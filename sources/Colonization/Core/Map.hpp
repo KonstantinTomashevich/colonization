@@ -10,8 +10,6 @@ class Map : public Urho3D::Object
 URHO3D_OBJECT (Map, Object)
 protected:
     Urho3D::Vector <District *> districts_;
-    void UpdateNeighborsOfDistricts ();
-    void ClearDistricts ();
 
 public:
     Map (Urho3D::Context *context);
@@ -23,5 +21,8 @@ public:
     District *GetDistrictByIndex (int index);
     int GetDistrictsCount ();
     void AddDistrict (District *district);
+
+    void UpdateNeighborsOfDistricts ();
+    void ClearDistricts ();
 };
 }

@@ -6,6 +6,8 @@
 #include <Urho3D/AngelScript/Script.h>
 #include <Launcher/AngelScriptBinders/BindApplication.hpp>
 #include <Colonization/AngelScriptBinders/BindActivity.hpp>
+#include <Colonization/AngelScriptBinders/BindDistrict.hpp>
+#include <Colonization/AngelScriptBinders/BindMap.hpp>
 
 URHO3D_DEFINE_APPLICATION_MAIN (ColonizationLauncher::Application)
 namespace ColonizationLauncher
@@ -45,6 +47,8 @@ void Application::Start ()
     context_->RegisterSubsystem (script);
     Colonization::BindActivity (script);
     BindApplication (script);
+    Colonization::BindDistrict (script);
+    Colonization::BindMap (script);
 }
 
 void Application::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)

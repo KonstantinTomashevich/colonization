@@ -3,22 +3,6 @@
 
 namespace Colonization
 {
-void Map::UpdateNeighborsOfDistricts ()
-{
-    for (int index = 0; index < districts_.Size (); index++)
-        districts_.At (index)->CalculateNeighbors (districts_);
-}
-
-void Map::ClearDistricts()
-{
-    while (!districts_.Empty ())
-    {
-        District *district = districts_.At (0);
-        districts_.Remove (district);
-        delete district;
-    }
-}
-
 Map::Map (Urho3D::Context *context) : Urho3D::Object (context), districts_ ()
 {
 
@@ -70,6 +54,24 @@ void Map::AddDistrict (District *district)
 {
     assert (district);
     districts_.Push (district);
+    // Because if it called from script, script engine will release ref and delete this object if we don't add ref.
+    district->AddRef ();
     UpdateNeighborsOfDistricts ();
+}
+
+void Map::UpdateNeighborsOfDistricts ()
+{
+    for (int index = 0; index < districts_.Size (); index++)
+        districts_.At (index)->CalculateNeighbors (districts_);
+}
+
+void Map::ClearDistricts()
+{
+    while (!districts_.Empty ())
+    {
+        District *district = districts_.At (0);
+        districts_.Remove (district);
+        delete district;
+    }
 }
 }
