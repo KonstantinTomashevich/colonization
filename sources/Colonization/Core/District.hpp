@@ -59,12 +59,12 @@ public:
     Urho3D::String colonyOwnerName_;
     int mansCount_;
     int womenCount_;
-    int localArmyCount_;
+    int localArmySize_;
     float farmsEvolutionPoints_;
     float minesEvolutionPoints_;
     float industryEvolutionPoints_;
     float logisticsEvolutionPoints_;
     float defenseEvolutionPoints_;
-    float averageStandartOfLifePoints_;
+    float averageLevelOfLifePoints_;
 };
 }
