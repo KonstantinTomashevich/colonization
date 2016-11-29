@@ -4,7 +4,8 @@
 namespace Colonization
 {
 District::District (Urho3D::Context *context) : Urho3D::Object (context),
-    needDataUpdate_ (false),
+    needDataUpdate_ (true),
+    name_ ("Unknown"),
     polygonPoints_ (),
     neighbors_ (),
 
@@ -55,6 +56,9 @@ void District::UpdateDataNode (Urho3D::Node *dataNode, bool rewritePolygonPoints
             polygonPointsVariants.Push (polygonPoints_.At (index));
         dataNode->SetVar ("polygonPoints", polygonPointsVariants);
     }
+
+    if (dataNode->GetVar ("name").GetString () != name_)
+        dataNode->SetVar ("name", name_);
 
     if (dataNode->GetVar ("farmingSquare").GetFloat () != farmingSquare_)
         dataNode->SetVar ("farmingSquare", farmingSquare_);
@@ -132,6 +136,7 @@ void District::UpdateDataNode (Urho3D::Node *dataNode, bool rewritePolygonPoints
 void District::ReadDataFromNode (Urho3D::Node *dataNode)
 {
     assert (dataNode);
+    name_ = dataNode->GetVar ("name").GetString ();
     Urho3D::VariantVector polygonPointsVariants = dataNode->GetVar ("polygonPoints").GetVariantVector ();
     polygonPoints_.Clear ();
     for (int index = 0; index < polygonPointsVariants.Size (); index++)
@@ -175,7 +180,7 @@ void District::CalculateNeighbors (Urho3D::Vector <District *> &allDistricts)
         District *another = allDistricts.At (index);
         assert (another);
 
-        if (!another->polygonPoints_.Empty () && !polygonPoints_.Empty ())
+        if (another != this && !another->polygonPoints_.Empty () && !polygonPoints_.Empty ())
         {
             int contactsCount = 0;
             for (int anotherPolygonPointIndex = 0;

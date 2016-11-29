@@ -27,6 +27,7 @@ enum NativesCharacter
 
 class District : public Urho3D::Object
 {
+URHO3D_OBJECT (District, Object)
 public:
     District (Urho3D::Context *context);
     virtual ~District ();
@@ -36,6 +37,7 @@ public:
     void CalculateNeighbors (Urho3D::Vector <District *> &allDistricts);
 
     bool needDataUpdate_;
+    Urho3D::String name_;
     Urho3D::PODVector <Urho3D::Vector3> polygonPoints_;
     Urho3D::Vector <District *> neighbors_;
 
