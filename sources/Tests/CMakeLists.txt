@@ -1,0 +1,5 @@
+set (TARGET_NAME TestDistrictsNeighborsCalculation)
+set (SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/TestDistrictsNeighborsCalculation.hpp ${CMAKE_CURRENT_SOURCE_DIR}/TestDistrictsNeighborsCalculation.cpp)
+setup_executable ()
+target_link_libraries (TestDistrictsNeighborsCalculation Colonization)
+add_test (NAME test_districts_neighbors_calculation COMMAND TestDistrictsNeighborsCalculation)
