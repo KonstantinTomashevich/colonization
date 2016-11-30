@@ -1,0 +1,7 @@
+language: cpp
+compiler: gcc
+dist: stable
+before_script:
+- wget http://downloads.sourceforge.net/project/urho3d/Urho3D/1.6/Urho3D-1.6-Linux-64bit-STATIC.tar.gz -O Urho3D.tar.gz && tar -xvf Urho3D.tar.gz && export URHO3D_HOME=$PWD/Urho3D-1.6-Linux-64bit-STATIC/usr/local
+script:
+- mkdir build && cd build && cmake .. -DCOLONIZATION_ENABLE_ASSERTION=1 && make  && make test
