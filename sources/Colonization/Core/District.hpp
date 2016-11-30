@@ -39,6 +39,8 @@ public:
     bool needDataUpdate_;
     Urho3D::String name_;
     Urho3D::PODVector <Urho3D::Vector3> polygonPoints_;
+    Urho3D::Vector3 unitPosition_;
+    Urho3D::Vector3 colonyPosition_;
     Urho3D::Vector <District *> neighbors_;
 
     float farmingSquare_;

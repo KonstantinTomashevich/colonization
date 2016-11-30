@@ -7,6 +7,8 @@ District::District (Urho3D::Context *context) : Urho3D::Object (context),
     needDataUpdate_ (true),
     name_ ("Unknown"),
     polygonPoints_ (),
+    unitPosition_ (),
+    colonyPosition_ (),
     neighbors_ (),
 
     farmingSquare_ (0.0f),
@@ -59,6 +61,12 @@ void District::UpdateDataNode (Urho3D::Node *dataNode, bool rewritePolygonPoints
 
     if (dataNode->GetVar ("name").GetString () != name_)
         dataNode->SetVar ("name", name_);
+
+    if (dataNode->GetVar ("unitPosition").GetVector3 () != unitPosition_)
+        dataNode->SetVar ("unitPosition", unitPosition_);
+
+    if (dataNode->GetVar ("colonyPosition").GetVector3 () != colonyPosition_)
+        dataNode->SetVar ("colonyPosition", colonyPosition_);
 
     if (dataNode->GetVar ("farmingSquare").GetFloat () != farmingSquare_)
         dataNode->SetVar ("farmingSquare", farmingSquare_);
@@ -141,6 +149,9 @@ void District::ReadDataFromNode (Urho3D::Node *dataNode)
     polygonPoints_.Clear ();
     for (int index = 0; index < polygonPointsVariants.Size (); index++)
         polygonPoints_.Push (polygonPointsVariants.At (index).GetVector3 ());
+
+    unitPosition_ = dataNode->GetVar ("unitPosition").GetVector3 ();
+    colonyPosition_ = dataNode->GetVar ("colonyPosition").GetVector3 ();
 
     farmingSquare_ = dataNode->GetVar ("farmingSquare").GetFloat ();
     forestsSquare_ = dataNode->GetVar ("forestsSquare").GetFloat ();
