@@ -8,8 +8,12 @@
 namespace Colonization
 {
 OBJECT_PROPERTY_GETTER_AND_SETTER (District, bool, needDataUpdate_)
+OBJECT_PROPERTY_GETTER_AND_SETTER (District, bool, isSea_)
+OBJECT_PROPERTY_GETTER_AND_SETTER (District, bool, isImpassable_)
 OBJECT_PROPERTY_GETTER_AND_SETTER (District, Urho3D::String, name_)
 OBJECT_ARRAY_PROPERTY_ACESSOR (District, Urho3D::Vector3, polygonPoints_)
+OBJECT_PROPERTY_GETTER_AND_SETTER (District, Urho3D::Vector3, unitPosition_)
+OBJECT_PROPERTY_GETTER_AND_SETTER (District, Urho3D::Vector3, colonyPosition_)
 OBJECT_ARRAY_PROPERTY_ACESSOR (District, District*, neighbors_)
 
 OBJECT_PROPERTY_GETTER_AND_SETTER (District, float, farmingSquare_)
@@ -73,8 +77,12 @@ void BindDistrict(Urho3D::Script *script)
                 );
 
     BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, bool, needDataUpdate_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, bool, isSea_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, bool, isImpassable_);
     BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, String, name_);
     BIND_OBJECT_ARRAY_PROPERTY (engine, District, District, Vector3, polygonPoints_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, Vector3, unitPosition_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, Vector3, colonyPosition_);
     BIND_OBJECT_ARRAY_PROPERTY (engine, District, District, District@, neighbors_);
 
     BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, float, farmingSquare_);
