@@ -1,8 +1,5 @@
 #pragma once
 #include <Urho3D/Engine/Application.h>
-#include <Urho3D/Container/Ptr.h>
-#include <Urho3D/Container/Vector.h>
-#include <Colonization/Utils/Activity.hpp>
 
 namespace Tests
 {

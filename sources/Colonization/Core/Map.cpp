@@ -98,6 +98,7 @@ Urho3D::Vector <District *> Map::FindPath (District *from, District *to, Urho3D:
 
         if (current == to)
         {
+            // Reconstruct way.
             Urho3D::Vector <District *> reversedWay;
             District *previous = cameFrom [current->name_];
             while (previous)
@@ -107,7 +108,7 @@ Urho3D::Vector <District *> Map::FindPath (District *from, District *to, Urho3D:
             }
 
             Urho3D::Vector <District *> way;
-            for (int index = reversedWay.Size () - 1; index > 0; index--)
+            for (int index = reversedWay.Size () - 1; index >= 0; index--)
                 way.Push (reversedWay.At (index));
             way.Push (to);
             return way;
@@ -135,6 +136,10 @@ Urho3D::Vector <District *> Map::FindPath (District *from, District *to, Urho3D:
             }
         }
     }
+
+    // Failure.
+    Urho3D::Vector <District *> empty;
+    return empty;
 }
 
 float HeuristicDistanceForPathFinding (District *goal, District *next)
