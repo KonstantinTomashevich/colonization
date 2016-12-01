@@ -1,5 +1,7 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "Map.hpp"
+#include <queue>
+#include <Urho3D/Container/HashMap.h>
 
 namespace Colonization
 {
@@ -73,5 +75,72 @@ void Map::ClearDistricts()
         districts_.Remove (district);
         delete district;
     }
+}
+
+Urho3D::Vector <District *> Map::FindPath (District *from, District *to, Urho3D::String playerName, bool canGoThroughColonies)
+{
+    assert (districts_.Contains (from));
+    assert (districts_.Contains (to));
+
+    Urho3D::HashMap <Urho3D::StringHash, District *> frontier;
+    Urho3D::HashMap <Urho3D::StringHash, District *> cameFrom;
+    Urho3D::HashMap <Urho3D::StringHash, float> costSoFar;
+
+    frontier [Urho3D::StringHash (1)] = from;
+    cameFrom [from->name_] = 0;
+    costSoFar [from->name_] = 0.0f;
+
+    while (!frontier.Empty ())
+    {
+        frontier.Sort ();
+        District *current = frontier.Front ().second_;
+        frontier.Erase (frontier.Front ().first_);
+
+        if (current == to)
+        {
+            Urho3D::Vector <District *> reversedWay;
+            District *previous = cameFrom [current->name_];
+            while (previous)
+            {
+                reversedWay.Push (previous);
+                previous = cameFrom [previous->name_];
+            }
+
+            Urho3D::Vector <District *> way;
+            for (int index = reversedWay.Size () - 1; index > 0; index--)
+                way.Push (reversedWay.At (index));
+            way.Push (to);
+            return way;
+        }
+
+        for (int index = 0; index < current->neighbors_.Size (); index++)
+        {
+            District *next = current->neighbors_.At (index);
+            if (!next->isImpassable_ && (
+                        next->isSea_ || (canGoThroughColonies && next->hasColony_ && next->colonyOwnerName_ == playerName)))
+            {
+                float newCost = costSoFar [current->name_];
+                if (!next->isSea_)
+                    newCost += (current->unitPosition_ - next->unitPosition_).Length () * 3.0f;
+                else
+                    newCost += (current->unitPosition_ - next->unitPosition_).Length ();
+
+                if (!costSoFar.Contains (next->name_) || newCost < costSoFar [next->name_])
+                {
+                    costSoFar [next->name_] = newCost;
+                    int priority = static_cast <int> (1 + HeuristicDistanceForPathFinding (to, next) * 1000);
+                    frontier [Urho3D::StringHash (priority)] = next;
+                    cameFrom [next->name_] = current;
+                }
+            }
+        }
+    }
+}
+
+float HeuristicDistanceForPathFinding (District *goal, District *next)
+{
+    return (Urho3D::Abs (goal->unitPosition_.x_ - next->unitPosition_.x_) +
+            Urho3D::Abs (goal->unitPosition_.y_ - next->unitPosition_.y_) +
+            Urho3D::Abs (goal->unitPosition_.z_ - next->unitPosition_.z_));
 }
 }
