@@ -37,6 +37,8 @@ public:
     void CalculateNeighbors (Urho3D::Vector <District *> &allDistricts);
 
     bool needDataUpdate_;
+    bool isSea_;
+    bool isImpassable_;
     Urho3D::String name_;
     Urho3D::PODVector <Urho3D::Vector3> polygonPoints_;
     Urho3D::Vector3 unitPosition_;

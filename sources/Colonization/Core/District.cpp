@@ -5,6 +5,8 @@ namespace Colonization
 {
 District::District (Urho3D::Context *context) : Urho3D::Object (context),
     needDataUpdate_ (true),
+    isSea_ (true),
+    isImpassable_ (false),
     name_ ("Unknown"),
     polygonPoints_ (),
     unitPosition_ (),
@@ -61,6 +63,12 @@ void District::UpdateDataNode (Urho3D::Node *dataNode, bool rewritePolygonPoints
 
     if (dataNode->GetVar ("name").GetString () != name_)
         dataNode->SetVar ("name", name_);
+
+    if (dataNode->GetVar ("isSea").GetBool () != isSea_)
+        dataNode->SetVar ("isSea", isSea_);
+
+    if (dataNode->GetVar ("isImpassable").GetBool () != isImpassable_)
+        dataNode->SetVar ("isImpassable", isImpassable_);
 
     if (dataNode->GetVar ("unitPosition").GetVector3 () != unitPosition_)
         dataNode->SetVar ("unitPosition", unitPosition_);
@@ -152,6 +160,8 @@ void District::ReadDataFromNode (Urho3D::Node *dataNode)
 
     unitPosition_ = dataNode->GetVar ("unitPosition").GetVector3 ();
     colonyPosition_ = dataNode->GetVar ("colonyPosition").GetVector3 ();
+    isSea_ = dataNode->GetVar ("isSea").GetBool ();
+    isImpassable_ = dataNode->GetVar ("isImpassable").GetBool ();
 
     farmingSquare_ = dataNode->GetVar ("farmingSquare").GetFloat ();
     forestsSquare_ = dataNode->GetVar ("forestsSquare").GetFloat ();
