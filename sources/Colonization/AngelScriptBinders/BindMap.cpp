@@ -7,6 +7,13 @@
 
 namespace Colonization
 {
+Urho3D::CScriptArray *MapFindPath (Map *map, District *from, District *to,
+                                   Urho3D::String playerName, bool canGoThroughColonies)
+{
+    Urho3D::Vector <District *> result = map->FindPath (from, to, playerName, canGoThroughColonies);
+    return Urho3D::VectorToArray <District *> (result, "Array<District@>");
+}
+
 void BindMap(Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
@@ -52,6 +59,13 @@ void BindMap(Urho3D::Script *script)
                 engine->RegisterObjectMethod (
                     "Map", "void ClearDistricts ()",
                                   asMETHOD (Map, ClearDistricts), asCALL_THISCALL)
+                );
+
+    CHECK_ANGELSCRIPT_RETURN (
+                engine->RegisterObjectMethod (
+                    "Map",
+                    "Array<District@> @FindPath (District @from, District @to, String playerName, bool canGoThroughColonies)",
+                                  asFUNCTION (MapFindPath), asCALL_CDECL_OBJFIRST)
                 );
 }
 }
