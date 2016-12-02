@@ -1,0 +1,52 @@
+#pragma once
+#include <Urho3D/Core/Object.h>
+
+namespace Colonization
+{
+enum PlayerActionType
+{
+    PLAYER_ACTION_NONE = 0,
+    PLAYER_ACTION_SET_UNIT_MOVE_TARGET = 1,
+
+    PLAYER_ACTION_INVEST_TO_COLONY = 2,
+    PLAYER_ACTION_CHANGE_INTERNAL_TRADE_TAXES = 3,
+    PLAYER_ACTION_CHANGE_EUROPE_TRADE_TAXES = 4,
+
+    PLAYER_ACTION_REQUEST_COLONIZATORS_FROM_EUROPE = 5,
+    PLAYER_ACTION_REQUEST_ARMY_FROM_EUROPE = 6,
+    PLAYER_ACTION_REQUEST_FLEET_FROM_EUROPE = 7,
+
+    PLAYER_ACTION_MOBILIZE_ARMY = 8,
+    PLAYER_ACTION_IMMOBILIZE_ARMY = 9,
+
+    PLAYER_ACTION_START_WAR = 10,
+    PLAYER_ACTION_SEND_PEACE_TREATY = 11,
+    PLAYER_ACTION_ACCEPT_PEACE_TREATY = 12,
+    PLAYER_ACTION_SEND_GIFT_TO_THE_KING = 13
+
+    // TODO: To be continued.
+};
+
+class Player : Urho3D::Object
+{
+protected:
+    Urho3D::String name_;
+    float gold_;
+    Urho3D::Vector <Urho3D::Pair <PlayerActionType, Urho3D::VariantMap> > actionsSequence_;
+public:
+    Player (Urho3D::Context *context, Urho3D::String name);
+    virtual ~Player ();
+
+    void Update (float delta);
+    Urho3D::Pair <PlayerActionType, Urho3D::VariantMap> GetAction (int index);
+    void RemoveAction (int index);
+    bool RemoveAction(Urho3D::Pair <PlayerActionType, Urho3D::VariantMap> &action);
+    void RemoveAllActions ();
+    void AddAction (Urho3D::Pair <PlayerActionType, Urho3D::VariantMap> &action);
+    int GetActionsCount ();
+
+    Urho3D::String GetName ();
+    float GetGold ();
+    void SetGold (float gold);
+};
+}
