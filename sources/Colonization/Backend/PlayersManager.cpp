@@ -28,17 +28,15 @@ PlayersManager::PlayersManager (Urho3D::Context *context) : Urho3D::Object (cont
     connectionHashToNameHashMap_ (),
     connectionsWithoutId_ ()
 {
-
+    SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (PlayersManager, Update));
+    SubscribeToEvent (Urho3D::E_CLIENTCONNECTED, URHO3D_HANDLER (PlayersManager, HandlePlayerConnected));
+    SubscribeToEvent (Urho3D::E_CLIENTDISCONNECTED, URHO3D_HANDLER (PlayersManager, HandlePlayerDisconnected));
 }
 
 PlayersManager::~PlayersManager ()
 {
-    while (!connectionsWithoutId_.Empty ())
-    {
-        Urho3D::Connection *connection = connectionsWithoutId_.Front ();
-        connectionsWithoutId_.Remove (connectionsWithoutId_.Front ());
-        delete connection;
-    }
+    UnsubscribeFromAllEvents ();
+    DisconnectAllUnidentificatedConnections ();
 
     while (!players_.Keys ().Empty ())
         DisconnectPlayer (players_.Keys ().Front ());
@@ -75,6 +73,21 @@ void PlayersManager::HandlePlayerDisconnected (Urho3D::StringHash eventType, Urh
     Urho3D::Connection *connection = eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
     DisconnectPlayer (connection);
     // TODO: Inform other players.
+}
+
+int PlayersManager::GetPlayersCount ()
+{
+    return players_.Values ().Size ();
+}
+
+void PlayersManager::DisconnectAllUnidentificatedConnections ()
+{
+    while (!connectionsWithoutId_.Empty ())
+    {
+        Urho3D::Connection *connection = connectionsWithoutId_.Front ();
+        connectionsWithoutId_.Remove (connectionsWithoutId_.Front ());
+        delete connection;
+    }
 }
 
 Player *PlayersManager::GetPlayer (Urho3D::StringHash nameHash)

@@ -28,7 +28,7 @@ enum PlayerActionType
     // TODO: To be continued.
 };
 
-class Player : Urho3D::Object
+class Player : public Urho3D::Object
 {
 URHO3D_OBJECT (Player, Object)
 protected:
