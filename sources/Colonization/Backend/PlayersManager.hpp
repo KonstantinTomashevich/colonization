@@ -26,7 +26,9 @@ public:
     int GetPlayersCount ();
     void DisconnectAllUnidentificatedConnections ();
     Player *GetPlayer (Urho3D::StringHash nameHash);
+    Urho3D::Vector <Player *> GetPlayersByNames (Urho3D::Vector <Urho3D::StringHash> namesHashes);
     Player *GetPlayer (Urho3D::Connection *connection);
+    Urho3D::Vector <Player *> GetAllPlayers ();
 
     void PlayerIdentified (Urho3D::Connection *connection, Urho3D::String name);
     void DisconnectPlayer (Urho3D::StringHash nameHash);

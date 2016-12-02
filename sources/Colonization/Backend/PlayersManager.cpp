@@ -1,7 +1,9 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "PlayersManager.hpp"
+#include <Urho3D/Core/Context.h>
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/Network/NetworkEvents.h>
+#include <Colonization/Backend/MessagesHandler.hpp>
 
 namespace Colonization
 {
@@ -44,9 +46,16 @@ PlayersManager::~PlayersManager ()
 
 void PlayersManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
+    MessagesHandler *messagesHandler = context_->GetSubsystem <MessagesHandler> ();
+    assert (messagesHandler);
+
     float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
     for (int index = 0; index < players_.Values ().Size (); index++)
-        players_.Values ().At (index)->Update (timeStep);
+    {
+        Player *player = players_.Values ().At (index);
+        player->Update (timeStep);
+        messagesHandler->SendPlayersStats (player);
+    }
 
     int index = 0;
     while (index < connectionsWithoutId_.Size ())
@@ -54,6 +63,7 @@ void PlayersManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &e
         connectionsWithoutId_.At (index).first_ -= timeStep;
         if (connectionsWithoutId_.At (index).first_ <= 0.0f)
         {
+            connectionsWithoutId_.At (index).second_->Disconnect ();
             delete connectionsWithoutId_.At (index).second_;
             connectionsWithoutId_.Remove (connectionsWithoutId_.At (index));
         }
@@ -64,15 +74,20 @@ void PlayersManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &e
 
 void PlayersManager::HandlePlayerConnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    Urho3D::Connection *connection = eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
+    Urho3D::Connection *connection = (Urho3D::Connection *)
+            eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
     connectionsWithoutId_.Push (Urho3D::Pair <float, Urho3D::Connection *> (1.0f, connection));
 }
 
 void PlayersManager::HandlePlayerDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    Urho3D::Connection *connection = eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
+    Urho3D::Connection *connection = (Urho3D::Connection *)
+            eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
+    MessagesHandler *messagesHandler = context_->GetSubsystem <MessagesHandler> ();
+    assert (messagesHandler);
+    Urho3D::Vector <Player *> allPlayers = players_.Values ();
+    messagesHandler->SendTextInfoFromServer (GetPlayer (connection)->GetName () + " left game!", allPlayers);
     DisconnectPlayer (connection);
-    // TODO: Inform other players.
 }
 
 int PlayersManager::GetPlayersCount ()
@@ -84,8 +99,10 @@ void PlayersManager::DisconnectAllUnidentificatedConnections ()
 {
     while (!connectionsWithoutId_.Empty ())
     {
-        Urho3D::Connection *connection = connectionsWithoutId_.Front ();
+        Urho3D::Connection *connection = (Urho3D::Connection *)
+                connectionsWithoutId_.Front ().second_;
         connectionsWithoutId_.Remove (connectionsWithoutId_.Front ());
+        connection->Disconnect ();
         delete connection;
     }
 }
@@ -95,9 +112,22 @@ Player *PlayersManager::GetPlayer (Urho3D::StringHash nameHash)
     return players_ [nameHash];
 }
 
+Urho3D::Vector <Player *> PlayersManager::GetPlayersByNames (Urho3D::Vector <Urho3D::StringHash> namesHashes)
+{
+    Urho3D::Vector <Player *> players;
+    for (int index = 0; index < namesHashes.Size (); index++)
+        players.Push (players_ [namesHashes.At (index)]);
+    return players;
+}
+
 Player *PlayersManager::GetPlayer (Urho3D::Connection *connection)
 {
     return players_ [connectionHashToNameHashMap_ [connection->GetAddress ()]];
+}
+
+Urho3D::Vector<Player *> PlayersManager::GetAllPlayers ()
+{
+    return players_.Values ();
 }
 
 void PlayersManager::PlayerIdentified (Urho3D::Connection *connection, Urho3D::String name)
@@ -106,7 +136,11 @@ void PlayersManager::PlayerIdentified (Urho3D::Connection *connection, Urho3D::S
     Player *player = new Player (context_, name, connection);
     players_ [name] = player;
     connectionHashToNameHashMap_ [connection->GetAddress ()] = name;
-    // TODO: Inform other players.
+
+    MessagesHandler *messagesHandler = context_->GetSubsystem <MessagesHandler> ();
+    assert (messagesHandler);
+    Urho3D::Vector <Player *> allPlayers = players_.Values ();
+    messagesHandler->SendTextInfoFromServer (player->GetName () + " entered game!", allPlayers);
 }
 
 void PlayersManager::DisconnectPlayer (Urho3D::StringHash nameHash)
