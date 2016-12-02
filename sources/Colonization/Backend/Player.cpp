@@ -3,17 +3,20 @@
 
 namespace Colonization
 {
-Player::Player (Urho3D::Context *context, Urho3D::String name) : Urho3D::Object (context),
+Player::Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Connection *connection) : Urho3D::Object (context),
     name_ (name),
     gold_ (0.0f),
-    actionsSequence_ ()
+    points_ (0.0f),
+    actionsSequence_ (),
+    connection_ (connection)
 {
-
+    assert (connection);
+    assert (!name.Empty ());
 }
 
 Player::~Player ()
 {
-
+    delete connection_;
 }
 
 void Player::Update (float delta)
@@ -71,5 +74,20 @@ float Player::GetGold ()
 void Player::SetGold (float gold)
 {
     gold_ = gold;
+}
+
+Urho3D::Connection *Player::GetConnection ()
+{
+    return connection_;
+}
+
+float Player::GetPoints ()
+{
+    return points_;
+}
+
+void Player::SetPoints (float points)
+{
+    points_ = points;
 }
 }

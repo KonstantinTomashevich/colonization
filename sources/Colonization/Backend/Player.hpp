@@ -1,5 +1,6 @@
 #pragma once
 #include <Urho3D/Core/Object.h>
+#include <Urho3D/Network/Connection.h>
 
 namespace Colonization
 {
@@ -29,12 +30,15 @@ enum PlayerActionType
 
 class Player : Urho3D::Object
 {
+URHO3D_OBJECT (Player, Object)
 protected:
     Urho3D::String name_;
+    float points_;
     float gold_;
     Urho3D::Vector <Urho3D::Pair <PlayerActionType, Urho3D::VariantMap> > actionsSequence_;
+    Urho3D::Connection *connection_;
 public:
-    Player (Urho3D::Context *context, Urho3D::String name);
+    Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Connection *connection);
     virtual ~Player ();
 
     void Update (float delta);
@@ -48,5 +52,8 @@ public:
     Urho3D::String GetName ();
     float GetGold ();
     void SetGold (float gold);
+    Urho3D::Connection *GetConnection ();
+    float GetPoints ();
+    void SetPoints (float points);
 };
 }
