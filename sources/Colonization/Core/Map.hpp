@@ -21,6 +21,7 @@ public:
     void ReadDataFromNode (Urho3D::Node *dataNode);
 
     District *GetDistrictByIndex (int index);
+    District *GetDistrictByNameHash (Urho3D::StringHash nameHash);
     int GetDistrictsCount ();
     void AddDistrict (District *district);
 
