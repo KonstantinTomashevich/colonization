@@ -77,12 +77,12 @@ void PlayersManager::HandlePlayerDisconnected (Urho3D::StringHash eventType, Urh
     // TODO: Inform other players.
 }
 
-void PlayersManager::GetPlayer (Urho3D::StringHash nameHash)
+Player *PlayersManager::GetPlayer (Urho3D::StringHash nameHash)
 {
     return players_ [nameHash];
 }
 
-void PlayersManager::GetPlayer (Urho3D::Connection *connection)
+Player *PlayersManager::GetPlayer (Urho3D::Connection *connection)
 {
     return players_ [connectionHashToNameHashMap_ [connection->GetAddress ()]];
 }
