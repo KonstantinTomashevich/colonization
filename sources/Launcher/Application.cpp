@@ -42,7 +42,7 @@ void Application::Start ()
     SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (Application, Update));
     if (!currentActivities_.Empty ())
         for (int index = 0; index < currentActivities_.Size (); index++)
-            currentActivities_.At (index)->Init ();
+            currentActivities_.At (index)->Start ();
 
     // Register AngelScript subsystem.
     Urho3D::Script *script = new Urho3D::Script (context_);
@@ -74,7 +74,7 @@ void Application::SetupActivity (Urho3D::SharedPtr <Colonization::Activity> acti
 {
     assert (activity.NotNull ());
     currentActivities_.Push (activity);
-    activity->Init ();
+    activity->Start ();
 }
 
 void Application::StopActivity (Urho3D::SharedPtr<Colonization::Activity> activity)

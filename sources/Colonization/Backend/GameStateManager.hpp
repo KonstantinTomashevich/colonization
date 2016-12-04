@@ -34,7 +34,7 @@ protected:
 public:
     GameStateManager (Urho3D::Context *context);
     virtual ~GameStateManager ();
-    void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void Update (float timeStep);
     GameStateType GetCurrentState ();
 };
 }

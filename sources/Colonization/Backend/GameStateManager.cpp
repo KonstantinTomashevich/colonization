@@ -90,6 +90,11 @@ GameStateManager::~GameStateManager ()
     DisposeCurrentState ();
 }
 
+void GameStateManager::Update (float timeStep)
+{
+    // TODO: Implement later.
+}
+
 GameStateType GameStateManager::GetCurrentState ()
 {
     return currentState_;

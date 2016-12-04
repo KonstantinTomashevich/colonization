@@ -13,8 +13,8 @@ void BindActivity (Urho3D::Script *script)
     Urho3D::RegisterObject <Activity> (engine, "Activity");
 
     CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod ("Activity", "void Init ()",
-                                              asMETHOD (Activity, Init), asCALL_THISCALL)
+                engine->RegisterObjectMethod ("Activity", "void Start ()",
+                                              asMETHOD (Activity, Start), asCALL_THISCALL)
             );
 
     CHECK_ANGELSCRIPT_RETURN (
