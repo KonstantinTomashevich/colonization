@@ -4,7 +4,7 @@
 
 namespace Colonization
 {
-class HostActivity : Activity
+class HostActivity : public Activity
 {
 URHO3D_OBJECT (HostActivity, Activity)
 protected:

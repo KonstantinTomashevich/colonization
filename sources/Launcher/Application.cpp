@@ -10,6 +10,7 @@
 #include <Colonization/AngelScriptBinders/BindMap.hpp>
 #include <Colonization/AngelScriptBinders/BindNetworkMessageType.hpp>
 #include <Colonization/AngelScriptBinders/BindGameStateType.hpp>
+#include <Colonization/AngelScriptBinders/BindHostActivity.hpp>
 
 URHO3D_DEFINE_APPLICATION_MAIN (ColonizationLauncher::Application)
 namespace ColonizationLauncher
@@ -53,6 +54,7 @@ void Application::Start ()
     Colonization::BindMap (script);
     Colonization::BindNetworkMessageType (script);
     Colonization::BindGameStateType (script);
+    Colonization::BindHostActivity (script);
 }
 
 void Application::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
