@@ -46,8 +46,7 @@ PlayersManager::~PlayersManager ()
 
 void PlayersManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    // TODO: Maybe use global vars instead of subsystems?
-    MessagesHandler *messagesHandler = context_->GetSubsystem <MessagesHandler> ();
+    MessagesHandler *messagesHandler = (MessagesHandler *) context_->GetGlobalVar ("MessagesHandler").GetPtr ();
     assert (messagesHandler);
 
     float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
@@ -84,7 +83,7 @@ void PlayersManager::HandlePlayerDisconnected (Urho3D::StringHash eventType, Urh
 {
     Urho3D::Connection *connection = (Urho3D::Connection *)
             eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
-    MessagesHandler *messagesHandler = context_->GetSubsystem <MessagesHandler> ();
+    MessagesHandler *messagesHandler = (MessagesHandler *) context_->GetGlobalVar ("MessagesHandler").GetPtr ();
     assert (messagesHandler);
     Urho3D::Vector <Player *> allPlayers = players_.Values ();
     messagesHandler->SendTextInfoFromServer (GetPlayer (connection)->GetName () + " left game!", allPlayers);
@@ -138,7 +137,7 @@ void PlayersManager::PlayerIdentified (Urho3D::Connection *connection, Urho3D::S
     players_ [name] = player;
     connectionHashToNameHashMap_ [connection->GetAddress ()] = name;
 
-    MessagesHandler *messagesHandler = context_->GetSubsystem <MessagesHandler> ();
+    MessagesHandler *messagesHandler = (MessagesHandler *) context_->GetGlobalVar ("MessagesHandler").GetPtr ();
     assert (messagesHandler);
     Urho3D::Vector <Player *> allPlayers = players_.Values ();
     messagesHandler->SendTextInfoFromServer (player->GetName () + " entered game!", allPlayers);

@@ -22,14 +22,14 @@ void MessagesHandler::HandleClientIdentity (Urho3D::StringHash eventType, Urho3D
 {
     Urho3D::Connection *connection = (Urho3D::Connection *)
             eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
-    PlayersManager *playersManager = context_->GetSubsystem <PlayersManager> ();
+    PlayersManager *playersManager = (PlayersManager *) context_->GetGlobalVar ("PlayersManager").GetPtr ();
     assert (playersManager);
     playersManager->PlayerIdentified (connection, connection->GetIdentity () ["Name"].GetString ());
 }
 
 void MessagesHandler::HandleNetworkMessage (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    PlayersManager *playersManager = context_->GetSubsystem <PlayersManager> ();
+    PlayersManager *playersManager = (PlayersManager *) context_->GetGlobalVar ("PlayersManager").GetPtr ();
     assert (playersManager);
 
     Urho3D::Connection *connection = (Urho3D::Connection *)
