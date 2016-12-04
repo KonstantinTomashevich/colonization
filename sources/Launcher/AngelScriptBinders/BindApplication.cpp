@@ -23,6 +23,11 @@ void BindApplication (Urho3D::Script *script)
             );
 
     CHECK_ANGELSCRIPT_RETURN (
+                engine->RegisterObjectMethod ("LauncherApplication", "void StopActivityNextFrame (Activity @activity)",
+                                              asMETHOD (ColonizationLauncher::Application, StopActivityNextFrame), asCALL_THISCALL)
+            );
+
+    CHECK_ANGELSCRIPT_RETURN (
                 engine->RegisterObjectMethod ("LauncherApplication", "int GetActivitiesCount ()",
                                               asMETHOD (ColonizationLauncher::Application, GetActivitiesCount), asCALL_THISCALL)
             );

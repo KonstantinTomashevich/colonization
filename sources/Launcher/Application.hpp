@@ -11,6 +11,7 @@ class Application : public Urho3D::Application
 URHO3D_OBJECT (Application, Object)
 protected:
     Urho3D::Vector <Urho3D::SharedPtr <Colonization::Activity> > currentActivities_;
+    Urho3D::Vector <Urho3D::SharedPtr <Colonization::Activity> > activitiesToStop_;
 public:
     Application (Urho3D::Context *context);
     virtual ~Application ();
@@ -22,6 +23,7 @@ public:
 
     void SetupActivity (Urho3D::SharedPtr <Colonization::Activity> activity);
     void StopActivity (Urho3D::SharedPtr <Colonization::Activity> activity);
+    void StopActivityNextFrame (Urho3D::SharedPtr <Colonization::Activity> activity);
     int GetActivitiesCount ();
     Urho3D::SharedPtr <Colonization::Activity> GetActivityByIndex (int index);
 };

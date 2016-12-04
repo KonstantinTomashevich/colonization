@@ -15,7 +15,7 @@
 URHO3D_DEFINE_APPLICATION_MAIN (ColonizationLauncher::Application)
 namespace ColonizationLauncher
 {
-Application::Application (Urho3D::Context *context) : Urho3D::Application (context), currentActivities_ ()
+Application::Application (Urho3D::Context *context) : Urho3D::Application (context), currentActivities_ (), activitiesToStop_ ()
 {
 
 }
@@ -60,6 +60,14 @@ void Application::Start ()
 void Application::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
+    if (!activitiesToStop_.Empty ())
+        while (!activitiesToStop_.Empty ())
+        {
+            Urho3D::SharedPtr <Colonization::Activity> activity = activitiesToStop_.Front ();
+            activitiesToStop_.Remove (activity);
+            StopActivity (activity);
+        }
+
     if (!currentActivities_.Empty ())
         for (int index = 0; index < currentActivities_.Size (); index++)
             currentActivities_.At (index)->Update (timeStep);
@@ -79,11 +87,16 @@ void Application::SetupActivity (Urho3D::SharedPtr <Colonization::Activity> acti
     activity->Start ();
 }
 
-void Application::StopActivity (Urho3D::SharedPtr<Colonization::Activity> activity)
+void Application::StopActivity (Urho3D::SharedPtr <Colonization::Activity> activity)
 {
     assert (activity.NotNull ());
     currentActivities_.Remove (activity);
     activity->Stop ();
+}
+
+void Application::StopActivityNextFrame (Urho3D::SharedPtr <Colonization::Activity> activity)
+{
+    activitiesToStop_.Push (activity);
 }
 
 int Application::GetActivitiesCount ()
