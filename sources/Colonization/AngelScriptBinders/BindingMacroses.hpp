@@ -2,22 +2,6 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include <Urho3D/AngelScript/APITemplates.h>
 
-namespace Urho3D
-{
-// Modification of RegisterObject. Allows to register object which isn't directly inherits Urho3D object.
-template <class T, class Base> void RegisterObjectWithInheritance (asIScriptEngine *engine, const char *className, const char *baseName)
-{
-    RegisterRefCounted <T> (engine, className);
-    engine->RegisterObjectMethod (className, "StringHash get_type() const", asMETHODPR(T, GetType, () const, StringHash), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className, "const String& get_typeName() const", asMETHODPR(T, GetTypeName, () const, const String&), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className, "const String& get_category() const", asMETHODPR(T, GetCategory, () const, const String&), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className, "void SendEvent(const String&in, VariantMap& eventData = VariantMap())", asFUNCTION(ObjectSendEvent<T>), asCALL_CDECL_OBJLAST);
-    engine->RegisterObjectMethod (className, "bool HasSubscribedToEvent(const String&in)", asFUNCTION(ObjectHasSubscribedToEvent<T>), asCALL_CDECL_OBJLAST);
-    engine->RegisterObjectMethod (className, "bool HasSubscribedToEvent(Object@+, const String&in)", asFUNCTION(ObjectHasSubscribedToSenderEvent<T>), asCALL_CDECL_OBJLAST);
-    RegisterSubclass <Base, T> (engine, baseName,  className);
-}
-}
-
 #ifdef NDEBUG
     #define CHECK_ANGELSCRIPT_RETURN(expression) expression
 #else
