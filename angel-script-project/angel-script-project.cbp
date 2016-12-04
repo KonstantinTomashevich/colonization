@@ -19,6 +19,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="../bin/Data/AngelScript/MainMenu.as" />
 		<Unit filename="AngelScriptAPI.hpp" />
 		<Extensions>
 			<code_completion />
