@@ -46,6 +46,7 @@ PlayersManager::~PlayersManager ()
 
 void PlayersManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
+    // TODO: Maybe use global vars instead of subsystems?
     MessagesHandler *messagesHandler = context_->GetSubsystem <MessagesHandler> ();
     assert (messagesHandler);
 

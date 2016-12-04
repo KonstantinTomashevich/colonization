@@ -94,4 +94,12 @@ void MessagesHandler::SendTextInfoFromServer (Urho3D::String info, Urho3D::Vecto
     for (int index = 0; index < recieviers.Size (); index++)
         recieviers.At (index)->GetConnection ()->SendMessage (STC_NETWORK_MESSAGE_TEXT_INFO_FROM_SERVER, true, false, messageData);
 }
+
+void MessagesHandler::SendGameState (GameState gameState, Urho3D::Vector<Player *> &recieviers)
+{
+    Urho3D::VectorBuffer messageData;
+    messageData.WriteInt (static_cast <int> (gameState));
+    for (int index = 0; index < recieviers.Size (); index++)
+        recieviers.At (index)->GetConnection ()->SendMessage (STC_NETWORK_MESSAGE_SEND_GAME_STATE, true, false, messageData);
+}
 }
