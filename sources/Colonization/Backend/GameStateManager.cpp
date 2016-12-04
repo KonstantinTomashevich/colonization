@@ -35,7 +35,7 @@ void GameStateManager::DisposeFinishedState ()
     // TODO: Implement later.
 }
 
-void GameStateManager::SetupState (GameState state)
+void GameStateManager::SetupState (GameStateType state)
 {
     if (state == GAME_STATE_WAITING_FOR_PLAYERS)
         SetupWaitingForPlayersState ();
@@ -47,11 +47,11 @@ void GameStateManager::SetupState (GameState state)
 
 void GameStateManager::DisposeCurrentState ()
 {
-    if (state == GAME_STATE_WAITING_FOR_PLAYERS)
+    if (currentState_ == GAME_STATE_WAITING_FOR_PLAYERS)
         DisposeWaitingForPlayersState ();
-    else if (state == GAME_STATE_PLAYING)
+    else if (currentState_ == GAME_STATE_PLAYING)
         DisposePlayingState ();
-    else if (state == GAME_STATE_FINISHED)
+    else if (currentState_ == GAME_STATE_FINISHED)
         DisposeFinishedState ();
 }
 
@@ -69,7 +69,7 @@ bool GameStateManager::WillIGoFromPlayingToFinishedState ()
 }
 
 GameStateManager::GameStateManager (Urho3D::Context *context, int serverPort) : Urho3D::Object (context),
-    gameState_ (GAME_STATE_UNITIALIZED)
+    currentState_ (GAME_STATE_UNITIALIZED)
 {
     currentState_ = GAME_STATE_WAITING_FOR_PLAYERS;
     SetupState (currentState_);
@@ -80,7 +80,7 @@ GameStateManager::~GameStateManager ()
     DisposeCurrentState ();
 }
 
-GameState GameStateManager::GetCurrentState ()
+GameStateType GameStateManager::GetCurrentState ()
 {
     return currentState_;
 }

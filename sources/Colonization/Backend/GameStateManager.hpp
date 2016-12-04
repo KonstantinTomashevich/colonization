@@ -3,7 +3,7 @@
 
 namespace Colonization
 {
-enum GameState
+enum GameStateType
 {
     GAME_STATE_UNITIALIZED = -1,
     GAME_STATE_WAITING_FOR_PLAYERS = 0,
@@ -15,7 +15,7 @@ class GameStateManager : public Urho3D::Object
 {
 URHO3D_OBJECT (GameStateManager, Object)
 protected:
-    GameState currentState_;
+    GameStateType currentState_;
 
     void SetupWaitingForPlayersState ();
     void DisposeWaitingForPlayersState ();
@@ -26,7 +26,7 @@ protected:
     void SetupFinishedState ();
     void DisposeFinishedState ();
 
-    void SetupState (GameState state);
+    void SetupState (GameStateType state);
     void DisposeCurrentState ();
 
     bool WillIGoFromWaitingForPlayersToPlayingState ();
@@ -35,7 +35,7 @@ public:
     GameStateManager (Urho3D::Context *context, int serverPort = 13751);
     virtual ~GameStateManager ();
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
-    GameState GetCurrentState ();
+    GameStateType GetCurrentState ();
 };
 }
 

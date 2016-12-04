@@ -5,7 +5,6 @@
 
 namespace Colonization
 {
-// TODO: Bind network messages types to AngelScript.
 enum NetworkMessageType
 {
     // CTS -- client to server message.
@@ -35,6 +34,6 @@ public:
     void SendPlayersStats (Player *player);
     void SendChatMessage (Urho3D::String senderName, Urho3D::String message, Urho3D::Vector <Player *> &recieviers, bool isPrivate);
     void SendTextInfoFromServer (Urho3D::String info, Urho3D::Vector <Player *> &recieviers);
-    void SendGameState (GameState gameState, Urho3D::Vector <Player *> &recieviers);
+    void SendGameState (GameStateType gameState, Urho3D::Vector <Player *> &recieviers);
 };
 }
