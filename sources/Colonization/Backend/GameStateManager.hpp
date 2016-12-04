@@ -32,7 +32,7 @@ protected:
     bool WillIGoFromWaitingForPlayersToPlayingState ();
     bool WillIGoFromPlayingToFinishedState ();
 public:
-    GameStateManager (Urho3D::Context *context, int serverPort = 13751);
+    GameStateManager (Urho3D::Context *context);
     virtual ~GameStateManager ();
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     GameStateType GetCurrentState ();

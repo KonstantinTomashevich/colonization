@@ -125,7 +125,7 @@ Player *PlayersManager::GetPlayer (Urho3D::Connection *connection)
     return players_ [connectionHashToNameHashMap_ [connection->GetAddress ()]];
 }
 
-Urho3D::Vector<Player *> PlayersManager::GetAllPlayers ()
+Urho3D::Vector <Player *> PlayersManager::GetAllPlayers ()
 {
     return players_.Values ();
 }

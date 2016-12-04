@@ -1,18 +1,26 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "GameStateManager.hpp"
 #include <Urho3D/Core/Context.h>
+#include <Colonization/Backend/MessagesHandler.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 
 namespace Colonization
 {
 void GameStateManager::SetupWaitingForPlayersState ()
 {
-    // TODO: Implement later.
+    // TODO: To be continued...
+    MessagesHandler *messagesHandler = new MessagesHandler (context_);
+    PlayersManager *playersManager = new PlayersManager (context_);
+
+    context_->SetGlobalVar ("MessagesHandler", Urho3D::Variant (messagesHandler));
+    context_->SetGlobalVar ("PlayersManager", Urho3D::Variant (playersManager));
 }
 
 void GameStateManager::DisposeWaitingForPlayersState ()
 {
-    // TODO: Implement later.
+    // TODO: Temporary. Reimplement later.
+    SetupState (GAME_STATE_FINISHED);
+    DisposeCurrentState ();
 }
 
 void GameStateManager::SetupPlayingState ()
@@ -32,7 +40,9 @@ void GameStateManager::SetupFinishedState ()
 
 void GameStateManager::DisposeFinishedState ()
 {
-    // TODO: Implement later.
+    // TODO: To be continued...
+    delete ( (MessagesHandler *) context_->GetGlobalVar ("MessagesHandler").GetPtr ());
+    delete ( (PlayersManager *) context_->GetGlobalVar ("PlayersManager").GetPtr ());
 }
 
 void GameStateManager::SetupState (GameStateType state)
@@ -43,6 +53,7 @@ void GameStateManager::SetupState (GameStateType state)
         SetupPlayingState ();
     else if (state == GAME_STATE_FINISHED)
         SetupFinishedState ();
+    currentState_ = state;
 }
 
 void GameStateManager::DisposeCurrentState ()
@@ -68,11 +79,10 @@ bool GameStateManager::WillIGoFromPlayingToFinishedState ()
     return false;
 }
 
-GameStateManager::GameStateManager (Urho3D::Context *context, int serverPort) : Urho3D::Object (context),
+GameStateManager::GameStateManager (Urho3D::Context *context) : Urho3D::Object (context),
     currentState_ (GAME_STATE_UNITIALIZED)
 {
-    currentState_ = GAME_STATE_WAITING_FOR_PLAYERS;
-    SetupState (currentState_);
+    SetupState (GAME_STATE_WAITING_FOR_PLAYERS);
 }
 
 GameStateManager::~GameStateManager ()
