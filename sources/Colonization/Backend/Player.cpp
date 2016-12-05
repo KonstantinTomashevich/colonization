@@ -16,7 +16,7 @@ Player::Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Connectio
 
 Player::~Player ()
 {
-    delete connection_;
+
 }
 
 void Player::Update (float delta)

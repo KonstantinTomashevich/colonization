@@ -12,6 +12,7 @@
 #include <Colonization/AngelScriptBinders/BindGameStateType.hpp>
 #include <Colonization/AngelScriptBinders/BindHostActivity.hpp>
 #include <Colonization/AngelScriptBinders/BindMainMenuActivity.hpp>
+#include <Colonization/AngelScriptBinders/BindIngamePlayerActivity.hpp>
 #include <Colonization/Activities/MainMenuActivity.hpp>
 
 URHO3D_DEFINE_APPLICATION_MAIN (ColonizationLauncher::LauncherApplication)
@@ -58,6 +59,7 @@ void LauncherApplication::Start ()
     Colonization::BindGameStateType (script);
     Colonization::BindHostActivity (script);
     Colonization::BindMainMenuActivity (script);
+    Colonization::BindIngamePlayerActivity (script);
 
     Urho3D::SharedPtr <Colonization::MainMenuActivity> mainMenuActivity (new Colonization::MainMenuActivity (context_));
     SetupActivity (mainMenuActivity);

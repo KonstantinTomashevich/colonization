@@ -3,6 +3,7 @@
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/Network/NetworkEvents.h>
+#include <Urho3D/IO/Log.h>
 #include <Colonization/Backend/MessagesHandler.hpp>
 
 namespace Colonization
@@ -17,7 +18,6 @@ bool PlayersManager::DeleteIdentificatedConnection (Urho3D::Connection *connecti
         {
             connectionsWithoutId_.Remove (connectionsWithoutId_.At (index));
             isFinded = true;
-            delete connection;
         }
         else
             index++;
@@ -63,9 +63,9 @@ void PlayersManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &e
         connectionsWithoutId_.At (index).first_ -= timeStep;
         if (connectionsWithoutId_.At (index).first_ <= 0.0f)
         {
-            connectionsWithoutId_.At (index).second_->Disconnect ();
-            delete connectionsWithoutId_.At (index).second_;
+            Urho3D::Connection *connection = connectionsWithoutId_.At (index).second_;
             connectionsWithoutId_.Remove (connectionsWithoutId_.At (index));
+            connection->Disconnect ();
         }
         else
             index++;
@@ -85,9 +85,14 @@ void PlayersManager::HandlePlayerDisconnected (Urho3D::StringHash eventType, Urh
             eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
     MessagesHandler *messagesHandler = (MessagesHandler *) context_->GetGlobalVar ("MessagesHandler").GetPtr ();
     assert (messagesHandler);
-    Urho3D::Vector <Player *> allPlayers = players_.Values ();
-    messagesHandler->SendTextInfoFromServer (GetPlayer (connection)->GetName () + " left game!", allPlayers);
-    DisconnectPlayer (connection);
+
+    Player *player = GetPlayer (connection);
+    if (player)
+    {
+        Urho3D::Vector <Player *> allPlayers = players_.Values ();
+        messagesHandler->SendTextInfoFromServer (GetPlayer (connection)->GetName () + " left game!", allPlayers);
+        DisconnectPlayer (connection);
+    }
 }
 
 int PlayersManager::GetPlayersCount ()
@@ -103,7 +108,6 @@ void PlayersManager::DisconnectAllUnidentificatedConnections ()
                 connectionsWithoutId_.Front ().second_;
         connectionsWithoutId_.Remove (connectionsWithoutId_.Front ());
         connection->Disconnect ();
-        delete connection;
     }
 }
 
@@ -122,7 +126,10 @@ Urho3D::Vector <Player *> PlayersManager::GetPlayersByNames (Urho3D::Vector <Urh
 
 Player *PlayersManager::GetPlayer (Urho3D::Connection *connection)
 {
-    return players_ [connectionHashToNameHashMap_ [connection->GetAddress ()]];
+    if (connectionHashToNameHashMap_ [connection->GetAddress ()].Value ())
+        return players_ [connectionHashToNameHashMap_ [connection->GetAddress ()]];
+    else
+        return 0;
 }
 
 Urho3D::Vector <Player *> PlayersManager::GetAllPlayers ()
@@ -154,6 +161,7 @@ void PlayersManager::DisconnectPlayer (Urho3D::StringHash nameHash)
 
 void PlayersManager::DisconnectPlayer (Urho3D::Connection *connection)
 {
-    DisconnectPlayer (connectionHashToNameHashMap_ [connection->GetAddress ()]);
+    if (connectionHashToNameHashMap_ [connection->GetAddress ()].Value ())
+        DisconnectPlayer (connectionHashToNameHashMap_ [connection->GetAddress ()]);
 }
 }

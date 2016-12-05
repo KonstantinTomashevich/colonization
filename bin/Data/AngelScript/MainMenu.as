@@ -53,7 +53,14 @@ class MainMenu : ScriptObject
             launcherApplication_.StopActivityNextFrame (launcherApplication_.GetActivityByIndex (index));
         
         HostActivity @hostActivity = CreateHostActivity ();
+        hostActivity.serverPort = 13768;
         launcherApplication_.SetupActivity (hostActivity);
+        
+        IngamePlayerActivity @ingamePlayerActivity = CreateIngamePlayerActivity ();
+        ingamePlayerActivity.serverAdress = "localhost";
+        ingamePlayerActivity.serverPort = 13768;
+        ingamePlayerActivity.playerName = "Konstant";
+        launcherApplication_.SetupActivity (ingamePlayerActivity);
     }
     
     void HandleExitClick ()
