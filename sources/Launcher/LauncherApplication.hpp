@@ -6,15 +6,15 @@
 
 namespace ColonizationLauncher
 {
-class Application : public Urho3D::Application
+class LauncherApplication : public Urho3D::Application
 {
 URHO3D_OBJECT (Application, Object)
 protected:
     Urho3D::Vector <Urho3D::SharedPtr <Colonization::Activity> > currentActivities_;
     Urho3D::Vector <Urho3D::SharedPtr <Colonization::Activity> > activitiesToStop_;
 public:
-    Application (Urho3D::Context *context);
-    virtual ~Application ();
+    LauncherApplication (Urho3D::Context *context);
+    virtual ~LauncherApplication ();
 
     virtual void Setup ();
     virtual void Start ();
