@@ -49,13 +49,17 @@ class MainMenu : ScriptObject
     
     void HandleStartGameClick ()
     {
+        for (int index = 0; index < launcherApplication_.GetActivitiesCount (); index++)
+            launcherApplication_.StopActivityNextFrame (launcherApplication_.GetActivityByIndex (index));
         
+        HostActivity @hostActivity = CreateHostActivity ();
+        launcherApplication_.SetupActivity (hostActivity);
     }
     
     void HandleExitClick ()
     {
         for (int index = 0; index < launcherApplication_.GetActivitiesCount (); index++)
-            launcherApplication_.StopActivity (launcherApplication_.GetActivityByIndex (index));
+            launcherApplication_.StopActivityNextFrame (launcherApplication_.GetActivityByIndex (index));
         engine.Exit ();
     }
 };
