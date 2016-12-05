@@ -24,7 +24,13 @@ void MessagesHandler::HandleClientIdentity (Urho3D::StringHash eventType, Urho3D
             eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
     PlayersManager *playersManager = (PlayersManager *) context_->GetGlobalVar ("PlayersManager").GetPtr ();
     assert (playersManager);
-    playersManager->PlayerIdentified (connection, connection->GetIdentity () ["Name"].GetString ());
+
+    Urho3D::String name = connection->GetIdentity () ["Name"].GetString ();
+    // TODO: Currently we disconnect player if it sends identity with name which is already used by another player.
+    if (playersManager->GetPlayer (name))
+        connection->Disconnect ();
+    else
+        playersManager->PlayerIdentified (connection, connection->GetIdentity () ["Name"].GetString ());
 }
 
 void MessagesHandler::HandleNetworkMessage (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)

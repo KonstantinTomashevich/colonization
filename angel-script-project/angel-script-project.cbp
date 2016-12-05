@@ -20,6 +20,7 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Unit filename="../bin/Data/AngelScript/MainMenu.as" />
+		<Unit filename="../bin/Data/AngelScript/Player/Player.as" />
 		<Unit filename="AngelScriptAPI.hpp" />
 		<Extensions>
 			<code_completion />

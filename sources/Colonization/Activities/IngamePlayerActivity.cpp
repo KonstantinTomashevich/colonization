@@ -24,13 +24,14 @@ IngamePlayerActivity::~IngamePlayerActivity ()
 
 void IngamePlayerActivity::Start ()
 {
+    Urho3D::ResourceCache *resourceCache = context_->GetSubsystem <Urho3D::ResourceCache> ();
     scene_ = new Urho3D::Scene (context_);
     angelScript_ = scene_->CreateComponent <Urho3D::ScriptInstance> (Urho3D::LOCAL);
-    angelScript_->CreateObject (resourceCache->GetResource <Urho3D::ScriptFile> ("AngelScript/Player/Player.as"), "MainMenu");
+    angelScript_->CreateObject (resourceCache->GetResource <Urho3D::ScriptFile> ("AngelScript/Player/Player.as"), "Player");
 
     Urho3D::VariantVector executionParameters;
     executionParameters.Push (application_);
-    angelScriptGUI_->Execute ("void set_launcherApplication (LauncherApplication @launcherApplication)", executionParameters);
+    angelScript_->Execute ("void set_launcherApplication (LauncherApplication @launcherApplication)", executionParameters);
 
     Urho3D::Network *network = context_->GetSubsystem <Urho3D::Network> ();
     Urho3D::VariantMap identity;

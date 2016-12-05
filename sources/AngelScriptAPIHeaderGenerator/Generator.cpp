@@ -9,6 +9,7 @@
 #include <Colonization/AngelScriptBinders/BindGameStateType.hpp>
 #include <Colonization/AngelScriptBinders/BindHostActivity.hpp>
 #include <Colonization/AngelScriptBinders/BindMainMenuActivity.hpp>
+#include <Colonization/AngelScriptBinders/BindIngamePlayerActivity.hpp>
 
 URHO3D_DEFINE_APPLICATION_MAIN (Generator)
 Generator::Generator (Urho3D::Context *context) :
@@ -43,6 +44,7 @@ void Generator::Start ()
     Colonization::BindGameStateType (script);
     Colonization::BindHostActivity (script);
     Colonization::BindMainMenuActivity (script);
+    Colonization::BindIngamePlayerActivity (script);
 
     Urho3D::Log *log = context_->GetSubsystem <Urho3D::Log> ();
     log->SetQuiet (true);
