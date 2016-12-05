@@ -4,7 +4,7 @@
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/AngelScript/Script.h>
 
-#include <Launcher/AngelScriptBinders/BindApplication.hpp>
+#include <Launcher/AngelScriptBinders/BindLauncherApplication.hpp>
 #include <Colonization/AngelScriptBinders/BindActivity.hpp>
 #include <Colonization/AngelScriptBinders/BindDistrict.hpp>
 #include <Colonization/AngelScriptBinders/BindMap.hpp>
@@ -51,7 +51,7 @@ void LauncherApplication::Start ()
     Urho3D::Script *script = new Urho3D::Script (context_);
     context_->RegisterSubsystem (script);
     Colonization::BindActivity (script);
-    BindApplication (script);
+    BindLauncherApplication (script);
     Colonization::BindDistrict (script);
     Colonization::BindMap (script);
     Colonization::BindNetworkMessageType (script);

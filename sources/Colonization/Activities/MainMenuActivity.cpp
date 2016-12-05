@@ -25,6 +25,10 @@ void MainMenuActivity::Start ()
     backgroundScene_ = new Urho3D::Scene (context_);
     angelScriptGUI_ = backgroundScene_->CreateComponent <Urho3D::ScriptInstance> (Urho3D::LOCAL);
     angelScriptGUI_->CreateObject (resourceCache->GetResource <Urho3D::ScriptFile> ("AngelScript/MainMenu.as"), "MainMenu");
+
+    Urho3D::VariantVector executionParameters;
+    executionParameters.Push (application_);
+    angelScriptGUI_->Execute ("void set_launcherApplication (LauncherApplication @launcherApplication)", executionParameters);
 }
 
 void MainMenuActivity::Update (float timeStep)

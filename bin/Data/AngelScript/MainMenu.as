@@ -1,5 +1,7 @@
 class MainMenu : ScriptObject
 {
+    protected LauncherApplication @launcherApplication_;
+    
     MainMenu ()
     {
         
@@ -23,5 +25,15 @@ class MainMenu : ScriptObject
     void Stop ()
     {
         
+    }
+    
+    LauncherApplication @get_launcherApplication ()
+    {
+        return launcherApplication_;
+    }
+    
+    void set_launcherApplication (LauncherApplication @launcherApplication)
+    {
+        launcherApplication_ = launcherApplication;
     }
 };
