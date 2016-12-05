@@ -44,7 +44,12 @@ OBJECT_PROPERTY_GETTER_AND_SETTER (District, float, logisticsEvolutionPoints_)
 OBJECT_PROPERTY_GETTER_AND_SETTER (District, float, defenseEvolutionPoints_)
 OBJECT_PROPERTY_GETTER_AND_SETTER (District, float, averageLevelOfLifePoints_)
 
-void BindDistrict(Urho3D::Script *script)
+District *CreateDistrict ()
+{
+    return new District (Urho3D::GetScriptContext ());
+}
+
+void BindDistrict (Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
     Urho3D::RegisterObject <District> (engine, "District");
@@ -112,5 +117,10 @@ void BindDistrict(Urho3D::Script *script)
     BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, float, logisticsEvolutionPoints_);
     BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, float, defenseEvolutionPoints_);
     BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, float, averageLevelOfLifePoints_);
+
+    CHECK_ANGELSCRIPT_RETURN (
+                engine->RegisterGlobalFunction (
+                    "District @CreateDistrict ()", asFUNCTION (CreateDistrict), asCALL_CDECL)
+                );
 }
 }

@@ -9,11 +9,21 @@
 
 namespace Colonization
 {
+MainMenuActivity *CreateMainMenuActivity ()
+{
+    return new MainMenuActivity (Urho3D::GetScriptContext ());
+}
+
 void BindMainMenuActivity (Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
     Urho3D::RegisterObject <MainMenuActivity> (engine, "MainMenuActivity");
     Urho3D::RegisterSubclass <Activity, MainMenuActivity> (engine, "Activity", "MainMenuActivity");
     BindActivityInterface (script, "MainMenuActivity");
+
+    CHECK_ANGELSCRIPT_RETURN (
+                engine->RegisterGlobalFunction (
+                    "MainMenuActivity @CreateMainMenuActivity ()", asFUNCTION (CreateMainMenuActivity), asCALL_CDECL)
+                );
 }
 }

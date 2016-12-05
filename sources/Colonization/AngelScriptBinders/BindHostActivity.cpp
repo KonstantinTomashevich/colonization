@@ -9,6 +9,11 @@
 
 namespace Colonization
 {
+HostActivity *CreateHostActivity ()
+{
+    return new HostActivity (Urho3D::GetScriptContext ());
+}
+
 void BindHostActivity (Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
@@ -25,5 +30,10 @@ void BindHostActivity (Urho3D::Script *script)
                 engine->RegisterObjectMethod ("HostActivity", "void set_serverPort (int serverPort)",
                                               asMETHOD (HostActivity, SetServerPort), asCALL_THISCALL)
             );
+
+    CHECK_ANGELSCRIPT_RETURN (
+                engine->RegisterGlobalFunction (
+                    "HostActivity @CreateHostActivity ()", asFUNCTION (CreateHostActivity), asCALL_CDECL)
+                );
 }
 }
