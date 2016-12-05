@@ -21,6 +21,13 @@ void LauncherApplication_StopActivity (LauncherApplication *app, Colonization::A
     app->StopActivity (activityPtr);
 }
 
+void LauncherApplication_StopActivityNextFrame (LauncherApplication *app, Colonization::Activity *activity)
+{
+    assert (activity);
+    Urho3D::SharedPtr <Colonization::Activity> activityPtr (activity);
+    app->StopActivityNextFrame (activityPtr);
+}
+
 Colonization::Activity *LauncherApplication_GetActivityByIndex (LauncherApplication *app, int index)
 {
     Colonization::Activity *activity = app->GetActivityByIndex (index).Get ();
@@ -41,6 +48,11 @@ void BindLauncherApplication (Urho3D::Script *script)
     CHECK_ANGELSCRIPT_RETURN (
                 engine->RegisterObjectMethod ("LauncherApplication", "void StopActivity (Activity @activity)",
                                               asFUNCTION (LauncherApplication_StopActivity), asCALL_CDECL_OBJFIRST)
+            );
+
+    CHECK_ANGELSCRIPT_RETURN (
+                engine->RegisterObjectMethod ("LauncherApplication", "void StopActivityNextFrame (Activity @activity)",
+                                              asFUNCTION (LauncherApplication_StopActivityNextFrame), asCALL_CDECL_OBJFIRST)
             );
 
     CHECK_ANGELSCRIPT_RETURN (
