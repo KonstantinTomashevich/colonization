@@ -14,7 +14,17 @@ class MainMenu : ScriptObject
     
     void Start ()
     {
+        XMLFile@ style = cache.GetResource ("XMLFile", "UI/DefaultStyle.xml");
+        ui.root.defaultStyle = style;
+    
+        UIElement @uiRoot = ui.LoadLayout (cache.GetResource ("XMLFile", "UI/MainMenu.xml"));
+        ui.root.AddChild (uiRoot);
         
+        Button @startGameButton = uiRoot.GetChild ("startGameButton");
+        Button @exitButton = uiRoot.GetChild ("exitButton");
+        
+        SubscribeToEvent (startGameButton, "Released", "HandleStartGameClick");
+        SubscribeToEvent (exitButton, "Released", "HandleExitClick");
     }
     
     void Update (float timeStep)
@@ -24,7 +34,7 @@ class MainMenu : ScriptObject
     
     void Stop ()
     {
-        
+        ui.root.RemoveAllChildren ();
     }
     
     LauncherApplication @get_launcherApplication ()
@@ -35,5 +45,17 @@ class MainMenu : ScriptObject
     void set_launcherApplication (LauncherApplication @launcherApplication)
     {
         launcherApplication_ = launcherApplication;
+    }
+    
+    void HandleStartGameClick ()
+    {
+        
+    }
+    
+    void HandleExitClick ()
+    {
+        for (int index = 0; index < launcherApplication_.GetActivitiesCount (); index++)
+            launcherApplication_.StopActivity (launcherApplication_.GetActivityByIndex (index));
+        engine.Exit ();
     }
 };
