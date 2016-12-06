@@ -19,8 +19,10 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="../bin/Data/AngelScript/Client/Player.as" />
+		<Unit filename="../bin/Data/AngelScript/Client/PlayerNetwork.as" />
+		<Unit filename="../bin/Data/AngelScript/Client/PlayerUi.as" />
 		<Unit filename="../bin/Data/AngelScript/MainMenu.as" />
-		<Unit filename="../bin/Data/AngelScript/Player/Player.as" />
 		<Unit filename="AngelScriptAPI.hpp" />
 		<Extensions>
 			<code_completion />

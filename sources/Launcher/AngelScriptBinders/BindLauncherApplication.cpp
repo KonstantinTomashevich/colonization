@@ -7,18 +7,11 @@
 
 namespace ColonizationLauncher
 {
-void LauncherApplication_SetupActivity (LauncherApplication *app, Colonization::Activity *activity)
+void LauncherApplication_SetupActivityNextFrame (LauncherApplication *app, Colonization::Activity *activity)
 {
     assert (activity);
     Urho3D::SharedPtr <Colonization::Activity> activityPtr (activity);
-    app->SetupActivity (activityPtr);
-}
-
-void LauncherApplication_StopActivity (LauncherApplication *app, Colonization::Activity *activity)
-{
-    assert (activity);
-    Urho3D::SharedPtr <Colonization::Activity> activityPtr (activity);
-    app->StopActivity (activityPtr);
+    app->SetupActivityNextFrame (activityPtr);
 }
 
 void LauncherApplication_StopActivityNextFrame (LauncherApplication *app, Colonization::Activity *activity)
@@ -41,13 +34,8 @@ void BindLauncherApplication (Urho3D::Script *script)
     Urho3D::RegisterObject <LauncherApplication> (engine, "LauncherApplication");
 
     CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod ("LauncherApplication", "void SetupActivity (Activity @activity)",
-                                              asFUNCTION (LauncherApplication_SetupActivity), asCALL_CDECL_OBJFIRST)
-            );
-
-    CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod ("LauncherApplication", "void StopActivity (Activity @activity)",
-                                              asFUNCTION (LauncherApplication_StopActivity), asCALL_CDECL_OBJFIRST)
+                engine->RegisterObjectMethod ("LauncherApplication", "void SetupActivityNextFrame (Activity @activity)",
+                                              asFUNCTION (LauncherApplication_SetupActivityNextFrame), asCALL_CDECL_OBJFIRST)
             );
 
     CHECK_ANGELSCRIPT_RETURN (

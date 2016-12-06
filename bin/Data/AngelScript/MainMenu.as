@@ -14,11 +14,13 @@ class MainMenu : ScriptObject
     
     void Start ()
     {
+        ui.root.RemoveAllChildren ();
         XMLFile@ style = cache.GetResource ("XMLFile", "UI/DefaultStyle.xml");
         ui.root.defaultStyle = style;
     
         UIElement @uiRoot = ui.LoadLayout (cache.GetResource ("XMLFile", "UI/MainMenu.xml"));
         ui.root.AddChild (uiRoot);
+        uiRoot.name = "main_menu";
         
         Button @startGameButton = uiRoot.GetChild ("startGameButton");
         Button @exitButton = uiRoot.GetChild ("exitButton");
@@ -34,7 +36,7 @@ class MainMenu : ScriptObject
     
     void Stop ()
     {
-        ui.root.RemoveAllChildren ();
+        
     }
     
     LauncherApplication @get_launcherApplication ()
@@ -54,13 +56,13 @@ class MainMenu : ScriptObject
         
         HostActivity @hostActivity = CreateHostActivity ();
         hostActivity.serverPort = 13768;
-        launcherApplication_.SetupActivity (hostActivity);
+        launcherApplication_.SetupActivityNextFrame (hostActivity);
         
         IngamePlayerActivity @ingamePlayerActivity = CreateIngamePlayerActivity ();
         ingamePlayerActivity.serverAdress = "localhost";
         ingamePlayerActivity.serverPort = 13768;
         ingamePlayerActivity.playerName = "Konstant";
-        launcherApplication_.SetupActivity (ingamePlayerActivity);
+        launcherApplication_.SetupActivityNextFrame (ingamePlayerActivity);
     }
     
     void HandleExitClick ()

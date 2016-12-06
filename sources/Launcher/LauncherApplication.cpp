@@ -18,7 +18,10 @@
 URHO3D_DEFINE_APPLICATION_MAIN (ColonizationLauncher::LauncherApplication)
 namespace ColonizationLauncher
 {
-LauncherApplication::LauncherApplication (Urho3D::Context *context) : Urho3D::Application (context), currentActivities_ (), activitiesToStop_ ()
+LauncherApplication::LauncherApplication (Urho3D::Context *context) : Urho3D::Application (context),
+    currentActivities_ (),
+    activitiesToSetup_ (),
+    activitiesToStop_ ()
 {
 
 }
@@ -62,7 +65,7 @@ void LauncherApplication::Start ()
     Colonization::BindIngamePlayerActivity (script);
 
     Urho3D::SharedPtr <Colonization::MainMenuActivity> mainMenuActivity (new Colonization::MainMenuActivity (context_));
-    SetupActivity (mainMenuActivity);
+    SetupActivityNextFrame (mainMenuActivity);
 }
 
 void LauncherApplication::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
@@ -73,7 +76,20 @@ void LauncherApplication::Update (Urho3D::StringHash eventType, Urho3D::VariantM
         {
             Urho3D::SharedPtr <Colonization::Activity> activity = activitiesToStop_.Front ();
             activitiesToStop_.Remove (activity);
-            StopActivity (activity);
+            assert (activity.NotNull ());
+            currentActivities_.Remove (activity);
+            activity->Stop ();
+        }
+
+    if (!activitiesToSetup_.Empty ())
+        while (!activitiesToSetup_.Empty ())
+        {
+            Urho3D::SharedPtr <Colonization::Activity> activity = activitiesToSetup_.Front ();
+            activitiesToSetup_.Remove (activity);
+            assert (activity.NotNull ());
+            currentActivities_.Push (activity);
+            activity->SetApplication (this);
+            activity->Start ();
         }
 
     if (!currentActivities_.Empty ())
@@ -88,19 +104,10 @@ void LauncherApplication::Stop ()
             currentActivities_.At (index)->Stop ();
 }
 
-void LauncherApplication::SetupActivity (Urho3D::SharedPtr <Colonization::Activity> activity)
+void LauncherApplication::SetupActivityNextFrame (Urho3D::SharedPtr <Colonization::Activity> activity)
 {
     assert (activity.NotNull ());
-    currentActivities_.Push (activity);
-    activity->SetApplication (this);
-    activity->Start ();
-}
-
-void LauncherApplication::StopActivity (Urho3D::SharedPtr <Colonization::Activity> activity)
-{
-    assert (activity.NotNull ());
-    currentActivities_.Remove (activity);
-    activity->Stop ();
+    activitiesToSetup_.Push (activity);
 }
 
 void LauncherApplication::StopActivityNextFrame (Urho3D::SharedPtr <Colonization::Activity> activity)
