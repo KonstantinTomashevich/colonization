@@ -14,7 +14,7 @@ protected:
     Urho3D::HashMap <Urho3D::StringHash, Urho3D::StringHash> connectionHashToNameHashMap_;
     Urho3D::Vector <Urho3D::Pair <float, Urho3D::Connection *> > connectionsWithoutId_;
 
-    bool DeleteIdentificatedConnection(Urho3D::Connection *connection);
+    bool DeleteIdentificatedConnection (Urho3D::Connection *connection);
 public:
     PlayersManager (Urho3D::Context *context);
     virtual ~PlayersManager ();
