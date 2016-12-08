@@ -4,7 +4,9 @@
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/Network/NetworkEvents.h>
 #include <Urho3D/IO/Log.h>
+
 #include <Colonization/Backend/MessagesHandler.hpp>
+#include <Colonization/Backend/SceneManager.hpp>
 
 namespace Colonization
 {
@@ -148,6 +150,10 @@ void PlayersManager::PlayerIdentified (Urho3D::Connection *connection, Urho3D::S
     assert (messagesHandler);
     Urho3D::Vector <Player *> allPlayers = players_.Values ();
     messagesHandler->SendTextInfoFromServer (player->GetName () + " entered game!", allPlayers);
+
+    SceneManager *sceneManager = (SceneManager *) context_->GetGlobalVar ("SceneManager").GetPtr ();
+    assert (sceneManager);
+    connection->SetScene (sceneManager->GetScene ());
 }
 
 void PlayersManager::DisconnectPlayer (Urho3D::StringHash nameHash)

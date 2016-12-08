@@ -3,6 +3,7 @@
 #include <Urho3D/Core/Context.h>
 #include <Colonization/Backend/MessagesHandler.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
+#include <Colonization/Backend/SceneManager.hpp>
 
 namespace Colonization
 {
@@ -12,8 +13,12 @@ void GameStateManager::SetupWaitingForPlayersState ()
     MessagesHandler *messagesHandler = new MessagesHandler (context_);
     PlayersManager *playersManager = new PlayersManager (context_);
 
+    SceneManager *sceneManager = new SceneManager (context_);
+    sceneManager->PrepareForGameState (GAME_STATE_WAITING_FOR_PLAYERS);
+
     context_->SetGlobalVar ("MessagesHandler", Urho3D::Variant (messagesHandler));
     context_->SetGlobalVar ("PlayersManager", Urho3D::Variant (playersManager));
+    context_->SetGlobalVar ("SceneManager", Urho3D::Variant (sceneManager));
 }
 
 void GameStateManager::DisposeWaitingForPlayersState ()
@@ -25,12 +30,17 @@ void GameStateManager::DisposeWaitingForPlayersState ()
 
 void GameStateManager::SetupPlayingState ()
 {
-    // TODO: Implement later.
+    // TODO: To be continued...
+    SceneManager *sceneManager = (SceneManager *) context_->GetGlobalVar ("SceneManager").GetPtr ();
+    assert (sceneManager);
+    sceneManager->PrepareForGameState (GAME_STATE_PLAYING);
 }
 
 void GameStateManager::DisposePlayingState ()
 {
-    // TODO: Implement later.
+    // TODO: Temporary. Reimplement later.
+    SetupState (GAME_STATE_FINISHED);
+    DisposeCurrentState ();
 }
 
 void GameStateManager::SetupFinishedState ()
@@ -43,6 +53,7 @@ void GameStateManager::DisposeFinishedState ()
     // TODO: To be continued...
     delete ( (MessagesHandler *) context_->GetGlobalVar ("MessagesHandler").GetPtr ());
     delete ( (PlayersManager *) context_->GetGlobalVar ("PlayersManager").GetPtr ());
+    delete ( (SceneManager *) context_->GetGlobalVar ("SceneManager").GetPtr ());
 }
 
 void GameStateManager::SetupState (GameStateType state)

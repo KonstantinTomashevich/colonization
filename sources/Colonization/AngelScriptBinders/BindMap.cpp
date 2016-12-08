@@ -10,6 +10,7 @@ namespace Colonization
 Urho3D::CScriptArray *MapFindPath (Map *map, District *from, District *to,
                                    Urho3D::String playerName, bool canGoThroughColonies)
 {
+    // WARNING: Return array of handles or AddRef to each district!
     Urho3D::Vector <District *> result = map->FindPath (from, to, playerName, canGoThroughColonies);
     return Urho3D::VectorToArray <District *> (result, "Array<District@>");
 }

@@ -1,22 +1,54 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "SceneManager.hpp"
 #include <Urho3D/Core/CoreEvents.h>
+#include <Urho3D/Core/Context.h>
+#include <Urho3D/Network/Network.h>
+#include <Colonization/Backend/PlayersManager.hpp>
 
 namespace Colonization
 {
+void SceneManager::WritePlayersStats ()
+{
+    PlayersManager *playersManager = (PlayersManager *) context_->GetGlobalVar ("PlayersManager").GetPtr ();
+    assert (playersManager);
+    Urho3D::Vector <Player *> players = playersManager->GetAllPlayers ();
+    Urho3D::HashMap <Urho3D::StringHash, Player*> sortedPlayers;
+
+    for (int index = 0; index < players.Size (); index++)
+    {
+        Player *player = players.At (index);
+        sortedPlayers [Urho3D::StringHash (static_cast <int> (player->GetPoints () * 1000))] = player;
+    }
+
+    sortedPlayers.Sort ();
+    Urho3D::VariantVector playersLeaderboard;
+    for (int index = sortedPlayers.Size () - 1; index >= 0; index--)
+    {
+        Player *player = sortedPlayers.Values ().At (index);
+        Urho3D::String infoString;
+        infoString += player->GetName ();
+        infoString += ";" + Urho3D::String (player->GetPoints ());
+        playersLeaderboard.Push (infoString);
+    }
+    scene_->SetVar ("sortedByPointsPlayersList", playersLeaderboard);
+}
+
 void SceneManager::UpdateWaitingForPlayersState ()
 {
-    // TODO: Implement later.
+    // TODO: To be continued....
+    WritePlayersStats ();
 }
 
 void SceneManager::UpdatePlayingState ()
 {
-    // TODO: Implement later.
+    // TODO: To be continued...
+    WritePlayersStats ();
 }
 
 void SceneManager::UpdateFinishedState ()
 {
-    // TODO: Implement later.
+    // TODO: To be continued...
+    WritePlayersStats ();
 }
 
 void SceneManager::PrepareForWaitingForPlayersState ()
@@ -52,6 +84,10 @@ SceneManager::~SceneManager ()
 
 void SceneManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
+    if (context_->GetSubsystem <Urho3D::Network> ()->GetServerConnection () &&
+            !context_->GetSubsystem <Urho3D::Network> ()->GetServerConnection ()->GetScene ())
+        context_->GetSubsystem <Urho3D::Network> ()->GetServerConnection ()->SetScene (scene_);
+
     GameStateType gameState = static_cast <GameStateType> (scene_->GetVar ("GameState").GetInt ());
     if (gameState == GAME_STATE_WAITING_FOR_PLAYERS)
         UpdateWaitingForPlayersState ();

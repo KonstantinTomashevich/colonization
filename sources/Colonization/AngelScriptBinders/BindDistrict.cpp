@@ -14,6 +14,8 @@ OBJECT_PROPERTY_GETTER_AND_SETTER (District, Urho3D::String, name_)
 OBJECT_ARRAY_PROPERTY_ACESSOR (District, PODVector, Urho3D::Vector3, polygonPoints_, "Array<Vector3>")
 OBJECT_PROPERTY_GETTER_AND_SETTER (District, Urho3D::Vector3, unitPosition_)
 OBJECT_PROPERTY_GETTER_AND_SETTER (District, Urho3D::Vector3, colonyPosition_)
+
+// WARNING: Return array of handles or AddRef to each district!
 OBJECT_ARRAY_PROPERTY_ACESSOR (District, Vector, District*, neighbors_, "Array<District@>")
 
 OBJECT_PROPERTY_GETTER_AND_SETTER (District, float, farmingSquare_)

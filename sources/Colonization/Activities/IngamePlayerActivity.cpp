@@ -26,6 +26,8 @@ void IngamePlayerActivity::Start ()
 {
     Urho3D::ResourceCache *resourceCache = context_->GetSubsystem <Urho3D::ResourceCache> ();
     scene_ = new Urho3D::Scene (context_);
+    // Add ref because scene is used in AngelScript too.
+    scene_->AddRef ();
     angelScript_ = scene_->CreateChild ("script_main", Urho3D::LOCAL)->CreateComponent <Urho3D::ScriptInstance> (Urho3D::LOCAL);
     angelScript_->CreateObject (resourceCache->GetResource <Urho3D::ScriptFile> ("AngelScript/Client/Player.as"), "Player");
 

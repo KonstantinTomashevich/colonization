@@ -11,6 +11,8 @@ URHO3D_OBJECT (SceneManager, Object)
 protected:
     Urho3D::Scene *scene_;
 
+    void WritePlayersStats ();
+
     void UpdateWaitingForPlayersState ();
     void UpdatePlayingState ();
     void UpdateFinishedState ();
