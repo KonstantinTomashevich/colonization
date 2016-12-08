@@ -32,9 +32,9 @@ public:
     District (Urho3D::Context *context);
     virtual ~District ();
 
-    void UpdateDataNode (Urho3D::Node *dataNode, bool rewritePolygonPoints = false);
+    void UpdateDataNode (Urho3D::Node *dataNode, bool rewritePolygonPoints);
     void ReadDataFromNode (Urho3D::Node *dataNode);
-    void CalculateNeighbors (Urho3D::Vector <District *> &allDistricts);
+    void CalculateNeighbors (Urho3D::Vector<District *> *allDistricts);
 
     bool needDataUpdate_;
     bool isSea_;

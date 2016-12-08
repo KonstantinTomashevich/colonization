@@ -43,6 +43,10 @@ class Player : ScriptObject
     {
         if (node.vars ["goToMenuCalled"].GetBool ())
             GoToMainMenuState ();
+        if (scene.GetChild ("map") !is null)
+            log.Info ("" + scene.GetChild ("map").GetChildren ().length);
+        else
+            log.Info ("_");
     }
     
     void Stop ()

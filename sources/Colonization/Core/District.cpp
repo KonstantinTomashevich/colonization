@@ -55,7 +55,6 @@ void District::UpdateDataNode (Urho3D::Node *dataNode, bool rewritePolygonPoints
     if (rewritePolygonPoints)
     {
         Urho3D::VariantVector polygonPointsVariants;
-        polygonPoints_.Clear ();
         for (int index = 0; index < polygonPoints_.Size (); index++)
             polygonPointsVariants.Push (polygonPoints_.At (index));
         dataNode->SetVar ("polygonPoints", polygonPointsVariants);
@@ -192,13 +191,13 @@ void District::ReadDataFromNode (Urho3D::Node *dataNode)
     averageLevelOfLifePoints_ = dataNode->GetVar ("averageLevelOfLifePoints").GetFloat ();
 }
 
-void District::CalculateNeighbors (Urho3D::Vector <District *> &allDistricts)
+void District::CalculateNeighbors (Urho3D::Vector <District *> *allDistricts)
 {
-    assert (!allDistricts.Empty ());
+    assert (!allDistricts->Empty ());
     neighbors_.Clear ();
-    for (int index = 0; index < allDistricts.Size (); index++)
+    for (int index = 0; index < allDistricts->Size (); index++)
     {
-        District *another = allDistricts.At (index);
+        District *another = allDistricts->At (index);
         assert (another);
 
         if (another != this && !another->polygonPoints_.Empty () && !polygonPoints_.Empty ())

@@ -3,7 +3,9 @@
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Network/Network.h>
+
 #include <Colonization/Backend/PlayersManager.hpp>
+#include <Colonization/Core/Map.hpp>
 
 namespace Colonization
 {
@@ -33,6 +35,14 @@ void SceneManager::WritePlayersStats ()
     scene_->SetVar ("sortedByPointsPlayersList", playersLeaderboard);
 }
 
+void SceneManager::UpdateMap (bool rewriteDistrictsPolygons)
+{
+    Map *map = (Map *) context_->GetGlobalVar ("Map").GetPtr ();
+    assert (map);
+    Urho3D::Node *mapNode = scene_->GetChild ("map");
+    map->UpdateDataNode (mapNode, rewriteDistrictsPolygons);
+}
+
 void SceneManager::UpdateWaitingForPlayersState ()
 {
     // TODO: To be continued....
@@ -43,6 +53,7 @@ void SceneManager::UpdatePlayingState ()
 {
     // TODO: To be continued...
     WritePlayersStats ();
+    UpdateMap (false);
 }
 
 void SceneManager::UpdateFinishedState ()
@@ -61,6 +72,8 @@ void SceneManager::PrepareForPlayingState ()
 {
     // TODO: Implement later.
     scene_->SetVar ("GameState", static_cast <int> (GAME_STATE_PLAYING));
+    scene_->CreateChild ("map", Urho3D::REPLICATED);
+    UpdateMap (true);
 }
 
 void SceneManager::PrepareForFinishedState ()

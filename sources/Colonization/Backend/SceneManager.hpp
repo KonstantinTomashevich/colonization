@@ -12,6 +12,7 @@ protected:
     Urho3D::Scene *scene_;
 
     void WritePlayersStats ();
+    void UpdateMap (bool rewriteDistrictsPolygons);
 
     void UpdateWaitingForPlayersState ();
     void UpdatePlayingState ();

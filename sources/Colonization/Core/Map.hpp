@@ -5,19 +5,19 @@
 
 namespace Colonization
 {
-float HeuristicDistanceForPathFinding(District *goal, District *next);
+float HeuristicDistanceForPathFinding (District *goal, District *next);
 
 class Map : public Urho3D::Object
 {
 URHO3D_OBJECT (Map, Object)
 protected:
-    Urho3D::Vector <District *> districts_;
+    Urho3D::Vector <District *> *districts_;
 
 public:
     Map (Urho3D::Context *context);
     virtual ~Map ();
 
-    void UpdateDataNode (Urho3D::Node *dataNode, bool rewriteDistrictsPolygons = false);
+    void UpdateDataNode (Urho3D::Node *dataNode, bool rewriteDistrictsPolygons);
     void ReadDataFromNode (Urho3D::Node *dataNode);
 
     District *GetDistrictByIndex (int index);
