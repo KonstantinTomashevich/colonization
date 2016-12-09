@@ -69,6 +69,24 @@
         object->propertyName = Urho3D::ArrayTo ## arrayType <arrayValuesType> (array); \
     } \
 
+#define OBJECT_ARRAY_OF_POINTERS_PROPERTY_ACESSOR(objectType, arrayType, arrayValuesType, propertyName, asArrayDecl) \
+    Urho3D::CScriptArray *objectType ## _get_ ## propertyName (objectType * object) \
+    { \
+        /* Add refs for AngelScript. */ \
+        for (int index = 0; index < object->propertyName.Size (); index++) \
+            object->propertyName.At (index)->AddRef (); \
+        return Urho3D::VectorToArray <arrayValuesType> (object->propertyName, asArrayDecl); \
+    } \
+    \
+    void objectType ## _set_ ## propertyName (objectType * object, Urho3D::CScriptArray *array) \
+    { \
+        Urho3D::arrayType <arrayValuesType> cxxArray = Urho3D::ArrayTo ## arrayType <arrayValuesType> (array); \
+        /* Add refs for AngelScript. */ \
+        for (int index = 0; index < cxxArray.Size (); index++) \
+            cxxArray.At (index)->AddRef (); \
+        object->propertyName = Urho3D::ArrayTo ## arrayType <arrayValuesType> (array); \
+    } \
+
 #define BIND_OBJECT_ARRAY_PROPERTY(asEngine, cxxObjectType, asObjectType, asArrayValuesType, propertyName) \
     CHECK_ANGELSCRIPT_RETURN ( \
                 asEngine->RegisterObjectMethod (#asObjectType, (Urho3D::String ("Array <") \
