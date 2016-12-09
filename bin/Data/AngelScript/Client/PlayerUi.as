@@ -80,7 +80,7 @@ class PlayerUi : ScriptObject
         playerStatsInfo += "Points: " + node.parent.vars ["points"].GetFloat ();
         playerStatsText.text = playerStatsInfo;
         
-        if (scene.GetChild ("map") !is null)
+        if (scene.GetChild ("map") !is null and scene.GetChild ("camera") !is null)
             UpdateDistrictsButtons ();
     }
     

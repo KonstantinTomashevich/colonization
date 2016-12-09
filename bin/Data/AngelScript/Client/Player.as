@@ -4,6 +4,7 @@ class Player : ScriptObject
     protected String playerName_;
     protected float beforeMapUpdate_;
     protected float beforeMapNeighborsUpdate_;
+    protected Map @mapPtr_;
     
     Player ()
     {
@@ -50,6 +51,7 @@ class Player : ScriptObject
         Map @map = CreateMap ();
         AddRef (map);
         node.vars ["map"] = map;
+        mapPtr_ = map;
     }
     
     void Update (float timeStep)
@@ -59,19 +61,18 @@ class Player : ScriptObject
             
         if (scene.GetChild ("map") !is null)
         {
-            Map @map = node.vars ["map"].GetPtr ();
             beforeMapUpdate_ -= timeStep;
             beforeMapNeighborsUpdate_ -= timeStep;
             
             if (beforeMapUpdate_ <= 0.0f)
             {
-                map.ReadDataFromNode (scene.GetChild ("map"));
+                mapPtr_.ReadDataFromNode (scene.GetChild ("map"));
                 beforeMapUpdate_ = 1.0f;
             }
             
             if (beforeMapNeighborsUpdate_ <= 0.0f)
             {
-                map.UpdateNeighborsOfDistricts ();
+                mapPtr_.UpdateNeighborsOfDistricts ();
                 beforeMapNeighborsUpdate_ = 10.0f;
             }
         }
@@ -80,12 +81,7 @@ class Player : ScriptObject
     void Stop ()
     {
         UnsubscribeFromAllEvents ();
-        Dispose ();
-    }
-    
-    void Dispose ()
-    {
-        
+        SetRefs (mapPtr_, 1);
     }
     
     LauncherApplication @get_launcherApplication ()
