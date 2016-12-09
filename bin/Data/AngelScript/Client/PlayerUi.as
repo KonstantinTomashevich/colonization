@@ -38,7 +38,7 @@ class PlayerUi : ScriptObject
             point.x *= width;
             point.y *= height;
             
-            button.SetPosition (point.x, point.y);
+            button.SetPosition (point.x - height * 0.1f, point.y - height * 0.025f);
             button.SetSize (height * 0.2f, height * 0.05f);
             buttonText.fontSize = height * 0.03f;
             
