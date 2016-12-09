@@ -22,6 +22,7 @@
 		<Unit filename="../bin/Data/AngelScript/Client/Player.as" />
 		<Unit filename="../bin/Data/AngelScript/Client/PlayerNetwork.as" />
 		<Unit filename="../bin/Data/AngelScript/Client/PlayerUi.as" />
+		<Unit filename="../bin/Data/AngelScript/Client/SceneManager.as" />
 		<Unit filename="../bin/Data/AngelScript/MainMenu.as" />
 		<Unit filename="AngelScriptAPI.hpp" />
 		<Extensions>

@@ -2,10 +2,13 @@ class Player : ScriptObject
 {
     protected LauncherApplication @launcherApplication_;
     protected String playerName_;
+    protected float beforeMapUpdate_;
+    protected float beforeMapNeighborsUpdate_;
     
     Player ()
     {
-        
+        beforeMapUpdate_ = 0.001f;
+        beforeMapNeighborsUpdate_ = 0.001f;
     }
     
     ~Player ()
@@ -34,15 +37,44 @@ class Player : ScriptObject
         networkScript.CreateObject (cache.GetResource ("ScriptFile",
                                                          "AngelScript/Client/PlayerNetwork.as"),
                                      "PlayerNetwork");
+                                     
+        Node @sceneManagerScriptNode = node.CreateChild ("sceneManagerScriptNode", LOCAL);
+        ScriptInstance @sceneManagerScript = sceneManagerScriptNode.CreateComponent ("ScriptInstance", LOCAL);
+        sceneManagerScript.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Client/SceneManager.as"),
+                                     "SceneManager");
         
         SubscribeToEvent ("ServerDisconnected", "HandleServerDisconnected");
         SubscribeToEvent ("ConnectFailed", "HandleConnectFailed");
+        
+        Map @map = CreateMap ();
+        AddRef (map);
+        node.vars ["map"] = map;
     }
     
     void Update (float timeStep)
     {
         if (node.vars ["goToMenuCalled"].GetBool ())
             GoToMainMenuState ();
+            
+        if (scene.GetChild ("map") !is null)
+        {
+            Map @map = node.vars ["map"].GetPtr ();
+            beforeMapUpdate_ -= timeStep;
+            beforeMapNeighborsUpdate_ -= timeStep;
+            
+            if (beforeMapUpdate_ <= 0.0f)
+            {
+                map.ReadDataFromNode (scene.GetChild ("map"));
+                beforeMapUpdate_ = 1.0f;
+            }
+            
+            if (beforeMapNeighborsUpdate_ <= 0.0f)
+            {
+                map.UpdateNeighborsOfDistricts ();
+                beforeMapNeighborsUpdate_ = 10.0f;
+            }
+        }
     }
     
     void Stop ()

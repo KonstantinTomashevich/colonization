@@ -3,6 +3,7 @@
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Network/Network.h>
+#include <Urho3D/Graphics/Octree.h>
 
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Core/Map.hpp>
@@ -72,7 +73,8 @@ void SceneManager::PrepareForPlayingState ()
 {
     // TODO: Implement later.
     scene_->SetVar ("GameState", static_cast <int> (GAME_STATE_PLAYING));
-    scene_->CreateChild ("map", Urho3D::REPLICATED);
+    Urho3D::Node *mapNode = scene_->CreateChild ("map", Urho3D::REPLICATED);
+    mapNode->SetVar ("PrefabXMLPath", "Objects/TestMapLocal.xml");
     UpdateMap (true);
 }
 
@@ -86,6 +88,7 @@ SceneManager::SceneManager (Urho3D::Context *context) : Urho3D::Object (context)
     scene_ (new Urho3D::Scene (context))
 {
     SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (SceneManager, Update));
+    scene_->CreateComponent <Urho3D::Octree> (Urho3D::REPLICATED);
 }
 
 SceneManager::~SceneManager ()

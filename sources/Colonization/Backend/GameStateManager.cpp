@@ -21,35 +21,35 @@ void CreateTestMap (Map *map)
             Colonization::District *district = new District (map->GetContext ());
             district->name_ = "(" + Urho3D::String (x) + "; " + Urho3D::String (y) + ")";
 
-            district->polygonPoints_.Push (Urho3D::Vector3 (x - 0.5f, 0.0f, y - 0.5f));
-            district->polygonPoints_.Push (Urho3D::Vector3 (x + 0.5f, 0.0f, y - 0.5f));
-            district->polygonPoints_.Push (Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.5f));
-            district->polygonPoints_.Push (Urho3D::Vector3 (x - 0.5f, 0.0f, y + 0.5f));
+            district->polygonPoints_.Push (Urho3D::Vector3 (x, 0.0f, y ));
+            district->polygonPoints_.Push (Urho3D::Vector3 (x + 1.0f, 0.0f, y));
+            district->polygonPoints_.Push (Urho3D::Vector3 (x + 1.0f, 0.0f, y + 1.0f));
+            district->polygonPoints_.Push (Urho3D::Vector3 (x, 0.0f, y + 1.0f));
 
-            district->unitPosition_ = Urho3D::Vector3 (x, 0.0f, y);
-            district->colonyPosition_ = Urho3D::Vector3 (x, 0.0f, y);
+            district->unitPosition_ = Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.5f);
+            district->colonyPosition_ = Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.5f);
             map->AddDistrict (district);
         }
 
     // Map: (~ -- sea, = -- terrain, @ -- colony)
     //   0 1 2 3 4
-    // 0 ~ ~ ~ ~ ~
-    // 1 ~ = = = ~
+    // 4 ~ ~ ~ ~ ~
+    // 3 ~ = = = ~
     // 2 ~ ~ ~ = ~
-    // 3 ~ = @ = ~
-    // 4 ~ = ~ ~ ~
+    // 1 ~ = @ = ~
+    // 0 ~ = ~ ~ ~
     // Start point: (0, 2).
     // End point: (4, 4).
 
     // array (X * HEIGHT + Y) = (X, Y)
-    map->GetDistrictByIndex (1 * mapHeight + 1)->isSea_ = false;
-    map->GetDistrictByIndex (2 * mapHeight + 1)->isSea_ = false;
-    map->GetDistrictByIndex (3 * mapHeight + 1)->isSea_ = false;
-    map->GetDistrictByIndex (3 * mapHeight + 2)->isSea_ = false;
-    map->GetDistrictByIndex (3 * mapHeight + 3)->isSea_ = false;
-    map->GetDistrictByIndex (2 * mapHeight + 3)->isSea_ = false;
     map->GetDistrictByIndex (1 * mapHeight + 3)->isSea_ = false;
-    map->GetDistrictByIndex (1 * mapHeight + 4)->isSea_ = false;
+    map->GetDistrictByIndex (2 * mapHeight + 3)->isSea_ = false;
+    map->GetDistrictByIndex (3 * mapHeight + 3)->isSea_ = false;
+    map->GetDistrictByIndex (3 * mapHeight + 2)->isSea_ = false;
+    map->GetDistrictByIndex (3 * mapHeight + 1)->isSea_ = false;
+    map->GetDistrictByIndex (2 * mapHeight + 1)->isSea_ = false;
+    map->GetDistrictByIndex (1 * mapHeight + 1)->isSea_ = false;
+    map->GetDistrictByIndex (1 * mapHeight + 0)->isSea_ = false;
     map->UpdateNeighborsOfDistricts ();
 }
 

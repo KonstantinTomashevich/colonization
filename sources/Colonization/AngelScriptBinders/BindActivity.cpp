@@ -7,11 +7,21 @@
 
 namespace Colonization
 {
+void AddRef (Urho3D::Object *object)
+{
+    object->AddRef ();
+}
+
 void BindActivity (Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
     Urho3D::RegisterObject <Activity> (engine, "Activity");
     BindActivityInterface (script, "Activity");
+
+    CHECK_ANGELSCRIPT_RETURN (
+                engine->RegisterGlobalFunction ("void AddRef (Object @objecty)",
+                                                asFUNCTION (AddRef), asCALL_CDECL)
+                );
 }
 
 void BindActivityInterface (Urho3D::Script *script, char *className)
