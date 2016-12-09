@@ -46,7 +46,8 @@ void SceneManager::UpdateMap (bool rewriteDistrictsPolygons)
 
 void SceneManager::WriteChildrenCount ()
 {
-    Urho3D::PODVector <Urho3D::Node *> children = scene_->GetChildren (true);
+    Urho3D::PODVector <Urho3D::Node *> children;
+    scene_->GetChildren (children, true);
     int replicated = 0;
     for (int index = 0; index < children.Size (); index++)
         if (children.At (index)->GetID () < Urho3D::FIRST_LOCAL_ID)
