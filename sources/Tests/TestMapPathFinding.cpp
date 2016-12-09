@@ -57,26 +57,26 @@ void TestMapPathFindingApplication::Start ()
 
     // Map: (~ -- sea, = -- terrain, @ -- colony)
     //   0 1 2 3 4
-    // 0 ~ ~ ~ ~ ~
-    // 1 ~ = = = ~
+    // 4 ~ ~ ~ ~ ~
+    // 3 ~ = = = ~
     // 2 ~ ~ ~ = ~
-    // 3 ~ = @ = ~
-    // 4 ~ = ~ ~ ~
+    // 1 ~ = @ = ~
+    // 0 ~ = ~ ~ ~
     // Start point: (0, 2).
-    // End point: (4, 4).
+    // End point: (4, 0).
 
     // array (X * HEIGHT + Y) = (X, Y)
-    map->GetDistrictByIndex (1 * mapHeight + 1)->isSea_ = false;
-    map->GetDistrictByIndex (2 * mapHeight + 1)->isSea_ = false;
-    map->GetDistrictByIndex (3 * mapHeight + 1)->isSea_ = false;
-    map->GetDistrictByIndex (3 * mapHeight + 2)->isSea_ = false;
-    map->GetDistrictByIndex (3 * mapHeight + 3)->isSea_ = false;
-    map->GetDistrictByIndex (2 * mapHeight + 3)->isSea_ = false;
     map->GetDistrictByIndex (1 * mapHeight + 3)->isSea_ = false;
-    map->GetDistrictByIndex (1 * mapHeight + 4)->isSea_ = false;
+    map->GetDistrictByIndex (2 * mapHeight + 3)->isSea_ = false;
+    map->GetDistrictByIndex (3 * mapHeight + 3)->isSea_ = false;
+    map->GetDistrictByIndex (3 * mapHeight + 2)->isSea_ = false;
+    map->GetDistrictByIndex (3 * mapHeight + 1)->isSea_ = false;
+    map->GetDistrictByIndex (2 * mapHeight + 1)->isSea_ = false;
+    map->GetDistrictByIndex (1 * mapHeight + 1)->isSea_ = false;
+    map->GetDistrictByIndex (1 * mapHeight + 0)->isSea_ = false;
 
-    map->GetDistrictByIndex (2 * mapHeight + 3)->hasColony_ = true;
-    map->GetDistrictByIndex (2 * mapHeight + 3)->colonyOwnerName_ = "PlayerX";
+    map->GetDistrictByIndex (2 * mapHeight + 1)->hasColony_ = true;
+    map->GetDistrictByIndex (2 * mapHeight + 1)->colonyOwnerName_ = "PlayerX";
     map->UpdateNeighborsOfDistricts ();
 
     // Test map's serialization.
@@ -86,7 +86,7 @@ void TestMapPathFindingApplication::Start ()
 
     // Firstly calculate path if ship owner isn't colony owner.
     Urho3D::Vector <Colonization::District *> way = map->FindPath (
-                map->GetDistrictByIndex (0 * mapHeight + 2), map->GetDistrictByIndex (4 * mapHeight + 4), "PlayerY", true);
+                map->GetDistrictByIndex (0 * mapHeight + 2), map->GetDistrictByIndex (4 * mapHeight + 0), "PlayerY", true);
 
     Urho3D::String calculatedWay = "";
     for (int index = 0; index < way.Size (); index++)
@@ -96,20 +96,20 @@ void TestMapPathFindingApplication::Start ()
     if (way.Size () != 11)
         ErrorExit ("First way points size don't match expected.");
     else if (way.At (0) != map->GetDistrictByIndex (0 * mapHeight + 2) ||
-             way.At (1) != map->GetDistrictByIndex (0 * mapHeight + 1) ||
-             way.At (2) != map->GetDistrictByIndex (0 * mapHeight + 0) ||
-             way.At (3) != map->GetDistrictByIndex (1 * mapHeight + 0) ||
-             way.At (4) != map->GetDistrictByIndex (2 * mapHeight + 0) ||
-             way.At (5) != map->GetDistrictByIndex (3 * mapHeight + 0) ||
-             way.At (6) != map->GetDistrictByIndex (4 * mapHeight + 0) ||
-             way.At (7) != map->GetDistrictByIndex (4 * mapHeight + 1) ||
+             way.At (1) != map->GetDistrictByIndex (0 * mapHeight + 3) ||
+             way.At (2) != map->GetDistrictByIndex (0 * mapHeight + 4) ||
+             way.At (3) != map->GetDistrictByIndex (1 * mapHeight + 4) ||
+             way.At (4) != map->GetDistrictByIndex (2 * mapHeight + 4) ||
+             way.At (5) != map->GetDistrictByIndex (3 * mapHeight + 4) ||
+             way.At (6) != map->GetDistrictByIndex (4 * mapHeight + 4) ||
+             way.At (7) != map->GetDistrictByIndex (4 * mapHeight + 3) ||
              way.At (8) != map->GetDistrictByIndex (4 * mapHeight + 2) ||
-             way.At (9) != map->GetDistrictByIndex (4 * mapHeight + 3) ||
-             way.At (10) != map->GetDistrictByIndex (4 * mapHeight + 4))
+             way.At (9) != map->GetDistrictByIndex (4 * mapHeight + 1) ||
+             way.At (10) != map->GetDistrictByIndex (4 * mapHeight + 0))
         ErrorExit ("First way don't match expected.");
     else
     {
-        way = map->FindPath (map->GetDistrictByIndex (0 * mapHeight + 2), map->GetDistrictByIndex (4 * mapHeight + 4), "PlayerX", true);
+        way = map->FindPath (map->GetDistrictByIndex (0 * mapHeight + 2), map->GetDistrictByIndex (4 * mapHeight + 0), "PlayerX", true);
         calculatedWay = "";
         for (int index = 0; index < way.Size (); index++)
             calculatedWay += way.At (index)->name_ + "\n";
@@ -121,10 +121,10 @@ void TestMapPathFindingApplication::Start ()
         else if (way.At (0) != map->GetDistrictByIndex (0 * mapHeight + 2) ||
                  way.At (1) != map->GetDistrictByIndex (1 * mapHeight + 2) ||
                  way.At (2) != map->GetDistrictByIndex (2 * mapHeight + 2) ||
-                 way.At (3) != map->GetDistrictByIndex (2 * mapHeight + 3) ||
-                 way.At (4) != map->GetDistrictByIndex (2 * mapHeight + 4) ||
-                 way.At (5) != map->GetDistrictByIndex (3 * mapHeight + 4) ||
-                 way.At (6) != map->GetDistrictByIndex (4 * mapHeight + 4))
+                 way.At (3) != map->GetDistrictByIndex (2 * mapHeight + 1) ||
+                 way.At (4) != map->GetDistrictByIndex (2 * mapHeight + 0) ||
+                 way.At (5) != map->GetDistrictByIndex (3 * mapHeight + 0) ||
+                 way.At (6) != map->GetDistrictByIndex (4 * mapHeight + 0))
             ErrorExit ("Second way don't match expected.");
         else
             engine_->Exit ();
