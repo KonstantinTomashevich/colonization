@@ -44,6 +44,16 @@ void SceneManager::UpdateMap (bool rewriteDistrictsPolygons)
     map->UpdateDataNode (mapNode, rewriteDistrictsPolygons);
 }
 
+void SceneManager::WriteChildrenCount ()
+{
+    Urho3D::PODVector <Urho3D::Node *> children = scene_->GetChildren (true);
+    int replicated = 0;
+    for (int index = 0; index < children.Size (); index++)
+        if (children.At (index)->GetID () < Urho3D::FIRST_LOCAL_ID)
+            replicated++;
+    scene_->SetVar ("ReplicatedNodesCount", replicated);
+}
+
 void SceneManager::UpdateWaitingForPlayersState ()
 {
     // TODO: To be continued....
@@ -55,6 +65,7 @@ void SceneManager::UpdatePlayingState ()
     // TODO: To be continued...
     WritePlayersStats ();
     UpdateMap (false);
+    WriteChildrenCount ();
 }
 
 void SceneManager::UpdateFinishedState ()
@@ -76,6 +87,7 @@ void SceneManager::PrepareForPlayingState ()
     Urho3D::Node *mapNode = scene_->CreateChild ("map", Urho3D::REPLICATED);
     mapNode->SetVar ("PrefabXMLPath", "Objects/TestMapLocal.xml");
     UpdateMap (true);
+    WriteChildrenCount ();
 }
 
 void SceneManager::PrepareForFinishedState ()

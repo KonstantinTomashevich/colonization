@@ -5,11 +5,28 @@ class Player : ScriptObject
     protected float beforeMapUpdate_;
     protected float beforeMapNeighborsUpdate_;
     protected Map @mapPtr_;
+    protected bool isSceneLoaded_;
+    
+    protected void CheckIsSceneLoaded ()
+    {
+        if (scene.vars ["ReplicatedNodesCount"].GetInt () != 0)
+        {
+            Array <Node @> children = scene.GetChildren (true);
+            int replicated = 0;
+            for (int index = 0; index < children.length; index++)
+                if (children [index].id < FIRST_LOCAL_ID)
+                    replicated++;
+            isSceneLoaded_ = (replicated == scene.vars ["ReplicatedNodesCount"].GetInt ());
+        }
+        else
+            isSceneLoaded_ = false;
+    }
     
     Player ()
     {
         beforeMapUpdate_ = 0.001f;
         beforeMapNeighborsUpdate_ = 0.001f;
+        isSceneLoaded_ = false;
     }
     
     ~Player ()
@@ -59,7 +76,10 @@ class Player : ScriptObject
         if (node.vars ["goToMenuCalled"].GetBool ())
             GoToMainMenuState ();
             
-        if (scene.GetChild ("map") !is null)
+        if (!isSceneLoaded_)
+            CheckIsSceneLoaded ();
+            
+        if (isSceneLoaded_)
         {
             beforeMapUpdate_ -= timeStep;
             beforeMapNeighborsUpdate_ -= timeStep;

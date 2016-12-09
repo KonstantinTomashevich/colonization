@@ -2,6 +2,22 @@ class PlayerUi : ScriptObject
 {
     protected Array <Button @> districtsButtons_;
     protected float beforeDistrictsButtonsUpdate_;
+    protected bool isSceneLoaded_;
+    
+    protected void CheckIsSceneLoaded ()
+    {
+        if (scene.vars ["ReplicatedNodesCount"].GetInt () != 0)
+        {
+            Array <Node @> children = scene.GetChildren (true);
+            int replicated = 0;
+            for (int index = 0; index < children.length; index++)
+                if (children [index].id < FIRST_LOCAL_ID)
+                    replicated++;
+            isSceneLoaded_ = (replicated == scene.vars ["ReplicatedNodesCount"].GetInt ());
+        }
+        else
+            isSceneLoaded_ = false;
+    }
     
     protected void AddDistrictButton ()
     {
@@ -48,6 +64,7 @@ class PlayerUi : ScriptObject
     PlayerUi ()
     {
         beforeDistrictsButtonsUpdate_ = 0.001f;
+        isSceneLoaded_ = false;
     }
     
     ~PlayerUi ()
@@ -80,7 +97,10 @@ class PlayerUi : ScriptObject
         playerStatsInfo += "Points: " + node.parent.vars ["points"].GetFloat ();
         playerStatsText.text = playerStatsInfo;
         
-        if (scene.GetChild ("map") !is null and scene.GetChild ("camera") !is null)
+        if (!isSceneLoaded_)
+            CheckIsSceneLoaded ();
+        
+        if (isSceneLoaded_ and scene.GetChild ("camera") !is null)
             UpdateDistrictsButtons ();
     }
     

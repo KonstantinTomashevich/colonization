@@ -2,6 +2,22 @@ class SceneManager : ScriptObject
 {
     protected float CAMERA_MOVE_SPEED = 2.5f;
     protected Node @cameraNode_;
+    protected bool isSceneLoaded_;
+    
+    protected void CheckIsSceneLoaded ()
+    {
+        if (scene.vars ["ReplicatedNodesCount"].GetInt () != 0)
+        {
+            Array <Node @> children = scene.GetChildren (true);
+            int replicated = 0;
+            for (int index = 0; index < children.length; index++)
+                if (children [index].id < FIRST_LOCAL_ID)
+                    replicated++;
+            isSceneLoaded_ = (replicated == scene.vars ["ReplicatedNodesCount"].GetInt ());
+        }
+        else
+            isSceneLoaded_ = false;
+    }
     
     protected void LoadPrefabOf (Node @replicatedNode)
     {
@@ -45,7 +61,7 @@ class SceneManager : ScriptObject
     
     SceneManager ()
     {
-        
+        isSceneLoaded_ = false;
     }
     
     ~SceneManager ()
@@ -60,7 +76,10 @@ class SceneManager : ScriptObject
     
     void Update (float timeStep)
     {
-        if (scene.GetChild ("map") !is null and scene.GetChild ("locals").GetChild ("map") is null)
+        if (!isSceneLoaded_)
+            CheckIsSceneLoaded ();
+            
+        if (isSceneLoaded_ and scene.GetChild ("locals").GetChild ("map") is null)
         {
             LoadPrefabOf (scene.GetChild ("map"));
             CreateLocalCamera ();

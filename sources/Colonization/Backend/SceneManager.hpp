@@ -13,6 +13,7 @@ protected:
 
     void WritePlayersStats ();
     void UpdateMap (bool rewriteDistrictsPolygons);
+    void WriteChildrenCount ();
 
     void UpdateWaitingForPlayersState ();
     void UpdatePlayingState ();
