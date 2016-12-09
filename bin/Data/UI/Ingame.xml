@@ -6,7 +6,7 @@
 	<attribute name="Pivot" value="0 0" />
 	<attribute name="Enable Anchor" value="true" />
 	<element type="Text">
-        <attribute name="Name" value="playerStatsInfo" />
+		<attribute name="Name" value="playerStatsInfo" />
 		<attribute name="Min Anchor" value="0.03 0.03" />
 		<attribute name="Max Anchor" value="0.2 0.1" />
 		<attribute name="Pivot" value="0 0" />
@@ -15,9 +15,12 @@
 		<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
 		<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
 		<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
+		<attribute name="Bring To Front" value="true" />
+		<attribute name="Bring To Back" value="false" />
 		<attribute name="Font" value="Font;Fonts/BlueHighway.ttf" />
 		<attribute name="Font Size" value="20" />
 		<attribute name="Text" value="Player Name..." />
+		<attribute name="Text Effect" value="Stroke" />
 	</element>
 	<element type="Button">
 		<attribute name="Name" value="exitButton" />
@@ -26,6 +29,8 @@
 		<attribute name="Max Anchor" value="1 0.1" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Enable Anchor" value="true" />
+		<attribute name="Bring To Front" value="true" />
+		<attribute name="Bring To Back" value="false" />
 		<element type="Text">
 			<attribute name="Name" value="text" />
 			<attribute name="Min Anchor" value="0.5 0.5" />
