@@ -17,15 +17,11 @@ Urho3D::CScriptArray *MapFindPath (Map *map, District *from, District *to,
     return Urho3D::VectorToArray <District *> (result, "Array<District@>");
 }
 
-Map *CreateMap ()
-{
-    return new Map (Urho3D::GetScriptContext ());
-}
-
 void BindMap(Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
     Urho3D::RegisterObject <Map> (engine, "Map");
+    Urho3D::RegisterObjectConstructor <Map> (engine, "Map");
 
     CHECK_ANGELSCRIPT_RETURN (
                 engine->RegisterObjectMethod (
@@ -74,11 +70,6 @@ void BindMap(Urho3D::Script *script)
                     "Map",
                     "Array<District@> @FindPath (District @from, District @to, String playerName, bool canGoThroughColonies)",
                                   asFUNCTION (MapFindPath), asCALL_CDECL_OBJFIRST)
-                );
-
-    CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterGlobalFunction (
-                    "Map @CreateMap ()", asFUNCTION (CreateMap), asCALL_CDECL)
                 );
 }
 }

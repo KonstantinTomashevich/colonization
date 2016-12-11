@@ -65,7 +65,7 @@ class Player : ScriptObject
         SubscribeToEvent ("ServerDisconnected", "HandleServerDisconnected");
         SubscribeToEvent ("ConnectFailed", "HandleConnectFailed");
         
-        Map @map = CreateMap ();
+        Map @map = Map ();
         AddRef (map);
         node.vars ["map"] = map;
         mapPtr_ = map;
@@ -136,7 +136,7 @@ class Player : ScriptObject
         for (int index = 0; index < launcherApplication_.GetActivitiesCount (); index++)
             launcherApplication_.StopActivityNextFrame (launcherApplication_.GetActivityByIndex (index));
             
-        MainMenuActivity @mainMenuActivity = CreateMainMenuActivity ();
+        MainMenuActivity @mainMenuActivity = MainMenuActivity ();
         launcherApplication_.SetupActivityNextFrame (mainMenuActivity);
     }
     

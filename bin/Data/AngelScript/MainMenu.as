@@ -54,11 +54,11 @@ class MainMenu : ScriptObject
         for (int index = 0; index < launcherApplication_.GetActivitiesCount (); index++)
             launcherApplication_.StopActivityNextFrame (launcherApplication_.GetActivityByIndex (index));
         
-        HostActivity @hostActivity = CreateHostActivity ();
+        HostActivity @hostActivity = HostActivity ();
         hostActivity.serverPort = 13768;
         launcherApplication_.SetupActivityNextFrame (hostActivity);
         
-        IngamePlayerActivity @ingamePlayerActivity = CreateIngamePlayerActivity ();
+        IngamePlayerActivity @ingamePlayerActivity = IngamePlayerActivity ();
         ingamePlayerActivity.serverAdress = "localhost";
         ingamePlayerActivity.serverPort = 13768;
         ingamePlayerActivity.playerName = "Konstant";

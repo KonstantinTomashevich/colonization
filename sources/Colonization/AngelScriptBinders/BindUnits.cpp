@@ -65,7 +65,7 @@ void BindFleetUnit (Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
     Urho3D::RegisterObject <FleetUnit> (engine, "FleetUnit");
-    Urho3D::RegisterObjectConstructor (engine, "FleetUnit");
+    Urho3D::RegisterObjectConstructor <FleetUnit> (engine, "FleetUnit");
     Urho3D::RegisterSubclass <Unit, FleetUnit> (engine, "Unit", "FleetUnit");
     BindUnitInterface (script, "FleetUnit");
     BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, FleetUnit, "FleetUnit", int, warShipsCount_);
