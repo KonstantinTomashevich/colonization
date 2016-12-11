@@ -11,7 +11,7 @@ class Map : public Urho3D::Object
 {
 URHO3D_OBJECT (Map, Object)
 protected:
-    Urho3D::PODVector <District *> *districts_;
+    Urho3D::PODVector <District *> districts_;
 
 public:
     Map (Urho3D::Context *context);

@@ -34,7 +34,7 @@ public:
 
     void UpdateDataNode (Urho3D::Node *dataNode, bool rewritePolygonPoints);
     void ReadDataFromNode (Urho3D::Node *dataNode);
-    void CalculateNeighbors (Urho3D::PODVector <District *> *allDistricts);
+    void CalculateNeighbors (Urho3D::PODVector <District *> &allDistricts);
 
     bool needDataUpdate_;
     bool isSea_;
