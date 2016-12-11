@@ -35,6 +35,11 @@ void TestMapPathFindingApplication::Start ()
     input->SetMouseVisible (true);
     input->SetMouseMode (Urho3D::MM_FREE);
 
+    context_->SetGlobalVar ("sailSpeed", 0.3f);
+    context_->SetGlobalVar ("marchSpeed", 0.1f);
+    context_->SetGlobalVar ("embarkationSpeed", 0.15f);
+    context_->SetGlobalVar ("disembarkationSpeed", 0.2f);
+
     Urho3D::SharedPtr <Colonization::Map> map (new Colonization::Map (context_));
     const int mapWidth = 5;
     const int mapHeight = 5;

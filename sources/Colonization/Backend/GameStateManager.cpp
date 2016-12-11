@@ -75,6 +75,11 @@ void GameStateManager::DisposeWaitingForPlayersState ()
 void GameStateManager::SetupPlayingState ()
 {
     // TODO: To be continued...
+    context_->SetGlobalVar ("sailSpeed", 0.3f);
+    context_->SetGlobalVar ("marchSpeed", 0.1f);
+    context_->SetGlobalVar ("embarkationSpeed", 0.15f);
+    context_->SetGlobalVar ("disembarkationSpeed", 0.2f);
+
     Map *map = new Map (context_);
     CreateTestMap (map);
     context_->SetGlobalVar ("Map", Urho3D::Variant (map));

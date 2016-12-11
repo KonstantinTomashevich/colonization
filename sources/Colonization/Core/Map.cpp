@@ -2,6 +2,7 @@
 #include "Map.hpp"
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/Container/HashMap.h>
+#include <Urho3D/Core/Context.h>
 
 namespace Colonization
 {
@@ -91,6 +92,11 @@ Urho3D::PODVector <District *> Map::FindPath (District *from, District *to, Urho
     assert (districts_.Contains (from));
     assert (districts_.Contains (to));
 
+    float sailSpeed = context_->GetGlobalVar ("sailSpeed").GetFloat ();
+    float marchSpeed = context_->GetGlobalVar ("marchSpeed").GetFloat ();
+    float embarkationSpeed = context_->GetGlobalVar ("embarkationSpeed").GetFloat ();
+    float disembarkationSpeed = context_->GetGlobalVar ("disembarkationSpeed").GetFloat ();
+
     Urho3D::HashMap <Urho3D::StringHash, District *> frontier;
     Urho3D::HashMap <Urho3D::StringHash, District *> cameFrom;
     Urho3D::HashMap <Urho3D::StringHash, float> costSoFar;
@@ -130,10 +136,16 @@ Urho3D::PODVector <District *> Map::FindPath (District *from, District *to, Urho
                         next->isSea_ || (canGoThroughColonies && next->hasColony_ && next->colonyOwnerName_ == playerName)))
             {
                 float newCost = costSoFar [current->name_];
-                if (!next->isSea_)
-                    newCost += (current->unitPosition_ - next->unitPosition_).Length () * 3.0f;
-                else
-                    newCost += (current->unitPosition_ - next->unitPosition_).Length ();
+                float distance = (current->unitPosition_ - next->unitPosition_).Length ();
+
+                if (current->isSea_ && next->isSea_)
+                    newCost += (distance / sailSpeed);
+                else if (!current->isSea_ && !next->isSea_)
+                    newCost += (distance / marchSpeed);
+                else if (!current->isSea_ && next->isSea_)
+                    newCost += (distance / embarkationSpeed);
+                else if (current->isSea_ && !next->isSea_)
+                    newCost += (distance / disembarkationSpeed);
 
                 if (!costSoFar.Contains (next->name_) || newCost < costSoFar [next->name_])
                 {
