@@ -26,7 +26,7 @@ public:
     UnitType unitType_;
     District *position_;
     Urho3D::PODVector <District *> way_;
-    float wayToNextDistrictProgress_;
+    float wayToNextDistrictProgressInPercents_;
 
     virtual void UpdateDataNode (Urho3D::Node *dataNode);
     virtual void ReadDataFromNode (Urho3D::Node *dataNode, Map *map);

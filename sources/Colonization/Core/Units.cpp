@@ -9,7 +9,7 @@ Unit::Unit (Urho3D::Context *context, UnitType unitType) : Urho3D::Object (conte
     unitType_ (unitType),
     position_ (0),
     way_ (0),
-    wayToNextDistrictProgress_ (0)
+    wayToNextDistrictProgressInPercents_ (0)
 {
 
 }
@@ -32,8 +32,8 @@ void Unit::UpdateDataNode (Urho3D::Node *dataNode)
     if (dataNode->GetVar ("position").GetString () != position_->name_)
         dataNode->SetVar ("position", position_->name_);
 
-    if (dataNode->GetVar ("wayToNextDistrictProgress").GetFloat () != wayToNextDistrictProgress_)
-        dataNode->SetVar ("wayToNextDistrictProgress", wayToNextDistrictProgress_);
+    if (dataNode->GetVar ("wayToNextDistrictProgress").GetFloat () != wayToNextDistrictProgressInPercents_)
+        dataNode->SetVar ("wayToNextDistrictProgress", wayToNextDistrictProgressInPercents_);
 
     if (way_.Empty ())
         dataNode->SetVar ("wayTarget", "no_way_target");
@@ -51,7 +51,7 @@ void Unit::ReadDataFromNode (Urho3D::Node *dataNode, Map *map)
     position_ = map->GetDistrictByNameHash (Urho3D::StringHash (
                                                 dataNode->GetVar ("position").GetString ()));
     assert (position_);
-    wayToNextDistrictProgress_ = dataNode->GetVar ("wayToNextDistrictProgress").GetFloat ();
+    wayToNextDistrictProgressInPercents_ = dataNode->GetVar ("wayToNextDistrictProgress").GetFloat ();
 
     District *wayTarget = map->GetDistrictByNameHash (Urho3D::StringHash (
                                                           dataNode->GetVar ("wayTarget").GetString ()));

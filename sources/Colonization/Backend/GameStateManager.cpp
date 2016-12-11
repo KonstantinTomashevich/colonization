@@ -5,6 +5,7 @@
 #include <Colonization/Backend/MessagesHandler.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/SceneManager.hpp>
+#include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Core/Map.hpp>
 
 namespace Colonization
@@ -80,6 +81,9 @@ void GameStateManager::SetupPlayingState ()
     context_->SetGlobalVar ("embarkationSpeed", 0.15f);
     context_->SetGlobalVar ("disembarkationSpeed", 0.2f);
 
+    UnitsManager *unitsManager = new UnitsManager (context_);
+    context_->SetGlobalVar ("UnitsManager", Urho3D::Variant (unitsManager));
+
     Map *map = new Map (context_);
     CreateTestMap (map);
     context_->SetGlobalVar ("Map", Urho3D::Variant (map));
@@ -93,6 +97,7 @@ void GameStateManager::DisposePlayingState ()
 {
     // TODO: Temporary. Reimplement later.
     delete ( (Map *) context_->GetGlobalVar ("Map").GetPtr ());
+    delete ( (UnitsManager *) context_->GetGlobalVar ("UnitsManager").GetPtr ());
     SetupState (GAME_STATE_FINISHED);
     DisposeCurrentState ();
 }

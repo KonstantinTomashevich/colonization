@@ -6,6 +6,7 @@
 #include <Urho3D/Graphics/Octree.h>
 
 #include <Colonization/Backend/PlayersManager.hpp>
+#include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Core/Map.hpp>
 
 namespace Colonization
@@ -42,6 +43,13 @@ void SceneManager::UpdateMap (bool rewriteDistrictsPolygons)
     assert (map);
     Urho3D::Node *mapNode = scene_->GetChild ("map");
     map->UpdateDataNode (mapNode, rewriteDistrictsPolygons);
+}
+
+void SceneManager::UpdateUnits ()
+{
+    UnitsManager *unitsManager = (UnitsManager *) context_->GetGlobalVar ("UnitsManager").GetPtr ();
+    Urho3D::Node *unitsNode = scene_->GetChild ("units");
+    unitsManager->GetUnitsContainer ()->UpdateDataNode (unitsNode);
 }
 
 void SceneManager::WriteChildrenCount ()
@@ -87,7 +95,10 @@ void SceneManager::PrepareForPlayingState ()
     scene_->SetVar ("GameState", static_cast <int> (GAME_STATE_PLAYING));
     Urho3D::Node *mapNode = scene_->CreateChild ("map", Urho3D::REPLICATED);
     mapNode->SetVar ("PrefabXMLPath", "Objects/TestMapLocal.xml");
+    Urho3D::Node *unitsNode = scene_->CreateChild ("units", Urho3D::REPLICATED);
+
     UpdateMap (true);
+    UpdateUnits ();
     WriteChildrenCount ();
 }
 

@@ -12,7 +12,7 @@ OBJECT_PROPERTY_GETTER_AND_SETTER (Unit ,Urho3D::String, ownerPlayer_)
 OBJECT_PROPERTY_GETTER_AND_SETTER (Unit, UnitType, unitType_)
 OBJECT_PROPERTY_GETTER_AND_SETTER (Unit, District*, position_)
 OBJECT_ARRAY_OF_POINTERS_PROPERTY_ACESSOR (Unit, PODVector, District*, way_, "Array<District@>")
-OBJECT_PROPERTY_GETTER_AND_SETTER (Unit, float, wayToNextDistrictProgress_)
+OBJECT_PROPERTY_GETTER_AND_SETTER (Unit, float, wayToNextDistrictProgressInPercents_)
 
 OBJECT_PROPERTY_GETTER_AND_SETTER (FleetUnit, int, warShipsCount_)
 
@@ -58,7 +58,7 @@ void BindUnitInterface (Urho3D::Script *script, Urho3D::String className)
     BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, Unit, className.CString (), UnitType, unitType_);
     BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, Unit, className.CString (), District@, position_);
     BIND_OBJECT_ARRAY_PROPERTY (engine, Unit, className.CString (), District@, way_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, Unit, className.CString (), float, wayToNextDistrictProgress_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, Unit, className.CString (), float, wayToNextDistrictProgressInPercents_);
 }
 
 void BindFleetUnit (Urho3D::Script *script)
