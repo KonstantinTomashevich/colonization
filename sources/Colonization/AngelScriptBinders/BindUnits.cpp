@@ -7,7 +7,6 @@
 
 namespace Colonization
 {
-OBJECT_PROPERTY_GETTER_AND_SETTER (Unit, bool, needDataUpdate_)
 OBJECT_PROPERTY_GETTER_AND_SETTER (Unit ,Urho3D::String, ownerPlayer_)
 OBJECT_PROPERTY_GETTER_AND_SETTER (Unit, UnitType, unitType_)
 OBJECT_PROPERTY_GETTER_AND_SETTER (Unit, District*, position_)
@@ -53,7 +52,6 @@ void BindUnit(Urho3D::Script *script)
 void BindUnitInterface (Urho3D::Script *script, Urho3D::String className)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, Unit, className.CString (), bool, needDataUpdate_);
     BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, Unit, className.CString (), String, ownerPlayer_);
     BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, Unit, className.CString (), UnitType, unitType_);
     BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, Unit, className.CString (), District@, position_);

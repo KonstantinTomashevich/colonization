@@ -20,14 +20,13 @@ void UnitsContainer::UpdateDataNode (Urho3D::Node *dataNode)
     while (dataNode->GetChildren ().Size () < units_.Size ())
         dataNode->CreateChild ();
 
+    while (dataNode->GetChildren ().Size () > units_.Size ())
+        dataNode->RemoveChild (dataNode->GetChildren ().Back ());
+
     for (int index = 0; index < units_.Size (); index++)
     {
         Unit *unit = units_.At (index);
-        if (unit->needDataUpdate_)
-        {
-            unit->UpdateDataNode (dataNode->GetChildren ().At (index));
-            unit->needDataUpdate_ = false;
-        }
+        unit->UpdateDataNode (dataNode->GetChildren ().At (index));
     }
 }
 

@@ -30,7 +30,6 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
         Unit *unit = unitsContainer_->GetUnitByIndex (index);
         if (!unit->way_.Empty ())
         {
-            unit->needDataUpdate_ = true;
             float distance = (unit->position_->unitPosition_ - unit->way_.At (0)->unitPosition_).Length ();
             float speed;
 

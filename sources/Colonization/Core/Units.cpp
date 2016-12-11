@@ -4,7 +4,6 @@
 namespace Colonization
 {
 Unit::Unit (Urho3D::Context *context, UnitType unitType) : Urho3D::Object (context),
-    needDataUpdate_ (true),
     ownerPlayer_ ("???"),
     unitType_ (unitType),
     position_ (0),

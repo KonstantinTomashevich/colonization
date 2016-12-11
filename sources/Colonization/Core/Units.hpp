@@ -21,7 +21,6 @@ protected:
 public:
     virtual ~Unit ();
 
-    bool needDataUpdate_;
     Urho3D::String ownerPlayer_;
     UnitType unitType_;
     District *position_;
