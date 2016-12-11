@@ -16,10 +16,12 @@ enum UnitType
 class Unit : public Urho3D::Object
 {
 URHO3D_OBJECT (Unit, Object)
-public:
+protected:
     Unit (Urho3D::Context *context, UnitType unitType);
+public:
     virtual ~Unit ();
 
+    bool needDataUpdate_;
     Urho3D::String ownerPlayer_;
     UnitType unitType_;
     District *position_;
@@ -52,6 +54,20 @@ public:
     virtual ~TradersUnit ();
 
     float tradeGoodsCost_;
+    // TODO: To be continued...
+
+    virtual void UpdateDataNode (Urho3D::Node *dataNode, bool rewriteWaypoints);
+    virtual void ReadDataFromNode (Urho3D::Node *dataNode, Map *map);
+};
+
+class ColonizatorsUnit : public Unit
+{
+URHO3D_OBJECT (ColonizatorsUnit, Unit)
+public:
+    ColonizatorsUnit (Urho3D::Context *context);
+    virtual ~ColonizatorsUnit ();
+
+    int colonistsCount_;
     // TODO: To be continued...
 
     virtual void UpdateDataNode (Urho3D::Node *dataNode, bool rewriteWaypoints);

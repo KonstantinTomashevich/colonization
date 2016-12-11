@@ -4,6 +4,7 @@
 namespace Colonization
 {
 Unit::Unit (Urho3D::Context *context, UnitType unitType) : Urho3D::Object (context),
+    needDataUpdate_ (true),
     ownerPlayer_ ("???"),
     unitType_ (unitType),
     position_ (0),
@@ -108,6 +109,30 @@ void TradersUnit::ReadDataFromNode (Urho3D::Node *dataNode, Map *map)
 {
     Unit::ReadDataFromNode (dataNode, map);
     tradeGoodsCost_ = dataNode->GetVar ("tradeGoodsCost").GetFloat ();
+}
+
+ColonizatorsUnit::ColonizatorsUnit (Urho3D::Context *context) : Unit (context, UNIT_COLONIZATORS),
+    colonistsCount_ (0)
+{
+
+}
+
+ColonizatorsUnit::~ColonizatorsUnit ()
+{
+
+}
+
+void ColonizatorsUnit::UpdateDataNode (Urho3D::Node *dataNode, bool rewriteWaypoints)
+{
+    Unit::UpdateDataNode (dataNode, rewriteWaypoints);
+    if (dataNode->GetVar ("colonistsCount").GetInt () != colonistsCount_)
+        dataNode->SetVar ("colonistsCount", colonistsCount_);
+}
+
+void ColonizatorsUnit::ReadDataFromNode (Urho3D::Node *dataNode, Map *map)
+{
+    Unit::ReadDataFromNode (dataNode, map);
+    colonistsCount_ = dataNode->GetVar ("colonistsCount").GetInt ();
 }
 
 ArmyUnit::ArmyUnit (Urho3D::Context *context) : Unit (context, UNIT_ARMY),
