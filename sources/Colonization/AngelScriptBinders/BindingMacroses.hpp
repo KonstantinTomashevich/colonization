@@ -40,7 +40,7 @@
 
 #define BIND_OBJECT_PROPERTY_GETTER(asEngine, cxxObjectType, asObjectType, asPropertyType, propertyName) \
     CHECK_ANGELSCRIPT_RETURN ( \
-                asEngine->RegisterObjectMethod (#asObjectType, (#asPropertyType + Urho3D::String (" get_") \
+                asEngine->RegisterObjectMethod (asObjectType, (#asPropertyType + Urho3D::String (" get_") \
                 + #propertyName + Urho3D::String (" ()")).CString (), asFUNCTION (cxxObjectType ## _get_ ## propertyName ), \
                 asCALL_CDECL_OBJFIRST) \
                 ) \
@@ -48,7 +48,7 @@
 
 #define BIND_OBJECT_PROPERTY_SETTER(asEngine, cxxObjectType, asObjectType, asPropertyType, propertyName) \
     CHECK_ANGELSCRIPT_RETURN ( \
-                asEngine->RegisterObjectMethod (#asObjectType, (Urho3D::String ("void set_") \
+                asEngine->RegisterObjectMethod (asObjectType, (Urho3D::String ("void set_") \
                 + #propertyName + Urho3D::String (" (") + #asPropertyType \
                 + Urho3D::String (" value)")).CString (), asFUNCTION (cxxObjectType ## _set_ ## propertyName ), \
                 asCALL_CDECL_OBJFIRST) \
@@ -89,14 +89,14 @@
 
 #define BIND_OBJECT_ARRAY_PROPERTY(asEngine, cxxObjectType, asObjectType, asArrayValuesType, propertyName) \
     CHECK_ANGELSCRIPT_RETURN ( \
-                asEngine->RegisterObjectMethod (#asObjectType, (Urho3D::String ("Array <") \
+                asEngine->RegisterObjectMethod (asObjectType, (Urho3D::String ("Array <") \
                 + #asArrayValuesType + Urho3D::String (">@") + Urho3D::String (" get_") \
                 + #propertyName + Urho3D::String (" ()")).CString (), \
                 asFUNCTION (cxxObjectType ## _get_ ## propertyName), \
                 asCALL_CDECL_OBJFIRST) \
                 ); \
     CHECK_ANGELSCRIPT_RETURN ( \
-                asEngine->RegisterObjectMethod (#asObjectType, (Urho3D::String ("void set_") \
+                asEngine->RegisterObjectMethod (asObjectType, (Urho3D::String ("void set_") \
                 + #propertyName + Urho3D::String (" (Array <") + #asArrayValuesType \
                 + Urho3D::String (">@ array)")).CString (), \
                 asFUNCTION (cxxObjectType ## _set_ ## propertyName), \

@@ -81,42 +81,42 @@ void BindDistrict (Urho3D::Script *script)
                                   asMETHOD (District, ReadDataFromNode), asCALL_THISCALL)
                 );
 
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, bool, needDataUpdate_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, bool, isSea_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, bool, isImpassable_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, String, name_);
-    BIND_OBJECT_ARRAY_PROPERTY (engine, District, District, Vector3, polygonPoints_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, Vector3, unitPosition_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, Vector3, colonyPosition_);
-    BIND_OBJECT_ARRAY_PROPERTY (engine, District, District, District@, neighbors_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", bool, needDataUpdate_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", bool, isSea_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", bool, isImpassable_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", String, name_);
+    BIND_OBJECT_ARRAY_PROPERTY (engine, District, "District", Vector3, polygonPoints_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", Vector3, unitPosition_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", Vector3, colonyPosition_);
+    BIND_OBJECT_ARRAY_PROPERTY (engine, District, "District", District@, neighbors_);
 
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, float, farmingSquare_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, float, forestsSquare_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, float, landAverageFertility_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, ClimateType, climate_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", float, farmingSquare_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", float, forestsSquare_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", float, landAverageFertility_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", ClimateType, climate_);
 
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, float, forestsReproductivity_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, bool, hasCoalDeposits_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, bool, hasIronDeposits_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, bool, hasSilverDeposits_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, bool, hasGoldDeposits_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", float, forestsReproductivity_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", bool, hasCoalDeposits_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", bool, hasIronDeposits_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", bool, hasSilverDeposits_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", bool, hasGoldDeposits_);
 
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, int, nativesCount_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, int, nativesFightingTechnologyLevel_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, float, nativesAggressiveness_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, NativesCharacter, nativesCharacter_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", int, nativesCount_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", int, nativesFightingTechnologyLevel_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", float, nativesAggressiveness_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", NativesCharacter, nativesCharacter_);
 
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, bool, hasColony_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, String, colonyOwnerName_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, int, mansCount_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, int, womenCount_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, int, localArmySize_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, float, farmsEvolutionPoints_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, float, minesEvolutionPoints_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, float, industryEvolutionPoints_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, float, logisticsEvolutionPoints_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, float, defenseEvolutionPoints_);
-    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, District, float, averageLevelOfLifePoints_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", bool, hasColony_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", String, colonyOwnerName_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", int, mansCount_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", int, womenCount_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", int, localArmySize_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", float, farmsEvolutionPoints_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", float, minesEvolutionPoints_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", float, industryEvolutionPoints_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", float, logisticsEvolutionPoints_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", float, defenseEvolutionPoints_);
+    BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", float, averageLevelOfLifePoints_);
 
     CHECK_ANGELSCRIPT_RETURN (
                 engine->RegisterGlobalFunction (

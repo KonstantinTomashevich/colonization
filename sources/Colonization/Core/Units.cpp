@@ -112,7 +112,7 @@ void TradersUnit::ReadDataFromNode (Urho3D::Node *dataNode, Map *map)
 }
 
 ColonizatorsUnit::ColonizatorsUnit (Urho3D::Context *context) : Unit (context, UNIT_COLONIZATORS),
-    colonistsCount_ (0)
+    colonizatorsCount_ (0)
 {
 
 }
@@ -125,14 +125,14 @@ ColonizatorsUnit::~ColonizatorsUnit ()
 void ColonizatorsUnit::UpdateDataNode (Urho3D::Node *dataNode, bool rewriteWaypoints)
 {
     Unit::UpdateDataNode (dataNode, rewriteWaypoints);
-    if (dataNode->GetVar ("colonistsCount").GetInt () != colonistsCount_)
-        dataNode->SetVar ("colonistsCount", colonistsCount_);
+    if (dataNode->GetVar ("colonizatorsCount").GetInt () != colonizatorsCount_)
+        dataNode->SetVar ("colonizatorsCount", colonizatorsCount_);
 }
 
 void ColonizatorsUnit::ReadDataFromNode (Urho3D::Node *dataNode, Map *map)
 {
     Unit::ReadDataFromNode (dataNode, map);
-    colonistsCount_ = dataNode->GetVar ("colonistsCount").GetInt ();
+    colonizatorsCount_ = dataNode->GetVar ("colonizatorsCount").GetInt ();
 }
 
 ArmyUnit::ArmyUnit (Urho3D::Context *context) : Unit (context, UNIT_ARMY),

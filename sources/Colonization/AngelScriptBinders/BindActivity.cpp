@@ -15,21 +15,21 @@ void BindActivity (Urho3D::Script *script)
     BindActivityInterface (script, "Activity");
 }
 
-void BindActivityInterface (Urho3D::Script *script, char *className)
+void BindActivityInterface (Urho3D::Script *script, Urho3D::String className)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
     CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod (className, "void Start ()",
+                engine->RegisterObjectMethod (className.CString (), "void Start ()",
                                               asMETHOD (Activity, Start), asCALL_THISCALL)
-            );
+                );
 
     CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod (className, "void Update (float timeStep)",
+                engine->RegisterObjectMethod (className.CString (), "void Update (float timeStep)",
                                               asMETHOD (Activity, Update), asCALL_THISCALL)
-            );
+                );
 
     CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod (className, "void Stop ()",
+                engine->RegisterObjectMethod (className.CString (), "void Stop ()",
                                               asMETHOD (Activity, Stop), asCALL_THISCALL)
                 );
 }

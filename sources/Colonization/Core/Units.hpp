@@ -67,7 +67,7 @@ public:
     ColonizatorsUnit (Urho3D::Context *context);
     virtual ~ColonizatorsUnit ();
 
-    int colonistsCount_;
+    int colonizatorsCount_;
     // TODO: To be continued...
 
     virtual void UpdateDataNode (Urho3D::Node *dataNode, bool rewriteWaypoints);
