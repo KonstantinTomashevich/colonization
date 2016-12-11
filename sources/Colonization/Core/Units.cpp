@@ -19,7 +19,7 @@ Unit::~Unit ()
 
 }
 
-void Unit::UpdateDataNode (Urho3D::Node *dataNode, bool rewriteWaypoints)
+void Unit::UpdateDataNode (Urho3D::Node *dataNode)
 {
     assert (dataNode);
     assert (position_);
@@ -35,13 +35,10 @@ void Unit::UpdateDataNode (Urho3D::Node *dataNode, bool rewriteWaypoints)
     if (dataNode->GetVar ("wayToNextDistrictProgress").GetFloat () != wayToNextDistrictProgress_)
         dataNode->SetVar ("wayToNextDistrictProgress", wayToNextDistrictProgress_);
 
-    if (rewriteWaypoints)
-    {
-        if (way_.Empty ())
-            dataNode->SetVar ("wayTarget", "no_way_target");
-        else
-            dataNode->SetVar ("wayTarget", way_.At (way_.Size () - 1)->name_);
-    }
+    if (way_.Empty ())
+        dataNode->SetVar ("wayTarget", "no_way_target");
+    else
+        dataNode->SetVar ("wayTarget", way_.At (way_.Size () - 1)->name_);
 }
 
 void Unit::ReadDataFromNode (Urho3D::Node *dataNode, Map *map)
@@ -74,9 +71,9 @@ FleetUnit::~FleetUnit ()
 
 }
 
-void FleetUnit::UpdateDataNode (Urho3D::Node *dataNode, bool rewriteWaypoints)
+void FleetUnit::UpdateDataNode (Urho3D::Node *dataNode)
 {
-    Unit::UpdateDataNode (dataNode, rewriteWaypoints);
+    Unit::UpdateDataNode (dataNode);
     if (dataNode->GetVar ("warShipsCount").GetInt () != warShipsCount_)
         dataNode->SetVar ("warShipsCount", warShipsCount_);
 }
@@ -98,9 +95,9 @@ TradersUnit::~TradersUnit ()
 
 }
 
-void TradersUnit::UpdateDataNode (Urho3D::Node *dataNode, bool rewriteWaypoints)
+void TradersUnit::UpdateDataNode (Urho3D::Node *dataNode)
 {
-    Unit::UpdateDataNode (dataNode, rewriteWaypoints);
+    Unit::UpdateDataNode (dataNode);
     if (dataNode->GetVar ("tradeGoodsCost").GetFloat () != tradeGoodsCost_)
         dataNode->SetVar ("tradeGoodsCost", tradeGoodsCost_);
 }
@@ -122,9 +119,9 @@ ColonizatorsUnit::~ColonizatorsUnit ()
 
 }
 
-void ColonizatorsUnit::UpdateDataNode (Urho3D::Node *dataNode, bool rewriteWaypoints)
+void ColonizatorsUnit::UpdateDataNode (Urho3D::Node *dataNode)
 {
-    Unit::UpdateDataNode (dataNode, rewriteWaypoints);
+    Unit::UpdateDataNode (dataNode);
     if (dataNode->GetVar ("colonizatorsCount").GetInt () != colonizatorsCount_)
         dataNode->SetVar ("colonizatorsCount", colonizatorsCount_);
 }
@@ -146,9 +143,9 @@ ArmyUnit::~ArmyUnit ()
 
 }
 
-void ArmyUnit::UpdateDataNode (Urho3D::Node *dataNode, bool rewriteWaypoints)
+void ArmyUnit::UpdateDataNode (Urho3D::Node *dataNode)
 {
-    Unit::UpdateDataNode (dataNode, rewriteWaypoints);
+    Unit::UpdateDataNode (dataNode);
     if (dataNode->GetVar ("soldiersCount").GetInt () != soldiersCount_)
         dataNode->SetVar ("soldiersCount", soldiersCount_);
 }

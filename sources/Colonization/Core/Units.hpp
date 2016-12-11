@@ -28,7 +28,7 @@ public:
     Urho3D::PODVector <District *> way_;
     float wayToNextDistrictProgress_;
 
-    virtual void UpdateDataNode (Urho3D::Node *dataNode, bool rewriteWaypoints);
+    virtual void UpdateDataNode (Urho3D::Node *dataNode);
     virtual void ReadDataFromNode (Urho3D::Node *dataNode, Map *map);
 };
 
@@ -42,7 +42,7 @@ public:
     int warShipsCount_;
     // TODO: To be continued...
 
-    virtual void UpdateDataNode (Urho3D::Node *dataNode, bool rewriteWaypoints);
+    virtual void UpdateDataNode (Urho3D::Node *dataNode);
     virtual void ReadDataFromNode (Urho3D::Node *dataNode, Map *map);
 };
 
@@ -56,7 +56,7 @@ public:
     float tradeGoodsCost_;
     // TODO: To be continued...
 
-    virtual void UpdateDataNode (Urho3D::Node *dataNode, bool rewriteWaypoints);
+    virtual void UpdateDataNode (Urho3D::Node *dataNode);
     virtual void ReadDataFromNode (Urho3D::Node *dataNode, Map *map);
 };
 
@@ -70,7 +70,7 @@ public:
     int colonizatorsCount_;
     // TODO: To be continued...
 
-    virtual void UpdateDataNode (Urho3D::Node *dataNode, bool rewriteWaypoints);
+    virtual void UpdateDataNode (Urho3D::Node *dataNode);
     virtual void ReadDataFromNode (Urho3D::Node *dataNode, Map *map);
 };
 
@@ -84,7 +84,7 @@ public:
     float soldiersCount_;
     // TODO: To be continued...
 
-    virtual void UpdateDataNode (Urho3D::Node *dataNode, bool rewriteWaypoints);
+    virtual void UpdateDataNode (Urho3D::Node *dataNode);
     virtual void ReadDataFromNode (Urho3D::Node *dataNode, Map *map);
 };
 }
