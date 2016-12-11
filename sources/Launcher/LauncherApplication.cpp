@@ -15,6 +15,7 @@
 #include <Colonization/AngelScriptBinders/BindIngamePlayerActivity.hpp>
 #include <Colonization/AngelScriptBinders/BindAngelScriptDirectMemoryAccess.hpp>
 #include <Colonization/AngelScriptBinders/BindUnits.hpp>
+#include <Colonization/AngelScriptBinders/BindUnitsContainer.hpp>
 #include <Colonization/Activities/MainMenuActivity.hpp>
 
 URHO3D_DEFINE_APPLICATION_MAIN (ColonizationLauncher::LauncherApplication)
@@ -67,6 +68,7 @@ void LauncherApplication::Start ()
     Colonization::BindIngamePlayerActivity (script);
     Colonization::BindAngelScriptDirectMemoryAccess (script);
     Colonization::BindUnits (script);
+    Colonization::BindUnitsContainer (script);
 
     Urho3D::SharedPtr <Colonization::MainMenuActivity> mainMenuActivity (new Colonization::MainMenuActivity (context_));
     SetupActivityNextFrame (mainMenuActivity);

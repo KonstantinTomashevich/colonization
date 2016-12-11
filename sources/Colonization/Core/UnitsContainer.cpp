@@ -84,6 +84,8 @@ Urho3D::PODVector <Unit *> UnitsContainer::GetUnitsOfPlayer (Urho3D::StringHash 
 void UnitsContainer::AddUnit (Unit *unit)
 {
     units_.Push (unit);
+    // Because if it called from script, script engine will release ref and delete this object if we don't add ref.
+    unit->AddRef ();
 }
 
 bool UnitsContainer::RemoveAndDeleteUnit (Unit *unit)
