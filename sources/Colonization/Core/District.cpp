@@ -191,7 +191,7 @@ void District::ReadDataFromNode (Urho3D::Node *dataNode)
     averageLevelOfLifePoints_ = dataNode->GetVar ("averageLevelOfLifePoints").GetFloat ();
 }
 
-void District::CalculateNeighbors (Urho3D::Vector <District *> *allDistricts)
+void District::CalculateNeighbors (Urho3D::PODVector <District *> *allDistricts)
 {
     assert (!allDistricts->Empty ());
     neighbors_.Clear ();

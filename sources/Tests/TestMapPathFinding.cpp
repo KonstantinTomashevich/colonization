@@ -85,7 +85,7 @@ void TestMapPathFindingApplication::Start ()
     map->ReadDataFromNode (node);
 
     // Firstly calculate path if ship owner isn't colony owner.
-    Urho3D::Vector <Colonization::District *> way = map->FindPath (
+    Urho3D::PODVector <Colonization::District *> way = map->FindPath (
                 map->GetDistrictByIndex (0 * mapHeight + 2), map->GetDistrictByIndex (4 * mapHeight + 0), "PlayerY", true);
 
     Urho3D::String calculatedWay = "";

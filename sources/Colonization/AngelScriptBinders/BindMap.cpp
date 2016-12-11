@@ -10,7 +10,7 @@ namespace Colonization
 Urho3D::CScriptArray *MapFindPath (Map *map, District *from, District *to,
                                    Urho3D::String playerName, bool canGoThroughColonies)
 {
-    Urho3D::Vector <District *> result = map->FindPath (from, to, playerName, canGoThroughColonies);
+    Urho3D::PODVector <District *> result = map->FindPath (from, to, playerName, canGoThroughColonies);
     // Add refs for AngelScript.
     for (int index = 0; index < result.Size (); index++)
         result.At (index)->AddRef ();

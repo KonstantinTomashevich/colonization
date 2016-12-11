@@ -5,7 +5,7 @@
 
 namespace Colonization
 {
-Map::Map (Urho3D::Context *context) : Urho3D::Object (context), districts_ (new Urho3D::Vector <District *> ())
+Map::Map (Urho3D::Context *context) : Urho3D::Object (context), districts_ (new Urho3D::PODVector <District *> ())
 {
 
 }
@@ -87,7 +87,7 @@ void Map::ClearDistricts()
     }
 }
 
-Urho3D::Vector <District *> Map::FindPath (District *from, District *to, Urho3D::String playerName, bool canGoThroughColonies)
+Urho3D::PODVector <District *> Map::FindPath (District *from, District *to, Urho3D::String playerName, bool canGoThroughColonies)
 {
     assert (districts_->Contains (from));
     assert (districts_->Contains (to));
@@ -109,7 +109,7 @@ Urho3D::Vector <District *> Map::FindPath (District *from, District *to, Urho3D:
         if (current == to)
         {
             // Reconstruct way.
-            Urho3D::Vector <District *> reversedWay;
+            Urho3D::PODVector <District *> reversedWay;
             District *previous = cameFrom [current->name_];
             while (previous)
             {
@@ -117,7 +117,7 @@ Urho3D::Vector <District *> Map::FindPath (District *from, District *to, Urho3D:
                 previous = cameFrom [previous->name_];
             }
 
-            Urho3D::Vector <District *> way;
+            Urho3D::PODVector <District *> way;
             for (int index = reversedWay.Size () - 1; index >= 0; index--)
                 way.Push (reversedWay.At (index));
             way.Push (to);
@@ -148,7 +148,7 @@ Urho3D::Vector <District *> Map::FindPath (District *from, District *to, Urho3D:
     }
 
     // Failure.
-    Urho3D::Vector <District *> empty;
+    Urho3D::PODVector <District *> empty;
     return empty;
 }
 

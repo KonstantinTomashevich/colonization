@@ -34,7 +34,7 @@ public:
 
     void UpdateDataNode (Urho3D::Node *dataNode, bool rewritePolygonPoints);
     void ReadDataFromNode (Urho3D::Node *dataNode);
-    void CalculateNeighbors (Urho3D::Vector<District *> *allDistricts);
+    void CalculateNeighbors (Urho3D::PODVector <District *> *allDistricts);
 
     bool needDataUpdate_;
     bool isSea_;
@@ -43,7 +43,7 @@ public:
     Urho3D::PODVector <Urho3D::Vector3> polygonPoints_;
     Urho3D::Vector3 unitPosition_;
     Urho3D::Vector3 colonyPosition_;
-    Urho3D::Vector <District *> neighbors_;
+    Urho3D::PODVector <District *> neighbors_;
 
     float farmingSquare_;
     float forestsSquare_;

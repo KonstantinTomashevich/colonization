@@ -11,7 +11,7 @@ class Map : public Urho3D::Object
 {
 URHO3D_OBJECT (Map, Object)
 protected:
-    Urho3D::Vector <District *> *districts_;
+    Urho3D::PODVector <District *> *districts_;
 
 public:
     Map (Urho3D::Context *context);
@@ -27,7 +27,7 @@ public:
 
     void UpdateNeighborsOfDistricts ();
     void ClearDistricts ();
-    Urho3D::Vector <District *> FindPath (District *from, District *to,
-                                          Urho3D::String playerName, bool canGoThroughColonies);
+    Urho3D::PODVector <District *> FindPath(District *from, District *to,
+                                            Urho3D::String playerName, bool canGoThroughColonies);
 };
 }
