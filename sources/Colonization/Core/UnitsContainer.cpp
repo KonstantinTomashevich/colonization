@@ -26,7 +26,9 @@ void UnitsContainer::UpdateDataNode (Urho3D::Node *dataNode)
     for (int index = 0; index < units_.Size (); index++)
     {
         Unit *unit = units_.At (index);
-        unit->UpdateDataNode (dataNode->GetChildren ().At (index));
+        Urho3D::Node *node = dataNode->GetChildren ().At (index);
+        node->SetName ("Unit" + Urho3D::String (index) + "_owner_" + unit->ownerPlayer_);
+        unit->UpdateDataNode (node);
     }
 }
 

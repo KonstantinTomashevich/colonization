@@ -22,11 +22,17 @@ void Map::UpdateDataNode (Urho3D::Node *dataNode, bool rewriteDistrictsPolygons)
     while (dataNode->GetChildren ().Size () < districts_.Size ())
         dataNode->CreateChild ();
 
+    while (dataNode->GetChildren ().Size () > districts_.Size ())
+        dataNode->RemoveChild (dataNode->GetChildren ().Back ());
+
     for (int index = 0; index < districts_.Size (); index++)
         if (districts_.At (index)->needDataUpdate_)
         {
-            districts_.At (index)->UpdateDataNode (dataNode->GetChildren ().At (index), rewriteDistrictsPolygons);
-            districts_.At (index)->needDataUpdate_ = false;
+            District *district = districts_.At (index);
+            Urho3D::Node *node = dataNode->GetChildren ().At (index);
+            node->SetName (district->name_);
+            district->UpdateDataNode (node, rewriteDistrictsPolygons);
+            district->needDataUpdate_ = false;
         }
 }
 
