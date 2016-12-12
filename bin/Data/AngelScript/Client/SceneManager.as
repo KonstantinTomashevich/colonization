@@ -3,6 +3,7 @@ class SceneManager : ScriptObject
     protected float CAMERA_MOVE_SPEED = 2.5f;
     protected Node @cameraNode_;
     protected bool isSceneLoaded_;
+    protected float beforeDistrictsNamesUpdate_;
     
     protected void CheckIsSceneLoaded ()
     {
@@ -19,13 +20,41 @@ class SceneManager : ScriptObject
             isSceneLoaded_ = false;
     }
     
-    protected void LoadPrefabOf (Node @replicatedNode)
+    protected void LoadPrefabOf (Node @replicatedNode, bool asChild, String overridePrefabPath = "")
     {
-        Node @localNode = scene.GetChild ("locals").CreateChild ("newLocal", LOCAL);
-        XMLFile @prefabXML = cache.GetResource ("XMLFile", 
-                                                replicatedNode.vars ["PrefabXMLPath"].GetString ());
+        Node @localNode;
+        if (asChild)
+            localNode = replicatedNode.CreateChild ("local", LOCAL);
+        else
+            localNode = scene.GetChild ("locals").CreateChild (replicatedNode.name, LOCAL);
+        
+        String prefabPath;
+        if (overridePrefabPath.empty)
+            prefabPath = replicatedNode.vars ["PrefabXMLPath"].GetString ();
+        else
+            prefabPath = overridePrefabPath;
+        
+        XMLFile @prefabXML = cache.GetResource ("XMLFile", prefabPath);
         localNode.LoadXML (prefabXML.root);
         localNode.name = replicatedNode.name;
+    }
+    
+    protected void UpdateDistrictsNames ()
+    {
+        Array <Node @> districtsNodes = scene.GetChild ("map").GetChildren ();
+        for (int index = 0; index < districtsNodes.length; index++)
+        {
+            Node @districtNode = districtsNodes [index];
+            if (districtNode.GetChild ("local") is null)
+            {
+                LoadPrefabOf (districtNode, true, "Objects/DistrictNameLocal.xml");
+                districtNode.GetChildren () [0].name = "local";
+            }
+            Vector3 position = districtNode.vars ["colonyPosition"].GetVector3 ();
+            districtNode.GetChild ("local").position = position;
+            Text3D @text = districtNode.GetChild ("local").GetComponent ("Text3D");
+            text.text = districtNode.name;
+        }
     }
     
     protected void CreateLocalCamera ()
@@ -62,6 +91,7 @@ class SceneManager : ScriptObject
     SceneManager ()
     {
         isSceneLoaded_ = false;
+        beforeDistrictsNamesUpdate_ = 0.001f;
     }
     
     ~SceneManager ()
@@ -81,12 +111,22 @@ class SceneManager : ScriptObject
             
         if (isSceneLoaded_ and scene.GetChild ("locals").GetChild ("map") is null)
         {
-            LoadPrefabOf (scene.GetChild ("map"));
+            LoadPrefabOf (scene.GetChild ("map"), false);
             CreateLocalCamera ();
         }
         
         if (cameraNode_ !is null)
             UpdateCameraPositionByKeyboardInput (timeStep);
+            
+        if (isSceneLoaded_)
+        {
+            beforeDistrictsNamesUpdate_ -= timeStep;
+            if (beforeDistrictsNamesUpdate_ <= 0.0f)
+            {
+                UpdateDistrictsNames ();
+                beforeDistrictsNamesUpdate_ = 1.0f;
+            }
+        }
     }
     
     void Stop ()
