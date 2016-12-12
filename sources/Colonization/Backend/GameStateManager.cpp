@@ -54,6 +54,23 @@ void CreateTestMap (Map *map)
     map->UpdateNeighborsOfDistricts ();
 }
 
+void AddTestFleetUnits (UnitsContainer *container, Map *map, int count)
+{
+    for (int index = 0; index < count; index++)
+    {
+        FleetUnit *unit = new FleetUnit (map->GetContext ());
+        unit->warShipsCount_ = Urho3D::Random (1, 10);
+
+        int districtIndex;
+        do
+            districtIndex = Urho3D::Random (0, map->GetDistrictsCount ());
+        while (!map->GetDistrictByIndex (districtIndex)->isSea_);
+
+        unit->position_ = map->GetDistrictByIndex (districtIndex);
+        container->AddUnit (unit);
+    }
+}
+
 void GameStateManager::SetupWaitingForPlayersState ()
 {
     // TODO: To be continued...
@@ -81,12 +98,13 @@ void GameStateManager::SetupPlayingState ()
     context_->SetGlobalVar ("embarkationSpeed", 0.15f);
     context_->SetGlobalVar ("disembarkationSpeed", 0.2f);
 
-    UnitsManager *unitsManager = new UnitsManager (context_);
-    context_->SetGlobalVar ("UnitsManager", Urho3D::Variant (unitsManager));
-
     Map *map = new Map (context_);
     CreateTestMap (map);
     context_->SetGlobalVar ("Map", Urho3D::Variant (map));
+
+    UnitsManager *unitsManager = new UnitsManager (context_);
+    AddTestFleetUnits (unitsManager->GetUnitsContainer (), map, Urho3D::Random (5, 15));
+    context_->SetGlobalVar ("UnitsManager", Urho3D::Variant (unitsManager));
 
     SceneManager *sceneManager = (SceneManager *) context_->GetGlobalVar ("SceneManager").GetPtr ();
     assert (sceneManager);

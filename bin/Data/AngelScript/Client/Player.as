@@ -4,7 +4,9 @@ class Player : ScriptObject
     protected String playerName_;
     protected float beforeMapUpdate_;
     protected float beforeMapNeighborsUpdate_;
+    protected float beforeUnitsUpdate_;
     protected Map @mapPtr_;
+    protected UnitsContainer @unitsContainerPtr_;
     protected bool isSceneLoaded_;
     
     protected void CheckIsSceneLoaded ()
@@ -26,6 +28,7 @@ class Player : ScriptObject
     {
         beforeMapUpdate_ = 0.001f;
         beforeMapNeighborsUpdate_ = 0.001f;
+        beforeUnitsUpdate_ = 0.001f;
         isSceneLoaded_ = false;
     }
     
@@ -69,6 +72,11 @@ class Player : ScriptObject
         AddRef (map);
         node.vars ["map"] = map;
         mapPtr_ = map;
+        
+        UnitsContainer @unitsContainer = UnitsContainer ();
+        AddRef (unitsContainer);
+        node.vars ["unitsContainer"] = unitsContainer;
+        unitsContainerPtr_ = unitsContainer;
     }
     
     void Update (float timeStep)
@@ -83,6 +91,7 @@ class Player : ScriptObject
         {
             beforeMapUpdate_ -= timeStep;
             beforeMapNeighborsUpdate_ -= timeStep;
+            beforeUnitsUpdate_ -= timeStep;
             
             if (beforeMapUpdate_ <= 0.0f)
             {
@@ -95,6 +104,12 @@ class Player : ScriptObject
                 mapPtr_.UpdateNeighborsOfDistricts ();
                 beforeMapNeighborsUpdate_ = 10.0f;
             }
+            
+            if (beforeUnitsUpdate_ <= 0.0f)
+            {
+                unitsContainerPtr_.ReadDataFromNode (scene.GetChild ("units"), mapPtr_);
+                beforeUnitsUpdate_ = 0.1f;
+            }
         }
     }
     
@@ -102,6 +117,7 @@ class Player : ScriptObject
     {
         UnsubscribeFromAllEvents ();
         SetRefs (mapPtr_, 1);
+        SetRefs (unitsContainerPtr_, 1);
     }
     
     LauncherApplication @get_launcherApplication ()

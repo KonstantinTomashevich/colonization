@@ -49,6 +49,9 @@ void LauncherApplication::Start ()
     input->SetMouseVisible (true);
     input->SetMouseMode (Urho3D::MM_FREE);
 
+    // Init random
+    Urho3D::SetRandomSeed (Urho3D::Time::GetTimeSinceEpoch ());
+
     SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (LauncherApplication, Update));
     if (!currentActivities_.Empty ())
         for (int index = 0; index < currentActivities_.Size (); index++)

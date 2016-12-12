@@ -4,6 +4,7 @@
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Network/Network.h>
 #include <Urho3D/Graphics/Octree.h>
+#include <Urho3D/IO/Log.h>
 
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
@@ -75,6 +76,7 @@ void SceneManager::UpdatePlayingState ()
     WritePlayersStats ();
     UpdateMap (false);
     WriteChildrenCount ();
+    UpdateUnits ();
 }
 
 void SceneManager::UpdateFinishedState ()
