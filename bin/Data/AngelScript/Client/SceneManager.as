@@ -4,6 +4,7 @@ class SceneManager : ScriptObject
     protected Node @cameraNode_;
     protected bool isSceneLoaded_;
     protected float beforeDistrictsNamesUpdate_;
+    protected float beforeUnitsUpdate_;
     
     protected void CheckIsSceneLoaded ()
     {
@@ -57,6 +58,56 @@ class SceneManager : ScriptObject
         }
     }
     
+    protected void UpdateUnits ()
+    {
+        Map @map = node.parent.vars ["map"].GetPtr ();
+        UnitsContainer @unitsContainer = node.parent.vars ["unitsContainer"].GetPtr ();
+        VariantMap unitsInDistrictsCounts;
+        VariantMap placedUnitsInDistrictsCounts;
+        
+        for (int index = 0; index < unitsContainer.GetUnitsCount(); index++)
+        {
+            Unit @unit = unitsContainer.GetUnitByIndex (index);
+            unitsInDistrictsCounts [unit.position_.name_] = 
+                unitsInDistrictsCounts [unit.position_.name_].GetInt () + 1;
+        }
+        
+        Array <Node @> unitsNodes = scene.GetChild ("units").GetChildren ();
+        for (int index = 0; index < unitsContainer.GetUnitsCount(); index++)
+        {
+            Unit @unit = unitsContainer.GetUnitByIndex (index);
+            Node @unitNode = unitsNodes [index];
+            
+            if (unitNode.GetChild ("local") is null)
+            {
+                if (unit.unitType_ == UNIT_FLEET)
+                    LoadPrefabOf (unitNode, true, "Objects/FleetUnitLocal.xml");
+                else if (unit.unitType_ == UNIT_TRADERS)
+                    LoadPrefabOf (unitNode, true, "Objects/TradersUnitLocal.xml");
+                else if (unit.unitType_ == UNIT_COLONIZATORS)
+                    LoadPrefabOf (unitNode, true, "Objects/ColonizatorsUnitLocal.xml");
+                else if (unit.unitType_ == UNIT_ARMY)
+                    LoadPrefabOf (unitNode, true, "Objects/ArmyUnitLocal.xml");
+                unitNode.GetChildren () [0].name = "local";
+            }
+            
+            int unitsCount = unitsInDistrictsCounts [unit.position_.name_].GetInt ();
+            int placedUnitsCount = placedUnitsInDistrictsCounts [unit.position_.name_].GetInt ();
+            placedUnitsInDistrictsCounts [unit.position_.name_] =
+                placedUnitsInDistrictsCounts [unit.position_.name_].GetInt () + 1;
+                
+            float placeAmplitude = 0.25f;
+            float placeStep = 2 * placeAmplitude / unitsCount;
+            Vector3 position = unit.position_.unitPosition_;  
+            position.x += placedUnitsCount * placeStep - placeAmplitude;
+            position.y += placedUnitsCount * 0.04f;
+            unitNode.GetChild ("local").position = position;
+                
+            Text3D @text = unitNode.GetChild ("local").GetChild ("playerText").GetComponent ("Text3D");
+            text.text = unit.ownerPlayer_;
+        }
+    }
+    
     protected void CreateLocalCamera ()
     {
         cameraNode_ = scene.CreateChild ("camera", LOCAL);
@@ -92,6 +143,7 @@ class SceneManager : ScriptObject
     {
         isSceneLoaded_ = false;
         beforeDistrictsNamesUpdate_ = 0.001f;
+        beforeUnitsUpdate_ = 0.001f;
     }
     
     ~SceneManager ()
@@ -121,10 +173,18 @@ class SceneManager : ScriptObject
         if (isSceneLoaded_)
         {
             beforeDistrictsNamesUpdate_ -= timeStep;
+            beforeUnitsUpdate_ -= timeStep;
+            
             if (beforeDistrictsNamesUpdate_ <= 0.0f)
             {
                 UpdateDistrictsNames ();
-                beforeDistrictsNamesUpdate_ = 1.0f;
+                beforeDistrictsNamesUpdate_ = 2.0f;
+            }
+            
+            if (beforeUnitsUpdate_ <= 0.0f)
+            {
+                UpdateUnits ();
+                beforeUnitsUpdate_ = 0.1f;
             }
         }
     }

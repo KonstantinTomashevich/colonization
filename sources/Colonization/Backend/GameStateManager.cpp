@@ -27,8 +27,8 @@ void CreateTestMap (Map *map)
             district->polygonPoints_.Push (Urho3D::Vector3 (x + 1.0f, 0.0f, y + 1.0f));
             district->polygonPoints_.Push (Urho3D::Vector3 (x, 0.0f, y + 1.0f));
 
-            district->unitPosition_ = Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.5f);
-            district->colonyPosition_ = Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.5f);
+            district->unitPosition_ = Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.65f);
+            district->colonyPosition_ = Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.35f);
             map->AddDistrict (district);
         }
 
@@ -67,6 +67,10 @@ void AddTestFleetUnits (UnitsContainer *container, Map *map, int count)
         while (!map->GetDistrictByIndex (districtIndex)->isSea_);
 
         unit->position_ = map->GetDistrictByIndex (districtIndex);
+        if (Urho3D::Random () < 0.5f)
+            unit->ownerPlayer_ = "Konstant";
+        else
+            unit->ownerPlayer_ = "AIPlayer";
         container->AddUnit (unit);
     }
 }

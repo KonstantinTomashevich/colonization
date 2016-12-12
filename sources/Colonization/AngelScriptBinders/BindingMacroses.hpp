@@ -34,9 +34,29 @@
     object->propertyName = value; \
     } \
 
+#define OBJECT_PROPERTY_GETTER_WITH_ADD_REF(objectType, propertyType, propertyName, addRefCount) \
+    propertyType objectType ## _get_ ## propertyName (objectType * object) \
+    { \
+        for (int index = 0; index < addRefCount; index++) \
+            object->propertyName->AddRef (); \
+        return object->propertyName; \
+    } \
+
+#define OBJECT_PROPERTY_SETTER_WITH_ADD_REF(objectType, propertyType, propertyName, addRefCount) \
+    void objectType ## _set_ ## propertyName (objectType * object, propertyType value) \
+    { \
+        for (int index = 0; index < addRefCount; index++) \
+            value->AddRef (); \
+        object->propertyName = value; \
+    } \
+
 #define OBJECT_PROPERTY_GETTER_AND_SETTER(objectType, propertyType, propertyName) \
     OBJECT_PROPERTY_GETTER (objectType, propertyType, propertyName) \
     OBJECT_PROPERTY_SETTER (objectType, propertyType, propertyName) \
+
+#define OBJECT_PROPERTY_GETTER_AND_SETTER_WITH_ADD_REF(objectType, propertyType, propertyName, addRefCount) \
+    OBJECT_PROPERTY_GETTER_WITH_ADD_REF (objectType, propertyType, propertyName, addRefCount) \
+    OBJECT_PROPERTY_SETTER_WITH_ADD_REF (objectType, propertyType, propertyName, addRefCount) \
 
 #define BIND_OBJECT_PROPERTY_GETTER(asEngine, cxxObjectType, asObjectType, asPropertyType, propertyName) \
     CHECK_ANGELSCRIPT_RETURN ( \

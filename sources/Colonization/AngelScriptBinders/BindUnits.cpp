@@ -9,7 +9,7 @@ namespace Colonization
 {
 OBJECT_PROPERTY_GETTER_AND_SETTER (Unit ,Urho3D::String, ownerPlayer_)
 OBJECT_PROPERTY_GETTER_AND_SETTER (Unit, UnitType, unitType_)
-OBJECT_PROPERTY_GETTER_AND_SETTER (Unit, District*, position_)
+OBJECT_PROPERTY_GETTER_AND_SETTER_WITH_ADD_REF (Unit, District*, position_, 2)
 OBJECT_ARRAY_OF_POINTERS_PROPERTY_ACESSOR (Unit, PODVector, District*, way_, "Array<District@>")
 OBJECT_PROPERTY_GETTER_AND_SETTER (Unit, float, wayToNextDistrictProgressInPercents_)
 
