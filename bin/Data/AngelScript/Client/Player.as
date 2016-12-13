@@ -65,6 +65,12 @@ class Player : ScriptObject
                                                          "AngelScript/Client/SceneManager.as"),
                                      "SceneManager");
         
+        Node @screenPressesHandlerScriptNode = node.CreateChild ("screenPressesHandlerScriptNode", LOCAL);
+        ScriptInstance @screenPressesHandlerScript = screenPressesHandlerScriptNode.CreateComponent ("ScriptInstance", LOCAL);
+        screenPressesHandlerScript.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Client/ScreenPressesHandler.as"),
+                                     "ScreenPressesHandler");
+        
         SubscribeToEvent ("ServerDisconnected", "HandleServerDisconnected");
         SubscribeToEvent ("ConnectFailed", "HandleConnectFailed");
         
