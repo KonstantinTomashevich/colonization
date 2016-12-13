@@ -13,6 +13,7 @@
 #include <Colonization/AngelScriptBinders/BindAngelScriptDirectMemoryAccess.hpp>
 #include <Colonization/AngelScriptBinders/BindUnits.hpp>
 #include <Colonization/AngelScriptBinders/BindUnitsContainer.hpp>
+#include <Colonization/AngelScriptBinders/BindPlayerActionType.hpp>
 
 URHO3D_DEFINE_APPLICATION_MAIN (Generator)
 Generator::Generator (Urho3D::Context *context) :
@@ -51,6 +52,7 @@ void Generator::Start ()
     Colonization::BindAngelScriptDirectMemoryAccess (script);
     Colonization::BindUnits (script);
     Colonization::BindUnitsContainer (script);
+    Colonization::BindPlayerActionType (script);
 
     Urho3D::Log *log = context_->GetSubsystem <Urho3D::Log> ();
     log->SetQuiet (true);
