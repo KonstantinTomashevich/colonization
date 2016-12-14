@@ -6,6 +6,7 @@
 
 namespace Colonization
 {
+class Map;
 enum ClimateType
 {
     CLIMATE_TROPICAL = 0,
@@ -28,6 +29,8 @@ enum NativesCharacter
 class District : public Urho3D::Object
 {
 URHO3D_OBJECT (District, Object)
+protected:
+    Urho3D::StringHash hash_;
 public:
     District (Urho3D::Context *context);
     virtual ~District ();
@@ -35,6 +38,9 @@ public:
     void UpdateDataNode (Urho3D::Node *dataNode, bool rewritePolygonPoints);
     void ReadDataFromNode (Urho3D::Node *dataNode);
     void CalculateNeighbors (Urho3D::PODVector <District *> &allDistricts);
+
+    void UpdateHash (Map *owner);
+    Urho3D::StringHash GetHash ();
 
     bool needDataUpdate_;
     bool isSea_;

@@ -22,6 +22,7 @@ public:
 
     District *GetDistrictByIndex (int index);
     District *GetDistrictByNameHash (Urho3D::StringHash nameHash);
+    District *GetDistrictByHash (Urho3D::StringHash hash);
     int GetDistrictsCount ();
     void AddDistrict (District *district);
 

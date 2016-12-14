@@ -63,6 +63,14 @@ District *Map::GetDistrictByNameHash (Urho3D::StringHash nameHash)
     return 0;
 }
 
+District *Map::GetDistrictByHash (Urho3D::StringHash hash)
+{
+    for (int index = 0; index < districts_.Size (); index++)
+        if (districts_.At (index)->GetHash () == hash)
+            return districts_.At (index);
+    return 0;
+}
+
 int Map::GetDistrictsCount ()
 {
     return districts_.Size ();

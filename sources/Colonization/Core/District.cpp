@@ -1,9 +1,11 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "District.hpp"
+#include <Colonization/Core/Map.hpp>
 
 namespace Colonization
 {
 District::District (Urho3D::Context *context) : Urho3D::Object (context),
+    hash_ (),
     needDataUpdate_ (true),
     isSea_ (true),
     isImpassable_ (false),
@@ -217,5 +219,17 @@ void District::CalculateNeighbors (Urho3D::PODVector <District *> &allDistricts)
                 neighbors_.Push (another);
         }
     }
+}
+
+void District::UpdateHash (Map *owner)
+{
+    do
+        hash_ = Urho3D::StringHash (name_ + Urho3D::String (Urho3D::Random (0, 1000)));
+    while (owner->GetDistrictByHash (hash_) != this);
+}
+
+Urho3D::StringHash District::GetHash ()
+{
+    return hash_;
 }
 }

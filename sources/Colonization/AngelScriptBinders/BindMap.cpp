@@ -43,6 +43,18 @@ void BindMap (Urho3D::Script *script)
 
     CHECK_ANGELSCRIPT_RETURN (
                 engine->RegisterObjectMethod (
+                    "Map", "District @GetDistrictByNameHash (StringHash nameHash)",
+                    asMETHOD (Map, GetDistrictByNameHash), asCALL_THISCALL)
+                );
+
+    CHECK_ANGELSCRIPT_RETURN (
+                engine->RegisterObjectMethod (
+                    "Map", "District @GetDistrictByHash (StringHash hash)",
+                    asMETHOD (Map, GetDistrictByHash), asCALL_THISCALL)
+                );
+
+    CHECK_ANGELSCRIPT_RETURN (
+                engine->RegisterObjectMethod (
                     "Map", "int GetDistrictsCount ()",
                     asMETHOD (Map, GetDistrictsCount), asCALL_THISCALL)
                 );

@@ -77,6 +77,12 @@ void BindDistrict (Urho3D::Script *script)
                                   asMETHOD (District, ReadDataFromNode), asCALL_THISCALL)
                 );
 
+    CHECK_ANGELSCRIPT_RETURN (
+                engine->RegisterObjectMethod (
+                    "District", "StringHash get_hash ()",
+                                  asMETHOD (District, GetHash), asCALL_THISCALL)
+                );
+
     BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", bool, needDataUpdate_);
     BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", bool, isSea_);
     BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, District, "District", bool, isImpassable_);
