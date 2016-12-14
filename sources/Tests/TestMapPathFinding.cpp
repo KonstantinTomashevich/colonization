@@ -91,7 +91,7 @@ void TestMapPathFindingApplication::Start ()
 
     // Firstly calculate path if ship owner isn't colony owner.
     Urho3D::PODVector <Colonization::District *> way = map->FindPath (
-                map->GetDistrictByIndex (0 * mapHeight + 2), map->GetDistrictByIndex (4 * mapHeight + 0), "PlayerY", true);
+                map->GetDistrictByIndex (0 * mapHeight + 2), map->GetDistrictByIndex (4 * mapHeight + 0), "PlayerY", true, false);
 
     Urho3D::String calculatedWay = "";
     for (int index = 0; index < way.Size (); index++)
@@ -114,7 +114,7 @@ void TestMapPathFindingApplication::Start ()
         ErrorExit ("First way don't match expected.");
     else
     {
-        way = map->FindPath (map->GetDistrictByIndex (0 * mapHeight + 2), map->GetDistrictByIndex (4 * mapHeight + 0), "PlayerX", true);
+        way = map->FindPath (map->GetDistrictByIndex (0 * mapHeight + 2), map->GetDistrictByIndex (4 * mapHeight + 0), "PlayerX", true, false);
         calculatedWay = "";
         for (int index = 0; index < way.Size (); index++)
             calculatedWay += way.At (index)->name_ + "\n";

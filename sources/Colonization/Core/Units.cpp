@@ -76,7 +76,7 @@ void Unit::ReadDataFromNode (Urho3D::Node *dataNode, Map *map)
                                                           dataNode->GetVar ("wayTarget").GetString ()));
     way_.Clear ();
     if (wayTarget)
-        way_ = map->FindPath (position_, wayTarget, ownerPlayer_, unitType_ != UNIT_FLEET);
+        way_ = map->FindPath (position_, wayTarget, ownerPlayer_, unitType_ != UNIT_FLEET, unitType_ == UNIT_COLONIZATORS);
 }
 
 FleetUnit::FleetUnit (Urho3D::Context *context) : Unit (context, UNIT_FLEET),

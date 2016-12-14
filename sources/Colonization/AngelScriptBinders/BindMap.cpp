@@ -8,9 +8,9 @@
 namespace Colonization
 {
 Urho3D::CScriptArray *MapFindPath (Map *map, District *from, District *to,
-                                   Urho3D::String playerName, bool canGoThroughColonies)
+                                   Urho3D::String playerName, bool canGoThroughColonies, bool isColonizator)
 {
-    Urho3D::PODVector <District *> result = map->FindPath (from, to, playerName, canGoThroughColonies);
+    Urho3D::PODVector <District *> result = map->FindPath (from, to, playerName, canGoThroughColonies, isColonizator);
     // Add refs for AngelScript.
     for (int index = 0; index < result.Size (); index++)
         result.At (index)->AddRef ();
@@ -80,7 +80,7 @@ void BindMap (Urho3D::Script *script)
     CHECK_ANGELSCRIPT_RETURN (
                 engine->RegisterObjectMethod (
                     "Map",
-                    "Array<District@> @FindPath (District @from, District @to, String playerName, bool canGoThroughColonies)",
+                    "Array<District@> @FindPath (District @from, District @to, String playerName, bool canGoThroughColonies, bool isColonizator)",
                     asFUNCTION (MapFindPath), asCALL_CDECL_OBJFIRST)
                 );
 }

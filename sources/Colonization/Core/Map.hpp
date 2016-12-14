@@ -29,6 +29,6 @@ public:
     void UpdateNeighborsOfDistricts ();
     void ClearDistricts ();
     Urho3D::PODVector <District *> FindPath(District *from, District *to,
-                                            Urho3D::String playerName, bool canGoThroughColonies);
+                                            Urho3D::String playerName, bool canGoThroughColonies, bool isColonizator);
 };
 }

@@ -27,8 +27,9 @@ void Player::ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data)
     assert (target);
 
     if ((unit->unitType_ == UNIT_FLEET && target->isSea_) ||
-            (unit->unitType_ != UNIT_FLEET && target->hasColony_ && target->colonyOwnerName_ == name_))
-        unit->way_ = map->FindPath (unit->position_, target, name_, unit->unitType_ != UNIT_FLEET);
+            (unit->unitType_ != UNIT_FLEET && target->hasColony_ && target->colonyOwnerName_ == name_) ||
+            (unit->unitType_ == UNIT_COLONIZATORS && !target->isSea_))
+        unit->way_ = map->FindPath (unit->position_, target, name_, unit->unitType_ != UNIT_FLEET, unit->unitType_ == UNIT_COLONIZATORS);
 }
 
 Player::Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Connection *connection) : Urho3D::Object (context),

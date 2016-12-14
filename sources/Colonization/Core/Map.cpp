@@ -101,7 +101,8 @@ void Map::ClearDistricts()
     }
 }
 
-Urho3D::PODVector <District *> Map::FindPath (District *from, District *to, Urho3D::String playerName, bool canGoThroughColonies)
+Urho3D::PODVector <District *> Map::FindPath (District *from, District *to, Urho3D::String playerName,
+                                              bool canGoThroughColonies, bool isColonizator)
 {
     assert (districts_.Contains (from));
     assert (districts_.Contains (to));
@@ -147,7 +148,8 @@ Urho3D::PODVector <District *> Map::FindPath (District *from, District *to, Urho
         {
             District *next = current->neighbors_.At (index);
             if (!next->isImpassable_ && (
-                        next->isSea_ || (canGoThroughColonies && next->hasColony_ && next->colonyOwnerName_ == playerName)))
+                        next->isSea_ || (canGoThroughColonies && next->hasColony_ && next->colonyOwnerName_ == playerName) ||
+                        (isColonizator && next == to)))
             {
                 float newCost = costSoFar [current->name_];
                 float distance = (current->unitPosition_ - next->unitPosition_).Length ();
