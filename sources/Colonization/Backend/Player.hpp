@@ -35,18 +35,20 @@ protected:
     Urho3D::String name_;
     float points_;
     float gold_;
-    Urho3D::Vector <Urho3D::Pair <PlayerActionType, Urho3D::VariantMap> > actionsSequence_;
+    Urho3D::Vector <Urho3D::Pair <PlayerActionType, Urho3D::Variant> > actionsSequence_;
     Urho3D::Connection *connection_;
+
+    void ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data);
 public:
     Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Connection *connection);
     virtual ~Player ();
 
     void Update (float delta);
-    Urho3D::Pair <PlayerActionType, Urho3D::VariantMap> GetAction (int index);
+    Urho3D::Pair <PlayerActionType, Urho3D::Variant> GetAction (int index);
     void RemoveAction (int index);
-    bool RemoveAction(Urho3D::Pair <PlayerActionType, Urho3D::VariantMap> &action);
+    bool RemoveAction (Urho3D::Pair <PlayerActionType, Urho3D::Variant> &action);
     void RemoveAllActions ();
-    void AddAction (Urho3D::Pair <PlayerActionType, Urho3D::VariantMap> &action);
+    void AddAction (Urho3D::Pair <PlayerActionType, Urho3D::Variant> &action);
     int GetActionsCount ();
 
     Urho3D::String GetName ();

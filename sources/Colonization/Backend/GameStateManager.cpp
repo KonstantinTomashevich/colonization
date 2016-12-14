@@ -73,6 +73,7 @@ void AddTestFleetUnits (UnitsContainer *container, Map *map, int count)
         else
             unit->ownerPlayer_ = "AIPlayer";
         container->AddUnit (unit);
+        unit->UpdateHash (container);
     }
 }
 

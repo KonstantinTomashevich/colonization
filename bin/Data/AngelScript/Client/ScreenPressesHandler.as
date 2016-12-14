@@ -28,17 +28,41 @@ class ScreenPressesHandler : ScriptObject
     
     protected void UnitSelected (int index)
     {
-        
+        UnitsContainer @unitsContainer = node.parent.vars ["unitsContainer"].GetPtr ();
+        node.vars ["selectionType"] = StringHash ("Unit");
+        node.vars ["selectedHash"] = unitsContainer.GetUnitByIndex (index).hash;
     }
     
     protected void DistrictSelected (int index)
     {
-        
+        Map @map = node.parent.vars ["map"].GetPtr ();
+        if (node.vars ["selectionType"].GetStringHash () == StringHash ("Unit"))
+        {
+            UnitsContainer @unitsContainer = node.parent.vars ["unitsContainer"].GetPtr ();
+            Array <Variant> networkTasks = node.parent.GetChild ("networkScriptNode").vars ["tasksList"].GetVariantVector ();
+            VariantMap taskData;
+            taskData ["type"] = CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION;
+            
+            VectorBuffer buffer = VectorBuffer ();
+            buffer.WriteInt (PLAYER_ACTION_SET_UNIT_MOVE_TARGET);
+            buffer.WriteStringHash (node.vars ["selectedHash"].GetStringHash ());
+            buffer.WriteStringHash (map.GetDistrictByIndex (index).hash);
+            
+            taskData ["buffer"] = buffer;
+            networkTasks.Push (Variant (taskData));
+            node.parent.GetChild ("networkScriptNode").vars ["tasksList"] = networkTasks;
+        }
+        else
+        {
+            node.vars ["selectionType"] = StringHash ("District");
+            node.vars ["selectedHash"] = map.GetDistrictByIndex (index).hash;
+        }
     }
     
     protected void ClearSelection ()
     {
-        
+        node.vars ["selectionType"] = StringHash ("None");
+        node.vars ["selectedHash"] = StringHash ();
     }
     
     ScreenPressesHandler ()

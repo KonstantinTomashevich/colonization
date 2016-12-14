@@ -3,6 +3,7 @@
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Network/NetworkEvents.h>
 #include <Urho3D/Network/Connection.h>
+#include <Urho3D/IO/Log.h>
 #include <Colonization/Backend/PlayersManager.hpp>
 
 namespace Colonization
@@ -65,10 +66,9 @@ void MessagesHandler::HandleNetworkMessage (Urho3D::StringHash eventType, Urho3D
 
     else if (messageType == CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION)
     {
-        Urho3D::VariantMap actionData = messageData.ReadVariantMap ();
         PlayerActionType actionType = static_cast <PlayerActionType> (messageData.ReadInt ());
-        Urho3D::Pair <PlayerActionType, Urho3D::VariantMap> action =
-                Urho3D::Pair <PlayerActionType, Urho3D::VariantMap> (actionType, actionData);
+        Urho3D::Pair <PlayerActionType, Urho3D::Variant> action =
+                Urho3D::Pair <PlayerActionType, Urho3D::Variant> (actionType, messageData);
         player->AddAction (action);
     }
 }
