@@ -70,6 +70,14 @@ Unit *UnitsContainer::GetUnitByIndex (int index)
     return units_.At (index);
 }
 
+Unit *UnitsContainer::GetUnitByHash (Urho3D::StringHash hash)
+{
+    for (int index = 0; index < units_.Size (); index++)
+        if (units_.At (index)->GetHash () == hash)
+            return units_.At (index);
+    return 0;
+}
+
 Urho3D::PODVector <Unit *> UnitsContainer::GetUnitsOfPlayer (Urho3D::StringHash playerNameHash)
 {
     Urho3D::PODVector <Unit *> unitsOfPlayer;

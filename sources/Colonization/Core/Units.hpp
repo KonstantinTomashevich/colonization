@@ -5,6 +5,7 @@
 
 namespace Colonization
 {
+class UnitsContainer;
 enum UnitType
 {
     UNIT_FLEET = 0,
@@ -18,8 +19,12 @@ class Unit : public Urho3D::Object
 URHO3D_OBJECT (Unit, Object)
 protected:
     Unit (Urho3D::Context *context, UnitType unitType);
+    Urho3D::StringHash hash_;
 public:
     virtual ~Unit ();
+
+    void UpdateHash (UnitsContainer *owner);
+    Urho3D::StringHash GetHash ();
 
     Urho3D::String ownerPlayer_;
     UnitType unitType_;

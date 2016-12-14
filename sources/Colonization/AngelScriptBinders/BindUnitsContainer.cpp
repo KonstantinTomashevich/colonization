@@ -48,6 +48,12 @@ void BindUnitsContainer (Urho3D::Script *script)
 
     CHECK_ANGELSCRIPT_RETURN (
                 engine->RegisterObjectMethod (
+                    "UnitsContainer", "Unit @GetUnitByHash (StringHash hash)",
+                    asMETHOD (UnitsContainer, GetUnitByHash), asCALL_THISCALL)
+                );
+
+    CHECK_ANGELSCRIPT_RETURN (
+                engine->RegisterObjectMethod (
                     "UnitsContainer", "Array<Unit@> @GetUnitsOfPlayer (StringHash playerNameHash)",
                     asFUNCTION (UnitsContainerGetUnitsOfPlayer), asCALL_CDECL_OBJFIRST)
                 );

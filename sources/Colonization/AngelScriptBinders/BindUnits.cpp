@@ -57,6 +57,12 @@ void BindUnitInterface (Urho3D::Script *script, Urho3D::String className)
     BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, Unit, className.CString (), District@, position_);
     BIND_OBJECT_ARRAY_PROPERTY (engine, Unit, className.CString (), District@, way_);
     BIND_OBJECT_PROPERTY_GETTER_AND_SETTER (engine, Unit, className.CString (), float, wayToNextDistrictProgressInPercents_);
+
+    CHECK_ANGELSCRIPT_RETURN (
+                engine->RegisterObjectMethod (
+                    className.CString (), "StringHash get_hash ()",
+                    asMETHOD (Unit, GetHash), asCALL_THISCALL)
+                );
 }
 
 void BindFleetUnit (Urho3D::Script *script)

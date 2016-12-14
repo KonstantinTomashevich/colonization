@@ -1,9 +1,11 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "Units.hpp"
+#include <Colonization/Core/UnitsContainer.hpp>
 
 namespace Colonization
 {
 Unit::Unit (Urho3D::Context *context, UnitType unitType) : Urho3D::Object (context),
+    hash_ (),
     ownerPlayer_ ("???"),
     unitType_ (unitType),
     position_ (0),
@@ -16,6 +18,19 @@ Unit::Unit (Urho3D::Context *context, UnitType unitType) : Urho3D::Object (conte
 Unit::~Unit ()
 {
 
+}
+
+void Unit::UpdateHash (UnitsContainer *owner)
+{
+    do
+        hash_ = Urho3D::StringHash (ownerPlayer_ + Urho3D::String (static_cast <int> (unitType_)) +
+                                    Urho3D::String (Urho3D::Random (0, 100000)));
+    while (owner->GetUnitByHash (hash_) != this);
+}
+
+Urho3D::StringHash Unit::GetHash ()
+{
+    return hash_;
 }
 
 void Unit::UpdateDataNode (Urho3D::Node *dataNode)
