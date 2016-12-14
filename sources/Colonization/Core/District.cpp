@@ -1,11 +1,12 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "District.hpp"
+#include <Urho3D/IO/Log.h>
 #include <Colonization/Core/Map.hpp>
 
 namespace Colonization
 {
 District::District (Urho3D::Context *context) : Urho3D::Object (context),
-    hash_ (),
+    hash_ ("nothing"),
     needDataUpdate_ (true),
     isSea_ (true),
     isImpassable_ (false),
@@ -61,6 +62,9 @@ void District::UpdateDataNode (Urho3D::Node *dataNode, bool rewritePolygonPoints
             polygonPointsVariants.Push (polygonPoints_.At (index));
         dataNode->SetVar ("polygonPoints", polygonPointsVariants);
     }
+
+    if (dataNode->GetVar ("hash").GetStringHash () != hash_)
+        dataNode->SetVar ("hash", hash_);
 
     if (dataNode->GetVar ("name").GetString () != name_)
         dataNode->SetVar ("name", name_);
@@ -153,6 +157,7 @@ void District::UpdateDataNode (Urho3D::Node *dataNode, bool rewritePolygonPoints
 void District::ReadDataFromNode (Urho3D::Node *dataNode)
 {
     assert (dataNode);
+    hash_ = dataNode->GetVar ("hash").GetStringHash ();
     name_ = dataNode->GetVar ("name").GetString ();
     Urho3D::VariantVector polygonPointsVariants = dataNode->GetVar ("polygonPoints").GetVariantVector ();
     polygonPoints_.Clear ();

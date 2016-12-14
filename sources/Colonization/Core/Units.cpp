@@ -1,11 +1,12 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "Units.hpp"
+#include <Urho3D/IO/Log.h>
 #include <Colonization/Core/UnitsContainer.hpp>
 
 namespace Colonization
 {
 Unit::Unit (Urho3D::Context *context, UnitType unitType) : Urho3D::Object (context),
-    hash_ (),
+    hash_ ("nothing"),
     ownerPlayer_ ("???"),
     unitType_ (unitType),
     position_ (0),
@@ -37,6 +38,9 @@ void Unit::UpdateDataNode (Urho3D::Node *dataNode)
 {
     assert (dataNode);
     assert (position_);
+    if (dataNode->GetVar ("hash").GetStringHash () != hash_)
+        dataNode->SetVar ("hash", hash_);
+
     if (dataNode->GetVar ("ownerPlayer").GetString () != ownerPlayer_)
         dataNode->SetVar ("ownerPlayer", ownerPlayer_);
 
@@ -59,6 +63,7 @@ void Unit::ReadDataFromNode (Urho3D::Node *dataNode, Map *map)
 {
     assert (dataNode);
     assert (map);
+    hash_ = dataNode->GetVar ("hash").GetStringHash ();
     ownerPlayer_ = dataNode->GetVar ("ownerPlayer").GetString ();
     unitType_ = static_cast <UnitType> (dataNode->GetVar ("unitType").GetInt ());
 
