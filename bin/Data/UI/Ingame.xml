@@ -17,7 +17,6 @@
 		<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
 		<attribute name="Bring To Front" value="true" />
 		<attribute name="Bring To Back" value="false" />
-		<attribute name="Font" value="Font;Fonts/BlueHighway.ttf" />
 		<attribute name="Font Size" value="20" />
 		<attribute name="Text" value="Player Name..." />
 		<attribute name="Text Effect" value="Stroke" />
@@ -40,10 +39,70 @@
 			<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
-			<attribute name="Font" value="Font;Fonts/BlueHighway.ttf" />
 			<attribute name="Font Size" value="20" />
 			<attribute name="Text" value="Exit" />
 			<attribute name="Text Alignment" value="Center" />
+		</element>
+	</element>
+	<element type="Window">
+		<attribute name="Name" value="unitInfoWindow" />
+		<attribute name="Size" value="683 141" />
+		<attribute name="Min Anchor" value="0.5 0.8" />
+		<attribute name="Max Anchor" value="1 1" />
+		<attribute name="Pivot" value="0 0" />
+		<attribute name="Enable Anchor" value="true" />
+		<element type="Text">
+			<attribute name="Name" value="ownerText" />
+			<attribute name="Min Anchor" value="0.05 0.05" />
+			<attribute name="Max Anchor" value="0.45 0.3" />
+			<attribute name="Pivot" value="0 0" />
+			<attribute name="Enable Anchor" value="true" />
+			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Font Size" value="30" />
+			<attribute name="Text" value="AiPlayer's" />
+		</element>
+		<element type="Text">
+			<attribute name="Name" value="typeText" />
+			<attribute name="Min Anchor" value="0.15 0.4" />
+			<attribute name="Max Anchor" value="0.45 0.6" />
+			<attribute name="Pivot" value="0 0" />
+			<attribute name="Enable Anchor" value="true" />
+			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Font Size" value="20" />
+			<attribute name="Text" value="Fleet" />
+		</element>
+		<element type="Text">
+			<attribute name="Name" value="positionText" />
+			<attribute name="Min Anchor" value="0.05 0.7" />
+			<attribute name="Max Anchor" value="0.45 0.95" />
+			<attribute name="Pivot" value="0 0" />
+			<attribute name="Enable Anchor" value="true" />
+			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Font Size" value="20" />
+			<attribute name="Text" value="in Green Harbor" />
+		</element>
+		<element type="Text">
+			<attribute name="Name" value="anotherText" />
+			<attribute name="Min Anchor" value="0.5 0.05" />
+			<attribute name="Max Anchor" value="0.95 0.95" />
+			<attribute name="Pivot" value="0 0" />
+			<attribute name="Enable Anchor" value="true" />
+			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Font Size" value="15" />
+			<attribute name="Text" value="Another info:" />
+			<attribute name="Row Spacing" value="5" />
 		</element>
 	</element>
 </element>

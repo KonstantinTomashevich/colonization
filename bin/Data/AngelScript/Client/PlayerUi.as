@@ -16,6 +16,57 @@ class PlayerUi : ScriptObject
         else
             isSceneLoaded_ = false;
     }
+    
+    protected void UpdateSelection ()
+    {
+        StringHash selectionType = node.parent.GetChild ("screenPressesHandlerScriptNode").
+                                    vars ["selectionType"].GetStringHash ();
+        if (selectionType == StringHash ("Unit"))
+            UpdateUnitSelection ();
+        else if (selectionType == StringHash ("District"))
+            UpdateDistrictSelection ();
+        else
+            ClearSelection ();
+    }
+    
+    protected void UpdateUnitSelection ()
+    {
+        Window @unitInfoWindow = ui.root.GetChild ("ingame").GetChild ("unitInfoWindow");
+        unitInfoWindow.visible = true;
+        
+        UnitsContainer @unitsContainer = node.parent.vars ["unitsContainer"].GetPtr ();
+        StringHash unitHash = node.parent.GetChild ("screenPressesHandlerScriptNode").
+                                vars ["selectedHash"].GetStringHash ();
+        Unit @unit = unitsContainer.GetUnitByHash (unitHash);
+            
+        Text @ownerText = unitInfoWindow.GetChild ("ownerText");
+        ownerText.text = unit.ownerPlayer_ + "'s";
+        
+        Text @typeText = unitInfoWindow.GetChild ("typeText");
+        if (unit.unitType_ == UNIT_FLEET)
+            typeText.text = "Fleet";
+        else if (unit.unitType_ == UNIT_TRADERS)
+            typeText.text = "Traders";
+        else if (unit.unitType_ == UNIT_COLONIZATORS)
+            typeText.text = "Colonizators";
+        else if (unit.unitType_ == UNIT_ARMY)
+            typeText.text = "Army";
+                
+        Text @positionText = unitInfoWindow.GetChild ("positionText");
+        positionText.text = "in " + unit.position_.name_;
+    }
+    
+    protected void UpdateDistrictSelection ()
+    {
+        Window @unitInfoWindow = ui.root.GetChild ("ingame").GetChild ("unitInfoWindow");
+        unitInfoWindow.visible = false;
+    }
+    
+    protected void ClearSelection ()
+    {
+        Window @unitInfoWindow = ui.root.GetChild ("ingame").GetChild ("unitInfoWindow");
+        unitInfoWindow.visible = false;
+    }
         
     PlayerUi ()
     {
@@ -54,6 +105,9 @@ class PlayerUi : ScriptObject
         
         if (!isSceneLoaded_)
             CheckIsSceneLoaded ();
+            
+        if (isSceneLoaded_)
+            UpdateSelection ();
     }
     
     void Stop ()

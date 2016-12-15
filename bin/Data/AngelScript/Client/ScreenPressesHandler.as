@@ -116,6 +116,8 @@ class ScreenPressesHandler : ScriptObject
                             ClearSelection ();
                     }
                 }
+                else
+                    ClearSelection ();
             }
             else
                 ClearSelection ();
