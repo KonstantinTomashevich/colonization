@@ -26,6 +26,9 @@ void Player::ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data)
     assert (unit);
     assert (target);
 
+    if (unit->ownerPlayer_ != name_)
+        return;
+
     if ((unit->unitType_ == UNIT_FLEET && target->isSea_) ||
             (unit->unitType_ != UNIT_FLEET && target->hasColony_ && target->colonyOwnerName_ == name_) ||
             (unit->unitType_ == UNIT_COLONIZATORS && !target->isSea_))
