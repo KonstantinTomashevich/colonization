@@ -14,6 +14,8 @@ void ColoniesManager::ProcessColony (District *colony, float timeStep)
     ProcessColonyIndustryEvolution (colony, timeStep);
     ProcessColonyLogisticsEvolution (colony, timeStep);
     ProcessColonyDefenseEvolution (colony, timeStep);
+    // TODO: Implement average level of life calculation.
+    colony->averageLevelOfLifePoints_ = 1.0f;
 }
 
 void ColoniesManager::ProcessColonyPopulation (District *colony, float timeStep)

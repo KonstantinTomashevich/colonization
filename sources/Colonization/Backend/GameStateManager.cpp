@@ -6,6 +6,7 @@
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/SceneManager.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
+#include <Colonization/Backend/ColoniesManager.hpp>
 #include <Colonization/Core/Map.hpp>
 
 namespace Colonization
@@ -27,6 +28,18 @@ void CreateTestMap (Map *map)
             district->polygonPoints_.Push (Urho3D::Vector3 (x + 1.0f, 0.0f, y + 1.0f));
             district->polygonPoints_.Push (Urho3D::Vector3 (x, 0.0f, y + 1.0f));
 
+            district->climate_ = CLIMATE_NORMAL;
+            district->farmingSquare_ = Urho3D::Random (50.0f, 300.0f);
+            district->landAverageFertility_ = Urho3D::Random (0.75f, 1.25f);
+            district->forestsSquare_ = 300.0f - district->farmingSquare_;
+            district->forestsReproductivity_ = Urho3D::Random (0.25f, 0.5f);
+
+            district->farmsEvolutionPoints_ = 1.0f;
+            district->minesEvolutionPoints_ = 1.0f;
+            district->industryEvolutionPoints_ = 1.0f;
+            district->logisticsEvolutionPoints_ = 1.0f;
+            district->defenseEvolutionPoints_ = 1.0f;
+
             district->unitPosition_ = Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.65f);
             district->colonyPosition_ = Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.35f);
             map->AddDistrict (district);
@@ -36,7 +49,7 @@ void CreateTestMap (Map *map)
     // Map: (~ -- sea, = -- terrain, @ -- colony)
     //   0 1 2 3 4
     // 4 ~ ~ ~ ~ ~
-    // 3 ~ = = = ~
+    // 3 ~ = @ = ~
     // 2 ~ ~ ~ = ~
     // 1 ~ = @ = ~
     // 0 ~ = ~ ~ ~
@@ -52,6 +65,16 @@ void CreateTestMap (Map *map)
     map->GetDistrictByIndex (2 * mapHeight + 1)->isSea_ = false;
     map->GetDistrictByIndex (1 * mapHeight + 1)->isSea_ = false;
     map->GetDistrictByIndex (1 * mapHeight + 0)->isSea_ = false;
+
+    map->GetDistrictByIndex (2 * mapHeight + 3)->hasColony_ = true;
+    map->GetDistrictByIndex (2 * mapHeight + 3)->colonyOwnerName_ = "Konstant";
+    map->GetDistrictByIndex (2 * mapHeight + 3)->mansCount_ = 50;
+    map->GetDistrictByIndex (2 * mapHeight + 3)->womenCount_ = 50;
+
+    map->GetDistrictByIndex (1 * mapHeight + 0)->hasColony_ = true;
+    map->GetDistrictByIndex (1 * mapHeight + 0)->colonyOwnerName_ = "AIPlayer";
+    map->GetDistrictByIndex (1 * mapHeight + 0)->mansCount_ = 50;
+    map->GetDistrictByIndex (1 * mapHeight + 0)->womenCount_ = 50;
     map->UpdateNeighborsOfDistricts ();
 }
 
@@ -112,6 +135,9 @@ void GameStateManager::SetupPlayingState ()
     AddTestFleetUnits (unitsManager->GetUnitsContainer (), map, Urho3D::Random (5, 15));
     context_->SetGlobalVar ("UnitsManager", Urho3D::Variant (unitsManager));
 
+    ColoniesManager *coloniesManager = new ColoniesManager (context_);
+    context_->SetGlobalVar ("ColoniesManager", Urho3D::Variant (coloniesManager));
+
     SceneManager *sceneManager = (SceneManager *) context_->GetGlobalVar ("SceneManager").GetPtr ();
     assert (sceneManager);
     sceneManager->PrepareForGameState (GAME_STATE_PLAYING);
@@ -122,6 +148,7 @@ void GameStateManager::DisposePlayingState ()
     // TODO: Temporary. Reimplement later.
     delete ( (Map *) context_->GetGlobalVar ("Map").GetPtr ());
     delete ( (UnitsManager *) context_->GetGlobalVar ("UnitsManager").GetPtr ());
+    delete ( (ColoniesManager *) context_->GetGlobalVar ("ColoniesManager").GetPtr ());
     SetupState (GAME_STATE_FINISHED);
     DisposeCurrentState ();
 }
