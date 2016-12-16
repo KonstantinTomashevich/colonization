@@ -12,7 +12,7 @@ UnitsManager::UnitsManager (Urho3D::Context *context) : Urho3D::Object (context)
     SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (UnitsManager, Update));
 }
 
-UnitsManager::~UnitsManager()
+UnitsManager::~UnitsManager ()
 {
     delete unitsContainer_;
 }
