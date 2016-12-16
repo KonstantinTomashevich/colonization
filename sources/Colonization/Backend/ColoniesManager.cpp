@@ -2,6 +2,7 @@
 #include "ColoniesManager.hpp"
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Core/CoreEvents.h>
+#include <cmath>
 
 namespace Colonization
 {
@@ -26,8 +27,8 @@ void ColoniesManager::ProcessColonyPopulation (District *colony, float timeStep)
             coloniesBasicPopulationIncrease_ * increaseModifer * timeStep;
 
     float newPopulationSexRatio = Urho3D::Random (0.4f, 0.6f);
-    colony->mansCount_ += Urho3D::Floor (populationIncrease * newPopulationSexRatio);
-    colony->womenCount_ += Urho3D::Floor (populationIncrease * (1.0f - newPopulationSexRatio));
+    colony->mansCount_ += floor (populationIncrease * newPopulationSexRatio + 0.5f);
+    colony->womenCount_ += floor (populationIncrease * (1.0f - newPopulationSexRatio) + 0.5f);
 }
 
 void ColoniesManager::ProcessColonyForests (District *colony, float timeStep)
@@ -50,7 +51,7 @@ void ColoniesManager::ProcessColonyFarmsEvolution (District *colony, float timeS
     float farmsEvolutionInColonyEvolution = colonyFarmsEvolution / totalColonyEvolution;
 
     float canBePlanted = (colony->mansCount_ + colony->womenCount_) * farmsEvolutionInColonyEvolution *
-            canBePlantedByOneColonist_ * Urho3D::Sqrt (colonyFarmsEvolution);
+            canBePlantedByOneColonist_ * sqrt (colonyFarmsEvolution);
 
     if (canBePlanted > colony->farmingSquare_ && colony->forestsSquare_ > colony->forestsReproductivity_ * 120.0f)
     {
@@ -126,8 +127,8 @@ void ColoniesManager::ProcessColonyMinesEvolution (District *colony, float timeS
         colony->farmingSquare_ +=  colony->forestsReproductivity_ * forestCanBeCuttedByOneColonist_ * timeStep;
     }
 
-    perspective += Urho3D::Sqrt (colony->industryEvolutionPoints_);
-    float modifer = Urho3D::Sqrt (perspective);
+    perspective += sqrt (colony->industryEvolutionPoints_);
+    float modifer = sqrt (perspective);
 
     if (minesEvolutionInColonyEvolution > 0.25f)
         modifer *= 0.25f;
@@ -155,13 +156,13 @@ void ColoniesManager::ProcessColonyIndustryEvolution (District *colony, float ti
     float industryEvolutionInColonyEvolution = colonyIndustryEvolution / totalColonyEvolution;
 
     float perspective = 1.0f;
-    perspective += Urho3D::Sqrt (colony->minesEvolutionPoints_);
-    perspective += Urho3D::Sqrt (colony->logisticsEvolutionPoints_);
+    perspective += sqrt (colony->minesEvolutionPoints_);
+    perspective += sqrt (colony->logisticsEvolutionPoints_);
 
     if (colony->hasCoalDeposits_ && colony->hasIronDeposits_)
         perspective += 2.0f;
 
-    float modifer = Urho3D::Sqrt (perspective);
+    float modifer = sqrt (perspective);
 
     if (industryEvolutionInColonyEvolution > 0.5f)
         modifer *= 0.3f;
@@ -189,12 +190,12 @@ void ColoniesManager::ProcessColonyLogisticsEvolution (District *colony, float t
     float logisticsEvolutionInColonyEvolution = colonyLogisticsEvolution / totalColonyEvolution;
 
     float perspective = 1.0f;
-    perspective += Urho3D::Sqrt (colony->farmsEvolutionPoints_);
-    perspective += Urho3D::Sqrt (colony->minesEvolutionPoints_);
-    perspective += Urho3D::Sqrt (colony->industryEvolutionPoints_);
-    perspective += Urho3D::Sqrt (colony->defenseEvolutionPoints_) * 2.0f;
+    perspective += sqrt (colony->farmsEvolutionPoints_);
+    perspective += sqrt (colony->minesEvolutionPoints_);
+    perspective += sqrt (colony->industryEvolutionPoints_);
+    perspective += sqrt (colony->defenseEvolutionPoints_) * 2.0f;
 
-    float modifer = Urho3D::Sqrt (perspective);
+    float modifer = sqrt (perspective);
 
     if (logisticsEvolutionInColonyEvolution > 0.1f)
         modifer *= 0.35f;
