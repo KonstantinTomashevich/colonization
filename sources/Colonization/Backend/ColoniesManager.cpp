@@ -58,11 +58,31 @@ void ColoniesManager::ProcessColonyFarmsEvolution (District *colony, float timeS
         colony->farmingSquare_ +=  colony->forestsReproductivity_ * 0.25f * forestCanBeCuttedByOneColonist_ * timeStep;
     }
 
+    float climateModifer = 1.0f;
+    if (colony->climate_ == CLIMATE_NORMAL)
+        climateModifer = 1.0f;
+    else if (colony->climate_ == CLIMATE_NORMAL_CONTINENTAL)
+        climateModifer = 0.8f;
+    else if (colony->climate_ == CLIMATE_TROPICAL)
+        climateModifer = 1.5f;
+    else if (colony->climate_ == CLIMATE_HOT)
+        climateModifer = 1.25f;
+    else if (colony->climate_ == CLIMATE_COLD)
+        climateModifer = 0.5f;
+    else if (colony->climate_ == CLIMATE_DESERT)
+        climateModifer = 0.25f;
+
     float evolutionModifer = (colony->farmingSquare_ - canBePlanted) / colony->farmingSquare_;
     if (evolutionModifer > 0.0f)
+    {
         evolutionModifer *= colony->landAverageFertility_;
+        evolutionModifer *= climateModifer;
+    }
     else
+    {
         evolutionModifer /= colony->landAverageFertility_;
+        evolutionModifer /= climateModifer;
+    }
 
     colony->farmsEvolutionPoints_ += coloniesBasicEvolution_ * evolutionModifer * timeStep;
 }
