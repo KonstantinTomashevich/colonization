@@ -19,7 +19,7 @@ District::District (Urho3D::Context *context) : Urho3D::Object (context),
     farmingSquare_ (0.0f),
     forestsSquare_ (0.0f),
     landAverageFertility_ (0.0f),
-    climate_ (CLIMATE_NORMAL),
+    climate_ (CLIMATE_TEMPERATE),
 
     forestsReproductivity_ (0.0f),
     hasCoalDeposits_ (false),

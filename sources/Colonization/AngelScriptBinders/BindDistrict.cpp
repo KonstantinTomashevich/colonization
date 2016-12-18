@@ -53,8 +53,8 @@ void BindDistrict (Urho3D::Script *script)
     engine->RegisterEnum ("ClimateType");
     engine->RegisterEnumValue ("ClimateType", "CLIMATE_TROPICAL", CLIMATE_TROPICAL);
     engine->RegisterEnumValue ("ClimateType", "CLIMATE_HOT", CLIMATE_HOT );
-    engine->RegisterEnumValue ("ClimateType", "CLIMATE_NORMAL", CLIMATE_NORMAL);
-    engine->RegisterEnumValue ("ClimateType", "CLIMATE_NORMAL_CONTINENTAL", CLIMATE_NORMAL_CONTINENTAL);
+    engine->RegisterEnumValue ("ClimateType", "CLIMATE_TEMPERATE", CLIMATE_TEMPERATE);
+    engine->RegisterEnumValue ("ClimateType", "CLIMATE_TEMPERATE_CONTINENTAL", CLIMATE_TEMPERATE_CONTINENTAL);
     engine->RegisterEnumValue ("ClimateType", "CLIMATE_DESERT", CLIMATE_DESERT);
     engine->RegisterEnumValue ("ClimateType", "CLIMATE_COLD", CLIMATE_COLD);
 
