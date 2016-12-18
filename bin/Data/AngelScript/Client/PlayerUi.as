@@ -42,6 +42,7 @@ class PlayerUi : ScriptObject
         StringHash unitHash = node.parent.GetChild ("screenPressesHandlerScriptNode").
                                 vars ["selectedHash"].GetStringHash ();
         Unit @unit = unitsContainer.GetUnitByHash (unitHash);
+        SetRefs (unit, 5);
             
         Text @ownerText = unitInfoWindow.GetChild ("ownerText");
         ownerText.text = unit.ownerPlayer_ + "'s";
@@ -62,28 +63,24 @@ class PlayerUi : ScriptObject
         String additionalInfo;
         if (unit.unitType_ == UNIT_FLEET)
         {
-            SetRefs (unit, 5);
             FleetUnit @fleetUnit = unit;
             additionalInfo += "War ships count: " + fleetUnit.warShipsCount_ + ".\n";
         }
         
         else if (unit.unitType_ == UNIT_TRADERS)
         {
-            SetRefs (unit, 5);
             TradersUnit @tradersUnit = unit;
             additionalInfo += "Trade goods cost: " + tradersUnit.tradeGoodsCost_ + ".\n";
         }
         
         else if (unit.unitType_ == UNIT_COLONIZATORS)
         {
-            SetRefs (unit, 5);
             ColonizatorsUnit @colonizatorsUnit = unit;
             additionalInfo += "Colonizators count: " + colonizatorsUnit.colonizatorsCount_ + ".\n";
         }
         
         else if (unit.unitType_ == UNIT_ARMY)
         {
-            SetRefs (unit, 5);
             ArmyUnit @armyUnit = unit;
             additionalInfo += "Soldiers count: " + armyUnit.soldiersCount_ + ".\n";
         }
@@ -112,6 +109,7 @@ class PlayerUi : ScriptObject
         StringHash districtHash = node.parent.GetChild ("screenPressesHandlerScriptNode").
                                 vars ["selectedHash"].GetStringHash ();
         District @district = map.GetDistrictByHash (districtHash);
+        SetRefs (district, 5);
         
         Text@ nameText = districtInfoWindow.GetChild ("nameText");
         nameText.text = district.name_;
