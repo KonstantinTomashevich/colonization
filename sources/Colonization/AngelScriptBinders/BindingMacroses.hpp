@@ -34,29 +34,9 @@
     object->propertyName = value; \
     } \
 
-#define OBJECT_PROPERTY_GETTER_WITH_ADD_REF(objectType, propertyType, propertyName, addRefCount) \
-    propertyType objectType ## _get_ ## propertyName (objectType * object) \
-    { \
-        for (int index = 0; index < addRefCount; index++) \
-            object->propertyName->AddRef (); \
-        return object->propertyName; \
-    } \
-
-#define OBJECT_PROPERTY_SETTER_WITH_ADD_REF(objectType, propertyType, propertyName, addRefCount) \
-    void objectType ## _set_ ## propertyName (objectType * object, propertyType value) \
-    { \
-        for (int index = 0; index < addRefCount; index++) \
-            value->AddRef (); \
-        object->propertyName = value; \
-    } \
-
 #define OBJECT_PROPERTY_GETTER_AND_SETTER(objectType, propertyType, propertyName) \
     OBJECT_PROPERTY_GETTER (objectType, propertyType, propertyName) \
     OBJECT_PROPERTY_SETTER (objectType, propertyType, propertyName) \
-
-#define OBJECT_PROPERTY_GETTER_AND_SETTER_WITH_ADD_REF(objectType, propertyType, propertyName, addRefCount) \
-    OBJECT_PROPERTY_GETTER_WITH_ADD_REF (objectType, propertyType, propertyName, addRefCount) \
-    OBJECT_PROPERTY_SETTER_WITH_ADD_REF (objectType, propertyType, propertyName, addRefCount) \
 
 #define BIND_OBJECT_PROPERTY_GETTER(asEngine, cxxObjectType, asObjectType, asPropertyType, propertyName) \
     CHECK_ANGELSCRIPT_RETURN ( \
@@ -86,24 +66,6 @@
     \
     void objectType ## _set_ ## propertyName (objectType * object, Urho3D::CScriptArray *array) \
     { \
-        object->propertyName = Urho3D::ArrayTo ## arrayType <arrayValuesType> (array); \
-    } \
-
-#define OBJECT_ARRAY_OF_POINTERS_PROPERTY_ACESSOR(objectType, arrayType, arrayValuesType, propertyName, asArrayDecl) \
-    Urho3D::CScriptArray *objectType ## _get_ ## propertyName (objectType * object) \
-    { \
-        /* Add refs for AngelScript. */ \
-        for (int index = 0; index < object->propertyName.Size (); index++) \
-            object->propertyName.At (index)->AddRef (); \
-        return Urho3D::VectorToArray <arrayValuesType> (object->propertyName, asArrayDecl); \
-    } \
-    \
-    void objectType ## _set_ ## propertyName (objectType * object, Urho3D::CScriptArray *array) \
-    { \
-        Urho3D::arrayType <arrayValuesType> cxxArray = Urho3D::ArrayTo ## arrayType <arrayValuesType> (array); \
-        /* Add refs for AngelScript. */ \
-        for (int index = 0; index < cxxArray.Size (); index++) \
-            cxxArray.At (index)->AddRef (); \
         object->propertyName = Urho3D::ArrayTo ## arrayType <arrayValuesType> (array); \
     } \
 
