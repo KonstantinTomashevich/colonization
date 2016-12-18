@@ -103,7 +103,7 @@ class Player : ScriptObject
             if (beforeMapUpdate_ <= 0.0f)
             {
                 mapPtr_.ReadDataFromNode (scene.GetChild ("map"));
-                beforeMapUpdate_ = 1.0f;
+                beforeMapUpdate_ = 0.001f;
             }
             
             if (beforeMapNeighborsUpdate_ <= 0.0f)

@@ -28,17 +28,22 @@ void CreateTestMap (Map *map)
             district->polygonPoints_.Push (Urho3D::Vector3 (x + 1.0f, 0.0f, y + 1.0f));
             district->polygonPoints_.Push (Urho3D::Vector3 (x, 0.0f, y + 1.0f));
 
-            district->climate_ = CLIMATE_NORMAL;
+            district->climate_ = CLIMATE_TEMPERATE;
             district->farmingSquare_ = Urho3D::Random (50.0f, 300.0f);
             district->landAverageFertility_ = Urho3D::Random (0.75f, 1.25f);
             district->forestsSquare_ = 300.0f - district->farmingSquare_;
-            district->forestsReproductivity_ = Urho3D::Random (0.25f, 0.5f);
+            district->forestsReproductivity_ = Urho3D::Random (0.25f, 1.0f);
 
             district->farmsEvolutionPoints_ = 1.0f;
             district->minesEvolutionPoints_ = 1.0f;
             district->industryEvolutionPoints_ = 1.0f;
             district->logisticsEvolutionPoints_ = 1.0f;
             district->defenseEvolutionPoints_ = 1.0f;
+
+            district->hasCoalDeposits_ = Urho3D::Random (0, 100) < 50;
+            district->hasIronDeposits_ = Urho3D::Random (0, 100) < 40;
+            district->hasSilverDeposits_ = Urho3D::Random (0, 100) < 20;
+            district->hasGoldDeposits_ = Urho3D::Random (0, 100) < 10;
 
             district->unitPosition_ = Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.65f);
             district->colonyPosition_ = Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.35f);

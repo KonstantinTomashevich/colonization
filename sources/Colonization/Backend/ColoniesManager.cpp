@@ -248,7 +248,7 @@ void ColoniesManager::ProcessColonyDefenseEvolution (District *colony, float tim
 
 ColoniesManager::ColoniesManager (Urho3D::Context *context) : Urho3D::Object (context),
     coloniesBasicPopulationIncrease_ (0.005f),
-    coloniesBasicEvolution_ (0.001f),
+    coloniesBasicEvolution_ (0.002f),
     canBePlantedByOneColonist_ (1.0f)
 {
     SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (ColoniesManager, Update));
