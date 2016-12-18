@@ -55,7 +55,7 @@ void ColoniesManager::ProcessColonyFarmsEvolution (District *colony, float timeS
     float canBePlanted = (colony->mansCount_ + colony->womenCount_) * farmsEvolutionInColonyEvolution *
             canBePlantedByOneColonist_ * sqrt (colonyFarmsEvolution);
 
-    if (canBePlanted > colony->farmingSquare_ && colony->forestsSquare_ > colony->forestsReproductivity_ * 120.0f)
+    if (colony->forestsSquare_ > (colony->forestsSquare_ + colony->farmingSquare_) * 0.15f)
     {
         colony->forestsSquare_ -= colony->forestsReproductivity_ * 0.25f * forestCanBeCuttedByOneColonist_ * timeStep;
         colony->farmingSquare_ +=  colony->forestsReproductivity_ * 0.25f * forestCanBeCuttedByOneColonist_ * timeStep;
@@ -102,13 +102,13 @@ void ColoniesManager::ProcessColonyMinesEvolution (District *colony, float timeS
 
     float perspective = 1.0f;
 
-    if (colony->forestsSquare_ < colony->forestsReproductivity_ * 120.0f)
+    if (colony->forestsSquare_ < (colony->forestsSquare_ + colony->farmingSquare_) * 0.15f)
         perspective -= 1.0;
-    else if (colony->forestsSquare_ < colony->forestsReproductivity_ * 180.0f)
+    else if (colony->forestsSquare_ < (colony->forestsSquare_ + colony->farmingSquare_) * 0.25f)
         perspective -= 0.75f;
-    else if (colony->forestsSquare_ > colony->forestsReproductivity_ * 360.0f)
+    else if (colony->forestsSquare_ > (colony->forestsSquare_ + colony->farmingSquare_) * 0.5f)
         perspective += 0.5f;
-    else if (colony->forestsSquare_ > colony->forestsReproductivity_ * 600.0f)
+    else if (colony->forestsSquare_ > colony->forestsSquare_ < (colony->forestsSquare_ + colony->farmingSquare_) * 0.75f)
         perspective += 1.0f;
 
     if (colony->hasCoalDeposits_)
@@ -123,7 +123,7 @@ void ColoniesManager::ProcessColonyMinesEvolution (District *colony, float timeS
     if (colony->hasGoldDeposits_)
         perspective += 1.5f;
 
-    if (colony->forestsSquare_ > colony->forestsReproductivity_ * 120.0f)
+    if (colony->forestsSquare_ > (colony->forestsSquare_ + colony->farmingSquare_) * 0.15f)
     {
         colony->forestsSquare_ -= colony->forestsReproductivity_ * forestCanBeCuttedByOneColonist_ * timeStep;
         colony->farmingSquare_ +=  colony->forestsReproductivity_ * forestCanBeCuttedByOneColonist_ * timeStep;
