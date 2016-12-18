@@ -2,6 +2,7 @@
 #include "ColoniesManager.hpp"
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Core/CoreEvents.h>
+#include <Urho3D/IO/Log.h>
 #include <cmath>
 
 namespace Colonization
@@ -17,6 +18,7 @@ void ColoniesManager::ProcessColony (District *colony, float timeStep)
     ProcessColonyDefenseEvolution (colony, timeStep);
     // TODO: Implement average level of life calculation.
     colony->averageLevelOfLifePoints_ = 1.0f;
+    colony->needDataUpdate_ = true;
 }
 
 void ColoniesManager::ProcessColonyPopulation (District *colony, float timeStep)
@@ -27,8 +29,8 @@ void ColoniesManager::ProcessColonyPopulation (District *colony, float timeStep)
             coloniesBasicPopulationIncrease_ * increaseModifer * timeStep;
 
     float newPopulationSexRatio = Urho3D::Random (0.4f, 0.6f);
-    colony->mansCount_ += floor (populationIncrease * newPopulationSexRatio + 0.5f);
-    colony->womenCount_ += floor (populationIncrease * (1.0f - newPopulationSexRatio) + 0.5f);
+    colony->mansCount_ += populationIncrease * newPopulationSexRatio + 0.5f;
+    colony->womenCount_ += populationIncrease * (1.0f - newPopulationSexRatio) + 0.5f;
 }
 
 void ColoniesManager::ProcessColonyForests (District *colony, float timeStep)
@@ -60,9 +62,9 @@ void ColoniesManager::ProcessColonyFarmsEvolution (District *colony, float timeS
     }
 
     float climateModifer = 1.0f;
-    if (colony->climate_ == CLIMATE_NORMAL)
+    if (colony->climate_ == CLIMATE_TEMPERATE)
         climateModifer = 1.0f;
-    else if (colony->climate_ == CLIMATE_NORMAL_CONTINENTAL)
+    else if (colony->climate_ == CLIMATE_TEMPERATE_CONTINENTAL)
         climateModifer = 0.8f;
     else if (colony->climate_ == CLIMATE_TROPICAL)
         climateModifer = 1.5f;
