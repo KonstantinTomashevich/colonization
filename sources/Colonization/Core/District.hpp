@@ -69,8 +69,8 @@ public:
 
     bool hasColony_;
     Urho3D::String colonyOwnerName_;
-    int mansCount_;
-    int womenCount_;
+    float mansCount_;
+    float womenCount_;
     int localArmySize_;
     float farmsEvolutionPoints_;
     float minesEvolutionPoints_;

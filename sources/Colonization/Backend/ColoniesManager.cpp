@@ -29,8 +29,8 @@ void ColoniesManager::ProcessColonyPopulation (District *colony, float timeStep)
             coloniesBasicPopulationIncrease_ * increaseModifer * timeStep;
 
     float newPopulationSexRatio = Urho3D::Random (0.4f, 0.6f);
-    colony->mansCount_ += populationIncrease * newPopulationSexRatio + 0.5f;
-    colony->womenCount_ += populationIncrease * (1.0f - newPopulationSexRatio) + 0.5f;
+    colony->mansCount_ += populationIncrease * newPopulationSexRatio;
+    colony->womenCount_ += populationIncrease * (1.0f - newPopulationSexRatio);
 }
 
 void ColoniesManager::ProcessColonyForests (District *colony, float timeStep)
