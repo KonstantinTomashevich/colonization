@@ -29,8 +29,8 @@ void ColoniesManager::ProcessColonyPopulation (District *colony, float timeStep)
             coloniesBasicPopulationIncrease_ * increaseModifer * timeStep;
 
     float newPopulationSexRatio = Urho3D::Random (0.4f, 0.6f);
-    colony->mansCount_ += populationIncrease * newPopulationSexRatio;
-    colony->womenCount_ += populationIncrease * (1.0f - newPopulationSexRatio);
+    colony->mansCount_ += populationIncrease * newPopulationSexRatio * timeStep;
+    colony->womenCount_ += populationIncrease * (1.0f - newPopulationSexRatio) * timeStep;
 }
 
 void ColoniesManager::ProcessColonyForests (District *colony, float timeStep)
@@ -248,7 +248,7 @@ void ColoniesManager::ProcessColonyDefenseEvolution (District *colony, float tim
 
 ColoniesManager::ColoniesManager (Urho3D::Context *context) : Urho3D::Object (context),
     coloniesBasicPopulationIncrease_ (0.005f),
-    coloniesBasicEvolution_ (0.0025f),
+    coloniesBasicEvolution_ (0.001f),
     canBePlantedByOneColonist_ (1.0f)
 {
     SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (ColoniesManager, Update));
