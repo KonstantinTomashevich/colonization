@@ -102,7 +102,6 @@
 			<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Font Size" value="15" />
 			<attribute name="Text" value="Another info:" />
-			<attribute name="Row Spacing" value="5" />
 		</element>
 	</element>
 </element>

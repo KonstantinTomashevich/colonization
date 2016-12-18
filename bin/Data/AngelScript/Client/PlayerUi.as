@@ -1,6 +1,7 @@
 class PlayerUi : ScriptObject
 {
     protected bool isSceneLoaded_;
+    protected float beforeSelectionUpdate_;
     
     protected void CheckIsSceneLoaded ()
     {
@@ -54,6 +55,46 @@ class PlayerUi : ScriptObject
                 
         Text @positionText = unitInfoWindow.GetChild ("positionText");
         positionText.text = "in " + unit.position_.name_;
+        
+        String additionalInfo;
+        if (unit.unitType_ == UNIT_FLEET)
+        {
+            SetRefs (unit, 5);
+            FleetUnit @fleetUnit = unit;
+            additionalInfo += "War ships count: " + fleetUnit.warShipsCount_ + ".\n";
+        }
+        
+        else if (unit.unitType_ == UNIT_TRADERS)
+        {
+            SetRefs (unit, 5);
+            TradersUnit @tradersUnit = unit;
+            additionalInfo += "Trade goods cost: " + tradersUnit.tradeGoodsCost_ + ".\n";
+        }
+        
+        else if (unit.unitType_ == UNIT_COLONIZATORS)
+        {
+            SetRefs (unit, 5);
+            ColonizatorsUnit @colonizatorsUnit = unit;
+            additionalInfo += "Colonizators count: " + colonizatorsUnit.colonizatorsCount_ + ".\n";
+        }
+        
+        else if (unit.unitType_ == UNIT_ARMY)
+        {
+            SetRefs (unit, 5);
+            ArmyUnit @armyUnit = unit;
+            additionalInfo += "Soldiers count: " + armyUnit.soldiersCount_ + ".\n";
+        }
+        
+        if (unit.way_.length > 0)
+        {
+            additionalInfo += "Going to: " + unit.way_ [unit.way_.length - 1].name_ + ".\n";
+            additionalInfo += "Next waypoint: " + unit.way_ [1].name_ + "\n";
+            additionalInfo += "Traveled to next waypoit: " + 
+                                FloorToInt (unit.wayToNextDistrictProgressInPercents_) + "%.\n";
+        }
+        
+        Text @anotherText = unitInfoWindow.GetChild ("anotherText");
+        anotherText.text = additionalInfo;
     }
     
     protected void UpdateDistrictSelection ()
@@ -71,6 +112,7 @@ class PlayerUi : ScriptObject
     PlayerUi ()
     {
         isSceneLoaded_ = false;
+        beforeSelectionUpdate_ = 0.001f;
     }
     
     ~PlayerUi ()
@@ -96,6 +138,8 @@ class PlayerUi : ScriptObject
     
     void Update (float timeStep)
     {
+        beforeSelectionUpdate_ -= timeStep;
+        
         Text @playerStatsText = ui.root.GetChild ("ingame").GetChild ("playerStatsInfo");
         String playerStatsInfo = "";
         playerStatsInfo += node.parent.vars ["playerName"].GetString () + "\n";
@@ -106,8 +150,11 @@ class PlayerUi : ScriptObject
         if (!isSceneLoaded_)
             CheckIsSceneLoaded ();
             
-        if (isSceneLoaded_)
+        if (isSceneLoaded_ and beforeSelectionUpdate_ <= 0.0f)
+        {
             UpdateSelection ();
+            beforeSelectionUpdate_ = 1.0f / 30.0f;
+        }
     }
     
     void Stop ()
