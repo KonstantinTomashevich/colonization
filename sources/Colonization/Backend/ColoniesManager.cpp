@@ -157,12 +157,16 @@ void ColoniesManager::ProcessColonyIndustryEvolution (District *colony, float ti
 
     float industryEvolutionInColonyEvolution = colonyIndustryEvolution / totalColonyEvolution;
 
-    float perspective = 1.0f;
-    perspective += sqrt (colony->minesEvolutionPoints_);
-    perspective += sqrt (colony->logisticsEvolutionPoints_);
+    float perspective = 0.0f;
+    perspective += sqrt (colony->minesEvolutionPoints_) * 0.75f;
+    perspective += sqrt (colony->logisticsEvolutionPoints_) * 0.75f;
 
     if (colony->hasCoalDeposits_ && colony->hasIronDeposits_)
         perspective += 2.0f;
+    else if (colony->hasCoalDeposits_)
+        perspective += 0.5f;
+    else if (colony->hasIronDeposits_)
+        perspective += 1.0f;
 
     float modifer = sqrt (perspective);
 
@@ -191,11 +195,11 @@ void ColoniesManager::ProcessColonyLogisticsEvolution (District *colony, float t
 
     float logisticsEvolutionInColonyEvolution = colonyLogisticsEvolution / totalColonyEvolution;
 
-    float perspective = 1.0f;
-    perspective += sqrt (colony->farmsEvolutionPoints_);
-    perspective += sqrt (colony->minesEvolutionPoints_);
-    perspective += sqrt (colony->industryEvolutionPoints_);
-    perspective += sqrt (colony->defenseEvolutionPoints_) * 2.0f;
+    float perspective = 0.0f;
+    perspective += sqrt (colony->farmsEvolutionPoints_) * 0.4f;
+    perspective += sqrt (colony->minesEvolutionPoints_) * 0.4f;
+    perspective += sqrt (colony->industryEvolutionPoints_) * 0.75f;
+    perspective += sqrt (colony->defenseEvolutionPoints_);
 
     float modifer = sqrt (perspective);
 
