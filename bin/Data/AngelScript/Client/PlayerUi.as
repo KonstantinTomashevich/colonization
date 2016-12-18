@@ -244,11 +244,14 @@ class PlayerUi : ScriptObject
     protected void UpdateDistrictColonyEvolutionInfo (District @district, Window @districtInfoWindow)
     {
         String infoText = "";
-        infoText += "Farms evolution: " + Floor (district.farmsEvolutionPoints_ * 100) / 100 + ".\n";
-        infoText += "Mines evolution: " + Floor (district.minesEvolutionPoints_ * 100) / 100 + ".\n";
-        infoText += "Industry evolution: " + Floor (district.industryEvolutionPoints_ * 100) / 100 + ".\n";
-        infoText += "Logistics evolution: " + Floor (district.logisticsEvolutionPoints_ * 100) / 100 + ".\n";
-        infoText += "Defense evolution: " + Floor (district.defenseEvolutionPoints_ * 100) / 100 + ".\n";
+        if (district.hasColony_)
+        {
+            infoText += "Farms evolution: " + Floor (district.farmsEvolutionPoints_ * 100) / 100 + ".\n";
+            infoText += "Mines evolution: " + Floor (district.minesEvolutionPoints_ * 100) / 100 + ".\n";
+            infoText += "Industry evolution: " + Floor (district.industryEvolutionPoints_ * 100) / 100 + ".\n";
+            infoText += "Logistics evolution: " + Floor (district.logisticsEvolutionPoints_ * 100) / 100 + ".\n";
+            infoText += "Defense evolution: " + Floor (district.defenseEvolutionPoints_ * 100) / 100 + ".\n";
+        }
         
         Text @informationTextUi = districtInfoWindow.GetChild ("informationText");
         informationTextUi.text = infoText;
