@@ -29,8 +29,12 @@ class ScreenPressesHandler : ScriptObject
     protected void UnitSelected (int index)
     {
         UnitsContainer @unitsContainer = node.parent.vars ["unitsContainer"].GetPtr ();
-        node.vars ["selectionType"] = StringHash ("Unit");
-        node.vars ["selectedHash"] = unitsContainer.GetUnitByIndex (index).hash;
+        Unit @unit = unitsContainer.GetUnitByIndex (index);
+        if (unit.unitType_ != UNIT_TRADERS and unit.unitType_ != UNIT_TRADERS)
+        {
+            node.vars ["selectionType"] = StringHash ("Unit");
+            node.vars ["selectedHash"] = unit.hash;
+        }
     }
     
     protected void DistrictSelected (int index)
