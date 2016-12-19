@@ -32,6 +32,7 @@ class PlayerUi : ScriptObject
     
     protected void UpdateUnitSelection ()
     {
+        ui.root.GetChild ("ingame").GetChild ("sendColonizatorsButton").visible = false;
         Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
         districtInfoWindow.visible = false;
         
@@ -111,6 +112,12 @@ class PlayerUi : ScriptObject
         District @district = map.GetDistrictByHash (districtHash);
         SetRefs (district, 5);
         
+        String playerName = node.parent.vars ["playerName"].GetString ();
+        ui.root.GetChild ("ingame").GetChild ("sendColonizatorsButton").visible =
+                                        (!district.isSea_ && (!district.hasColony_ ||
+                                                              (district.hasColony_ && 
+                                                               district.colonyOwnerName_ == playerName)));
+        
         Text@ nameText = districtInfoWindow.GetChild ("nameText");
         nameText.text = district.name_;
         
@@ -131,6 +138,7 @@ class PlayerUi : ScriptObject
     
     protected void ClearSelection ()
     {
+        ui.root.GetChild ("ingame").GetChild ("sendColonizatorsButton").visible = false;
         Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
         districtInfoWindow.visible = false;
         
@@ -279,6 +287,7 @@ class PlayerUi : ScriptObject
         ClearSelection ();
         
         Button @exitButton = uiRoot.GetChild ("exitButton");
+        Button @sendColonizatorsButton = uiRoot.GetChild ("sendColonizatorsButton");
         Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
         districtInfoWindow.vars ["infoType"] = StringHash ("Basic");
         
@@ -288,6 +297,7 @@ class PlayerUi : ScriptObject
         Button @colonyEvolutionInfoButton = districtInfoWindow.GetChild ("colonyEvolutionInfoButton");
         
         SubscribeToEvent (exitButton, "Released", "HandleExitClick");
+        SubscribeToEvent (sendColonizatorsButton, "Released", "HandleSendColonizatorsClick");
         SubscribeToEvent (basicInfoButton, "Released", "HandleBasicInfoClick");
         SubscribeToEvent (resourcesInfoButton, "Released", "HandleResourcesInfoClick");
         SubscribeToEvent (populationInfoButton, "Released", "HandlePopulationInfoClick");
@@ -323,6 +333,25 @@ class PlayerUi : ScriptObject
     void HandleExitClick ()
     {
         node.parent.vars ["goToMenuCalled"] = true;
+    }
+    
+    void HandleSendColonizatorsClick ()
+    {
+        Array <Variant> networkTasks = node.parent.GetChild ("networkScriptNode").vars ["tasksList"].GetVariantVector ();
+        VariantMap taskData;
+        taskData ["type"] = CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION;
+        
+        Map @map = node.parent.vars ["map"].GetPtr ();
+        StringHash districtHash = node.parent.GetChild ("screenPressesHandlerScriptNode").
+                                vars ["selectedHash"].GetStringHash ();
+        
+        VectorBuffer buffer = VectorBuffer ();
+        buffer.WriteInt (PLAYER_ACTION_REQUEST_COLONIZATORS_FROM_EUROPE);
+        buffer.WriteStringHash (districtHash);
+        
+        taskData ["buffer"] = buffer;
+        networkTasks.Push (Variant (taskData));
+        node.parent.GetChild ("networkScriptNode").vars ["tasksList"] = networkTasks;
     }
     
     void HandleBasicInfoClick ()
