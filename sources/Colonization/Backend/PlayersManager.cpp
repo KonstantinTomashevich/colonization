@@ -145,6 +145,7 @@ void PlayersManager::PlayerIdentified (Urho3D::Connection *connection, Urho3D::S
     Player *player = new Player (context_, name, connection);
     players_ [name] = player;
     connectionHashToNameHashMap_ [connection->GetAddress ()] = name;
+    player->SetGold (1000.0f);
 
     MessagesHandler *messagesHandler = (MessagesHandler *) context_->GetGlobalVar ("MessagesHandler").GetPtr ();
     assert (messagesHandler);

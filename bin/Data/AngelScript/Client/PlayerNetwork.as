@@ -50,8 +50,8 @@ class PlayerNetwork : ScriptObject
     void HandlePlayerStatsMessage (VariantMap &eventData)
     {
         VectorBuffer buffer = eventData ["Data"].GetBuffer ();
-        float points = buffer.ReadFloat ();
         float gold = buffer.ReadFloat ();
+        float points = buffer.ReadFloat ();
         node.parent.vars ["gold"] = gold;
         node.parent.vars ["points"] = points;
     }
