@@ -114,7 +114,8 @@ class PlayerUi : ScriptObject
         
         String playerName = node.parent.vars ["playerName"].GetString ();
         ui.root.GetChild ("ingame").GetChild ("sendColonizatorsButton").visible =
-                                        (!district.isSea_ && (!district.hasColony_ ||
+                                        (!district.isImpassable_ &&
+                                         !district.isSea_ && (!district.hasColony_ ||
                                                               (district.hasColony_ && 
                                                                district.colonyOwnerName_ == playerName)));
         

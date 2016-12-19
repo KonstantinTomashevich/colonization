@@ -39,6 +39,7 @@ protected:
     Urho3D::Connection *connection_;
 
     void ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data);
+    void ProcessRequestColonizatorsFromEurope (Urho3D::VectorBuffer data);
 public:
     Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Connection *connection);
     virtual ~Player ();

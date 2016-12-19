@@ -10,6 +10,8 @@ URHO3D_OBJECT (UnitsManager, Object)
 protected:
     UnitsContainer *unitsContainer_;
 
+    void SettleColonizator (ColonizatorsUnit *unit);
+
 public:
     UnitsManager (Urho3D::Context *context);
     virtual ~UnitsManager ();

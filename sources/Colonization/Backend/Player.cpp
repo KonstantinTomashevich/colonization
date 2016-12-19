@@ -35,6 +35,37 @@ void Player::ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data)
         unit->way_ = map->FindPath (unit->position_, target, name_, unit->unitType_ != UNIT_FLEET, unit->unitType_ == UNIT_COLONIZATORS);
 }
 
+void Player::ProcessRequestColonizatorsFromEurope (Urho3D::VectorBuffer data)
+{
+    // TODO: It's not a final version. May be rewrited later.
+    if (gold_ >= 100.0f)
+    {
+        Map *map = (Map *) context_->GetGlobalVar ("Map").GetPtr ();
+        UnitsManager *unitsManager = (UnitsManager *) context_->GetGlobalVar ("UnitsManager").GetPtr ();
+        // Skip action type.
+        data.ReadInt ();
+
+        assert (map);
+        assert (unitsManager);
+
+        Urho3D::StringHash targetDistrictHash = data.ReadStringHash ();
+        District *targetDistrict = map->GetDistrictByHash (targetDistrictHash);
+        assert (targetDistrict);
+        assert (!targetDistrict->isSea_);
+        assert (!targetDistrict->isImpassable_);
+        assert (!targetDistrict->hasColony_ || (targetDistrict->hasColony_ && targetDistrict->colonyOwnerName_ == name_));
+
+        gold_ -= 100.0f;
+        ColonizatorsUnit *colonizatorsUnit = new ColonizatorsUnit (context_);
+        colonizatorsUnit->colonizatorsCount_ = 100;
+        // TODO: Position is temporary! Will be rewrited!
+        colonizatorsUnit->position_ = map->GetDistrictByIndex (4 * 5 + 4); // [X * HEIGHT + Y] = (X, Y)
+        colonizatorsUnit->way_ = map->FindPath (colonizatorsUnit->position_, targetDistrict, name_, true, true);
+        colonizatorsUnit->ownerPlayer_ = name_;
+        unitsManager->GetUnitsContainer ()->AddUnit (colonizatorsUnit);
+    }
+}
+
 Player::Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Connection *connection) : Urho3D::Object (context),
     name_ (name),
     gold_ (0.0f),
@@ -58,6 +89,8 @@ void Player::Update (float delta)
         Urho3D::Pair <PlayerActionType, Urho3D::Variant> action = actionsSequence_.At (0);
         if (action.first_ == PLAYER_ACTION_SET_UNIT_MOVE_TARGET)
             ProcessSetUnitMoveTargetAction (action.second_.GetVectorBuffer ());
+        else if (action.first_ == PLAYER_ACTION_REQUEST_COLONIZATORS_FROM_EUROPE)
+            ProcessRequestColonizatorsFromEurope (action.second_.GetVectorBuffer ());
         actionsSequence_.Remove (actionsSequence_.At (0));
     }
 }
