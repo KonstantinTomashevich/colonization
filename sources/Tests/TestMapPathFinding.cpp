@@ -89,47 +89,49 @@ void TestMapPathFindingApplication::Start ()
     map->UpdateDataNode (node, true);
     map->ReadDataFromNode (node);
 
+    // WARNING: Navigation from (4, 4) works wrong in game. Will be fixed soon.
+
     // Firstly calculate path if ship owner isn't colony owner.
     Urho3D::PODVector <Colonization::District *> way = map->FindPath (
-                map->GetDistrictByIndex (0 * mapHeight + 2), map->GetDistrictByIndex (4 * mapHeight + 0), "PlayerY", true, false);
+                map->GetDistrictByIndex (4 * mapHeight + 0), map->GetDistrictByIndex (2 * mapHeight + 2), "PlayerX", true, false);
 
     Urho3D::String calculatedWay = "";
     for (int index = 0; index < way.Size (); index++)
         calculatedWay += way.At (index)->name_ + "\n";
 
     Urho3D::Log::Write (Urho3D::LOG_INFO, "First calculated way:\n" + calculatedWay);
-    if (way.Size () != 11)
+    if (way.Size () != 5)
         ErrorExit ("First way points size don't match expected.");
-    else if (way.At (0) != map->GetDistrictByIndex (0 * mapHeight + 2) ||
-             way.At (1) != map->GetDistrictByIndex (0 * mapHeight + 3) ||
-             way.At (2) != map->GetDistrictByIndex (0 * mapHeight + 4) ||
-             way.At (3) != map->GetDistrictByIndex (1 * mapHeight + 4) ||
-             way.At (4) != map->GetDistrictByIndex (2 * mapHeight + 4) ||
-             way.At (5) != map->GetDistrictByIndex (3 * mapHeight + 4) ||
-             way.At (6) != map->GetDistrictByIndex (4 * mapHeight + 4) ||
-             way.At (7) != map->GetDistrictByIndex (4 * mapHeight + 3) ||
-             way.At (8) != map->GetDistrictByIndex (4 * mapHeight + 2) ||
-             way.At (9) != map->GetDistrictByIndex (4 * mapHeight + 1) ||
-             way.At (10) != map->GetDistrictByIndex (4 * mapHeight + 0))
+    else if (way.At (0) != map->GetDistrictByIndex (4 * mapHeight + 0) ||
+             way.At (1) != map->GetDistrictByIndex (3 * mapHeight + 0) ||
+             way.At (2) != map->GetDistrictByIndex (2 * mapHeight + 0) ||
+             way.At (3) != map->GetDistrictByIndex (2 * mapHeight + 1) ||
+             way.At (4) != map->GetDistrictByIndex (2 * mapHeight + 2))
         ErrorExit ("First way don't match expected.");
     else
     {
-        way = map->FindPath (map->GetDistrictByIndex (0 * mapHeight + 2), map->GetDistrictByIndex (4 * mapHeight + 0), "PlayerX", true, false);
+        way = map->FindPath (map->GetDistrictByIndex (4 * mapHeight + 0), map->GetDistrictByIndex (2 * mapHeight + 2), "PlayerY", true, false);
         calculatedWay = "";
         for (int index = 0; index < way.Size (); index++)
             calculatedWay += way.At (index)->name_ + "\n";
 
         Urho3D::Log::Write (Urho3D::LOG_INFO, "Second calculated way:\n" + calculatedWay);
 
-        if (way.Size () != 7)
+        if (way.Size () != 13)
             ErrorExit ("Second way points size don't match expected.");
-        else if (way.At (0) != map->GetDistrictByIndex (0 * mapHeight + 2) ||
-                 way.At (1) != map->GetDistrictByIndex (1 * mapHeight + 2) ||
-                 way.At (2) != map->GetDistrictByIndex (2 * mapHeight + 2) ||
-                 way.At (3) != map->GetDistrictByIndex (2 * mapHeight + 1) ||
-                 way.At (4) != map->GetDistrictByIndex (2 * mapHeight + 0) ||
-                 way.At (5) != map->GetDistrictByIndex (3 * mapHeight + 0) ||
-                 way.At (6) != map->GetDistrictByIndex (4 * mapHeight + 0))
+        else if (way.At (0) != map->GetDistrictByIndex (4 * mapHeight + 0) ||
+                 way.At (1) != map->GetDistrictByIndex (4 * mapHeight + 1) ||
+                 way.At (2) != map->GetDistrictByIndex (4 * mapHeight + 2) ||
+                 way.At (3) != map->GetDistrictByIndex (4 * mapHeight + 3) ||
+                 way.At (4) != map->GetDistrictByIndex (4 * mapHeight + 4) ||
+                 way.At (5) != map->GetDistrictByIndex (3 * mapHeight + 4) ||
+                 way.At (6) != map->GetDistrictByIndex (2 * mapHeight + 4) ||
+                 way.At (7) != map->GetDistrictByIndex (1 * mapHeight + 4) ||
+                 way.At (8) != map->GetDistrictByIndex (0 * mapHeight + 4) ||
+                 way.At (9) != map->GetDistrictByIndex (0 * mapHeight + 3) ||
+                 way.At (10) != map->GetDistrictByIndex (0 * mapHeight + 2) ||
+                 way.At (11) != map->GetDistrictByIndex (1 * mapHeight + 2) ||
+                 way.At (12) != map->GetDistrictByIndex (2 * mapHeight + 2))
             ErrorExit ("Second way don't match expected.");
         else
             engine_->Exit ();
