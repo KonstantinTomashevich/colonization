@@ -3,7 +3,7 @@ class SceneManager : ScriptObject
     protected float CAMERA_MOVE_SPEED = 2.5f;
     protected Node @cameraNode_;
     protected bool isSceneLoaded_;
-    protected float beforeDistrictsNamesUpdate_;
+    protected float beforeDistrictsUpdate_;
     protected float beforeUnitsUpdate_;
     
     protected void CheckIsSceneLoaded ()
@@ -40,21 +40,40 @@ class SceneManager : ScriptObject
         localNode.name = replicatedNode.name;
     }
     
-    protected void UpdateDistrictsNames ()
+    protected void UpdateDistricts ()
     {
+        Map @map = node.parent.vars ["map"].GetPtr ();
         Array <Node @> districtsNodes = scene.GetChild ("map").GetChildren ();
+        
         for (int index = 0; index < districtsNodes.length; index++)
         {
             Node @districtNode = districtsNodes [index];
-            if (districtNode.GetChild ("local") is null)
+            District @district = map.GetDistrictByIndex (index);
+            
+            if (districtNode.GetChild ("localName") is null)
             {
                 LoadPrefabOf (districtNode, true, "Objects/DistrictNameLocal.xml");
-                districtNode.GetChildren () [0].name = "local";
+                districtNode.GetChild (districtNode.name).name = "localName";
             }
+            
             Vector3 position = districtNode.vars ["colonyPosition"].GetVector3 ();
-            districtNode.GetChild ("local").position = position;
-            Text3D @text = districtNode.GetChild ("local").GetChild ("text").GetComponent ("Text3D");
-            text.text = districtNode.name;
+            districtNode.GetChild ("localName").position = position;
+            Text3D @text = districtNode.GetChild ("localName").GetChild ("text").GetComponent ("Text3D");
+            text.text = district.name_;
+            
+            if (district.hasColony_)
+            {
+                if (districtNode.GetChild ("localColony") is null)
+                {
+                    LoadPrefabOf (districtNode, true, "Objects/ColonyLocal.xml");
+                    districtNode.GetChild (districtNode.name).name = "localColony";
+                }
+                
+                Vector3 position = districtNode.vars ["colonyPosition"].GetVector3 ();
+                districtNode.GetChild ("localColony").position = position;
+                Text3D @text = districtNode.GetChild ("localColony").GetChild ("playerText").GetComponent ("Text3D");
+                text.text = district.colonyOwnerName_;
+            }
         }
     }
     
@@ -142,7 +161,7 @@ class SceneManager : ScriptObject
     SceneManager ()
     {
         isSceneLoaded_ = false;
-        beforeDistrictsNamesUpdate_ = 0.001f;
+        beforeDistrictsUpdate_ = 0.001f;
         beforeUnitsUpdate_ = 0.001f;
     }
     
@@ -172,13 +191,13 @@ class SceneManager : ScriptObject
             
         if (isSceneLoaded_)
         {
-            beforeDistrictsNamesUpdate_ -= timeStep;
+            beforeDistrictsUpdate_ -= timeStep;
             beforeUnitsUpdate_ -= timeStep;
             
-            if (beforeDistrictsNamesUpdate_ <= 0.0f)
+            if (beforeDistrictsUpdate_ <= 0.0f)
             {
-                UpdateDistrictsNames ();
-                beforeDistrictsNamesUpdate_ = 2.0f;
+                UpdateDistricts ();
+                beforeDistrictsUpdate_ = 1.0f;
             }
             
             if (beforeUnitsUpdate_ <= 0.0f)
