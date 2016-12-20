@@ -21,7 +21,7 @@ class SceneManager : ScriptObject
             isSceneLoaded_ = false;
     }
     
-    protected void LoadPrefabOf (Node @replicatedNode, bool asChild, String overridePrefabPath = "")
+    protected void LoadPrefabOf (Node @replicatedNode, bool asChild, String name, String overridePrefabPath = "")
     {
         Node @localNode;
         if (asChild)
@@ -37,7 +37,7 @@ class SceneManager : ScriptObject
         
         XMLFile @prefabXML = cache.GetResource ("XMLFile", prefabPath);
         localNode.LoadXML (prefabXML.root);
-        localNode.name = replicatedNode.name;
+        localNode.name = name;
     }
     
     protected void UpdateDistricts ()
@@ -51,12 +51,11 @@ class SceneManager : ScriptObject
             District @district = map.GetDistrictByIndex (index);
             
             if (districtNode.GetChild ("localName") is null)
-            {
-                LoadPrefabOf (districtNode, true, "Objects/DistrictNameLocal.xml");
-                districtNode.GetChild (districtNode.name).name = "localName";
-            }
+                LoadPrefabOf (districtNode, true, "localName", "Objects/DistrictNameLocal.xml");
             
             Vector3 position = districtNode.vars ["colonyPosition"].GetVector3 ();
+            position.z += Abs (districtNode.vars ["unitPosition"].GetVector3 ().z - 
+                        districtNode.vars ["colonyPosition"].GetVector3 ().z) / 2;
             districtNode.GetChild ("localName").position = position;
             Text3D @text = districtNode.GetChild ("localName").GetChild ("text").GetComponent ("Text3D");
             text.text = district.name_;
@@ -64,13 +63,10 @@ class SceneManager : ScriptObject
             if (district.hasColony_)
             {
                 if (districtNode.GetChild ("localColony") is null)
-                {
-                    LoadPrefabOf (districtNode, true, "Objects/ColonyLocal.xml");
-                    districtNode.GetChild (districtNode.name).name = "localColony";
-                }
+                    LoadPrefabOf (districtNode, true, "localColony", "Objects/ColonyLocal.xml");
                 
-                Vector3 position = districtNode.vars ["colonyPosition"].GetVector3 ();
-                districtNode.GetChild ("localColony").position = position;
+                Vector3 colonyPosition = districtNode.vars ["colonyPosition"].GetVector3 ();
+                districtNode.GetChild ("localColony").position = colonyPosition;
                 Text3D @text = districtNode.GetChild ("localColony").GetChild ("playerText").GetComponent ("Text3D");
                 text.text = district.colonyOwnerName_;
             }
@@ -100,14 +96,13 @@ class SceneManager : ScriptObject
             if (unitNode.GetChild ("local") is null)
             {
                 if (unit.unitType_ == UNIT_FLEET)
-                    LoadPrefabOf (unitNode, true, "Objects/FleetUnitLocal.xml");
+                    LoadPrefabOf (unitNode, true, "local", "Objects/FleetUnitLocal.xml");
                 else if (unit.unitType_ == UNIT_TRADERS)
-                    LoadPrefabOf (unitNode, true, "Objects/TradersUnitLocal.xml");
+                    LoadPrefabOf (unitNode, true, "local", "Objects/TradersUnitLocal.xml");
                 else if (unit.unitType_ == UNIT_COLONIZATORS)
-                    LoadPrefabOf (unitNode, true, "Objects/ColonizatorsUnitLocal.xml");
+                    LoadPrefabOf (unitNode, true, "local", "Objects/ColonizatorsUnitLocal.xml");
                 else if (unit.unitType_ == UNIT_ARMY)
-                    LoadPrefabOf (unitNode, true, "Objects/ArmyUnitLocal.xml");
-                unitNode.GetChildren () [0].name = "local";
+                    LoadPrefabOf (unitNode, true, "local", "Objects/ArmyUnitLocal.xml");
             }
             
             int unitsCount = unitsInDistrictsCounts [unit.position_.name_].GetInt ();
@@ -182,7 +177,7 @@ class SceneManager : ScriptObject
             
         if (isSceneLoaded_ and scene.GetChild ("locals").GetChild ("map") is null)
         {
-            LoadPrefabOf (scene.GetChild ("map"), false);
+            LoadPrefabOf (scene.GetChild ("map"), false, "map");
             CreateLocalCamera ();
         }
         

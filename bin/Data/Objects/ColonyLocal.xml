@@ -37,6 +37,7 @@
 			<attribute name="Horiz Alignment" value="Center" />
 			<attribute name="Vert Alignment" value="Center" />
 			<attribute name="Text Effect" value="Stroke" />
+			<attribute name="Stroke Thickness" value="5" />
 		</component>
 	</node>
 </node>
