@@ -107,10 +107,26 @@ Urho3D::PODVector <District *> Map::FindPath (District *from, District *to, Urho
     assert (districts_.Contains (from));
     assert (districts_.Contains (to));
 
+    Urho3D::Log::Write (Urho3D::LOG_DEBUG,
+                        "##############################\n"
+                        "Map::FindPath called with arguments:\n"
+                        "from: " + from->name_ + "\n"
+                        "to: " + to->name_ + "\n"
+                        "playerName: " + playerName + "\n"
+                        "canGoTroughColonies: " + Urho3D::String (canGoThroughColonies) + "\n"
+                        "isColonizator: " + Urho3D::String (isColonizator) + "\n");
+
     float sailSpeed = context_->GetGlobalVar ("sailSpeed").GetFloat ();
     float marchSpeed = context_->GetGlobalVar ("marchSpeed").GetFloat ();
     float embarkationSpeed = context_->GetGlobalVar ("embarkationSpeed").GetFloat ();
     float disembarkationSpeed = context_->GetGlobalVar ("disembarkationSpeed").GetFloat ();
+
+    Urho3D::Log::Write (Urho3D::LOG_DEBUG,
+                        "\n"
+                        "sailSpeed: " + Urho3D::String (sailSpeed) + "\n"
+                        "marchSpeed: " + Urho3D::String (marchSpeed) + "\n"
+                        "embarkationSpeed: " + Urho3D::String (embarkationSpeed) + "\n"
+                        "disembarkationSpeed: " + Urho3D::String (disembarkationSpeed) + "\n");
 
     Urho3D::HashMap <Urho3D::StringHash, District *> frontier;
     Urho3D::HashMap <Urho3D::StringHash, District *> cameFrom;
@@ -122,9 +138,19 @@ Urho3D::PODVector <District *> Map::FindPath (District *from, District *to, Urho
 
     while (!frontier.Empty ())
     {
+        Urho3D::Log::Write (Urho3D::LOG_DEBUG,
+                            "\n"
+                            "frontierArraySize: " + Urho3D::String (frontier.Values ().Size ()) + "\n");
+
         frontier.Sort ();
-        District *current = frontier.Front ().second_;
-        frontier.Erase (frontier.Front ().first_);
+        District *current = frontier.Values ().At (0);
+        int currentPriority = frontier.Keys ().At (0).Value ();
+        frontier.Erase (frontier.Keys ().At (0));
+
+        Urho3D::Log::Write (Urho3D::LOG_DEBUG,
+                            "\n"
+                            "frontierPriority: " + Urho3D::String (currentPriority) + "\n"
+                            "frontier: " + current->name_ + "\n");
 
         if (current == to)
         {
@@ -147,10 +173,21 @@ Urho3D::PODVector <District *> Map::FindPath (District *from, District *to, Urho
         for (int index = 0; index < current->neighbors_.Size (); index++)
         {
             District *next = current->neighbors_.At (index);
+            Urho3D::Log::Write (Urho3D::LOG_DEBUG,
+                                "\n"
+                                "listingNeighbor (index): " + Urho3D::String (index) + "\n"
+                                "listingNeighbor (name): " + next->name_ + "\n"
+                                "isImpassable: " + Urho3D::String (next->isImpassable_) + "\n"
+                                "isSea: " + Urho3D::String (next->isSea_) + "\n"
+                                "hasColony: " + Urho3D::String (next->hasColony_) + "\n"
+                                "colonyOwnerName: " + next->colonyOwnerName_ + "\n");
+
             if (!next->isImpassable_ && (
                         next->isSea_ || (canGoThroughColonies && next->hasColony_ && next->colonyOwnerName_ == playerName) ||
                         (isColonizator && next == to)))
             {
+                Urho3D::Log::Write (Urho3D::LOG_DEBUG, "Can go through this neighbor.");
+
                 float newCost = costSoFar [current->name_];
                 float distance = (current->unitPosition_ - next->unitPosition_).Length ();
 
@@ -163,13 +200,24 @@ Urho3D::PODVector <District *> Map::FindPath (District *from, District *to, Urho
                 else if (current->isSea_ && !next->isSea_)
                     newCost += (distance / disembarkationSpeed);
 
+                Urho3D::Log::Write (Urho3D::LOG_DEBUG, "Cost: " + Urho3D::String (newCost));
+
+
                 if (!costSoFar.Contains (next->name_) || newCost < costSoFar [next->name_])
                 {
+                    int priority = 1 + static_cast <int> (HeuristicDistanceForPathFinding (to, next) * 1000);
+                    while (frontier [Urho3D::StringHash (priority)] && frontier [Urho3D::StringHash (priority)] != next)
+                        priority++;
+
                     costSoFar [next->name_] = newCost;
-                    int priority = static_cast <int> (1 + HeuristicDistanceForPathFinding (to, next) * 1000);
                     frontier [Urho3D::StringHash (priority)] = next;
                     cameFrom [next->name_] = current;
+
+                    Urho3D::Log::Write (Urho3D::LOG_DEBUG, "Priority: " + Urho3D::String (priority) + "\n"
+                                        "Setted as lowerest cost to this district.\n");
                 }
+
+                Urho3D::Log::Write (Urho3D::LOG_DEBUG, "");
             }
         }
     }

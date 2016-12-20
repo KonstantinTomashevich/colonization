@@ -35,6 +35,10 @@ void TestMapPathFindingApplication::Start ()
     input->SetMouseVisible (true);
     input->SetMouseMode (Urho3D::MM_FREE);
 
+    // Set logging level
+    Urho3D::Log *log = context_->GetSubsystem <Urho3D::Log> ();
+    log->SetLevel (Urho3D::LOG_DEBUG);
+
     context_->SetGlobalVar ("sailSpeed", 0.3f);
     context_->SetGlobalVar ("marchSpeed", 0.1f);
     context_->SetGlobalVar ("embarkationSpeed", 0.15f);
@@ -67,8 +71,8 @@ void TestMapPathFindingApplication::Start ()
     // 2 ~ ~ ~ = ~
     // 1 ~ = @ = ~
     // 0 ~ = ~ ~ ~
-    // Start point: (0, 2).
-    // End point: (4, 0).
+    // Start point: (4, 0).
+    // End point: (2, 2).
 
     // array (X * HEIGHT + Y) = (X, Y)
     map->GetDistrictByIndex (1 * mapHeight + 3)->isSea_ = false;
