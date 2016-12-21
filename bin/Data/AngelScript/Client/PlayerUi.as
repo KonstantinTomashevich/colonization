@@ -127,6 +127,11 @@ class PlayerUi : ScriptObject
         districtInfoWindow.GetChild ("colonyEvolutionInfoButton").visible = district.hasColony_;
         
         StringHash infoType = districtInfoWindow.vars ["infoType"].GetStringHash ();
+        UIElement @investButtons = districtInfoWindow.GetChild ("investButtons");
+        investButtons.visible = (infoType == StringHash ("ColonyEvolution") and
+                                 district.hasColony_ and
+                                 ui.root.GetChild ("ingame").GetChild ("sendColonizatorsButton").visible);
+        
         if (infoType == StringHash ("Basic"))
             UpdateDistrictBasicInfo (district, districtInfoWindow);
         else if (infoType == StringHash ("Resources"))
