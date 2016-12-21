@@ -8,6 +8,8 @@ class ColoniesManager : public Urho3D::Object
 {
 URHO3D_OBJECT (ColoniesManager, Object)
 protected:
+    Urho3D::HashMap <Urho3D::StringHash, Urho3D::HashMap <Urho3D::StringHash, float> > investitions_;
+
     void ProcessColony (District *colony, float timeStep);
     void ProcessColonyPopulation (District *colony, float timeStep);
     void ProcessColonyForests (District *colony, float timeStep);
@@ -22,10 +24,13 @@ public:
     virtual ~ColoniesManager ();
 
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void Invest (District *district, Urho3D::StringHash investitionType, float money);
 
     float coloniesBasicPopulationIncrease_;
     float coloniesBasicEvolution_;
     float canBePlantedByOneColonist_;
     float forestCanBeCuttedByOneColonist_;
+    float investitionsConsumption_;
+    float investitionsEfficiency_;
 };
 }

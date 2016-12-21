@@ -75,16 +75,26 @@ void ColoniesManager::ProcessColonyFarmsEvolution (District *colony, float timeS
     else if (colony->climate_ == CLIMATE_DESERT)
         climateModifer = 0.25f;
 
+    float investitions = investitions_ [colony->GetHash ()] ["defense"];
+    float investitionsModifer = 1.0f;
+    if (investitions > 0.0f)
+    {
+        investitionsModifer = sqrt (investitionsEfficiency_);
+        investitions_ [colony->GetHash ()] ["defense"] = investitions - investitionsConsumption_ * timeStep;
+    }
+
     float evolutionModifer = (colony->farmingSquare_ - canBePlanted) / colony->farmingSquare_;
     if (evolutionModifer > 0.0f)
     {
         evolutionModifer *= colony->landAverageFertility_;
         evolutionModifer *= climateModifer;
+        evolutionModifer *= investitionsModifer;
     }
     else
     {
         evolutionModifer /= colony->landAverageFertility_;
         evolutionModifer /= climateModifer;
+        evolutionModifer /= investitionsModifer;
     }
 
     colony->farmsEvolutionPoints_ += coloniesBasicEvolution_ * evolutionModifer * timeStep;
@@ -129,6 +139,13 @@ void ColoniesManager::ProcessColonyMinesEvolution (District *colony, float timeS
         colony->farmingSquare_ +=  colony->forestsReproductivity_ * forestCanBeCuttedByOneColonist_ * timeStep;
     }
 
+    float investitions = investitions_ [colony->GetHash ()] ["defense"];
+    if (investitions > 0.0f)
+    {
+        perspective *= investitionsEfficiency_;
+        investitions_ [colony->GetHash ()] ["defense"] = investitions - investitionsConsumption_ * timeStep;
+    }
+
     perspective += sqrt (colony->industryEvolutionPoints_);
     float modifer = sqrt (perspective);
 
@@ -168,6 +185,13 @@ void ColoniesManager::ProcessColonyIndustryEvolution (District *colony, float ti
     else if (colony->hasIronDeposits_)
         perspective += 1.0f;
 
+    float investitions = investitions_ [colony->GetHash ()] ["defense"];
+    if (investitions > 0.0f)
+    {
+        perspective *= investitionsEfficiency_;
+        investitions_ [colony->GetHash ()] ["defense"] = investitions - investitionsConsumption_ * timeStep;
+    }
+
     float modifer = sqrt (perspective);
 
     if (industryEvolutionInColonyEvolution > 0.5f)
@@ -200,6 +224,13 @@ void ColoniesManager::ProcessColonyLogisticsEvolution (District *colony, float t
     perspective += sqrt (colony->minesEvolutionPoints_) * 0.4f;
     perspective += sqrt (colony->industryEvolutionPoints_) * 0.75f;
     perspective += sqrt (colony->defenseEvolutionPoints_);
+
+    float investitions = investitions_ [colony->GetHash ()] ["defense"];
+    if (investitions > 0.0f)
+    {
+        perspective *= investitionsEfficiency_;
+        investitions_ [colony->GetHash ()] ["defense"] = investitions - investitionsConsumption_ * timeStep;
+    }
 
     float modifer = sqrt (perspective);
 
@@ -247,13 +278,23 @@ void ColoniesManager::ProcessColonyDefenseEvolution (District *colony, float tim
     else
         modifer *= 0.5f;
 
+    float investitions = investitions_ [colony->GetHash ()] ["defense"];
+    if (investitions > 0.0f)
+    {
+        modifer *= sqrt (investitionsEfficiency_);
+        investitions_ [colony->GetHash ()] ["defense"] = investitions - investitionsConsumption_ * timeStep;
+    }
+
     colony->defenseEvolutionPoints_ += coloniesBasicEvolution_ * modifer * timeStep;
 }
 
 ColoniesManager::ColoniesManager (Urho3D::Context *context) : Urho3D::Object (context),
     coloniesBasicPopulationIncrease_ (0.005f),
     coloniesBasicEvolution_ (0.002f),
-    canBePlantedByOneColonist_ (1.0f)
+    canBePlantedByOneColonist_ (1.0f),
+    investitionsConsumption_ (10.0f),
+    investitionsEfficiency_ (2.0f),
+    investitions_ ()
 {
     SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (ColoniesManager, Update));
 }
@@ -275,5 +316,10 @@ void ColoniesManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &
         if (district->hasColony_)
             ProcessColony (district, timeStep);
     }
+}
+
+void ColoniesManager::Invest (District *district, Urho3D::StringHash investitionType, float money)
+{
+    investitions_ [district->GetHash ()] [investitionType] = investitions_ [district->GetHash ()] [investitionType] + money;
 }
 }
