@@ -4,6 +4,7 @@
 #include <Urho3D/IO/Log.h>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
+#include <Colonization/Backend/ColoniesManager.hpp>
 
 namespace Colonization
 {
@@ -35,7 +36,29 @@ void Player::ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data)
         unit->way_ = map->FindPath (unit->position_, target, name_, unit->unitType_ != UNIT_FLEET, unit->unitType_ == UNIT_COLONIZATORS);
 }
 
-void Player::ProcessRequestColonizatorsFromEurope (Urho3D::VectorBuffer data)
+void Player::ProcessInvestToColonyAction (Urho3D::VectorBuffer data)
+{
+    Map *map = (Map *) context_->GetGlobalVar ("Map").GetPtr ();
+    ColoniesManager *coloniesManager = (ColoniesManager *) context_->GetGlobalVar ("ColoniesManager").GetPtr ();
+    // Skip action type.
+    data.ReadInt ();
+
+    Urho3D::StringHash targetDistrictHash = data.ReadStringHash ();
+    District *targetDistrict = map->GetDistrictByHash (targetDistrictHash);
+    assert (targetDistrict);
+    assert (!targetDistrict->isSea_);
+    assert (!targetDistrict->isImpassable_);
+    assert (!targetDistrict->hasColony_ || (targetDistrict->hasColony_ && targetDistrict->colonyOwnerName_ == name_));
+
+    Urho3D::StringHash investitionType = data.ReadStringHash ();
+    float money = data.ReadFloat ();
+    assert (money < gold_);
+
+    coloniesManager->Invest (targetDistrict, investitionType, money);
+    gold_ -= money;
+}
+
+void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer data)
 {
     // TODO: It's not a final version. May be rewrited later.
     if (gold_ >= 100.0f)
@@ -88,10 +111,16 @@ void Player::Update (float delta)
     while (!actionsSequence_.Empty ())
     {
         Urho3D::Pair <PlayerActionType, Urho3D::Variant> action = actionsSequence_.At (0);
+
         if (action.first_ == PLAYER_ACTION_SET_UNIT_MOVE_TARGET)
             ProcessSetUnitMoveTargetAction (action.second_.GetVectorBuffer ());
+
+        else if (action.first_ == PLAYER_ACTION_INVEST_TO_COLONY)
+            ProcessInvestToColonyAction (action.second_.GetVectorBuffer ());
+
         else if (action.first_ == PLAYER_ACTION_REQUEST_COLONIZATORS_FROM_EUROPE)
-            ProcessRequestColonizatorsFromEurope (action.second_.GetVectorBuffer ());
+            ProcessRequestColonizatorsFromEuropeAction (action.second_.GetVectorBuffer ());
+
         actionsSequence_.Remove (actionsSequence_.At (0));
     }
 }
