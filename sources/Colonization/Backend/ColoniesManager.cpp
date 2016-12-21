@@ -75,12 +75,12 @@ void ColoniesManager::ProcessColonyFarmsEvolution (District *colony, float timeS
     else if (colony->climate_ == CLIMATE_DESERT)
         climateModifer = 0.25f;
 
-    float investitions = investitions_ [colony->GetHash ()] ["defense"];
+    float investitions = investitions_ [colony->GetHash ()] ["farms"];
     float investitionsModifer = 1.0f;
     if (investitions > 0.0f)
     {
         investitionsModifer = sqrt (investitionsEfficiency_);
-        investitions_ [colony->GetHash ()] ["defense"] = investitions - investitionsConsumption_ * timeStep;
+        investitions_ [colony->GetHash ()] ["farms"] = investitions - investitionsConsumption_ * timeStep;
     }
 
     float evolutionModifer = (colony->farmingSquare_ - canBePlanted) / colony->farmingSquare_;
@@ -139,11 +139,11 @@ void ColoniesManager::ProcessColonyMinesEvolution (District *colony, float timeS
         colony->farmingSquare_ +=  colony->forestsReproductivity_ * forestCanBeCuttedByOneColonist_ * timeStep;
     }
 
-    float investitions = investitions_ [colony->GetHash ()] ["defense"];
+    float investitions = investitions_ [colony->GetHash ()] ["mines"];
     if (investitions > 0.0f)
     {
         perspective *= investitionsEfficiency_;
-        investitions_ [colony->GetHash ()] ["defense"] = investitions - investitionsConsumption_ * timeStep;
+        investitions_ [colony->GetHash ()] ["mines"] = investitions - investitionsConsumption_ * timeStep;
     }
 
     perspective += sqrt (colony->industryEvolutionPoints_);
@@ -185,11 +185,11 @@ void ColoniesManager::ProcessColonyIndustryEvolution (District *colony, float ti
     else if (colony->hasIronDeposits_)
         perspective += 1.0f;
 
-    float investitions = investitions_ [colony->GetHash ()] ["defense"];
+    float investitions = investitions_ [colony->GetHash ()] ["industry"];
     if (investitions > 0.0f)
     {
         perspective *= investitionsEfficiency_;
-        investitions_ [colony->GetHash ()] ["defense"] = investitions - investitionsConsumption_ * timeStep;
+        investitions_ [colony->GetHash ()] ["industry"] = investitions - investitionsConsumption_ * timeStep;
     }
 
     float modifer = sqrt (perspective);
@@ -225,11 +225,11 @@ void ColoniesManager::ProcessColonyLogisticsEvolution (District *colony, float t
     perspective += sqrt (colony->industryEvolutionPoints_) * 0.75f;
     perspective += sqrt (colony->defenseEvolutionPoints_);
 
-    float investitions = investitions_ [colony->GetHash ()] ["defense"];
+    float investitions = investitions_ [colony->GetHash ()] ["logistics"];
     if (investitions > 0.0f)
     {
         perspective *= investitionsEfficiency_;
-        investitions_ [colony->GetHash ()] ["defense"] = investitions - investitionsConsumption_ * timeStep;
+        investitions_ [colony->GetHash ()] ["logistics"] = investitions - investitionsConsumption_ * timeStep;
     }
 
     float modifer = sqrt (perspective);
@@ -292,8 +292,8 @@ ColoniesManager::ColoniesManager (Urho3D::Context *context) : Urho3D::Object (co
     coloniesBasicPopulationIncrease_ (0.005f),
     coloniesBasicEvolution_ (0.002f),
     canBePlantedByOneColonist_ (1.0f),
-    investitionsConsumption_ (10.0f),
-    investitionsEfficiency_ (2.0f),
+    investitionsConsumption_ (2.5f),
+    investitionsEfficiency_ (5.0f),
     investitions_ ()
 {
     SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (ColoniesManager, Update));
