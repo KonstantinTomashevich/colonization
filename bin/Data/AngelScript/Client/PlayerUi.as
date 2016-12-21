@@ -130,6 +130,7 @@ class PlayerUi : ScriptObject
         UIElement @investButtons = districtInfoWindow.GetChild ("investButtons");
         investButtons.visible = (infoType == StringHash ("ColonyEvolution") and
                                  district.hasColony_ and
+                                 node.parent.vars ["gold"].GetFloat () >= 100.0f and
                                  ui.root.GetChild ("ingame").GetChild ("sendColonizatorsButton").visible);
         
         if (infoType == StringHash ("Basic"))
@@ -302,12 +303,25 @@ class PlayerUi : ScriptObject
         Button @populationInfoButton = districtInfoWindow.GetChild ("populationInfoButton");
         Button @colonyEvolutionInfoButton = districtInfoWindow.GetChild ("colonyEvolutionInfoButton");
         
+        UIElement @investButtons = districtInfoWindow.GetChild ("investButtons");
+        Button @investToFarmsButton = investButtons.GetChild ("investToFarms");
+        Button @investToMinesButton = investButtons.GetChild ("investToMines");
+        Button @investToIndustryButton = investButtons.GetChild ("investToIndustry");
+        Button @investToLogisticsButton = investButtons.GetChild ("investToLogistics");
+        Button @investToDefenseButton = investButtons.GetChild ("investToDefense");
+        
         SubscribeToEvent (exitButton, "Released", "HandleExitClick");
         SubscribeToEvent (sendColonizatorsButton, "Released", "HandleSendColonizatorsClick");
         SubscribeToEvent (basicInfoButton, "Released", "HandleBasicInfoClick");
         SubscribeToEvent (resourcesInfoButton, "Released", "HandleResourcesInfoClick");
         SubscribeToEvent (populationInfoButton, "Released", "HandlePopulationInfoClick");
         SubscribeToEvent (colonyEvolutionInfoButton, "Released", "HandleColonyEvolutionInfoClick");
+        
+        SubscribeToEvent (investToFarmsButton, "Released", "HandleInvestClick");
+        SubscribeToEvent (investToMinesButton, "Released", "HandleInvestClick");
+        SubscribeToEvent (investToIndustryButton, "Released", "HandleInvestClick");
+        SubscribeToEvent (investToLogisticsButton, "Released", "HandleInvestClick");
+        SubscribeToEvent (investToDefenseButton, "Released", "HandleInvestClick");
     }
     
     void Update (float timeStep)
@@ -382,5 +396,29 @@ class PlayerUi : ScriptObject
     {
         Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
         districtInfoWindow.vars ["infoType"] = StringHash ("ColonyEvolution");
+    }
+    
+    void HandleInvestClick (StringHash eventType, VariantMap &eventData)
+    {
+        UIElement @element = eventData ["Element"].GetPtr ();
+        StringHash investTypeHash = StringHash (element.vars ["investitionType"].GetString ());
+        
+        Array <Variant> networkTasks = node.parent.GetChild ("networkScriptNode").vars ["tasksList"].GetVariantVector ();
+        VariantMap taskData;
+        taskData ["type"] = CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION;
+        
+        Map @map = node.parent.vars ["map"].GetPtr ();
+        StringHash districtHash = node.parent.GetChild ("screenPressesHandlerScriptNode").
+                                vars ["selectedHash"].GetStringHash ();
+        
+        VectorBuffer buffer = VectorBuffer ();
+        buffer.WriteInt (PLAYER_ACTION_INVEST_TO_COLONY);
+        buffer.WriteStringHash (districtHash);
+        buffer.WriteStringHash (investTypeHash);
+        buffer.WriteFloat (100.0f);
+        
+        taskData ["buffer"] = buffer;
+        networkTasks.Push (Variant (taskData));
+        node.parent.GetChild ("networkScriptNode").vars ["tasksList"] = networkTasks;
     }
 };
