@@ -5,7 +5,7 @@
 namespace Colonization
 {
 class PlayersManager;
-class TradeProcessor : Urho3D::Object
+class TradeProcessor : public Urho3D::Object
 {
 URHO3D_OBJECT (TradeProcessor, Object)
 protected:
@@ -14,6 +14,7 @@ protected:
 
     void UpdateTradeAreas (float updateDelay);
     InternalTradeArea *CreateTradeArea (District *start, Urho3D::PODVector <District *> &unscannedList);
+    void LogisticsEvolutionQuicksort (Urho3D::PODVector <District *> &array, int left, int right);
     void ProcessTradeAreaDistrict (District *district, Urho3D::PODVector <District *> &areaDistricts, Urho3D::PODVector <District *> &unscannedList);
     void ProcessTradeAreaIncome (PlayersManager *playersManager, Map *map, InternalTradeArea *tradeArea, float updateDelay);
     void ClearTradeAreas ();

@@ -32,8 +32,8 @@ public:
     Urho3D::Vector <Player *> GetAllPlayers ();
 
 #ifdef COLONIZIATION_ENABLE_FUNCTIONS_FOR_TESTS
-    void ManuallyAddTestPlayer (Player *player);
-    void ManuallyRemoveTestPlayer (Urho3D::StringHash nameHash);
+    void ManuallyAddFakePlayer (Player *player);
+    void ManuallyRemoveFakePlayer (Urho3D::StringHash nameHash);
 #endif
 
     void PlayerIdentified (Urho3D::Connection *connection, Urho3D::String name);

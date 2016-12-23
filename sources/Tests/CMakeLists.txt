@@ -15,3 +15,9 @@ set (SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/TestInternalTradeArea.hpp ${CMAKE_
 setup_executable ()
 target_link_libraries (TestInternalTradeArea Colonization)
 add_test (NAME test_internal_trade_area COMMAND TestInternalTradeArea)
+
+set (TARGET_NAME TestInternalTradeProcessing)
+set (SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/TestInternalTradeProcessing.hpp ${CMAKE_CURRENT_SOURCE_DIR}/TestInternalTradeProcessing.cpp)
+setup_executable ()
+target_link_libraries (TestInternalTradeProcessing Colonization)
+add_test (NAME test_internal_trade_processing COMMAND TestInternalTradeProcessing)

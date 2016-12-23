@@ -140,12 +140,12 @@ Urho3D::Vector <Player *> PlayersManager::GetAllPlayers ()
 }
 
 #ifdef COLONIZIATION_ENABLE_FUNCTIONS_FOR_TESTS
-void PlayersManager::ManuallyAddTestPlayer (Player *player)
+void PlayersManager::ManuallyAddFakePlayer (Player *player)
 {
     players_ [Urho3D::StringHash (player->GetName ())] = player;
 }
 
-void PlayersManager::ManuallyRemoveTestPlayer (Urho3D::StringHash nameHash)
+void PlayersManager::ManuallyRemoveFakePlayer (Urho3D::StringHash nameHash)
 {
     Player *player = players_ [nameHash];
     players_.Erase (nameHash);

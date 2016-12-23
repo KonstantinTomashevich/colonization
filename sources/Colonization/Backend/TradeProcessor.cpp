@@ -2,6 +2,7 @@
 #include "TradeProcessor.hpp"
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Core/CoreEvents.h>
+#include <Urho3D/IO/Log.h>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 
@@ -19,6 +20,9 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
         if (district->hasColony_)
             toScan.Push (district);
     }
+
+    // Sort by logistics evolution -- [max, ..., min].
+    LogisticsEvolutionQuicksort (toScan, 0, toScan.Size () - 1);
 
     while (!toScan.Empty ())
         tradeAreas_.Push (CreateTradeArea (toScan.At (0), toScan));
@@ -39,22 +43,53 @@ InternalTradeArea *TradeProcessor::CreateTradeArea (District *start, Urho3D::POD
     return tradeArea;
 }
 
+void TradeProcessor::LogisticsEvolutionQuicksort (Urho3D::PODVector <District *> &array, int left, int right)
+{
+    int i = left;
+    int j = right;
+    int medium = array.At ((left + right) / 2)->logisticsEvolutionPoints_;
+
+    while (i <= j)
+    {
+        while (array.At (i)->logisticsEvolutionPoints_ > medium)
+            i++;
+
+        while (array.At (j)->logisticsEvolutionPoints_ < medium)
+            j--;
+
+        if (i <= j)
+        {
+            District *temp = array.At (i);
+            array [i] = array [j];
+            array [j] = temp;
+            i++;
+            j--;
+        }
+    }
+
+    if (left < j)
+        LogisticsEvolutionQuicksort (array, left, j);
+
+    if (i < right)
+        LogisticsEvolutionQuicksort (array, i, right);
+}
+
 void TradeProcessor::ProcessTradeAreaDistrict (District *district, Urho3D::PODVector <District *> &areaDistricts, Urho3D::PODVector <District *> &unscannedList)
 {
     areaDistricts.Push (district);
     unscannedList.Remove (district);
 
     Urho3D::PODVector <District *> neighbors;
-    if (district->logisticsEvolutionPoints_ > 4.0f)
+    if (district->logisticsEvolutionPoints_ >= 4.0f)
         for (int index = 0; index < district->neighbors_.Size (); index++)
         {
             District *neighbor = district->neighbors_.At (index);
             if (neighbor->hasColony_ && neighbor->colonyOwnerName_ == district->colonyOwnerName_)
                 neighbors.Push (neighbor);
 
-            else if (district->logisticsEvolutionPoints_ > 6.0f && neighbor->isSea_ && !neighbor->isImpassable_)
+            else if (district->logisticsEvolutionPoints_ >= 6.0f && neighbor->isSea_ && !neighbor->isImpassable_)
             {
-                for (int neighborOfNeighboarIndex = 0; neighborOfNeighboarIndex < neighbor->neighbors_.Size (); index++)
+                for (int neighborOfNeighboarIndex = 0; neighborOfNeighboarIndex < neighbor->neighbors_.Size (); neighborOfNeighboarIndex++)
                 {
                     District *neighborOfNeighbor = neighbor->neighbors_.At (neighborOfNeighboarIndex);
                     if (neighborOfNeighbor->hasColony_ && neighborOfNeighbor->colonyOwnerName_ == district->colonyOwnerName_)
@@ -76,7 +111,7 @@ void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map
 {
     Player *player = playersManager->GetPlayer (Urho3D::StringHash (
                                                     map->GetDistrictByHash (tradeArea->GetDistrictHashByIndex (0))->
-                                                    colonyOwnerName_);
+                                                    colonyOwnerName_));
     float internalTaxes = context_->GetGlobalVar ("internalTaxes").GetFloat ();
     TradeDistrictProcessingInfo result = tradeArea->ProcessTrade (map);
     float playersIncome = result.soldTradeGoodsCost_ * result.logisticsBonus_ * result.defenseBonus_ * internalTaxes;
@@ -111,8 +146,8 @@ void TradeProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &e
     beforeTradeAreasUpdate_ -= timeStep;
     if (beforeTradeAreasUpdate_ <= 0.0f)
     {
-        UpdateTradeAreas (5.0f);
-        beforeTradeAreasUpdate_ = 5.0f;
+        UpdateTradeAreas (1.0f);
+        beforeTradeAreasUpdate_ = 1.0f;
     }
 }
 
