@@ -22,14 +22,26 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
     }
 
     // Sort by logistics evolution -- [max, ..., min].
-    LogisticsEvolutionQuicksort (toScan, 0, toScan.Size () - 1);
+    if (toScan.Size () > 3)
+        LogisticsEvolutionQuicksort (toScan, 0, toScan.Size () - 1);
+    else if (toScan.Size () == 2)
+    {
+        if (toScan.At (0)->logisticsEvolutionPoints_ < toScan.At (1)->logisticsEvolutionPoints_)
+        {
+            District *temp = toScan.At (0);
+            toScan.At (0) = toScan.At (1);
+            toScan.At (1) = temp;
+        }
+    }
+
 
     while (!toScan.Empty ())
-        tradeAreas_.Push (CreateTradeArea (toScan.At (0), toScan));
+        tradeAreas_.Push (CreateTradeArea (toScan.At (toScan.Size () - 1), toScan));
 
     PlayersManager *playersManager = (PlayersManager *) context_->GetGlobalVar ("PlayersManager").GetPtr ();
     for (int index = 0; index < tradeAreas_.Size (); index++)
         ProcessTradeAreaIncome (playersManager, map, tradeAreas_.At (index), updateDelay);
+
 }
 
 InternalTradeArea *TradeProcessor::CreateTradeArea (District *start, Urho3D::PODVector <District *> &unscannedList)
@@ -45,33 +57,33 @@ InternalTradeArea *TradeProcessor::CreateTradeArea (District *start, Urho3D::POD
 
 void TradeProcessor::LogisticsEvolutionQuicksort (Urho3D::PODVector <District *> &array, int left, int right)
 {
-    int i = left;
-    int j = right;
-    int medium = array.At ((left + right) / 2)->logisticsEvolutionPoints_;
+    int currentLeft = left;
+    int currentRight = right;
+    int medium = array.At (left + (right - left) / 2)->logisticsEvolutionPoints_;
 
-    while (i <= j)
+    while (currentLeft <= currentRight)
     {
-        while (array.At (i)->logisticsEvolutionPoints_ > medium)
-            i++;
+        while (array.At (currentLeft)->logisticsEvolutionPoints_ < medium)
+            currentLeft++;
 
-        while (array.At (j)->logisticsEvolutionPoints_ < medium)
-            j--;
+        while (array.At (currentRight)->logisticsEvolutionPoints_ > medium)
+            currentRight--;
 
-        if (i <= j)
+        if (currentLeft <= currentRight)
         {
-            District *temp = array.At (i);
-            array [i] = array [j];
-            array [j] = temp;
-            i++;
-            j--;
+            District *temp = array.At (currentLeft);
+            array [currentLeft] = array [currentRight];
+            array [currentRight] = temp;
+            currentLeft++;
+            currentRight--;
         }
     }
 
-    if (left < j)
-        LogisticsEvolutionQuicksort (array, left, j);
+    if (left < currentRight)
+        LogisticsEvolutionQuicksort (array, left, currentRight);
 
-    if (i < right)
-        LogisticsEvolutionQuicksort (array, i, right);
+    if (currentLeft < right)
+        LogisticsEvolutionQuicksort (array, currentLeft, right);
 }
 
 void TradeProcessor::ProcessTradeAreaDistrict (District *district, Urho3D::PODVector <District *> &areaDistricts, Urho3D::PODVector <District *> &unscannedList)
@@ -112,10 +124,17 @@ void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map
     Player *player = playersManager->GetPlayer (Urho3D::StringHash (
                                                     map->GetDistrictByHash (tradeArea->GetDistrictHashByIndex (0))->
                                                     colonyOwnerName_));
-    float internalTaxes = context_->GetGlobalVar ("internalTaxes").GetFloat ();
-    TradeDistrictProcessingInfo result = tradeArea->ProcessTrade (map);
-    float playersIncome = result.soldTradeGoodsCost_ * result.logisticsBonus_ * result.defenseBonus_ * internalTaxes;
-    player->SetGold (player->GetGold () + playersIncome);
+    if (!player)
+        Urho3D::Log::Write (Urho3D::LOG_ERROR, "Found colony of null player! Colony: " +
+                            map->GetDistrictByHash (tradeArea->GetDistrictHashByIndex (0))->name_ + ", player: " +
+                            map->GetDistrictByHash (tradeArea->GetDistrictHashByIndex (0))->colonyOwnerName_ + ".");
+    else
+    {
+        float internalTaxes = context_->GetGlobalVar ("internalTaxes").GetFloat ();
+        TradeDistrictProcessingInfo result = tradeArea->ProcessTrade (map);
+        float playersIncome = result.soldTradeGoodsCost_ * result.logisticsBonus_ * result.defenseBonus_ * internalTaxes;
+        player->SetGold (player->GetGold () + playersIncome);
+    }
 }
 
 void TradeProcessor::ClearTradeAreas ()

@@ -51,15 +51,23 @@ void PlayersManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &e
     MessagesHandler *messagesHandler = (MessagesHandler *) context_->GetGlobalVar ("MessagesHandler").GetPtr ();
     assert (messagesHandler);
 
+
     float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
-    for (int index = 0; index < players_.Values ().Size (); index++)
+    int index = 0;
+    while (index < players_.Values ().Size ())
     {
         Player *player = players_.Values ().At (index);
-        player->Update (timeStep);
-        messagesHandler->SendPlayersStats (player);
+        if (!player)
+            players_.Erase (players_.Keys ().At (index));
+        else
+        {
+            player->Update (timeStep);
+            messagesHandler->SendPlayersStats (player);
+            index++;
+        }
     }
 
-    int index = 0;
+    index = 0;
     while (index < connectionsWithoutId_.Size ())
     {
         connectionsWithoutId_.At (index).first_ -= timeStep;

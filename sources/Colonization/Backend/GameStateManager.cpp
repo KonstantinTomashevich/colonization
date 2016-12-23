@@ -7,6 +7,7 @@
 #include <Colonization/Backend/SceneManager.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Backend/ColoniesManager.hpp>
+#include <Colonization/Backend/TradeProcessor.hpp>
 #include <Colonization/Core/Map.hpp>
 
 namespace Colonization
@@ -162,6 +163,9 @@ void GameStateManager::SetupPlayingState ()
     ColoniesManager *coloniesManager = new ColoniesManager (context_);
     context_->SetGlobalVar ("ColoniesManager", Urho3D::Variant (coloniesManager));
 
+    TradeProcessor *tradeProcessor = new TradeProcessor (context_);
+    context_->SetGlobalVar ("TradeProcessor", Urho3D::Variant (tradeProcessor));
+
     SceneManager *sceneManager = (SceneManager *) context_->GetGlobalVar ("SceneManager").GetPtr ();
     assert (sceneManager);
     sceneManager->PrepareForGameState (GAME_STATE_PLAYING);
@@ -173,6 +177,7 @@ void GameStateManager::DisposePlayingState ()
     delete ( (Map *) context_->GetGlobalVar ("Map").GetPtr ());
     delete ( (UnitsManager *) context_->GetGlobalVar ("UnitsManager").GetPtr ());
     delete ( (ColoniesManager *) context_->GetGlobalVar ("ColoniesManager").GetPtr ());
+    delete ( (TradeProcessor *) context_->GetGlobalVar ("TradeProcessor").GetPtr ());
     SetupState (GAME_STATE_FINISHED);
     DisposeCurrentState ();
 }
