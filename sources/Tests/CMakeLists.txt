@@ -9,3 +9,9 @@ set (SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/TestMapPathFinding.hpp ${CMAKE_CUR
 setup_executable ()
 target_link_libraries (TestMapPathFinding Colonization)
 add_test (NAME test_map_path_finding COMMAND TestMapPathFinding)
+
+set (TARGET_NAME TestInternalTradeArea)
+set (SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/TestInternalTradeArea.hpp ${CMAKE_CURRENT_SOURCE_DIR}/TestInternalTradeArea.cpp)
+setup_executable ()
+target_link_libraries (TestInternalTradeArea Colonization)
+add_test (NAME test_internal_trade_area COMMAND TestInternalTradeArea)

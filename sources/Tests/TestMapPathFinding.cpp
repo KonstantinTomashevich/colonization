@@ -93,8 +93,6 @@ void TestMapPathFindingApplication::Start ()
     map->UpdateDataNode (node, true);
     map->ReadDataFromNode (node);
 
-    // WARNING: Navigation from (4, 4) works wrong in game. Will be fixed soon.
-
     // Firstly calculate path if ship owner isn't colony owner.
     Urho3D::PODVector <Colonization::District *> way = map->FindPath (
                 map->GetDistrictByIndex (4 * mapHeight + 0), map->GetDistrictByIndex (2 * mapHeight + 2), "PlayerX", true, false);

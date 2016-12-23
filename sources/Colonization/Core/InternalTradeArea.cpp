@@ -131,11 +131,11 @@ TradeDistrictProcessingInfo InternalTradeArea::ProcessTradeDistrict (Map *map)
 
     result.unsoldTradeGoodsCost_ = totalFarmsEvolution * farmsProductionCost +
             totalMinesEvolution * minesProductionCost +
-            totalIndustryConsumption * industryProductionCost -
+            totalIndustryEvolution * industryProductionCost -
             result.soldTradeGoodsCost_;
 
-    result.logisticsBonus_ = totalLogisticsEvolution / districtsHashes_.Size () * 6.5f;
-    result.defenseBonus_ = totalDefenseEvolution / districtsHashes_.Size () * 5.0f;
+    result.logisticsBonus_ = totalLogisticsEvolution / (districtsHashes_.Size () * 6.5f);
+    result.defenseBonus_ = totalDefenseEvolution / (districtsHashes_.Size () * 5.0f);
     return result;
 }
 

@@ -132,21 +132,21 @@ void GameStateManager::SetupPlayingState ()
     context_->SetGlobalVar ("embarkationSpeed", 0.15f);
     context_->SetGlobalVar ("disembarkationSpeed", 0.2f);
 
-    context_->SetGlobalVar ("oneColonistFarmsProductionConsumption", 0.015f);
-    context_->SetGlobalVar ("farmsProductionMinesConsumption", 0.01f);
+    context_->SetGlobalVar ("oneColonistFarmsProductionConsumption", 0.01f);
+    context_->SetGlobalVar ("farmsProductionMinesConsumption", 0.005f);
     context_->SetGlobalVar ("farmsProductionIndustryConsumption", 0.3f);
 
-    context_->SetGlobalVar ("oneColonistMinesProductionConsumption", 0.001f);
-    context_->SetGlobalVar ("minesProductionFarmsConsumption", 0.3f);
-    context_->SetGlobalVar ("minesProductionIndustryConsumption", 1.0f);
+    context_->SetGlobalVar ("oneColonistMinesProductionConsumption", 0.002f);
+    context_->SetGlobalVar ("minesProductionFarmsConsumption", 0.2f);
+    context_->SetGlobalVar ("minesProductionIndustryConsumption", 0.9f);
 
-    context_->SetGlobalVar ("oneColonistIndustryProductionConsumption", 0.004f);
-    context_->SetGlobalVar ("industryProductionFarmsConsumption", 0.25f);
-    context_->SetGlobalVar ("industryProductionMinesConsumption", 0.4f);
+    context_->SetGlobalVar ("oneColonistIndustryProductionConsumption", 0.003f);
+    context_->SetGlobalVar ("industryProductionFarmsConsumption", 0.15f);
+    context_->SetGlobalVar ("industryProductionMinesConsumption", 0.25f);
 
     context_->SetGlobalVar ("farmsProductionInternalCost", 1.0f);
     context_->SetGlobalVar ("minesProductionInternalCost", 1.5f);
-    context_->SetGlobalVar ("industryProductionInternalCost", 3.0f);
+    context_->SetGlobalVar ("industryProductionInternalCost", 5.0f);
 
     Map *map = new Map (context_);
     CreateTestMap (map);
