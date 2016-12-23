@@ -97,7 +97,7 @@ InternalTradeArea::~InternalTradeArea ()
 
 }
 
-TradeDistrictProcessingInfo InternalTradeArea::ProcessTradeDistrict (Map *map)
+TradeDistrictProcessingInfo InternalTradeArea::ProcessTrade (Map *map)
 {
     Urho3D::PODVector <District *> realDistricts;
     ConstructVectorOfRealDistricts (map, realDistricts);

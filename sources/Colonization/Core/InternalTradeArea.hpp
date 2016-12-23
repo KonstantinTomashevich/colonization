@@ -15,6 +15,7 @@ struct TradeDistrictProcessingInfo
     float defenseBonus_;
 };
 
+// TODO: Maybe reimplement later to add some features?
 class InternalTradeArea : public Urho3D::Object
 {
 URHO3D_OBJECT (InternalTradeArea, Object)
@@ -32,7 +33,7 @@ protected:
 public:
     InternalTradeArea (Urho3D::Context *context);
     virtual ~InternalTradeArea ();
-    TradeDistrictProcessingInfo ProcessTradeDistrict (Map *map);
+    TradeDistrictProcessingInfo ProcessTrade (Map *map);
 
     int GetDistrictsHashesCount ();
     Urho3D::StringHash GetDistrictHashByIndex (int index);

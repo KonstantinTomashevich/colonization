@@ -113,7 +113,7 @@ void TestInternalTradeAreaApplication::Start ()
     internalTradeArea->AddDistrictHash (map->GetDistrictByIndex (1)->GetHash ());
     internalTradeArea->AddDistrictHash (map->GetDistrictByIndex (2)->GetHash ());
     internalTradeArea->AddDistrictHash (map->GetDistrictByIndex (3)->GetHash ());
-    Colonization::TradeDistrictProcessingInfo result = internalTradeArea->ProcessTradeDistrict (map);
+    Colonization::TradeDistrictProcessingInfo result = internalTradeArea->ProcessTrade (map);
 
     Urho3D::Log::Write (Urho3D::LOG_INFO, "Unused farms production: " + Urho3D::String (result.unusedEvolutionPoints_ ["farms"]));
     Urho3D::Log::Write (Urho3D::LOG_INFO, "Unused mines production: " + Urho3D::String (result.unusedEvolutionPoints_ ["mines"]));

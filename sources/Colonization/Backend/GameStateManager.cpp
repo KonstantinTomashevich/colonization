@@ -148,6 +148,9 @@ void GameStateManager::SetupPlayingState ()
     context_->SetGlobalVar ("minesProductionInternalCost", 1.5f);
     context_->SetGlobalVar ("industryProductionInternalCost", 5.0f);
 
+    context_->SetGlobalVar ("internalTaxes", 0.2f);
+    context_->SetGlobalVar ("externalTaxes", 0.2f);
+
     Map *map = new Map (context_);
     CreateTestMap (map);
     context_->SetGlobalVar ("Map", Urho3D::Variant (map));

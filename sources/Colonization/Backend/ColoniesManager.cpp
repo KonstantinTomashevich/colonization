@@ -9,6 +9,7 @@ namespace Colonization
 {
 void ColoniesManager::ProcessColony (District *colony, float timeStep)
 {
+    // TODO: Think about balance.
     ProcessColonyPopulation (colony, timeStep);
     ProcessColonyForests (colony, timeStep);
     ProcessColonyFarmsEvolution (colony, timeStep);
