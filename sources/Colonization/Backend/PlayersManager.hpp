@@ -1,4 +1,5 @@
 #pragma once
+#include <Colonization/BuildConfiguration.hpp>
 #include <Urho3D/Core/Object.h>
 #include <Urho3D/Container/HashMap.h>
 #include <Urho3D/Network/Connection.h>
@@ -29,6 +30,11 @@ public:
     Urho3D::Vector <Player *> GetPlayersByNames (Urho3D::Vector <Urho3D::StringHash> namesHashes);
     Player *GetPlayer (Urho3D::Connection *connection);
     Urho3D::Vector <Player *> GetAllPlayers ();
+
+#ifdef COLONIZIATION_ENABLE_FUNCTIONS_FOR_TESTS
+    void ManuallyAddTestPlayer (Player *player);
+    void ManuallyRemoveTestPlayer (Urho3D::StringHash nameHash);
+#endif
 
     void PlayerIdentified (Urho3D::Connection *connection, Urho3D::String name);
     void DisconnectPlayer (Urho3D::StringHash nameHash);

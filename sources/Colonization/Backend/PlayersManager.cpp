@@ -139,6 +139,20 @@ Urho3D::Vector <Player *> PlayersManager::GetAllPlayers ()
     return players_.Values ();
 }
 
+#ifdef COLONIZIATION_ENABLE_FUNCTIONS_FOR_TESTS
+void PlayersManager::ManuallyAddTestPlayer (Player *player)
+{
+    players_ [Urho3D::StringHash (player->GetName ())] = player;
+}
+
+void PlayersManager::ManuallyRemoveTestPlayer (Urho3D::StringHash nameHash)
+{
+    Player *player = players_ [nameHash];
+    players_.Erase (nameHash);
+    delete player;
+}
+#endif
+
 void PlayersManager::PlayerIdentified (Urho3D::Connection *connection, Urho3D::String name)
 {
     DeleteIdentificatedConnection (connection);

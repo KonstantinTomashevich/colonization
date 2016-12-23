@@ -97,7 +97,9 @@ Player::Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Connectio
     actionsSequence_ (),
     connection_ (connection)
 {
+#ifndef COLONIZIATION_ENABLE_FUNCTIONS_FOR_TESTS
     assert (connection);
+#endif
     assert (!name.Empty ());
 }
 
