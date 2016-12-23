@@ -12,31 +12,28 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
 {
     ClearTradeAreas ();
     Map *map = (Map *) context_->GetGlobalVar ("Map").GetPtr ();
-    Urho3D::PODVector <District *> toScan;
+    Urho3D::HashMap <Urho3D::StringHash, District *> toScanHashMap;
+
 
     for (int index = 0; index < map->GetDistrictsCount (); index++)
     {
         District *district = map->GetDistrictByIndex (index);
         if (district->hasColony_)
-            toScan.Push (district);
-    }
-
-    // Sort by logistics evolution -- [max, ..., min].
-    if (toScan.Size () > 3)
-        LogisticsEvolutionQuicksort (toScan, 0, toScan.Size () - 1);
-    else if (toScan.Size () == 2)
-    {
-        if (toScan.At (0)->logisticsEvolutionPoints_ < toScan.At (1)->logisticsEvolutionPoints_)
         {
-            District *temp = toScan.At (0);
-            toScan.At (0) = toScan.At (1);
-            toScan.At (1) = temp;
+            float evolutionPoints = district->logisticsEvolutionPoints_;
+            while (toScanHashMap [Urho3D::StringHash (static_cast <int> (evolutionPoints * 1000))])
+                evolutionPoints += 0.001f;
+            toScanHashMap [Urho3D::StringHash (static_cast <int> (evolutionPoints * 1000))] = district;
         }
     }
 
+    toScanHashMap.Sort ();
+    Urho3D::PODVector <District *> toScan;
+    for (int index = toScanHashMap.Values ().Size () - 1; index >= 0; index--)
+        toScan.Push (toScanHashMap.Values ().At (index));
 
     while (!toScan.Empty ())
-        tradeAreas_.Push (CreateTradeArea (toScan.At (toScan.Size () - 1), toScan));
+        tradeAreas_.Push (CreateTradeArea (toScan.At (0), toScan));
 
     PlayersManager *playersManager = (PlayersManager *) context_->GetGlobalVar ("PlayersManager").GetPtr ();
     for (int index = 0; index < tradeAreas_.Size (); index++)
@@ -53,37 +50,6 @@ InternalTradeArea *TradeProcessor::CreateTradeArea (District *start, Urho3D::POD
     for (int index = 0; index < areaDistricts.Size (); index++)
         tradeArea->AddDistrictHash (areaDistricts.At (index)->GetHash ());
     return tradeArea;
-}
-
-void TradeProcessor::LogisticsEvolutionQuicksort (Urho3D::PODVector <District *> &array, int left, int right)
-{
-    int currentLeft = left;
-    int currentRight = right;
-    int medium = array.At (left + (right - left) / 2)->logisticsEvolutionPoints_;
-
-    while (currentLeft <= currentRight)
-    {
-        while (array.At (currentLeft)->logisticsEvolutionPoints_ < medium)
-            currentLeft++;
-
-        while (array.At (currentRight)->logisticsEvolutionPoints_ > medium)
-            currentRight--;
-
-        if (currentLeft <= currentRight)
-        {
-            District *temp = array.At (currentLeft);
-            array [currentLeft] = array [currentRight];
-            array [currentRight] = temp;
-            currentLeft++;
-            currentRight--;
-        }
-    }
-
-    if (left < currentRight)
-        LogisticsEvolutionQuicksort (array, left, currentRight);
-
-    if (currentLeft < right)
-        LogisticsEvolutionQuicksort (array, currentLeft, right);
 }
 
 void TradeProcessor::ProcessTradeAreaDistrict (District *district, Urho3D::PODVector <District *> &areaDistricts, Urho3D::PODVector <District *> &unscannedList)
