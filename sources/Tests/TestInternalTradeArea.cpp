@@ -56,6 +56,10 @@ void TestInternalTradeAreaApplication::Start ()
     context_->SetGlobalVar ("minesProductionInternalCost", 1.5f);
     context_->SetGlobalVar ("industryProductionInternalCost", 5.0f);
 
+    context_->SetGlobalVar ("farmsProductionExternalCost", 0.5f);
+    context_->SetGlobalVar ("minesProductionExternalCost", 1.0f);
+    context_->SetGlobalVar ("industryProductionExternalCost", 3.0f);
+
     Urho3D::SharedPtr <Colonization::Map> map (new Colonization::Map (context_));
     const int mapWidth = 2;
     const int mapHeight = 2;
@@ -129,9 +133,9 @@ void TestInternalTradeAreaApplication::Start ()
         ErrorExit ("Expected unused mines production < 0.0.");
     else if (result.unusedEvolutionPoints_ ["industry"] <= 0.0f)
         ErrorExit ("Expected unused industry production > 0.0.");
-    else if (result.unsoldTradeGoodsCost_ / result.soldTradeGoodsCost_ < 0.1f ||
-             result.unsoldTradeGoodsCost_ / result.soldTradeGoodsCost_ > 0.5f)
-        ErrorExit ("Expected unsold / sold production in (0.1; 0.5).");
+    else if (result.unsoldTradeGoodsCost_ / (result.unsoldTradeGoodsCost_ + result.soldTradeGoodsCost_) < 0.1f ||
+             result.unsoldTradeGoodsCost_ / (result.unsoldTradeGoodsCost_ + result.soldTradeGoodsCost_) > 0.5f)
+        ErrorExit ("Expected unsold / (unsold + sold) production in (0.1; 0.5).");
     else if (result.logisticsBonus_ >= 1.0f)
         ErrorExit ("Expected logistics bonus < 1.0.");
     else if (result.defenseBonus_ >= 1.0f)

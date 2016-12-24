@@ -112,9 +112,13 @@ TradeDistrictProcessingInfo InternalTradeArea::ProcessTrade (Map *map)
     float totalMinesConsumption = CalculateTotalProductionConsumptionOf ("mines", realDistricts);
     float totalIndustryConsumption = CalculateTotalProductionConsumptionOf ("industry", realDistricts);
 
-    float farmsProductionCost = context_->GetGlobalVar ("farmsProductionInternalCost").GetFloat ();
-    float minesProductionCost = context_->GetGlobalVar ("minesProductionInternalCost").GetFloat ();
-    float industryProductionCost = context_->GetGlobalVar ("industryProductionInternalCost").GetFloat ();
+    float farmsInternalProductionCost = context_->GetGlobalVar ("farmsProductionInternalCost").GetFloat ();
+    float minesInternalProductionCost = context_->GetGlobalVar ("minesProductionInternalCost").GetFloat ();
+    float industryInternalProductionCost = context_->GetGlobalVar ("industryProductionInternalCost").GetFloat ();
+
+    float farmsExternalProductionCost = context_->GetGlobalVar ("farmsProductionExternalCost").GetFloat ();
+    float minesExternalProductionCost = context_->GetGlobalVar ("minesProductionExternalCost").GetFloat ();
+    float industryExternalProductionCost = context_->GetGlobalVar ("industryProductionExternalCost").GetFloat ();
 
     TradeDistrictProcessingInfo result;
     result.unusedEvolutionPoints_ ["farms"] = totalFarmsEvolution - totalFarmsConsumption;
@@ -125,14 +129,13 @@ TradeDistrictProcessingInfo InternalTradeArea::ProcessTrade (Map *map)
     float soldMinesProduction = (totalMinesConsumption > totalMinesEvolution) ? totalMinesEvolution : totalMinesConsumption;
     float soldIndustryProduction = (totalIndustryConsumption > totalIndustryEvolution) ? totalIndustryEvolution : totalIndustryConsumption;
 
-    result.soldTradeGoodsCost_ = soldFarmsProduction * farmsProductionCost +
-            soldMinesProduction * minesProductionCost +
-            soldIndustryProduction * industryProductionCost;
+    result.soldTradeGoodsCost_ = soldFarmsProduction * farmsInternalProductionCost +
+            soldMinesProduction * minesInternalProductionCost +
+            soldIndustryProduction * industryInternalProductionCost;
 
-    result.unsoldTradeGoodsCost_ = totalFarmsEvolution * farmsProductionCost +
-            totalMinesEvolution * minesProductionCost +
-            totalIndustryEvolution * industryProductionCost -
-            result.soldTradeGoodsCost_;
+    result.unsoldTradeGoodsCost_ = (totalFarmsEvolution - soldFarmsProduction) * farmsExternalProductionCost +
+            (totalMinesEvolution - soldMinesProduction) * minesExternalProductionCost +
+            (totalIndustryEvolution - soldIndustryProduction) * industryExternalProductionCost;
 
     result.logisticsBonus_ = totalLogisticsEvolution / (districtsHashes_.Size () * 6.5f);
     result.defenseBonus_ = totalDefenseEvolution / (districtsHashes_.Size () * 5.0f);
