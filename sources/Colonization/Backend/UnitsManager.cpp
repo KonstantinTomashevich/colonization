@@ -4,6 +4,7 @@
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/IO/Log.h>
 #include <Colonization/Backend/SceneManager.hpp>
+#include <Colonization/Backend/PlayersManager.hpp>
 
 namespace Colonization
 {
@@ -32,6 +33,19 @@ void UnitsManager::SettleColonizator (ColonizatorsUnit *unit)
         colony->womenCount_ += unit->colonizatorsCount_ * 1.0f * (1.0f - mansPercent);
         unitsContainer_->RemoveAndDeleteUnit (unit);
     }
+}
+
+void UnitsManager::ProcessTrader (TradersUnit *unit)
+{
+    PlayersManager *playersManager = (PlayersManager *) context_->GetGlobalVar ("PlayersManager").GetPtr ();
+    assert (playersManager);
+
+    Player *player = playersManager->GetPlayer (Urho3D::String (unit->ownerPlayer_));
+    assert (player);
+
+    float externalTaxes = context_->GetGlobalVar ("externalTaxes").GetFloat ();
+    player->SetGold (player->GetGold () + unit->tradeGoodsCost_ * externalTaxes);
+    unitsContainer_->RemoveAndDeleteUnit (unit);
 }
 
 UnitsManager::UnitsManager (Urho3D::Context *context) : Urho3D::Object (context),
@@ -65,6 +79,8 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
 
                 if (unit->way_.Empty () && unit->unitType_ == UNIT_COLONIZATORS)
                     SettleColonizator ( (ColonizatorsUnit *) unit);
+                else if (unit->way_.Empty () && unit->unitType_ == UNIT_TRADERS)
+                    ProcessTrader ( (TradersUnit *) unit);
             }
 
             float distance = (unit->position_->unitPosition_ - unit->way_.At (0)->unitPosition_).Length ();
@@ -90,6 +106,8 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
 
                 if (unit->way_.Empty () && unit->unitType_ == UNIT_COLONIZATORS)
                     SettleColonizator ( (ColonizatorsUnit *) unit);
+                else if (unit->way_.Empty () && unit->unitType_ == UNIT_TRADERS)
+                    ProcessTrader ( (TradersUnit *) unit);
             }
         }
     }

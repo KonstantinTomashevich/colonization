@@ -11,6 +11,7 @@ protected:
     UnitsContainer *unitsContainer_;
 
     void SettleColonizator (ColonizatorsUnit *unit);
+    void ProcessTrader (TradersUnit *unit);
 
 public:
     UnitsManager (Urho3D::Context *context);
