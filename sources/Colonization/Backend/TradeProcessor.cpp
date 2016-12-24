@@ -5,6 +5,7 @@
 #include <Urho3D/IO/Log.h>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
+#include <Colonization/Backend/UnitsManager.hpp>
 
 namespace Colonization
 {
@@ -98,8 +99,24 @@ void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map
     {
         float internalTaxes = context_->GetGlobalVar ("internalTaxes").GetFloat ();
         TradeDistrictProcessingInfo result = tradeArea->ProcessTrade (map);
-        float playersIncome = result.soldTradeGoodsCost_ * result.logisticsBonus_ * result.defenseBonus_ * internalTaxes;
+        float playersIncome = result.soldTradeGoodsCost_ * result.logisticsBonus_ * result.defenseBonus_ * updateDelay * internalTaxes;
         player->SetGold (player->GetGold () + playersIncome);
+
+        UnitsManager *unitsManager = (UnitsManager *) context_->GetGlobalVar ("unitsManager").GetPtr ();
+        assert (unitsManager);
+        float unsoldGoldPerDistrict = result.unsoldTradeGoodsCost_ * updateDelay  / tradeArea->GetDistrictsHashesCount ();
+        for (int index = 0; index < tradeArea->GetDistrictsHashesCount (); index++)
+        {
+            District *district = map->GetDistrictByHash (tradeArea->GetDistrictHashByIndex (index));
+            assert (district);
+            TradersUnit *unit = new TradersUnit (context_);
+            unit->tradeGoodsCost_ = unsoldGoldPerDistrict;
+            unit->ownerPlayer_ = district->colonyOwnerName_;
+            unit->position_ = district;
+            // TODO: Path is temporary!
+            unit->way_ = map->FindPath (unit->position_, map->GetDistrictByIndex (0), unit->ownerPlayer_, true, false);
+            unitsManager->GetUnitsContainer ()->AddUnit (unit);
+        }
     }
 }
 
@@ -131,8 +148,8 @@ void TradeProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &e
     beforeTradeAreasUpdate_ -= timeStep;
     if (beforeTradeAreasUpdate_ <= 0.0f)
     {
-        UpdateTradeAreas (1.0f);
-        beforeTradeAreasUpdate_ = 1.0f;
+        UpdateTradeAreas (10.0f);
+        beforeTradeAreasUpdate_ = 10.0f;
     }
 }
 

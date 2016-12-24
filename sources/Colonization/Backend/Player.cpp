@@ -82,7 +82,7 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
         ColonizatorsUnit *colonizatorsUnit = new ColonizatorsUnit (context_);
         colonizatorsUnit->colonizatorsCount_ = 100;
         // TODO: Position is temporary! Will be rewrited!
-        colonizatorsUnit->position_ = map->GetDistrictByIndex (4 * 5 + 4); // [X * HEIGHT + Y] = (X, Y)
+        colonizatorsUnit->position_ = map->GetDistrictByIndex (0 * 5 + 0); // [X * HEIGHT + Y] = (X, Y)
         colonizatorsUnit->way_ = map->FindPath (colonizatorsUnit->position_, targetDistrict, name_, true, true);
         assert (!colonizatorsUnit->way_.Empty ());
         colonizatorsUnit->ownerPlayer_ = name_;

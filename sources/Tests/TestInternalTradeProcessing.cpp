@@ -8,6 +8,7 @@
 #include <Colonization/Core/InternalTradeArea.hpp>
 #include <Colonization/Backend/TradeProcessor.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
+#include <Colonization/Backend/UnitsManager.hpp>
 
 URHO3D_DEFINE_APPLICATION_MAIN (Tests::TestInternalTradeProcessingApplication)
 namespace Tests
@@ -121,9 +122,11 @@ void TestInternalTradeProcessingApplication::Start ()
     playersManager->ManuallyAddFakePlayer (fakePlayer);
 
     Urho3D::SharedPtr <Colonization::TradeProcessor> tradeProcessor (new Colonization::TradeProcessor (context_));
+    Urho3D::SharedPtr <Colonization::UnitsManager> unitsManager (new Colonization::UnitsManager (context_));
     context_->SetGlobalVar ("Map", Urho3D::Variant (map.Get ()));
     context_->SetGlobalVar ("PlayersManager", Urho3D::Variant (playersManager.Get ()));
     context_->SetGlobalVar ("TradeProcessor", Urho3D::Variant (tradeProcessor.Get ()));
+    context_->SetGlobalVar ("UnitsManager", Urho3D::Variant (unitsManager.Get ()));
 
     Urho3D::VariantMap eventData;
     eventData [Urho3D::Update::P_TIMESTEP] = 0.1f;
@@ -141,6 +144,8 @@ void TestInternalTradeProcessingApplication::Start ()
 
 
     Urho3D::Log::Write (Urho3D::LOG_INFO, "PlayerX's gold: " + Urho3D::String (fakePlayer->GetGold ()));
+    Urho3D::Log::Write (Urho3D::LOG_INFO, "Sended traders: " + Urho3D::String (unitsManager->GetUnitsContainer ()->GetUnitsCount ()));
+
     if (tradeProcessor->GetTradeAreasCount () != 2)
     {
         playersManager->ManuallyRemoveFakePlayer (fakePlayer->GetName ());
@@ -151,6 +156,11 @@ void TestInternalTradeProcessingApplication::Start ()
         playersManager->ManuallyRemoveFakePlayer (fakePlayer->GetName ());
         ErrorExit ("Expected that PlayerX has more than 5.0 gold!");
     }
+    /*else if (unitsManager->GetUnitsContainer ()->GetUnitsCount () != 7)
+    {
+        playersManager->ManuallyRemoveFakePlayer (fakePlayer->GetName ());
+        ErrorExit ("Expected that PlayerX sended 7 traders!");
+    }*/
     else
     {
         playersManager->ManuallyRemoveFakePlayer (fakePlayer->GetName ());

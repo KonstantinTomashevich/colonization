@@ -95,7 +95,8 @@ class Player : ScriptObject
             
         if (isSceneLoaded_)
         {
-            SetRefs (mapPtr_, 5);
+            SetRefs (mapPtr_, 100);
+            SetRefs (unitsContainerPtr_, 100);
             beforeMapUpdate_ -= timeStep;
             beforeMapNeighborsUpdate_ -= timeStep;
             beforeUnitsUpdate_ -= timeStep;

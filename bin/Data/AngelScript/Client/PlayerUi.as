@@ -43,7 +43,7 @@ class PlayerUi : ScriptObject
         StringHash unitHash = node.parent.GetChild ("screenPressesHandlerScriptNode").
                                 vars ["selectedHash"].GetStringHash ();
         Unit @unit = unitsContainer.GetUnitByHash (unitHash);
-        SetRefs (unit, 5);
+        SetRefs (unit, 100);
             
         Text @ownerText = unitInfoWindow.GetChild ("ownerText");
         ownerText.text = unit.ownerPlayer_ + "'s";
@@ -110,7 +110,7 @@ class PlayerUi : ScriptObject
         StringHash districtHash = node.parent.GetChild ("screenPressesHandlerScriptNode").
                                 vars ["selectedHash"].GetStringHash ();
         District @district = map.GetDistrictByHash (districtHash);
-        SetRefs (district, 5);
+        SetRefs (district, 100);
         
         String playerName = node.parent.vars ["playerName"].GetString ();
         ui.root.GetChild ("ingame").GetChild ("sendColonizatorsButton").visible =
