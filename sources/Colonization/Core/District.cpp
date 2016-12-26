@@ -26,27 +26,27 @@ District::District (Urho3D::Context *context) : Urho3D::LogicComponent (context)
     colonyPosition_ (),
     neighbors_ (),
 
-    farmingSquare_ (0.0f),
-    forestsSquare_ (0.0f),
-    landAverageFertility_ (0.0f),
+    farmingSquare_ (1.0f),
+    forestsSquare_ (1.0f),
+    landAverageFertility_ (1.0f),
     climate_ (CLIMATE_TEMPERATE),
 
-    forestsReproductivity_ (0.0f),
+    forestsReproductivity_ (1.0f),
     hasCoalDeposits_ (false),
     hasIronDeposits_ (false),
     hasSilverDeposits_ (false),
     hasGoldDeposits_ (false),
 
-    nativesCount_ (0),
-    nativesFightingTechnologyLevel_ (0),
+    nativesCount_ (0.0f),
+    nativesFightingTechnologyLevel_ (1.0f),
     nativesAggressiveness_ (0.0f),
     nativesCharacter_ (NATIVES_CHARACTER_MEDIUM),
 
     hasColony_ (false),
     colonyOwnerName_ (),
-    menCount_ (0),
-    womenCount_ (0),
-    localArmySize_ (0),
+    menCount_ (0.0f),
+    womenCount_ (0.0f),
+    localArmySize_ (0.0f),
     farmsEvolutionPoints_ (0.0f),
     minesEvolutionPoints_ (0.0f),
     industryEvolutionPoints_ (0.0f),
@@ -248,7 +248,7 @@ Urho3D::StringHash District::GetHash ()
     return hash_;
 }
 
-void District::SetHash(Urho3D::StringHash hash)
+void District::SetHash (Urho3D::StringHash hash)
 {
     hash_ = hash;
 }
@@ -280,6 +280,7 @@ Urho3D::String District::GetName ()
 
 void District::SetName (Urho3D::String name)
 {
+    assert (!name.Empty ());
     name_ = name;
 }
 
@@ -290,6 +291,7 @@ Urho3D::PODVector <Urho3D::Vector3> District::GetPolygonPoints ()
 
 void District::SetPolygonPoints (Urho3D::PODVector <Urho3D::Vector3> polygonPoints)
 {
+    assert (!polygonPoints.Empty ());
     polygonPoints_ = polygonPoints;
 }
 
@@ -335,6 +337,7 @@ Urho3D::PODVector <Urho3D::StringHash> District::GetNeighborsHashes ()
 
 void District::SetNeighborsHashes (Urho3D::PODVector <Urho3D::StringHash> neighbors)
 {
+    assert (!neighbors.Empty ());
     neighbors_ = neighbors;
 }
 
@@ -360,6 +363,7 @@ float District::GetFarmingSquare ()
 
 void District::SetFarmingSquare (float farmingSquare)
 {
+    assert (farmingSquare > 0.0f);
     farmingSquare_ = farmingSquare;
 }
 
@@ -370,6 +374,7 @@ float District::GetForestsSquare ()
 
 void District::SetForestsSquare (float forestsSquare)
 {
+    assert (forestsSquare > 0.0f);
     forestsSquare_ = forestsSquare;
 }
 
@@ -380,6 +385,7 @@ float District::GetLandAverageFertility ()
 
 void District::SetLandAverageFertility (float landAverageFertility)
 {
+    assert (landAverageFertility > 0.0f);
     landAverageFertility_ = landAverageFertility;
 }
 
@@ -400,6 +406,7 @@ float District::GetForestsReproductivity ()
 
 void District::SetForestsReproductivity (float forestsReproductivity)
 {
+    assert (forestsReproductivity > 0.0f);
     forestsReproductivity_ = forestsReproductivity;
 }
 
@@ -450,6 +457,7 @@ float District::GetNativesCount ()
 
 void District::SetNativesCount (float nativesCount)
 {
+    assert (nativesCount >= 0.0f);
     nativesCount_ = nativesCount;
 }
 
@@ -460,6 +468,7 @@ float District::GetNativesFightingTechnologyLevel ()
 
 void District::SetNativesFightingTechnologyLevel (float nativesFightingTechnologyLevel)
 {
+    assert (nativesFightingTechnologyLevel > 0.0f);
     nativesFightingTechnologyLevel_ = nativesFightingTechnologyLevel;
 }
 
@@ -470,6 +479,7 @@ float District::GetNativesAggressiveness ()
 
 void District::SetNativesAggressivness (float nativesAggressiveness)
 {
+    assert (nativesAggressiveness >= 0.0f);
     nativesAggressiveness_ = nativesAggressiveness;
 }
 
@@ -510,6 +520,7 @@ float District::GetMenCount ()
 
 void District::SetMenCount (float menCount)
 {
+    assert (menCount >= 0.0f);
     menCount_ = menCount;
 }
 
@@ -520,6 +531,7 @@ float District::GetWomenCount ()
 
 void District::SetWomenCount (float womenCount)
 {
+    assert (womenCount >= 0.0f);
     womenCount_ = womenCount;
 }
 
@@ -530,6 +542,7 @@ float District::GetLocalArmySize ()
 
 void District::SetLocalArmySize (float localArmySize)
 {
+    assert (localArmySize >= 0.0f);
     localArmySize_ = localArmySize;
 }
 
@@ -540,6 +553,7 @@ float District::GetFarmsEvolutionPoints ()
 
 void District::SetFarmsEvolutionPoints (float farmsEvolutionPoints)
 {
+    assert (farmsEvolutionPoints >= 0.0f);
     farmsEvolutionPoints_ = farmsEvolutionPoints;
 }
 
@@ -550,6 +564,7 @@ float District::GetMinesEvolutionPoints ()
 
 void District::SetMinesEvolutionPoints (float minesEvolutionPoints)
 {
+    assert (minesEvolutionPoints >= 0.0f);
     minesEvolutionPoints_ = minesEvolutionPoints;
 }
 
@@ -560,6 +575,7 @@ float District::GetIndustryEvolutionPoints ()
 
 void District::SetIndustryEvolutionPoints (float industryEvolutionPoints)
 {
+    assert (industryEvolutionPoints >= 0.0f);
     industryEvolutionPoints_ = industryEvolutionPoints;
 }
 
@@ -570,6 +586,7 @@ float District::GetLogisticsEvolutionPoints ()
 
 void District::SetLogisticsEvolutionPoints (float logisticsEvolutionPoints)
 {
+    assert (logisticsEvolutionPoints >= 0.0f);
     logisticsEvolutionPoints_ = logisticsEvolutionPoints;
 }
 
@@ -580,6 +597,7 @@ float District::GetDefenseEvolutionPoints ()
 
 void District::SetDefenseEvolutionPoints (float defenseEvolutionPoints)
 {
+    assert (defenseEvolutionPoints >= 0.0f);
     defenseEvolutionPoints_ = defenseEvolutionPoints;
 }
 
@@ -590,6 +608,7 @@ float District::GetAverageLevelOfLifePoints ()
 
 void District::SetAverageLevelOfLifePoint (float averageLevelOfLifePoints)
 {
+    assert (averageLevelOfLifePoints >= 0.0f);
     averageLevelOfLifePoints_ = averageLevelOfLifePoints;
 }
 }
