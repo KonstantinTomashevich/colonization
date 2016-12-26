@@ -5,6 +5,16 @@
 
 namespace Colonization
 {
+float District::forestsReproductivity() const
+{
+    return forestsReproductivity_;
+}
+
+void District::setForestsReproductivity(float forestsReproductivity)
+{
+    forestsReproductivity_ = forestsReproductivity;
+}
+
 District::District (Urho3D::Context *context) : Urho3D::Object (context),
     hash_ ("nothing"),
     needDataUpdate_ (true),
@@ -34,7 +44,7 @@ District::District (Urho3D::Context *context) : Urho3D::Object (context),
 
     hasColony_ (false),
     colonyOwnerName_ (),
-    mansCount_ (0),
+    menCount_ (0),
     womenCount_ (0),
     localArmySize_ (0),
     farmsEvolutionPoints_ (0.0f),
@@ -126,8 +136,8 @@ void District::UpdateDataNode (Urho3D::Node *dataNode, bool rewritePolygonPoints
     if (dataNode->GetVar ("colonyOwnerName").GetString () != colonyOwnerName_)
         dataNode->SetVar ("colonyOwnerName", colonyOwnerName_);
 
-    if (dataNode->GetVar ("mansCount").GetInt () != mansCount_)
-        dataNode->SetVar ("mansCount", mansCount_);
+    if (dataNode->GetVar ("mansCount").GetInt () != menCount_)
+        dataNode->SetVar ("mansCount", menCount_);
 
     if (dataNode->GetVar ("womenCount").GetInt () != womenCount_)
         dataNode->SetVar ("womenCount", womenCount_);
@@ -187,7 +197,7 @@ void District::ReadDataFromNode (Urho3D::Node *dataNode)
 
     hasColony_ = dataNode->GetVar ("hasColony").GetBool ();
     colonyOwnerName_ = dataNode->GetVar ("colonyOwnerName").GetString ();
-    mansCount_ = dataNode->GetVar ("mansCount").GetInt ();
+    menCount_ = dataNode->GetVar ("mansCount").GetInt ();
     womenCount_ = dataNode->GetVar ("womenCount").GetInt ();
     localArmySize_ = dataNode->GetVar ("localArmySize").GetInt ();
     farmsEvolutionPoints_ = dataNode->GetVar ("farmsEvolutionPoints").GetFloat ();
@@ -236,5 +246,350 @@ void District::UpdateHash (Map *owner)
 Urho3D::StringHash District::GetHash ()
 {
     return hash_;
+}
+
+void District::SetHash(Urho3D::StringHash hash)
+{
+    hash_ = hash;
+}
+
+bool District::IsSea ()
+{
+    return isSea_;
+}
+
+bool District::SetIsSea (bool isSea)
+{
+    isSea_ = isSea;
+}
+
+bool District::IsImpassable ()
+{
+    return isImpassable_;
+}
+
+void District::SetIsImpassable (bool isImpassable)
+{
+    isImpassable_ = isImpassable;
+}
+
+Urho3D::String District::GetName ()
+{
+    return name_;
+}
+
+void District::SetName (Urho3D::String name)
+{
+    name_ = name;
+}
+
+Urho3D::PODVector <Urho3D::Vector3> District::GetPolygonPoints ()
+{
+    return polygonPoints_;
+}
+
+void District::SetPolygonPoints (Urho3D::PODVector <Urho3D::Vector3> polygonPoints)
+{
+    polygonPoints_ = polygonPoints;
+}
+
+Urho3D::VariantVector &District::GetPolygonPointsAttribute ()
+{
+    Urho3D::VariantVector variantVector;
+    for (int index = 0; index < polygonPoints_.Size (); index++)
+        variantVector.Push (polygonPoints_.At (index));
+    return variantVector;
+}
+
+void District::SetPolygonPointsAttribute (Urho3D::VariantVector polygonPoints)
+{
+    polygonPoints_.Clear ();
+    for (int index = 0; index < polygonPoints.Size (); index++)
+        polygonPoints_.Push (polygonPoints.At (index).GetVector3 ());
+}
+
+Urho3D::Vector3 District::GetUnitPosition ()
+{
+    return unitPosition_;
+}
+
+void District::SetUnitPosition (Urho3D::Vector3 unitPosition)
+{
+    unitPosition_ = unitPosition;
+}
+
+Urho3D::Vector3 District::GetColonyPosition ()
+{
+    return colonyPosition_;
+}
+
+void District::SetColonyPosition (Urho3D::Vector3 colonyPosition)
+{
+    colonyPosition_ = colonyPosition;
+}
+
+Urho3D::PODVector <Urho3D::StringHash> District::GetNeighborsHashes ()
+{
+    return neighbors_;
+}
+
+void District::SetNeighborsHashes (Urho3D::PODVector <Urho3D::StringHash> neighbors)
+{
+    neighbors_ = neighbors;
+}
+
+Urho3D::VariantVector District::GetNeighborsHashesAttribute ()
+{
+    Urho3D::VariantVector variantVector;
+    for (int index = 0; index < neighbors_.Size (); index++)
+        variantVector.Push (neighbors_.At (index));
+    return variantVector;
+}
+
+void District::SetNeighborsHashesAttribute (Urho3D::VariantVector neighbors)
+{
+    neighbors_.Clear ();
+    for (int index = 0; index < neighbors.Size (); index++)
+        neighbors_.Push (neighbors.At (index).GetStringHash ());
+}
+
+float District::GetFarmingSquare ()
+{
+    return farmingSquare_;
+}
+
+void District::SetFarmingSquare (float farmingSquare)
+{
+    farmingSquare_ = farmingSquare;
+}
+
+float District::GetForestsSquare ()
+{
+    return forestsSquare_;
+}
+
+void District::SetForestsSquare (float forestsSquare)
+{
+    forestsSquare_ = forestsSquare;
+}
+
+float District::GetLandAverageFertility ()
+{
+    return landAverageFertility_;
+}
+
+void District::SetLandAverageFertility (float landAverageFertility)
+{
+    landAverageFertility_ = landAverageFertility;
+}
+
+ClimateType District::GetClimate ()
+{
+    return climate_;
+}
+
+void District::SetClimate (ClimateType climate)
+{
+    climate_ = climate;
+}
+
+float District::GetForestsReproductivity ()
+{
+    return forestsReproductivity_;
+}
+
+void District::SetForestsReproductivity (float forestsReproductivity)
+{
+    forestsReproductivity_ = forestsReproductivity;
+}
+
+bool District::HasCoalDeposits ()
+{
+    return hasCoalDeposits_;
+}
+
+void District::SetCoalDepositits (bool hasCoalDeposits)
+{
+    hasCoalDeposits_ = hasCoalDeposits;
+}
+
+bool District::HasIronDeposits ()
+{
+    return hasIronDeposits_;
+}
+
+void District::SetIronDeposits (bool hasIronDeposits)
+{
+    hasIronDeposits_ = hasIronDeposits;
+}
+
+bool District::HasSilverDeposits ()
+{
+    return hasSilverDeposits_;
+}
+
+void District::SetSilverDeposits (bool hasSilverDeposits)
+{
+    hasSilverDeposits_ = hasSilverDeposits;
+}
+
+bool District::HasGoldDeposits ()
+{
+    return hasGoldDeposits_;
+}
+
+void District::SetGoldDepositions (bool hasGoldDeposits)
+{
+    hasGoldDeposits_ = hasGoldDeposits;
+}
+
+float District::GetNativesCount ()
+{
+    return nativesCount_;
+}
+
+void District::SetNativesCount (float nativesCount)
+{
+    nativesCount_ = nativesCount;
+}
+
+float District::GetNativesFightingTechnologyLevel ()
+{
+    return nativesFightingTechnologyLevel_;
+}
+
+void District::SetNativesFightingTechnologyLevel (float nativesFightingTechnologyLevel)
+{
+    nativesFightingTechnologyLevel_ = nativesFightingTechnologyLevel;
+}
+
+float District::GetNativesAggressiveness ()
+{
+    return nativesAggressiveness_;
+}
+
+void District::SetNativesAggressivness (float nativesAggressiveness)
+{
+    nativesAggressiveness_ = nativesAggressiveness;
+}
+
+NativesCharacter District::GetNativesCharacter ()
+{
+    return nativesCharacter_;
+}
+
+void District::SetNativesCharacter (NativesCharacter nativesCharacter)
+{
+    nativesCharacter_ = nativesCharacter;
+}
+
+bool District::HasColony ()
+{
+    return hasColony_;
+}
+
+void District::SetColony (bool hasColony)
+{
+    hasColony_ = hasColony;
+}
+
+Urho3D::String District::GetColonyOwnerName ()
+{
+    return colonyOwnerName_;
+}
+
+void District::SetColonyOwnerName (Urho3D::String colonyOwnerName)
+{
+    colonyOwnerName_ = colonyOwnerName;
+}
+
+float District::GetMenCount ()
+{
+    return menCount_;
+}
+
+void District::SetMenCount (float menCount)
+{
+    menCount_ = menCount;
+}
+
+float District::GetWomenCount ()
+{
+    return womenCount_;
+}
+
+void District::SetWomenCount (float womenCount)
+{
+    womenCount_ = womenCount;
+}
+
+float District::GetLocalArmySize ()
+{
+    return localArmySize_;
+}
+
+void District::SetLocalArmySize (float localArmySize)
+{
+    localArmySize_ = localArmySize;
+}
+
+float District::GetFarmsEvolutionPoints ()
+{
+    return farmsEvolutionPoints_;
+}
+
+void District::SetFarmsEvolutionPoints (float farmsEvolutionPoints)
+{
+    farmsEvolutionPoints_ = farmsEvolutionPoints;
+}
+
+float District::GetMinesEvolutionPoints ()
+{
+    return minesEvolutionPoints_;
+}
+
+void District::SetMinesEvolutionPoints (float minesEvolutionPoints)
+{
+    minesEvolutionPoints_ = minesEvolutionPoints;
+}
+
+float District::GetIndustryEvolutionPoints ()
+{
+    return industryEvolutionPoints_;
+}
+
+void District::SetIndustryEvolutionPoints (float industryEvolutionPoints)
+{
+    industryEvolutionPoints_ = industryEvolutionPoints;
+}
+
+float District::GetLogisticsEvolutionPoints ()
+{
+    return logisticsEvolutionPoints_;
+}
+
+void District::SetLogisticsEvolutionPoints (float logisticsEvolutionPoints)
+{
+    logisticsEvolutionPoints_ = logisticsEvolutionPoints;
+}
+
+float District::GetDefenseEvolutionPoints ()
+{
+    return defenseEvolutionPoints_;
+}
+
+void District::SetDefenseEvolutionPoints (float defenseEvolutionPoints)
+{
+    defenseEvolutionPoints_ = defenseEvolutionPoints;
+}
+
+float District::GetAverageLevelOfLifePoints ()
+{
+    return averageLevelOfLifePoints_;
+}
+
+void District::SetAverageLevelOfLifePoint (float averageLevelOfLifePoints)
+{
+    averageLevelOfLifePoints_ = averageLevelOfLifePoints;
 }
 }

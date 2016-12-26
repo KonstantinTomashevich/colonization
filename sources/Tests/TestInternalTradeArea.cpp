@@ -81,7 +81,7 @@ void TestInternalTradeAreaApplication::Start ()
             district->isSea_ = false;
             district->hasColony_ = true;
             district->colonyOwnerName_ = "PlayerX";
-            district->mansCount_ = 100;
+            district->menCount_ = 100;
             district->womenCount_ = 100;
             map->AddDistrict (district);
             district->UpdateHash (map);

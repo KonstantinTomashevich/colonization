@@ -24,13 +24,13 @@ void ColoniesManager::ProcessColony (District *colony, float timeStep)
 
 void ColoniesManager::ProcessColonyPopulation (District *colony, float timeStep)
 {
-    float sexRatio = colony->mansCount_ / colony->womenCount_;
+    float sexRatio = colony->menCount_ / colony->womenCount_;
     float increaseModifer = 1.0f - Urho3D::Abs (1.0f - sexRatio);
-    float populationIncrease = (colony->mansCount_ * colony->womenCount_) *
+    float populationIncrease = (colony->menCount_ * colony->womenCount_) *
             coloniesBasicPopulationIncrease_ * increaseModifer * timeStep;
 
     float newPopulationSexRatio = Urho3D::Random (0.4f, 0.6f);
-    colony->mansCount_ += populationIncrease * newPopulationSexRatio * timeStep;
+    colony->menCount_ += populationIncrease * newPopulationSexRatio * timeStep;
     colony->womenCount_ += populationIncrease * (1.0f - newPopulationSexRatio) * timeStep;
 }
 
@@ -53,7 +53,7 @@ void ColoniesManager::ProcessColonyFarmsEvolution (District *colony, float timeS
 
     float farmsEvolutionInColonyEvolution = colonyFarmsEvolution / totalColonyEvolution;
 
-    float canBePlanted = (colony->mansCount_ + colony->womenCount_) * farmsEvolutionInColonyEvolution *
+    float canBePlanted = (colony->menCount_ + colony->womenCount_) * farmsEvolutionInColonyEvolution *
             canBePlantedByOneColonist_ * sqrt (colonyFarmsEvolution);
 
     if (colony->forestsSquare_ > (colony->forestsSquare_ + colony->farmingSquare_) * 0.15f)

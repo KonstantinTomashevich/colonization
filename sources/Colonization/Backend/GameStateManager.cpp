@@ -74,12 +74,12 @@ void CreateTestMap (Map *map)
 
     map->GetDistrictByIndex (2 * mapHeight + 3)->hasColony_ = true;
     map->GetDistrictByIndex (2 * mapHeight + 3)->colonyOwnerName_ = "Konstant";
-    map->GetDistrictByIndex (2 * mapHeight + 3)->mansCount_ = 50;
+    map->GetDistrictByIndex (2 * mapHeight + 3)->menCount_ = 50;
     map->GetDistrictByIndex (2 * mapHeight + 3)->womenCount_ = 50;
 
     map->GetDistrictByIndex (1 * mapHeight + 0)->hasColony_ = true;
     map->GetDistrictByIndex (1 * mapHeight + 0)->colonyOwnerName_ = "AIPlayer";
-    map->GetDistrictByIndex (1 * mapHeight + 0)->mansCount_ = 50;
+    map->GetDistrictByIndex (1 * mapHeight + 0)->menCount_ = 50;
     map->GetDistrictByIndex (1 * mapHeight + 0)->womenCount_ = 50;
     map->UpdateNeighborsOfDistricts ();
 }

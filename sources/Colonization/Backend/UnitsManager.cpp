@@ -29,7 +29,7 @@ void UnitsManager::SettleColonizator (ColonizatorsUnit *unit)
     else
     {
         float mansPercent = Urho3D::Random (0.4f, 0.6f);
-        colony->mansCount_ += unit->colonizatorsCount_ * 1.0f * mansPercent;
+        colony->menCount_ += unit->colonizatorsCount_ * 1.0f * mansPercent;
         colony->womenCount_ += unit->colonizatorsCount_ * 1.0f * (1.0f - mansPercent);
         unitsContainer_->RemoveAndDeleteUnit (unit);
     }

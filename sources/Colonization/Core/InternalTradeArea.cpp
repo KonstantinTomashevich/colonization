@@ -56,7 +56,7 @@ float InternalTradeArea::CalculateDistrictProductionConsumptionOfFarms (District
     float minesConsumption = context_->GetGlobalVar ("farmsProductionMinesConsumption").GetFloat ();
     float industryConsumption = context_->GetGlobalVar ("farmsProductionIndustryConsumption").GetFloat ();
 
-    float totalConsumption = oneColinistConsumption * (district->mansCount_ + district->womenCount_);
+    float totalConsumption = oneColinistConsumption * (district->menCount_ + district->womenCount_);
     totalConsumption += minesConsumption * district->minesEvolutionPoints_;
     totalConsumption += industryConsumption * district->industryEvolutionPoints_;
     return totalConsumption * Urho3D::Random (0.9f, 1.1f);
@@ -68,7 +68,7 @@ float InternalTradeArea::CalculateDistrictProductionConsumptionOfMines (District
     float farmsConsumption = context_->GetGlobalVar ("minesProductionFarmsConsumption").GetFloat ();
     float industryConsumption = context_->GetGlobalVar ("minesProductionIndustryConsumption").GetFloat ();
 
-    float totalConsumption = oneColinistConsumption * (district->mansCount_ + district->womenCount_);
+    float totalConsumption = oneColinistConsumption * (district->menCount_ + district->womenCount_);
     totalConsumption += farmsConsumption * district->farmsEvolutionPoints_;
     totalConsumption += industryConsumption * district->industryEvolutionPoints_;
     return totalConsumption * Urho3D::Random (0.9f, 1.1f);
@@ -80,7 +80,7 @@ float InternalTradeArea::CalculateDistrictProductionConsumptionOfIndustry (Distr
     float farmsConsumption = context_->GetGlobalVar ("industryProductionFarmsConsumption").GetFloat ();
     float minesConsumption = context_->GetGlobalVar ("industryProductionMinesConsumption").GetFloat ();
 
-    float totalConsumption = oneColinistConsumption * (district->mansCount_ + district->womenCount_);
+    float totalConsumption = oneColinistConsumption * (district->menCount_ + district->womenCount_);
     totalConsumption += farmsConsumption * district->farmsEvolutionPoints_;
     totalConsumption += minesConsumption * district->minesEvolutionPoints_;
     return totalConsumption * Urho3D::Random (0.9f, 1.1f);
