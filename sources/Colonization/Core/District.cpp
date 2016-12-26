@@ -1,19 +1,30 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "District.hpp"
 #include <Urho3D/IO/Log.h>
+#include <Urho3D/Core/Context.h>
+#include <Colonization/Utils/Categories.hpp>
 #include <Colonization/Core/Map.hpp>
 
 namespace Colonization
 {
-float District::forestsReproductivity() const
+static const char *climateTypesNames [] =
 {
-    return forestsReproductivity_;
-}
+    "Tropical",
+    "Hot",
+    "Temperate",
+    "Temperate Continental",
+    "Desert",
+    "Cold",
+};
 
-void District::setForestsReproductivity(float forestsReproductivity)
+static const char *nativesCharacterTypesNames [] =
 {
-    forestsReproductivity_ = forestsReproductivity;
-}
+    "Friendly",
+    "Medium",
+    "Cold",
+    "Isolationist",
+    "Aggressive"
+};
 
 District::District (Urho3D::Context *context) : Urho3D::LogicComponent (context),
     hash_ ("nothing"),
@@ -62,150 +73,46 @@ District::~District ()
 
 }
 
-void District::UpdateDataNode (Urho3D::Node *dataNode, bool rewritePolygonPoints)
+void District::RegisterObject (Urho3D::Context *context)
 {
-    assert (dataNode);
-    if (rewritePolygonPoints)
-    {
-        Urho3D::VariantVector polygonPointsVariants;
-        for (int index = 0; index < polygonPoints_.Size (); index++)
-            polygonPointsVariants.Push (polygonPoints_.At (index));
-        dataNode->SetVar ("polygonPoints", polygonPointsVariants);
-    }
+    context->RegisterFactory <District> (COLONIZATION_CORE_CATEGORY);
 
-    if (dataNode->GetVar ("hash").GetStringHash () != hash_)
-        dataNode->SetVar ("hash", hash_);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Hash", GetHash, SetHash, Urho3D::StringHash, Urho3D::StringHash ("nothing"), Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Is Sea", IsSea, SetIsSea, bool, true, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Is Impassable", IsImpassable, SetIsImpassable, bool, false, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Name", GetName, SetName, Urho3D::String, Urho3D::String ("District without name"), Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Polygon Points", GetPolygonPointsAttribute, SetPolygonPointsAttribute, Urho3D::VariantVector, Urho3D::VariantVector , Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Unit Position", GetUnitPosition, SetUnitPosition, Urho3D::Vector3, Urho3D::Vector3 (), Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Colony Position", GetColonyPosition, SetColonyPosition, Urho3D::Vector3, Urho3D::Vector3 (), Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Neighbors Hashes", GetNeighborsHashesAttribute, SetNeighborsHashesAttribute, Urho3D::VariantVector, Urho3D::VariantVector , Urho3D::AM_DEFAULT);
 
-    if (dataNode->GetVar ("name").GetString () != name_)
-        dataNode->SetVar ("name", name_);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farming Square", GetFarmingSquare, SetFarmingSquare, float, 1.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Forests Square", GetForestsSquare, SetForestsSquare, float, 1.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Land Average Fertility", GetLandAverageFertility, SetLandAverageFertility, float, 1.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ENUM_ACCESSOR_ATTRIBUTE ("Climate", GetClimate, SetClimate, ClimateType, climateTypesNames, CLIMATE_TEMPERATE, Urho3D::AM_DEFAULT);
 
-    if (dataNode->GetVar ("isSea").GetBool () != isSea_)
-        dataNode->SetVar ("isSea", isSea_);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Forests Reproductivity", GetForestsReproductivity, SetForestsReproductivity, float, 1.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Has Coal Deposits", HasCoalDeposits, SetCoalDeposits, bool, false, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Has Iron Deposits", HasIronDeposits, SetIronDeposits, bool, false, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Has Silver Deposits", HasSilverDeposits, SetSilverDeposits, bool, false, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Has Gold Deposits", HasGoldDeposits, SetGoldDeposits, bool, false, Urho3D::AM_DEFAULT);
 
-    if (dataNode->GetVar ("isImpassable").GetBool () != isImpassable_)
-        dataNode->SetVar ("isImpassable", isImpassable_);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Natives Count", GetNativesCount, SetNativesCount, float, 0.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Natives Fighting Technology Level", GetNativesFightingTechnologyLevel, SetNativesFightingTechnologyLevel, float, 1.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Natives Aggressiveness", GetNativesAggressiveness, SetNativesAggressiveness, float, 1.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ENUM_ACCESSOR_ATTRIBUTE ("Natives Character", GetNativesCharacter, SetNativesCharacter, NativesCharacter, nativesCharacterTypesNames, NATIVES_CHARACTER_MEDIUM, Urho3D::AM_DEFAULT);
 
-    if (dataNode->GetVar ("unitPosition").GetVector3 () != unitPosition_)
-        dataNode->SetVar ("unitPosition", unitPosition_);
-
-    if (dataNode->GetVar ("colonyPosition").GetVector3 () != colonyPosition_)
-        dataNode->SetVar ("colonyPosition", colonyPosition_);
-
-    if (dataNode->GetVar ("farmingSquare").GetFloat () != farmingSquare_)
-        dataNode->SetVar ("farmingSquare", farmingSquare_);
-
-    if (dataNode->GetVar ("forestsSquare").GetFloat () != forestsSquare_)
-        dataNode->SetVar ("forestsSquare", forestsSquare_);
-
-    if (dataNode->GetVar ("landAverageFertility").GetFloat () != landAverageFertility_)
-        dataNode->SetVar ("landAverageFertility", landAverageFertility_);
-
-    if (static_cast <ClimateType> (dataNode->GetVar ("climate").GetInt ()) != climate_)
-        dataNode->SetVar ("climate", static_cast <int> (climate_));
-
-    if (dataNode->GetVar ("forestsReproductivity").GetFloat () != forestsReproductivity_)
-        dataNode->SetVar ("forestsReproductivity", forestsReproductivity_);
-
-    if (dataNode->GetVar ("hasCoalDeposits").GetBool () != hasCoalDeposits_)
-        dataNode->SetVar ("hasCoalDeposits", hasCoalDeposits_);
-
-    if (dataNode->GetVar ("hasIronDeposits").GetBool () != hasIronDeposits_)
-        dataNode->SetVar ("hasIronDeposits", hasIronDeposits_);
-
-    if (dataNode->GetVar ("hasSilverDeposits").GetBool () != hasSilverDeposits_)
-        dataNode->SetVar ("hasSilverDeposits", hasSilverDeposits_);
-
-    if (dataNode->GetVar ("hasGoldDeposits").GetBool () != hasGoldDeposits_)
-        dataNode->SetVar ("hasGoldDeposits", hasGoldDeposits_);
-
-    if (dataNode->GetVar ("nativesCount").GetInt () != nativesCount_)
-        dataNode->SetVar ("nativesCount", nativesCount_);
-
-    if (dataNode->GetVar ("nativesFightingTechnologyLevel").GetInt () != nativesFightingTechnologyLevel_)
-        dataNode->SetVar ("nativesFightingTechnologyLevel", nativesFightingTechnologyLevel_);
-
-    if (dataNode->GetVar ("nativesAggressiveness").GetFloat () != nativesAggressiveness_)
-        dataNode->SetVar ("nativesAggressiveness", nativesAggressiveness_);
-
-    if (static_cast <NativesCharacter> (dataNode->GetVar ("nativesCharacter").GetInt ()) != nativesCharacter_)
-        dataNode->SetVar ("nativesCharacter", static_cast <int> (nativesCharacter_));
-
-    if (dataNode->GetVar ("hasColony").GetBool () != hasColony_)
-        dataNode->SetVar ("hasColony", hasColony_);
-
-    if (dataNode->GetVar ("colonyOwnerName").GetString () != colonyOwnerName_)
-        dataNode->SetVar ("colonyOwnerName", colonyOwnerName_);
-
-    if (dataNode->GetVar ("mansCount").GetInt () != menCount_)
-        dataNode->SetVar ("mansCount", menCount_);
-
-    if (dataNode->GetVar ("womenCount").GetInt () != womenCount_)
-        dataNode->SetVar ("womenCount", womenCount_);
-
-    if (dataNode->GetVar ("localArmySize").GetInt () != localArmySize_)
-        dataNode->SetVar ("localArmySize", localArmySize_);
-
-    if (dataNode->GetVar ("farmsEvolutionPoints").GetFloat () != farmsEvolutionPoints_)
-        dataNode->SetVar ("farmsEvolutionPoints", farmsEvolutionPoints_);
-
-    if (dataNode->GetVar ("minesEvolutionPoints").GetFloat () != minesEvolutionPoints_)
-        dataNode->SetVar ("minesEvolutionPoints", minesEvolutionPoints_);
-
-    if (dataNode->GetVar ("industryEvolutionPoints").GetFloat () != industryEvolutionPoints_)
-        dataNode->SetVar ("industryEvolutionPoints", industryEvolutionPoints_);
-
-    if (dataNode->GetVar ("logisticsEvolutionPoints").GetFloat () != logisticsEvolutionPoints_)
-        dataNode->SetVar ("logisticsEvolutionPoints", logisticsEvolutionPoints_);
-
-    if (dataNode->GetVar ("defenseEvolutionPoints").GetFloat () != defenseEvolutionPoints_)
-        dataNode->SetVar ("defenseEvolutionPoints", defenseEvolutionPoints_);
-
-    if (dataNode->GetVar ("averageLevelOfLifePoints").GetFloat () != averageLevelOfLifePoints_)
-        dataNode->SetVar ("averageLevelOfLifePoints", averageLevelOfLifePoints_);
-}
-
-void District::ReadDataFromNode (Urho3D::Node *dataNode)
-{
-    assert (dataNode);
-    hash_ = dataNode->GetVar ("hash").GetStringHash ();
-    name_ = dataNode->GetVar ("name").GetString ();
-    Urho3D::VariantVector polygonPointsVariants = dataNode->GetVar ("polygonPoints").GetVariantVector ();
-    polygonPoints_.Clear ();
-    for (int index = 0; index < polygonPointsVariants.Size (); index++)
-        polygonPoints_.Push (polygonPointsVariants.At (index).GetVector3 ());
-
-    unitPosition_ = dataNode->GetVar ("unitPosition").GetVector3 ();
-    colonyPosition_ = dataNode->GetVar ("colonyPosition").GetVector3 ();
-    isSea_ = dataNode->GetVar ("isSea").GetBool ();
-    isImpassable_ = dataNode->GetVar ("isImpassable").GetBool ();
-
-    farmingSquare_ = dataNode->GetVar ("farmingSquare").GetFloat ();
-    forestsSquare_ = dataNode->GetVar ("forestsSquare").GetFloat ();
-    landAverageFertility_ = dataNode->GetVar ("landAverageFertility").GetFloat ();
-    climate_ = static_cast <ClimateType> (dataNode->GetVar ("climate").GetInt ());
-
-    forestsReproductivity_ = dataNode->GetVar ("forestsReproductivity").GetFloat ();
-    hasCoalDeposits_ = dataNode->GetVar ("hasCoalDeposits").GetBool ();
-    hasIronDeposits_ = dataNode->GetVar ("hasIronDeposits").GetBool ();
-    hasSilverDeposits_ = dataNode->GetVar ("hasSilverDeposits").GetBool ();
-    hasGoldDeposits_ = dataNode->GetVar ("hasGoldDeposits").GetBool ();
-
-    nativesCount_ = dataNode->GetVar ("nativesCount").GetInt ();
-    nativesFightingTechnologyLevel_ = dataNode->GetVar ("nativesFightingTechnologyLevel").GetInt ();
-    nativesAggressiveness_ = dataNode->GetVar ("nativesAggressiveness").GetFloat ();
-    nativesCharacter_ = static_cast <NativesCharacter> (dataNode->GetVar ("nativesCharacter").GetInt ());
-
-    hasColony_ = dataNode->GetVar ("hasColony").GetBool ();
-    colonyOwnerName_ = dataNode->GetVar ("colonyOwnerName").GetString ();
-    menCount_ = dataNode->GetVar ("mansCount").GetInt ();
-    womenCount_ = dataNode->GetVar ("womenCount").GetInt ();
-    localArmySize_ = dataNode->GetVar ("localArmySize").GetInt ();
-    farmsEvolutionPoints_ = dataNode->GetVar ("farmsEvolutionPoints").GetFloat ();
-    minesEvolutionPoints_ = dataNode->GetVar ("minesEvolutionPoints").GetFloat ();
-    industryEvolutionPoints_ = dataNode->GetVar ("industryEvolutionPoints").GetFloat ();
-    logisticsEvolutionPoints_ = dataNode->GetVar ("logisticsEvolutionPoints").GetFloat ();
-    defenseEvolutionPoints_ = dataNode->GetVar ("defenseEvolutionPoints").GetFloat ();
-    averageLevelOfLifePoints_ = dataNode->GetVar ("averageLevelOfLifePoints").GetFloat ();
+    URHO3D_ACCESSOR_ATTRIBUTE ("Has Colony", HasColony, SetColony, bool, false, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Colony Owner Name", GetColonyOwnerName, SetColonyOwnerName, Urho3D::String, Urho3D::String (), Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Men Count", GetMenCount, SetMenCount, float, 0.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Women Count", GetWomenCount, SetWomenCount, float, 0.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Local Army Size", GetLocalArmySize, SetLocalArmySize, float, 0.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Evolution Points", GetFarmsEvolutionPoints, SetFarmsEvolutionPoints, float, 0.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Mines Evolution Points", GetMinesEvolutionPoints, SetMinesEvolutionPoints, float, 0.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Evolution Points", GetIndustryEvolutionPoints, SetIndustryEvolutionPoints, float, 0.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Logistics Evolution Points", GetLogisticsEvolutionPoints, SetLogisticsEvolutionPoints, float, 0.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Defense Evolution Points", GetDefenseEvolutionPoints, SetDefenseEvolutionPoints, float, 0.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Average Level Of Life Points", GetAverageLevelOfLifePoints, SetAverageLevelOfLifePoints, float, 0.0f, Urho3D::AM_DEFAULT);
 }
 
 void District::CalculateNeighbors (Urho3D::PODVector <District *> &allDistricts)
@@ -416,7 +323,7 @@ bool District::HasCoalDeposits ()
     return hasCoalDeposits_;
 }
 
-void District::SetCoalDepositits (bool hasCoalDeposits)
+void District::SetCoalDeposits (bool hasCoalDeposits)
 {
     hasCoalDeposits_ = hasCoalDeposits;
 }
@@ -446,7 +353,7 @@ bool District::HasGoldDeposits ()
     return hasGoldDeposits_;
 }
 
-void District::SetGoldDepositions (bool hasGoldDeposits)
+void District::SetGoldDeposits (bool hasGoldDeposits)
 {
     hasGoldDeposits_ = hasGoldDeposits;
 }
@@ -478,7 +385,7 @@ float District::GetNativesAggressiveness ()
     return nativesAggressiveness_;
 }
 
-void District::SetNativesAggressivness (float nativesAggressiveness)
+void District::SetNativesAggressiveness (float nativesAggressiveness)
 {
     assert (nativesAggressiveness >= 0.0f);
     nativesAggressiveness_ = nativesAggressiveness;
@@ -607,7 +514,7 @@ float District::GetAverageLevelOfLifePoints ()
     return averageLevelOfLifePoints_;
 }
 
-void District::SetAverageLevelOfLifePoint (float averageLevelOfLifePoints)
+void District::SetAverageLevelOfLifePoints (float averageLevelOfLifePoints)
 {
     assert (averageLevelOfLifePoints >= 0.0f);
     averageLevelOfLifePoints_ = averageLevelOfLifePoints;

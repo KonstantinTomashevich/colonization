@@ -63,7 +63,7 @@ void BindDistrict (Urho3D::Script *script)
     engine->RegisterEnumValue ("NativesCharacter", "NATIVES_CHARACTER_MEDIUM", NATIVES_CHARACTER_MEDIUM);
     engine->RegisterEnumValue ("NativesCharacter", "NATIVES_CHARACTER_COLD", NATIVES_CHARACTER_COLD);
     engine->RegisterEnumValue ("NativesCharacter", "NATIVES_CHARACTER_ISOLATIONIST", NATIVES_CHARACTER_ISOLATIONIST);
-    engine->RegisterEnumValue ("NativesCharacter", "NATIVES_CHARATER_AGRESSIVE", NATIVES_CHARATER_AGRESSIVE);
+    engine->RegisterEnumValue ("NativesCharacter", "NATIVES_CHARATER_AGGRESSIVE", NATIVES_CHARATER_AGGRESSIVE);
 
     CHECK_ANGELSCRIPT_RETURN (
                 engine->RegisterObjectMethod (

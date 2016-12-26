@@ -24,7 +24,7 @@ enum NativesCharacter
     NATIVES_CHARACTER_MEDIUM = 1,
     NATIVES_CHARACTER_COLD = 2,
     NATIVES_CHARACTER_ISOLATIONIST = 3,
-    NATIVES_CHARATER_AGRESSIVE = 4
+    NATIVES_CHARATER_AGGRESSIVE = 4
 };
 
 class District : public Urho3D::LogicComponent
@@ -71,8 +71,7 @@ public:
     District (Urho3D::Context *context);
     virtual ~District ();
 
-    void UpdateDataNode (Urho3D::Node *dataNode, bool rewritePolygonPoints);
-    void ReadDataFromNode (Urho3D::Node *dataNode);
+    static void RegisterObject (Urho3D::Context *context);
     void CalculateNeighbors (Urho3D::PODVector <District *> &allDistricts);
 
     void UpdateHash (Map *owner);
@@ -120,7 +119,7 @@ public:
     void SetForestsReproductivity (float forestsReproductivity);
 
     bool HasCoalDeposits ();
-    void SetCoalDepositits (bool hasCoalDeposits);
+    void SetCoalDeposits (bool hasCoalDeposits);
 
     bool HasIronDeposits ();
     void SetIronDeposits (bool hasIronDeposits);
@@ -129,7 +128,7 @@ public:
     void SetSilverDeposits (bool hasSilverDeposits);
 
     bool HasGoldDeposits ();
-    void SetGoldDepositions (bool hasGoldDeposits);
+    void SetGoldDeposits (bool hasGoldDeposits);
 
     float GetNativesCount ();
     void SetNativesCount (float nativesCount);
@@ -138,7 +137,7 @@ public:
     void SetNativesFightingTechnologyLevel (float nativesFightingTechnologyLevel);
 
     float GetNativesAggressiveness ();
-    void SetNativesAggressivness (float nativesAggressiveness);
+    void SetNativesAggressiveness (float nativesAggressiveness);
 
     NativesCharacter GetNativesCharacter ();
     void SetNativesCharacter (NativesCharacter nativesCharacter);
@@ -174,6 +173,6 @@ public:
     void SetDefenseEvolutionPoints (float defenseEvolutionPoints);
 
     float GetAverageLevelOfLifePoints ();
-    void SetAverageLevelOfLifePoint (float averageLevelOfLifePoints);
+    void SetAverageLevelOfLifePoints (float averageLevelOfLifePoints);
 };
 }
