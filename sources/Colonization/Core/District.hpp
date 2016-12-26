@@ -3,6 +3,7 @@
 #include <Urho3D/Container/Vector.h>
 #include <Urho3D/Scene/Node.h>
 #include <Urho3D/Container/Str.h>
+#include <Urho3D/Scene/LogicComponent.h>
 
 namespace Colonization
 {
@@ -26,9 +27,9 @@ enum NativesCharacter
     NATIVES_CHARATER_AGRESSIVE = 4
 };
 
-class District : public Urho3D::Object
+class District : public Urho3D::LogicComponent
 {
-URHO3D_OBJECT (District, Object)
+URHO3D_OBJECT (District, LogicComponent)
 protected:
     Urho3D::StringHash hash_;
     bool isSea_;

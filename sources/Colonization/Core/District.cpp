@@ -15,7 +15,7 @@ void District::setForestsReproductivity(float forestsReproductivity)
     forestsReproductivity_ = forestsReproductivity;
 }
 
-District::District (Urho3D::Context *context) : Urho3D::Object (context),
+District::District (Urho3D::Context *context) : Urho3D::LogicComponent (context),
     hash_ ("nothing"),
     needDataUpdate_ (true),
     isSea_ (true),
