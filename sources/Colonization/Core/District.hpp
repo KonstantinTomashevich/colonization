@@ -18,7 +18,7 @@ enum ClimateType
     CLIMATE_COLD = 5,
 };
 
-enum NativesCharacter
+enum NativesCharacterType
 {
     NATIVES_CHARACTER_FRIENDLY = 0,
     NATIVES_CHARACTER_MEDIUM = 1,
@@ -27,9 +27,9 @@ enum NativesCharacter
     NATIVES_CHARATER_AGGRESSIVE = 4
 };
 
-class District : public Urho3D::LogicComponent
+class District : public Urho3D::Component
 {
-URHO3D_OBJECT (District, LogicComponent)
+URHO3D_OBJECT (District, Component)
 protected:
     Urho3D::StringHash hash_;
     bool isSea_;
@@ -38,7 +38,7 @@ protected:
     Urho3D::PODVector <Urho3D::Vector3> polygonPoints_;
     Urho3D::Vector3 unitPosition_;
     Urho3D::Vector3 colonyPosition_;
-    Urho3D::PODVector <District *> neighbors_;
+    Urho3D::PODVector <Urho3D::StringHash> neighbors_;
 
     float farmingSquare_;
     float forestsSquare_;
@@ -54,7 +54,7 @@ protected:
     float nativesCount_;
     float nativesFightingTechnologyLevel_;
     float nativesAggressiveness_;
-    NativesCharacter nativesCharacter_;
+    NativesCharacterType nativesCharacter_;
 
     bool hasColony_;
     Urho3D::String colonyOwnerName_;
@@ -139,8 +139,8 @@ public:
     float GetNativesAggressiveness ();
     void SetNativesAggressiveness (float nativesAggressiveness);
 
-    NativesCharacter GetNativesCharacter ();
-    void SetNativesCharacter (NativesCharacter nativesCharacter);
+    NativesCharacterType GetNativesCharacter ();
+    void SetNativesCharacter (NativesCharacterType nativesCharacter);
 
     bool HasColony ();
     void SetColony (bool hasColony);

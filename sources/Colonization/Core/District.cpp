@@ -26,7 +26,7 @@ static const char *nativesCharacterTypesNames [] =
     "Aggressive"
 };
 
-District::District (Urho3D::Context *context) : Urho3D::LogicComponent (context),
+District::District (Urho3D::Context *context) : Urho3D::Component (context),
     hash_ ("nothing"),
     needDataUpdate_ (true),
     isSea_ (true),
@@ -100,7 +100,7 @@ void District::RegisterObject (Urho3D::Context *context)
     URHO3D_ACCESSOR_ATTRIBUTE ("Natives Count", GetNativesCount, SetNativesCount, float, 0.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Natives Fighting Technology Level", GetNativesFightingTechnologyLevel, SetNativesFightingTechnologyLevel, float, 1.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Natives Aggressiveness", GetNativesAggressiveness, SetNativesAggressiveness, float, 1.0f, Urho3D::AM_DEFAULT);
-    URHO3D_ENUM_ACCESSOR_ATTRIBUTE ("Natives Character", GetNativesCharacter, SetNativesCharacter, NativesCharacter, nativesCharacterTypesNames, NATIVES_CHARACTER_MEDIUM, Urho3D::AM_DEFAULT);
+    URHO3D_ENUM_ACCESSOR_ATTRIBUTE ("Natives Character", GetNativesCharacter, SetNativesCharacter, NativesCharacterType, nativesCharacterTypesNames, NATIVES_CHARACTER_MEDIUM, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Has Colony", HasColony, SetColony, bool, false, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Colony Owner Name", GetColonyOwnerName, SetColonyOwnerName, Urho3D::String, Urho3D::String (), Urho3D::AM_DEFAULT);
@@ -391,12 +391,12 @@ void District::SetNativesAggressiveness (float nativesAggressiveness)
     nativesAggressiveness_ = nativesAggressiveness;
 }
 
-NativesCharacter District::GetNativesCharacter ()
+NativesCharacterType District::GetNativesCharacter ()
 {
     return nativesCharacter_;
 }
 
-void District::SetNativesCharacter (NativesCharacter nativesCharacter)
+void District::SetNativesCharacter (NativesCharacterType nativesCharacter)
 {
     nativesCharacter_ = nativesCharacter;
 }
