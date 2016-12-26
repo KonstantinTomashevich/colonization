@@ -215,23 +215,24 @@ void District::CalculateNeighbors (Urho3D::PODVector <District *> &allDistricts)
     for (int index = 0; index < allDistricts.Size (); index++)
     {
         District *another = allDistricts.At (index);
+        Urho3D::PODVector <Urho3D::Vector3> anotherPolygonPoints = another->GetPolygonPoints ();
         assert (another);
 
-        if (another != this && !another->polygonPoints_.Empty () && !polygonPoints_.Empty ())
+        if (another != this && !anotherPolygonPoints.Empty () && !polygonPoints_.Empty ())
         {
             int contactsCount = 0;
             for (int anotherPolygonPointIndex = 0;
-                 anotherPolygonPointIndex < another->polygonPoints_.Size (); anotherPolygonPointIndex++)
+                 anotherPolygonPointIndex < anotherPolygonPoints.Size (); anotherPolygonPointIndex++)
 
                 for (int thisPolygonPointIndex = 0;
                      thisPolygonPointIndex < polygonPoints_.Size (); thisPolygonPointIndex++)
 
-                    if (another->polygonPoints_.At (anotherPolygonPointIndex) ==
+                    if (anotherPolygonPoints.At (anotherPolygonPointIndex) ==
                             polygonPoints_.At (thisPolygonPointIndex))
                         contactsCount += 1;
 
             if (contactsCount >= 2)
-                neighbors_.Push (another);
+                neighbors_.Push (another->GetHash ());
         }
     }
 }
@@ -295,7 +296,7 @@ void District::SetPolygonPoints (Urho3D::PODVector <Urho3D::Vector3> polygonPoin
     polygonPoints_ = polygonPoints;
 }
 
-Urho3D::VariantVector &District::GetPolygonPointsAttribute ()
+Urho3D::VariantVector District::GetPolygonPointsAttribute ()
 {
     Urho3D::VariantVector variantVector;
     for (int index = 0; index < polygonPoints_.Size (); index++)

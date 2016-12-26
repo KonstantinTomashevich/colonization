@@ -90,7 +90,7 @@ public:
 
     Urho3D::PODVector<Urho3D::Vector3> GetPolygonPoints();
     void SetPolygonPoints (Urho3D::PODVector <Urho3D::Vector3> polygonPoints);
-    Urho3D::VariantVector &GetPolygonPointsAttribute ();
+    Urho3D::VariantVector GetPolygonPointsAttribute ();
     void SetPolygonPointsAttribute (Urho3D::VariantVector polygonPoints);
 
     Urho3D::Vector3 GetUnitPosition ();
