@@ -7,6 +7,7 @@
 
 namespace Colonization
 {
+// TODO: Not all functions are binded. Some server-side functions aren't binded.
 Urho3D::CScriptArray *MapFindPath (Map *map, District *from, District *to,
                                    Urho3D::String playerName, bool canGoThroughColonies, bool isColonizator)
 {

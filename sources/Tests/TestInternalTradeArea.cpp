@@ -83,7 +83,7 @@ void TestInternalTradeAreaApplication::Start ()
             district->colonyOwnerName_ = "PlayerX";
             district->menCount_ = 100;
             district->womenCount_ = 100;
-            map->AddDistrict (district);
+            map->CreateDistrict (district);
             district->UpdateHash (map);
         }
     map->RecalculateDistrictsNeighbors ();

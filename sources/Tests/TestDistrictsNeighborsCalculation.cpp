@@ -63,10 +63,10 @@ void TestDistrictsNeighborsCalculationApplication::Start ()
     districtD->polygonPoints_.Push (Urho3D::Vector3 (-1.0f, 0.0f, 1.0f));
     districtD->polygonPoints_.Push (Urho3D::Vector3 (-2.0f, 0.0f, 1.0f));
 
-    map->AddDistrict (districtA);
-    map->AddDistrict (districtB);
-    map->AddDistrict (districtC);
-    map->AddDistrict (districtD);
+    map->CreateDistrict (districtA);
+    map->CreateDistrict (districtB);
+    map->CreateDistrict (districtC);
+    map->CreateDistrict (districtD);
     map->RecalculateDistrictsNeighbors ();
 
     if (!districtA->neighbors_.Contains (districtB) || !districtA->neighbors_.Contains (districtD))

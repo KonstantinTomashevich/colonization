@@ -61,7 +61,7 @@ void TestMapPathFindingApplication::Start ()
 
             district->unitPosition_ = Urho3D::Vector3 (x, 0.0f, y);
             district->colonyPosition_ = Urho3D::Vector3 (x, 0.0f, y);
-            map->AddDistrict (district);
+            map->CreateDistrict (district);
         }
 
     // Map: (~ -- sea, = -- terrain, @ -- colony)

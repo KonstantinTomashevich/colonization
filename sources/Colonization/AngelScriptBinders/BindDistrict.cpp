@@ -8,6 +8,7 @@
 
 namespace Colonization
 {
+// TODO: Not all functions are binded. Some server-side functions aren't binded.
 Urho3D::CScriptArray *District_GetPolygonPoints (District *district)
 {
     return Urho3D::VectorToArray <Urho3D::Vector3> (district->GetPolygonPoints (), "Array<Vector3>");

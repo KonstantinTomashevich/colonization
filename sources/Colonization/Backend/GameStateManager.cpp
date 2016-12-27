@@ -48,7 +48,7 @@ void CreateTestMap (Map *map)
 
             district->unitPosition_ = Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.65f);
             district->colonyPosition_ = Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.2f);
-            map->AddDistrict (district);
+            map->CreateDistrict (district);
             district->UpdateHash (map);
         }
 

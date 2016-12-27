@@ -3,12 +3,15 @@
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/Container/HashMap.h>
 #include <Urho3D/Core/Context.h>
+#include <Urho3D/Core/CoreEvents.h>
+#include <Urho3D/Scene/Scene.h>
+#include <Colonization/Utils/Categories.hpp>
 
 namespace Colonization
 {
 Map::Map (Urho3D::Context *context) : Urho3D::Object (context), districts_ ()
 {
-
+    SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (Map, Update));
 }
 
 Map::~Map ()
@@ -16,37 +19,9 @@ Map::~Map ()
     districts_.Clear ();
 }
 
-void Map::UpdateDataNode (Urho3D::Node *dataNode, bool rewriteDistrictsPolygons)
+void Map::RegisterObject (Urho3D::Context *context)
 {
-    assert (dataNode);
-    while (dataNode->GetChildren ().Size () < districts_.Size ())
-        dataNode->CreateChild ();
-
-    while (dataNode->GetChildren ().Size () > districts_.Size ())
-        dataNode->RemoveChild (dataNode->GetChildren ().Back ());
-
-    for (int index = 0; index < districts_.Size (); index++)
-        if (districts_.At (index)->needDataUpdate_)
-        {
-            District *district = districts_.At (index);
-            Urho3D::Node *node = dataNode->GetChildren ().At (index);
-            node->SetName (district->name_);
-            district->UpdateDataNode (node, rewriteDistrictsPolygons);
-            district->needDataUpdate_ = false;
-        }
-}
-
-void Map::ReadDataFromNode (Urho3D::Node *dataNode)
-{
-    assert (dataNode);
-    districts_.Clear ();
-    for (int index = 0; index < dataNode->GetChildren ().Size (); index++)
-    {
-        District *district = new District (context_);
-        district->ReadDataFromNode (dataNode->GetChildren ().At (index).Get ());
-        districts_.Push (district);
-    }
-    RecalculateDistrictsNeighbors ();
+    context->RegisterFactory <Map> (COLONIZATION_SHARED_CATEGORY);
 }
 
 District *Map::GetDistrictByIndex (int index)
@@ -76,11 +51,27 @@ int Map::GetDistrictsCount ()
     return districts_.Size ();
 }
 
-void Map::AddDistrict (Urho3D::SharedPtr <District> district)
+District *Map::CreateDistrict(Urho3D::String districtName)
 {
-    assert (district.NotNull ());
+    assert (node_);
+    Urho3D::Node *districtNode = node_->CreateChild (districtName, Urho3D::REPLICATED);
+    Urho3D::SharedPtr <District> district (districtNode->CreateComponent (District::GetTypeStatic (), Urho3D::REPLICATED));
     districts_.Push (district);
-    RecalculateDistrictsNeighbors ();
+}
+
+void Map::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    // Reload districts array from child nodes.
+    assert (node_);
+    districts_.Clear ();
+    Urho3D::PODVector <Urho3D::Node *> districtsNodes;
+    node_->GetChildrenWithComponent (districtsNodes, District::GetTypeStatic ());
+    for (int index = 0; index < districtsNodes.Size (); index++)
+    {
+        Urho3D::Node *districtNode = districtsNodes.At (index);
+        if (districtNode->GetID () < Urho3D::FIRST_LOCAL_ID)
+            districts_.Push (districtNode->GetComponent (District::GetTypeStatic ()));
+    }
 }
 
 void Map::RecalculateDistrictsNeighbors ()
@@ -89,9 +80,14 @@ void Map::RecalculateDistrictsNeighbors ()
         districts_.At (index)->CalculateNeighbors (districts_);
 }
 
-void Map::ClearDistricts ()
+void Map::ClearAndRemoveDistricts ()
 {
+    assert (node_);
     districts_.Clear ();
+    Urho3D::PODVector <Urho3D::Node *> districtsNodes;
+    node_->GetChildrenWithComponent (districtsNodes, District::GetTypeStatic ());
+    for (int index = 0; index < districtsNodes.Size (); index++)
+        node_->RemoveChild (districtsNodes.At (index));
 }
 
 Urho3D::PODVector <Urho3D::SharedPtr <District> > Map::FindPath (

@@ -16,18 +16,17 @@ protected:
 public:
     Map (Urho3D::Context *context);
     virtual ~Map ();
+    static void RegisterObject (Urho3D::Context *context);
 
-    void UpdateDataNode (Urho3D::Node *dataNode, bool rewriteDistrictsPolygons);
-    void ReadDataFromNode (Urho3D::Node *dataNode);
-
-    District *GetDistrictByIndex(int index);
+    District *GetDistrictByIndex (int index);
     District *GetDistrictByNameHash(Urho3D::StringHash nameHash);
     District *GetDistrictByHash (Urho3D::StringHash hash);
     int GetDistrictsCount ();
-    void AddDistrict (Urho3D::SharedPtr<District> district);
+    District *CreateDistrict (Urho3D::String districtName);
 
+    void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     void RecalculateDistrictsNeighbors ();
-    void ClearDistricts ();
+    void ClearAndRemoveDistricts ();
     Urho3D::PODVector < Urho3D::SharedPtr<District> > FindPath(
             Urho3D::StringHash startDistrictHash, Urho3D::StringHash targetDistrictHash,
             Urho3D::String playerName, bool canGoThroughColonies, bool isColonizator);

@@ -82,7 +82,7 @@ void TestInternalTradeProcessingApplication::Start ()
 
             district->isSea_ = true;
             district->hasColony_ = false;
-            map->AddDistrict (district);
+            map->CreateDistrict (district);
             district->UpdateHash (map);
         }
     map->RecalculateDistrictsNeighbors ();
