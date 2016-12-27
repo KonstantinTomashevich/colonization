@@ -47,20 +47,20 @@ void Unit::RegisterObject (Urho3D::Context *context)
                                float, 0.0f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("[Fleet Only] War Ships Count",
-                               FleetTypeGetWarShipsCount,
-                               FleetTypeSetWarShipsCount, int, 0, Urho3D::AM_DEFAULT);
+                               FleetUnitGetWarShipsCount,
+                               FleetUnitSetWarShipsCount, int, 0, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("[Traders Only] Trade Goods Cost",
-                               TradersTypeGetTradeGoodsCost,
-                               TradersTypeSetTradeGoodsCost, float, 0.0f, Urho3D::AM_DEFAULT);
+                               TradersUnitGetTradeGoodsCost,
+                               TradersUnitSetTradeGoodsCost, float, 0.0f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("[Colonizators Only] Colonizators Count",
-                               ColonizatorsTypeGetColonizatorsCount,
-                               ColonizatorsTypeSetColonizatorsCount, int, 0, Urho3D::AM_DEFAULT);
+                               ColonizatorsUnitGetColonizatorsCount,
+                               ColonizatorsUnitSetColonizatorsCount, int, 0, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("[Army Only] War Ships Count",
-                               ArmyTypeGetSoldiersCount,
-                               ArmyTypeSetSoldiersCount, int, 0, Urho3D::AM_DEFAULT);
+                               ArmyUnitGetSoldiersCount,
+                               ArmyUnitSetSoldiersCount, int, 0, Urho3D::AM_DEFAULT);
 }
 
 const Urho3D::Vector <Urho3D::AttributeInfo> *Unit::GetAttributes () const
@@ -153,42 +153,42 @@ void Unit::SetWayToNextDistrictProgressInPercents (float wayToNextDistrictProgre
     wayToNextDistrictProgressInPercents_ = wayToNextDistrictProgressInPercents;
 }
 
-int Unit::FleetTypeGetWarShipsCount ()
+int Unit::FleetUnitGetWarShipsCount ()
 {
     return unitTypeSpecificVars_ ["WarShipsCount"].GetInt ();
 }
 
-void Unit::FleetTypeSetWarShipsCount (int warShipsCount)
+void Unit::FleetUnitSetWarShipsCount (int warShipsCount)
 {
     unitTypeSpecificVars_ ["WarShipsCount"] = warShipsCount;
 }
 
-float Unit::TradersTypeGetTradeGoodsCost ()
+float Unit::TradersUnitGetTradeGoodsCost ()
 {
     return unitTypeSpecificVars_ ["TradeGoodsCost"].GetFloat ();
 }
 
-void Unit::TradersTypeSetTradeGoodsCost (float tradeGoodsCost)
+void Unit::TradersUnitSetTradeGoodsCost (float tradeGoodsCost)
 {
     unitTypeSpecificVars_ ["TradeGoodsCost"] = tradeGoodsCost;
 }
 
-int Unit::ColonizatorsTypeGetColonizatorsCount ()
+int Unit::ColonizatorsUnitGetColonizatorsCount ()
 {
     return unitTypeSpecificVars_ ["ColonizatorsCount"].GetInt ();
 }
 
-void Unit::ColonizatorsTypeSetColonizatorsCount (int colonizatorsCount)
+void Unit::ColonizatorsUnitSetColonizatorsCount (int colonizatorsCount)
 {
     unitTypeSpecificVars_ ["ColonizatorsCount"] = colonizatorsCount;
 }
 
-int Unit::ArmyTypeGetSoldiersCount ()
+int Unit::ArmyUnitGetSoldiersCount ()
 {
     return unitTypeSpecificVars_ ["SoldiersCount"].GetInt ();
 }
 
-void Unit::ArmyTypeSetSoldiersCount (int soldiersCount)
+void Unit::ArmyUnitSetSoldiersCount (int soldiersCount)
 {
     unitTypeSpecificVars_ ["SoldiersCount"] = soldiersCount;
 }

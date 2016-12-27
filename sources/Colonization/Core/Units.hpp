@@ -53,16 +53,16 @@ public:
     float GetWayToNextDistrictProgressInPercents ();
     void SetWayToNextDistrictProgressInPercents (float wayToNextDistrictProgressInPercents);
 
-    int FleetTypeGetWarShipsCount ();
-    void FleetTypeSetWarShipsCount (int warShipsCount);
+    int FleetUnitGetWarShipsCount ();
+    void FleetUnitSetWarShipsCount (int warShipsCount);
 
-    float TradersTypeGetTradeGoodsCost ();
-    void TradersTypeSetTradeGoodsCost (float tradeGoodsCost);
+    float TradersUnitGetTradeGoodsCost ();
+    void TradersUnitSetTradeGoodsCost (float tradeGoodsCost);
 
-    int ColonizatorsTypeGetColonizatorsCount ();
-    void ColonizatorsTypeSetColonizatorsCount (int colonizatorsCount);
+    int ColonizatorsUnitGetColonizatorsCount ();
+    void ColonizatorsUnitSetColonizatorsCount (int colonizatorsCount);
 
-    int ArmyTypeGetSoldiersCount ();
-    void ArmyTypeSetSoldiersCount (int soldiersCount);
+    int ArmyUnitGetSoldiersCount ();
+    void ArmyUnitSetSoldiersCount (int soldiersCount);
 };
 }
