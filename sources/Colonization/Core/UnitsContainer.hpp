@@ -3,7 +3,7 @@
 #include <Urho3D/Scene/Node.h>
 
 #include <Colonization/Core/Map.hpp>
-#include <Colonization/Core/Units.hpp>
+#include <Colonization/Core/Unit.hpp>
 
 namespace Colonization
 {

@@ -11,7 +11,7 @@
 #include <Colonization/AngelScriptBinders/BindMainMenuActivity.hpp>
 #include <Colonization/AngelScriptBinders/BindIngamePlayerActivity.hpp>
 #include <Colonization/AngelScriptBinders/BindAngelScriptDirectMemoryAccess.hpp>
-#include <Colonization/AngelScriptBinders/BindUnits.hpp>
+#include <Colonization/AngelScriptBinders/BindUnit.hpp>
 #include <Colonization/AngelScriptBinders/BindUnitsContainer.hpp>
 #include <Colonization/AngelScriptBinders/BindPlayerActionType.hpp>
 
