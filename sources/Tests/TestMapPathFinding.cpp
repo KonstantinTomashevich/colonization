@@ -86,7 +86,7 @@ void TestMapPathFindingApplication::Start ()
 
     map->GetDistrictByIndex (2 * mapHeight + 1)->hasColony_ = true;
     map->GetDistrictByIndex (2 * mapHeight + 1)->colonyOwnerName_ = "PlayerX";
-    map->UpdateNeighborsOfDistricts ();
+    map->RecalculateDistrictsNeighbors ();
 
     // Test map's serialization.
     Urho3D::Node *node = new Urho3D::Node (context_);

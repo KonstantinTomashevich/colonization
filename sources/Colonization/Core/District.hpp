@@ -72,7 +72,7 @@ public:
     virtual ~District ();
 
     static void RegisterObject (Urho3D::Context *context);
-    void CalculateNeighbors (Urho3D::PODVector <District *> &allDistricts);
+    void CalculateNeighbors (Urho3D::Vector <Urho3D::SharedPtr <District> > &allDistricts);
 
     void UpdateHash (Map *owner);
     Urho3D::StringHash GetHash ();

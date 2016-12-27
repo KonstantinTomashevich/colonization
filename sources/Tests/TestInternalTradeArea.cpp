@@ -86,7 +86,7 @@ void TestInternalTradeAreaApplication::Start ()
             map->AddDistrict (district);
             district->UpdateHash (map);
         }
-    map->UpdateNeighborsOfDistricts ();
+    map->RecalculateDistrictsNeighbors ();
 
     map->GetDistrictByIndex (0)->farmsEvolutionPoints_ = 9.0f;
     map->GetDistrictByIndex (0)->minesEvolutionPoints_ = 1.0f;

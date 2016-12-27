@@ -115,13 +115,13 @@ void District::RegisterObject (Urho3D::Context *context)
     URHO3D_ACCESSOR_ATTRIBUTE ("Average Level Of Life Points", GetAverageLevelOfLifePoints, SetAverageLevelOfLifePoints, float, 0.0f, Urho3D::AM_DEFAULT);
 }
 
-void District::CalculateNeighbors (Urho3D::PODVector <District *> &allDistricts)
+void District::CalculateNeighbors (Urho3D::Vector<Urho3D::SharedPtr<District> > &allDistricts)
 {
     assert (!allDistricts.Empty ());
     neighbors_.Clear ();
     for (int index = 0; index < allDistricts.Size (); index++)
     {
-        District *another = allDistricts.At (index);
+        Urho3D::SharedPtr <District> another = allDistricts.At (index);
         Urho3D::PODVector <Urho3D::Vector3> anotherPolygonPoints = another->GetPolygonPoints ();
         assert (another);
 

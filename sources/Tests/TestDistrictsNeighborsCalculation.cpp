@@ -67,7 +67,7 @@ void TestDistrictsNeighborsCalculationApplication::Start ()
     map->AddDistrict (districtB);
     map->AddDistrict (districtC);
     map->AddDistrict (districtD);
-    map->UpdateNeighborsOfDistricts ();
+    map->RecalculateDistrictsNeighbors ();
 
     if (!districtA->neighbors_.Contains (districtB) || !districtA->neighbors_.Contains (districtD))
         ErrorExit ("Incorrect A neighbors!");

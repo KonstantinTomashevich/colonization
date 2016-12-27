@@ -81,7 +81,7 @@ void CreateTestMap (Map *map)
     map->GetDistrictByIndex (1 * mapHeight + 0)->colonyOwnerName_ = "AIPlayer";
     map->GetDistrictByIndex (1 * mapHeight + 0)->menCount_ = 50;
     map->GetDistrictByIndex (1 * mapHeight + 0)->womenCount_ = 50;
-    map->UpdateNeighborsOfDistricts ();
+    map->RecalculateDistrictsNeighbors ();
 }
 
 void AddTestFleetUnits (UnitsContainer *container, Map *map, int count)

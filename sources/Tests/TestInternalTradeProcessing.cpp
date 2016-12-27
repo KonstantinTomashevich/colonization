@@ -85,7 +85,7 @@ void TestInternalTradeProcessingApplication::Start ()
             map->AddDistrict (district);
             district->UpdateHash (map);
         }
-    map->UpdateNeighborsOfDistricts ();
+    map->RecalculateDistrictsNeighbors ();
 
     // Map: (~ -- sea, = -- terrain, numbers -- colonies with equal logistics level)
     //   0 1 2 3
