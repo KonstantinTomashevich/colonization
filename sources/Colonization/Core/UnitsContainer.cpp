@@ -27,7 +27,7 @@ void UnitsContainer::UpdateDataNode (Urho3D::Node *dataNode)
     {
         Unit *unit = units_.At (index);
         Urho3D::Node *node = dataNode->GetChildren ().At (index);
-        node->SetName ("Unit" + Urho3D::String (index) + "_owner_" + unit->ownerPlayer_);
+        node->SetName ("Unit" + Urho3D::String (index) + "_owner_" + unit->ownerPlayerName_);
         unit->UpdateDataNode (node);
     }
 }
@@ -84,7 +84,7 @@ Urho3D::PODVector <Unit *> UnitsContainer::GetUnitsOfPlayer (Urho3D::StringHash 
     for (int index = 0; index < units_.Size (); index++)
     {
         Unit *unit = units_.At (index);
-        if (Urho3D::StringHash (unit->ownerPlayer_) == playerNameHash)
+        if (Urho3D::StringHash (unit->ownerPlayerName_) == playerNameHash)
             unitsOfPlayer.Push (unit);
     }
     return unitsOfPlayer;

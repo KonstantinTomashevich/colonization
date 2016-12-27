@@ -1,17 +1,28 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "Units.hpp"
 #include <Urho3D/IO/Log.h>
-#include <Colonization/Core/UnitsContainer.hpp>
+#include <Urho3D/Core/Context.h>
+#include <Colonization/Backend/UnitsManager.hpp>
+#include <Colonization/Utils/Categories.hpp>
 
 namespace Colonization
 {
-Unit::Unit (Urho3D::Context *context, UnitType unitType) : Urho3D::Object (context),
+static const char *unitTypesNames [] =
+{
+    "Fleet",
+    "Traders",
+    "Colonizators",
+    "Army",
+};
+
+Unit::Unit (Urho3D::Context *context) : Urho3D::Component (context),
     hash_ ("nothing"),
-    ownerPlayer_ ("???"),
-    unitType_ (unitType),
+    ownerPlayerName_ ("???"),
+    unitType_ (UNIT_FLEET),
     position_ (0),
     way_ (0),
-    wayToNextDistrictProgressInPercents_ (0)
+    wayToNextDistrictProgressInPercents_ (0),
+    unitTypeSpecificVars_ ()
 {
 
 }
@@ -21,10 +32,46 @@ Unit::~Unit ()
 
 }
 
-void Unit::UpdateHash (UnitsContainer *owner)
+void Unit::RegisterObject (Urho3D::Context *context)
+{
+    context->RegisterFactory <Unit> (COLONIZATION_CORE_CATEGORY);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Hash", GetHash, SetHash, Urho3D::StringHash, Urho3D::StringHash ("nothing"), Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Owner Player Name", GetOwnerPlayerName, SetOwnerPlayerName, Urho3D::String, Urho3D::String ("Unit without owner"), Urho3D::AM_DEFAULT);
+    URHO3D_ENUM_ACCESSOR_ATTRIBUTE ("Unit Type", GetUnitType, SetUnitType, UnitType, unitTypesNames, UNIT_FLEET, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Position Hash", GetPositionHash, SetPositionHash, Urho3D::StringHash, Urho3D::StringHash ("nothing"), Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Way", GetWayAttribute, SetWayAttribute, Urho3D::VariantVector, Urho3D::VariantVector (), Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Way To Next District Progress In Percents",
+                               GetWayToNextDistrictProgressInPercents,
+                               SetWayToNextDistrictProgressInPercents,
+                               float, 0.0f, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("[Fleet Only] War Ships Count",
+                               FleetTypeGetWarShipsCount,
+                               FleetTypeSetWarShipsCount, int, 0, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("[Traders Only] Trade Goods Cost",
+                               TradersTypeGetTradeGoodsCost,
+                               TradersTypeSetTradeGoodsCost, float, 0.0f, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("[Colonizators Only] Colonizators Count",
+                               ColonizatorsTypeGetColonizatorsCount,
+                               ColonizatorsTypeSetColonizatorsCount, int, 0, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("[Army Only] War Ships Count",
+                               ArmyTypeGetSoldiersCount,
+                               ArmyTypeSetSoldiersCount, int, 0, Urho3D::AM_DEFAULT);
+}
+
+const Urho3D::Vector <Urho3D::AttributeInfo> *Unit::GetAttributes () const
+{
+    return currentAttributesList_;
+}
+
+void Unit::UpdateHash (UnitsManager *owner)
 {
     do
-        hash_ = Urho3D::StringHash (ownerPlayer_ + Urho3D::String (static_cast <int> (unitType_)) +
+        hash_ = Urho3D::StringHash (ownerPlayerName_ + Urho3D::String (static_cast <int> (unitType_)) +
                                     Urho3D::String (Urho3D::Random (0, 100000)));
     while (owner->GetUnitByHash (hash_) != this);
 }
@@ -34,144 +81,115 @@ Urho3D::StringHash Unit::GetHash ()
     return hash_;
 }
 
-void Unit::UpdateDataNode (Urho3D::Node *dataNode)
+void Unit::SetHash (Urho3D::StringHash hash)
 {
-    assert (dataNode);
-    assert (position_);
-    if (dataNode->GetVar ("hash").GetStringHash () != hash_)
-        dataNode->SetVar ("hash", hash_);
-
-    if (dataNode->GetVar ("ownerPlayer").GetString () != ownerPlayer_)
-        dataNode->SetVar ("ownerPlayer", ownerPlayer_);
-
-    if (static_cast <UnitType> (dataNode->GetVar ("unitType").GetInt ()) != unitType_)
-        dataNode->SetVar ("unitType", static_cast <int> (unitType_));
-
-    if (dataNode->GetVar ("position").GetString () != position_->name_)
-        dataNode->SetVar ("position", position_->name_);
-
-    if (dataNode->GetVar ("wayToNextDistrictProgress").GetFloat () != wayToNextDistrictProgressInPercents_)
-        dataNode->SetVar ("wayToNextDistrictProgress", wayToNextDistrictProgressInPercents_);
-
-    if (way_.Empty ())
-        dataNode->SetVar ("wayTarget", "no_way_target");
-    else
-        dataNode->SetVar ("wayTarget", way_.At (way_.Size () - 1)->name_);
+    hash_ = hash;
 }
 
-void Unit::ReadDataFromNode (Urho3D::Node *dataNode, Map *map)
+UnitType Unit::GetUnitType ()
 {
-    assert (dataNode);
-    assert (map);
-    hash_ = dataNode->GetVar ("hash").GetStringHash ();
-    ownerPlayer_ = dataNode->GetVar ("ownerPlayer").GetString ();
-    unitType_ = static_cast <UnitType> (dataNode->GetVar ("unitType").GetInt ());
+    return unitType_;
+}
 
-    position_ = map->GetDistrictByNameHash (Urho3D::StringHash (
-                                                dataNode->GetVar ("position").GetString ()));
-    assert (position_);
-    wayToNextDistrictProgressInPercents_ = dataNode->GetVar ("wayToNextDistrictProgress").GetFloat ();
+void Unit::SetUnitType (UnitType unitType)
+{
+    unitType_ = unitType;
+}
 
-    District *wayTarget = map->GetDistrictByNameHash (Urho3D::StringHash (
-                                                          dataNode->GetVar ("wayTarget").GetString ()));
+Urho3D::String Unit::GetOwnerPlayerName ()
+{
+    return ownerPlayerName_;
+}
+
+void Unit::SetOwnerPlayerName (Urho3D::String ownerPlayerName)
+{
+    ownerPlayerName_ = ownerPlayerName;
+}
+
+Urho3D::StringHash Unit::GetPositionHash ()
+{
+    return positionHash_;
+}
+
+void Unit::SetPositionHash (Urho3D::StringHash positionHash)
+{
+    positionHash_ = positionHash;
+}
+
+Urho3D::PODVector <Urho3D::StringHash> Unit::GetWay ()
+{
+    return way_;
+}
+
+void Unit::SetWay (Urho3D::PODVector <Urho3D::StringHash> way)
+{
+    way_ = way;
+}
+
+Urho3D::VariantVector Unit::GetWayAttribute ()
+{
+    Urho3D::VariantVector variantVector;
+    if (!way_.Empty ())
+        for (int index = 0; index < way_.Size (); index++)
+            variantVector.Push (Urho3D::Variant (way_.At (index)));
+    return variantVector;
+}
+
+void Unit::SetWayAttribute (Urho3D::VariantVector way)
+{
     way_.Clear ();
-    if (wayTarget)
-        way_ = map->FindPath (position_, wayTarget, ownerPlayer_, unitType_ != UNIT_FLEET, unitType_ == UNIT_COLONIZATORS);
+    if (way.Size ())
+        for (int index = 0; index < way.Size (); index++)
+            way_.Push (way.At (index).GetStringHash ());
 }
 
-FleetUnit::FleetUnit (Urho3D::Context *context) : Unit (context, UNIT_FLEET),
-    warShipsCount_ (0)
+float Unit::GetWayToNextDistrictProgressInPercents ()
 {
-
+    return wayToNextDistrictProgressInPercents_;
 }
 
-FleetUnit::~FleetUnit ()
+void Unit::SetWayToNextDistrictProgressInPercents (float wayToNextDistrictProgressInPercents)
 {
-
+    wayToNextDistrictProgressInPercents_ = wayToNextDistrictProgressInPercents;
 }
 
-void FleetUnit::UpdateDataNode (Urho3D::Node *dataNode)
+int Unit::FleetTypeGetWarShipsCount ()
 {
-    Unit::UpdateDataNode (dataNode);
-    if (dataNode->GetVar ("warShipsCount").GetInt () != warShipsCount_)
-        dataNode->SetVar ("warShipsCount", warShipsCount_);
+    return unitTypeSpecificVars_ ["WarShipsCount"].GetInt ();
 }
 
-void FleetUnit::ReadDataFromNode (Urho3D::Node *dataNode, Map *map)
+void Unit::FleetTypeSetWarShipsCount (int warShipsCount)
 {
-    Unit::ReadDataFromNode (dataNode, map);
-    warShipsCount_ = dataNode->GetVar ("warShipsCount").GetInt ();
+    unitTypeSpecificVars_ ["WarShipsCount"] = warShipsCount;
 }
 
-TradersUnit::TradersUnit (Urho3D::Context *context) : Unit (context, UNIT_TRADERS),
-    tradeGoodsCost_ (0)
+float Unit::TradersTypeGetTradeGoodsCost ()
 {
-
+    return unitTypeSpecificVars_ ["TradeGoodsCost"].GetFloat ();
 }
 
-TradersUnit::~TradersUnit ()
+void Unit::TradersTypeSetTradeGoodsCost (float tradeGoodsCost)
 {
-
+    unitTypeSpecificVars_ ["TradeGoodsCost"] = tradeGoodsCost;
 }
 
-void TradersUnit::UpdateDataNode (Urho3D::Node *dataNode)
+int Unit::ColonizatorsTypeGetColonizatorsCount ()
 {
-    Unit::UpdateDataNode (dataNode);
-    if (dataNode->GetVar ("tradeGoodsCost").GetFloat () != tradeGoodsCost_)
-        dataNode->SetVar ("tradeGoodsCost", tradeGoodsCost_);
+    return unitTypeSpecificVars_ ["ColonizatorsCount"].GetInt ();
 }
 
-void TradersUnit::ReadDataFromNode (Urho3D::Node *dataNode, Map *map)
+void Unit::ColonizatorsTypeSetColonizatorsCount (int colonizatorsCount)
 {
-    Unit::ReadDataFromNode (dataNode, map);
-    tradeGoodsCost_ = dataNode->GetVar ("tradeGoodsCost").GetFloat ();
+    unitTypeSpecificVars_ ["ColonizatorsCount"] = colonizatorsCount;
 }
 
-ColonizatorsUnit::ColonizatorsUnit (Urho3D::Context *context) : Unit (context, UNIT_COLONIZATORS),
-    colonizatorsCount_ (0)
+int Unit::ArmyTypeGetSoldiersCount ()
 {
-
+    return unitTypeSpecificVars_ ["SoldiersCount"].GetInt ();
 }
 
-ColonizatorsUnit::~ColonizatorsUnit ()
+void Unit::ArmyTypeSetSoldiersCount (int soldiersCount)
 {
-
-}
-
-void ColonizatorsUnit::UpdateDataNode (Urho3D::Node *dataNode)
-{
-    Unit::UpdateDataNode (dataNode);
-    if (dataNode->GetVar ("colonizatorsCount").GetInt () != colonizatorsCount_)
-        dataNode->SetVar ("colonizatorsCount", colonizatorsCount_);
-}
-
-void ColonizatorsUnit::ReadDataFromNode (Urho3D::Node *dataNode, Map *map)
-{
-    Unit::ReadDataFromNode (dataNode, map);
-    colonizatorsCount_ = dataNode->GetVar ("colonizatorsCount").GetInt ();
-}
-
-ArmyUnit::ArmyUnit (Urho3D::Context *context) : Unit (context, UNIT_ARMY),
-    soldiersCount_ (0)
-{
-
-}
-
-ArmyUnit::~ArmyUnit ()
-{
-
-}
-
-void ArmyUnit::UpdateDataNode (Urho3D::Node *dataNode)
-{
-    Unit::UpdateDataNode (dataNode);
-    if (dataNode->GetVar ("soldiersCount").GetInt () != soldiersCount_)
-        dataNode->SetVar ("soldiersCount", soldiersCount_);
-}
-
-void ArmyUnit::ReadDataFromNode (Urho3D::Node *dataNode, Map *map)
-{
-    Unit::ReadDataFromNode (dataNode, map);
-    soldiersCount_ = dataNode->GetVar ("soldiersCount").GetInt ();
+    unitTypeSpecificVars_ ["SoldiersCount"] = soldiersCount;
 }
 }

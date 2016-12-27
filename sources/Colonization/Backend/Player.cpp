@@ -27,7 +27,7 @@ void Player::ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data)
     assert (unit);
     assert (target);
 
-    if (unit->ownerPlayer_ != name_)
+    if (unit->ownerPlayerName_ != name_)
         return;
 
     if ((unit->unitType_ == UNIT_FLEET && target->isSea_) ||

@@ -1,11 +1,12 @@
 #pragma once
 #include <Urho3D/Core/Object.h>
+#include <Urho3D/Core/Attribute.h>
 #include <Colonization/Core/District.hpp>
 #include <Colonization/Core/Map.hpp>
 
 namespace Colonization
 {
-class UnitsContainer;
+class UnitsManager;
 enum UnitType
 {
     UNIT_FLEET = 0,
@@ -14,81 +15,54 @@ enum UnitType
     UNIT_ARMY = 3
 };
 
-class Unit : public Urho3D::Object
+class Unit : public Urho3D::Component
 {
 URHO3D_OBJECT (Unit, Object)
 protected:
-    Unit (Urho3D::Context *context, UnitType unitType);
     Urho3D::StringHash hash_;
+    Urho3D::String ownerPlayerName_;
+    UnitType unitType_;
+    Urho3D::StringHash positionHash_;
+    Urho3D::PODVector <Urho3D::StringHash> way_;
+    float wayToNextDistrictProgressInPercents_;
+    Urho3D::VariantMap unitTypeSpecificVars_;
+
 public:
+    Unit (Urho3D::Context *context);
     virtual ~Unit ();
 
-    void UpdateHash (UnitsContainer *owner);
+    static void RegisterObject (Urho3D::Context *context);
+    void UpdateHash (UnitsManager *owner);
     Urho3D::StringHash GetHash ();
+    void SetHash (Urho3D::StringHash hash);
 
-    Urho3D::String ownerPlayer_;
-    UnitType unitType_;
-    District *position_;
-    Urho3D::PODVector <District *> way_;
-    float wayToNextDistrictProgressInPercents_;
+    UnitType GetUnitType ();
+    void SetUnitType (UnitType unitType);
 
-    virtual void UpdateDataNode (Urho3D::Node *dataNode);
-    virtual void ReadDataFromNode (Urho3D::Node *dataNode, Map *map);
-};
+    Urho3D::String GetOwnerPlayerName ();
+    void SetOwnerPlayerName (Urho3D::String ownerPlayerName);
 
-class FleetUnit : public Unit
-{
-URHO3D_OBJECT (FleetUnit, Unit)
-public:
-    FleetUnit (Urho3D::Context *context);
-    virtual ~FleetUnit ();
+    Urho3D::StringHash GetPositionHash ();
+    void SetPositionHash (Urho3D::StringHash positionHash);
 
-    int warShipsCount_;
-    // TODO: To be continued...
+    Urho3D::PODVector <Urho3D::StringHash> GetWay ();
+    void SetWay (Urho3D::PODVector <Urho3D::StringHash> way);
+    Urho3D::VariantVector GetWayAttribute ();
+    void SetWayAttribute (Urho3D::VariantVector way);
 
-    virtual void UpdateDataNode (Urho3D::Node *dataNode);
-    virtual void ReadDataFromNode (Urho3D::Node *dataNode, Map *map);
-};
+    float GetWayToNextDistrictProgressInPercents ();
+    void SetWayToNextDistrictProgressInPercents (float wayToNextDistrictProgressInPercents);
 
-class TradersUnit : public Unit
-{
-URHO3D_OBJECT (TradersUnit, Unit)
-public:
-    TradersUnit (Urho3D::Context *context);
-    virtual ~TradersUnit ();
+    int FleetTypeGetWarShipsCount ();
+    void FleetTypeSetWarShipsCount (int warShipsCount);
 
-    float tradeGoodsCost_;
-    // TODO: To be continued...
+    float TradersTypeGetTradeGoodsCost ();
+    void TradersTypeSetTradeGoodsCost (float tradeGoodsCost);
 
-    virtual void UpdateDataNode (Urho3D::Node *dataNode);
-    virtual void ReadDataFromNode (Urho3D::Node *dataNode, Map *map);
-};
+    int ColonizatorsTypeGetColonizatorsCount ();
+    void ColonizatorsTypeSetColonizatorsCount (int colonizatorsCount);
 
-class ColonizatorsUnit : public Unit
-{
-URHO3D_OBJECT (ColonizatorsUnit, Unit)
-public:
-    ColonizatorsUnit (Urho3D::Context *context);
-    virtual ~ColonizatorsUnit ();
-
-    int colonizatorsCount_;
-    // TODO: To be continued...
-
-    virtual void UpdateDataNode (Urho3D::Node *dataNode);
-    virtual void ReadDataFromNode (Urho3D::Node *dataNode, Map *map);
-};
-
-class ArmyUnit : public Unit
-{
-URHO3D_OBJECT (ArmyUnit, Unit)
-public:
-    ArmyUnit (Urho3D::Context *context);
-    virtual ~ArmyUnit ();
-
-    float soldiersCount_;
-    // TODO: To be continued...
-
-    virtual void UpdateDataNode (Urho3D::Node *dataNode);
-    virtual void ReadDataFromNode (Urho3D::Node *dataNode, Map *map);
+    int ArmyTypeGetSoldiersCount ();
+    void ArmyTypeSetSoldiersCount (int soldiersCount);
 };
 }
