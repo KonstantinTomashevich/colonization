@@ -1,6 +1,5 @@
 #pragma once
 #include <Urho3D/Core/Object.h>
-#include <Colonization/Core/UnitsContainer.hpp>
 
 namespace Colonization
 {
