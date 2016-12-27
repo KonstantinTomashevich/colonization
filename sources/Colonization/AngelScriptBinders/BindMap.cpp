@@ -3,86 +3,41 @@
 #include <Urho3D/ThirdParty/AngelScript/angelscript.h>
 #include <Urho3D/AngelScript/APITemplates.h>
 #include <Colonization/Core/Map.hpp>
+// TODO: Maybe delete BindingMacroses?
 #include <Colonization/AngelScriptBinders/BindingMacroses.hpp>
 
 namespace Colonization
 {
 // TODO: Not all functions are binded. Some server-side functions aren't binded.
-Urho3D::CScriptArray *MapFindPath (Map *map, District *from, District *to,
+Urho3D::CScriptArray *Map_FindPath (Map *map, Urho3D::StringHash startDistrictHash, Urho3D::StringHash targetDistrictHash,
                                    Urho3D::String playerName, bool canGoThroughColonies, bool isColonizator)
 {
-    Urho3D::PODVector <District *> result = map->FindPath (from, to, playerName, canGoThroughColonies, isColonizator);
-    // Add refs for AngelScript.
-    for (int index = 0; index < result.Size (); index++)
-        result.At (index)->AddRef ();
-    return Urho3D::VectorToArray <District *> (result, "Array<District@>");
+    Urho3D::Vector <Urho3D::SharedPtr <District> > result = map->FindPath (
+                startDistrictHash, targetDistrictHash, playerName, canGoThroughColonies, isColonizator);
+    return Urho3D::VectorToHandleArray <District> (result, "Array<District@>");
 }
 
 void BindMap (Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
-    Urho3D::RegisterObject <Map> (engine, "Map");
-    Urho3D::RegisterObjectConstructor <Map> (engine, "Map");
+    Urho3D::RegisterComponent <Map> (engine, "Map");
+    BindMapInterface (script, "Map");
+}
 
-    CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod (
-                    "Map", "void UpdateDataNode (Node @dataNode, bool rewritePolygonPoints = false)",
-                    asMETHOD (Map, UpdateDataNode), asCALL_THISCALL)
-                );
+void BindMapInterface (Urho3D::Script *script, Urho3D::String className)
+{
+    asIScriptEngine *engine = script->GetScriptEngine ();
+    engine->RegisterObjectMethod (className.CString (), "District @+ GetDistrictByIndex (int index)", asMETHOD (Map, GetDistrictByIndex), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "District @+ GetDistrictByNameHash (StringHash nameHash)", asMETHOD (Map, GetDistrictByNameHash), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "District @+ GetDistrictByHash (StringHash hash)", asMETHOD (Map, GetDistrictByHash), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "int GetDistrictsCount ()", asMETHOD (Map, GetDistrictsCount), asCALL_THISCALL);
 
-    CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod (
-                    "Map", "void ReadDataFromNode (Node @dataNode)",
-                    asMETHOD (Map, ReadDataFromNode), asCALL_THISCALL)
-                );
+    engine->RegisterObjectMethod (className.CString (), "District @+ CreateDistrict (Urho3D::String districtName)", asMETHOD (Map, CreateDistrict), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void RecalculateDistrictsNeighbors ()", asMETHOD (Map, RecalculateDistrictsNeighbors), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void ClearAndRemoveDistricts ()", asMETHOD (Map, ClearAndRemoveDistricts), asCALL_THISCALL);
 
-    CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod (
-                    "Map", "District @GetDistrictByIndex (int index)",
-                    asMETHOD (Map, GetDistrictByIndex), asCALL_THISCALL)
-                );
-
-    CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod (
-                    "Map", "District @GetDistrictByNameHash (StringHash nameHash)",
-                    asMETHOD (Map, GetDistrictByNameHash), asCALL_THISCALL)
-                );
-
-    CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod (
-                    "Map", "District @GetDistrictByHash (StringHash hash)",
-                    asMETHOD (Map, GetDistrictByHash), asCALL_THISCALL)
-                );
-
-    CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod (
-                    "Map", "int GetDistrictsCount ()",
-                    asMETHOD (Map, GetDistrictsCount), asCALL_THISCALL)
-                );
-
-    CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod (
-                    "Map", "void AddDistrict (District @district)",
-                    asMETHOD (Map, AddDistrict), asCALL_THISCALL)
-                );
-
-    CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod (
-                    "Map", "void UpdateNeighborsOfDistricts ()",
-                    asMETHOD (Map, UpdateNeighborsOfDistricts), asCALL_THISCALL)
-                );
-
-    CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod (
-                    "Map", "void ClearDistricts ()",
-                    asMETHOD (Map, ClearDistricts), asCALL_THISCALL)
-                );
-
-    CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod (
-                    "Map",
-                    "Array<District@> @FindPath (District @from, District @to, String playerName, bool canGoThroughColonies, bool isColonizator)",
-                    asFUNCTION (MapFindPath), asCALL_CDECL_OBJFIRST)
-                );
+    engine->RegisterObjectMethod (className.CString (),
+                "Array<District@> @FindPath (StringHash startDistrictHash, StringHash targetDistrictHash, String playerName, bool canGoThroughColonies, bool isColonizator)",
+                asFUNCTION (Map_FindPath), asCALL_CDECL_OBJFIRST);
 }
 }

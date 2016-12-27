@@ -90,7 +90,7 @@ void Map::ClearAndRemoveDistricts ()
         node_->RemoveChild (districtsNodes.At (index));
 }
 
-Urho3D::PODVector <Urho3D::SharedPtr <District> > Map::FindPath (
+Urho3D::Vector <Urho3D::SharedPtr <District> > Map::FindPath (
         Urho3D::StringHash startDistrictHash, Urho3D::StringHash targetDistrictHash,
         Urho3D::String playerName, bool canGoThroughColonies, bool isColonizator)
 {
@@ -156,7 +156,7 @@ Urho3D::PODVector <Urho3D::SharedPtr <District> > Map::FindPath (
                 previous = cameFrom [previous->name_];
             }
 
-            Urho3D::PODVector <Urho3D::SharedPtr <District> > way;
+            Urho3D::Vector <Urho3D::SharedPtr <District> > way;
             for (int index = reversedWay.Size () - 1; index >= 0; index--)
                 way.Push (Urho3D::SharedPtr <District> (reversedWay.At (index)));
             way.Push (target);

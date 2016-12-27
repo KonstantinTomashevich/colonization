@@ -19,7 +19,7 @@ public:
     static void RegisterObject (Urho3D::Context *context);
 
     District *GetDistrictByIndex (int index);
-    District *GetDistrictByNameHash(Urho3D::StringHash nameHash);
+    District *GetDistrictByNameHash (Urho3D::StringHash nameHash);
     District *GetDistrictByHash (Urho3D::StringHash hash);
     int GetDistrictsCount ();
     District *CreateDistrict (Urho3D::String districtName);
@@ -27,7 +27,7 @@ public:
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     void RecalculateDistrictsNeighbors ();
     void ClearAndRemoveDistricts ();
-    Urho3D::PODVector < Urho3D::SharedPtr<District> > FindPath(
+    Urho3D::Vector <Urho3D::SharedPtr<District> > FindPath (
             Urho3D::StringHash startDistrictHash, Urho3D::StringHash targetDistrictHash,
             Urho3D::String playerName, bool canGoThroughColonies, bool isColonizator);
 };
