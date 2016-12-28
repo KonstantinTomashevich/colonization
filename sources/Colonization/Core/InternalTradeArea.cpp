@@ -105,7 +105,7 @@ void InternalTradeArea::RegisterObject (Urho3D::Context *context)
                                Urho3D::VariantVector, Urho3D::Variant::emptyVariantVector, Urho3D::AM_DEFAULT);
 }
 
-TradeDistrictProcessingInfo *InternalTradeArea::ProcessTrade (Map *map)
+Urho3D::SharedPtr <TradeDistrictProcessingInfo> InternalTradeArea::ProcessTrade(Map *map)
 {
     Urho3D::PODVector <District *> realDistricts;
     ConstructVectorOfRealDistricts (map, realDistricts);
@@ -128,25 +128,25 @@ TradeDistrictProcessingInfo *InternalTradeArea::ProcessTrade (Map *map)
     float minesExternalProductionCost = context_->GetGlobalVar ("minesProductionExternalCost").GetFloat ();
     float industryExternalProductionCost = context_->GetGlobalVar ("industryProductionExternalCost").GetFloat ();
 
-    TradeDistrictProcessingInfo *result = new TradeDistrictProcessingInfo (context_);
-    result->unusedEvolutionPoints_ ["farms"] = totalFarmsEvolution - totalFarmsConsumption;
-    result->unusedEvolutionPoints_ ["mines"] = totalMinesEvolution - totalMinesConsumption;
-    result->unusedEvolutionPoints_ ["industry"] = totalIndustryEvolution - totalIndustryConsumption;
+    Urho3D::SharedPtr <TradeDistrictProcessingInfo> result (new TradeDistrictProcessingInfo (context_));
+    result->SetUnusedEvolutionPointsOf ("farms", totalFarmsEvolution - totalFarmsConsumption);
+    result->SetUnusedEvolutionPointsOf ("mines", totalMinesEvolution - totalMinesConsumption;
+    result->SetUnusedEvolutionPointsOf ("industry", totalIndustryEvolution - totalIndustryConsumption);
 
     float soldFarmsProduction = (totalFarmsConsumption > totalFarmsEvolution) ? totalFarmsEvolution : totalFarmsConsumption;
     float soldMinesProduction = (totalMinesConsumption > totalMinesEvolution) ? totalMinesEvolution : totalMinesConsumption;
     float soldIndustryProduction = (totalIndustryConsumption > totalIndustryEvolution) ? totalIndustryEvolution : totalIndustryConsumption;
 
-    result->soldTradeGoodsCost_ = soldFarmsProduction * farmsInternalProductionCost +
-            soldMinesProduction * minesInternalProductionCost +
-            soldIndustryProduction * industryInternalProductionCost;
+    result->SetSoldTradeGoodsCost (soldFarmsProduction * farmsInternalProductionCost +
+                                   soldMinesProduction * minesInternalProductionCost +
+                                   soldIndustryProduction * industryInternalProductionCost);
 
-    result->unsoldTradeGoodsCost_ = (totalFarmsEvolution - soldFarmsProduction) * farmsExternalProductionCost +
-            (totalMinesEvolution - soldMinesProduction) * minesExternalProductionCost +
-            (totalIndustryEvolution - soldIndustryProduction) * industryExternalProductionCost;
+    result->SetUnsoldTradeGoodsCost ( (totalFarmsEvolution - soldFarmsProduction) * farmsExternalProductionCost +
+                                      (totalMinesEvolution - soldMinesProduction) * minesExternalProductionCost +
+                                      (totalIndustryEvolution - soldIndustryProduction) * industryExternalProductionCost;
 
-    result->logisticsBonus_ = totalLogisticsEvolution / (districtsHashes_.Size () * 6.5f);
-    result->defenseBonus_ = totalDefenseEvolution / (districtsHashes_.Size () * 5.0f);
+    result->SetLogisticsBonus (totalLogisticsEvolution / (districtsHashes_.Size () * 6.5f));
+    result->SetDefenseBonus (totalDefenseEvolution / (districtsHashes_.Size () * 5.0f));
     return result;
 }
 
@@ -194,7 +194,12 @@ void InternalTradeArea::SetDistrictsHashesArrayAttribute (Urho3D::VariantVector 
             districtsHashes_.Push (attribute.At (index).GetStringHash ());
 }
 
-TradeDistrictProcessingInfo::TradeDistrictProcessingInfo (Urho3D::Context *context) : Urho3D::Object (context)
+TradeDistrictProcessingInfo::TradeDistrictProcessingInfo (Urho3D::Context *context) : Urho3D::Object (context),
+    unusedEvolutionPoints_ (),
+    unsoldTradeGoodsCost_ (0.0f),
+    soldTradeGoodsCost_ (0.0f),
+    logisticsBonus_ (1.0f),
+    defenseBonus_ (1.0f)
 {
 
 }
