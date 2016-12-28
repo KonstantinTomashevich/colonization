@@ -4,6 +4,7 @@
 
 namespace Colonization
 {
+// TODO: Maybe remove it?
 void AddRef (Urho3D::Object *object)
 {
     object->AddRef ();
