@@ -40,12 +40,17 @@ protected:
 public:
     InternalTradeArea (Urho3D::Context *context);
     virtual ~InternalTradeArea ();
-    TradeDistrictProcessingInfo ProcessTrade (Map *map);
+
+    static void RegisterObject (Urho3D::Context *context);
+    TradeDistrictProcessingInfo *ProcessTrade (Map *map);
 
     int GetDistrictsHashesCount ();
     Urho3D::StringHash GetDistrictHashByIndex (int index);
     Urho3D::PODVector <Urho3D::StringHash> GetDistrictsHashesArray ();
     void AddDistrictHash (Urho3D::StringHash districtHash);
     bool ContainsDistrictHash (Urho3D::StringHash districtHash);
+
+    Urho3D::VariantVector GetDistrictsHashesArrayAttribute ();
+    void SetDistrictsHashesArrayAttribute (Urho3D::VariantVector attribute);
 };
 }
