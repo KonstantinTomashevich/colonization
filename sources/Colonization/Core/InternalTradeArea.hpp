@@ -1,13 +1,20 @@
 #pragma once
 #include <Urho3D/Core/Object.h>
 #include <Urho3D/Container/Vector.h>
+#include <Urho3D/Scene/Component.h>
 
 namespace Colonization
 {
 class Map;
 class District;
-struct TradeDistrictProcessingInfo
+
+class TradeDistrictProcessingInfo : public Urho3D::Object
 {
+URHO3D_OBJECT (TradeDistrictProcessingInfo, Object)
+public:
+    TradeDistrictProcessingInfo (Urho3D::Context *context);
+    virtual ~TradeDistrictProcessingInfo ();
+
     Urho3D::HashMap <Urho3D::StringHash, float> unusedEvolutionPoints_;
     float unsoldTradeGoodsCost_;
     float soldTradeGoodsCost_;
@@ -16,9 +23,9 @@ struct TradeDistrictProcessingInfo
 };
 
 // TODO: Maybe reimplement later to add some features?
-class InternalTradeArea : public Urho3D::Object
+class InternalTradeArea : public Urho3D::Component
 {
-URHO3D_OBJECT (InternalTradeArea, Object)
+URHO3D_OBJECT (InternalTradeArea, Component)
 protected:
     Urho3D::PODVector <Urho3D::StringHash> districtsHashes_;
 

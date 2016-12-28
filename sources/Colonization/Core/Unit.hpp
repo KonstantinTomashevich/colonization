@@ -17,7 +17,7 @@ enum UnitType
 
 class Unit : public Urho3D::Component
 {
-URHO3D_OBJECT (Unit, Object)
+URHO3D_OBJECT (Unit, Component)
 protected:
     Urho3D::StringHash hash_;
     Urho3D::String ownerPlayerName_;
