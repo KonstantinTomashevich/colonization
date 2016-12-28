@@ -12,9 +12,9 @@ namespace Colonization
 Urho3D::CScriptArray *Map_FindPath (Map *map, Urho3D::StringHash startDistrictHash, Urho3D::StringHash targetDistrictHash,
                                    Urho3D::String playerName, bool canGoThroughColonies, bool isColonizator)
 {
-    Urho3D::Vector <Urho3D::SharedPtr <District> > result = map->FindPath (
+    Urho3D::Vector <Urho3D::StringHash> result = map->FindPath (
                 startDistrictHash, targetDistrictHash, playerName, canGoThroughColonies, isColonizator);
-    return Urho3D::VectorToHandleArray <District> (result, "Array<District@>");
+    return Urho3D::VectorToArray <Urho3D::StringHash> (result, "Array<StringHash>");
 }
 
 void BindMap (Urho3D::Script *script)
@@ -37,7 +37,7 @@ void BindMapInterface (Urho3D::Script *script, Urho3D::String className)
     engine->RegisterObjectMethod (className.CString (), "void ClearAndRemoveDistricts ()", asMETHOD (Map, ClearAndRemoveDistricts), asCALL_THISCALL);
 
     engine->RegisterObjectMethod (className.CString (),
-                "Array<District@> @FindPath (StringHash startDistrictHash, StringHash targetDistrictHash, String playerName, bool canGoThroughColonies, bool isColonizator)",
+                "Array<StringHash> @FindPath (StringHash startDistrictHash, StringHash targetDistrictHash, String playerName, bool canGoThroughColonies, bool isColonizator)",
                 asFUNCTION (Map_FindPath), asCALL_CDECL_OBJFIRST);
 }
 }
