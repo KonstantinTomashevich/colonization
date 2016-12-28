@@ -70,7 +70,7 @@ void Map::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
     {
         Urho3D::Node *districtNode = districtsNodes.At (index);
         if (districtNode->GetID () < Urho3D::FIRST_LOCAL_ID)
-            districts_.Push (districtNode->GetComponent (District::GetTypeStatic ()));
+            districts_.Push (districtNode->GetComponent <District> ());
     }
 }
 
