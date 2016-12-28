@@ -16,7 +16,7 @@ Map::Map (Urho3D::Context *context) : Urho3D::Object (context), districts_ ()
 
 Map::~Map ()
 {
-    districts_.Clear ();
+    ClearAndRemoveDistricts ();
 }
 
 void Map::RegisterObject (Urho3D::Context *context)
@@ -51,12 +51,13 @@ int Map::GetDistrictsCount ()
     return districts_.Size ();
 }
 
-District *Map::CreateDistrict(Urho3D::String districtName)
+District *Map::CreateDistrict (Urho3D::String districtName)
 {
     assert (node_);
     Urho3D::Node *districtNode = node_->CreateChild (districtName, Urho3D::REPLICATED);
-    Urho3D::SharedPtr <District> district (districtNode->CreateComponent (District::GetTypeStatic (), Urho3D::REPLICATED));
+    Urho3D::SharedPtr <District> district (districtNode->CreateComponent <District> (Urho3D::REPLICATED));
     districts_.Push (district);
+    return district;
 }
 
 void Map::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)

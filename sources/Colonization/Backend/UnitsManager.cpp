@@ -3,12 +3,13 @@
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/IO/Log.h>
+#include <Urho3D/Scene/Scene.h>
 #include <Colonization/Backend/SceneManager.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 
 namespace Colonization
 {
-void UnitsManager::UpdateUnitsList()
+void UnitsManager::UpdateUnitsList ()
 {
     // Reload units array from child nodes.
     assert (node_);
@@ -76,7 +77,9 @@ UnitsManager::UnitsManager (Urho3D::Context *context) : Urho3D::Component (conte
 
 UnitsManager::~UnitsManager ()
 {
-    delete unitsContainer_;
+    for (int index = 0; index < units_.Size (); index++)
+        units_.At (index)->GetNode ()->Remove ();
+    units_.Clear ();
 }
 
 void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
@@ -153,6 +156,16 @@ Unit *UnitsManager::GetUnitByHash (Urho3D::StringHash hash)
         if (units_.At (index)->GetHash () == hash)
             return units_.At (index);
     return 0;
+}
+
+Unit *UnitsManager::CreateUnit ()
+{
+    assert (node_);
+    Urho3D::Node *unitNode = node_->CreateChild (Urho3D::REPLICATED);
+    unitNode->SetName ("Unit" + Urho3D::String (unitNode->GetID ()));
+    Urho3D::SharedPtr <Unit> unit (unitNode->CreateComponent <Unit> (Urho3D::REPLICATED));
+    units_.Push (unit);
+    return unit;
 }
 }
 

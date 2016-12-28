@@ -23,5 +23,6 @@ public:
     int GetUnitsCount ();
     Unit *GetUnitByIndex (int index);
     Unit *GetUnitByHash (Urho3D::StringHash hash);
+    Unit *CreateUnit ();
 };
 }

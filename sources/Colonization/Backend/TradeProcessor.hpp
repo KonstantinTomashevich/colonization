@@ -5,16 +5,16 @@
 namespace Colonization
 {
 class PlayersManager;
-class TradeProcessor : public Urho3D::Object
+class TradeProcessor : public Urho3D::Component
 {
-URHO3D_OBJECT (TradeProcessor, Object)
+URHO3D_OBJECT (TradeProcessor, Component)
 protected:
-    Urho3D::PODVector <InternalTradeArea *> tradeAreas_;
+    Urho3D::PODVector <Urho3D::SharedPtr <InternalTradeArea> > tradeAreas_;
     float beforeTradeAreasUpdate_;
 
     void UpdateTradeAreas (float updateDelay);
-    InternalTradeArea *CreateTradeArea (District *start, Urho3D::PODVector <District *> &unscannedList);
-    void ProcessTradeAreaDistrict (District *district, Urho3D::PODVector <District *> &areaDistricts, Urho3D::PODVector <District *> &unscannedList);
+    InternalTradeArea *CreateTradeArea (Map *map, District *start, Urho3D::PODVector <District *> &unscannedList, int tradeAreaIndex);
+    void ProcessTradeAreaDistrict (Map *map, District *district, Urho3D::PODVector <District *> &areaDistricts, Urho3D::PODVector <District *> &unscannedList);
     void ProcessTradeAreaIncome (PlayersManager *playersManager, Map *map, InternalTradeArea *tradeArea, float updateDelay);
     void ClearTradeAreas ();
 
