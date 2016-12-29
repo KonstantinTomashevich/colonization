@@ -40,7 +40,7 @@ void SceneManager::WritePlayersStats ()
 
 void SceneManager::UpdateMap (bool rewriteDistrictsPolygons)
 {
-    Map *map = (Map *) context_->GetGlobalVar ("Map").GetPtr ();
+    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
     assert (map);
     Urho3D::Node *mapNode = scene_->GetChild ("map");
     map->UpdateDataNode (mapNode, rewriteDistrictsPolygons);

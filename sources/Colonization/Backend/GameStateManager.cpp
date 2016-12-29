@@ -178,7 +178,7 @@ void GameStateManager::SetupPlayingState ()
 void GameStateManager::DisposePlayingState ()
 {
     // TODO: Temporary. Reimplement later.
-    delete ( (Map *) context_->GetGlobalVar ("Map").GetPtr ());
+    delete ( node_->GetScene ()->GetChild ("map")->GetComponent <Map> ());
     delete ( (UnitsManager *) context_->GetGlobalVar ("UnitsManager").GetPtr ());
     delete ( (ColoniesManager *) context_->GetGlobalVar ("ColoniesManager").GetPtr ());
     delete ( (TradeProcessor *) context_->GetGlobalVar ("TradeProcessor").GetPtr ());

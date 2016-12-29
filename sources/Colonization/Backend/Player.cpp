@@ -10,7 +10,7 @@ namespace Colonization
 {
 void Player::ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data)
 {
-    Map *map = (Map *) context_->GetGlobalVar ("Map").GetPtr ();
+    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
     UnitsManager *unitsManager = (UnitsManager *) context_->GetGlobalVar ("UnitsManager").GetPtr ();
     // Skip action type.
     data.ReadInt ();
@@ -38,7 +38,7 @@ void Player::ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data)
 
 void Player::ProcessInvestToColonyAction (Urho3D::VectorBuffer data)
 {
-    Map *map = (Map *) context_->GetGlobalVar ("Map").GetPtr ();
+    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
     ColoniesManager *coloniesManager = (ColoniesManager *) context_->GetGlobalVar ("ColoniesManager").GetPtr ();
     // Skip action type.
     data.ReadInt ();
@@ -63,7 +63,7 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
     // TODO: It's not a final version. May be rewrited later.
     if (gold_ >= 100.0f)
     {
-        Map *map = (Map *) context_->GetGlobalVar ("Map").GetPtr ();
+        Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
         UnitsManager *unitsManager = (UnitsManager *) context_->GetGlobalVar ("UnitsManager").GetPtr ();
         // Skip action type.
         data.ReadInt ();

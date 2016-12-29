@@ -3,13 +3,24 @@
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/IO/Log.h>
+#include <Urho3D/Scene/Scene.h>
+
+#include <Colonization/Utils/Categories.hpp>
 #include <cmath>
 
 namespace Colonization
 {
+float ColoniesManager::GetTotalColonyEvolution(District *colony)
+{
+    return colony->GetFarmsEvolutionPoints () + colony->GetMinesEvolutionPoints () +
+            colony->GetIndustryEvolutionPoints () + colony->GetLogisticsEvolutionPoints () +
+            colony->GetDefenseEvolutionPoints ();
+}
+
 void ColoniesManager::ProcessColony (District *colony, float timeStep)
 {
     // TODO: Think about balance.
+    // TODO: Maybe delete ability to cut forests? And delete forests reproductivity too.
     ProcessColonyPopulation (colony, timeStep);
     ProcessColonyForests (colony, timeStep);
     ProcessColonyFarmsEvolution (colony, timeStep);
@@ -18,62 +29,57 @@ void ColoniesManager::ProcessColony (District *colony, float timeStep)
     ProcessColonyLogisticsEvolution (colony, timeStep);
     ProcessColonyDefenseEvolution (colony, timeStep);
     // TODO: Implement average level of life calculation.
-    colony->averageLevelOfLifePoints_ = 1.0f;
-    colony->needDataUpdate_ = true;
+    colony->SetAverageLevelOfLifePoints (1.0f);
 }
 
 void ColoniesManager::ProcessColonyPopulation (District *colony, float timeStep)
 {
-    float sexRatio = colony->menCount_ / colony->womenCount_;
+    float sexRatio = colony->GetMenCount () / colony->GetWomenCount ();
     float increaseModifer = 1.0f - Urho3D::Abs (1.0f - sexRatio);
-    float populationIncrease = (colony->menCount_ * colony->womenCount_) *
+    float populationIncrease = (colony->GetMenCount () * colony->GetWomenCount ()) *
             coloniesBasicPopulationIncrease_ * increaseModifer * timeStep;
 
     float newPopulationSexRatio = Urho3D::Random (0.4f, 0.6f);
-    colony->menCount_ += populationIncrease * newPopulationSexRatio * timeStep;
-    colony->womenCount_ += populationIncrease * (1.0f - newPopulationSexRatio) * timeStep;
+    colony->SetMenCount (colony->GetMenCount () + populationIncrease * newPopulationSexRatio * timeStep);
+    colony->SetWomenCount (colony->GetWomenCount () + populationIncrease * (1.0f - newPopulationSexRatio) * timeStep);
 }
 
 void ColoniesManager::ProcessColonyForests (District *colony, float timeStep)
 {
-    if (colony->forestsSquare_ < colony->farmingSquare_)
+    if (colony->GetForestsSquare () < colony->GetFarmingSquare ())
     {
-        colony->forestsSquare_ += colony->forestsReproductivity_ * timeStep;
-        colony->farmingSquare_ -= colony->forestsReproductivity_ * timeStep;
+        colony->SetForestsSquare (colony->GetForestsSquare () + colony->GetForestsReproductivity () * timeStep);
+        colony->SetFarmingSquare (colony->GetFarmingSquare () - colony->GetForestsReproductivity () * timeStep);
     }
 }
 
 void ColoniesManager::ProcessColonyFarmsEvolution (District *colony, float timeStep)
 {
-    float totalColonyEvolution = colony->farmsEvolutionPoints_ + colony->minesEvolutionPoints_ +
-            colony->industryEvolutionPoints_ + colony->logisticsEvolutionPoints_ +
-            colony->defenseEvolutionPoints_;
-
-    float colonyFarmsEvolution = colony->farmsEvolutionPoints_;
-
+    float totalColonyEvolution = GetTotalColonyEvolution (colony);
+    float colonyFarmsEvolution = colony->GetFarmsEvolutionPoints ();
     float farmsEvolutionInColonyEvolution = colonyFarmsEvolution / totalColonyEvolution;
 
-    float canBePlanted = (colony->menCount_ + colony->womenCount_) * farmsEvolutionInColonyEvolution *
+    float canBePlanted = (colony->GetMenCount () + colony->GetWomenCount ()) * farmsEvolutionInColonyEvolution *
             canBePlantedByOneColonist_ * sqrt (colonyFarmsEvolution);
 
-    if (colony->forestsSquare_ > (colony->forestsSquare_ + colony->farmingSquare_) * 0.15f)
+    if (colony->GetForestsSquare () > (colony->GetForestsSquare () + colony->GetFarmingSquare ()) * 0.15f)
     {
-        colony->forestsSquare_ -= colony->forestsReproductivity_ * 0.25f * forestCanBeCuttedByOneColonist_ * timeStep;
-        colony->farmingSquare_ +=  colony->forestsReproductivity_ * 0.25f * forestCanBeCuttedByOneColonist_ * timeStep;
+        colony->SetForestsSquare (colony->GetForestsSquare () - 0.25f * forestCanBeCuttedByOneColonist_ * timeStep);
+        colony->SetFarmingSquare (colony->GetFarmingSquare () + 0.25f * forestCanBeCuttedByOneColonist_ * timeStep);
     }
 
     float climateModifer = 1.0f;
-    if (colony->climate_ == CLIMATE_TEMPERATE)
+    if (colony->GetClimate () == CLIMATE_TEMPERATE)
         climateModifer = 1.0f;
-    else if (colony->climate_ == CLIMATE_TEMPERATE_CONTINENTAL)
+    else if (colony->GetClimate () == CLIMATE_TEMPERATE_CONTINENTAL)
         climateModifer = 0.8f;
-    else if (colony->climate_ == CLIMATE_TROPICAL)
+    else if (colony->GetClimate () == CLIMATE_TROPICAL)
         climateModifer = 1.5f;
-    else if (colony->climate_ == CLIMATE_HOT)
+    else if (colony->GetClimate () == CLIMATE_HOT)
         climateModifer = 1.25f;
-    else if (colony->climate_ == CLIMATE_COLD)
+    else if (colony->GetClimate () == CLIMATE_COLD)
         climateModifer = 0.5f;
-    else if (colony->climate_ == CLIMATE_DESERT)
+    else if (colony->GetClimate () == CLIMATE_DESERT)
         climateModifer = 0.25f;
 
     float investitions = investitions_ [colony->GetHash ()] ["farms"];
@@ -84,60 +90,56 @@ void ColoniesManager::ProcessColonyFarmsEvolution (District *colony, float timeS
         investitions_ [colony->GetHash ()] ["farms"] = investitions - investitionsConsumption_ * timeStep;
     }
 
-    float evolutionModifer = (colony->farmingSquare_ - canBePlanted) / colony->farmingSquare_;
+    float evolutionModifer = (colony->GetFarmingSquare () - canBePlanted) / colony->GetFarmingSquare ();
     if (evolutionModifer > 0.0f)
     {
-        evolutionModifer *= colony->landAverageFertility_;
+        evolutionModifer *= colony->GetLandAverageFertility ();
         evolutionModifer *= climateModifer;
         evolutionModifer *= investitionsModifer;
     }
     else
     {
-        evolutionModifer /= colony->landAverageFertility_;
+        evolutionModifer /= colony->GetLandAverageFertility ();
         evolutionModifer /= climateModifer;
         evolutionModifer /= investitionsModifer;
     }
 
-    colony->farmsEvolutionPoints_ += coloniesBasicEvolution_ * evolutionModifer * timeStep;
+    colony->SetFarmsEvolutionPoints (colony->GetFarmsEvolutionPoints () + coloniesBasicEvolution_ * evolutionModifer * timeStep);
 }
 
 void ColoniesManager::ProcessColonyMinesEvolution (District *colony, float timeStep)
 {
-    float totalColonyEvolution = colony->farmsEvolutionPoints_ + colony->minesEvolutionPoints_ +
-            colony->industryEvolutionPoints_ + colony->logisticsEvolutionPoints_ +
-            colony->defenseEvolutionPoints_;
-
-    float colonyMinesEvolution = colony->minesEvolutionPoints_;
-
+    float totalColonyEvolution = GetTotalColonyEvolution (colony);
+    float colonyMinesEvolution = colony->GetMinesEvolutionPoints ();
     float minesEvolutionInColonyEvolution = colonyMinesEvolution / totalColonyEvolution;
 
     float perspective = 1.0f;
 
-    if (colony->forestsSquare_ < (colony->forestsSquare_ + colony->farmingSquare_) * 0.15f)
+    if (colony->GetForestsSquare () < (colony->GetForestsSquare () + colony->GetFarmingSquare ()) * 0.15f)
         perspective -= 1.0;
-    else if (colony->forestsSquare_ < (colony->forestsSquare_ + colony->farmingSquare_) * 0.25f)
+    else if (colony->GetForestsSquare () < (colony->GetForestsSquare () + colony->GetFarmingSquare ()) * 0.25f)
         perspective -= 0.75f;
-    else if (colony->forestsSquare_ > (colony->forestsSquare_ + colony->farmingSquare_) * 0.5f)
+    else if (colony->GetForestsSquare () > (colony->GetForestsSquare () + colony->GetFarmingSquare ()) * 0.5f)
         perspective += 0.5f;
-    else if (colony->forestsSquare_ > colony->forestsSquare_ < (colony->forestsSquare_ + colony->farmingSquare_) * 0.75f)
+    else if (colony->GetForestsSquare () > colony->GetForestsSquare () < (colony->GetForestsSquare () + colony->GetFarmingSquare ()) * 0.75f)
         perspective += 1.0f;
 
-    if (colony->hasCoalDeposits_)
+    if (colony->HasCoalDeposits ())
         perspective += 0.5f;
 
-    if (colony->hasIronDeposits_)
+    if (colony->HasIronDeposits ())
         perspective += 0.75f;
 
-    if (colony->hasSilverDeposits_)
+    if (colony->HasSilverDeposits ())
         perspective += 1.25f;
 
-    if (colony->hasGoldDeposits_)
+    if (colony->HasGoldDeposits ())
         perspective += 1.5f;
 
-    if (colony->forestsSquare_ > (colony->forestsSquare_ + colony->farmingSquare_) * 0.15f)
+    if (colony->GetForestsSquare () > (colony->GetForestsSquare () + colony->GetFarmingSquare ()) * 0.15f)
     {
-        colony->forestsSquare_ -= colony->forestsReproductivity_ * forestCanBeCuttedByOneColonist_ * timeStep;
-        colony->farmingSquare_ +=  colony->forestsReproductivity_ * forestCanBeCuttedByOneColonist_ * timeStep;
+        colony->SetForestsSquare (colony->GetForestsSquare () - forestCanBeCuttedByOneColonist_ * timeStep);
+        colony->SetFarmingSquare (colony->GetFarmingSquare () + forestCanBeCuttedByOneColonist_ * timeStep);
     }
 
     float investitions = investitions_ [colony->GetHash ()] ["mines"];
@@ -147,7 +149,7 @@ void ColoniesManager::ProcessColonyMinesEvolution (District *colony, float timeS
         investitions_ [colony->GetHash ()] ["mines"] = investitions - investitionsConsumption_ * timeStep;
     }
 
-    perspective += sqrt (colony->industryEvolutionPoints_);
+    perspective += sqrt (colony->GetIndustryEvolutionPoints ());
     float modifer = sqrt (perspective);
 
     if (minesEvolutionInColonyEvolution > 0.25f)
@@ -156,34 +158,30 @@ void ColoniesManager::ProcessColonyMinesEvolution (District *colony, float timeS
     else if (minesEvolutionInColonyEvolution > 0.5f)
         modifer *= 0.15f;
 
-    else if (colonyMinesEvolution > 1.5f * colony->farmsEvolutionPoints_)
+    else if (colonyMinesEvolution > 1.5f * colony->GetFarmsEvolutionPoints ())
         modifer *= 0.1f;
 
     else
         modifer *= 0.5f;
 
-    colony->minesEvolutionPoints_ += coloniesBasicEvolution_ * modifer * timeStep;
+    colony->SetMinesEvolutionPoints (colony->GetMinesEvolutionPoints () + coloniesBasicEvolution_ * modifer * timeStep);
 }
 
 void ColoniesManager::ProcessColonyIndustryEvolution (District *colony, float timeStep)
 {
-    float totalColonyEvolution = colony->farmsEvolutionPoints_ + colony->minesEvolutionPoints_ +
-            colony->industryEvolutionPoints_ + colony->logisticsEvolutionPoints_ +
-            colony->defenseEvolutionPoints_;
-
-    float colonyIndustryEvolution = colony->industryEvolutionPoints_;
-
+    float totalColonyEvolution = GetTotalColonyEvolution (colony);
+    float colonyIndustryEvolution = colony->GetIndustryEvolutionPoints ();
     float industryEvolutionInColonyEvolution = colonyIndustryEvolution / totalColonyEvolution;
 
     float perspective = 0.0f;
-    perspective += sqrt (colony->minesEvolutionPoints_) * 0.75f;
-    perspective += sqrt (colony->logisticsEvolutionPoints_) * 0.75f;
+    perspective += sqrt (colony->GetMinesEvolutionPoints ()) * 0.75f;
+    perspective += sqrt (colony->GetLogisticsEvolutionPoints ()) * 0.75f;
 
-    if (colony->hasCoalDeposits_ && colony->hasIronDeposits_)
+    if (colony->HasCoalDeposits () && colony->HasIronDeposits ())
         perspective += 2.0f;
-    else if (colony->hasCoalDeposits_)
+    else if (colony->HasCoalDeposits ())
         perspective += 0.5f;
-    else if (colony->hasIronDeposits_)
+    else if (colony->HasIronDeposits ())
         perspective += 1.0f;
 
     float investitions = investitions_ [colony->GetHash ()] ["industry"];
@@ -201,30 +199,26 @@ void ColoniesManager::ProcessColonyIndustryEvolution (District *colony, float ti
     else if (industryEvolutionInColonyEvolution > 0.75f)
         modifer *= 0.15f;
 
-    else if (colonyIndustryEvolution > 5.0f * colony->farmsEvolutionPoints_)
+    else if (colonyIndustryEvolution > 5.0f * colony->GetFarmsEvolutionPoints ())
         modifer *= 0.1f;
 
     else
         modifer *= 0.5f;
 
-    colony->industryEvolutionPoints_ += coloniesBasicEvolution_ * modifer * timeStep;
+    colony->SetIndustryEvolutionPoints (colony->GetIndustryEvolutionPoints () + coloniesBasicEvolution_ * modifer * timeStep);
 }
 
 void ColoniesManager::ProcessColonyLogisticsEvolution (District *colony, float timeStep)
 {
-    float totalColonyEvolution = colony->farmsEvolutionPoints_ + colony->minesEvolutionPoints_ +
-            colony->industryEvolutionPoints_ + colony->logisticsEvolutionPoints_ +
-            colony->defenseEvolutionPoints_;
-
-    float colonyLogisticsEvolution = colony->logisticsEvolutionPoints_;
-
+    float totalColonyEvolution = GetTotalColonyEvolution (colony);
+    float colonyLogisticsEvolution = colony->GetLogisticsEvolutionPoints ();
     float logisticsEvolutionInColonyEvolution = colonyLogisticsEvolution / totalColonyEvolution;
 
     float perspective = 0.0f;
-    perspective += sqrt (colony->farmsEvolutionPoints_) * 0.4f;
-    perspective += sqrt (colony->minesEvolutionPoints_) * 0.4f;
-    perspective += sqrt (colony->industryEvolutionPoints_) * 0.75f;
-    perspective += sqrt (colony->defenseEvolutionPoints_);
+    perspective += sqrt (colony->GetFarmsEvolutionPoints ()) * 0.4f;
+    perspective += sqrt (colony->GetMinesEvolutionPoints ()) * 0.4f;
+    perspective += sqrt (colony->GetIndustryEvolutionPoints ()) * 0.75f;
+    perspective += sqrt (colony->GetDefenseEvolutionPoints ());
 
     float investitions = investitions_ [colony->GetHash ()] ["logistics"];
     if (investitions > 0.0f)
@@ -253,17 +247,13 @@ void ColoniesManager::ProcessColonyLogisticsEvolution (District *colony, float t
     else
         modifer *= 0.5f;
 
-    colony->logisticsEvolutionPoints_ += coloniesBasicEvolution_ * modifer * timeStep;
+    colony->SetLogisticsEvolutionPoints (colony->GetLogisticsEvolutionPoints () + coloniesBasicEvolution_ * modifer * timeStep);
 }
 
 void ColoniesManager::ProcessColonyDefenseEvolution (District *colony, float timeStep)
 {
-    float totalColonyEvolution = colony->farmsEvolutionPoints_ + colony->minesEvolutionPoints_ +
-            colony->industryEvolutionPoints_ + colony->logisticsEvolutionPoints_ +
-            colony->defenseEvolutionPoints_;
-
-    float colonyDefenseEvolution = colony->defenseEvolutionPoints_;
-
+    float totalColonyEvolution = GetTotalColonyEvolution (colony);
+    float colonyDefenseEvolution = colony->GetDefenseEvolutionPoints ();
     float defenseEvolutionInColonyEvolution = colonyDefenseEvolution / totalColonyEvolution;
     float modifer = 1.0f;
 
@@ -286,13 +276,14 @@ void ColoniesManager::ProcessColonyDefenseEvolution (District *colony, float tim
         investitions_ [colony->GetHash ()] ["defense"] = investitions - investitionsConsumption_ * timeStep;
     }
 
-    colony->defenseEvolutionPoints_ += coloniesBasicEvolution_ * modifer * timeStep;
+    colony->SetDefenseEvolutionPoints (colony->GetDefenseEvolutionPoints () + coloniesBasicEvolution_ * modifer * timeStep);
 }
 
-ColoniesManager::ColoniesManager (Urho3D::Context *context) : Urho3D::Object (context),
+ColoniesManager::ColoniesManager (Urho3D::Context *context) : Urho3D::Component (context),
     coloniesBasicPopulationIncrease_ (0.005f),
     coloniesBasicEvolution_ (0.002f),
-    canBePlantedByOneColonist_ (1.0f),
+    canBePlantedByOneColonist_ (0.5f),
+    forestCanBeCuttedByOneColonist_ (0.025f),
     investitionsConsumption_ (2.5f),
     investitionsEfficiency_ (5.0f),
     investitions_ ()
@@ -305,16 +296,40 @@ ColoniesManager::~ColoniesManager ()
 
 }
 
+void ColoniesManager::RegisterObject (Urho3D::Context *context)
+{
+    context->RegisterFactory <ColoniesManager> (COLONIZATION_SERVER_ONLY_CATEGORY);
+    using namespace Urho3D;
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Colonies Basic Population Increase", GetColoniesBasicPopulationIncrease,
+                               SetColoniesBasicPopulationIncrease, float, 0.005f, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Colonies Basic Evolution", GetColoniesBasicEvolution,
+                               SetColoniesBasicEvolution, float, 0.002f, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Can Be Planted By One Colonist", GetCanBePlantedByOneColonist,
+                               SetCanBePlantedByOneColonist, float, 0.5f, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Forest Can Be Cutted By One Colonist", GetForestCanBeCuttedByOneColonist,
+                               SetForestCanBeCuttedByOneColonist, float, 0.025f, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Investitions Consumption", GetInvestitionsConsumption,
+                               SetInvestitionsConsumption, float, 2.5f, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Investitions Efficiency", GetInvestitionsEfficiency,
+                               SetInvestitionsEfficiency, float, 5.0f, Urho3D::AM_DEFAULT);
+}
+
 void ColoniesManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    Map *map = (Map *) context_->GetGlobalVar ("Map").GetPtr ();
+    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
     assert (map);
     float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
 
     for (int index = 0; index < map->GetDistrictsCount (); index++)
     {
         District *district = map->GetDistrictByIndex (index);
-        if (district->hasColony_)
+        if (district->HasColony ())
             ProcessColony (district, timeStep);
     }
 }
@@ -322,5 +337,65 @@ void ColoniesManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &
 void ColoniesManager::Invest (District *district, Urho3D::StringHash investitionType, float money)
 {
     investitions_ [district->GetHash ()] [investitionType] = investitions_ [district->GetHash ()] [investitionType] + money;
+}
+
+float ColoniesManager::GetColoniesBasicPopulationIncrease () const
+{
+    return coloniesBasicPopulationIncrease_;
+}
+
+void ColoniesManager::SetColoniesBasicPopulationIncrease (float coloniesBasicPopulationIncrease)
+{
+    coloniesBasicPopulationIncrease_ = coloniesBasicPopulationIncrease;
+}
+
+float ColoniesManager::GetColoniesBasicEvolution () const
+{
+    return coloniesBasicEvolution_;
+}
+
+void ColoniesManager::SetColoniesBasicEvolution (float coloniesBasicEvolution)
+{
+    coloniesBasicEvolution_ = coloniesBasicEvolution;
+}
+
+float ColoniesManager::GetCanBePlantedByOneColonist () const
+{
+    return canBePlantedByOneColonist_;
+}
+
+void ColoniesManager::SetCanBePlantedByOneColonist (float canBePlantedByOneColonist)
+{
+    canBePlantedByOneColonist_ = canBePlantedByOneColonist;
+}
+
+float ColoniesManager::GetForestCanBeCuttedByOneColonist () const
+{
+    return forestCanBeCuttedByOneColonist_;
+}
+
+void ColoniesManager::SetForestCanBeCuttedByOneColonist (float forestCanBeCuttedByOneColonist)
+{
+    forestCanBeCuttedByOneColonist_ = forestCanBeCuttedByOneColonist;
+}
+
+float ColoniesManager::GetInvestitionsConsumption () const
+{
+    return investitionsConsumption_;
+}
+
+void ColoniesManager::SetInvestitionsConsumption (float investitionsConsumption)
+{
+    investitionsConsumption_ = investitionsConsumption;
+}
+
+float ColoniesManager::GetInvestitionsEfficiency () const
+{
+    return investitionsEfficiency_;
+}
+
+void ColoniesManager::SetInvestitionsEfficiency (float investitionsEfficiency)
+{
+    investitionsEfficiency_ = investitionsEfficiency;
 }
 }
