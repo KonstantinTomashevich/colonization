@@ -14,6 +14,7 @@
 #include <Colonization/AngelScriptBinders/BindUnit.hpp>
 #include <Colonization/AngelScriptBinders/BindPlayerActionType.hpp>
 #include <Colonization/AngelScriptBinders/BindInternalTradeArea.hpp>
+#include <Colonization/AngelScriptBinders/BindPlayerInfo.hpp>
 
 URHO3D_DEFINE_APPLICATION_MAIN (Generator)
 Generator::Generator (Urho3D::Context *context) :
@@ -53,6 +54,7 @@ void Generator::Start ()
     Colonization::BindUnit (script);
     Colonization::BindPlayerActionType (script);
     Colonization::BindInternalTradeArea (script);
+    Colonization::BindPlayerInfo (script);
 
     Urho3D::Log *log = context_->GetSubsystem <Urho3D::Log> ();
     log->SetQuiet (true);

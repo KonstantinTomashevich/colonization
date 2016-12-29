@@ -18,6 +18,7 @@ protected:
 public:
     UnitsManager (Urho3D::Context *context);
     virtual ~UnitsManager ();
+    static void RegisterObject (Urho3D::Context *context);
 
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     int GetUnitsCount ();

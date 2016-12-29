@@ -14,7 +14,7 @@ namespace Colonization
 {
 void SceneManager::WritePlayersStats ()
 {
-    PlayersManager *playersManager = (PlayersManager *) context_->GetGlobalVar ("PlayersManager").GetPtr ();
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ()
     assert (playersManager);
     Urho3D::Vector <Player *> players = playersManager->GetAllPlayers ();
     Urho3D::HashMap <Urho3D::StringHash, Player*> sortedPlayers;

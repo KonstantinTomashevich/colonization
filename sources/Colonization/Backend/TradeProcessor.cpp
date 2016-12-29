@@ -4,7 +4,9 @@
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/Scene/Scene.h>
+
 #include <Colonization/Core/Map.hpp>
+#include <Colonization/Utils/Categories.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
 
@@ -62,7 +64,7 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
     }
     tradeAreasNodes.Clear ();
 
-    PlayersManager *playersManager = node_->GetScene ()->GetComponent <PlayersManager> ();
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
     for (int index = 0; index < tradeAreas_.Size (); index++)
         ProcessTradeAreaIncome (playersManager, map, tradeAreas_.At (index), updateDelay);
 
@@ -176,6 +178,11 @@ TradeProcessor::TradeProcessor (Urho3D::Context *context) : Urho3D::Component (c
 TradeProcessor::~TradeProcessor ()
 {
     ClearTradeAreas ();
+}
+
+void TradeProcessor::RegisterObject (Urho3D::Context *context)
+{
+    context->RegisterFactory <TradeProcessor> (COLONIZATION_SERVER_ONLY_CATEGORY);
 }
 
 void TradeProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)

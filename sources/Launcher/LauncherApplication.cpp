@@ -17,6 +17,7 @@
 #include <Colonization/AngelScriptBinders/BindUnit.hpp>
 #include <Colonization/AngelScriptBinders/BindPlayerActionType.hpp>
 #include <Colonization/AngelScriptBinders/BindInternalTradeArea.hpp>
+#include <Colonization/AngelScriptBinders/BindPlayerInfo.hpp>
 #include <Colonization/Activities/MainMenuActivity.hpp>
 
 URHO3D_DEFINE_APPLICATION_MAIN (ColonizationLauncher::LauncherApplication)
@@ -74,6 +75,7 @@ void LauncherApplication::Start ()
     Colonization::BindUnit (script);
     Colonization::BindPlayerActionType (script);
     Colonization::BindInternalTradeArea (script);
+    Colonization::BindPlayerInfo (script);
 
     Urho3D::SharedPtr <Colonization::MainMenuActivity> mainMenuActivity (new Colonization::MainMenuActivity (context_));
     SetupActivityNextFrame (mainMenuActivity);

@@ -21,6 +21,7 @@ protected:
 public:
     TradeProcessor (Urho3D::Context *context);
     virtual ~TradeProcessor ();
+    static void RegisterObject (Urho3D::Context *context);
 
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     int GetTradeAreasCount ();

@@ -222,7 +222,7 @@ void GameStateManager::DisposeCurrentState ()
 
 bool GameStateManager::WillIGoFromWaitingForPlayersToPlayingState ()
 {
-    PlayersManager *playersManager = (PlayersManager *) context_->GetGlobalVar ("PlayersManager").GetPtr ();
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ()
     // TODO: Reimplement later!
     return (playersManager->GetAllPlayers ().Size () > 0);
 }

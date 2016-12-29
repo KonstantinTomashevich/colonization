@@ -4,8 +4,10 @@
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/Scene/Scene.h>
+
 #include <Colonization/Backend/SceneManager.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
+#include <Colonization/Utils/Categories.hpp>
 
 namespace Colonization
 {
@@ -58,7 +60,7 @@ void UnitsManager::ProcessTrader (Unit *unit)
     assert (unit);
     assert (unit->GetUnitType () == UNIT_TRADERS);
 
-    PlayersManager *playersManager = (PlayersManager *) context_->GetGlobalVar ("PlayersManager").GetPtr ();
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ()
     assert (playersManager);
 
     Player *player = playersManager->GetPlayer (Urho3D::String (unit->GetOwnerPlayerName ()));
@@ -80,6 +82,11 @@ UnitsManager::~UnitsManager ()
     for (int index = 0; index < units_.Size (); index++)
         units_.At (index)->GetNode ()->Remove ();
     units_.Clear ();
+}
+
+void UnitsManager::RegisterObject (Urho3D::Context *context)
+{
+    context->RegisterFactory <UnitsManager> (COLONIZATION_SERVER_ONLY_CATEGORY);
 }
 
 void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
