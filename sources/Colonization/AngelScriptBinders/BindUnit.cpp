@@ -3,7 +3,6 @@
 #include <Urho3D/ThirdParty/AngelScript/angelscript.h>
 #include <Urho3D/AngelScript/APITemplates.h>
 #include <Colonization/Core/Unit.hpp>
-#include <Colonization/AngelScriptBinders/BindingMacroses.hpp>
 
 namespace Colonization
 {
