@@ -5,10 +5,11 @@
 #include <Urho3D/Network/Connection.h>
 #include <Urho3D/IO/Log.h>
 #include <Colonization/Backend/PlayersManager.hpp>
+#include <Colonization/Utils/Categories.hpp>
 
 namespace Colonization
 {
-MessagesHandler::MessagesHandler (Urho3D::Context *context) : Urho3D::Object (context)
+MessagesHandler::MessagesHandler (Urho3D::Context *context) : Urho3D::Component (context)
 {
     SubscribeToEvent (Urho3D::E_CLIENTIDENTITY, URHO3D_HANDLER (MessagesHandler, HandleClientIdentity));
     SubscribeToEvent (Urho3D::E_NETWORKMESSAGE, URHO3D_HANDLER (MessagesHandler, HandleNetworkMessage));
@@ -17,6 +18,11 @@ MessagesHandler::MessagesHandler (Urho3D::Context *context) : Urho3D::Object (co
 MessagesHandler::~MessagesHandler ()
 {
 
+}
+
+void MessagesHandler::RegisterObject (Urho3D::Context *context)
+{
+    context->RegisterFactory <MessagesHandler> (COLONIZATION_SERVER_ONLY_CATEGORY);
 }
 
 void MessagesHandler::HandleClientIdentity (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
