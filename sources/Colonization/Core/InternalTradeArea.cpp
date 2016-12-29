@@ -177,6 +177,11 @@ bool InternalTradeArea::ContainsDistrictHash (Urho3D::StringHash districtHash)
     return districtsHashes_.Contains (districtHash);
 }
 
+bool InternalTradeArea::RemoveDistrictHash (Urho3D::StringHash districtHash)
+{
+    return districtsHashes_.Remove (districtHash);
+}
+
 Urho3D::VariantVector InternalTradeArea::GetDistrictsHashesArrayAttribute ()
 {
     Urho3D::VariantVector variantVector;

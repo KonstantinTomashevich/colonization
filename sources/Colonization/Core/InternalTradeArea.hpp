@@ -64,6 +64,7 @@ public:
     Urho3D::PODVector <Urho3D::StringHash> GetDistrictsHashesArray ();
     void AddDistrictHash (Urho3D::StringHash districtHash);
     bool ContainsDistrictHash (Urho3D::StringHash districtHash);
+    bool RemoveDistrictHash (Urho3D::StringHash districtHash);
 
     Urho3D::VariantVector GetDistrictsHashesArrayAttribute ();
     void SetDistrictsHashesArrayAttribute (Urho3D::VariantVector attribute);

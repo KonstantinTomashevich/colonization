@@ -12,7 +12,7 @@ namespace Colonization
 {
 void TradeProcessor::UpdateTradeAreas (float updateDelay)
 {
-    ClearTradeAreas ();
+    tradeAreas_.Clear ();
     Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
     Urho3D::HashMap <Urho3D::StringHash, District *> toScanHashMap;
 
@@ -34,31 +34,54 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
     for (int index = toScanHashMap.Values ().Size () - 1; index >= 0; index--)
         toScan.Push (toScanHashMap.Values ().At (index));
 
+    assert (node_);
+    Urho3D::PODVector <Urho3D::Node *> tradeAreasNodes;
+    node_->GetChildrenWithComponent (tradeAreasNodes, InternalTradeArea::GetTypeStatic ());
     int tradeAreaIndex = 0;
-    while (!toScan.Empty ())
+
+    while (!toScan.Empty () || tradeAreaIndex < tradeAreasNodes.Size ())
     {
-        tradeAreas_.Push (CreateTradeArea (map, toScan.At (0), toScan, tradeAreaIndex));
+        if (!toScan.Empty ())
+        {
+            Urho3D::Node *node;
+            if (tradeAreaIndex < tradeAreasNodes.Size ())
+                node = tradeAreasNodes.At (tradeAreaIndex);
+            else
+                node = node_->CreateChild ("InternalTradeArea" + Urho3D::String (tradeAreaIndex), Urho3D::REPLICATED);
+
+            UpdateTradeArea (node->GetComponent <InternalTradeArea> (), map, toScan.At (0), toScan);
+            tradeAreas_.Push (node->GetComponent <InternalTradeArea> ());
+        }
+        else
+        {
+            Urho3D::Node *node = tradeAreasNodes.At (tradeAreaIndex);
+            node->Remove ();
+        }
+
         tradeAreaIndex++;
     }
+    tradeAreasNodes.Clear ();
 
-    assert (node_);
     PlayersManager *playersManager = node_->GetScene ()->GetComponent <PlayersManager> ();
     for (int index = 0; index < tradeAreas_.Size (); index++)
         ProcessTradeAreaIncome (playersManager, map, tradeAreas_.At (index), updateDelay);
 
 }
 
-InternalTradeArea *TradeProcessor::CreateTradeArea (Map *map, District *start, Urho3D::PODVector <District *> &unscannedList, int tradeAreaIndex)
+void TradeProcessor::UpdateTradeArea (InternalTradeArea *tradeArea, Map *map, District *start, Urho3D::PODVector<District *> &unscannedList)
 {
     Urho3D::PODVector <District *> areaDistricts;
     ProcessTradeAreaDistrict (map, start, areaDistricts, unscannedList);
 
     assert (node_);
-    InternalTradeArea *tradeArea = node_->CreateChild ("TradeArea" + Urho3D::String (tradeAreaIndex), Urho3D::REPLICATED)->
-            CreateComponent <InternalTradeArea> (Urho3D::REPLICATED);
-    for (int index = 0; index < areaDistricts.Size (); index++)
-        tradeArea->AddDistrictHash (areaDistricts.At (index)->GetHash ());
-    return tradeArea;
+    if (tradeArea->GetDistrictsHashesArray () != areaDistricts)
+    {
+        while (tradeArea->GetDistrictsHashesCount ())
+            tradeArea->RemoveDistrictHash (tradeArea->GetDistrictHashByIndex (0));
+
+        for (int index = 0; index < areaDistricts.Size (); index++)
+            tradeArea->AddDistrictHash (areaDistricts.At (index));
+    }
 }
 
 void TradeProcessor::ProcessTradeAreaDistrict (Map *map, District *district, Urho3D::PODVector <District *> &areaDistricts, Urho3D::PODVector <District *> &unscannedList)

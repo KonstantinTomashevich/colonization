@@ -13,7 +13,7 @@ protected:
     float beforeTradeAreasUpdate_;
 
     void UpdateTradeAreas (float updateDelay);
-    InternalTradeArea *CreateTradeArea (Map *map, District *start, Urho3D::PODVector <District *> &unscannedList, int tradeAreaIndex);
+    void UpdateTradeArea (InternalTradeArea *tradeArea, Map *map, District *start, Urho3D::PODVector <District *> &unscannedList);
     void ProcessTradeAreaDistrict (Map *map, District *district, Urho3D::PODVector <District *> &areaDistricts, Urho3D::PODVector <District *> &unscannedList);
     void ProcessTradeAreaIncome (PlayersManager *playersManager, Map *map, InternalTradeArea *tradeArea, float updateDelay);
     void ClearTradeAreas ();
