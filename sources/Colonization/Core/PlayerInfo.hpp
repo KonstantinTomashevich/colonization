@@ -15,10 +15,10 @@ public:
     virtual ~PlayerInfo ();
     static void RegisterObject (Urho3D::Context *context);
 
-    Urho3D::String GetName ();
+    Urho3D::String GetName () const;
     void SetName (Urho3D::String name);
 
-    float GetPoints ();
+    float GetPoints () const;
     void SetPoints (float points);
 };
 }

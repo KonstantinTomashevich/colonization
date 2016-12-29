@@ -101,8 +101,9 @@ InternalTradeArea::~InternalTradeArea ()
 void InternalTradeArea::RegisterObject (Urho3D::Context *context)
 {
     context_->RegisterFactory <InternalTradeArea> (COLONIZATION_CORE_CATEGORY);
+    using namespace Urho3D;
     URHO3D_ACCESSOR_ATTRIBUTE ("Districts hashes", GetDistrictsHashesArrayAttribute, SetDistrictsHashesArrayAttribute,
-                               Urho3D::VariantVector, Urho3D::Variant::emptyVariantVector, Urho3D::AM_DEFAULT);
+                               VariantVector, Variant::emptyVariantVector, AM_DEFAULT);
 }
 
 Urho3D::SharedPtr <TradeDistrictProcessingInfo> InternalTradeArea::ProcessTrade(Map *map)
@@ -182,7 +183,7 @@ bool InternalTradeArea::RemoveDistrictHash (Urho3D::StringHash districtHash)
     return districtsHashes_.Remove (districtHash);
 }
 
-Urho3D::VariantVector InternalTradeArea::GetDistrictsHashesArrayAttribute ()
+Urho3D::VariantVector InternalTradeArea::GetDistrictsHashesArrayAttribute () const
 {
     Urho3D::VariantVector variantVector;
     if (!districtsHashes_.Empty ())

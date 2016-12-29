@@ -66,7 +66,7 @@ public:
     bool ContainsDistrictHash (Urho3D::StringHash districtHash);
     bool RemoveDistrictHash (Urho3D::StringHash districtHash);
 
-    Urho3D::VariantVector GetDistrictsHashesArrayAttribute ();
+    Urho3D::VariantVector GetDistrictsHashesArrayAttribute () const;
     void SetDistrictsHashesArrayAttribute (Urho3D::VariantVector attribute);
 };
 }

@@ -35,32 +35,33 @@ Unit::~Unit ()
 void Unit::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <Unit> (COLONIZATION_CORE_CATEGORY);
+    using namespace Urho3D;
 
-    URHO3D_ACCESSOR_ATTRIBUTE ("Hash", GetHash, SetHash, Urho3D::StringHash, Urho3D::StringHash ("nothing"), Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Owner Player Name", GetOwnerPlayerName, SetOwnerPlayerName, Urho3D::String, Urho3D::String ("Unit without owner"), Urho3D::AM_DEFAULT);
-    URHO3D_ENUM_ACCESSOR_ATTRIBUTE ("Unit Type", GetUnitType, SetUnitType, UnitType, unitTypesNames, UNIT_FLEET, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Position Hash", GetPositionHash, SetPositionHash, Urho3D::StringHash, Urho3D::StringHash ("nothing"), Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Way", GetWayAttribute, SetWayAttribute, Urho3D::VariantVector, Urho3D::Variant::emptyVariantVector, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Hash", GetHash, SetHash, StringHash, StringHash ("nothing"), AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Owner Player Name", GetOwnerPlayerName, SetOwnerPlayerName, String, String ("Unit without owner"), AM_DEFAULT);
+    URHO3D_ENUM_ACCESSOR_ATTRIBUTE ("Unit Type", GetUnitType, SetUnitType, UnitType, unitTypesNames, UNIT_FLEET, AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Position Hash", GetPositionHash, SetPositionHash, StringHash, StringHash ("nothing"), AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Way", GetWayAttribute, SetWayAttribute, VariantVector, Variant::emptyVariantVector, AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Way To Next District Progress In Percents",
                                GetWayToNextDistrictProgressInPercents,
                                SetWayToNextDistrictProgressInPercents,
-                               float, 0.0f, Urho3D::AM_DEFAULT);
+                               float, 0.0f, AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("[Fleet Only] War Ships Count",
                                FleetUnitGetWarShipsCount,
-                               FleetUnitSetWarShipsCount, int, 0, Urho3D::AM_DEFAULT);
+                               FleetUnitSetWarShipsCount, int, 0, AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("[Traders Only] Trade Goods Cost",
                                TradersUnitGetTradeGoodsCost,
-                               TradersUnitSetTradeGoodsCost, float, 0.0f, Urho3D::AM_DEFAULT);
+                               TradersUnitSetTradeGoodsCost, float, 0.0f, AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("[Colonizators Only] Colonizators Count",
                                ColonizatorsUnitGetColonizatorsCount,
-                               ColonizatorsUnitSetColonizatorsCount, int, 0, Urho3D::AM_DEFAULT);
+                               ColonizatorsUnitSetColonizatorsCount, int, 0, AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("[Army Only] War Ships Count",
                                ArmyUnitGetSoldiersCount,
-                               ArmyUnitSetSoldiersCount, int, 0, Urho3D::AM_DEFAULT);
+                               ArmyUnitSetSoldiersCount, int, 0, AM_DEFAULT);
 }
 
 const Urho3D::Vector <Urho3D::AttributeInfo> *Unit::GetAttributes () const
@@ -76,7 +77,7 @@ void Unit::UpdateHash (UnitsManager *owner)
     while (owner->GetUnitByHash (hash_) != this);
 }
 
-Urho3D::StringHash Unit::GetHash ()
+Urho3D::StringHash Unit::GetHash () const
 {
     return hash_;
 }
@@ -86,7 +87,7 @@ void Unit::SetHash (Urho3D::StringHash hash)
     hash_ = hash;
 }
 
-UnitType Unit::GetUnitType ()
+UnitType Unit::GetUnitType () const
 {
     return unitType_;
 }
@@ -96,7 +97,7 @@ void Unit::SetUnitType (UnitType unitType)
     unitType_ = unitType;
 }
 
-Urho3D::String Unit::GetOwnerPlayerName ()
+Urho3D::String Unit::GetOwnerPlayerName () const
 {
     return ownerPlayerName_;
 }
@@ -106,7 +107,7 @@ void Unit::SetOwnerPlayerName (Urho3D::String ownerPlayerName)
     ownerPlayerName_ = ownerPlayerName;
 }
 
-Urho3D::StringHash Unit::GetPositionHash ()
+Urho3D::StringHash Unit::GetPositionHash () const
 {
     return positionHash_;
 }
@@ -116,7 +117,7 @@ void Unit::SetPositionHash (Urho3D::StringHash positionHash)
     positionHash_ = positionHash;
 }
 
-Urho3D::PODVector <Urho3D::StringHash> Unit::GetWay ()
+Urho3D::PODVector <Urho3D::StringHash> Unit::GetWay () const
 {
     return way_;
 }
@@ -126,7 +127,7 @@ void Unit::SetWay (Urho3D::PODVector <Urho3D::StringHash> way)
     way_ = way;
 }
 
-Urho3D::VariantVector Unit::GetWayAttribute ()
+Urho3D::VariantVector Unit::GetWayAttribute () const
 {
     Urho3D::VariantVector variantVector;
     if (!way_.Empty ())
@@ -143,7 +144,7 @@ void Unit::SetWayAttribute (Urho3D::VariantVector way)
             way_.Push (way.At (index).GetStringHash ());
 }
 
-float Unit::GetWayToNextDistrictProgressInPercents ()
+float Unit::GetWayToNextDistrictProgressInPercents () const
 {
     return wayToNextDistrictProgressInPercents_;
 }
@@ -153,7 +154,7 @@ void Unit::SetWayToNextDistrictProgressInPercents (float wayToNextDistrictProgre
     wayToNextDistrictProgressInPercents_ = wayToNextDistrictProgressInPercents;
 }
 
-int Unit::FleetUnitGetWarShipsCount ()
+int Unit::FleetUnitGetWarShipsCount () const
 {
     return unitTypeSpecificVars_ ["WarShipsCount"].GetInt ();
 }
@@ -163,7 +164,7 @@ void Unit::FleetUnitSetWarShipsCount (int warShipsCount)
     unitTypeSpecificVars_ ["WarShipsCount"] = warShipsCount;
 }
 
-float Unit::TradersUnitGetTradeGoodsCost ()
+float Unit::TradersUnitGetTradeGoodsCost () const
 {
     return unitTypeSpecificVars_ ["TradeGoodsCost"].GetFloat ();
 }
@@ -173,7 +174,7 @@ void Unit::TradersUnitSetTradeGoodsCost (float tradeGoodsCost)
     unitTypeSpecificVars_ ["TradeGoodsCost"] = tradeGoodsCost;
 }
 
-int Unit::ColonizatorsUnitGetColonizatorsCount ()
+int Unit::ColonizatorsUnitGetColonizatorsCount () const
 {
     return unitTypeSpecificVars_ ["ColonizatorsCount"].GetInt ();
 }
@@ -183,7 +184,7 @@ void Unit::ColonizatorsUnitSetColonizatorsCount (int colonizatorsCount)
     unitTypeSpecificVars_ ["ColonizatorsCount"] = colonizatorsCount;
 }
 
-int Unit::ArmyUnitGetSoldiersCount ()
+int Unit::ArmyUnitGetSoldiersCount () const
 {
     return unitTypeSpecificVars_ ["SoldiersCount"].GetInt ();
 }

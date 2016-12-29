@@ -76,43 +76,44 @@ District::~District ()
 void District::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <District> (COLONIZATION_CORE_CATEGORY);
+    using namespace Urho3D;
 
-    URHO3D_ACCESSOR_ATTRIBUTE ("Hash", GetHash, SetHash, Urho3D::StringHash, Urho3D::StringHash ("nothing"), Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Is Sea", IsSea, SetIsSea, bool, true, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Is Impassable", IsImpassable, SetIsImpassable, bool, false, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Name", GetName, SetName, Urho3D::String, Urho3D::String ("District without name"), Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Polygon Points", GetPolygonPointsAttribute, SetPolygonPointsAttribute, Urho3D::VariantVector, Urho3D::Variant::emptyVariantVector, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Unit Position", GetUnitPosition, SetUnitPosition, Urho3D::Vector3, Urho3D::Vector3 (), Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Colony Position", GetColonyPosition, SetColonyPosition, Urho3D::Vector3, Urho3D::Vector3 (), Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Neighbors Hashes", GetNeighborsHashesAttribute, SetNeighborsHashesAttribute, Urho3D::VariantVector, Urho3D::Variant::emptyVariantVector, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Hash", GetHash, SetHash, StringHash, StringHash ("nothing"), AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Is Sea", IsSea, SetIsSea, bool, true, AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Is Impassable", IsImpassable, SetIsImpassable, bool, false, AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Name", GetName, SetName, String, String ("District without name"), AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Polygon Points", GetPolygonPointsAttribute, SetPolygonPointsAttribute, VariantVector, Variant::emptyVariantVector, AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Unit Position", GetUnitPosition, SetUnitPosition, Vector3, Vector3 (), AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Colony Position", GetColonyPosition, SetColonyPosition, Vector3, Vector3 (), AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Neighbors Hashes", GetNeighborsHashesAttribute, SetNeighborsHashesAttribute, VariantVector, Variant::emptyVariantVector, AM_DEFAULT);
 
-    URHO3D_ACCESSOR_ATTRIBUTE ("Farming Square", GetFarmingSquare, SetFarmingSquare, float, 1.0f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Forests Square", GetForestsSquare, SetForestsSquare, float, 1.0f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Land Average Fertility", GetLandAverageFertility, SetLandAverageFertility, float, 1.0f, Urho3D::AM_DEFAULT);
-    URHO3D_ENUM_ACCESSOR_ATTRIBUTE ("Climate", GetClimate, SetClimate, ClimateType, climateTypesNames, CLIMATE_TEMPERATE, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farming Square", GetFarmingSquare, SetFarmingSquare, float, 1.0f, AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Forests Square", GetForestsSquare, SetForestsSquare, float, 1.0f, AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Land Average Fertility", GetLandAverageFertility, SetLandAverageFertility, float, 1.0f, AM_DEFAULT);
+    URHO3D_ENUM_ACCESSOR_ATTRIBUTE ("Climate", GetClimate, SetClimate, ClimateType, climateTypesNames, CLIMATE_TEMPERATE, AM_DEFAULT);
 
-    URHO3D_ACCESSOR_ATTRIBUTE ("Forests Reproductivity", GetForestsReproductivity, SetForestsReproductivity, float, 1.0f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Has Coal Deposits", HasCoalDeposits, SetCoalDeposits, bool, false, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Has Iron Deposits", HasIronDeposits, SetIronDeposits, bool, false, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Has Silver Deposits", HasSilverDeposits, SetSilverDeposits, bool, false, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Has Gold Deposits", HasGoldDeposits, SetGoldDeposits, bool, false, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Forests Reproductivity", GetForestsReproductivity, SetForestsReproductivity, float, 1.0f, AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Has Coal Deposits", HasCoalDeposits, SetCoalDeposits, bool, false, AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Has Iron Deposits", HasIronDeposits, SetIronDeposits, bool, false, AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Has Silver Deposits", HasSilverDeposits, SetSilverDeposits, bool, false, AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Has Gold Deposits", HasGoldDeposits, SetGoldDeposits, bool, false, AM_DEFAULT);
 
-    URHO3D_ACCESSOR_ATTRIBUTE ("Natives Count", GetNativesCount, SetNativesCount, float, 0.0f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Natives Fighting Technology Level", GetNativesFightingTechnologyLevel, SetNativesFightingTechnologyLevel, float, 1.0f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Natives Aggressiveness", GetNativesAggressiveness, SetNativesAggressiveness, float, 1.0f, Urho3D::AM_DEFAULT);
-    URHO3D_ENUM_ACCESSOR_ATTRIBUTE ("Natives Character", GetNativesCharacter, SetNativesCharacter, NativesCharacterType, nativesCharacterTypesNames, NATIVES_CHARACTER_MEDIUM, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Natives Count", GetNativesCount, SetNativesCount, float, 0.0f, AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Natives Fighting Technology Level", GetNativesFightingTechnologyLevel, SetNativesFightingTechnologyLevel, float, 1.0f, AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Natives Aggressiveness", GetNativesAggressiveness, SetNativesAggressiveness, float, 1.0f, AM_DEFAULT);
+    URHO3D_ENUM_ACCESSOR_ATTRIBUTE ("Natives Character", GetNativesCharacter, SetNativesCharacter, NativesCharacterType, nativesCharacterTypesNames, NATIVES_CHARACTER_MEDIUM, AM_DEFAULT);
 
-    URHO3D_ACCESSOR_ATTRIBUTE ("Has Colony", HasColony, SetColony, bool, false, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Colony Owner Name", GetColonyOwnerName, SetColonyOwnerName, Urho3D::String, Urho3D::String (), Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Men Count", GetMenCount, SetMenCount, float, 0.0f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Women Count", GetWomenCount, SetWomenCount, float, 0.0f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Local Army Size", GetLocalArmySize, SetLocalArmySize, float, 0.0f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Evolution Points", GetFarmsEvolutionPoints, SetFarmsEvolutionPoints, float, 0.0f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Mines Evolution Points", GetMinesEvolutionPoints, SetMinesEvolutionPoints, float, 0.0f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Evolution Points", GetIndustryEvolutionPoints, SetIndustryEvolutionPoints, float, 0.0f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Logistics Evolution Points", GetLogisticsEvolutionPoints, SetLogisticsEvolutionPoints, float, 0.0f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Defense Evolution Points", GetDefenseEvolutionPoints, SetDefenseEvolutionPoints, float, 0.0f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Average Level Of Life Points", GetAverageLevelOfLifePoints, SetAverageLevelOfLifePoints, float, 0.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Has Colony", HasColony, SetColony, bool, false, AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Colony Owner Name", GetColonyOwnerName, SetColonyOwnerName, String, String (), AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Men Count", GetMenCount, SetMenCount, float, 0.0f, AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Women Count", GetWomenCount, SetWomenCount, float, 0.0f, AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Local Army Size", GetLocalArmySize, SetLocalArmySize, float, 0.0f, AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Evolution Points", GetFarmsEvolutionPoints, SetFarmsEvolutionPoints, float, 0.0f, AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Mines Evolution Points", GetMinesEvolutionPoints, SetMinesEvolutionPoints, float, 0.0f, AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Evolution Points", GetIndustryEvolutionPoints, SetIndustryEvolutionPoints, float, 0.0f, AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Logistics Evolution Points", GetLogisticsEvolutionPoints, SetLogisticsEvolutionPoints, float, 0.0f, AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Defense Evolution Points", GetDefenseEvolutionPoints, SetDefenseEvolutionPoints, float, 0.0f, AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Average Level Of Life Points", GetAverageLevelOfLifePoints, SetAverageLevelOfLifePoints, float, 0.0f, AM_DEFAULT);
 }
 
 void District::CalculateNeighbors (Urho3D::Vector<Urho3D::SharedPtr<District> > &allDistricts)
@@ -151,7 +152,7 @@ void District::UpdateHash (Map *owner)
     while (owner->GetDistrictByHash (hash_) != this);
 }
 
-Urho3D::StringHash District::GetHash ()
+Urho3D::StringHash District::GetHash () const
 {
     return hash_;
 }
@@ -161,7 +162,7 @@ void District::SetHash (Urho3D::StringHash hash)
     hash_ = hash;
 }
 
-bool District::IsSea ()
+bool District::IsSea () const
 {
     return isSea_;
 }
@@ -171,7 +172,7 @@ bool District::SetIsSea (bool isSea)
     isSea_ = isSea;
 }
 
-bool District::IsImpassable ()
+bool District::IsImpassable () const
 {
     return isImpassable_;
 }
@@ -181,7 +182,7 @@ void District::SetIsImpassable (bool isImpassable)
     isImpassable_ = isImpassable;
 }
 
-Urho3D::String District::GetName ()
+Urho3D::String District::GetName () const
 {
     return name_;
 }
@@ -192,7 +193,7 @@ void District::SetName (Urho3D::String name)
     name_ = name;
 }
 
-Urho3D::PODVector <Urho3D::Vector3> District::GetPolygonPoints ()
+Urho3D::PODVector <Urho3D::Vector3> District::GetPolygonPoints () const
 {
     return polygonPoints_;
 }
@@ -203,7 +204,7 @@ void District::SetPolygonPoints (Urho3D::PODVector <Urho3D::Vector3> polygonPoin
     polygonPoints_ = polygonPoints;
 }
 
-Urho3D::VariantVector District::GetPolygonPointsAttribute ()
+Urho3D::VariantVector District::GetPolygonPointsAttribute () const
 {
     Urho3D::VariantVector variantVector;
     for (int index = 0; index < polygonPoints_.Size (); index++)
@@ -218,7 +219,7 @@ void District::SetPolygonPointsAttribute (Urho3D::VariantVector polygonPoints)
         polygonPoints_.Push (polygonPoints.At (index).GetVector3 ());
 }
 
-Urho3D::Vector3 District::GetUnitPosition ()
+Urho3D::Vector3 District::GetUnitPosition () const
 {
     return unitPosition_;
 }
@@ -228,7 +229,7 @@ void District::SetUnitPosition (Urho3D::Vector3 unitPosition)
     unitPosition_ = unitPosition;
 }
 
-Urho3D::Vector3 District::GetColonyPosition ()
+Urho3D::Vector3 District::GetColonyPosition () const
 {
     return colonyPosition_;
 }
@@ -238,7 +239,7 @@ void District::SetColonyPosition (Urho3D::Vector3 colonyPosition)
     colonyPosition_ = colonyPosition;
 }
 
-Urho3D::PODVector <Urho3D::StringHash> District::GetNeighborsHashes ()
+Urho3D::PODVector <Urho3D::StringHash> District::GetNeighborsHashes () const
 {
     return neighbors_;
 }
@@ -249,7 +250,7 @@ void District::SetNeighborsHashes (Urho3D::PODVector <Urho3D::StringHash> neighb
     neighbors_ = neighbors;
 }
 
-Urho3D::VariantVector District::GetNeighborsHashesAttribute ()
+Urho3D::VariantVector District::GetNeighborsHashesAttribute () const
 {
     Urho3D::VariantVector variantVector;
     for (int index = 0; index < neighbors_.Size (); index++)
@@ -264,7 +265,7 @@ void District::SetNeighborsHashesAttribute (Urho3D::VariantVector neighbors)
         neighbors_.Push (neighbors.At (index).GetStringHash ());
 }
 
-float District::GetFarmingSquare ()
+float District::GetFarmingSquare () const
 {
     return farmingSquare_;
 }
@@ -275,7 +276,7 @@ void District::SetFarmingSquare (float farmingSquare)
     farmingSquare_ = farmingSquare;
 }
 
-float District::GetForestsSquare ()
+float District::GetForestsSquare () const
 {
     return forestsSquare_;
 }
@@ -286,7 +287,7 @@ void District::SetForestsSquare (float forestsSquare)
     forestsSquare_ = forestsSquare;
 }
 
-float District::GetLandAverageFertility ()
+float District::GetLandAverageFertility () const
 {
     return landAverageFertility_;
 }
@@ -297,7 +298,7 @@ void District::SetLandAverageFertility (float landAverageFertility)
     landAverageFertility_ = landAverageFertility;
 }
 
-ClimateType District::GetClimate ()
+ClimateType District::GetClimate () const
 {
     return climate_;
 }
@@ -307,7 +308,7 @@ void District::SetClimate (ClimateType climate)
     climate_ = climate;
 }
 
-float District::GetForestsReproductivity ()
+float District::GetForestsReproductivity () const
 {
     return forestsReproductivity_;
 }
@@ -318,7 +319,7 @@ void District::SetForestsReproductivity (float forestsReproductivity)
     forestsReproductivity_ = forestsReproductivity;
 }
 
-bool District::HasCoalDeposits ()
+bool District::HasCoalDeposits () const
 {
     return hasCoalDeposits_;
 }
@@ -328,7 +329,7 @@ void District::SetCoalDeposits (bool hasCoalDeposits)
     hasCoalDeposits_ = hasCoalDeposits;
 }
 
-bool District::HasIronDeposits ()
+bool District::HasIronDeposits () const
 {
     return hasIronDeposits_;
 }
@@ -338,7 +339,7 @@ void District::SetIronDeposits (bool hasIronDeposits)
     hasIronDeposits_ = hasIronDeposits;
 }
 
-bool District::HasSilverDeposits ()
+bool District::HasSilverDeposits () const
 {
     return hasSilverDeposits_;
 }
@@ -348,7 +349,7 @@ void District::SetSilverDeposits (bool hasSilverDeposits)
     hasSilverDeposits_ = hasSilverDeposits;
 }
 
-bool District::HasGoldDeposits ()
+bool District::HasGoldDeposits () const
 {
     return hasGoldDeposits_;
 }
@@ -358,7 +359,7 @@ void District::SetGoldDeposits (bool hasGoldDeposits)
     hasGoldDeposits_ = hasGoldDeposits;
 }
 
-float District::GetNativesCount ()
+float District::GetNativesCount () const
 {
     return nativesCount_;
 }
@@ -369,7 +370,7 @@ void District::SetNativesCount (float nativesCount)
     nativesCount_ = nativesCount;
 }
 
-float District::GetNativesFightingTechnologyLevel ()
+float District::GetNativesFightingTechnologyLevel () const
 {
     return nativesFightingTechnologyLevel_;
 }
@@ -380,7 +381,7 @@ void District::SetNativesFightingTechnologyLevel (float nativesFightingTechnolog
     nativesFightingTechnologyLevel_ = nativesFightingTechnologyLevel;
 }
 
-float District::GetNativesAggressiveness ()
+float District::GetNativesAggressiveness () const
 {
     return nativesAggressiveness_;
 }
@@ -391,7 +392,7 @@ void District::SetNativesAggressiveness (float nativesAggressiveness)
     nativesAggressiveness_ = nativesAggressiveness;
 }
 
-NativesCharacterType District::GetNativesCharacter ()
+NativesCharacterType District::GetNativesCharacter () const
 {
     return nativesCharacter_;
 }
@@ -401,7 +402,7 @@ void District::SetNativesCharacter (NativesCharacterType nativesCharacter)
     nativesCharacter_ = nativesCharacter;
 }
 
-bool District::HasColony ()
+bool District::HasColony () const
 {
     return hasColony_;
 }
@@ -411,7 +412,7 @@ void District::SetColony (bool hasColony)
     hasColony_ = hasColony;
 }
 
-Urho3D::String District::GetColonyOwnerName ()
+Urho3D::String District::GetColonyOwnerName () const
 {
     return colonyOwnerName_;
 }
@@ -421,7 +422,7 @@ void District::SetColonyOwnerName (Urho3D::String colonyOwnerName)
     colonyOwnerName_ = colonyOwnerName;
 }
 
-float District::GetMenCount ()
+float District::GetMenCount () const
 {
     return menCount_;
 }
@@ -432,7 +433,7 @@ void District::SetMenCount (float menCount)
     menCount_ = menCount;
 }
 
-float District::GetWomenCount ()
+float District::GetWomenCount () const
 {
     return womenCount_;
 }
@@ -443,7 +444,7 @@ void District::SetWomenCount (float womenCount)
     womenCount_ = womenCount;
 }
 
-float District::GetLocalArmySize ()
+float District::GetLocalArmySize () const
 {
     return localArmySize_;
 }
@@ -454,7 +455,7 @@ void District::SetLocalArmySize (float localArmySize)
     localArmySize_ = localArmySize;
 }
 
-float District::GetFarmsEvolutionPoints ()
+float District::GetFarmsEvolutionPoints () const
 {
     return farmsEvolutionPoints_;
 }
@@ -465,7 +466,7 @@ void District::SetFarmsEvolutionPoints (float farmsEvolutionPoints)
     farmsEvolutionPoints_ = farmsEvolutionPoints;
 }
 
-float District::GetMinesEvolutionPoints ()
+float District::GetMinesEvolutionPoints () const
 {
     return minesEvolutionPoints_;
 }
@@ -476,7 +477,7 @@ void District::SetMinesEvolutionPoints (float minesEvolutionPoints)
     minesEvolutionPoints_ = minesEvolutionPoints;
 }
 
-float District::GetIndustryEvolutionPoints ()
+float District::GetIndustryEvolutionPoints () const
 {
     return industryEvolutionPoints_;
 }
@@ -487,7 +488,7 @@ void District::SetIndustryEvolutionPoints (float industryEvolutionPoints)
     industryEvolutionPoints_ = industryEvolutionPoints;
 }
 
-float District::GetLogisticsEvolutionPoints ()
+float District::GetLogisticsEvolutionPoints () const
 {
     return logisticsEvolutionPoints_;
 }
@@ -498,7 +499,7 @@ void District::SetLogisticsEvolutionPoints (float logisticsEvolutionPoints)
     logisticsEvolutionPoints_ = logisticsEvolutionPoints;
 }
 
-float District::GetDefenseEvolutionPoints ()
+float District::GetDefenseEvolutionPoints () const
 {
     return defenseEvolutionPoints_;
 }
@@ -509,7 +510,7 @@ void District::SetDefenseEvolutionPoints (float defenseEvolutionPoints)
     defenseEvolutionPoints_ = defenseEvolutionPoints;
 }
 
-float District::GetAverageLevelOfLifePoints ()
+float District::GetAverageLevelOfLifePoints () const
 {
     return averageLevelOfLifePoints_;
 }

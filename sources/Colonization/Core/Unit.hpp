@@ -33,36 +33,36 @@ public:
 
     static void RegisterObject (Urho3D::Context *context);
     void UpdateHash (UnitsManager *owner);
-    Urho3D::StringHash GetHash ();
+    Urho3D::StringHash GetHash () const;
     void SetHash (Urho3D::StringHash hash);
 
-    UnitType GetUnitType ();
+    UnitType GetUnitType () const;
     void SetUnitType (UnitType unitType);
 
-    Urho3D::String GetOwnerPlayerName ();
+    Urho3D::String GetOwnerPlayerName () const;
     void SetOwnerPlayerName (Urho3D::String ownerPlayerName);
 
-    Urho3D::StringHash GetPositionHash ();
+    Urho3D::StringHash GetPositionHash () const;
     void SetPositionHash (Urho3D::StringHash positionHash);
 
-    Urho3D::PODVector <Urho3D::StringHash> GetWay ();
+    Urho3D::PODVector <Urho3D::StringHash> GetWay () const;
     void SetWay (Urho3D::PODVector <Urho3D::StringHash> way);
-    Urho3D::VariantVector GetWayAttribute ();
+    Urho3D::VariantVector GetWayAttribute () const;
     void SetWayAttribute (Urho3D::VariantVector way);
 
-    float GetWayToNextDistrictProgressInPercents ();
+    float GetWayToNextDistrictProgressInPercents () const;
     void SetWayToNextDistrictProgressInPercents (float wayToNextDistrictProgressInPercents);
 
-    int FleetUnitGetWarShipsCount ();
+    int FleetUnitGetWarShipsCount () const;
     void FleetUnitSetWarShipsCount (int warShipsCount);
 
-    float TradersUnitGetTradeGoodsCost ();
+    float TradersUnitGetTradeGoodsCost () const;
     void TradersUnitSetTradeGoodsCost (float tradeGoodsCost);
 
-    int ColonizatorsUnitGetColonizatorsCount ();
+    int ColonizatorsUnitGetColonizatorsCount () const;
     void ColonizatorsUnitSetColonizatorsCount (int colonizatorsCount);
 
-    int ArmyUnitGetSoldiersCount ();
+    int ArmyUnitGetSoldiersCount () const;
     void ArmyUnitSetSoldiersCount (int soldiersCount);
 };
 }

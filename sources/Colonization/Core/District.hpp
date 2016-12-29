@@ -75,104 +75,104 @@ public:
     void CalculateNeighbors (Urho3D::Vector <Urho3D::SharedPtr <District> > &allDistricts);
 
     void UpdateHash (Map *owner);
-    Urho3D::StringHash GetHash ();
+    Urho3D::StringHash GetHash () const;
     void SetHash (Urho3D::StringHash hash);
 
-    bool IsSea ();
+    bool IsSea () const;
     bool SetIsSea (bool isSea);
 
-    bool IsImpassable ();
+    bool IsImpassable () const;
     void SetIsImpassable (bool isImpassable);
 
-    Urho3D::String GetName ();
+    Urho3D::String GetName () const;
     void SetName (Urho3D::String name);
 
-    Urho3D::PODVector<Urho3D::Vector3> GetPolygonPoints();
+    Urho3D::PODVector <Urho3D::Vector3> GetPolygonPoints () const;
     void SetPolygonPoints (Urho3D::PODVector <Urho3D::Vector3> polygonPoints);
-    Urho3D::VariantVector GetPolygonPointsAttribute ();
+    Urho3D::VariantVector GetPolygonPointsAttribute () const;
     void SetPolygonPointsAttribute (Urho3D::VariantVector polygonPoints);
 
-    Urho3D::Vector3 GetUnitPosition ();
+    Urho3D::Vector3 GetUnitPosition () const;
     void SetUnitPosition (Urho3D::Vector3 unitPosition);
 
-    Urho3D::Vector3 GetColonyPosition ();
+    Urho3D::Vector3 GetColonyPosition () const;
     void SetColonyPosition (Urho3D::Vector3 colonyPosition);
 
-    Urho3D::PODVector <Urho3D::StringHash> GetNeighborsHashes ();
+    Urho3D::PODVector <Urho3D::StringHash> GetNeighborsHashes () const;
     void SetNeighborsHashes (Urho3D::PODVector <Urho3D::StringHash> neighbors);
-    Urho3D::VariantVector GetNeighborsHashesAttribute ();
+    Urho3D::VariantVector GetNeighborsHashesAttribute () const;
     void SetNeighborsHashesAttribute (Urho3D::VariantVector neighbors);
 
-    float GetFarmingSquare ();
+    float GetFarmingSquare () const;
     void SetFarmingSquare (float farmingSquare);
 
-    float GetForestsSquare ();
+    float GetForestsSquare () const;
     void SetForestsSquare (float forestsSquare);
 
-    float GetLandAverageFertility ();
+    float GetLandAverageFertility () const;
     void SetLandAverageFertility (float landAverageFertility);
 
-    ClimateType GetClimate ();
+    ClimateType GetClimate () const;
     void SetClimate (ClimateType climate);
 
-    float GetForestsReproductivity ();
+    float GetForestsReproductivity () const;
     void SetForestsReproductivity (float forestsReproductivity);
 
-    bool HasCoalDeposits ();
+    bool HasCoalDeposits () const;
     void SetCoalDeposits (bool hasCoalDeposits);
 
-    bool HasIronDeposits ();
+    bool HasIronDeposits () const;
     void SetIronDeposits (bool hasIronDeposits);
 
-    bool HasSilverDeposits ();
+    bool HasSilverDeposits () const;
     void SetSilverDeposits (bool hasSilverDeposits);
 
-    bool HasGoldDeposits ();
+    bool HasGoldDeposits () const;
     void SetGoldDeposits (bool hasGoldDeposits);
 
-    float GetNativesCount ();
+    float GetNativesCount () const;
     void SetNativesCount (float nativesCount);
 
-    float GetNativesFightingTechnologyLevel ();
+    float GetNativesFightingTechnologyLevel () const;
     void SetNativesFightingTechnologyLevel (float nativesFightingTechnologyLevel);
 
-    float GetNativesAggressiveness ();
+    float GetNativesAggressiveness () const;
     void SetNativesAggressiveness (float nativesAggressiveness);
 
-    NativesCharacterType GetNativesCharacter ();
+    NativesCharacterType GetNativesCharacter () const;
     void SetNativesCharacter (NativesCharacterType nativesCharacter);
 
-    bool HasColony ();
+    bool HasColony () const;
     void SetColony (bool hasColony);
 
-    Urho3D::String GetColonyOwnerName ();
+    Urho3D::String GetColonyOwnerName () const;
     void SetColonyOwnerName (Urho3D::String colonyOwnerName);
 
-    float GetMenCount ();
+    float GetMenCount () const;
     void SetMenCount (float menCount);
 
-    float GetWomenCount ();
+    float GetWomenCount () const;
     void SetWomenCount (float womenCount);
 
-    float GetLocalArmySize ();
+    float GetLocalArmySize () const;
     void SetLocalArmySize (float localArmySize);
 
-    float GetFarmsEvolutionPoints ();
+    float GetFarmsEvolutionPoints () const;
     void SetFarmsEvolutionPoints (float farmsEvolutionPoints);
 
-    float GetMinesEvolutionPoints ();
+    float GetMinesEvolutionPoints () const;
     void SetMinesEvolutionPoints (float minesEvolutionPoints);
 
-    float GetIndustryEvolutionPoints ();
+    float GetIndustryEvolutionPoints () const;
     void SetIndustryEvolutionPoints (float industryEvolutionPoints);
 
-    float GetLogisticsEvolutionPoints ();
+    float GetLogisticsEvolutionPoints () const;
     void SetLogisticsEvolutionPoints (float logisticsEvolutionPoints);
 
-    float GetDefenseEvolutionPoints ();
+    float GetDefenseEvolutionPoints () const;
     void SetDefenseEvolutionPoints (float defenseEvolutionPoints);
 
-    float GetAverageLevelOfLifePoints ();
+    float GetAverageLevelOfLifePoints () const;
     void SetAverageLevelOfLifePoints (float averageLevelOfLifePoints);
 };
 }

@@ -20,12 +20,13 @@ PlayerInfo::~PlayerInfo ()
 void PlayerInfo::RegisterObject (Urho3D::Context *context)
 {
     context_->RegisterFactory <PlayerInfo> (COLONIZATION_CORE_CATEGORY);
+    using namespace Urho3D;
 
-    URHO3D_ACCESSOR_ATTRIBUTE ("Name", GetName, SetName, Urho3D::String, Urho3D::String ("NoName"), Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Points", GetPoints, SetPoints, float, 0.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Name", GetName, SetName, String, String ("NoName"), AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Points", GetPoints, SetPoints, float, 0.0f, AM_DEFAULT);
 }
 
-Urho3D::String PlayerInfo::GetName ()
+Urho3D::String PlayerInfo::GetName () const
 {
     return name_;
 }
@@ -35,7 +36,7 @@ void PlayerInfo::SetName (Urho3D::String name)
     name_ = name;
 }
 
-float PlayerInfo::GetPoints ()
+float PlayerInfo::GetPoints () const
 {
     return points_;
 }
