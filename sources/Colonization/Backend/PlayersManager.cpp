@@ -2,11 +2,15 @@
 #include "PlayersManager.hpp"
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Core/CoreEvents.h>
+#include <Urho3D/Scene/Component.h>
+#include <Urho3D/Scene/Scene.h>
 #include <Urho3D/Network/NetworkEvents.h>
 #include <Urho3D/IO/Log.h>
 
 #include <Colonization/Backend/MessagesHandler.hpp>
 #include <Colonization/Backend/SceneManager.hpp>
+#include <Colonization/Core/PlayerInfo.hpp>
+#include <Colonization/Utils/Categories.hpp>
 
 namespace Colonization
 {
@@ -27,7 +31,77 @@ bool PlayersManager::DeleteIdentificatedConnection (Urho3D::Connection *connecti
     return isFinded;
 }
 
-PlayersManager::PlayersManager (Urho3D::Context *context) : Urho3D::Object (context),
+void PlayersManager::SendPlayersStats (MessagesHandler *messagesHandler)
+{
+    int index = 0;
+    while (index < players_.Values ().Size ())
+    {
+        Player *player = players_.Values ().At (index);
+        if (!player)
+            players_.Erase (players_.Keys ().At (index));
+        else
+        {
+            player->Update (timeStep);
+            messagesHandler->SendPlayersStats (player);
+            index++;
+        }
+    }
+}
+
+void PlayersManager::UpdateConnectionsWithoudId (float timeStep)
+{
+    int index = 0;
+    while (index < connectionsWithoutId_.Size ())
+    {
+        connectionsWithoutId_.At (index).first_ -= timeStep;
+        if (connectionsWithoutId_.At (index).first_ <= 0.0f)
+        {
+            Urho3D::Connection *connection = connectionsWithoutId_.At (index).second_;
+            connectionsWithoutId_.Remove (connectionsWithoutId_.At (index));
+            connection->Disconnect ();
+        }
+        else
+            index++;
+    }
+}
+
+void PlayersManager::UpdatePlayersInfos ()
+{
+    assert (node_);
+    Urho3D::PODVector <Urho3D::Node *> playersInfosNodes;
+    node_->GetChildrenWithComponent (playersInfosNodes, PlayerInfo::GetTypeStatic ());
+
+    int index = 0;
+    while (index < players_.Values ().Size () || index < playersInfosNodes.Size ())
+    {
+        if (index < players_.Values ().Size ())
+        {
+            Player *player = players_.Values ().At (index);
+            Urho3D::Node *infoNode;
+            if (index < playersInfosNodes.Size ())
+                infoNode = playersInfosNodes.At (index);
+            else
+            {
+                infoNode = node_->CreateChild (player->GetName (), Urho3D::REPLICATED);
+                infoNode->CreateComponent <PlayerInfo> (Urho3D::REPLICATED);
+            }
+
+            infoNode->SetName (player->GetName ());
+            PlayerInfo *playerInfo = infoNode->GetComponent <PlayerInfo> ();
+            if (playerInfo->GetName () != player->GetName ())
+                playerInfo->SetName (player->GetName ());
+
+            if (playerInfo->GetPoints () != player->GetPoints ())
+                playerInfo->SetPoints (player->GetPoints ());
+        }
+        else
+            playersInfosNodes.At (index)->Remove ();
+
+        index++;
+    }
+}
+
+PlayersManager::PlayersManager (Urho3D::Context *context) : Urho3D::Component (context),
     players_ (),
     connectionHashToNameHashMap_ (),
     connectionsWithoutId_ ()
@@ -46,40 +120,19 @@ PlayersManager::~PlayersManager ()
         DisconnectPlayer (players_.Keys ().Front ());
 }
 
+void PlayersManager::RegisterObject (Urho3D::Context *context)
+{
+    context->RegisterFactory <PlayersManager> (COLONIZATION_SERVER_ONLY_CATEGORY);
+}
+
 void PlayersManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    MessagesHandler *messagesHandler = (MessagesHandler *) context_->GetGlobalVar ("MessagesHandler").GetPtr ();
+    MessagesHandler *messagesHandler = node_->GetScene ()->GetComponent <MessagesHandler> ();
     assert (messagesHandler);
-
-
+    SendPlayersStats (messagesHandler);
     float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
-    int index = 0;
-    while (index < players_.Values ().Size ())
-    {
-        Player *player = players_.Values ().At (index);
-        if (!player)
-            players_.Erase (players_.Keys ().At (index));
-        else
-        {
-            player->Update (timeStep);
-            messagesHandler->SendPlayersStats (player);
-            index++;
-        }
-    }
-
-    index = 0;
-    while (index < connectionsWithoutId_.Size ())
-    {
-        connectionsWithoutId_.At (index).first_ -= timeStep;
-        if (connectionsWithoutId_.At (index).first_ <= 0.0f)
-        {
-            Urho3D::Connection *connection = connectionsWithoutId_.At (index).second_;
-            connectionsWithoutId_.Remove (connectionsWithoutId_.At (index));
-            connection->Disconnect ();
-        }
-        else
-            index++;
-    }
+    UpdateConnectionsWithoudId (timeStep);
+    UpdatePlayersInfos ();
 }
 
 void PlayersManager::HandlePlayerConnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
@@ -93,7 +146,7 @@ void PlayersManager::HandlePlayerDisconnected (Urho3D::StringHash eventType, Urh
 {
     Urho3D::Connection *connection = (Urho3D::Connection *)
             eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
-    MessagesHandler *messagesHandler = (MessagesHandler *) context_->GetGlobalVar ("MessagesHandler").GetPtr ();
+    MessagesHandler *messagesHandler = node_->GetScene ()->GetComponent <MessagesHandler> ();
     assert (messagesHandler);
 
     Player *player = GetPlayer (connection);
@@ -169,14 +222,11 @@ void PlayersManager::PlayerIdentified (Urho3D::Connection *connection, Urho3D::S
     connectionHashToNameHashMap_ [connection->GetAddress ()] = name;
     player->SetGold (1000.0f);
 
-    MessagesHandler *messagesHandler = (MessagesHandler *) context_->GetGlobalVar ("MessagesHandler").GetPtr ();
+    MessagesHandler *messagesHandler = node_->GetScene ()->GetComponent <MessagesHandler> ();
     assert (messagesHandler);
     Urho3D::Vector <Player *> allPlayers = players_.Values ();
     messagesHandler->SendTextInfoFromServer (player->GetName () + " entered game!", allPlayers);
-
-    SceneManager *sceneManager = (SceneManager *) context_->GetGlobalVar ("SceneManager").GetPtr ();
-    assert (sceneManager);
-    connection->SetScene (sceneManager->GetScene ());
+    connection->SetScene (node_->GetScene ());
 }
 
 void PlayersManager::DisconnectPlayer (Urho3D::StringHash nameHash)

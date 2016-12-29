@@ -49,7 +49,10 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
             if (tradeAreaIndex < tradeAreasNodes.Size ())
                 node = tradeAreasNodes.At (tradeAreaIndex);
             else
+            {
                 node = node_->CreateChild ("InternalTradeArea" + Urho3D::String (tradeAreaIndex), Urho3D::REPLICATED);
+                node->CreateComponent <InternalTradeArea> (Urho3D::REPLICATED);
+            }
 
             UpdateTradeArea (node->GetComponent <InternalTradeArea> (), map, toScan.At (0), toScan);
             tradeAreas_.Push (node->GetComponent <InternalTradeArea> ());
