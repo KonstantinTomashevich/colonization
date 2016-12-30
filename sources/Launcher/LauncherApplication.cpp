@@ -16,6 +16,19 @@
 #include <Colonization/AngelScriptBinders/BindPlayerActionType.hpp>
 #include <Colonization/AngelScriptBinders/BindInternalTradeArea.hpp>
 #include <Colonization/AngelScriptBinders/BindPlayerInfo.hpp>
+
+#include <Colonization/Backend/ColoniesManager.hpp>
+#include <Colonization/Backend/MessagesHandler.hpp>
+#include <Colonization/Backend/Player.hpp>
+#include <Colonization/Backend/PlayersManager.hpp>
+#include <Colonization/Backend/TradeProcessor.hpp>
+#include <Colonization/Backend/UnitsManager.hpp>
+
+#include <Colonization/Core/District.hpp>
+#include <Colonization/Core/InternalTradeArea.hpp>
+#include <Colonization/Core/Map.hpp>
+#include <Colonization/Core/PlayerInfo.hpp>
+#include <Colonization/Core/Unit.hpp>
 #include <Colonization/Activities/MainMenuActivity.hpp>
 
 URHO3D_DEFINE_APPLICATION_MAIN (ColonizationLauncher::LauncherApplication)
@@ -57,7 +70,20 @@ void LauncherApplication::Start ()
         for (int index = 0; index < currentActivities_.Size (); index++)
             currentActivities_.At (index)->Start ();
 
-    // Register AngelScript subsystem.
+    // Register objects.
+    Colonization::ColoniesManager::RegisterObject (context_);
+    Colonization::MessagesHandler::RegisterObject (context_);
+    Colonization::PlayersManager::RegisterObject (context_);
+    Colonization::TradeProcessor::RegisterObject (context_);
+    Colonization::UnitsManager::RegisterObject (context_);
+
+    Colonization::District::RegisterObject (context_);
+    Colonization::InternalTradeArea::RegisterObject (context_);
+    Colonization::Map::RegisterObject (context_);
+    Colonization::PlayerInfo::RegisterObject (context_);
+    Colonization::Unit::RegisterObject (context_);
+
+    // Register AngelScript subsystem and run bindings.
     Urho3D::Script *script = new Urho3D::Script (context_);
     context_->RegisterSubsystem (script);
     Colonization::BindActivity (script);
