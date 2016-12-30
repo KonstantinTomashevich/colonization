@@ -9,7 +9,6 @@
 #include <Colonization/AngelScriptBinders/BindHostActivity.hpp>
 #include <Colonization/AngelScriptBinders/BindMainMenuActivity.hpp>
 #include <Colonization/AngelScriptBinders/BindIngamePlayerActivity.hpp>
-#include <Colonization/AngelScriptBinders/BindAngelScriptDirectMemoryAccess.hpp>
 #include <Colonization/AngelScriptBinders/BindUnit.hpp>
 #include <Colonization/AngelScriptBinders/BindPlayerActionType.hpp>
 #include <Colonization/AngelScriptBinders/BindInternalTradeArea.hpp>
@@ -48,7 +47,6 @@ void Generator::Start ()
     Colonization::BindHostActivity (script);
     Colonization::BindMainMenuActivity (script);
     Colonization::BindIngamePlayerActivity (script);
-    Colonization::BindAngelScriptDirectMemoryAccess (script);
     Colonization::BindUnit (script);
     Colonization::BindPlayerActionType (script);
     Colonization::BindInternalTradeArea (script);

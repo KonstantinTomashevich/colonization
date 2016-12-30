@@ -27,6 +27,8 @@ enum NativesCharacterType
     NATIVES_CHARATER_AGGRESSIVE = 4
 };
 
+// WARNING: Rewrite all arrays accessor without arrays duplication (to reduce memory usage). See "Bone Animation Enabled" in AnimatedModel as example.
+
 class District : public Urho3D::Component
 {
 URHO3D_OBJECT (District, Component)
