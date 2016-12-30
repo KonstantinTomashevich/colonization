@@ -67,78 +67,80 @@ void TestInternalTradeAreaApplication::Start ()
     for (int x = 0; x < mapWidth; x++)
         for (int y = 0; y < mapHeight; y++)
         {
-            Colonization::District *district = new Colonization::District (context_);
-            district->name_ = "(" + Urho3D::String (x) + "; " + Urho3D::String (y) + ")";
+            Colonization::District *district = map->CreateDistrict (
+                        "(" + Urho3D::String (x) + "; " + Urho3D::String (y) + ")");
 
-            district->polygonPoints_.Push (Urho3D::Vector3 (x - 0.5f, 0.0f, y - 0.5f));
-            district->polygonPoints_.Push (Urho3D::Vector3 (x + 0.5f, 0.0f, y - 0.5f));
-            district->polygonPoints_.Push (Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.5f));
-            district->polygonPoints_.Push (Urho3D::Vector3 (x - 0.5f, 0.0f, y + 0.5f));
+            Urho3D::PODVector <Urho3D::Vector3> polygonPoints;
+            polygonPoints.Push (Urho3D::Vector3 (x, 0.0f, y ));
+            polygonPoints.Push (Urho3D::Vector3 (x + 1.0f, 0.0f, y));
+            polygonPoints.Push (Urho3D::Vector3 (x + 1.0f, 0.0f, y + 1.0f));
+            polygonPoints.Push (Urho3D::Vector3 (x, 0.0f, y + 1.0f));
+            district->SetPolygonPoints (polygonPoints);
 
-            district->unitPosition_ = Urho3D::Vector3 (x, 0.0f, y);
-            district->colonyPosition_ = Urho3D::Vector3 (x, 0.0f, y);
+            district->SetClimate (Colonization::CLIMATE_TEMPERATE);
+            district->SetFarmingSquare (250.0f);
+            district->SetLandAverageFertility (1.0f);
+            district->SetForestsSquare (150.0f);
+            district->SetForestsReproductivity (0.75f);
 
-            district->isSea_ = false;
-            district->hasColony_ = true;
-            district->colonyOwnerName_ = "PlayerX";
-            district->menCount_ = 100;
-            district->womenCount_ = 100;
-            map->CreateDistrict (district);
+            district->SetUnitPosition (Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.65f));
+            district->SetColonyPosition (Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.2f));
+            district->SetColonyOwnerName ("PlayerX");
             district->UpdateHash (map);
         }
     map->RecalculateDistrictsNeighbors ();
 
-    map->GetDistrictByIndex (0)->farmsEvolutionPoints_ = 9.0f;
-    map->GetDistrictByIndex (0)->minesEvolutionPoints_ = 1.0f;
-    map->GetDistrictByIndex (0)->industryEvolutionPoints_ = 1.0f;
-    map->GetDistrictByIndex (0)->logisticsEvolutionPoints_ = 4.0f;
-    map->GetDistrictByIndex (0)->defenseEvolutionPoints_ = 1.0f;
+    map->GetDistrictByIndex (0)->SetFarmsEvolutionPoints (9.0f);
+    map->GetDistrictByIndex (0)->SetMinesEvolutionPoints (1.0f);
+    map->GetDistrictByIndex (0)->SetIndustryEvolutionPoints (1.0f);
+    map->GetDistrictByIndex (0)->SetLogisticsEvolutionPoints (4.0f);
+    map->GetDistrictByIndex (0)->SetDefenseEvolutionPoints (1.0f);
 
-    map->GetDistrictByIndex (1)->farmsEvolutionPoints_ = 2.0f;
-    map->GetDistrictByIndex (1)->minesEvolutionPoints_ = 2.0f;
-    map->GetDistrictByIndex (1)->industryEvolutionPoints_ = 1.5f;
-    map->GetDistrictByIndex (1)->logisticsEvolutionPoints_ = 4.0f;
-    map->GetDistrictByIndex (1)->defenseEvolutionPoints_ = 1.0f;
+    map->GetDistrictByIndex (1)->SetFarmsEvolutionPoints (2.0f);
+    map->GetDistrictByIndex (1)->SetMinesEvolutionPoints (2.0f);
+    map->GetDistrictByIndex (1)->SetIndustryEvolutionPoints (1.5f);
+    map->GetDistrictByIndex (1)->SetLogisticsEvolutionPoints (4.0f);
+    map->GetDistrictByIndex (1)->SetDefenseEvolutionPoints (1.0f);
 
-    map->GetDistrictByIndex (2)->farmsEvolutionPoints_ = 2.0f;
-    map->GetDistrictByIndex (2)->minesEvolutionPoints_ = 8.0f;
-    map->GetDistrictByIndex (2)->industryEvolutionPoints_ = 2.0f;
-    map->GetDistrictByIndex (2)->logisticsEvolutionPoints_ = 4.0f;
-    map->GetDistrictByIndex (2)->defenseEvolutionPoints_ = 1.0f;
+    map->GetDistrictByIndex (2)->SetFarmsEvolutionPoints (2.0f);
+    map->GetDistrictByIndex (2)->SetMinesEvolutionPoints (8.0f);
+    map->GetDistrictByIndex (2)->SetIndustryEvolutionPoints (2.0f);
+    map->GetDistrictByIndex (2)->SetLogisticsEvolutionPoints (4.0f);
+    map->GetDistrictByIndex (2)->SetDefenseEvolutionPoints (1.0f);
 
-    map->GetDistrictByIndex (3)->farmsEvolutionPoints_ = 2.0f;
-    map->GetDistrictByIndex (3)->minesEvolutionPoints_ = 2.0f;
-    map->GetDistrictByIndex (3)->industryEvolutionPoints_ = 7.0f;
-    map->GetDistrictByIndex (3)->logisticsEvolutionPoints_ = 4.0f;
-    map->GetDistrictByIndex (3)->defenseEvolutionPoints_ = 1.0f;
+    map->GetDistrictByIndex (3)->SetFarmsEvolutionPoints (2.0f);
+    map->GetDistrictByIndex (3)->SetMinesEvolutionPoints (2.0f);
+    map->GetDistrictByIndex (3)->SetIndustryEvolutionPoints (7.0f);
+    map->GetDistrictByIndex (3)->SetLogisticsEvolutionPoints (4.0f);
+    map->GetDistrictByIndex (3)->SetDefenseEvolutionPoints (1.0f);
 
     Urho3D::SharedPtr <Colonization::InternalTradeArea> internalTradeArea (new Colonization::InternalTradeArea (context_));
     internalTradeArea->AddDistrictHash (map->GetDistrictByIndex (0)->GetHash ());
     internalTradeArea->AddDistrictHash (map->GetDistrictByIndex (1)->GetHash ());
     internalTradeArea->AddDistrictHash (map->GetDistrictByIndex (2)->GetHash ());
     internalTradeArea->AddDistrictHash (map->GetDistrictByIndex (3)->GetHash ());
-    Colonization::TradeDistrictProcessingInfo result = internalTradeArea->ProcessTrade (map);
+    Urho3D::SharedPtr <Colonization::TradeDistrictProcessingInfo> result = internalTradeArea->ProcessTrade (map);
 
-    Urho3D::Log::Write (Urho3D::LOG_INFO, "Unused farms production: " + Urho3D::String (result.unusedEvolutionPoints_ ["farms"]));
-    Urho3D::Log::Write (Urho3D::LOG_INFO, "Unused mines production: " + Urho3D::String (result.unusedEvolutionPoints_ ["mines"]));
-    Urho3D::Log::Write (Urho3D::LOG_INFO, "Unused industry production: " + Urho3D::String (result.unusedEvolutionPoints_ ["industry"]));
-    Urho3D::Log::Write (Urho3D::LOG_INFO, "Sold trade goods cost: " + Urho3D::String (result.soldTradeGoodsCost_));
-    Urho3D::Log::Write (Urho3D::LOG_INFO, "Unsold trade goods cost: " + Urho3D::String (result.unsoldTradeGoodsCost_));
-    Urho3D::Log::Write (Urho3D::LOG_INFO, "Logistics bonus: " + Urho3D::String (result.logisticsBonus_));
-    Urho3D::Log::Write (Urho3D::LOG_INFO, "Defense bonus: " + Urho3D::String (result.defenseBonus_));
+    Urho3D::Log::Write (Urho3D::LOG_INFO, "Unused farms production: " + Urho3D::String (result->GetUnusedEvolutionPointsOf ("farms")));
+    Urho3D::Log::Write (Urho3D::LOG_INFO, "Unused mines production: " + Urho3D::String (result->GetUnusedEvolutionPointsOf ("mines")));
+    Urho3D::Log::Write (Urho3D::LOG_INFO, "Unused industry production: " + Urho3D::String (result->GetUnusedEvolutionPointsOf ("industry")));
+    Urho3D::Log::Write (Urho3D::LOG_INFO, "Sold trade goods cost: " + Urho3D::String (result->GetSoldTradeGoodsCost ()));
+    Urho3D::Log::Write (Urho3D::LOG_INFO, "Unsold trade goods cost: " + Urho3D::String (result->GetUnsoldTradeGoodsCost ()));
+    Urho3D::Log::Write (Urho3D::LOG_INFO, "Logistics bonus: " + Urho3D::String (result->GetLogisticsBonus ()));
+    Urho3D::Log::Write (Urho3D::LOG_INFO, "Defense bonus: " + Urho3D::String (result->GetDefenseBonus ()));
 
-    if (result.unusedEvolutionPoints_ ["farms"] <= 0.0f)
+    if (result->GetUnusedEvolutionPointsOf ("farms") <= 0.0f)
         ErrorExit ("Expected unused farms production > 0.0.");
-    else if (result.unusedEvolutionPoints_ ["mines"] >= 0.0f)
+    else if (result->GetUnusedEvolutionPointsOf ("mines") >= 0.0f)
         ErrorExit ("Expected unused mines production < 0.0.");
-    else if (result.unusedEvolutionPoints_ ["industry"] <= 0.0f)
+    else if (result->GetUnusedEvolutionPointsOf ("industry") <= 0.0f)
         ErrorExit ("Expected unused industry production > 0.0.");
-    else if (result.unsoldTradeGoodsCost_ / (result.unsoldTradeGoodsCost_ + result.soldTradeGoodsCost_) < 0.1f ||
-             result.unsoldTradeGoodsCost_ / (result.unsoldTradeGoodsCost_ + result.soldTradeGoodsCost_) > 0.5f)
+    else if (result->GetUnsoldTradeGoodsCost () / (result->GetUnsoldTradeGoodsCost () + result->GetSoldTradeGoodsCost ()) < 0.1f ||
+             result->GetUnsoldTradeGoodsCost () / (result->GetUnsoldTradeGoodsCost () + result->GetSoldTradeGoodsCost ()) > 0.5f)
         ErrorExit ("Expected unsold / (unsold + sold) production in (0.1; 0.5).");
-    else if (result.logisticsBonus_ >= 1.0f)
+    else if (result->GetLogisticsBonus () >= 1.0f)
         ErrorExit ("Expected logistics bonus < 1.0.");
-    else if (result.defenseBonus_ >= 1.0f)
+    else if (result->GetDefenseBonus () >= 1.0f)
         ErrorExit ("Expected logistics bonus < 1.0.");
     else
         engine_->Exit ();
