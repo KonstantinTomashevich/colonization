@@ -270,7 +270,7 @@ void HostActivity::Update (float timeStep)
 
 void HostActivity::Stop ()
 {
-    context_->GetSubsystem <Urho3D::Network> ()->StopServer ();
     scene_->Clear (true, true);
+    context_->GetSubsystem <Urho3D::Network> ()->StopServer ();
 }
 }

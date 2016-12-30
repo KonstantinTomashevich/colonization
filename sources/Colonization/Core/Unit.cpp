@@ -150,7 +150,10 @@ void Unit::SetWayToNextDistrictProgressInPercents (float wayToNextDistrictProgre
 
 int Unit::FleetUnitGetWarShipsCount () const
 {
-    return unitTypeSpecificVars_ ["WarShipsCount"]->GetInt ();
+    if (unitType_ == UNIT_FLEET)
+        return unitTypeSpecificVars_ ["WarShipsCount"]->GetInt ();
+    else
+        return 0;
 }
 
 void Unit::FleetUnitSetWarShipsCount (int warShipsCount)
@@ -160,7 +163,10 @@ void Unit::FleetUnitSetWarShipsCount (int warShipsCount)
 
 float Unit::TradersUnitGetTradeGoodsCost () const
 {
-    return unitTypeSpecificVars_ ["TradeGoodsCost"]->GetFloat ();
+    if (unitType_ == UNIT_TRADERS)
+        return unitTypeSpecificVars_ ["TradeGoodsCost"]->GetFloat ();
+    else
+        return 0.0f;
 }
 
 void Unit::TradersUnitSetTradeGoodsCost (float tradeGoodsCost)
@@ -170,7 +176,10 @@ void Unit::TradersUnitSetTradeGoodsCost (float tradeGoodsCost)
 
 int Unit::ColonizatorsUnitGetColonizatorsCount () const
 {
-    return unitTypeSpecificVars_ ["ColonizatorsCount"]->GetInt ();
+    if (unitType_ == UNIT_COLONIZATORS)
+        return unitTypeSpecificVars_ ["ColonizatorsCount"]->GetInt ();
+    else
+        return 0;
 }
 
 void Unit::ColonizatorsUnitSetColonizatorsCount (int colonizatorsCount)
@@ -180,7 +189,10 @@ void Unit::ColonizatorsUnitSetColonizatorsCount (int colonizatorsCount)
 
 int Unit::ArmyUnitGetSoldiersCount () const
 {
-    return unitTypeSpecificVars_ ["SoldiersCount"]->GetInt ();
+    if (unitType_ == UNIT_ARMY)
+        return unitTypeSpecificVars_ ["SoldiersCount"]->GetInt ();
+    else
+        return 0;
 }
 
 void Unit::ArmyUnitSetSoldiersCount (int soldiersCount)

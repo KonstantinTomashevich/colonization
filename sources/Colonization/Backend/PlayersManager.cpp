@@ -217,7 +217,10 @@ void PlayersManager::PlayerIdentified (Urho3D::Connection *connection, Urho3D::S
 void PlayersManager::DisconnectPlayer (Urho3D::StringHash nameHash)
 {
     Player *player = players_ [nameHash];
+    assert (player);
     players_.Erase (nameHash);
+
+    assert (player->GetConnection ());
     connectionHashToNameHashMap_.Erase (player->GetConnection ()->GetAddress ());
     player->GetConnection ()->Disconnect ();
     delete player;

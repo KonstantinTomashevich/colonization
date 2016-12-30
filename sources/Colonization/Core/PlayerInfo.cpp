@@ -1,6 +1,7 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "PlayerInfo.hpp"
 #include <Urho3D/Core/Context.h>
+#include <Urho3D/IO/Log.h>
 #include <Colonization/Utils/Categories.hpp>
 
 namespace Colonization

@@ -3,7 +3,9 @@
 #include <Colonization/Core/District.hpp>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Utils/Categories.hpp>
+
 #include <Urho3D/Core/Context.h>
+#include <Urho3D/IO/Log.h>
 
 namespace Colonization
 {

@@ -1,9 +1,7 @@
 #include "TestInternalTradeProcessing.hpp"
 #include <Urho3D/Input/Input.h>
 #include <Urho3D/Core/CoreEvents.h>
-
 #include <Urho3D/IO/Log.h>
-#include <Urho3D/Scene/Scene.h>
 #include <Urho3D/Network/Network.h>
 
 #include <Colonization/Core/District.hpp>
@@ -19,7 +17,9 @@ URHO3D_DEFINE_APPLICATION_MAIN (Tests::TestInternalTradeProcessingApplication)
 namespace Tests
 {
 TestInternalTradeProcessingApplication::TestInternalTradeProcessingApplication (Urho3D::Context *context) :
-    Urho3D::Application (context)
+    Urho3D::Application (context),
+    scene_ (),
+    sceneForReplication_ ()
 {
 
 }
@@ -77,8 +77,8 @@ void TestInternalTradeProcessingApplication::Start ()
     Colonization::PlayerInfo::RegisterObject (context_);
     Colonization::MessagesHandler::RegisterObject (context_);
 
-    Urho3D::SharedPtr <Urho3D::Scene> scene (new Urho3D::Scene (context_));
-    Colonization::Map *map = scene->CreateChild ("map")->CreateComponent <Colonization::Map> ();
+    scene_ = Urho3D::SharedPtr <Urho3D::Scene> (new Urho3D::Scene (context_));
+    Colonization::Map *map = scene_->CreateChild ("map")->CreateComponent <Colonization::Map> ();
     const int mapWidth = 4;
     const int mapHeight = 4;
 
@@ -137,59 +137,77 @@ void TestInternalTradeProcessingApplication::Start ()
         district->SetDefenseEvolutionPoints (5.0f);
     }
 
-    Colonization::MessagesHandler *messagesHandler = scene->CreateComponent <Colonization::MessagesHandler> ();
-    Colonization::PlayersManager *playersManager =
-            scene->CreateChild ("players")->CreateComponent <Colonization::PlayersManager> ();
+    scene_->CreateComponent <Colonization::MessagesHandler> ();
+    scene_->CreateChild ("players")->CreateComponent <Colonization::PlayersManager> ();
 
     Urho3D::Network *network = context_->GetSubsystem <Urho3D::Network> ();
     network->StartServer (3793);
-    Urho3D::SharedPtr <Urho3D::Scene> sceneForReplication (new Urho3D::Scene (context_));
+    sceneForReplication_ = Urho3D::SharedPtr <Urho3D::Scene> (new Urho3D::Scene (context_));
 
     Urho3D::VariantMap identity;
     identity ["Name"] = "PlayerX";
-    network->Connect ("localhost", 3793, sceneForReplication, identity);
-    Colonization::Player *playerX = playersManager->GetPlayer ("PlayerX");
+    network->Connect ("localhost", 3793, sceneForReplication_, identity);
 
-    Colonization::TradeProcessor *tradeProcessor =
-            scene->CreateComponent <Colonization::TradeProcessor> ();
+    SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (TestInternalTradeProcessingApplication, Update));
+    timeBeforeAutoExit_ = 2.5f;
+}
 
-    Colonization::UnitsManager *unitsManager =
-            scene->CreateChild ("units", Urho3D::REPLICATED)->CreateComponent <Colonization::UnitsManager> ();
+void TestInternalTradeProcessingApplication::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
+    timeBeforeAutoExit_ -= timeStep;
+    if (timeBeforeAutoExit_ <= 0.0f)
+        ErrorExit ("Time elapsed!");
 
-    Urho3D::VariantMap eventData;
-    eventData [Urho3D::Update::P_TIMESTEP] = 0.1f;
-    tradeProcessor->Update (Urho3D::E_UPDATE, eventData);
-
-    Urho3D::Log::Write (Urho3D::LOG_INFO, "Trade areas count: " + Urho3D::String (tradeProcessor->GetTradeAreasCount ()));
-    for (int index = 0; index < tradeProcessor->GetTradeAreasCount (); index++)
+    Colonization::PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <Colonization::PlayersManager> ();
+    if (playersManager->GetPlayer ("PlayerX"))
     {
-        Colonization::InternalTradeArea *tradeArea = tradeProcessor->GetTradeAreaByIndex (index);
-        Urho3D::Log::Write (Urho3D::LOG_INFO, "Trade area: " + Urho3D::String (index) + ", districts:");
+        Colonization::Map *map = scene_->GetChild ("map")->GetComponent <Colonization::Map> ();
+        Colonization::Player *playerX = playersManager->GetPlayer ("PlayerX");
 
-        for (int districtIndex = 0; districtIndex < tradeArea->GetDistrictsHashesCount (); districtIndex++)
-            Urho3D::Log::Write (Urho3D::LOG_INFO, map->GetDistrictByHash (
-                                    tradeArea->GetDistrictHashByIndex (districtIndex))->GetName ());
+        Colonization::TradeProcessor *tradeProcessor =
+                scene_->CreateComponent <Colonization::TradeProcessor> ();
 
-        Urho3D::Log::Write (Urho3D::LOG_INFO, "");
+        Colonization::UnitsManager *unitsManager =
+                scene_->CreateChild ("units", Urho3D::REPLICATED)->CreateComponent <Colonization::UnitsManager> ();
+
+        Urho3D::VariantMap eventData;
+        eventData [Urho3D::Update::P_TIMESTEP] = 0.1f;
+        tradeProcessor->Update (Urho3D::E_UPDATE, eventData);
+
+        Urho3D::Log::Write (Urho3D::LOG_INFO, "Trade areas count: " + Urho3D::String (tradeProcessor->GetTradeAreasCount ()));
+        for (int index = 0; index < tradeProcessor->GetTradeAreasCount (); index++)
+        {
+            Colonization::InternalTradeArea *tradeArea = tradeProcessor->GetTradeAreaByIndex (index);
+            Urho3D::Log::Write (Urho3D::LOG_INFO, "Trade area: " + Urho3D::String (index) + ", districts:");
+
+            for (int districtIndex = 0; districtIndex < tradeArea->GetDistrictsHashesCount (); districtIndex++)
+                Urho3D::Log::Write (Urho3D::LOG_INFO, map->GetDistrictByHash (
+                                        tradeArea->GetDistrictHashByIndex (districtIndex))->GetName ());
+
+            Urho3D::Log::Write (Urho3D::LOG_INFO, "");
+        }
+
+        Urho3D::Log::Write (Urho3D::LOG_INFO, "PlayerX's gold: " + Urho3D::String (playerX->GetGold ()));
+        Urho3D::Log::Write (Urho3D::LOG_INFO, "Sended traders: " + Urho3D::String (unitsManager->GetUnitsCount ()));
+
+        if (tradeProcessor->GetTradeAreasCount () != 2)
+            ErrorExit ("Expected 2 trade areas!");
+        else if (playerX->GetGold () <= 5.0f)
+            ErrorExit ("Expected that PlayerX has more than 5.0 gold!");
+        else if (unitsManager->GetUnitsCount () != 7)
+            ErrorExit ("Expected that PlayerX sended 7 traders!");
+        else
+            engine_->Exit ();
     }
-
-
-    Urho3D::Log::Write (Urho3D::LOG_INFO, "PlayerX's gold: " + Urho3D::String (playerX->GetGold ()));
-    Urho3D::Log::Write (Urho3D::LOG_INFO, "Sended traders: " + Urho3D::String (unitsManager->GetUnitsCount ()));
-
-    if (tradeProcessor->GetTradeAreasCount () != 2)
-        ErrorExit ("Expected 2 trade areas!");
-    else if (playerX->GetGold () <= 5.0f)
-        ErrorExit ("Expected that PlayerX has more than 5.0 gold!");
-    else if (unitsManager->GetUnitsCount () != 7)
-        ErrorExit ("Expected that PlayerX sended 7 traders!");
-    else
-        engine_->Exit ();
 }
 
 void TestInternalTradeProcessingApplication::Stop ()
 {
-
+    scene_->Clear (true, true);
+    Urho3D::Network *network = context_->GetSubsystem <Urho3D::Network> ();
+    network->StopServer ();
+    sceneForReplication_->Clear (true, true);
 }
 }
 

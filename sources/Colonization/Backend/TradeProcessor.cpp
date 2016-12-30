@@ -18,7 +18,6 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
     Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
     Urho3D::HashMap <Urho3D::StringHash, District *> toScanHashMap;
 
-
     for (int index = 0; index < map->GetDistrictsCount (); index++)
     {
         District *district = map->GetDistrictByIndex (index);
@@ -43,6 +42,7 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
 
     while (!toScan.Empty () || tradeAreaIndex < tradeAreasNodes.Size ())
     {
+        Urho3D::Log::Write (Urho3D::LOG_INFO, Urho3D::String (tradeAreaIndex));
         if (!toScan.Empty ())
         {
             Urho3D::Node *node;
@@ -54,8 +54,9 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
                 node->CreateComponent <InternalTradeArea> (Urho3D::REPLICATED);
             }
 
-            UpdateTradeArea (node->GetComponent <InternalTradeArea> (), map, toScan.At (0), toScan);
-            tradeAreas_.Push (Urho3D::SharedPtr <InternalTradeArea> (node->GetComponent <InternalTradeArea> ()));
+            Urho3D::SharedPtr <InternalTradeArea> tradeAreaSharedPtr (node->GetComponent <InternalTradeArea> ());
+            UpdateTradeArea (tradeAreaSharedPtr, map, toScan.At (0), toScan);
+            tradeAreas_.Push (tradeAreaSharedPtr);
         }
         else
         {
