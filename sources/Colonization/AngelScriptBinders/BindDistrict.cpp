@@ -40,7 +40,7 @@ void BindDistrict (Urho3D::Script *script)
 void BindDistrictEnums (Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
-    engine->RegisterEnum ("Climate");
+    engine->RegisterEnum ("ClimateType");
     engine->RegisterEnumValue ("ClimateType", "CLIMATE_TROPICAL", CLIMATE_TROPICAL);
     engine->RegisterEnumValue ("ClimateType", "CLIMATE_HOT", CLIMATE_HOT );
     engine->RegisterEnumValue ("ClimateType", "CLIMATE_TEMPERATE", CLIMATE_TEMPERATE);

@@ -32,7 +32,7 @@ void BindMapInterface (Urho3D::Script *script, Urho3D::String className)
     engine->RegisterObjectMethod (className.CString (), "District @+ GetDistrictByHash (StringHash hash)", asMETHOD (Map, GetDistrictByHash), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "int GetDistrictsCount ()", asMETHOD (Map, GetDistrictsCount), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod (className.CString (), "District @+ CreateDistrict (Urho3D::String districtName)", asMETHOD (Map, CreateDistrict), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "District @+ CreateDistrict (String districtName)", asMETHOD (Map, CreateDistrict), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void RecalculateDistrictsNeighbors ()", asMETHOD (Map, RecalculateDistrictsNeighbors), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void ClearAndRemoveDistricts ()", asMETHOD (Map, ClearAndRemoveDistricts), asCALL_THISCALL);
 
