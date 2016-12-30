@@ -29,7 +29,7 @@ void MessagesHandler::HandleClientIdentity (Urho3D::StringHash eventType, Urho3D
 {
     Urho3D::Connection *connection = (Urho3D::Connection *)
             eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
-    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ()
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
     assert (playersManager);
 
     Urho3D::String name = connection->GetIdentity () ["Name"].GetString ();
@@ -42,7 +42,7 @@ void MessagesHandler::HandleClientIdentity (Urho3D::StringHash eventType, Urho3D
 
 void MessagesHandler::HandleNetworkMessage (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ()
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
     assert (playersManager);
 
     Urho3D::Connection *connection = (Urho3D::Connection *)
