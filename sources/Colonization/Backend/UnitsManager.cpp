@@ -21,7 +21,7 @@ void UnitsManager::UpdateUnitsList ()
     {
         Urho3D::Node *unitNode = unitsNodes.At (index);
         if (unitNode->GetID () < Urho3D::FIRST_LOCAL_ID)
-            units_.Push (unitNode->GetComponent <Unit> ());
+            units_.Push (Urho3D::SharedPtr <Unit> (unitNode->GetComponent <Unit> ()));
     }
 }
 
@@ -41,7 +41,7 @@ void UnitsManager::SettleColonizator (Unit *unit, Map *map)
 
     if (colony->HasColony () && colony->GetColonyOwnerName () != unit->GetOwnerPlayerName ())
     {
-        Urho3D::Log::Write (Urho3D::LOG_WARNING, "Can't settle colonizator of " + unit->ownerPlayer_ +
+        Urho3D::Log::Write (Urho3D::LOG_WARNING, "Can't settle colonizator of " + unit->GetOwnerPlayerName () +
                             " in " + colony->GetName () + ". Because there is a colony of " + colony->GetColonyOwnerName () + "!");
         unit->GetNode ()->Remove ();
     }
@@ -59,7 +59,7 @@ void UnitsManager::ProcessTrader (Unit *unit)
     assert (unit);
     assert (unit->GetUnitType () == UNIT_TRADERS);
 
-    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ()
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
     assert (playersManager);
 
     Player *player = playersManager->GetPlayer (Urho3D::String (unit->GetOwnerPlayerName ()));
@@ -71,7 +71,7 @@ void UnitsManager::ProcessTrader (Unit *unit)
 }
 
 UnitsManager::UnitsManager (Urho3D::Context *context) : Urho3D::Component (context),
-    unitsContainer_ (new UnitsContainer (context))
+    units_ ()
 {
     SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (UnitsManager, Update));
 }
@@ -103,24 +103,25 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
     for (int index = 0; index < units_.Size (); index++)
     {
         Unit *unit = units_.At (index);
-        Urho3D::PODVector <Urho3D::StringHash>  unitsWay = unit->GetWay ();
-        if (!unitsWay.Empty ())
+        Urho3D::PODVector <Urho3D::StringHash>  unitWay = unit->GetWay ();
+        if (!unitWay.Empty ())
         {
-            if (unit->GetPositionHash () == unit->way_.At (0) || unit->wayToNextDistrictProgressInPercents_ >= 100.0f)
+            if (unit->GetPositionHash () == unitWay.At (0) || unit->GetWayToNextDistrictProgressInPercents () >= 100.0f)
             {
-                unit->way_.Remove (unit->way_.At (0));
-                unit->wayToNextDistrictProgressInPercents_ = 0.0f;
+                unitWay.Remove (unitWay.At (0));
+                unit->SetWayToNextDistrictProgressInPercents (0.0f);
+                unit->SetWay (unitWay);
 
-                if (unit->way_.Empty () && unit->unitType_ == UNIT_COLONIZATORS)
+                if (unitWay.Empty () && unit->GetUnitType () == UNIT_COLONIZATORS)
                     SettleColonizator (unit, map);
-                else if (unit->way_.Empty () && unit->unitType_ == UNIT_TRADERS)
+                else if (unitWay.Empty () && unit->GetUnitType () == UNIT_TRADERS)
                     ProcessTrader (unit);
             }
 
             District *unitPosition = map->GetDistrictByHash (unit->GetPositionHash ());
             assert (unitPosition);
 
-            District *nextTarget = map->GetDistrictByHash (unitsWay.At (0));
+            District *nextTarget = map->GetDistrictByHash (unitWay.At (0));
             assert (nextTarget);
 
             float distance = (unitPosition->GetUnitPosition () - nextTarget->GetUnitPosition ()).Length ();
@@ -167,7 +168,7 @@ Unit *UnitsManager::GetUnitByHash (Urho3D::StringHash hash)
 Unit *UnitsManager::CreateUnit ()
 {
     assert (node_);
-    Urho3D::Node *unitNode = node_->CreateChild (Urho3D::REPLICATED);
+    Urho3D::Node *unitNode = node_->CreateChild ("unit", Urho3D::REPLICATED);
     unitNode->SetName ("Unit" + Urho3D::String (unitNode->GetID ()));
     Urho3D::SharedPtr <Unit> unit (unitNode->CreateComponent <Unit> (Urho3D::REPLICATED));
     units_.Push (unit);
