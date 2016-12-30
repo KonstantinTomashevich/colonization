@@ -19,9 +19,10 @@ Unit::Unit (Urho3D::Context *context) : Urho3D::Component (context),
     hash_ ("nothing"),
     ownerPlayerName_ ("???"),
     unitType_ (UNIT_FLEET),
-    position_ (0),
-    way_ (0),
-    wayToNextDistrictProgressInPercents_ (0),
+    positionHash_ (),
+    way_ (),
+    wayVariant_ (),
+    wayToNextDistrictProgressInPercents_ (0.0f),
     unitTypeSpecificVars_ ()
 {
 
@@ -64,11 +65,6 @@ void Unit::RegisterObject (Urho3D::Context *context)
                                ArmyUnitSetSoldiersCount, int, 0, AM_DEFAULT);
 }
 
-const Urho3D::Vector <Urho3D::AttributeInfo> *Unit::GetAttributes () const
-{
-    return currentAttributesList_;
-}
-
 void Unit::UpdateHash (UnitsManager *owner)
 {
     do
@@ -77,12 +73,12 @@ void Unit::UpdateHash (UnitsManager *owner)
     while (owner->GetUnitByHash (hash_) != this);
 }
 
-Urho3D::StringHash Unit::GetHash () const
+const Urho3D::StringHash &Unit::GetHash () const
 {
     return hash_;
 }
 
-void Unit::SetHash (Urho3D::StringHash hash)
+void Unit::SetHash (const Urho3D::StringHash &hash)
 {
     hash_ = hash;
 }
@@ -97,22 +93,22 @@ void Unit::SetUnitType (UnitType unitType)
     unitType_ = unitType;
 }
 
-Urho3D::String Unit::GetOwnerPlayerName () const
+const Urho3D::String &Unit::GetOwnerPlayerName () const
 {
     return ownerPlayerName_;
 }
 
-void Unit::SetOwnerPlayerName (Urho3D::String ownerPlayerName)
+void Unit::SetOwnerPlayerName (const Urho3D::String &ownerPlayerName)
 {
     ownerPlayerName_ = ownerPlayerName;
 }
 
-Urho3D::StringHash Unit::GetPositionHash () const
+const Urho3D::StringHash &Unit::GetPositionHash () const
 {
     return positionHash_;
 }
 
-void Unit::SetPositionHash (Urho3D::StringHash positionHash)
+void Unit::SetPositionHash (const Urho3D::StringHash &positionHash)
 {
     positionHash_ = positionHash;
 }
@@ -125,23 +121,26 @@ Urho3D::PODVector <Urho3D::StringHash> Unit::GetWay () const
 void Unit::SetWay (Urho3D::PODVector <Urho3D::StringHash> way)
 {
     way_ = way;
-}
-
-Urho3D::VariantVector Unit::GetWayAttribute () const
-{
-    Urho3D::VariantVector variantVector;
     if (!way_.Empty ())
         for (int index = 0; index < way_.Size (); index++)
-            variantVector.Push (Urho3D::Variant (way_.At (index)));
-    return variantVector;
+            wayVariant_.Push (Urho3D::Variant (way_.At (index)));
 }
 
-void Unit::SetWayAttribute (Urho3D::VariantVector way)
+const Urho3D::VariantVector &Unit::GetWayAttribute () const
+{
+    return wayVariant_;
+}
+
+void Unit::SetWayAttribute (const Urho3D::VariantVector &way)
 {
     way_.Clear ();
-    if (way.Size ())
+    wayVariant_.Clear ();
+    if (!way.Empty ())
         for (int index = 0; index < way.Size (); index++)
+        {
             way_.Push (way.At (index).GetStringHash ());
+            wayVariant_.Push (way.At (index));
+        }
 }
 
 float Unit::GetWayToNextDistrictProgressInPercents () const
@@ -156,7 +155,7 @@ void Unit::SetWayToNextDistrictProgressInPercents (float wayToNextDistrictProgre
 
 int Unit::FleetUnitGetWarShipsCount () const
 {
-    return unitTypeSpecificVars_ ["WarShipsCount"].GetInt ();
+    return unitTypeSpecificVars_ ["WarShipsCount"]->GetInt ();
 }
 
 void Unit::FleetUnitSetWarShipsCount (int warShipsCount)
@@ -166,7 +165,7 @@ void Unit::FleetUnitSetWarShipsCount (int warShipsCount)
 
 float Unit::TradersUnitGetTradeGoodsCost () const
 {
-    return unitTypeSpecificVars_ ["TradeGoodsCost"].GetFloat ();
+    return unitTypeSpecificVars_ ["TradeGoodsCost"]->GetFloat ();
 }
 
 void Unit::TradersUnitSetTradeGoodsCost (float tradeGoodsCost)
@@ -176,7 +175,7 @@ void Unit::TradersUnitSetTradeGoodsCost (float tradeGoodsCost)
 
 int Unit::ColonizatorsUnitGetColonizatorsCount () const
 {
-    return unitTypeSpecificVars_ ["ColonizatorsCount"].GetInt ();
+    return unitTypeSpecificVars_ ["ColonizatorsCount"]->GetInt ();
 }
 
 void Unit::ColonizatorsUnitSetColonizatorsCount (int colonizatorsCount)
@@ -186,7 +185,7 @@ void Unit::ColonizatorsUnitSetColonizatorsCount (int colonizatorsCount)
 
 int Unit::ArmyUnitGetSoldiersCount () const
 {
-    return unitTypeSpecificVars_ ["SoldiersCount"].GetInt ();
+    return unitTypeSpecificVars_ ["SoldiersCount"]->GetInt ();
 }
 
 void Unit::ArmyUnitSetSoldiersCount (int soldiersCount)

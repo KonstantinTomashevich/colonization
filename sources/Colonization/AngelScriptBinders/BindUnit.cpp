@@ -17,7 +17,7 @@ void Unit_SetWay (Unit *unit, Urho3D::CScriptArray *array)
     unit->SetWay (Urho3D::ArrayToPODVector <Urho3D::StringHash> (array));
 }
 
-void BindUnits (Urho3D::Script *script)
+void BindUnit (Urho3D::Script *script)
 {
     BindUnitType (script);
     asIScriptEngine *engine = script->GetScriptEngine ();

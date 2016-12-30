@@ -217,8 +217,12 @@ const Urho3D::VariantVector &District::GetPolygonPointsAttribute () const
 void District::SetPolygonPointsAttribute (const Urho3D::VariantVector &polygonPoints)
 {
     polygonPoints_.Clear ();
+    polygonPointsVariant_.Clear ();
     for (int index = 0; index < polygonPoints.Size (); index++)
+    {
         polygonPoints_.Push (polygonPoints.At (index).GetVector3 ());
+        polygonPointsVariant_.Push (polygonPoints.At (index));
+    }
 }
 
 const Urho3D::Vector3 &District::GetUnitPosition () const
@@ -264,8 +268,12 @@ const Urho3D::VariantVector &District::GetNeighborsHashesAttribute() const
 void District::SetNeighborsHashesAttribute (const Urho3D::VariantVector &neighbors)
 {
     neighbors_.Clear ();
+    neighborsVariant_.Clear ();
     for (int index = 0; index < neighbors.Size (); index++)
+    {
         neighbors_.Push (neighbors.At (index).GetStringHash ());
+        neighborsVariant_.Push (neighbors.At (index));
+    }
 }
 
 float District::GetFarmingSquare () const

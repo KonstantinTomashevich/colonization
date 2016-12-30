@@ -200,9 +200,14 @@ const Urho3D::VariantVector &InternalTradeArea::GetDistrictsHashesArrayAttribute
 void InternalTradeArea::SetDistrictsHashesArrayAttribute (const Urho3D::VariantVector &attribute)
 {
     districtsHashes_.Clear ();
+    districtsHashesVariant_.Clear ();
+
     if (!attribute.Empty ())
         for (int index = 0; index < attribute.Size (); index++)
+        {
             districtsHashes_.Push (attribute.At (index).GetStringHash ());
+            districtsHashesVariant_.Push (attribute.At (index));
+        }
 }
 
 TradeDistrictProcessingInfo::TradeDistrictProcessingInfo (Urho3D::Context *context) : Urho3D::Object (context),
