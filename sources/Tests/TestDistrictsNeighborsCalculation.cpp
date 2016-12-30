@@ -2,6 +2,7 @@
 #include <Urho3D/Input/Input.h>
 #include <Urho3D/Core/CoreEvents.h>
 
+#include <Urho3D/Scene/Scene.h>
 #include <Urho3D/IO/Log.h>
 #include <Colonization/Core/District.hpp>
 #include <Colonization/Core/Map.hpp>
@@ -35,50 +36,58 @@ void TestDistrictsNeighborsCalculationApplication::Start ()
     input->SetMouseVisible (true);
     input->SetMouseMode (Urho3D::MM_FREE);
 
-    Colonization::District *districtA = new Colonization::District (context_);
-    Colonization::District *districtB = new Colonization::District (context_);
-    Colonization::District *districtC = new Colonization::District (context_);
-    Colonization::District *districtD = new Colonization::District (context_);
-    Urho3D::SharedPtr <Colonization::Map> map (new Colonization::Map (context_));
+    Urho3D::SharedPtr <Urho3D::Scene> scene (new Urho3D::Scene (context_));
+    Colonization::Map *map = scene->CreateChild ("map")->CreateComponent <Colonization::Map> ();
+    Colonization::District *districtA = map->CreateDistrict ("A");
+    Colonization::District *districtB = map->CreateDistrict ("B");
+    Colonization::District *districtC = map->CreateDistrict ("C");
+    Colonization::District *districtD = map->CreateDistrict ("D");
 
     // A neighbors will be: B, D.
-    districtA->polygonPoints_.Push (Urho3D::Vector3 (1.0f, 0.0f, 1.0f));
-    districtA->polygonPoints_.Push (Urho3D::Vector3 (-1.0f, 0.0f, 1.0f));
-    districtA->polygonPoints_.Push (Urho3D::Vector3 (-1.0f, 0.0f, -1.0f));
-    districtA->polygonPoints_.Push (Urho3D::Vector3 (1.0f, 0.0f, -1.0f));
+    Urho3D::PODVector <Urho3D::Vector3> pointsA;
+    pointsA.Push (Urho3D::Vector3 (1.0f, 0.0f, 1.0f));
+    pointsA.Push (Urho3D::Vector3 (-1.0f, 0.0f, 1.0f));
+    pointsA.Push (Urho3D::Vector3 (-1.0f, 0.0f, -1.0f));
+    pointsA.Push (Urho3D::Vector3 (1.0f, 0.0f, -1.0f));
+    districtA->SetPolygonPoints (pointsA);
 
     // B neighbors will be: A, D.
-    districtB->polygonPoints_.Push (Urho3D::Vector3 (1.0f, 0.0f, 1.0f));
-    districtB->polygonPoints_.Push (Urho3D::Vector3 (2.0f, 0.0f, 1.0f));
-    districtB->polygonPoints_.Push (Urho3D::Vector3 (1.0f, 0.0f, -1.0f));
+    Urho3D::PODVector <Urho3D::Vector3> pointsB;
+    pointsB.Push (Urho3D::Vector3 (1.0f, 0.0f, 1.0f));
+    pointsB.Push (Urho3D::Vector3 (2.0f, 0.0f, 1.0f));
+    pointsB.Push (Urho3D::Vector3 (1.0f, 0.0f, -1.0f));
+    districtB->SetPolygonPoints (pointsB);
 
     // C neighbors will be: D.
-    districtC->polygonPoints_.Push (Urho3D::Vector3 (-1.0f, 0.0f, 1.0f));
-    districtC->polygonPoints_.Push (Urho3D::Vector3 (-2.0f, 0.0f, 1.0f));
-    districtC->polygonPoints_.Push (Urho3D::Vector3 (-2.0f, 0.0f, 2.0f));
+    Urho3D::PODVector <Urho3D::Vector3> pointsC;
+    pointsC.Push (Urho3D::Vector3 (-1.0f, 0.0f, 1.0f));
+    pointsC.Push (Urho3D::Vector3 (-2.0f, 0.0f, 1.0f));
+    pointsC.Push (Urho3D::Vector3 (-2.0f, 0.0f, 2.0f));
+    districtC->SetPolygonPoints (pointsC);
 
     // D neighbors will be: A, B, C.
-    districtD->polygonPoints_.Push (Urho3D::Vector3 (2.0f, 0.0f, 1.0f));
-    districtD->polygonPoints_.Push (Urho3D::Vector3 (1.0f, 0.0f, 1.0f));
-    districtD->polygonPoints_.Push (Urho3D::Vector3 (-1.0f, 0.0f, 1.0f));
-    districtD->polygonPoints_.Push (Urho3D::Vector3 (-2.0f, 0.0f, 1.0f));
-
-    map->CreateDistrict (districtA);
-    map->CreateDistrict (districtB);
-    map->CreateDistrict (districtC);
-    map->CreateDistrict (districtD);
+    Urho3D::PODVector <Urho3D::Vector3> pointsD;
+    pointsD.Push (Urho3D::Vector3 (2.0f, 0.0f, 1.0f));
+    pointsD.Push (Urho3D::Vector3 (1.0f, 0.0f, 1.0f));
+    pointsD.Push (Urho3D::Vector3 (-1.0f, 0.0f, 1.0f));
+    pointsD.Push (Urho3D::Vector3 (-2.0f, 0.0f, 1.0f));
+    districtD->SetPolygonPoints (pointsD);
     map->RecalculateDistrictsNeighbors ();
 
-    if (!districtA->neighbors_.Contains (districtB) || !districtA->neighbors_.Contains (districtD))
+    if (!districtA->GetNeighborsHashes ().Contains (districtB->GetHash ()) ||
+            !districtA->GetNeighborsHashes ().Contains (districtD->GetHash ()))
         ErrorExit ("Incorrect A neighbors!");
 
-    else if (!districtB->neighbors_.Contains (districtA) || !districtB->neighbors_.Contains (districtD))
+    else if (!districtB->GetNeighborsHashes ().Contains (districtA->GetHash ()) ||
+             !districtB->GetNeighborsHashes ().Contains (districtD->GetHash ()))
         ErrorExit ("Incorrect B neighbors!");
 
-    else if (!districtC->neighbors_.Contains (districtD))
+    else if (!districtC->GetNeighborsHashes ().Contains (districtD->GetHash ()))
         ErrorExit ("Incorrect C neighbors!");
 
-    else if (!districtD->neighbors_.Contains (districtA) || !districtD->neighbors_.Contains (districtB) || !districtD->neighbors_.Contains (districtC))
+    else if (!districtD->GetNeighborsHashes ().Contains (districtA->GetHash ()) ||
+             !districtD->GetNeighborsHashes ().Contains (districtB->GetHash ()) ||
+             !districtD->GetNeighborsHashes ().Contains (districtC->GetHash ()))
         ErrorExit ("Incorrect D neighbors!");
 
     else

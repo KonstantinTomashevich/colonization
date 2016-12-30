@@ -1,8 +1,9 @@
 #include "TestInternalTradeArea.hpp"
 #include <Urho3D/Input/Input.h>
 #include <Urho3D/Core/CoreEvents.h>
-
 #include <Urho3D/IO/Log.h>
+#include <Urho3D/Scene/Scene.h>
+
 #include <Colonization/Core/District.hpp>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/InternalTradeArea.hpp>
@@ -60,7 +61,8 @@ void TestInternalTradeAreaApplication::Start ()
     context_->SetGlobalVar ("minesProductionExternalCost", 1.0f);
     context_->SetGlobalVar ("industryProductionExternalCost", 3.0f);
 
-    Urho3D::SharedPtr <Colonization::Map> map (new Colonization::Map (context_));
+    Urho3D::SharedPtr <Urho3D::Scene> scene (new Urho3D::Scene (context_));
+    Colonization::Map *map = scene->CreateChild ("map")->CreateComponent <Colonization::Map> ();
     const int mapWidth = 2;
     const int mapHeight = 2;
 
