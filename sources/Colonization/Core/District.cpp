@@ -32,11 +32,9 @@ District::District (Urho3D::Context *context) : Urho3D::Component (context),
     isImpassable_ (false),
     name_ ("Unknown"),
     polygonPoints_ (),
-    polygonPointsVariant_ (),
     unitPosition_ (),
     colonyPosition_ (),
     neighbors_ (),
-    neighborsVariant_ (),
 
     farmingSquare_ (1.0f),
     forestsSquare_ (1.0f),
@@ -83,10 +81,10 @@ void District::RegisterObject (Urho3D::Context *context)
     URHO3D_ACCESSOR_ATTRIBUTE ("Is Sea", IsSea, SetIsSea, bool, true, AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Is Impassable", IsImpassable, SetIsImpassable, bool, false, AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Name", GetName, SetName, String, String::EMPTY, AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Polygon Points", GetPolygonPointsAttribute, SetPolygonPointsAttribute, VariantVector, Variant::emptyVariantVector, AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Polygon Points", GetPolygonPointsAttribute, SetPolygonPointsAttribute, VariantVector, Variant::emptyVariantVector, AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Unit Position", GetUnitPosition, SetUnitPosition, Vector3, Vector3::ZERO, AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Colony Position", GetColonyPosition, SetColonyPosition, Vector3, Vector3::ZERO, AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Neighbors Hashes", GetNeighborsHashesAttribute, SetNeighborsHashesAttribute, VariantVector, Variant::emptyVariantVector, AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Neighbors Hashes", GetNeighborsHashesAttribute, SetNeighborsHashesAttribute, VariantVector, Variant::emptyVariantVector, AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Farming Square", GetFarmingSquare, SetFarmingSquare, float, 1.0f, AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Forests Square", GetForestsSquare, SetForestsSquare, float, 1.0f, AM_DEFAULT);
@@ -201,28 +199,22 @@ Urho3D::PODVector <Urho3D::Vector3> District::GetPolygonPoints () const
 
 void District::SetPolygonPoints (Urho3D::PODVector <Urho3D::Vector3> polygonPoints)
 {
-    assert (!polygonPoints.Empty ());
     polygonPoints_ = polygonPoints;
-
-    polygonPointsVariant_.Clear ();
-    for (int index = 0; index < polygonPoints_.Size (); index++)
-        polygonPointsVariant_.Push (polygonPoints_.At (index));
 }
 
-const Urho3D::VariantVector &District::GetPolygonPointsAttribute () const
+Urho3D::VariantVector District::GetPolygonPointsAttribute () const
 {
-    return polygonPointsVariant_;
+    Urho3D::VariantVector variantVector;
+    for (int index = 0; index < polygonPoints_.Size (); index++)
+        variantVector.Push (Urho3D::Variant (polygonPoints_.At (index)));
+    return variantVector;
 }
 
 void District::SetPolygonPointsAttribute (const Urho3D::VariantVector &polygonPoints)
 {
     polygonPoints_.Clear ();
-    polygonPointsVariant_.Clear ();
     for (int index = 0; index < polygonPoints.Size (); index++)
-    {
         polygonPoints_.Push (polygonPoints.At (index).GetVector3 ());
-        polygonPointsVariant_.Push (polygonPoints.At (index));
-    }
 }
 
 const Urho3D::Vector3 &District::GetUnitPosition () const
@@ -252,28 +244,22 @@ Urho3D::PODVector <Urho3D::StringHash> District::GetNeighborsHashes () const
 
 void District::SetNeighborsHashes (Urho3D::PODVector <Urho3D::StringHash> neighbors)
 {
-    assert (!neighbors.Empty ());
     neighbors_ = neighbors;
-
-    neighborsVariant_.Clear ();
-    for (int index = 0; index < neighbors_.Size (); index++)
-        neighborsVariant_.Push (neighbors_.At (index));
 }
 
-const Urho3D::VariantVector &District::GetNeighborsHashesAttribute() const
+Urho3D::VariantVector District::GetNeighborsHashesAttribute() const
 {
-    return neighborsVariant_;
+    Urho3D::VariantVector variantVector;
+    for (int index = 0; index < neighbors_.Size (); index++)
+        variantVector.Push (Urho3D::Variant (neighbors_.At (index)));
+    return variantVector;
 }
 
 void District::SetNeighborsHashesAttribute (const Urho3D::VariantVector &neighbors)
 {
     neighbors_.Clear ();
-    neighborsVariant_.Clear ();
     for (int index = 0; index < neighbors.Size (); index++)
-    {
         neighbors_.Push (neighbors.At (index).GetStringHash ());
-        neighborsVariant_.Push (neighbors.At (index));
-    }
 }
 
 float District::GetFarmingSquare () const

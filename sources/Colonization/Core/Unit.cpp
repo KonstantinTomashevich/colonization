@@ -21,7 +21,6 @@ Unit::Unit (Urho3D::Context *context) : Urho3D::Component (context),
     unitType_ (UNIT_FLEET),
     positionHash_ (),
     way_ (),
-    wayVariant_ (),
     wayToNextDistrictProgressInPercents_ (0.0f),
     unitTypeSpecificVars_ ()
 {
@@ -42,7 +41,7 @@ void Unit::RegisterObject (Urho3D::Context *context)
     URHO3D_ACCESSOR_ATTRIBUTE ("Owner Player Name", GetOwnerPlayerName, SetOwnerPlayerName, String, String ("Unit without owner"), AM_DEFAULT);
     URHO3D_ENUM_ACCESSOR_ATTRIBUTE ("Unit Type", GetUnitType, SetUnitType, UnitType, unitTypesNames, UNIT_FLEET, AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Position Hash", GetPositionHash, SetPositionHash, StringHash, StringHash ("nothing"), AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Way", GetWayAttribute, SetWayAttribute, VariantVector, Variant::emptyVariantVector, AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Way", GetWayAttribute, SetWayAttribute, VariantVector, Variant::emptyVariantVector, AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Way To Next District Progress In Percents",
                                GetWayToNextDistrictProgressInPercents,
                                SetWayToNextDistrictProgressInPercents,
@@ -121,26 +120,22 @@ Urho3D::PODVector <Urho3D::StringHash> Unit::GetWay () const
 void Unit::SetWay (Urho3D::PODVector <Urho3D::StringHash> way)
 {
     way_ = way;
-    if (!way_.Empty ())
-        for (int index = 0; index < way_.Size (); index++)
-            wayVariant_.Push (Urho3D::Variant (way_.At (index)));
 }
 
-const Urho3D::VariantVector &Unit::GetWayAttribute () const
+Urho3D::VariantVector Unit::GetWayAttribute () const
 {
-    return wayVariant_;
+    Urho3D::VariantVector variantVector;
+    for (int index = 0; index < way_.Size (); index++)
+        variantVector.Push (Urho3D::Variant (way_.At (index)));
+    return variantVector;
 }
 
 void Unit::SetWayAttribute (const Urho3D::VariantVector &way)
 {
     way_.Clear ();
-    wayVariant_.Clear ();
     if (!way.Empty ())
         for (int index = 0; index < way.Size (); index++)
-        {
             way_.Push (way.At (index).GetStringHash ());
-            wayVariant_.Push (way.At (index));
-        }
 }
 
 float Unit::GetWayToNextDistrictProgressInPercents () const

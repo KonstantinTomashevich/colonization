@@ -24,7 +24,6 @@ protected:
     UnitType unitType_;
     Urho3D::StringHash positionHash_;
     Urho3D::PODVector <Urho3D::StringHash> way_;
-    Urho3D::VariantVector wayVariant_;
     float wayToNextDistrictProgressInPercents_;
     Urho3D::VariantMap unitTypeSpecificVars_;
 
@@ -48,7 +47,7 @@ public:
 
     Urho3D::PODVector <Urho3D::StringHash> GetWay () const;
     void SetWay (Urho3D::PODVector <Urho3D::StringHash> way);
-    const Urho3D::VariantVector &GetWayAttribute () const;
+    Urho3D::VariantVector GetWayAttribute () const;
     void SetWayAttribute (const Urho3D::VariantVector &way);
 
     float GetWayToNextDistrictProgressInPercents () const;

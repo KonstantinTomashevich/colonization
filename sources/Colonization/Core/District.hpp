@@ -27,8 +27,6 @@ enum NativesCharacterType
     NATIVES_CHARATER_AGGRESSIVE = 4
 };
 
-// WARNING: Rewrite all arrays accessor without arrays duplication (to reduce memory usage). See "Bone Animation Enabled" in AnimatedModel as example.
-
 class District : public Urho3D::Component
 {
 URHO3D_OBJECT (District, Component)
@@ -38,11 +36,9 @@ protected:
     bool isImpassable_;
     Urho3D::String name_;
     Urho3D::PODVector <Urho3D::Vector3> polygonPoints_;
-    Urho3D::VariantVector polygonPointsVariant_;
     Urho3D::Vector3 unitPosition_;
     Urho3D::Vector3 colonyPosition_;
     Urho3D::PODVector <Urho3D::StringHash> neighbors_;
-    Urho3D::VariantVector neighborsVariant_;
 
     float farmingSquare_;
     float forestsSquare_;
@@ -93,7 +89,7 @@ public:
 
     Urho3D::PODVector <Urho3D::Vector3> GetPolygonPoints () const;
     void SetPolygonPoints (Urho3D::PODVector <Urho3D::Vector3> polygonPoints);
-    const Urho3D::VariantVector &GetPolygonPointsAttribute () const;
+    Urho3D::VariantVector GetPolygonPointsAttribute () const;
     void SetPolygonPointsAttribute (const Urho3D::VariantVector &polygonPoints);
 
     const Urho3D::Vector3 &GetUnitPosition () const;
@@ -104,7 +100,7 @@ public:
 
     Urho3D::PODVector <Urho3D::StringHash> GetNeighborsHashes () const;
     void SetNeighborsHashes (Urho3D::PODVector <Urho3D::StringHash> neighbors);
-    const Urho3D::VariantVector &GetNeighborsHashesAttribute () const;
+    Urho3D::VariantVector GetNeighborsHashesAttribute () const;
     void SetNeighborsHashesAttribute (const Urho3D::VariantVector &neighbors);
 
     float GetFarmingSquare () const;

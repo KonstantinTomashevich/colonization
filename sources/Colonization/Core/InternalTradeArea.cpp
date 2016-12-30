@@ -102,8 +102,8 @@ void InternalTradeArea::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <InternalTradeArea> (COLONIZATION_CORE_CATEGORY);
     using namespace Urho3D;
-    URHO3D_ACCESSOR_ATTRIBUTE ("Districts hashes", GetDistrictsHashesArrayAttribute, SetDistrictsHashesArrayAttribute,
-                               VariantVector, Variant::emptyVariantVector, AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Districts hashes", GetDistrictsHashesArrayAttribute, SetDistrictsHashesArrayAttribute,
+                                     VariantVector, Variant::emptyVariantVector, AM_DEFAULT);
 }
 
 Urho3D::SharedPtr <TradeDistrictProcessingInfo> InternalTradeArea::ProcessTrade(Map *map)
@@ -171,7 +171,6 @@ void InternalTradeArea::AddDistrictHash (Urho3D::StringHash districtHash)
 {
     assert (!districtsHashes_.Contains (districtHash));
     districtsHashes_.Push (districtHash);
-    districtsHashesVariant_.Push (Urho3D::Variant (districtHash));
 }
 
 bool InternalTradeArea::ContainsDistrictHash (Urho3D::StringHash districtHash)
@@ -181,33 +180,23 @@ bool InternalTradeArea::ContainsDistrictHash (Urho3D::StringHash districtHash)
 
 bool InternalTradeArea::RemoveDistrictHash (Urho3D::StringHash districtHash)
 {
-    if (districtsHashes_.Remove (districtHash))
-    {
-        districtsHashesVariant_.Clear ();
-        for (int index = 0; index < districtsHashes_.Size (); index++)
-            districtsHashesVariant_.Push (Urho3D::Variant (districtsHashes_.At (index)));
-        return true;
-    }
-    else
-        return false;
+    return districtsHashes_.Remove (districtHash);
 }
 
-const Urho3D::VariantVector &InternalTradeArea::GetDistrictsHashesArrayAttribute() const
+Urho3D::VariantVector InternalTradeArea::GetDistrictsHashesArrayAttribute() const
 {
-    return districtsHashesVariant_;
+    Urho3D::VariantVector variantVector;
+    for (int index = 0; index < districtsHashes_.Size (); index++)
+        variantVector.Push (Urho3D::Variant (districtsHashes_.At (index)));
+    return variantVector;
 }
 
 void InternalTradeArea::SetDistrictsHashesArrayAttribute (const Urho3D::VariantVector &attribute)
 {
     districtsHashes_.Clear ();
-    districtsHashesVariant_.Clear ();
-
     if (!attribute.Empty ())
         for (int index = 0; index < attribute.Size (); index++)
-        {
             districtsHashes_.Push (attribute.At (index).GetStringHash ());
-            districtsHashesVariant_.Push (attribute.At (index));
-        }
 }
 
 TradeDistrictProcessingInfo::TradeDistrictProcessingInfo (Urho3D::Context *context) : Urho3D::Object (context),
