@@ -87,7 +87,7 @@ float InternalTradeArea::CalculateDistrictProductionConsumptionOfIndustry (Distr
     return totalConsumption * Urho3D::Random (0.9f, 1.1f);
 }
 
-InternalTradeArea::InternalTradeArea (Urho3D::Context *context) : Urho3D::Object (context),
+InternalTradeArea::InternalTradeArea (Urho3D::Context *context) : Urho3D::Component (context),
     districtsHashes_ ()
 {
 
@@ -100,7 +100,7 @@ InternalTradeArea::~InternalTradeArea ()
 
 void InternalTradeArea::RegisterObject (Urho3D::Context *context)
 {
-    context_->RegisterFactory <InternalTradeArea> (COLONIZATION_CORE_CATEGORY);
+    context->RegisterFactory <InternalTradeArea> (COLONIZATION_CORE_CATEGORY);
     using namespace Urho3D;
     URHO3D_ACCESSOR_ATTRIBUTE ("Districts hashes", GetDistrictsHashesArrayAttribute, SetDistrictsHashesArrayAttribute,
                                VariantVector, Variant::emptyVariantVector, AM_DEFAULT);
@@ -131,7 +131,7 @@ Urho3D::SharedPtr <TradeDistrictProcessingInfo> InternalTradeArea::ProcessTrade(
 
     Urho3D::SharedPtr <TradeDistrictProcessingInfo> result (new TradeDistrictProcessingInfo (context_));
     result->SetUnusedEvolutionPointsOf ("farms", totalFarmsEvolution - totalFarmsConsumption);
-    result->SetUnusedEvolutionPointsOf ("mines", totalMinesEvolution - totalMinesConsumption;
+    result->SetUnusedEvolutionPointsOf ("mines", totalMinesEvolution - totalMinesConsumption);
     result->SetUnusedEvolutionPointsOf ("industry", totalIndustryEvolution - totalIndustryConsumption);
 
     float soldFarmsProduction = (totalFarmsConsumption > totalFarmsEvolution) ? totalFarmsEvolution : totalFarmsConsumption;
@@ -144,7 +144,7 @@ Urho3D::SharedPtr <TradeDistrictProcessingInfo> InternalTradeArea::ProcessTrade(
 
     result->SetUnsoldTradeGoodsCost ( (totalFarmsEvolution - soldFarmsProduction) * farmsExternalProductionCost +
                                       (totalMinesEvolution - soldMinesProduction) * minesExternalProductionCost +
-                                      (totalIndustryEvolution - soldIndustryProduction) * industryExternalProductionCost;
+                                      (totalIndustryEvolution - soldIndustryProduction) * industryExternalProductionCost);
 
     result->SetLogisticsBonus (totalLogisticsEvolution / (districtsHashes_.Size () * 6.5f));
     result->SetDefenseBonus (totalDefenseEvolution / (districtsHashes_.Size () * 5.0f));
@@ -171,6 +171,7 @@ void InternalTradeArea::AddDistrictHash (Urho3D::StringHash districtHash)
 {
     assert (!districtsHashes_.Contains (districtHash));
     districtsHashes_.Push (districtHash);
+    districtsHashesVariant_.Push (Urho3D::Variant (districtHash));
 }
 
 bool InternalTradeArea::ContainsDistrictHash (Urho3D::StringHash districtHash)
@@ -180,19 +181,23 @@ bool InternalTradeArea::ContainsDistrictHash (Urho3D::StringHash districtHash)
 
 bool InternalTradeArea::RemoveDistrictHash (Urho3D::StringHash districtHash)
 {
-    return districtsHashes_.Remove (districtHash);
+    if (districtsHashes_.Remove (districtHash))
+    {
+        districtsHashesVariant_.Clear ();
+        for (int index = 0; index < districtsHashes_.Size (); index++)
+            districtsHashesVariant_.Push (Urho3D::Variant (districtsHashes_.At (index)));
+        return true;
+    }
+    else
+        return false;
 }
 
-Urho3D::VariantVector InternalTradeArea::GetDistrictsHashesArrayAttribute () const
+const Urho3D::VariantVector &InternalTradeArea::GetDistrictsHashesArrayAttribute() const
 {
-    Urho3D::VariantVector variantVector;
-    if (!districtsHashes_.Empty ())
-        for (int index = 0; index < districtsHashes_; index++)
-            variantVector.Push (Urho3D::Variant (districtsHashes_.At (index)));
-    return variantVector;
+    return districtsHashesVariant_;
 }
 
-void InternalTradeArea::SetDistrictsHashesArrayAttribute (Urho3D::VariantVector attribute)
+void InternalTradeArea::SetDistrictsHashesArrayAttribute (const Urho3D::VariantVector &attribute)
 {
     districtsHashes_.Clear ();
     if (!attribute.Empty ())
