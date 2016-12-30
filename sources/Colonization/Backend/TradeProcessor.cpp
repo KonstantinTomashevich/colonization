@@ -22,9 +22,9 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
     for (int index = 0; index < map->GetDistrictsCount (); index++)
     {
         District *district = map->GetDistrictByIndex (index);
-        if (district->hasColony_)
+        if (district->HasColony ())
         {
-            float evolutionPoints = district->logisticsEvolutionPoints_;
+            float evolutionPoints = district->GetLogisticsEvolutionPoints ();
             while (toScanHashMap [Urho3D::StringHash (static_cast <int> (evolutionPoints * 1000))])
                 evolutionPoints += 0.001f;
             toScanHashMap [Urho3D::StringHash (static_cast <int> (evolutionPoints * 1000))] = district;
@@ -55,7 +55,7 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
             }
 
             UpdateTradeArea (node->GetComponent <InternalTradeArea> (), map, toScan.At (0), toScan);
-            tradeAreas_.Push (node->GetComponent <InternalTradeArea> ());
+            tradeAreas_.Push (Urho3D::SharedPtr <InternalTradeArea> (node->GetComponent <InternalTradeArea> ()));
         }
         else
         {
@@ -78,14 +78,18 @@ void TradeProcessor::UpdateTradeArea (InternalTradeArea *tradeArea, Map *map, Di
     Urho3D::PODVector <District *> areaDistricts;
     ProcessTradeAreaDistrict (map, start, areaDistricts, unscannedList);
 
+    Urho3D::PODVector <Urho3D::StringHash> areaDistrictsHashes;
+    for (int index = 0; index < areaDistricts.Size (); index++)
+        areaDistrictsHashes.Push (areaDistricts.At (index)->GetHash ());
+
     assert (node_);
-    if (tradeArea->GetDistrictsHashesArray () != areaDistricts)
+    if (tradeArea->GetDistrictsHashesArray () != areaDistrictsHashes)
     {
         while (tradeArea->GetDistrictsHashesCount ())
             tradeArea->RemoveDistrictHash (tradeArea->GetDistrictHashByIndex (0));
 
-        for (int index = 0; index < areaDistricts.Size (); index++)
-            tradeArea->AddDistrictHash (areaDistricts.At (index));
+        for (int index = 0; index < areaDistrictsHashes.Size (); index++)
+            tradeArea->AddDistrictHash (areaDistrictsHashes.At (index));
     }
 }
 
@@ -132,11 +136,11 @@ void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map
 {
     Player *player = playersManager->GetPlayer (Urho3D::StringHash (
                                                     map->GetDistrictByHash (tradeArea->GetDistrictHashByIndex (0))->
-                                                    colonyOwnerName_));
+                                                    GetColonyOwnerName ()));
     if (!player)
         Urho3D::Log::Write (Urho3D::LOG_ERROR, "Found colony of null player! Colony: " +
-                            map->GetDistrictByHash (tradeArea->GetDistrictHashByIndex (0))->name_ + ", player: " +
-                            map->GetDistrictByHash (tradeArea->GetDistrictHashByIndex (0))->colonyOwnerName_ + ".");
+                            map->GetDistrictByHash (tradeArea->GetDistrictHashByIndex (0))->GetName () + ", player: " +
+                            map->GetDistrictByHash (tradeArea->GetDistrictHashByIndex (0))->GetColonyOwnerName () + ".");
     else
     {
         float internalTaxes = context_->GetGlobalVar ("internalTaxes").GetFloat ();
@@ -160,7 +164,8 @@ void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map
             unit->SetPositionHash (district->GetHash ());
 
             // TODO: Path is temporary!
-            unit->SetWay (map->FindPath (unit->GetPositionHash (), map->GetDistrictByIndex (0), unit->GetOwnerPlayer (), true, false));
+            unit->SetWay (map->FindPath (unit->GetPositionHash (), map->GetDistrictByIndex (0)->GetHash (),
+                                         unit->GetOwnerPlayerName (), true, false));
         }
     }
 }
