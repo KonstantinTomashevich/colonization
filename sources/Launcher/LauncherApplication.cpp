@@ -9,7 +9,6 @@
 #include <Colonization/AngelScriptBinders/BindDistrict.hpp>
 #include <Colonization/AngelScriptBinders/BindMap.hpp>
 #include <Colonization/AngelScriptBinders/BindNetworkMessageType.hpp>
-#include <Colonization/AngelScriptBinders/BindGameStateType.hpp>
 #include <Colonization/AngelScriptBinders/BindHostActivity.hpp>
 #include <Colonization/AngelScriptBinders/BindMainMenuActivity.hpp>
 #include <Colonization/AngelScriptBinders/BindIngamePlayerActivity.hpp>
@@ -67,7 +66,6 @@ void LauncherApplication::Start ()
     Colonization::BindDistrict (script);
     Colonization::BindMap (script);
     Colonization::BindNetworkMessageType (script);
-    Colonization::BindGameStateType (script);
     Colonization::BindHostActivity (script);
     Colonization::BindMainMenuActivity (script);
     Colonization::BindIngamePlayerActivity (script);

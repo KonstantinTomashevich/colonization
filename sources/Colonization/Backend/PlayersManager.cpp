@@ -8,7 +8,6 @@
 #include <Urho3D/IO/Log.h>
 
 #include <Colonization/Backend/MessagesHandler.hpp>
-#include <Colonization/Backend/SceneManager.hpp>
 #include <Colonization/Core/PlayerInfo.hpp>
 #include <Colonization/Utils/Categories.hpp>
 

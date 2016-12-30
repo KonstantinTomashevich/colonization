@@ -9,9 +9,20 @@
 
 namespace Colonization
 {
+void BindGameStateType(Urho3D::Script *script)
+{
+    asIScriptEngine *engine = script->GetScriptEngine ();
+    engine->RegisterEnum ("GameStateType");
+    engine->RegisterEnumValue ("GameStateType", "GAME_STATE_UNITIALIZED", GAME_STATE_UNITIALIZED);
+    engine->RegisterEnumValue ("GameStateType", "GAME_STATE_WAITING_FOR_PLAYERS", GAME_STATE_WAITING_FOR_PLAYERS);
+    engine->RegisterEnumValue ("GameStateType", "GAME_STATE_PLAYING", GAME_STATE_PLAYING);
+    engine->RegisterEnumValue ("GameStateType", "GAME_STATE_FINISHED", GAME_STATE_FINISHED);
+}
+
 void BindHostActivity (Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
+    BindGameStateType (script);
     Urho3D::RegisterObject <HostActivity> (engine, "HostActivity");
     Urho3D::RegisterObjectConstructor <HostActivity> (engine, "HostActivity");
     Urho3D::RegisterSubclass <Activity, HostActivity> (engine, "Activity", "HostActivity");

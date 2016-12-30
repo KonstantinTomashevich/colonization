@@ -56,6 +56,7 @@ District *Map::CreateDistrict (Urho3D::String districtName)
     assert (node_);
     Urho3D::Node *districtNode = node_->CreateChild (districtName, Urho3D::REPLICATED);
     Urho3D::SharedPtr <District> district (districtNode->CreateComponent <District> (Urho3D::REPLICATED));
+    district->SetName (districtName);
     districts_.Push (district);
     return district;
 }

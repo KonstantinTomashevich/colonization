@@ -5,7 +5,6 @@
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/Scene/Scene.h>
 
-#include <Colonization/Backend/SceneManager.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Utils/Categories.hpp>
 

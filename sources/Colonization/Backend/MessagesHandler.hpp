@@ -1,7 +1,6 @@
 #pragma once
 #include <Urho3D/Core/Object.h>
 #include <Colonization/Backend/Player.hpp>
-#include <Colonization/Backend/GameStateManager.hpp>
 
 namespace Colonization
 {
