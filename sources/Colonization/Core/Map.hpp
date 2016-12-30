@@ -27,7 +27,7 @@ public:
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     void RecalculateDistrictsNeighbors ();
     void ClearAndRemoveDistricts ();
-    Urho3D::Vector <Urho3D::StringHash> FindPath (
+    Urho3D::PODVector <Urho3D::StringHash> FindPath(
             Urho3D::StringHash startDistrictHash, Urho3D::StringHash targetDistrictHash,
             Urho3D::String playerName, bool canGoThroughColonies, bool isColonizator);
 };
