@@ -224,4 +224,54 @@ TradeDistrictProcessingInfo::~TradeDistrictProcessingInfo ()
 {
 
 }
+
+float TradeDistrictProcessingInfo::GetUnusedEvolutionPointsOf (Urho3D::StringHash type)
+{
+    return unusedEvolutionPoints_ [type];
+}
+
+void TradeDistrictProcessingInfo::SetUnusedEvolutionPointsOf (Urho3D::StringHash type, float points)
+{
+    unusedEvolutionPoints_ [type] = points;
+}
+
+float TradeDistrictProcessingInfo::GetUnsoldTradeGoodsCost ()
+{
+    return unsoldTradeGoodsCost_;
+}
+
+void TradeDistrictProcessingInfo::SetUnsoldTradeGoodsCost (float unsoldTradeGoodsCost)
+{
+    unsoldTradeGoodsCost_ = unsoldTradeGoodsCost;
+}
+
+float TradeDistrictProcessingInfo::GetSoldTradeGoodsCost ()
+{
+    return soldTradeGoodsCost_;
+}
+
+void TradeDistrictProcessingInfo::SetSoldTradeGoodsCost (float soldTradeGoodsCost)
+{
+    soldTradeGoodsCost_ = soldTradeGoodsCost;
+}
+
+float TradeDistrictProcessingInfo::GetLogisticsBonus ()
+{
+    return logisticsBonus_;
+}
+
+void TradeDistrictProcessingInfo::SetLogisticsBonus (float logisticsBonus)
+{
+    logisticsBonus_ = logisticsBonus;
+}
+
+float TradeDistrictProcessingInfo::GetDefenseBonus ()
+{
+    return defenseBonus_;
+}
+
+void TradeDistrictProcessingInfo::SetDefenseBonus (float defenseBonus)
+{
+    defenseBonus_ = defenseBonus;
+}
 }
