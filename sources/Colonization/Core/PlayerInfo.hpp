@@ -15,8 +15,8 @@ public:
     virtual ~PlayerInfo ();
     static void RegisterObject (Urho3D::Context *context);
 
-    Urho3D::String GetName () const;
-    void SetName (Urho3D::String name);
+    const Urho3D::String &GetName () const;
+    void SetName (const Urho3D::String &name);
 
     float GetPoints () const;
     void SetPoints (float points);
