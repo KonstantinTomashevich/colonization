@@ -36,6 +36,9 @@ void TestDistrictsNeighborsCalculationApplication::Start ()
     input->SetMouseVisible (true);
     input->SetMouseMode (Urho3D::MM_FREE);
 
+    Colonization::Map::RegisterObject (context_);
+    Colonization::District::RegisterObject (context_);
+
     Urho3D::SharedPtr <Urho3D::Scene> scene (new Urho3D::Scene (context_));
     Colonization::Map *map = scene->CreateChild ("map")->CreateComponent <Colonization::Map> ();
     Colonization::District *districtA = map->CreateDistrict ("A");

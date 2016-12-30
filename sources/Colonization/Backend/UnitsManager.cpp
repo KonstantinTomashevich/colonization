@@ -78,8 +78,6 @@ UnitsManager::UnitsManager (Urho3D::Context *context) : Urho3D::Component (conte
 
 UnitsManager::~UnitsManager ()
 {
-    for (int index = 0; index < units_.Size (); index++)
-        units_.At (index)->GetNode ()->Remove ();
     units_.Clear ();
 }
 

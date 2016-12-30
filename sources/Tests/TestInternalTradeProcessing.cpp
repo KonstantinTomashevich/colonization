@@ -13,6 +13,7 @@
 #include <Colonization/Backend/TradeProcessor.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
+#include <Colonization/Core/PlayerInfo.hpp>
 
 URHO3D_DEFINE_APPLICATION_MAIN (Tests::TestInternalTradeProcessingApplication)
 namespace Tests
@@ -65,6 +66,16 @@ void TestInternalTradeProcessingApplication::Start ()
 
     context_->SetGlobalVar ("internalTaxes", 0.2f);
     context_->SetGlobalVar ("externalTaxes", 0.2f);
+
+    Colonization::Map::RegisterObject (context_);
+    Colonization::District::RegisterObject (context_);
+    Colonization::InternalTradeArea::RegisterObject (context_);
+    Colonization::PlayersManager::RegisterObject (context_);
+    Colonization::TradeProcessor::RegisterObject (context_);
+    Colonization::UnitsManager::RegisterObject (context_);
+    Colonization::Unit::RegisterObject (context_);
+    Colonization::PlayerInfo::RegisterObject (context_);
+    Colonization::MessagesHandler::RegisterObject (context_);
 
     Urho3D::SharedPtr <Urho3D::Scene> scene (new Urho3D::Scene (context_));
     Colonization::Map *map = scene->CreateChild ("map")->CreateComponent <Colonization::Map> ();
@@ -126,6 +137,7 @@ void TestInternalTradeProcessingApplication::Start ()
         district->SetDefenseEvolutionPoints (5.0f);
     }
 
+    Colonization::MessagesHandler *messagesHandler = scene->CreateComponent <Colonization::MessagesHandler> ();
     Colonization::PlayersManager *playersManager =
             scene->CreateChild ("players")->CreateComponent <Colonization::PlayersManager> ();
 

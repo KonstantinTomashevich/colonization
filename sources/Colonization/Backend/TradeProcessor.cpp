@@ -185,7 +185,7 @@ TradeProcessor::TradeProcessor (Urho3D::Context *context) : Urho3D::Component (c
 
 TradeProcessor::~TradeProcessor ()
 {
-    ClearTradeAreas ();
+    tradeAreas_.Clear ();
 }
 
 void TradeProcessor::RegisterObject (Urho3D::Context *context)

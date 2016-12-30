@@ -17,7 +17,7 @@ Map::Map (Urho3D::Context *context) : Urho3D::Component (context),
 
 Map::~Map ()
 {
-    ClearAndRemoveDistricts ();
+    districts_.Clear ();
 }
 
 void Map::RegisterObject (Urho3D::Context *context)

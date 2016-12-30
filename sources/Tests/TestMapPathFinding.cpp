@@ -45,6 +45,9 @@ void TestMapPathFindingApplication::Start ()
     context_->SetGlobalVar ("embarkationSpeed", 0.15f);
     context_->SetGlobalVar ("disembarkationSpeed", 0.2f);
 
+    Colonization::Map::RegisterObject (context_);
+    Colonization::District::RegisterObject (context_);
+
     Urho3D::SharedPtr <Urho3D::Scene> scene (new Urho3D::Scene (context_));
     Colonization::Map *map = scene->CreateChild ("map")->CreateComponent <Colonization::Map> ();
     const int mapWidth = 5;
