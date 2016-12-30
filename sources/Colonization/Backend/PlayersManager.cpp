@@ -30,7 +30,7 @@ bool PlayersManager::DeleteIdentificatedConnection (Urho3D::Connection *connecti
     return isFinded;
 }
 
-void PlayersManager::SendPlayersStats (MessagesHandler *messagesHandler)
+void PlayersManager::UpdatePlayers (MessagesHandler *messagesHandler, float timeStep)
 {
     int index = 0;
     while (index < players_.Values ().Size ())
@@ -128,8 +128,8 @@ void PlayersManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &e
 {
     MessagesHandler *messagesHandler = node_->GetScene ()->GetComponent <MessagesHandler> ();
     assert (messagesHandler);
-    SendPlayersStats (messagesHandler);
     float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
+    UpdatePlayers (messagesHandler, timeStep);
     UpdateConnectionsWithoudId (timeStep);
     UpdatePlayersInfos ();
 }
@@ -199,24 +199,10 @@ Urho3D::Vector <Player *> PlayersManager::GetAllPlayers ()
     return players_.Values ();
 }
 
-#ifdef COLONIZIATION_ENABLE_FUNCTIONS_FOR_TESTS
-void PlayersManager::ManuallyAddFakePlayer (Player *player)
-{
-    players_ [Urho3D::StringHash (player->GetName ())] = player;
-}
-
-void PlayersManager::ManuallyRemoveFakePlayer (Urho3D::StringHash nameHash)
-{
-    Player *player = players_ [nameHash];
-    players_.Erase (nameHash);
-    delete player;
-}
-#endif
-
 void PlayersManager::PlayerIdentified (Urho3D::Connection *connection, Urho3D::String name)
 {
     DeleteIdentificatedConnection (connection);
-    Player *player = new Player (context_, name, connection);
+    Player *player = new Player (context_, name, connection, node_->GetScene ());
     players_ [name] = player;
     connectionHashToNameHashMap_ [connection->GetAddress ()] = name;
     player->SetGold (1000.0f);

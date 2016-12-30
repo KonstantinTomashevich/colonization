@@ -17,7 +17,7 @@ protected:
     Urho3D::Vector <Urho3D::Pair <float, Urho3D::Connection *> > connectionsWithoutId_;
 
     bool DeleteIdentificatedConnection (Urho3D::Connection *connection);
-    void SendPlayersStats (MessagesHandler *messagesHandler);
+    void UpdatePlayers (MessagesHandler *messagesHandler, float timeStep);
     void UpdateConnectionsWithoudId (float timeStep);
     void UpdatePlayersInfos ();
 
@@ -36,12 +36,6 @@ public:
     Urho3D::Vector <Player *> GetPlayersByNames (Urho3D::Vector <Urho3D::StringHash> namesHashes);
     Player *GetPlayer (Urho3D::Connection *connection);
     Urho3D::Vector <Player *> GetAllPlayers ();
-
-#ifdef COLONIZIATION_ENABLE_FUNCTIONS_FOR_TESTS
-    // TODO: It will be deleted!!! :)
-    void ManuallyAddFakePlayer (Player *player);
-    void ManuallyRemoveFakePlayer (Urho3D::StringHash nameHash);
-#endif
 
     void PlayerIdentified (Urho3D::Connection *connection, Urho3D::String name);
     void DisconnectPlayer (Urho3D::StringHash nameHash);
