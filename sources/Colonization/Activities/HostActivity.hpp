@@ -16,7 +16,7 @@ class HostActivity : public Activity
 {
 URHO3D_OBJECT (HostActivity, Activity)
 protected:
-    Urho3D::Scene *scene_;
+    Urho3D::SharedPtr <Urho3D::Scene> scene_;
     unsigned short serverPort_;
     GameStateType currentState_;
 

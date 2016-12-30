@@ -12,7 +12,7 @@ namespace Colonization
 Urho3D::CScriptArray *Map_FindPath (Map *map, Urho3D::StringHash startDistrictHash, Urho3D::StringHash targetDistrictHash,
                                    Urho3D::String playerName, bool canGoThroughColonies, bool isColonizator)
 {
-    Urho3D::Vector <Urho3D::StringHash> result = map->FindPath (
+    Urho3D::PODVector <Urho3D::StringHash> result = map->FindPath (
                 startDistrictHash, targetDistrictHash, playerName, canGoThroughColonies, isColonizator);
     return Urho3D::VectorToArray <Urho3D::StringHash> (result, "Array<StringHash>");
 }

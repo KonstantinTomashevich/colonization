@@ -36,9 +36,11 @@ protected:
     bool isImpassable_;
     Urho3D::String name_;
     Urho3D::PODVector <Urho3D::Vector3> polygonPoints_;
+    Urho3D::VariantVector polygonPointsVariant_;
     Urho3D::Vector3 unitPosition_;
     Urho3D::Vector3 colonyPosition_;
     Urho3D::PODVector <Urho3D::StringHash> neighbors_;
+    Urho3D::VariantVector neighborsVariant_;
 
     float farmingSquare_;
     float forestsSquare_;
@@ -75,33 +77,33 @@ public:
     void CalculateNeighbors (Urho3D::Vector <Urho3D::SharedPtr <District> > &allDistricts);
 
     void UpdateHash (Map *owner);
-    Urho3D::StringHash GetHash () const;
-    void SetHash (Urho3D::StringHash hash);
+    const Urho3D::StringHash &GetHash () const;
+    void SetHash (const Urho3D::StringHash &hash);
 
     bool IsSea () const;
-    bool SetIsSea (bool isSea);
+    void SetIsSea (bool isSea);
 
     bool IsImpassable () const;
     void SetIsImpassable (bool isImpassable);
 
-    Urho3D::String GetName () const;
-    void SetName (Urho3D::String name);
+    const Urho3D::String &GetName () const;
+    void SetName (const Urho3D::String &name);
 
     Urho3D::PODVector <Urho3D::Vector3> GetPolygonPoints () const;
     void SetPolygonPoints (Urho3D::PODVector <Urho3D::Vector3> polygonPoints);
-    Urho3D::VariantVector GetPolygonPointsAttribute () const;
-    void SetPolygonPointsAttribute (Urho3D::VariantVector polygonPoints);
+    const Urho3D::VariantVector &GetPolygonPointsAttribute () const;
+    void SetPolygonPointsAttribute (const Urho3D::VariantVector &polygonPoints);
 
-    Urho3D::Vector3 GetUnitPosition () const;
-    void SetUnitPosition (Urho3D::Vector3 unitPosition);
+    const Urho3D::Vector3 &GetUnitPosition () const;
+    void SetUnitPosition (const Urho3D::Vector3 &unitPosition);
 
-    Urho3D::Vector3 GetColonyPosition () const;
-    void SetColonyPosition (Urho3D::Vector3 colonyPosition);
+    const Urho3D::Vector3 &GetColonyPosition () const;
+    void SetColonyPosition (const Urho3D::Vector3 &colonyPosition);
 
     Urho3D::PODVector <Urho3D::StringHash> GetNeighborsHashes () const;
     void SetNeighborsHashes (Urho3D::PODVector <Urho3D::StringHash> neighbors);
-    Urho3D::VariantVector GetNeighborsHashesAttribute () const;
-    void SetNeighborsHashesAttribute (Urho3D::VariantVector neighbors);
+    const Urho3D::VariantVector &GetNeighborsHashesAttribute () const;
+    void SetNeighborsHashesAttribute (const Urho3D::VariantVector &neighbors);
 
     float GetFarmingSquare () const;
     void SetFarmingSquare (float farmingSquare);
@@ -145,8 +147,8 @@ public:
     bool HasColony () const;
     void SetColony (bool hasColony);
 
-    Urho3D::String GetColonyOwnerName () const;
-    void SetColonyOwnerName (Urho3D::String colonyOwnerName);
+    const Urho3D::String &GetColonyOwnerName () const;
+    void SetColonyOwnerName (const Urho3D::String &colonyOwnerName);
 
     float GetMenCount () const;
     void SetMenCount (float menCount);
