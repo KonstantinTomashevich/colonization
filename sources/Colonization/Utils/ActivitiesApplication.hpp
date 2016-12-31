@@ -4,9 +4,9 @@
 #include <Urho3D/Container/Vector.h>
 #include <Colonization/Utils/Activity.hpp>
 
-namespace ColonizationLauncher
+namespace Colonization
 {
-class LauncherApplication : public Urho3D::Application
+class ActivitiesApplication : public Urho3D::Application
 {
 URHO3D_OBJECT (Application, Object)
 protected:
@@ -14,8 +14,8 @@ protected:
     Urho3D::Vector <Urho3D::SharedPtr <Colonization::Activity> > activitiesToSetup_;
     Urho3D::Vector <Urho3D::SharedPtr <Colonization::Activity> > activitiesToStop_;
 public:
-    LauncherApplication (Urho3D::Context *context);
-    virtual ~LauncherApplication ();
+    ActivitiesApplication (Urho3D::Context *context);
+    virtual ~ActivitiesApplication ();
 
     virtual void Setup ();
     virtual void Start ();
@@ -28,4 +28,3 @@ public:
     Colonization::Activity *GetActivityByIndex (int index);
 };
 }
-

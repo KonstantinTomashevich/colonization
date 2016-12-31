@@ -1,10 +1,10 @@
 #include <Colonization/BuildConfiguration.hpp>
-#include "LauncherApplication.hpp"
+#include "ActivitiesApplication.hpp"
 #include <Urho3D/Input/Input.h>
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/AngelScript/Script.h>
 
-#include <Launcher/AngelScriptBinders/BindLauncherApplication.hpp>
+#include <Launcher/AngelScriptBinders/BindActivitiesApplication.hpp>
 #include <Colonization/AngelScriptBinders/BindActivity.hpp>
 #include <Colonization/AngelScriptBinders/BindDistrict.hpp>
 #include <Colonization/AngelScriptBinders/BindMap.hpp>
@@ -31,10 +31,9 @@
 #include <Colonization/Core/Unit.hpp>
 #include <Colonization/Activities/MainMenuActivity.hpp>
 
-URHO3D_DEFINE_APPLICATION_MAIN (ColonizationLauncher::LauncherApplication)
-namespace ColonizationLauncher
+namespace Colonization
 {
-LauncherApplication::LauncherApplication (Urho3D::Context *context) : Urho3D::Application (context),
+ActivitiesApplication::ActivitiesApplication (Urho3D::Context *context) : Urho3D::Application (context),
     currentActivities_ (),
     activitiesToSetup_ (),
     activitiesToStop_ ()
@@ -42,12 +41,12 @@ LauncherApplication::LauncherApplication (Urho3D::Context *context) : Urho3D::Ap
 
 }
 
-LauncherApplication::~LauncherApplication ()
+ActivitiesApplication::~ActivitiesApplication ()
 {
 
 }
 
-void LauncherApplication::Setup ()
+void ActivitiesApplication::Setup ()
 {
     engineParameters_ ["FullScreen"] = false;
     engineParameters_ ["WindowResizable"] = true;
@@ -55,7 +54,7 @@ void LauncherApplication::Setup ()
     engineParameters_ ["WindowTitle"] = "Colonization";
 }
 
-void LauncherApplication::Start ()
+void ActivitiesApplication::Start ()
 {
     // Set mouse to free mode
     Urho3D::Input *input = GetSubsystem <Urho3D::Input> ();
@@ -65,51 +64,51 @@ void LauncherApplication::Start ()
     // Init random
     Urho3D::SetRandomSeed (Urho3D::Time::GetTimeSinceEpoch ());
 
-    SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (LauncherApplication, Update));
+    SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (ActivitiesApplication, Update));
     if (!currentActivities_.Empty ())
         for (int index = 0; index < currentActivities_.Size (); index++)
             currentActivities_.At (index)->Start ();
 
     // Register objects.
-    Colonization::ColoniesManager::RegisterObject (context_);
-    Colonization::MessagesHandler::RegisterObject (context_);
-    Colonization::PlayersManager::RegisterObject (context_);
-    Colonization::TradeProcessor::RegisterObject (context_);
-    Colonization::UnitsManager::RegisterObject (context_);
+    ColoniesManager::RegisterObject (context_);
+    MessagesHandler::RegisterObject (context_);
+    PlayersManager::RegisterObject (context_);
+    TradeProcessor::RegisterObject (context_);
+    UnitsManager::RegisterObject (context_);
 
-    Colonization::District::RegisterObject (context_);
-    Colonization::InternalTradeArea::RegisterObject (context_);
-    Colonization::Map::RegisterObject (context_);
-    Colonization::PlayerInfo::RegisterObject (context_);
-    Colonization::Unit::RegisterObject (context_);
+    District::RegisterObject (context_);
+    InternalTradeArea::RegisterObject (context_);
+    Map::RegisterObject (context_);
+    PlayerInfo::RegisterObject (context_);
+    Unit::RegisterObject (context_);
 
     // Register AngelScript subsystem and run bindings.
     Urho3D::Script *script = new Urho3D::Script (context_);
     context_->RegisterSubsystem (script);
-    Colonization::BindActivity (script);
-    BindLauncherApplication (script);
-    Colonization::BindDistrict (script);
-    Colonization::BindMap (script);
-    Colonization::BindNetworkMessageType (script);
-    Colonization::BindHostActivity (script);
-    Colonization::BindMainMenuActivity (script);
-    Colonization::BindIngamePlayerActivity (script);
-    Colonization::BindUnit (script);
-    Colonization::BindPlayerActionType (script);
-    Colonization::BindInternalTradeArea (script);
-    Colonization::BindPlayerInfo (script);
+    BindActivity (script);
+    BindActivitiesApplication (script);
+    BindDistrict (script);
+    BindMap (script);
+    BindNetworkMessageType (script);
+    BindHostActivity (script);
+    BindMainMenuActivity (script);
+    BindIngamePlayerActivity (script);
+    BindUnit (script);
+    BindPlayerActionType (script);
+    BindInternalTradeArea (script);
+    BindPlayerInfo (script);
 
-    Urho3D::SharedPtr <Colonization::MainMenuActivity> mainMenuActivity (new Colonization::MainMenuActivity (context_));
+    Urho3D::SharedPtr <MainMenuActivity> mainMenuActivity (new MainMenuActivity (context_));
     SetupActivityNextFrame (mainMenuActivity);
 }
 
-void LauncherApplication::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+void ActivitiesApplication::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
     if (!activitiesToStop_.Empty ())
         while (!activitiesToStop_.Empty ())
         {
-            Urho3D::SharedPtr <Colonization::Activity> activity = activitiesToStop_.Front ();
+            Urho3D::SharedPtr <Activity> activity = activitiesToStop_.Front ();
             activitiesToStop_.Remove (activity);
             assert (activity.NotNull ());
             currentActivities_.Remove (activity);
@@ -119,7 +118,7 @@ void LauncherApplication::Update (Urho3D::StringHash eventType, Urho3D::VariantM
     if (!activitiesToSetup_.Empty ())
         while (!activitiesToSetup_.Empty ())
         {
-            Urho3D::SharedPtr <Colonization::Activity> activity = activitiesToSetup_.Front ();
+            Urho3D::SharedPtr <Activity> activity = activitiesToSetup_.Front ();
             activitiesToSetup_.Remove (activity);
             assert (activity.NotNull ());
             currentActivities_.Push (activity);
@@ -132,31 +131,31 @@ void LauncherApplication::Update (Urho3D::StringHash eventType, Urho3D::VariantM
             currentActivities_.At (index)->Update (timeStep);
 }
 
-void LauncherApplication::Stop ()
+void ActivitiesApplication::Stop ()
 {
     if (!currentActivities_.Empty ())
         for (int index = 0; index < currentActivities_.Size (); index++)
             currentActivities_.At (index)->Stop ();
 }
 
-void LauncherApplication::SetupActivityNextFrame (Colonization::Activity *activity)
+void ActivitiesApplication::SetupActivityNextFrame (Activity *activity)
 {
     assert (activity);
-    activitiesToSetup_.Push (Urho3D::SharedPtr <Colonization::Activity> (activity));
+    activitiesToSetup_.Push (Urho3D::SharedPtr <Activity> (activity));
 }
 
-void LauncherApplication::StopActivityNextFrame (Colonization::Activity *activity)
+void ActivitiesApplication::StopActivityNextFrame (Activity *activity)
 {
     assert (activity);
-    activitiesToStop_.Push (Urho3D::SharedPtr <Colonization::Activity> (activity));
+    activitiesToStop_.Push (Urho3D::SharedPtr <Activity> (activity));
 }
 
-int LauncherApplication::GetActivitiesCount ()
+int ActivitiesApplication::GetActivitiesCount ()
 {
     return currentActivities_.Size ();
 }
 
-Colonization::Activity *LauncherApplication::GetActivityByIndex (int index)
+Activity *ActivitiesApplication::GetActivityByIndex (int index)
 {
     assert (index < currentActivities_.Size ());
     return currentActivities_.At (index);
