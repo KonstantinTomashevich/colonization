@@ -2,11 +2,6 @@ class Player : ScriptObject
 {
     protected LauncherApplication @launcherApplication_;
     protected String playerName_;
-    protected float beforeMapUpdate_;
-    protected float beforeMapNeighborsUpdate_;
-    protected float beforeUnitsUpdate_;
-    protected Map @mapPtr_;
-    protected UnitsContainer @unitsContainerPtr_;
     protected bool isSceneLoaded_;
     
     protected void CheckIsSceneLoaded ()
@@ -26,9 +21,6 @@ class Player : ScriptObject
     
     Player ()
     {
-        beforeMapUpdate_ = 0.001f;
-        beforeMapNeighborsUpdate_ = 0.001f;
-        beforeUnitsUpdate_ = 0.001f;
         isSceneLoaded_ = false;
     }
     
@@ -47,7 +39,7 @@ class Player : ScriptObject
         XMLFile@ style = cache.GetResource ("XMLFile", "UI/DefaultStyle.xml");
         ui.root.defaultStyle = style;
         
-        Node @uiScriptNode = node.CreateChild ("uiScriptNode", LOCAL);
+        /*Node @uiScriptNode = node.CreateChild ("uiScriptNode", LOCAL);
         ScriptInstance @uiScript = uiScriptNode.CreateComponent ("ScriptInstance", LOCAL);
         uiScript.CreateObject (cache.GetResource ("ScriptFile",
                                                          "AngelScript/Client/PlayerUi.as"),
@@ -69,20 +61,10 @@ class Player : ScriptObject
         ScriptInstance @screenPressesHandlerScript = screenPressesHandlerScriptNode.CreateComponent ("ScriptInstance", LOCAL);
         screenPressesHandlerScript.CreateObject (cache.GetResource ("ScriptFile",
                                                          "AngelScript/Client/ScreenPressesHandler.as"),
-                                     "ScreenPressesHandler");
+                                     "ScreenPressesHandler");*/
         
         SubscribeToEvent ("ServerDisconnected", "HandleServerDisconnected");
         SubscribeToEvent ("ConnectFailed", "HandleConnectFailed");
-        
-        Map @map = Map ();
-        AddRef (map);
-        node.vars ["map"] = map;
-        mapPtr_ = map;
-        
-        UnitsContainer @unitsContainer = UnitsContainer ();
-        AddRef (unitsContainer);
-        node.vars ["unitsContainer"] = unitsContainer;
-        unitsContainerPtr_ = unitsContainer;
     }
     
     void Update (float timeStep)
@@ -95,37 +77,14 @@ class Player : ScriptObject
             
         if (isSceneLoaded_)
         {
-            SetRefs (mapPtr_, 100);
-            SetRefs (unitsContainerPtr_, 100);
-            beforeMapUpdate_ -= timeStep;
-            beforeMapNeighborsUpdate_ -= timeStep;
-            beforeUnitsUpdate_ -= timeStep;
-            
-            if (beforeMapUpdate_ <= 0.0f)
-            {
-                mapPtr_.ReadDataFromNode (scene.GetChild ("map"));
-                beforeMapUpdate_ = 0.001f;
-            }
-            
-            if (beforeMapNeighborsUpdate_ <= 0.0f)
-            {
-                mapPtr_.UpdateNeighborsOfDistricts ();
-                beforeMapNeighborsUpdate_ = 10.0f;
-            }
-            
-            if (beforeUnitsUpdate_ <= 0.0f)
-            {
-                unitsContainerPtr_.ReadDataFromNode (scene.GetChild ("units"), mapPtr_);
-                beforeUnitsUpdate_ = 0.1f;
-            }
+            log.Info ("Scene loaded!");
+            node.vars ["goToMenuCalled"] = true;
         }
     }
     
     void Stop ()
     {
         UnsubscribeFromAllEvents ();
-        SetRefs (mapPtr_, 1);
-        SetRefs (unitsContainerPtr_, 1);
     }
     
     LauncherApplication @get_launcherApplication ()
@@ -157,9 +116,9 @@ class Player : ScriptObject
     
     void GoToMainMenuState ()
     {
-        for (int index = 0; index < launcherApplication_.GetActivitiesCount (); index++)
+        for (int index = launcherApplication_.GetActivitiesCount () - 1; index >= 0; index--)
             launcherApplication_.StopActivityNextFrame (launcherApplication_.GetActivityByIndex (index));
-            
+         
         MainMenuActivity @mainMenuActivity = MainMenuActivity ();
         launcherApplication_.SetupActivityNextFrame (mainMenuActivity);
     }

@@ -42,7 +42,6 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
 
     while (!toScan.Empty () || tradeAreaIndex < tradeAreasNodes.Size ())
     {
-        Urho3D::Log::Write (Urho3D::LOG_INFO, Urho3D::String (tradeAreaIndex));
         if (!toScan.Empty ())
         {
             Urho3D::Node *node;

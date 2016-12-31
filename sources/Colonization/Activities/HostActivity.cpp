@@ -2,6 +2,7 @@
 #include "HostActivity.hpp"
 #include <Urho3D/Network/Network.h>
 #include <Urho3D/Core/Context.h>
+#include <Urho3D/IO/Log.h>
 
 #include <Colonization/Core/District.hpp>
 #include <Colonization/Core/Map.hpp>
@@ -169,6 +170,9 @@ void HostActivity::DisposePlayingState ()
     scene_->GetChild ("units")->GetComponent <UnitsManager> ()->Remove ();
     scene_->GetComponent <ColoniesManager> ()->Remove ();
     scene_->GetComponent <TradeProcessor> ()->Remove ();
+
+    // TODO: This is temporary!
+    currentState_ = GAME_STATE_UNITIALIZED;
     SetupState (GAME_STATE_FINISHED);
 }
 
@@ -185,6 +189,7 @@ void HostActivity::DisposeFinishedState ()
 
 void HostActivity::SetupState (GameStateType state)
 {
+    DisposeCurrentState ();
     if (state == GAME_STATE_WAITING_FOR_PLAYERS)
         SetupWaitingForPlayersState ();
     else if (state == GAME_STATE_PLAYING)
@@ -202,6 +207,7 @@ void HostActivity::DisposeCurrentState ()
         DisposePlayingState ();
     else if (currentState_ == GAME_STATE_FINISHED)
         DisposeFinishedState ();
+    currentState_ = GAME_STATE_UNITIALIZED;
 }
 
 bool HostActivity::WillIGoFromWaitingForPlayersToPlayingState ()
@@ -271,6 +277,7 @@ void HostActivity::Update (float timeStep)
 
 void HostActivity::Stop ()
 {
+    DisposeCurrentState ();
     scene_->Clear (true, true);
     context_->GetSubsystem <Urho3D::Network> ()->StopServer ();
 }
