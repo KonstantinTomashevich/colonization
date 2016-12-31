@@ -1,12 +1,21 @@
 #pragma once
-#include <Colonization/Utils/EditorLauncher.hpp>
+#include <Urho3D/Engine/Application.h>
+#include <Urho3D/AngelScript/ScriptFile.h>
 
-class EditorLauncherImpl : public Colonization::EditorLauncher
+class EditorLauncher : public Urho3D::Application
 {
 URHO3D_OBJECT (EditorLauncher, Application)
 public:
-    EditorLauncherImpl (Urho3D::Context* context);
+    EditorLauncher (Urho3D::Context* context);
     virtual void Setup ();
     virtual void Start ();
     virtual void Stop ();
+
+private:
+    void HandleScriptReloadStarted (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandleScriptReloadFinished (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandleScriptReloadFailed (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+
+    Urho3D::String scriptFileName_;
+    Urho3D::SharedPtr <Urho3D::ScriptFile> scriptFile_;
 };
