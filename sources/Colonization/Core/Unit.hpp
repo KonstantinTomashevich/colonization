@@ -33,16 +33,16 @@ public:
 
     static void RegisterObject (Urho3D::Context *context);
     void UpdateHash (UnitsManager *owner);
-    const Urho3D::StringHash &GetHash () const;
+    Urho3D::StringHash GetHash () const;
     void SetHash (const Urho3D::StringHash &hash);
 
     UnitType GetUnitType () const;
     void SetUnitType (UnitType unitType);
 
-    const Urho3D::String &GetOwnerPlayerName () const;
+    Urho3D::String GetOwnerPlayerName () const;
     void SetOwnerPlayerName (const Urho3D::String &ownerPlayerName);
 
-    const Urho3D::StringHash &GetPositionHash () const;
+    Urho3D::StringHash GetPositionHash () const;
     void SetPositionHash (const Urho3D::StringHash &positionHash);
 
     Urho3D::PODVector <Urho3D::StringHash> GetWay () const;

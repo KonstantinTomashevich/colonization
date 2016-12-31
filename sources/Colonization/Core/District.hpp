@@ -75,7 +75,7 @@ public:
     void CalculateNeighbors (Urho3D::Vector <Urho3D::SharedPtr <District> > &allDistricts);
 
     void UpdateHash (Map *owner);
-    const Urho3D::StringHash &GetHash () const;
+    Urho3D::StringHash GetHash () const;
     void SetHash (const Urho3D::StringHash &hash);
 
     bool IsSea () const;
@@ -84,7 +84,7 @@ public:
     bool IsImpassable () const;
     void SetIsImpassable (bool isImpassable);
 
-    const Urho3D::String &GetName () const;
+    Urho3D::String GetName () const;
     void SetName (const Urho3D::String &name);
 
     Urho3D::PODVector <Urho3D::Vector3> GetPolygonPoints () const;
@@ -92,10 +92,10 @@ public:
     Urho3D::VariantVector GetPolygonPointsAttribute () const;
     void SetPolygonPointsAttribute (const Urho3D::VariantVector &polygonPoints);
 
-    const Urho3D::Vector3 &GetUnitPosition () const;
+    Urho3D::Vector3 GetUnitPosition () const;
     void SetUnitPosition (const Urho3D::Vector3 &unitPosition);
 
-    const Urho3D::Vector3 &GetColonyPosition () const;
+    Urho3D::Vector3 GetColonyPosition () const;
     void SetColonyPosition (const Urho3D::Vector3 &colonyPosition);
 
     Urho3D::PODVector <Urho3D::StringHash> GetNeighborsHashes () const;
@@ -145,7 +145,7 @@ public:
     bool HasColony () const;
     void SetColony (bool hasColony);
 
-    const Urho3D::String &GetColonyOwnerName () const;
+    Urho3D::String GetColonyOwnerName () const;
     void SetColonyOwnerName (const Urho3D::String &colonyOwnerName);
 
     float GetMenCount () const;

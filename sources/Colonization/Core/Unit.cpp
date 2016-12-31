@@ -37,10 +37,10 @@ void Unit::RegisterObject (Urho3D::Context *context)
     context->RegisterFactory <Unit> (COLONIZATION_CORE_CATEGORY);
     using namespace Urho3D;
 
-    URHO3D_ACCESSOR_ATTRIBUTE ("Hash", GetHash, SetHash, StringHash, StringHash ("nothing"), AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Owner Player Name", GetOwnerPlayerName, SetOwnerPlayerName, String, String ("Unit without owner"), AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Hash", GetHash, SetHash, StringHash, StringHash ("nothing"), AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Owner Player Name", GetOwnerPlayerName, SetOwnerPlayerName, String, String ("Unit without owner"), AM_DEFAULT);
     URHO3D_ENUM_ACCESSOR_ATTRIBUTE ("Unit Type", GetUnitType, SetUnitType, UnitType, unitTypesNames, UNIT_FLEET, AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Position Hash", GetPositionHash, SetPositionHash, StringHash, StringHash ("nothing"), AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Position Hash", GetPositionHash, SetPositionHash, StringHash, StringHash ("nothing"), AM_DEFAULT);
     URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Way", GetWayAttribute, SetWayAttribute, VariantVector, Variant::emptyVariantVector, AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Way To Next District Progress In Percents",
                                GetWayToNextDistrictProgressInPercents,
@@ -72,7 +72,7 @@ void Unit::UpdateHash (UnitsManager *owner)
     while (owner->GetUnitByHash (hash_) != this);
 }
 
-const Urho3D::StringHash &Unit::GetHash () const
+Urho3D::StringHash Unit::GetHash () const
 {
     return hash_;
 }
@@ -92,7 +92,7 @@ void Unit::SetUnitType (UnitType unitType)
     unitType_ = unitType;
 }
 
-const Urho3D::String &Unit::GetOwnerPlayerName () const
+Urho3D::String Unit::GetOwnerPlayerName () const
 {
     return ownerPlayerName_;
 }
@@ -102,7 +102,7 @@ void Unit::SetOwnerPlayerName (const Urho3D::String &ownerPlayerName)
     ownerPlayerName_ = ownerPlayerName;
 }
 
-const Urho3D::StringHash &Unit::GetPositionHash () const
+Urho3D::StringHash Unit::GetPositionHash () const
 {
     return positionHash_;
 }

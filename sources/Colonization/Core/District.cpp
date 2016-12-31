@@ -77,13 +77,13 @@ void District::RegisterObject (Urho3D::Context *context)
     context->RegisterFactory <District> (COLONIZATION_CORE_CATEGORY);
     using namespace Urho3D;
 
-    URHO3D_ACCESSOR_ATTRIBUTE ("Hash", GetHash, SetHash, StringHash, StringHash::ZERO, AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Hash", GetHash, SetHash, StringHash, StringHash::ZERO, AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Is Sea", IsSea, SetIsSea, bool, true, AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Is Impassable", IsImpassable, SetIsImpassable, bool, false, AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Name", GetName, SetName, String, String::EMPTY, AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Name", GetName, SetName, String, String::EMPTY, AM_DEFAULT);
     URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Polygon Points", GetPolygonPointsAttribute, SetPolygonPointsAttribute, VariantVector, Variant::emptyVariantVector, AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Unit Position", GetUnitPosition, SetUnitPosition, Vector3, Vector3::ZERO, AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Colony Position", GetColonyPosition, SetColonyPosition, Vector3, Vector3::ZERO, AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Unit Position", GetUnitPosition, SetUnitPosition, Vector3, Vector3::ZERO, AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Colony Position", GetColonyPosition, SetColonyPosition, Vector3, Vector3::ZERO, AM_DEFAULT);
     URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Neighbors Hashes", GetNeighborsHashesAttribute, SetNeighborsHashesAttribute, VariantVector, Variant::emptyVariantVector, AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Farming Square", GetFarmingSquare, SetFarmingSquare, float, 1.0f, AM_DEFAULT);
@@ -103,7 +103,7 @@ void District::RegisterObject (Urho3D::Context *context)
     URHO3D_ENUM_ACCESSOR_ATTRIBUTE ("Natives Character", GetNativesCharacter, SetNativesCharacter, NativesCharacterType, nativesCharacterTypesNames, NATIVES_CHARACTER_MEDIUM, AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Has Colony", HasColony, SetColony, bool, false, AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Colony Owner Name", GetColonyOwnerName, SetColonyOwnerName, String, String::EMPTY, AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Colony Owner Name", GetColonyOwnerName, SetColonyOwnerName, String, String::EMPTY, AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Men Count", GetMenCount, SetMenCount, float, 0.0f, AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Women Count", GetWomenCount, SetWomenCount, float, 0.0f, AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Local Army Size", GetLocalArmySize, SetLocalArmySize, float, 0.0f, AM_DEFAULT);
@@ -151,7 +151,7 @@ void District::UpdateHash (Map *owner)
     while (owner->GetDistrictByHash (hash_) != this);
 }
 
-const Urho3D::StringHash &District::GetHash () const
+Urho3D::StringHash District::GetHash () const
 {
     return hash_;
 }
@@ -181,7 +181,7 @@ void District::SetIsImpassable (bool isImpassable)
     isImpassable_ = isImpassable;
 }
 
-const Urho3D::String &District::GetName () const
+Urho3D::String District::GetName () const
 {
     return name_;
 }
@@ -217,7 +217,7 @@ void District::SetPolygonPointsAttribute (const Urho3D::VariantVector &polygonPo
         polygonPoints_.Push (polygonPoints.At (index).GetVector3 ());
 }
 
-const Urho3D::Vector3 &District::GetUnitPosition () const
+Urho3D::Vector3 District::GetUnitPosition () const
 {
     return unitPosition_;
 }
@@ -227,7 +227,7 @@ void District::SetUnitPosition (const Urho3D::Vector3 &unitPosition)
     unitPosition_ = unitPosition;
 }
 
-const Urho3D::Vector3 &District::GetColonyPosition () const
+Urho3D::Vector3 District::GetColonyPosition () const
 {
     return colonyPosition_;
 }
@@ -409,7 +409,7 @@ void District::SetColony (bool hasColony)
     hasColony_ = hasColony;
 }
 
-const Urho3D::String &District::GetColonyOwnerName() const
+Urho3D::String District::GetColonyOwnerName () const
 {
     return colonyOwnerName_;
 }

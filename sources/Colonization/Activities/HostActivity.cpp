@@ -1,8 +1,10 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "HostActivity.hpp"
+
 #include <Urho3D/Network/Network.h>
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/IO/Log.h>
+#include <Urho3D/Graphics/Octree.h>
 
 #include <Colonization/Core/District.hpp>
 #include <Colonization/Core/Map.hpp>
@@ -113,6 +115,7 @@ void AddTestFleetUnits (UnitsManager *manager, Map *map, int count)
 
 void HostActivity::SetupWaitingForPlayersState ()
 {
+    scene_->CreateComponent <Urho3D::Octree> (Urho3D::REPLICATED);
     scene_->CreateComponent <MessagesHandler> (Urho3D::LOCAL);
     scene_->CreateChild ("players", Urho3D::REPLICATED)->CreateComponent <PlayersManager> (Urho3D::LOCAL);
 }
