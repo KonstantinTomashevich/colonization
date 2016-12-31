@@ -66,8 +66,8 @@ class SceneManager : ScriptObject
                 
                 Vector3 colonyPosition = district.colonyPosition;
                 districtNode.GetChild ("localColony").position = colonyPosition;
-                Text3D @text = districtNode.GetChild ("localColony").GetChild ("playerText").GetComponent ("Text3D");
-                text.text = district.colonyOwnerName;
+                Text3D @colonyText = districtNode.GetChild ("localColony").GetChild ("playerText").GetComponent ("Text3D");
+                colonyText.text = district.colonyOwnerName;
             }
         }
     }

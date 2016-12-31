@@ -110,7 +110,7 @@ class Player : ScriptObject
     
     void GoToMainMenuState ()
     {
-        for (int index = launcherApplication_.GetActivitiesCount () - 1; index >= 0; index--)
+        for (int index = 0; index < launcherApplication_.GetActivitiesCount (); index++)
             launcherApplication_.StopActivityNextFrame (launcherApplication_.GetActivityByIndex (index));
          
         MainMenuActivity @mainMenuActivity = MainMenuActivity ();
