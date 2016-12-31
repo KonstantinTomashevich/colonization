@@ -42,7 +42,7 @@ if (NOT EXISTS "${CMAKE_SOURCE_DIR}/bin/Urho3DEditorData")
     if (NOT EXISTS "$ENV{URHO3D_HOME}/share/Resources/Data/")
         file (COPY "$ENV{URHO3D_HOME}/share/Urho3D/Resources/Data/" DESTINATION "${CMAKE_SOURCE_DIR}/bin/Urho3DEditorData")
     else ()
-        file (COPY "$ENV{URHO3D_HOME}/share/Resources/CoreData/" DESTINATION "${CMAKE_SOURCE_DIR}/bin/Urho3DEditorData")
+        file (COPY "$ENV{URHO3D_HOME}/share/Resources/Data/" DESTINATION "${CMAKE_SOURCE_DIR}/bin/Urho3DEditorData")
     endif ()
 endif ()
 
