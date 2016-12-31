@@ -104,16 +104,10 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
         Urho3D::PODVector <Urho3D::StringHash>  unitWay = unit->GetWay ();
         if (!unitWay.Empty ())
         {
-            if (unit->GetPositionHash () == unitWay.At (0) || unit->GetWayToNextDistrictProgressInPercents () >= 100.0f)
+            if (unit->GetPositionHash () == unitWay.At (0))
             {
                 unitWay.Remove (unitWay.At (0));
-                unit->SetWayToNextDistrictProgressInPercents (0.0f);
                 unit->SetWay (unitWay);
-
-                if (unitWay.Empty () && unit->GetUnitType () == UNIT_COLONIZATORS)
-                    SettleColonizator (unit, map);
-                else if (unitWay.Empty () && unit->GetUnitType () == UNIT_TRADERS)
-                    ProcessTrader (unit);
             }
 
             District *unitPosition = map->GetDistrictByHash (unit->GetPositionHash ());
@@ -138,6 +132,20 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
 
             float addition = (100.0f * speed * timeStep) / distance;
             unit->SetWayToNextDistrictProgressInPercents (unit->GetWayToNextDistrictProgressInPercents () + addition);
+
+            if (unit->GetWayToNextDistrictProgressInPercents () >= 100.0f)
+            {
+                unit->SetPositionHash (unitWay.At (0));
+                unitWay.Remove (unitWay.At (0));
+                unit->SetWayToNextDistrictProgressInPercents (0.0f);
+                unit->SetWay (unitWay);
+
+                if (unitWay.Empty () && unit->GetUnitType () == UNIT_COLONIZATORS)
+                    SettleColonizator (unit, map);
+                else if (unitWay.Empty () && unit->GetUnitType () == UNIT_TRADERS)
+                    ProcessTrader (unit);
+            }
+
         }
     }
 

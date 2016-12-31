@@ -200,8 +200,8 @@ void TradeProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &e
     beforeTradeAreasUpdate_ -= timeStep;
     if (beforeTradeAreasUpdate_ <= 0.0f)
     {
-        UpdateTradeAreas (3.0f);
-        beforeTradeAreasUpdate_ = 3.0f;
+        UpdateTradeAreas (10.0f);
+        beforeTradeAreasUpdate_ = 10.0f;
     }
 }
 
