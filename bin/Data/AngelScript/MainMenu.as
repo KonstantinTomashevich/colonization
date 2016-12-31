@@ -1,6 +1,6 @@
 class MainMenu : ScriptObject
 {
-    protected LauncherApplication @launcherApplication_;
+    protected ActivitiesApplication @activitiesApplication_;
     
     MainMenu ()
     {
@@ -39,36 +39,36 @@ class MainMenu : ScriptObject
         
     }
     
-    LauncherApplication @get_launcherApplication ()
+    ActivitiesApplication @get_activitiesApplication ()
     {
-        return launcherApplication_;
+        return activitiesApplication_;
     }
     
-    void set_launcherApplication (LauncherApplication @launcherApplication)
+    void set_activitiesApplication (ActivitiesApplication @activitiesApplication)
     {
-        launcherApplication_ = launcherApplication;
+        activitiesApplication_ = activitiesApplication;
     }
     
     void HandleStartGameClick ()
     {
-        for (int index = 0; index < launcherApplication_.GetActivitiesCount (); index++)
-            launcherApplication_.StopActivityNextFrame (launcherApplication_.GetActivityByIndex (index));
+        for (int index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
+            activitiesApplication_.StopActivityNextFrame (activitiesApplication_.GetActivityByIndex (index));
         
         HostActivity @hostActivity = HostActivity ();
         hostActivity.serverPort = 13768;
-        launcherApplication_.SetupActivityNextFrame (hostActivity);
+        activitiesApplication_.SetupActivityNextFrame (hostActivity);
         
         IngamePlayerActivity @ingamePlayerActivity = IngamePlayerActivity ();
         ingamePlayerActivity.serverAdress = "localhost";
         ingamePlayerActivity.serverPort = 13768;
         ingamePlayerActivity.playerName = "Konstant";
-        launcherApplication_.SetupActivityNextFrame (ingamePlayerActivity);
+        activitiesApplication_.SetupActivityNextFrame (ingamePlayerActivity);
     }
     
     void HandleExitClick ()
     {
-        for (int index = 0; index < launcherApplication_.GetActivitiesCount (); index++)
-            launcherApplication_.StopActivityNextFrame (launcherApplication_.GetActivityByIndex (index));
+        for (int index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
+            activitiesApplication_.StopActivityNextFrame (activitiesApplication_.GetActivityByIndex (index));
         engine.Exit ();
     }
 };

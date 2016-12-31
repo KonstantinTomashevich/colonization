@@ -1,6 +1,6 @@
 class Player : ScriptObject
 {
-    protected LauncherApplication @launcherApplication_;
+    protected ActivitiesApplication @activitiesApplication_;
     protected String playerName_;
     protected bool isSceneLoaded_;
     
@@ -81,14 +81,14 @@ class Player : ScriptObject
         UnsubscribeFromAllEvents ();
     }
     
-    LauncherApplication @get_launcherApplication ()
+    ActivitiesApplication @get_activitiesApplication ()
     {
-        return launcherApplication_;
+        return activitiesApplication_;
     }
     
-    void set_launcherApplication (LauncherApplication @launcherApplication)
+    void set_activitiesApplication (ActivitiesApplication @activitiesApplication)
     {
-        launcherApplication_ = launcherApplication;
+        activitiesApplication_ = activitiesApplication;
     }
     
     String get_playerName ()
@@ -110,11 +110,11 @@ class Player : ScriptObject
     
     void GoToMainMenuState ()
     {
-        for (int index = 0; index < launcherApplication_.GetActivitiesCount (); index++)
-            launcherApplication_.StopActivityNextFrame (launcherApplication_.GetActivityByIndex (index));
+        for (int index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
+            activitiesApplication_.StopActivityNextFrame (activitiesApplication_.GetActivityByIndex (index));
          
         MainMenuActivity @mainMenuActivity = MainMenuActivity ();
-        launcherApplication_.SetupActivityNextFrame (mainMenuActivity);
+        activitiesApplication_.SetupActivityNextFrame (mainMenuActivity);
     }
     
     void HandleConnectFailed ()
