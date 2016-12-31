@@ -167,6 +167,7 @@ void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map
             // TODO: Path is temporary!
             unit->SetWay (map->FindPath (unit->GetPositionHash (), map->GetDistrictByIndex (0)->GetHash (),
                                          unit->GetOwnerPlayerName (), true, false));
+            unit->UpdateHash (unitsManager);
         }
     }
 }

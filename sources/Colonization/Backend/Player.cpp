@@ -93,6 +93,7 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
         // TODO: Position is temporary! Will be rewrited!
         unit->SetPositionHash (map->GetDistrictByIndex (0 * 5 + 0)->GetHash ()); // [X * HEIGHT + Y] = (X, Y)
         unit->SetWay (map->FindPath (unit->GetPositionHash (), targetDistrict->GetHash (), name_, true, true));
+        unit->UpdateHash (unitsManager);
         unit->MarkNetworkUpdate ();
         assert (!unit->GetWay ().Empty ());
     }
