@@ -11,7 +11,7 @@
 #include <Colonization/Backend/TradeProcessor.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
-#include <Colonization/Core/PlayerInfo.hpp>
+#include <Colonization/Utils/RegisterAllObjects.hpp>
 
 URHO3D_DEFINE_APPLICATION_MAIN (Tests::TestInternalTradeProcessingApplication)
 namespace Tests
@@ -67,16 +67,7 @@ void TestInternalTradeProcessingApplication::Start ()
     context_->SetGlobalVar ("internalTaxes", 0.2f);
     context_->SetGlobalVar ("externalTaxes", 0.2f);
 
-    Colonization::Map::RegisterObject (context_);
-    Colonization::District::RegisterObject (context_);
-    Colonization::InternalTradeArea::RegisterObject (context_);
-    Colonization::PlayersManager::RegisterObject (context_);
-    Colonization::TradeProcessor::RegisterObject (context_);
-    Colonization::UnitsManager::RegisterObject (context_);
-    Colonization::Unit::RegisterObject (context_);
-    Colonization::PlayerInfo::RegisterObject (context_);
-    Colonization::MessagesHandler::RegisterObject (context_);
-
+    Colonization::RegisterAllObjects (context_);
     scene_ = Urho3D::SharedPtr <Urho3D::Scene> (new Urho3D::Scene (context_));
     Colonization::Map *map = scene_->CreateChild ("map")->CreateComponent <Colonization::Map> ();
     const int mapWidth = 4;

@@ -7,6 +7,7 @@
 #include <Colonization/Core/District.hpp>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/InternalTradeArea.hpp>
+#include <Colonization/Utils/RegisterAllObjects.hpp>
 
 URHO3D_DEFINE_APPLICATION_MAIN (Tests::TestInternalTradeAreaApplication)
 namespace Tests
@@ -61,10 +62,7 @@ void TestInternalTradeAreaApplication::Start ()
     context_->SetGlobalVar ("minesProductionExternalCost", 1.0f);
     context_->SetGlobalVar ("industryProductionExternalCost", 3.0f);
 
-    Colonization::Map::RegisterObject (context_);
-    Colonization::District::RegisterObject (context_);
-    Colonization::InternalTradeArea::RegisterObject (context_);
-
+    Colonization::RegisterAllObjects (context_);
     Urho3D::SharedPtr <Urho3D::Scene> scene (new Urho3D::Scene (context_));
     Colonization::Map *map = scene->CreateChild ("map")->CreateComponent <Colonization::Map> ();
     const int mapWidth = 2;
