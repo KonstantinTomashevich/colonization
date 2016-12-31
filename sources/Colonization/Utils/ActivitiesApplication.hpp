@@ -8,7 +8,7 @@ namespace Colonization
 {
 class ActivitiesApplication : public Urho3D::Application
 {
-URHO3D_OBJECT (Application, Object)
+URHO3D_OBJECT (ActivitiesApplication, Application)
 protected:
     Urho3D::Vector <Urho3D::SharedPtr <Colonization::Activity> > currentActivities_;
     Urho3D::Vector <Urho3D::SharedPtr <Colonization::Activity> > activitiesToSetup_;
