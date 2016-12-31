@@ -7,7 +7,7 @@
 
 namespace Colonization
 {
-static const char *climateTypesNames [] =
+const char *climateTypesNames [] =
 {
     "Tropical",
     "Hot",
@@ -17,7 +17,7 @@ static const char *climateTypesNames [] =
     "Cold",
 };
 
-static const char *nativesCharacterTypesNames [] =
+const char *nativesCharacterTypesNames [] =
 {
     "Friendly",
     "Medium",

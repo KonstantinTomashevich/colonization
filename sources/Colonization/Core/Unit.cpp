@@ -7,7 +7,7 @@
 
 namespace Colonization
 {
-static const char *unitTypesNames [] =
+const char *unitTypesNames [] =
 {
     "Fleet",
     "Traders",
