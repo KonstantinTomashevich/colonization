@@ -39,59 +39,54 @@ class PlayerUi : ScriptObject
         Window @unitInfoWindow = ui.root.GetChild ("ingame").GetChild ("unitInfoWindow");
         unitInfoWindow.visible = true;
         
-        UnitsContainer @unitsContainer = node.parent.vars ["unitsContainer"].GetPtr ();
         StringHash unitHash = node.parent.GetChild ("screenPressesHandlerScriptNode").
                                 vars ["selectedHash"].GetStringHash ();
-        Unit @unit = unitsContainer.GetUnitByHash (unitHash);
-        SetRefs (unit, 100);
+        Array <Node@> unitsNodes = scene.GetChild ("units").GetChildrenWithComponent ("Unit");
+        Unit @unit = unitsNodes [0].GetComponent ("Unit");
+        int index = 1;
+        while (unit.hash != unitHash and index < unitsNodes.length)
+        {
+            unit = unitsNodes [index].GetComponent ("Unit");
+            index++;
+        }
             
         Text @ownerText = unitInfoWindow.GetChild ("ownerText");
-        ownerText.text = unit.ownerPlayer_ + "'s";
+        ownerText.text = unit.ownerPlayerName + "'s";
         
         Text @typeText = unitInfoWindow.GetChild ("typeText");
-        if (unit.unitType_ == UNIT_FLEET)
+        if (unit.unitType == UNIT_FLEET)
             typeText.text = "Fleet";
-        else if (unit.unitType_ == UNIT_TRADERS)
+        else if (unit.unitType == UNIT_TRADERS)
             typeText.text = "Traders";
-        else if (unit.unitType_ == UNIT_COLONIZATORS)
+        else if (unit.unitType == UNIT_COLONIZATORS)
             typeText.text = "Colonizators";
-        else if (unit.unitType_ == UNIT_ARMY)
+        else if (unit.unitType == UNIT_ARMY)
             typeText.text = "Army";
-                
+        
+        Map @map = scene.GetChild ("map").GetComponent ("Map");        
         Text @positionText = unitInfoWindow.GetChild ("positionText");
-        positionText.text = "in " + unit.position_.name_;
+        positionText.text = "in " + map.GetDistrictByHash (unit.positionHash).name;
         
         String additionalInfo;
-        if (unit.unitType_ == UNIT_FLEET)
-        {
-            FleetUnit @fleetUnit = unit;
-            additionalInfo += "War ships count: " + fleetUnit.warShipsCount_ + ".\n";
-        }
+        if (unit.unitType == UNIT_FLEET)
+            additionalInfo += "War ships count: " + unit.fleetUnitWarShipsCount + ".\n";
         
-        else if (unit.unitType_ == UNIT_TRADERS)
-        {
-            TradersUnit @tradersUnit = unit;
-            additionalInfo += "Trade goods cost: " + tradersUnit.tradeGoodsCost_ + ".\n";
-        }
+        else if (unit.unitType == UNIT_TRADERS)
+            additionalInfo += "Trade goods cost: " + Floor (unit.tradersUnitTradeGoodsCost) + ".\n";
         
-        else if (unit.unitType_ == UNIT_COLONIZATORS)
-        {
-            ColonizatorsUnit @colonizatorsUnit = unit;
-            additionalInfo += "Colonizators count: " + colonizatorsUnit.colonizatorsCount_ + ".\n";
-        }
+        else if (unit.unitType == UNIT_COLONIZATORS)
+            additionalInfo += "Colonizators count: " + unit.colonizatorsUnitColonizatorsCount + ".\n";
         
-        else if (unit.unitType_ == UNIT_ARMY)
-        {
-            ArmyUnit @armyUnit = unit;
-            additionalInfo += "Soldiers count: " + armyUnit.soldiersCount_ + ".\n";
-        }
+        else if (unit.unitType == UNIT_ARMY)
+            additionalInfo += "Soldiers count: " + unit.armyUnitSoldiersCount + ".\n";
         
-        if (unit.way_.length > 0)
+        if (unit.GetWay ().length > 0)
         {
-            additionalInfo += "Going to: " + unit.way_ [unit.way_.length - 1].name_ + ".\n";
-            additionalInfo += "Next waypoint: " + unit.way_ [1].name_ + "\n";
+            Array <StringHash> unitWay = unit.GetWay ();
+            additionalInfo += "Going to: " + map.GetDistrictByHash (unitWay [unitWay.length - 1]).name + ".\n";
+            additionalInfo += "Next waypoint: " + map.GetDistrictByHash (unitWay [0]).name + "\n";
             additionalInfo += "Traveled to next waypoit: " + 
-                                FloorToInt (unit.wayToNextDistrictProgressInPercents_) + "%.\n";
+                                FloorToInt (unit.wayToNextDistrictProgressInPercents) + "%.\n";
         }
         
         Text @anotherText = unitInfoWindow.GetChild ("anotherText");
@@ -110,26 +105,25 @@ class PlayerUi : ScriptObject
         StringHash districtHash = node.parent.GetChild ("screenPressesHandlerScriptNode").
                                 vars ["selectedHash"].GetStringHash ();
         District @district = map.GetDistrictByHash (districtHash);
-        SetRefs (district, 100);
         
         String playerName = node.parent.vars ["playerName"].GetString ();
         ui.root.GetChild ("ingame").GetChild ("sendColonizatorsButton").visible =
-                                        (!district.isImpassable_ &&
-                                         !district.isSea_ && (!district.hasColony_ ||
-                                                              (district.hasColony_ && 
-                                                               district.colonyOwnerName_ == playerName)));
+                                        (!district.isImpassable &&
+                                         !district.isSea && (!district.hasColony ||
+                                                             (district.hasColony && 
+                                                             district.colonyOwnerName == playerName)));
         
         Text@ nameText = districtInfoWindow.GetChild ("nameText");
-        nameText.text = district.name_;
+        nameText.text = district.name;
         
-        districtInfoWindow.GetChild ("resourcesInfoButton").visible = !district.isSea_;
-        districtInfoWindow.GetChild ("populationInfoButton").visible = !district.isSea_;
-        districtInfoWindow.GetChild ("colonyEvolutionInfoButton").visible = district.hasColony_;
+        districtInfoWindow.GetChild ("resourcesInfoButton").visible = !district.isSea;
+        districtInfoWindow.GetChild ("populationInfoButton").visible = !district.isSea;
+        districtInfoWindow.GetChild ("colonyEvolutionInfoButton").visible = district.hasColony;
         
         StringHash infoType = districtInfoWindow.vars ["infoType"].GetStringHash ();
         UIElement @investButtons = districtInfoWindow.GetChild ("investButtons");
         investButtons.visible = (infoType == StringHash ("ColonyEvolution") and
-                                 district.hasColony_ and
+                                 district.hasColony and
                                  node.parent.vars ["gold"].GetFloat () >= 100.0f and
                                  ui.root.GetChild ("ingame").GetChild ("sendColonizatorsButton").visible);
         
@@ -156,27 +150,27 @@ class PlayerUi : ScriptObject
     protected void UpdateDistrictBasicInfo (District @district, Window @districtInfoWindow)
     {
         String infoText = "";
-        if (district.isSea_)
+        if (district.isSea)
             infoText += "Sea district.\n";
-        else if (district.hasColony_)
-            infoText += "Colonized by " + district.colonyOwnerName_ + ".\n";
-        else if (district.isImpassable_)
+        else if (district.hasColony)
+            infoText += "Colonized by " + district.colonyOwnerName + ".\n";
+        else if (district.isImpassable)
             infoText += "Uninhabitable.\n";
         else
             infoText += "Can be colonized.\n";
         
         infoText += "Climate: ";
-        if (district.climate_ == CLIMATE_COLD)
+        if (district.climate == CLIMATE_COLD)
             infoText += "cold.\n";
-        else if (district.climate_ == CLIMATE_DESERT)
+        else if (district.climate == CLIMATE_DESERT)
             infoText += "desert.\n";
-        else if (district.climate_ == CLIMATE_HOT)
+        else if (district.climate == CLIMATE_HOT)
             infoText += "hot.\n";
-        else if (district.climate_ == CLIMATE_TEMPERATE)
+        else if (district.climate == CLIMATE_TEMPERATE)
             infoText += "temperate.\n";
-        else if (district.climate_ == CLIMATE_TEMPERATE_CONTINENTAL)
+        else if (district.climate == CLIMATE_TEMPERATE_CONTINENTAL)
             infoText += "temperate continental.\n";
-        else if (district.climate_ == CLIMATE_TROPICAL)
+        else if (district.climate == CLIMATE_TROPICAL)
             infoText += "tropical.\n";
             
         Text @informationTextUi = districtInfoWindow.GetChild ("informationText");
@@ -186,33 +180,33 @@ class PlayerUi : ScriptObject
     protected void UpdateDistrictResourcesInfo (District @district, Window @districtInfoWindow)
     {
         String infoText = "";
-        infoText += "Farming square: " + FloorToInt (district.farmingSquare_) + ".\n";
-        infoText += "Land average fertility: " + FloorToInt (district.landAverageFertility_ * 100) + "%.\n";
+        infoText += "Farming square: " + FloorToInt (district.farmingSquare) + ".\n";
+        infoText += "Land average fertility: " + FloorToInt (district.landAverageFertility * 100) + "%.\n";
         
         infoText += "Climate: ";
-        if (district.climate_ == CLIMATE_COLD)
+        if (district.climate == CLIMATE_COLD)
             infoText += "cold.\n";
-        else if (district.climate_ == CLIMATE_DESERT)
+        else if (district.climate == CLIMATE_DESERT)
             infoText += "desert.\n";
-        else if (district.climate_ == CLIMATE_HOT)
+        else if (district.climate == CLIMATE_HOT)
             infoText += "hot.\n";
-        else if (district.climate_ == CLIMATE_TEMPERATE)
+        else if (district.climate == CLIMATE_TEMPERATE)
             infoText += "temperate.\n";
-        else if (district.climate_ == CLIMATE_TEMPERATE_CONTINENTAL)
+        else if (district.climate == CLIMATE_TEMPERATE_CONTINENTAL)
             infoText += "temperate continental.\n";
-        else if (district.climate_ == CLIMATE_TROPICAL)
+        else if (district.climate == CLIMATE_TROPICAL)
             infoText += "tropical.\n";
         
-        infoText += "Forest square: " + FloorToInt (district.forestsSquare_) + ".\n";
-        infoText += "Forest reproductivity: " + Floor (district.forestsReproductivity_ * 100) / 100 + ".\n";
+        infoText += "Forest square: " + FloorToInt (district.forestsSquare) + ".\n";
+        infoText += "Forest reproductivity: " + Floor (district.forestsReproductivity * 100) / 100 + ".\n";
         
-        if (district.hasCoalDeposits_)
+        if (district.hasCoalDeposits)
             infoText += "Has coal deposits.\n";
-        if (district.hasIronDeposits_)
+        if (district.hasIronDeposits)
             infoText += "Has iron deposits.\n";
-        if (district.hasSilverDeposits_)
+        if (district.hasSilverDeposits)
             infoText += "Has silver deposits.\n";
-        if (district.hasGoldDeposits_)
+        if (district.hasGoldDeposits)
             infoText += "Has gold deposits.\n";
         
         Text @informationTextUi = districtInfoWindow.GetChild ("informationText");
@@ -222,30 +216,30 @@ class PlayerUi : ScriptObject
     protected void UpdateDistrictRopulationInfo (District @district, Window @districtInfoWindow)
     {
         String infoText = "";
-        if (district.hasColony_)
+        if (district.hasColony)
         {
-            infoText += "Colony total population: " + (district.mansCount_ + district.womenCount_) + ".\n";
-            infoText += "Mans: " + district.mansCount_ + ". Women: " + district.womenCount_ + ".\n";
-            infoText += "Average level of life: " + district.averageLevelOfLifePoints_ + ".\n";
+            infoText += "Colony total population: " + (district.menCount + district.womenCount) + ".\n";
+            infoText += "Men: " + district.menCount + ". Women: " + district.womenCount + ".\n";
+            infoText += "Average level of life: " + district.averageLevelOfLifePoints + ".\n";
             infoText += "\n";
         }
         
-        if (district.nativesCount_ > 0)
+        if (district.nativesCount > 0)
         {
-            infoText += "Natives population: " + district.nativesCount_ + ".\n";
-            infoText += "Natives fighting tech level: " + district.nativesFightingTechnologyLevel_ + ".\n";
-            infoText += "Natives agressiveness: " + district.nativesAggressiveness_ + ".\n";
+            infoText += "Natives population: " + district.nativesCount + ".\n";
+            infoText += "Natives fighting tech level: " + district.nativesFightingTechnologyLevel + ".\n";
+            infoText += "Natives agressiveness: " + district.nativesAggressiveness + ".\n";
             
             infoText += "Natives character: ";
-            if (district.nativesCharacter_ == NATIVES_CHARATER_AGRESSIVE)
+            if (district.nativesCharacter == NATIVES_CHARATER_AGGRESSIVE)
                 infoText += "agressive.\n";
-            else if (district.nativesCharacter_ == NATIVES_CHARACTER_MEDIUM)
+            else if (district.nativesCharacter == NATIVES_CHARACTER_MEDIUM)
                 infoText += "medium.\n";
-            else if (district.nativesCharacter_ == NATIVES_CHARACTER_ISOLATIONIST)
+            else if (district.nativesCharacter == NATIVES_CHARACTER_ISOLATIONIST)
                 infoText += "isolationist.\n";
-            else if (district.nativesCharacter_ == NATIVES_CHARACTER_FRIENDLY)
+            else if (district.nativesCharacter == NATIVES_CHARACTER_FRIENDLY)
                 infoText += "friendly.\n";
-            else if (district.nativesCharacter_ == NATIVES_CHARACTER_COLD)
+            else if (district.nativesCharacter == NATIVES_CHARACTER_COLD)
                 infoText += "cold.\n";
             infoText += "\n";
         }
@@ -257,13 +251,13 @@ class PlayerUi : ScriptObject
     protected void UpdateDistrictColonyEvolutionInfo (District @district, Window @districtInfoWindow)
     {
         String infoText = "";
-        if (district.hasColony_)
+        if (district.hasColony)
         {
-            infoText += "Farms evolution: " + Floor (district.farmsEvolutionPoints_ * 100) / 100 + ".\n";
-            infoText += "Mines evolution: " + Floor (district.minesEvolutionPoints_ * 100) / 100 + ".\n";
-            infoText += "Industry evolution: " + Floor (district.industryEvolutionPoints_ * 100) / 100 + ".\n";
-            infoText += "Logistics evolution: " + Floor (district.logisticsEvolutionPoints_ * 100) / 100 + ".\n";
-            infoText += "Defense evolution: " + Floor (district.defenseEvolutionPoints_ * 100) / 100 + ".\n";
+            infoText += "Farms evolution: " + Floor (district.farmsEvolutionPoints * 100) / 100 + ".\n";
+            infoText += "Mines evolution: " + Floor (district.minesEvolutionPoints * 100) / 100 + ".\n";
+            infoText += "Industry evolution: " + Floor (district.industryEvolutionPoints * 100) / 100 + ".\n";
+            infoText += "Logistics evolution: " + Floor (district.logisticsEvolutionPoints * 100) / 100 + ".\n";
+            infoText += "Defense evolution: " + Floor (district.defenseEvolutionPoints * 100) / 100 + ".\n";
         }
         
         Text @informationTextUi = districtInfoWindow.GetChild ("informationText");
@@ -406,8 +400,6 @@ class PlayerUi : ScriptObject
         Array <Variant> networkTasks = node.parent.GetChild ("networkScriptNode").vars ["tasksList"].GetVariantVector ();
         VariantMap taskData;
         taskData ["type"] = CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION;
-        
-        Map @map = node.parent.vars ["map"].GetPtr ();
         StringHash districtHash = node.parent.GetChild ("screenPressesHandlerScriptNode").
                                 vars ["selectedHash"].GetStringHash ();
         
