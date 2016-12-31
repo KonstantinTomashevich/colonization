@@ -150,8 +150,9 @@ void Unit::SetWayToNextDistrictProgressInPercents (float wayToNextDistrictProgre
 
 int Unit::FleetUnitGetWarShipsCount () const
 {
-    if (unitType_ == UNIT_FLEET)
-        return unitTypeSpecificVars_ ["WarShipsCount"]->GetInt ();
+    Urho3D::Variant *value = unitTypeSpecificVars_ ["WarShipsCount"];
+    if (value)
+        return value->GetInt ();
     else
         return 0;
 }
@@ -163,8 +164,9 @@ void Unit::FleetUnitSetWarShipsCount (int warShipsCount)
 
 float Unit::TradersUnitGetTradeGoodsCost () const
 {
-    if (unitType_ == UNIT_TRADERS)
-        return unitTypeSpecificVars_ ["TradeGoodsCost"]->GetFloat ();
+    Urho3D::Variant *value = unitTypeSpecificVars_ ["TradeGoodsCost"];
+    if (value)
+        return value->GetFloat ();
     else
         return 0.0f;
 }
@@ -176,8 +178,9 @@ void Unit::TradersUnitSetTradeGoodsCost (float tradeGoodsCost)
 
 int Unit::ColonizatorsUnitGetColonizatorsCount () const
 {
-    if (unitType_ == UNIT_COLONIZATORS)
-        return unitTypeSpecificVars_ ["ColonizatorsCount"]->GetInt ();
+    Urho3D::Variant *value = unitTypeSpecificVars_ ["ColonizatorsCount"];
+    if (value)
+        return value->GetInt ();
     else
         return 0;
 }
@@ -189,8 +192,9 @@ void Unit::ColonizatorsUnitSetColonizatorsCount (int colonizatorsCount)
 
 int Unit::ArmyUnitGetSoldiersCount () const
 {
-    if (unitType_ == UNIT_ARMY)
-        return unitTypeSpecificVars_ ["SoldiersCount"]->GetInt ();
+    Urho3D::Variant *value = unitTypeSpecificVars_ ["SoldiersCount"];
+    if (value)
+        return value->GetInt ();
     else
         return 0;
 }
