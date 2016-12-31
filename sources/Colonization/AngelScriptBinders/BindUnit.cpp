@@ -59,7 +59,7 @@ void BindUnitInterface (Urho3D::Script *script, Urho3D::String className)
     engine->RegisterObjectMethod (className.CString (), "void set_fleetUnitWarShipsCount (int fleetUnitWarShipsCount)", asMETHOD (Unit, FleetUnitSetWarShipsCount), asCALL_THISCALL);
 
     engine->RegisterObjectMethod (className.CString (), "float get_tradersUnitTradeGoodsCost ()", asMETHOD (Unit, TradersUnitGetTradeGoodsCost), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className.CString (), "void set_fleetUnitWarShipsCount (float tradersUnitTradeGoodsCost)", asMETHOD (Unit, TradersUnitSetTradeGoodsCost), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_tradersUnitTradeGoodsCost (float tradersUnitTradeGoodsCost)", asMETHOD (Unit, TradersUnitSetTradeGoodsCost), asCALL_THISCALL);
 
     engine->RegisterObjectMethod (className.CString (), "int get_colonizatorsUnitColonizatorsCount ()", asMETHOD (Unit, ColonizatorsUnitGetColonizatorsCount), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_colonizatorsUnitColonizatorsCount (int colonizatorsUnitColonizatorsCount)", asMETHOD (Unit, ColonizatorsUnitSetColonizatorsCount), asCALL_THISCALL);
