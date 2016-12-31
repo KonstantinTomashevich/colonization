@@ -21,28 +21,31 @@ class ScreenPressesHandler : ScriptObject
         {
             StringHash selectedHash = node.vars ["selectedHash"].GetStringHash ();
             Array <Node@> unitsNodes = scene.GetChild ("units").GetChildrenWithComponent ("Unit");
-            Unit @unit = unitsNodes [0].GetComponent ("Unit");
-            int index = 1;
-            while (unit.hash != selectedHash and index < unitsNodes.length)
+            if (unitsNodes.length > 0)
             {
-                unit = unitsNodes [index].GetComponent ("Unit");
-                index++;
-            }
-            
-            if (unit.unitType != UNIT_COLONIZATORS and unit.unitType != UNIT_TRADERS)
-            {
-                Array <Variant> networkTasks = node.parent.GetChild ("networkScriptNode").vars ["tasksList"].GetVariantVector ();
-                VariantMap taskData;
-                taskData ["type"] = CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION;
+                Unit @unit = unitsNodes [0].GetComponent ("Unit");
+                int index = 1;
+                while (unit.hash != selectedHash and index < unitsNodes.length)
+                {
+                    unit = unitsNodes [index].GetComponent ("Unit");
+                    index++;
+                }
                 
-                VectorBuffer buffer = VectorBuffer ();
-                buffer.WriteInt (PLAYER_ACTION_SET_UNIT_MOVE_TARGET);
-                buffer.WriteStringHash (selectedHash);
-                buffer.WriteStringHash (district.hash);
-                
-                taskData ["buffer"] = buffer;
-                networkTasks.Push (Variant (taskData));
-                node.parent.GetChild ("networkScriptNode").vars ["tasksList"] = networkTasks;
+                if (unit.unitType != UNIT_COLONIZATORS and unit.unitType != UNIT_TRADERS)
+                {
+                    Array <Variant> networkTasks = node.parent.GetChild ("networkScriptNode").vars ["tasksList"].GetVariantVector ();
+                    VariantMap taskData;
+                    taskData ["type"] = CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION;
+                    
+                    VectorBuffer buffer = VectorBuffer ();
+                    buffer.WriteInt (PLAYER_ACTION_SET_UNIT_MOVE_TARGET);
+                    buffer.WriteStringHash (selectedHash);
+                    buffer.WriteStringHash (district.hash);
+                    
+                    taskData ["buffer"] = buffer;
+                    networkTasks.Push (Variant (taskData));
+                    node.parent.GetChild ("networkScriptNode").vars ["tasksList"] = networkTasks;
+                }
             }
         }
         else

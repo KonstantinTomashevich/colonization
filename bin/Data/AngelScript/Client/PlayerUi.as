@@ -42,55 +42,58 @@ class PlayerUi : ScriptObject
         StringHash unitHash = node.parent.GetChild ("screenPressesHandlerScriptNode").
                                 vars ["selectedHash"].GetStringHash ();
         Array <Node@> unitsNodes = scene.GetChild ("units").GetChildrenWithComponent ("Unit");
-        Unit @unit = unitsNodes [0].GetComponent ("Unit");
-        int index = 1;
-        while (unit.hash != unitHash and index < unitsNodes.length)
+        if (unitsNodes.length > 0)
         {
-            unit = unitsNodes [index].GetComponent ("Unit");
-            index++;
-        }
+            Unit @unit = unitsNodes [0].GetComponent ("Unit");
+            int index = 1;
+            while (unit.hash != unitHash and index < unitsNodes.length)
+            {
+                unit = unitsNodes [index].GetComponent ("Unit");
+                index++;
+            }
+                
+            Text @ownerText = unitInfoWindow.GetChild ("ownerText");
+            ownerText.text = unit.ownerPlayerName + "'s";
             
-        Text @ownerText = unitInfoWindow.GetChild ("ownerText");
-        ownerText.text = unit.ownerPlayerName + "'s";
-        
-        Text @typeText = unitInfoWindow.GetChild ("typeText");
-        if (unit.unitType == UNIT_FLEET)
-            typeText.text = "Fleet";
-        else if (unit.unitType == UNIT_TRADERS)
-            typeText.text = "Traders";
-        else if (unit.unitType == UNIT_COLONIZATORS)
-            typeText.text = "Colonizators";
-        else if (unit.unitType == UNIT_ARMY)
-            typeText.text = "Army";
-        
-        Map @map = scene.GetChild ("map").GetComponent ("Map");        
-        Text @positionText = unitInfoWindow.GetChild ("positionText");
-        positionText.text = "in " + map.GetDistrictByHash (unit.positionHash).name;
-        
-        String additionalInfo;
-        if (unit.unitType == UNIT_FLEET)
-            additionalInfo += "War ships count: " + unit.fleetUnitWarShipsCount + ".\n";
-        
-        else if (unit.unitType == UNIT_TRADERS)
-            additionalInfo += "Trade goods cost: " + Floor (unit.tradersUnitTradeGoodsCost) + ".\n";
-        
-        else if (unit.unitType == UNIT_COLONIZATORS)
-            additionalInfo += "Colonizators count: " + unit.colonizatorsUnitColonizatorsCount + ".\n";
-        
-        else if (unit.unitType == UNIT_ARMY)
-            additionalInfo += "Soldiers count: " + unit.armyUnitSoldiersCount + ".\n";
-        
-        if (unit.GetWay ().length > 0)
-        {
-            Array <StringHash> unitWay = unit.GetWay ();
-            additionalInfo += "Going to: " + map.GetDistrictByHash (unitWay [unitWay.length - 1]).name + ".\n";
-            additionalInfo += "Next waypoint: " + map.GetDistrictByHash (unitWay [0]).name + "\n";
-            additionalInfo += "Traveled to next waypoit: " + 
-                                FloorToInt (unit.wayToNextDistrictProgressInPercents) + "%.\n";
+            Text @typeText = unitInfoWindow.GetChild ("typeText");
+            if (unit.unitType == UNIT_FLEET)
+                typeText.text = "Fleet";
+            else if (unit.unitType == UNIT_TRADERS)
+                typeText.text = "Traders";
+            else if (unit.unitType == UNIT_COLONIZATORS)
+                typeText.text = "Colonizators";
+            else if (unit.unitType == UNIT_ARMY)
+                typeText.text = "Army";
+            
+            Map @map = scene.GetChild ("map").GetComponent ("Map");        
+            Text @positionText = unitInfoWindow.GetChild ("positionText");
+            positionText.text = "in " + map.GetDistrictByHash (unit.positionHash).name;
+            
+            String additionalInfo;
+            if (unit.unitType == UNIT_FLEET)
+                additionalInfo += "War ships count: " + unit.fleetUnitWarShipsCount + ".\n";
+            
+            else if (unit.unitType == UNIT_TRADERS)
+                additionalInfo += "Trade goods cost: " + Floor (unit.tradersUnitTradeGoodsCost * 100.0f) / 100.0f + ".\n";
+            
+            else if (unit.unitType == UNIT_COLONIZATORS)
+                additionalInfo += "Colonizators count: " + unit.colonizatorsUnitColonizatorsCount + ".\n";
+            
+            else if (unit.unitType == UNIT_ARMY)
+                additionalInfo += "Soldiers count: " + unit.armyUnitSoldiersCount + ".\n";
+            
+            if (unit.GetWay ().length > 0)
+            {
+                Array <StringHash> unitWay = unit.GetWay ();
+                additionalInfo += "Going to: " + map.GetDistrictByHash (unitWay [unitWay.length - 1]).name + ".\n";
+                additionalInfo += "Next waypoint: " + map.GetDistrictByHash (unitWay [0]).name + "\n";
+                additionalInfo += "Traveled to next waypoit: " + 
+                                    FloorToInt (unit.wayToNextDistrictProgressInPercents) + "%.\n";
+            }
+            
+            Text @anotherText = unitInfoWindow.GetChild ("anotherText");
+            anotherText.text = additionalInfo;
         }
-        
-        Text @anotherText = unitInfoWindow.GetChild ("anotherText");
-        anotherText.text = additionalInfo;
     }
     
     protected void UpdateDistrictSelection ()
