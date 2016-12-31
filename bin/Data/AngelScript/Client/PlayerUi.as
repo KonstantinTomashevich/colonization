@@ -218,17 +218,17 @@ class PlayerUi : ScriptObject
         String infoText = "";
         if (district.hasColony)
         {
-            infoText += "Colony total population: " + (district.menCount + district.womenCount) + ".\n";
-            infoText += "Men: " + district.menCount + ". Women: " + district.womenCount + ".\n";
-            infoText += "Average level of life: " + district.averageLevelOfLifePoints + ".\n";
+            infoText += "Colony total population: " + Floor (district.menCount + district.womenCount) + ".\n";
+            infoText += "Men: " + Floor (district.menCount) + ". Women: " + Floor (district.womenCount) + ".\n";
+            infoText += "Average level of life: " + Floor (district.averageLevelOfLifePoints * 100.0f) / 100.0f + ".\n";
             infoText += "\n";
         }
         
         if (district.nativesCount > 0)
         {
-            infoText += "Natives population: " + district.nativesCount + ".\n";
-            infoText += "Natives fighting tech level: " + district.nativesFightingTechnologyLevel + ".\n";
-            infoText += "Natives agressiveness: " + district.nativesAggressiveness + ".\n";
+            infoText += "Natives population: " + Floor (district.nativesCount) + ".\n";
+            infoText += "Natives fighting tech level: " + Floor (district.nativesFightingTechnologyLevel * 100.0f) / 100.0f + ".\n";
+            infoText += "Natives agressiveness: " + Floor (district.nativesAggressiveness * 100.0f) / 100.0f + ".\n";
             
             infoText += "Natives character: ";
             if (district.nativesCharacter == NATIVES_CHARATER_AGGRESSIVE)
