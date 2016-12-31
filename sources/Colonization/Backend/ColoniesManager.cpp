@@ -99,11 +99,7 @@ void ColoniesManager::ProcessColonyFarmsEvolution (District *colony, float timeS
         evolutionModifer *= investitionsModifer;
     }
     else
-    {
-        evolutionModifer /= colony->GetLandAverageFertility ();
-        evolutionModifer /= climateModifer;
-        evolutionModifer /= investitionsModifer;
-    }
+        evolutionModifer = 0.0f;
 
     colony->SetFarmsEvolutionPoints (colony->GetFarmsEvolutionPoints () + coloniesBasicEvolution_ * evolutionModifer * timeStep);
 }

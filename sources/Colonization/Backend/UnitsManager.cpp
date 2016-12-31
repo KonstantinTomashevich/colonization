@@ -37,6 +37,12 @@ void UnitsManager::SettleColonizator (Unit *unit, Map *map)
     {
         colony->SetColony (true);
         colony->SetColonyOwnerName (unit->GetOwnerPlayerName ());
+
+        colony->SetFarmsEvolutionPoints (2.0f);
+        colony->SetMinesEvolutionPoints (0.5f);
+        colony->SetIndustryEvolutionPoints (0.1f);
+        colony->SetLogisticsEvolutionPoints (0.5f);
+        colony->SetDefenseEvolutionPoints (0.25f);
     }
 
     if (colony->HasColony () && colony->GetColonyOwnerName () != unit->GetOwnerPlayerName ())
