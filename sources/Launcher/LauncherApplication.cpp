@@ -139,15 +139,16 @@ void LauncherApplication::Stop ()
             currentActivities_.At (index)->Stop ();
 }
 
-void LauncherApplication::SetupActivityNextFrame (Urho3D::SharedPtr <Colonization::Activity> activity)
+void LauncherApplication::SetupActivityNextFrame (Colonization::Activity *activity)
 {
-    assert (activity.NotNull ());
-    activitiesToSetup_.Push (activity);
+    assert (activity);
+    activitiesToSetup_.Push (Urho3D::SharedPtr <Colonization::Activity> (activity));
 }
 
-void LauncherApplication::StopActivityNextFrame (Urho3D::SharedPtr <Colonization::Activity> activity)
+void LauncherApplication::StopActivityNextFrame (Colonization::Activity *activity)
 {
-    activitiesToStop_.Push (activity);
+    assert (activity);
+    activitiesToStop_.Push (Urho3D::SharedPtr <Colonization::Activity> (activity));
 }
 
 int LauncherApplication::GetActivitiesCount ()
@@ -155,7 +156,7 @@ int LauncherApplication::GetActivitiesCount ()
     return currentActivities_.Size ();
 }
 
-Urho3D::SharedPtr <Colonization::Activity> LauncherApplication::GetActivityByIndex (int index)
+Colonization::Activity *LauncherApplication::GetActivityByIndex (int index)
 {
     assert (index < currentActivities_.Size ());
     return currentActivities_.At (index);

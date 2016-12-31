@@ -22,10 +22,10 @@ public:
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     virtual void Stop ();
 
-    void SetupActivityNextFrame (Urho3D::SharedPtr <Colonization::Activity> activity);
-    void StopActivityNextFrame (Urho3D::SharedPtr <Colonization::Activity> activity);
+    void SetupActivityNextFrame (Colonization::Activity *activity);
+    void StopActivityNextFrame (Colonization::Activity *activity);
     int GetActivitiesCount ();
-    Urho3D::SharedPtr <Colonization::Activity> GetActivityByIndex (int index);
+    Colonization::Activity *GetActivityByIndex (int index);
 };
 }
 
