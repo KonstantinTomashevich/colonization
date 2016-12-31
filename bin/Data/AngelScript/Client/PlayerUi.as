@@ -101,7 +101,7 @@ class PlayerUi : ScriptObject
         Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
         districtInfoWindow.visible = true;
         
-        Map @map = node.parent.vars ["map"].GetPtr ();
+        Map @map = scene.GetChild ("map").GetComponent ("Map");  
         StringHash districtHash = node.parent.GetChild ("screenPressesHandlerScriptNode").
                                 vars ["selectedHash"].GetStringHash ();
         District @district = map.GetDistrictByHash (districtHash);

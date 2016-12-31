@@ -91,7 +91,7 @@ class ScreenPressesHandler : ScriptObject
                         UnitSelected (firstReplicated.GetComponent ("Unit"));
                     else
                     {
-                        if (ofirstReplicated.HasComponent ("District"))
+                        if (firstReplicated.HasComponent ("District"))
                             DistrictSelected (firstReplicated.GetComponent ("District"));
                         else
                             ClearSelection ();
