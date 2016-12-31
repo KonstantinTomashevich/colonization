@@ -42,83 +42,80 @@ class SceneManager : ScriptObject
     
     protected void UpdateDistricts ()
     {
-        Map @map = node.parent.vars ["map"].GetPtr ();
-        Array <Node @> districtsNodes = scene.GetChild ("map").GetChildren ();
+        Map @map = scene.GetChild ("map").GetComponent ("Map");
+        Array <Node @> districtsNodes = scene.GetChild ("map").GetChildrenWithComponent ("District");
         
         for (int index = 0; index < districtsNodes.length; index++)
         {
             Node @districtNode = districtsNodes [index];
-            District @district = map.GetDistrictByIndex (index);
+            District @district = districtNode.GetComponent ("District");
             
             if (districtNode.GetChild ("localName") is null)
                 LoadPrefabOf (districtNode, true, "localName", "Objects/DistrictNameLocal.xml");
             
-            Vector3 position = districtNode.vars ["colonyPosition"].GetVector3 ();
-            position.z += Abs (districtNode.vars ["unitPosition"].GetVector3 ().z - 
-                        districtNode.vars ["colonyPosition"].GetVector3 ().z) / 2;
-            districtNode.GetChild ("localName").position = position;
+            Vector3 position = district.colonyPosition;
+            position.z += Abs (district.unitPosition.z - district.colonyPosition.z) / 2;
+            districtNode.GetChild ("localName").worldPosition = position;
             Text3D @text = districtNode.GetChild ("localName").GetChild ("text").GetComponent ("Text3D");
-            text.text = district.name_;
+            text.text = district.name;
             
-            if (district.hasColony_)
+            if (district.hasColony)
             {
                 if (districtNode.GetChild ("localColony") is null)
                     LoadPrefabOf (districtNode, true, "localColony", "Objects/ColonyLocal.xml");
                 
-                Vector3 colonyPosition = districtNode.vars ["colonyPosition"].GetVector3 ();
+                Vector3 colonyPosition = district.colonyPosition;
                 districtNode.GetChild ("localColony").position = colonyPosition;
                 Text3D @text = districtNode.GetChild ("localColony").GetChild ("playerText").GetComponent ("Text3D");
-                text.text = district.colonyOwnerName_;
+                text.text = district.colonyOwnerName;
             }
         }
     }
     
     protected void UpdateUnits ()
     {
-        Map @map = node.parent.vars ["map"].GetPtr ();
-        UnitsContainer @unitsContainer = node.parent.vars ["unitsContainer"].GetPtr ();
+        Map @map = scene.GetChild ("map").GetComponent ("Map");
+        Array <Node @> unitsNodes = scene.GetChild ("units").GetChildrenWithComponent ("Unit");
         VariantMap unitsInDistrictsCounts;
         VariantMap placedUnitsInDistrictsCounts;
         
-        for (int index = 0; index < unitsContainer.GetUnitsCount(); index++)
+        for (int index = 0; index < unitsNodes.length; index++)
         {
-            Unit @unit = unitsContainer.GetUnitByIndex (index);
-            unitsInDistrictsCounts [unit.position_.name_] = 
-                unitsInDistrictsCounts [unit.position_.name_].GetInt () + 1;
+            Unit @unit = unitsNodes [index].GetComponent ("Unit");
+            unitsInDistrictsCounts [unit.positionHash] = 
+                unitsInDistrictsCounts [unit.positionHash].GetInt () + 1;
         }
         
-        Array <Node @> unitsNodes = scene.GetChild ("units").GetChildren ();
-        for (int index = 0; index < unitsContainer.GetUnitsCount(); index++)
+        for (int index = 0; index < unitsNodes.length; index++)
         {
-            Unit @unit = unitsContainer.GetUnitByIndex (index);
             Node @unitNode = unitsNodes [index];
+            Unit @unit = unitNode.GetComponent ("Unit");
             
             if (unitNode.GetChild ("local") is null)
             {
-                if (unit.unitType_ == UNIT_FLEET)
+                if (unit.unitType == UNIT_FLEET)
                     LoadPrefabOf (unitNode, true, "local", "Objects/FleetUnitLocal.xml");
-                else if (unit.unitType_ == UNIT_TRADERS)
+                else if (unit.unitType == UNIT_TRADERS)
                     LoadPrefabOf (unitNode, true, "local", "Objects/TradersUnitLocal.xml");
-                else if (unit.unitType_ == UNIT_COLONIZATORS)
+                else if (unit.unitType == UNIT_COLONIZATORS)
                     LoadPrefabOf (unitNode, true, "local", "Objects/ColonizatorsUnitLocal.xml");
-                else if (unit.unitType_ == UNIT_ARMY)
+                else if (unit.unitType == UNIT_ARMY)
                     LoadPrefabOf (unitNode, true, "local", "Objects/ArmyUnitLocal.xml");
             }
             
-            int unitsCount = unitsInDistrictsCounts [unit.position_.name_].GetInt ();
-            int placedUnitsCount = placedUnitsInDistrictsCounts [unit.position_.name_].GetInt ();
-            placedUnitsInDistrictsCounts [unit.position_.name_] =
-                placedUnitsInDistrictsCounts [unit.position_.name_].GetInt () + 1;
+            int unitsCount = unitsInDistrictsCounts [unit.positionHash].GetInt ();
+            int placedUnitsCount = placedUnitsInDistrictsCounts [unit.positionHash].GetInt ();
+            placedUnitsInDistrictsCounts [unit.positionHash] = placedUnitsCount + 1;
                 
             float placeAmplitude = 0.25f;
             float placeStep = 2 * placeAmplitude / unitsCount;
-            Vector3 position = unit.position_.unitPosition_;  
+            Vector3 position = map.GetDistrictByHash (unit.positionHash).unitPosition;  
             position.x += placedUnitsCount * placeStep - placeAmplitude;
-            position.y += placedUnitsCount * 0.04f;
-            unitNode.GetChild ("local").position = position;
+            position.y += placedUnitsCount * 0.035f;
+            unitNode.GetChild ("local").worldPosition = position;
                 
             Text3D @text = unitNode.GetChild ("local").GetChild ("playerText").GetComponent ("Text3D");
-            text.text = unit.ownerPlayer_;
+            text.text = unit.ownerPlayerName;
         }
     }
     
