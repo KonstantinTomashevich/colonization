@@ -19,7 +19,7 @@ public:
 
     virtual void Setup ();
     virtual void Start ();
-    void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void UpdateActivities (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     virtual void Stop ();
 
     void SetupActivityNextFrame (Colonization::Activity *activity);

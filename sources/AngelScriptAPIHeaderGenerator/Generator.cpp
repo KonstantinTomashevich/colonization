@@ -1,18 +1,7 @@
 #include "Generator.hpp"
 #include "Defines.hpp"
 #include <Urho3D/IO/Log.h>
-
-#include <Colonization/AngelScriptBinders/BindActivity.hpp>
-#include <Colonization/AngelScriptBinders/BindDistrict.hpp>
-#include <Colonization/AngelScriptBinders/BindMap.hpp>
-#include <Colonization/AngelScriptBinders/BindNetworkMessageType.hpp>
-#include <Colonization/AngelScriptBinders/BindHostActivity.hpp>
-#include <Colonization/AngelScriptBinders/BindMainMenuActivity.hpp>
-#include <Colonization/AngelScriptBinders/BindIngamePlayerActivity.hpp>
-#include <Colonization/AngelScriptBinders/BindUnit.hpp>
-#include <Colonization/AngelScriptBinders/BindPlayerActionType.hpp>
-#include <Colonization/AngelScriptBinders/BindInternalTradeArea.hpp>
-#include <Colonization/AngelScriptBinders/BindPlayerInfo.hpp>
+#include <Colonization/Utils/BindAll.hpp>
 
 URHO3D_DEFINE_APPLICATION_MAIN (Generator)
 Generator::Generator (Urho3D::Context *context) :
@@ -39,18 +28,7 @@ void Generator::Start ()
 {
     Urho3D::Script *script = new Urho3D::Script (context_);
     context_->RegisterSubsystem (script);
-
-    Colonization::BindActivity (script);
-    Colonization::BindDistrict (script);
-    Colonization::BindMap (script);
-    Colonization::BindNetworkMessageType (script);
-    Colonization::BindHostActivity (script);
-    Colonization::BindMainMenuActivity (script);
-    Colonization::BindIngamePlayerActivity (script);
-    Colonization::BindUnit (script);
-    Colonization::BindPlayerActionType (script);
-    Colonization::BindInternalTradeArea (script);
-    Colonization::BindPlayerInfo (script);
+    Colonization::BindAll (script);
 
     Urho3D::Log *log = context_->GetSubsystem <Urho3D::Log> ();
     log->SetQuiet (true);
