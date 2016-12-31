@@ -7,28 +7,28 @@ namespace Colonization
 {
 float HeuristicDistanceForPathFinding (District *goal, District *next);
 
-class Map : public Urho3D::Object
+class Map : public Urho3D::Component
 {
-URHO3D_OBJECT (Map, Object)
+URHO3D_OBJECT (Map, Component)
 protected:
-    Urho3D::PODVector <District *> districts_;
+    Urho3D::Vector <Urho3D::SharedPtr <District> > districts_;
 
 public:
     Map (Urho3D::Context *context);
     virtual ~Map ();
-
-    void UpdateDataNode (Urho3D::Node *dataNode, bool rewriteDistrictsPolygons);
-    void ReadDataFromNode (Urho3D::Node *dataNode);
+    static void RegisterObject (Urho3D::Context *context);
 
     District *GetDistrictByIndex (int index);
     District *GetDistrictByNameHash (Urho3D::StringHash nameHash);
     District *GetDistrictByHash (Urho3D::StringHash hash);
     int GetDistrictsCount ();
-    void AddDistrict (District *district);
+    District *CreateDistrict (Urho3D::String districtName);
 
-    void UpdateNeighborsOfDistricts ();
-    void ClearDistricts ();
-    Urho3D::PODVector <District *> FindPath(District *from, District *to,
-                                            Urho3D::String playerName, bool canGoThroughColonies, bool isColonizator);
+    void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void RecalculateDistrictsNeighbors ();
+    void ClearAndRemoveDistricts ();
+    Urho3D::PODVector <Urho3D::StringHash> FindPath(
+            Urho3D::StringHash startDistrictHash, Urho3D::StringHash targetDistrictHash,
+            Urho3D::String playerName, bool canGoThroughColonies, bool isColonizator);
 };
 }

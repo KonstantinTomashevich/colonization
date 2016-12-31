@@ -5,7 +5,6 @@
 #include <Colonization/Utils/Activity.hpp>
 #include <Colonization/Activities/IngamePlayerActivity.hpp>
 #include <Colonization/AngelScriptBinders/BindActivity.hpp>
-#include <Colonization/AngelScriptBinders/BindingMacroses.hpp>
 
 namespace Colonization
 {
@@ -17,34 +16,11 @@ void BindIngamePlayerActivity (Urho3D::Script *script)
     Urho3D::RegisterSubclass <Activity, IngamePlayerActivity> (engine, "Activity", "IngamePlayerActivity");
     BindActivityInterface (script, "IngamePlayerActivity");
 
-    CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod ("IngamePlayerActivity", "String get_serverAdress ()",
-                                              asMETHOD (IngamePlayerActivity, GetServerAdress), asCALL_THISCALL)
-            );
-
-    CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod ("IngamePlayerActivity", "void set_serverAdress (String serverAdress)",
-                                              asMETHOD (IngamePlayerActivity, SetServerAdress), asCALL_THISCALL)
-            );
-
-    CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod ("IngamePlayerActivity", "int get_serverPort ()",
-                                              asMETHOD (IngamePlayerActivity, GetServerPort), asCALL_THISCALL)
-            );
-
-    CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod ("IngamePlayerActivity", "void set_serverPort (int serverPort)",
-                                              asMETHOD (IngamePlayerActivity, SetServerPort), asCALL_THISCALL)
-            );
-
-    CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod ("IngamePlayerActivity", "String get_playerName ()",
-                                              asMETHOD (IngamePlayerActivity, GetPlayerName), asCALL_THISCALL)
-            );
-
-    CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod ("IngamePlayerActivity", "void set_playerName (String playerName)",
-                                              asMETHOD (IngamePlayerActivity, SetPlayerName), asCALL_THISCALL)
-            );
+    engine->RegisterObjectMethod ("IngamePlayerActivity", "String get_serverAdress ()", asMETHOD (IngamePlayerActivity, GetServerAdress), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("IngamePlayerActivity", "void set_serverAdress (String serverAdress)", asMETHOD (IngamePlayerActivity, SetServerAdress), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("IngamePlayerActivity", "int get_serverPort ()", asMETHOD (IngamePlayerActivity, GetServerPort), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("IngamePlayerActivity", "void set_serverPort (int serverPort)", asMETHOD (IngamePlayerActivity, SetServerPort), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("IngamePlayerActivity", "String get_playerName ()", asMETHOD (IngamePlayerActivity, GetPlayerName), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("IngamePlayerActivity", "void set_playerName (String playerName)", asMETHOD (IngamePlayerActivity, SetPlayerName), asCALL_THISCALL);
 }
 }

@@ -5,7 +5,6 @@
 #include <Colonization/Utils/Activity.hpp>
 #include <Colonization/Activities/MainMenuActivity.hpp>
 #include <Colonization/AngelScriptBinders/BindActivity.hpp>
-#include <Colonization/AngelScriptBinders/BindingMacroses.hpp>
 
 namespace Colonization
 {

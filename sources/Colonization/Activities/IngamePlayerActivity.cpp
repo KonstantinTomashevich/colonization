@@ -33,7 +33,7 @@ void IngamePlayerActivity::Start ()
 
     Urho3D::VariantVector executionParameters;
     executionParameters.Push (application_);
-    angelScript_->Execute ("void set_launcherApplication (LauncherApplication @launcherApplication)", executionParameters);
+    angelScript_->Execute ("void set_activitiesApplication (ActivitiesApplication @activitiesApplication)", executionParameters);
 
     executionParameters.Clear ();
     executionParameters.Push (playerName_);

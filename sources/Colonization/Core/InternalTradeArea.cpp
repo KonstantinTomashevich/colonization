@@ -2,7 +2,10 @@
 #include "InternalTradeArea.hpp"
 #include <Colonization/Core/District.hpp>
 #include <Colonization/Core/Map.hpp>
+#include <Colonization/Utils/Categories.hpp>
+
 #include <Urho3D/Core/Context.h>
+#include <Urho3D/IO/Log.h>
 
 namespace Colonization
 {
@@ -12,7 +15,7 @@ void InternalTradeArea::ConstructVectorOfRealDistricts (Map *map, Urho3D::PODVec
         output.Push (map->GetDistrictByHash (districtsHashes_.At (index)));
 }
 
-float InternalTradeArea::CalculateTotalEvolutionOf (Urho3D::StringHash evolutionBranch, Urho3D::PODVector<District *> &realDistricts)
+float InternalTradeArea::CalculateTotalEvolutionOf (Urho3D::StringHash evolutionBranch, Urho3D::PODVector <District *> &realDistricts)
 {
     float totalEvolution = 0.0f;
     for (int index = 0; index < realDistricts.Size (); index++)
@@ -20,20 +23,20 @@ float InternalTradeArea::CalculateTotalEvolutionOf (Urho3D::StringHash evolution
         District *district = realDistricts.At (index);
         assert (district);
         if (evolutionBranch == Urho3D::StringHash ("farms"))
-            totalEvolution += district->farmsEvolutionPoints_;
+            totalEvolution += district->GetFarmsEvolutionPoints ();
         else if (evolutionBranch == Urho3D::StringHash ("mines"))
-            totalEvolution += district->minesEvolutionPoints_;
+            totalEvolution += district->GetMinesEvolutionPoints ();
         else if (evolutionBranch == Urho3D::StringHash ("industry"))
-            totalEvolution += district->industryEvolutionPoints_;
+            totalEvolution += district->GetIndustryEvolutionPoints ();
         else if (evolutionBranch == Urho3D::StringHash ("logistics"))
-            totalEvolution += district->logisticsEvolutionPoints_;
+            totalEvolution += district->GetLogisticsEvolutionPoints ();
         else if (evolutionBranch == Urho3D::StringHash ("defense"))
-            totalEvolution += district->defenseEvolutionPoints_;
+            totalEvolution += district->GetDefenseEvolutionPoints ();
     }
     return totalEvolution;
 }
 
-float InternalTradeArea::CalculateTotalProductionConsumptionOf (Urho3D::StringHash evolutionBranch, Urho3D::PODVector<District *> &realDistricts)
+float InternalTradeArea::CalculateTotalProductionConsumptionOf (Urho3D::StringHash evolutionBranch, Urho3D::PODVector <District *> &realDistricts)
 {
     float totalConsumption = 0.0f;
     for (int index = 0; index < realDistricts.Size (); index++)
@@ -56,9 +59,9 @@ float InternalTradeArea::CalculateDistrictProductionConsumptionOfFarms (District
     float minesConsumption = context_->GetGlobalVar ("farmsProductionMinesConsumption").GetFloat ();
     float industryConsumption = context_->GetGlobalVar ("farmsProductionIndustryConsumption").GetFloat ();
 
-    float totalConsumption = oneColinistConsumption * (district->mansCount_ + district->womenCount_);
-    totalConsumption += minesConsumption * district->minesEvolutionPoints_;
-    totalConsumption += industryConsumption * district->industryEvolutionPoints_;
+    float totalConsumption = oneColinistConsumption * (district->GetMenCount () + district->GetWomenCount ());
+    totalConsumption += minesConsumption * district->GetMinesEvolutionPoints ();
+    totalConsumption += industryConsumption * district->GetIndustryEvolutionPoints ();
     return totalConsumption * Urho3D::Random (0.9f, 1.1f);
 }
 
@@ -68,9 +71,9 @@ float InternalTradeArea::CalculateDistrictProductionConsumptionOfMines (District
     float farmsConsumption = context_->GetGlobalVar ("minesProductionFarmsConsumption").GetFloat ();
     float industryConsumption = context_->GetGlobalVar ("minesProductionIndustryConsumption").GetFloat ();
 
-    float totalConsumption = oneColinistConsumption * (district->mansCount_ + district->womenCount_);
-    totalConsumption += farmsConsumption * district->farmsEvolutionPoints_;
-    totalConsumption += industryConsumption * district->industryEvolutionPoints_;
+    float totalConsumption = oneColinistConsumption * (district->GetMenCount () + district->GetWomenCount ());
+    totalConsumption += farmsConsumption * district->GetFarmsEvolutionPoints ();
+    totalConsumption += industryConsumption * district->GetIndustryEvolutionPoints ();
     return totalConsumption * Urho3D::Random (0.9f, 1.1f);
 }
 
@@ -80,13 +83,13 @@ float InternalTradeArea::CalculateDistrictProductionConsumptionOfIndustry (Distr
     float farmsConsumption = context_->GetGlobalVar ("industryProductionFarmsConsumption").GetFloat ();
     float minesConsumption = context_->GetGlobalVar ("industryProductionMinesConsumption").GetFloat ();
 
-    float totalConsumption = oneColinistConsumption * (district->mansCount_ + district->womenCount_);
-    totalConsumption += farmsConsumption * district->farmsEvolutionPoints_;
-    totalConsumption += minesConsumption * district->minesEvolutionPoints_;
+    float totalConsumption = oneColinistConsumption * (district->GetMenCount () + district->GetWomenCount ());
+    totalConsumption += farmsConsumption * district->GetFarmsEvolutionPoints ();
+    totalConsumption += minesConsumption * district->GetMinesEvolutionPoints ();
     return totalConsumption * Urho3D::Random (0.9f, 1.1f);
 }
 
-InternalTradeArea::InternalTradeArea (Urho3D::Context *context) : Urho3D::Object (context),
+InternalTradeArea::InternalTradeArea (Urho3D::Context *context) : Urho3D::Component (context),
     districtsHashes_ ()
 {
 
@@ -97,7 +100,15 @@ InternalTradeArea::~InternalTradeArea ()
 
 }
 
-TradeDistrictProcessingInfo InternalTradeArea::ProcessTrade (Map *map)
+void InternalTradeArea::RegisterObject (Urho3D::Context *context)
+{
+    context->RegisterFactory <InternalTradeArea> (COLONIZATION_CORE_CATEGORY);
+    using namespace Urho3D;
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Districts hashes", GetDistrictsHashesArrayAttribute, SetDistrictsHashesArrayAttribute,
+                                     VariantVector, Variant::emptyVariantVector, AM_DEFAULT);
+}
+
+Urho3D::SharedPtr <TradeDistrictProcessingInfo> InternalTradeArea::ProcessTrade(Map *map)
 {
     Urho3D::PODVector <District *> realDistricts;
     ConstructVectorOfRealDistricts (map, realDistricts);
@@ -120,25 +131,25 @@ TradeDistrictProcessingInfo InternalTradeArea::ProcessTrade (Map *map)
     float minesExternalProductionCost = context_->GetGlobalVar ("minesProductionExternalCost").GetFloat ();
     float industryExternalProductionCost = context_->GetGlobalVar ("industryProductionExternalCost").GetFloat ();
 
-    TradeDistrictProcessingInfo result;
-    result.unusedEvolutionPoints_ ["farms"] = totalFarmsEvolution - totalFarmsConsumption;
-    result.unusedEvolutionPoints_ ["mines"] = totalMinesEvolution - totalMinesConsumption;
-    result.unusedEvolutionPoints_ ["industry"] = totalIndustryEvolution - totalIndustryConsumption;
+    Urho3D::SharedPtr <TradeDistrictProcessingInfo> result (new TradeDistrictProcessingInfo (context_));
+    result->SetUnusedEvolutionPointsOf ("farms", totalFarmsEvolution - totalFarmsConsumption);
+    result->SetUnusedEvolutionPointsOf ("mines", totalMinesEvolution - totalMinesConsumption);
+    result->SetUnusedEvolutionPointsOf ("industry", totalIndustryEvolution - totalIndustryConsumption);
 
     float soldFarmsProduction = (totalFarmsConsumption > totalFarmsEvolution) ? totalFarmsEvolution : totalFarmsConsumption;
     float soldMinesProduction = (totalMinesConsumption > totalMinesEvolution) ? totalMinesEvolution : totalMinesConsumption;
     float soldIndustryProduction = (totalIndustryConsumption > totalIndustryEvolution) ? totalIndustryEvolution : totalIndustryConsumption;
 
-    result.soldTradeGoodsCost_ = soldFarmsProduction * farmsInternalProductionCost +
-            soldMinesProduction * minesInternalProductionCost +
-            soldIndustryProduction * industryInternalProductionCost;
+    result->SetSoldTradeGoodsCost (soldFarmsProduction * farmsInternalProductionCost +
+                                   soldMinesProduction * minesInternalProductionCost +
+                                   soldIndustryProduction * industryInternalProductionCost);
 
-    result.unsoldTradeGoodsCost_ = (totalFarmsEvolution - soldFarmsProduction) * farmsExternalProductionCost +
-            (totalMinesEvolution - soldMinesProduction) * minesExternalProductionCost +
-            (totalIndustryEvolution - soldIndustryProduction) * industryExternalProductionCost;
+    result->SetUnsoldTradeGoodsCost ( (totalFarmsEvolution - soldFarmsProduction) * farmsExternalProductionCost +
+                                      (totalMinesEvolution - soldMinesProduction) * minesExternalProductionCost +
+                                      (totalIndustryEvolution - soldIndustryProduction) * industryExternalProductionCost);
 
-    result.logisticsBonus_ = totalLogisticsEvolution / (districtsHashes_.Size () * 6.5f);
-    result.defenseBonus_ = totalDefenseEvolution / (districtsHashes_.Size () * 5.0f);
+    result->SetLogisticsBonus (totalLogisticsEvolution / (districtsHashes_.Size () * 6.5f));
+    result->SetDefenseBonus (totalDefenseEvolution / (districtsHashes_.Size () * 5.0f));
     return result;
 }
 
@@ -167,5 +178,91 @@ void InternalTradeArea::AddDistrictHash (Urho3D::StringHash districtHash)
 bool InternalTradeArea::ContainsDistrictHash (Urho3D::StringHash districtHash)
 {
     return districtsHashes_.Contains (districtHash);
+}
+
+bool InternalTradeArea::RemoveDistrictHash (Urho3D::StringHash districtHash)
+{
+    return districtsHashes_.Remove (districtHash);
+}
+
+Urho3D::VariantVector InternalTradeArea::GetDistrictsHashesArrayAttribute() const
+{
+    Urho3D::VariantVector variantVector;
+    for (int index = 0; index < districtsHashes_.Size (); index++)
+        variantVector.Push (Urho3D::Variant (districtsHashes_.At (index)));
+    return variantVector;
+}
+
+void InternalTradeArea::SetDistrictsHashesArrayAttribute (const Urho3D::VariantVector &attribute)
+{
+    districtsHashes_.Clear ();
+    if (!attribute.Empty ())
+        for (int index = 0; index < attribute.Size (); index++)
+            districtsHashes_.Push (attribute.At (index).GetStringHash ());
+}
+
+TradeDistrictProcessingInfo::TradeDistrictProcessingInfo (Urho3D::Context *context) : Urho3D::Object (context),
+    unusedEvolutionPoints_ (),
+    unsoldTradeGoodsCost_ (0.0f),
+    soldTradeGoodsCost_ (0.0f),
+    logisticsBonus_ (1.0f),
+    defenseBonus_ (1.0f)
+{
+
+}
+
+TradeDistrictProcessingInfo::~TradeDistrictProcessingInfo ()
+{
+
+}
+
+float TradeDistrictProcessingInfo::GetUnusedEvolutionPointsOf (Urho3D::StringHash type)
+{
+    return unusedEvolutionPoints_ [type];
+}
+
+void TradeDistrictProcessingInfo::SetUnusedEvolutionPointsOf (Urho3D::StringHash type, float points)
+{
+    unusedEvolutionPoints_ [type] = points;
+}
+
+float TradeDistrictProcessingInfo::GetUnsoldTradeGoodsCost ()
+{
+    return unsoldTradeGoodsCost_;
+}
+
+void TradeDistrictProcessingInfo::SetUnsoldTradeGoodsCost (float unsoldTradeGoodsCost)
+{
+    unsoldTradeGoodsCost_ = unsoldTradeGoodsCost;
+}
+
+float TradeDistrictProcessingInfo::GetSoldTradeGoodsCost ()
+{
+    return soldTradeGoodsCost_;
+}
+
+void TradeDistrictProcessingInfo::SetSoldTradeGoodsCost (float soldTradeGoodsCost)
+{
+    soldTradeGoodsCost_ = soldTradeGoodsCost;
+}
+
+float TradeDistrictProcessingInfo::GetLogisticsBonus ()
+{
+    return logisticsBonus_;
+}
+
+void TradeDistrictProcessingInfo::SetLogisticsBonus (float logisticsBonus)
+{
+    logisticsBonus_ = logisticsBonus;
+}
+
+float TradeDistrictProcessingInfo::GetDefenseBonus ()
+{
+    return defenseBonus_;
+}
+
+void TradeDistrictProcessingInfo::SetDefenseBonus (float defenseBonus)
+{
+    defenseBonus_ = defenseBonus;
 }
 }

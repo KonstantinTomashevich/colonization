@@ -2,6 +2,8 @@
 #include "Player.hpp"
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/IO/Log.h>
+#include <Urho3D/Scene/Scene.h>
+
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Backend/ColoniesManager.hpp>
@@ -10,8 +12,8 @@ namespace Colonization
 {
 void Player::ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data)
 {
-    Map *map = (Map *) context_->GetGlobalVar ("Map").GetPtr ();
-    UnitsManager *unitsManager = (UnitsManager *) context_->GetGlobalVar ("UnitsManager").GetPtr ();
+    Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
+    UnitsManager *unitsManager = scene_->GetChild ("units")->GetComponent <UnitsManager> ();
     // Skip action type.
     data.ReadInt ();
 
@@ -21,34 +23,38 @@ void Player::ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data)
     Urho3D::StringHash unitHash = data.ReadStringHash ();
     Urho3D::StringHash targetDistrictHash = data.ReadStringHash ();
 
-    Unit *unit = unitsManager->GetUnitsContainer ()->GetUnitByHash (unitHash);
+    Unit *unit = unitsManager->GetUnitByHash (unitHash);
     District *target = map->GetDistrictByHash (targetDistrictHash);
 
     assert (unit);
     assert (target);
 
-    if (unit->ownerPlayer_ != name_)
+    if (unit->GetOwnerPlayerName () != name_)
         return;
 
-    if ((unit->unitType_ == UNIT_FLEET && target->isSea_) ||
-            (unit->unitType_ != UNIT_FLEET && target->hasColony_ && target->colonyOwnerName_ == name_) ||
-            (unit->unitType_ == UNIT_COLONIZATORS && !target->isSea_))
-        unit->way_ = map->FindPath (unit->position_, target, name_, unit->unitType_ != UNIT_FLEET, unit->unitType_ == UNIT_COLONIZATORS);
+    if ((unit->GetUnitType () == UNIT_FLEET && target->IsSea ()) ||
+            (unit->GetUnitType () != UNIT_FLEET && target->HasColony () && target->GetColonyOwnerName () == name_) ||
+            (unit->GetUnitType () == UNIT_COLONIZATORS && !target->IsSea ()))
+    {
+        unit->SetWay (map->FindPath (unit->GetPositionHash (), target->GetHash (), name_,
+                                     unit->GetUnitType () != UNIT_FLEET, unit->GetUnitType () == UNIT_COLONIZATORS));
+        unit->MarkNetworkUpdate ();
+    }
 }
 
 void Player::ProcessInvestToColonyAction (Urho3D::VectorBuffer data)
 {
-    Map *map = (Map *) context_->GetGlobalVar ("Map").GetPtr ();
-    ColoniesManager *coloniesManager = (ColoniesManager *) context_->GetGlobalVar ("ColoniesManager").GetPtr ();
+    Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
+    ColoniesManager *coloniesManager = scene_->GetComponent <ColoniesManager> ();
     // Skip action type.
     data.ReadInt ();
 
     Urho3D::StringHash targetDistrictHash = data.ReadStringHash ();
     District *targetDistrict = map->GetDistrictByHash (targetDistrictHash);
     assert (targetDistrict);
-    assert (!targetDistrict->isSea_);
-    assert (!targetDistrict->isImpassable_);
-    assert (!targetDistrict->hasColony_ || (targetDistrict->hasColony_ && targetDistrict->colonyOwnerName_ == name_));
+    assert (!targetDistrict->IsSea ());
+    assert (!targetDistrict->IsImpassable ());
+    assert (targetDistrict->HasColony () && targetDistrict->GetColonyOwnerName () == name_);
 
     Urho3D::StringHash investitionType = data.ReadStringHash ();
     float money = data.ReadFloat ();
@@ -63,8 +69,8 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
     // TODO: It's not a final version. May be rewrited later.
     if (gold_ >= 100.0f)
     {
-        Map *map = (Map *) context_->GetGlobalVar ("Map").GetPtr ();
-        UnitsManager *unitsManager = (UnitsManager *) context_->GetGlobalVar ("UnitsManager").GetPtr ();
+        Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
+        UnitsManager *unitsManager = scene_->GetChild ("units")->GetComponent <UnitsManager> ();
         // Skip action type.
         data.ReadInt ();
 
@@ -74,32 +80,36 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
         Urho3D::StringHash targetDistrictHash = data.ReadStringHash ();
         District *targetDistrict = map->GetDistrictByHash (targetDistrictHash);
         assert (targetDistrict);
-        assert (!targetDistrict->isSea_);
-        assert (!targetDistrict->isImpassable_);
-        assert (!targetDistrict->hasColony_ || (targetDistrict->hasColony_ && targetDistrict->colonyOwnerName_ == name_));
+        assert (!targetDistrict->IsSea ());
+        assert (!targetDistrict->IsImpassable ());
+        assert (!targetDistrict->HasColony () || (targetDistrict->HasColony () && targetDistrict->GetColonyOwnerName () == name_));
 
         gold_ -= 100.0f;
-        ColonizatorsUnit *colonizatorsUnit = new ColonizatorsUnit (context_);
-        colonizatorsUnit->colonizatorsCount_ = 100;
+        Unit *unit = unitsManager->CreateUnit ();
+        unit->SetUnitType (UNIT_COLONIZATORS);
+        unit->ColonizatorsUnitSetColonizatorsCount (100);
+        unit->SetOwnerPlayerName (name_);
+
         // TODO: Position is temporary! Will be rewrited!
-        colonizatorsUnit->position_ = map->GetDistrictByIndex (0 * 5 + 0); // [X * HEIGHT + Y] = (X, Y)
-        colonizatorsUnit->way_ = map->FindPath (colonizatorsUnit->position_, targetDistrict, name_, true, true);
-        assert (!colonizatorsUnit->way_.Empty ());
-        colonizatorsUnit->ownerPlayer_ = name_;
-        unitsManager->GetUnitsContainer ()->AddUnit (colonizatorsUnit);
+        unit->SetPositionHash (map->GetDistrictByIndex (0 * 5 + 0)->GetHash ()); // [X * HEIGHT + Y] = (X, Y)
+        unit->SetWay (map->FindPath (unit->GetPositionHash (), targetDistrict->GetHash (), name_, true, true));
+        unit->UpdateHash (unitsManager);
+        unit->MarkNetworkUpdate ();
+        assert (!unit->GetWay ().Empty ());
     }
 }
 
-Player::Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Connection *connection) : Urho3D::Object (context),
+Player::Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Connection *connection, Urho3D::Scene *scene) :
+    Urho3D::Object (context),
+    scene_ (scene),
     name_ (name),
     gold_ (0.0f),
     points_ (0.0f),
     actionsSequence_ (),
     connection_ (connection)
 {
-#ifndef COLONIZIATION_ENABLE_FUNCTIONS_FOR_TESTS
+    assert (scene_);
     assert (connection);
-#endif
     assert (!name.Empty ());
 }
 
@@ -177,6 +187,11 @@ void Player::SetGold (float gold)
 Urho3D::Connection *Player::GetConnection ()
 {
     return connection_;
+}
+
+Urho3D::Scene *Player::GetScene ()
+{
+    return scene_;
 }
 
 float Player::GetPoints ()

@@ -28,7 +28,7 @@ void MainMenuActivity::Start ()
 
     Urho3D::VariantVector executionParameters;
     executionParameters.Push (application_);
-    angelScriptGUI_->Execute ("void set_launcherApplication (LauncherApplication @launcherApplication)", executionParameters);
+    angelScriptGUI_->Execute ("void set_activitiesApplication (ActivitiesApplication @activitiesApplication)", executionParameters);
 }
 
 void MainMenuActivity::Update (float timeStep)

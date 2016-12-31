@@ -1,4 +1,6 @@
+#include <Colonization/BuildConfiguration.hpp>
 #include "Activity.hpp"
+#include <Colonization/Utils/ActivitiesApplication.hpp>
 
 namespace Colonization
 {
@@ -12,12 +14,12 @@ Activity::~Activity ()
 
 }
 
-void *Activity::GetApplication ()
+ActivitiesApplication *Activity::GetApplication()
 {
     return application_;
 }
 
-void Activity::SetApplication (void *application)
+void Activity::SetApplication (ActivitiesApplication *application)
 {
     application_ = application;
 }

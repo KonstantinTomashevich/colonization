@@ -32,6 +32,7 @@ class Player : public Urho3D::Object
 {
 URHO3D_OBJECT (Player, Object)
 protected:
+    Urho3D::Scene *scene_;
     Urho3D::String name_;
     float points_;
     float gold_;
@@ -42,7 +43,7 @@ protected:
     void ProcessInvestToColonyAction (Urho3D::VectorBuffer data);
     void ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer data);
 public:
-    Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Connection *connection);
+    Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Connection *connection, Urho3D::Scene *scene);
     virtual ~Player ();
 
     void Update (float delta);
@@ -54,9 +55,12 @@ public:
     int GetActionsCount ();
 
     Urho3D::String GetName ();
-    float GetGold ();
-    void SetGold (float gold);
     Urho3D::Connection *GetConnection ();
+    Urho3D::Scene *GetScene ();
+
+    float GetGold ();
+    void SetGold (float gold);   
+
     float GetPoints ();
     void SetPoints (float points);
 };

@@ -5,10 +5,11 @@
 #include <Urho3D/Network/Connection.h>
 #include <Urho3D/IO/Log.h>
 #include <Colonization/Backend/PlayersManager.hpp>
+#include <Colonization/Utils/Categories.hpp>
 
 namespace Colonization
 {
-MessagesHandler::MessagesHandler (Urho3D::Context *context) : Urho3D::Object (context)
+MessagesHandler::MessagesHandler (Urho3D::Context *context) : Urho3D::Component (context)
 {
     SubscribeToEvent (Urho3D::E_CLIENTIDENTITY, URHO3D_HANDLER (MessagesHandler, HandleClientIdentity));
     SubscribeToEvent (Urho3D::E_NETWORKMESSAGE, URHO3D_HANDLER (MessagesHandler, HandleNetworkMessage));
@@ -19,11 +20,16 @@ MessagesHandler::~MessagesHandler ()
 
 }
 
+void MessagesHandler::RegisterObject (Urho3D::Context *context)
+{
+    context->RegisterFactory <MessagesHandler> (COLONIZATION_SERVER_ONLY_CATEGORY);
+}
+
 void MessagesHandler::HandleClientIdentity (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     Urho3D::Connection *connection = (Urho3D::Connection *)
             eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
-    PlayersManager *playersManager = (PlayersManager *) context_->GetGlobalVar ("PlayersManager").GetPtr ();
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
     assert (playersManager);
 
     Urho3D::String name = connection->GetIdentity () ["Name"].GetString ();
@@ -36,7 +42,7 @@ void MessagesHandler::HandleClientIdentity (Urho3D::StringHash eventType, Urho3D
 
 void MessagesHandler::HandleNetworkMessage (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    PlayersManager *playersManager = (PlayersManager *) context_->GetGlobalVar ("PlayersManager").GetPtr ();
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
     assert (playersManager);
 
     Urho3D::Connection *connection = (Urho3D::Connection *)

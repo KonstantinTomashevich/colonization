@@ -1,7 +1,7 @@
 #pragma once
-#include <Urho3D/Core/Object.h>
+#include <Urho3D/Scene/Component.h>
 #include <Colonization/Backend/Player.hpp>
-#include <Colonization/Backend/GameStateManager.hpp>
+#include <Colonization/Activities/HostActivity.hpp>
 
 namespace Colonization
 {
@@ -21,12 +21,13 @@ enum NetworkMessageType
     // TODO: To be continued.
 };
 
-class MessagesHandler : public Urho3D::Object
+class MessagesHandler : public Urho3D::Component
 {
-URHO3D_OBJECT (MessagesHandler, Object)
+URHO3D_OBJECT (MessagesHandler, Component)
 public:
     MessagesHandler (Urho3D::Context *context);
     virtual ~MessagesHandler ();
+    static void RegisterObject (Urho3D::Context *context);
 
     void HandleClientIdentity (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     void HandleNetworkMessage (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
