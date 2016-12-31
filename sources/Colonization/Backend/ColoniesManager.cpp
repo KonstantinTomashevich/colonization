@@ -30,6 +30,7 @@ void ColoniesManager::ProcessColony (District *colony, float timeStep)
     ProcessColonyDefenseEvolution (colony, timeStep);
     // TODO: Implement average level of life calculation.
     colony->SetAverageLevelOfLifePoints (1.0f);
+    colony->MarkNetworkUpdate ();
 }
 
 void ColoniesManager::ProcessColonyPopulation (District *colony, float timeStep)

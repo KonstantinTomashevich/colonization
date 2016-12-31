@@ -56,6 +56,7 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
             Urho3D::SharedPtr <InternalTradeArea> tradeAreaSharedPtr (node->GetComponent <InternalTradeArea> ());
             UpdateTradeArea (tradeAreaSharedPtr, map, toScan.At (0), toScan);
             tradeAreas_.Push (tradeAreaSharedPtr);
+            tradeAreaSharedPtr->MarkNetworkUpdate ();
         }
         else
         {

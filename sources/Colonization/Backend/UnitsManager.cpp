@@ -51,6 +51,7 @@ void UnitsManager::SettleColonizator (Unit *unit, Map *map)
         colony->SetMenCount (colony->GetMenCount () + unit->ColonizatorsUnitGetColonizatorsCount () * 1.0f * mansPercent);
         colony->SetWomenCount (colony->GetWomenCount () + unit->ColonizatorsUnitGetColonizatorsCount () * 1.0f * (1.0f - mansPercent));
         unit->GetNode ()->Remove ();
+        colony->MarkNetworkUpdate ();
     }
 }
 
@@ -108,6 +109,7 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
             {
                 unitWay.Remove (unitWay.At (0));
                 unit->SetWay (unitWay);
+                unit->MarkNetworkUpdate ();
             }
 
             District *unitPosition = map->GetDistrictByHash (unit->GetPositionHash ());
@@ -139,6 +141,7 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
                 unitWay.Remove (unitWay.At (0));
                 unit->SetWayToNextDistrictProgressInPercents (0.0f);
                 unit->SetWay (unitWay);
+                unit->MarkNetworkUpdate ();
 
                 if (unitWay.Empty () && unit->GetUnitType () == UNIT_COLONIZATORS)
                     SettleColonizator (unit, map);

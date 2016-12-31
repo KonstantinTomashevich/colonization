@@ -87,11 +87,22 @@ void PlayersManager::UpdatePlayersInfos ()
 
             infoNode->SetName (player->GetName ());
             PlayerInfo *playerInfo = infoNode->GetComponent <PlayerInfo> ();
+            bool changed = false;
+
             if (playerInfo->GetName () != player->GetName ())
+            {
                 playerInfo->SetName (player->GetName ());
+                changed = true;
+            }
 
             if (playerInfo->GetPoints () != player->GetPoints ())
+            {
                 playerInfo->SetPoints (player->GetPoints ());
+                changed = true;
+            }
+
+            if (changed)
+                playerInfo->MarkNetworkUpdate ();
         }
         else
             playersInfosNodes.At (index)->Remove ();

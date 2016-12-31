@@ -35,8 +35,11 @@ void Player::ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data)
     if ((unit->GetUnitType () == UNIT_FLEET && target->IsSea ()) ||
             (unit->GetUnitType () != UNIT_FLEET && target->HasColony () && target->GetColonyOwnerName () == name_) ||
             (unit->GetUnitType () == UNIT_COLONIZATORS && !target->IsSea ()))
+    {
         unit->SetWay (map->FindPath (unit->GetPositionHash (), target->GetHash (), name_,
                                      unit->GetUnitType () != UNIT_FLEET, unit->GetUnitType () == UNIT_COLONIZATORS));
+        unit->MarkNetworkUpdate ();
+    }
 }
 
 void Player::ProcessInvestToColonyAction (Urho3D::VectorBuffer data)
@@ -90,6 +93,7 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
         // TODO: Position is temporary! Will be rewrited!
         unit->SetPositionHash (map->GetDistrictByIndex (0 * 5 + 0)->GetHash ()); // [X * HEIGHT + Y] = (X, Y)
         unit->SetWay (map->FindPath (unit->GetPositionHash (), targetDistrict->GetHash (), name_, true, true));
+        unit->MarkNetworkUpdate ();
         assert (!unit->GetWay ().Empty ());
     }
 }
