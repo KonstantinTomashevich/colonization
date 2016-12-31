@@ -39,7 +39,7 @@ class Player : ScriptObject
         XMLFile@ style = cache.GetResource ("XMLFile", "UI/DefaultStyle.xml");
         ui.root.defaultStyle = style;
         
-        /*Node @uiScriptNode = node.CreateChild ("uiScriptNode", LOCAL);
+        Node @uiScriptNode = node.CreateChild ("uiScriptNode", LOCAL);
         ScriptInstance @uiScript = uiScriptNode.CreateComponent ("ScriptInstance", LOCAL);
         uiScript.CreateObject (cache.GetResource ("ScriptFile",
                                                          "AngelScript/Client/PlayerUi.as"),
@@ -61,7 +61,7 @@ class Player : ScriptObject
         ScriptInstance @screenPressesHandlerScript = screenPressesHandlerScriptNode.CreateComponent ("ScriptInstance", LOCAL);
         screenPressesHandlerScript.CreateObject (cache.GetResource ("ScriptFile",
                                                          "AngelScript/Client/ScreenPressesHandler.as"),
-                                     "ScreenPressesHandler");*/
+                                     "ScreenPressesHandler");
         
         SubscribeToEvent ("ServerDisconnected", "HandleServerDisconnected");
         SubscribeToEvent ("ConnectFailed", "HandleConnectFailed");
@@ -74,12 +74,6 @@ class Player : ScriptObject
             
         if (!isSceneLoaded_)
             CheckIsSceneLoaded ();
-            
-        if (isSceneLoaded_)
-        {
-            log.Info ("Scene loaded!");
-            node.vars ["goToMenuCalled"] = true;
-        }
     }
     
     void Stop ()
