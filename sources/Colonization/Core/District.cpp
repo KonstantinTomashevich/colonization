@@ -15,6 +15,7 @@ const char *climateTypesNames [] =
     "Temperate Continental",
     "Desert",
     "Cold",
+    0
 };
 
 const char *nativesCharacterTypesNames [] =
@@ -23,7 +24,8 @@ const char *nativesCharacterTypesNames [] =
     "Medium",
     "Cold",
     "Isolationist",
-    "Aggressive"
+    "Aggressive",
+    0
 };
 
 District::District (Urho3D::Context *context) : Urho3D::Component (context),

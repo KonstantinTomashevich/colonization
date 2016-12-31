@@ -13,6 +13,7 @@ const char *unitTypesNames [] =
     "Traders",
     "Colonizators",
     "Army",
+    0
 };
 
 Unit::Unit (Urho3D::Context *context) : Urho3D::Component (context),
