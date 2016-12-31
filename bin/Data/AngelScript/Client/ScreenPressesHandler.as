@@ -10,11 +10,8 @@ class ScreenPressesHandler : ScriptObject
     
     protected void UnitSelected (Unit @unit)
     {
-        if (unit.unitType != UNIT_COLONIZATORS and unit.unitType != UNIT_TRADERS)
-        {
-            node.vars ["selectionType"] = StringHash ("Unit");
-            node.vars ["selectedHash"] = unit.hash;
-        }
+        node.vars ["selectionType"] = StringHash ("Unit");
+        node.vars ["selectedHash"] = unit.hash;
     }
     
     protected void DistrictSelected (District @district)
@@ -22,18 +19,31 @@ class ScreenPressesHandler : ScriptObject
         Map @map = scene.GetChild ("map").GetComponent ("Map");
         if (node.vars ["selectionType"].GetStringHash () == StringHash ("Unit"))
         {
-            Array <Variant> networkTasks = node.parent.GetChild ("networkScriptNode").vars ["tasksList"].GetVariantVector ();
-            VariantMap taskData;
-            taskData ["type"] = CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION;
+            StringHash selectedHash = node.vars ["selectedHash"].GetStringHash ();
+            Array <Node@> unitsNodes = scene.GetChild ("units").GetChildrenWithComponent ("Unit");
+            Unit @unit = unitsNodes [0].GetComponent ("Unit");
+            int index = 1;
+            while (unit.hash != selectedHash and index < unitsNodes.length)
+            {
+                unit = unitsNodes [index].GetComponent ("Unit");
+                index++;
+            }
             
-            VectorBuffer buffer = VectorBuffer ();
-            buffer.WriteInt (PLAYER_ACTION_SET_UNIT_MOVE_TARGET);
-            buffer.WriteStringHash (node.vars ["selectedHash"].GetStringHash ());
-            buffer.WriteStringHash (district.hash);
-            
-            taskData ["buffer"] = buffer;
-            networkTasks.Push (Variant (taskData));
-            node.parent.GetChild ("networkScriptNode").vars ["tasksList"] = networkTasks;
+            if (unit.unitType != UNIT_COLONIZATORS and unit.unitType != UNIT_TRADERS)
+            {
+                Array <Variant> networkTasks = node.parent.GetChild ("networkScriptNode").vars ["tasksList"].GetVariantVector ();
+                VariantMap taskData;
+                taskData ["type"] = CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION;
+                
+                VectorBuffer buffer = VectorBuffer ();
+                buffer.WriteInt (PLAYER_ACTION_SET_UNIT_MOVE_TARGET);
+                buffer.WriteStringHash (selectedHash);
+                buffer.WriteStringHash (district.hash);
+                
+                taskData ["buffer"] = buffer;
+                networkTasks.Push (Variant (taskData));
+                node.parent.GetChild ("networkScriptNode").vars ["tasksList"] = networkTasks;
+            }
         }
         else
         {
