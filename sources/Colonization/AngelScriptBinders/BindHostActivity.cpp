@@ -5,7 +5,6 @@
 #include <Colonization/Utils/Activity.hpp>
 #include <Colonization/Activities/HostActivity.hpp>
 #include <Colonization/AngelScriptBinders/BindActivity.hpp>
-#include <Colonization/AngelScriptBinders/BindingMacroses.hpp>
 
 namespace Colonization
 {
@@ -27,15 +26,7 @@ void BindHostActivity (Urho3D::Script *script)
     Urho3D::RegisterObjectConstructor <HostActivity> (engine, "HostActivity");
     Urho3D::RegisterSubclass <Activity, HostActivity> (engine, "Activity", "HostActivity");
     BindActivityInterface (script, "HostActivity");
-
-    CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod ("HostActivity", "int get_serverPort ()",
-                                              asMETHOD (HostActivity, GetServerPort), asCALL_THISCALL)
-            );
-
-    CHECK_ANGELSCRIPT_RETURN (
-                engine->RegisterObjectMethod ("HostActivity", "void set_serverPort (int serverPort)",
-                                              asMETHOD (HostActivity, SetServerPort), asCALL_THISCALL)
-            );
+    engine->RegisterObjectMethod ("HostActivity", "int get_serverPort ()", asMETHOD (HostActivity, GetServerPort), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("HostActivity", "void set_serverPort (int serverPort)", asMETHOD (HostActivity, SetServerPort), asCALL_THISCALL);
 }
 }

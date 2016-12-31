@@ -3,8 +3,6 @@
 #include <Urho3D/AngelScript/APITemplates.h>
 #include <Urho3D/ThirdParty/AngelScript/angelscript.h>
 #include <Colonization/Core/District.hpp>
-// TODO: Maybe delete BindingMacroses?
-#include <Colonization/AngelScriptBinders/BindingMacroses.hpp>
 
 namespace Colonization
 {

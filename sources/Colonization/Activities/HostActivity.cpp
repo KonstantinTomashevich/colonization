@@ -123,6 +123,7 @@ void HostActivity::DisposeWaitingForPlayersState ()
 
 void HostActivity::SetupPlayingState ()
 {
+    // TODO: Maybe create special configuration component instead of using context's global vars?
     context_->SetGlobalVar ("sailSpeed", 0.3f);
     context_->SetGlobalVar ("marchSpeed", 0.1f);
     context_->SetGlobalVar ("embarkationSpeed", 0.15f);
