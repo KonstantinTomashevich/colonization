@@ -319,15 +319,18 @@ void ColoniesManager::RegisterObject (Urho3D::Context *context)
 
 void ColoniesManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
-    assert (map);
-    float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
-
-    for (int index = 0; index < map->GetDistrictsCount (); index++)
+    if (enabled_)
     {
-        District *district = map->GetDistrictByIndex (index);
-        if (district->HasColony ())
-            ProcessColony (district, timeStep);
+        Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
+        assert (map);
+        float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
+
+        for (int index = 0; index < map->GetDistrictsCount (); index++)
+        {
+            District *district = map->GetDistrictByIndex (index);
+            if (district->HasColony ())
+                ProcessColony (district, timeStep);
+        }
     }
 }
 

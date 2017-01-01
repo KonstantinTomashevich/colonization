@@ -64,16 +64,19 @@ District *Map::CreateDistrict (Urho3D::String districtName)
 
 void Map::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    // Reload districts array from child nodes.
-    assert (node_);
-    districts_.Clear ();
-    Urho3D::PODVector <Urho3D::Node *> districtsNodes;
-    node_->GetChildrenWithComponent (districtsNodes, District::GetTypeStatic ());
-    for (int index = 0; index < districtsNodes.Size (); index++)
+    if (enabled_)
     {
-        Urho3D::Node *districtNode = districtsNodes.At (index);
-        if (districtNode->GetID () < Urho3D::FIRST_LOCAL_ID)
-            districts_.Push (Urho3D::SharedPtr <District> (districtNode->GetComponent <District> ()));
+        // Reload districts array from child nodes.
+        assert (node_);
+        districts_.Clear ();
+        Urho3D::PODVector <Urho3D::Node *> districtsNodes;
+        node_->GetChildrenWithComponent (districtsNodes, District::GetTypeStatic ());
+        for (int index = 0; index < districtsNodes.Size (); index++)
+        {
+            Urho3D::Node *districtNode = districtsNodes.At (index);
+            if (districtNode->GetID () < Urho3D::FIRST_LOCAL_ID)
+                districts_.Push (Urho3D::SharedPtr <District> (districtNode->GetComponent <District> ()));
+        }
     }
 }
 

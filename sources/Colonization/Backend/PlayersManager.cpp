@@ -137,34 +137,43 @@ void PlayersManager::RegisterObject (Urho3D::Context *context)
 
 void PlayersManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    MessagesHandler *messagesHandler = node_->GetScene ()->GetComponent <MessagesHandler> ();
-    assert (messagesHandler);
-    float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
-    UpdatePlayers (messagesHandler, timeStep);
-    UpdateConnectionsWithoudId (timeStep);
-    UpdatePlayersInfos ();
+    if (enabled_)
+    {
+        MessagesHandler *messagesHandler = node_->GetScene ()->GetComponent <MessagesHandler> ();
+        assert (messagesHandler);
+        float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
+        UpdatePlayers (messagesHandler, timeStep);
+        UpdateConnectionsWithoudId (timeStep);
+        UpdatePlayersInfos ();
+    }
 }
 
 void PlayersManager::HandlePlayerConnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    Urho3D::Connection *connection = (Urho3D::Connection *)
-            eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
-    connectionsWithoutId_.Push (Urho3D::Pair <float, Urho3D::Connection *> (1.0f, connection));
+    if (enabled_)
+    {
+        Urho3D::Connection *connection = (Urho3D::Connection *)
+                eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
+        connectionsWithoutId_.Push (Urho3D::Pair <float, Urho3D::Connection *> (1.0f, connection));
+    }
 }
 
 void PlayersManager::HandlePlayerDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    Urho3D::Connection *connection = (Urho3D::Connection *)
-            eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
-    MessagesHandler *messagesHandler = node_->GetScene ()->GetComponent <MessagesHandler> ();
-    assert (messagesHandler);
-
-    Player *player = GetPlayer (connection);
-    if (player)
+    if (enabled_)
     {
-        Urho3D::Vector <Player *> allPlayers = players_.Values ();
-        messagesHandler->SendTextInfoFromServer (GetPlayer (connection)->GetName () + " left game!", allPlayers);
-        DisconnectPlayer (connection);
+        Urho3D::Connection *connection = (Urho3D::Connection *)
+                eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
+        MessagesHandler *messagesHandler = node_->GetScene ()->GetComponent <MessagesHandler> ();
+        assert (messagesHandler);
+
+        Player *player = GetPlayer (connection);
+        if (player)
+        {
+            Urho3D::Vector <Player *> allPlayers = players_.Values ();
+            messagesHandler->SendTextInfoFromServer (GetPlayer (connection)->GetName () + " left game!", allPlayers);
+            DisconnectPlayer (connection);
+        }
     }
 }
 

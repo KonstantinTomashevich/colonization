@@ -95,69 +95,72 @@ void UnitsManager::RegisterObject (Urho3D::Context *context)
 
 void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    UpdateUnitsList ();
-    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
-    assert (map);
-
-    float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
-    float sailSpeed = context_->GetGlobalVar ("sailSpeed").GetFloat ();
-    float marchSpeed = context_->GetGlobalVar ("marchSpeed").GetFloat ();
-    float embarkationSpeed = context_->GetGlobalVar ("embarkationSpeed").GetFloat ();
-    float disembarkationSpeed = context_->GetGlobalVar ("disembarkationSpeed").GetFloat ();
-
-    for (int index = 0; index < units_.Size (); index++)
+    if (enabled_)
     {
-        Unit *unit = units_.At (index);
-        Urho3D::PODVector <Urho3D::StringHash>  unitWay = unit->GetWay ();
-        if (!unitWay.Empty ())
+        UpdateUnitsList ();
+        Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
+        assert (map);
+
+        float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
+        float sailSpeed = context_->GetGlobalVar ("sailSpeed").GetFloat ();
+        float marchSpeed = context_->GetGlobalVar ("marchSpeed").GetFloat ();
+        float embarkationSpeed = context_->GetGlobalVar ("embarkationSpeed").GetFloat ();
+        float disembarkationSpeed = context_->GetGlobalVar ("disembarkationSpeed").GetFloat ();
+
+        for (int index = 0; index < units_.Size (); index++)
         {
-            if (unit->GetPositionHash () == unitWay.At (0))
+            Unit *unit = units_.At (index);
+            Urho3D::PODVector <Urho3D::StringHash>  unitWay = unit->GetWay ();
+            if (!unitWay.Empty ())
             {
-                unitWay.Remove (unitWay.At (0));
-                unit->SetWay (unitWay);
+                if (unit->GetPositionHash () == unitWay.At (0))
+                {
+                    unitWay.Remove (unitWay.At (0));
+                    unit->SetWay (unitWay);
+                    unit->MarkNetworkUpdate ();
+                }
+
+                District *unitPosition = map->GetDistrictByHash (unit->GetPositionHash ());
+                assert (unitPosition);
+
+                District *nextTarget = map->GetDistrictByHash (unitWay.At (0));
+                assert (nextTarget);
+
+                float distance = (unitPosition->GetUnitPosition () - nextTarget->GetUnitPosition ()).Length ();
+                float speed;
+
+                if (unitPosition->IsSea () && nextTarget->IsSea ())
+                    speed = sailSpeed;
+                else if (!unitPosition->IsSea () && !nextTarget->IsSea ())
+                    speed = marchSpeed;
+                else if (!unitPosition->IsSea () && nextTarget->IsSea ())
+                    speed = embarkationSpeed;
+                else if (unitPosition->IsSea () && !nextTarget->IsSea ())
+                    speed = disembarkationSpeed;
+                else
+                    speed = 0.0f;
+
+                float addition = (100.0f * speed * timeStep) / distance;
+                unit->SetWayToNextDistrictProgressInPercents (unit->GetWayToNextDistrictProgressInPercents () + addition);
+
+                if (unit->GetWayToNextDistrictProgressInPercents () >= 100.0f)
+                {
+                    unit->SetPositionHash (unitWay.At (0));
+                    unitWay.Remove (unitWay.At (0));
+                    unit->SetWayToNextDistrictProgressInPercents (0.0f);
+                    unit->SetWay (unitWay);
+
+                    if (unitWay.Empty () && unit->GetUnitType () == UNIT_COLONIZATORS)
+                        SettleColonizator (unit, map);
+                    else if (unitWay.Empty () && unit->GetUnitType () == UNIT_TRADERS)
+                        ProcessTrader (unit);
+                }
                 unit->MarkNetworkUpdate ();
             }
-
-            District *unitPosition = map->GetDistrictByHash (unit->GetPositionHash ());
-            assert (unitPosition);
-
-            District *nextTarget = map->GetDistrictByHash (unitWay.At (0));
-            assert (nextTarget);
-
-            float distance = (unitPosition->GetUnitPosition () - nextTarget->GetUnitPosition ()).Length ();
-            float speed;
-
-            if (unitPosition->IsSea () && nextTarget->IsSea ())
-                speed = sailSpeed;
-            else if (!unitPosition->IsSea () && !nextTarget->IsSea ())
-                speed = marchSpeed;
-            else if (!unitPosition->IsSea () && nextTarget->IsSea ())
-                speed = embarkationSpeed;
-            else if (unitPosition->IsSea () && !nextTarget->IsSea ())
-                speed = disembarkationSpeed;
-            else
-                speed = 0.0f;
-
-            float addition = (100.0f * speed * timeStep) / distance;
-            unit->SetWayToNextDistrictProgressInPercents (unit->GetWayToNextDistrictProgressInPercents () + addition);
-
-            if (unit->GetWayToNextDistrictProgressInPercents () >= 100.0f)
-            {
-                unit->SetPositionHash (unitWay.At (0));
-                unitWay.Remove (unitWay.At (0));
-                unit->SetWayToNextDistrictProgressInPercents (0.0f);
-                unit->SetWay (unitWay);
-
-                if (unitWay.Empty () && unit->GetUnitType () == UNIT_COLONIZATORS)
-                    SettleColonizator (unit, map);
-                else if (unitWay.Empty () && unit->GetUnitType () == UNIT_TRADERS)
-                    ProcessTrader (unit);
-            }
-            unit->MarkNetworkUpdate ();
         }
-    }
 
-    // TODO: To be continued...
+        // TODO: To be continued...
+    }
 }
 
 int UnitsManager::GetUnitsCount ()

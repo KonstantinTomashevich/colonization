@@ -27,55 +27,61 @@ void MessagesHandler::RegisterObject (Urho3D::Context *context)
 
 void MessagesHandler::HandleClientIdentity (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    Urho3D::Connection *connection = (Urho3D::Connection *)
-            eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
-    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
-    assert (playersManager);
+    if (enabled_)
+    {
+        Urho3D::Connection *connection = (Urho3D::Connection *)
+                eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
+        PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
+        assert (playersManager);
 
-    Urho3D::String name = connection->GetIdentity () ["Name"].GetString ();
-    // TODO: Currently we disconnect player if it sends identity with name which is already used by another player.
-    if (playersManager->GetPlayer (name))
-        connection->Disconnect ();
-    else
-        playersManager->PlayerIdentified (connection, connection->GetIdentity () ["Name"].GetString ());
+        Urho3D::String name = connection->GetIdentity () ["Name"].GetString ();
+        // TODO: Currently we disconnect player if it sends identity with name which is already used by another player.
+        if (playersManager->GetPlayer (name))
+            connection->Disconnect ();
+        else
+            playersManager->PlayerIdentified (connection, connection->GetIdentity () ["Name"].GetString ());
+    }
 }
 
 void MessagesHandler::HandleNetworkMessage (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
-    assert (playersManager);
-
-    Urho3D::Connection *connection = (Urho3D::Connection *)
-            eventData [Urho3D::NetworkMessage::P_CONNECTION].GetPtr ();
-    Player *player = playersManager->GetPlayer (connection);
-    assert (player);
-
-    NetworkMessageType messageType = static_cast <NetworkMessageType> (
-                eventData [Urho3D::NetworkMessage::P_MESSAGEID].GetInt ());
-    Urho3D::VectorBuffer messageData = eventData [Urho3D::NetworkMessage::P_DATA].GetVectorBuffer ();
-
-    if (messageType == CTS_NETWORK_MESSAGE_SEND_CHAT_MESSAGE)
+    if (enabled_)
     {
-        Urho3D::Vector <Player *> players = playersManager->GetAllPlayers ();
-        SendChatMessage (player->GetName (), messageData.ReadString (), players, false);
-    }
+        PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
+        assert (playersManager);
 
-    else if (messageType == CTS_NETWORK_MESSAGE_SEND_PRIVATE_MESSAGE)
-    {
-        Urho3D::String message = messageData.ReadString ();
-        Urho3D::Vector <Urho3D::StringHash> recievers;
-        while (!messageData.IsEof ())
-            recievers.Push (Urho3D::StringHash (messageData.ReadString ()));
-        Urho3D::Vector <Player *> players = playersManager->GetPlayersByNames (recievers);
-        SendChatMessage (player->GetName (), message, players, true);
-    }
+        Urho3D::Connection *connection = (Urho3D::Connection *)
+                eventData [Urho3D::NetworkMessage::P_CONNECTION].GetPtr ();
+        Player *player = playersManager->GetPlayer (connection);
+        assert (player);
 
-    else if (messageType == CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION)
-    {
-        PlayerActionType actionType = static_cast <PlayerActionType> (messageData.ReadInt ());
-        Urho3D::Pair <PlayerActionType, Urho3D::Variant> action =
-                Urho3D::Pair <PlayerActionType, Urho3D::Variant> (actionType, messageData);
-        player->AddAction (action);
+        NetworkMessageType messageType = static_cast <NetworkMessageType> (
+                    eventData [Urho3D::NetworkMessage::P_MESSAGEID].GetInt ());
+        Urho3D::VectorBuffer messageData = eventData [Urho3D::NetworkMessage::P_DATA].GetVectorBuffer ();
+
+        if (messageType == CTS_NETWORK_MESSAGE_SEND_CHAT_MESSAGE)
+        {
+            Urho3D::Vector <Player *> players = playersManager->GetAllPlayers ();
+            SendChatMessage (player->GetName (), messageData.ReadString (), players, false);
+        }
+
+        else if (messageType == CTS_NETWORK_MESSAGE_SEND_PRIVATE_MESSAGE)
+        {
+            Urho3D::String message = messageData.ReadString ();
+            Urho3D::Vector <Urho3D::StringHash> recievers;
+            while (!messageData.IsEof ())
+                recievers.Push (Urho3D::StringHash (messageData.ReadString ()));
+            Urho3D::Vector <Player *> players = playersManager->GetPlayersByNames (recievers);
+            SendChatMessage (player->GetName (), message, players, true);
+        }
+
+        else if (messageType == CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION)
+        {
+            PlayerActionType actionType = static_cast <PlayerActionType> (messageData.ReadInt ());
+            Urho3D::Pair <PlayerActionType, Urho3D::Variant> action =
+                    Urho3D::Pair <PlayerActionType, Urho3D::Variant> (actionType, messageData);
+            player->AddAction (action);
+        }
     }
 }
 
