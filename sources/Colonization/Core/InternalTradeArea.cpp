@@ -6,9 +6,17 @@
 
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/IO/Log.h>
+#include <Colonization/Utils/AttributeMacro.hpp>
 
 namespace Colonization
 {
+const char *districtsHashesStructureElementsNames [] =
+{
+    "Districts In Area Count",
+    "***District Hash",
+    0
+};
+
 void InternalTradeArea::ConstructVectorOfRealDistricts (Map *map, Urho3D::PODVector <District *> &output)
 {
     for (int index = 0; index < districtsHashes_.Size (); index++)
@@ -103,9 +111,9 @@ InternalTradeArea::~InternalTradeArea ()
 void InternalTradeArea::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <InternalTradeArea> (COLONIZATION_CORE_CATEGORY);
-    using namespace Urho3D;
-    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Districts hashes", GetDistrictsHashesArrayAttribute, SetDistrictsHashesArrayAttribute,
-                                     VariantVector, Variant::emptyVariantVector, AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_VARIANT_VECTOR_STRUCTURE_ATTRIBUTE ("Districts hashes", GetDistrictsHashesArrayAttribute, SetDistrictsHashesArrayAttribute,
+                                                              Urho3D::VariantVector, Urho3D::Variant::emptyVariantVector,
+                                                              districtsHashesStructureElementsNames, Urho3D::AM_DEFAULT);
 }
 
 Urho3D::SharedPtr <TradeDistrictProcessingInfo> InternalTradeArea::ProcessTrade(Map *map)
@@ -185,9 +193,10 @@ bool InternalTradeArea::RemoveDistrictHash (Urho3D::StringHash districtHash)
     return districtsHashes_.Remove (districtHash);
 }
 
-Urho3D::VariantVector InternalTradeArea::GetDistrictsHashesArrayAttribute() const
+Urho3D::VariantVector InternalTradeArea::GetDistrictsHashesArrayAttribute () const
 {
     Urho3D::VariantVector variantVector;
+    variantVector.Push (districtsHashes_.Size ());
     for (int index = 0; index < districtsHashes_.Size (); index++)
         variantVector.Push (Urho3D::Variant (districtsHashes_.At (index)));
     return variantVector;
@@ -196,8 +205,8 @@ Urho3D::VariantVector InternalTradeArea::GetDistrictsHashesArrayAttribute() cons
 void InternalTradeArea::SetDistrictsHashesArrayAttribute (const Urho3D::VariantVector &attribute)
 {
     districtsHashes_.Clear ();
-    if (!attribute.Empty ())
-        for (int index = 0; index < attribute.Size (); index++)
+    if (attribute.Size () > 1)
+        for (int index = 1; index < attribute.Size (); index++)
             districtsHashes_.Push (attribute.At (index).GetStringHash ());
 }
 

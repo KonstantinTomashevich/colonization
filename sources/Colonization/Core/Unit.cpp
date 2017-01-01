@@ -4,9 +4,17 @@
 #include <Urho3D/Core/Context.h>
 #include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Utils/Categories.hpp>
+#include <Colonization/Utils/AttributeMacro.hpp>
 
 namespace Colonization
 {
+const char *wayStructureElementsNames [] =
+{
+    "Waypoints Count",
+    "***District Hash",
+    0
+};
+
 const char *unitTypesNames [] =
 {
     "Fleet",
@@ -36,33 +44,32 @@ Unit::~Unit ()
 void Unit::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <Unit> (COLONIZATION_CORE_CATEGORY);
-    using namespace Urho3D;
 
-    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Hash", GetHash, SetHash, StringHash, StringHash ("nothing"), AM_DEFAULT);
-    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Owner Player Name", GetOwnerPlayerName, SetOwnerPlayerName, String, String ("Unit without owner"), AM_DEFAULT);
-    URHO3D_ENUM_ACCESSOR_ATTRIBUTE ("Unit Type", GetUnitType, SetUnitType, UnitType, unitTypesNames, UNIT_FLEET, AM_DEFAULT);
-    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Position Hash", GetPositionHash, SetPositionHash, StringHash, StringHash ("nothing"), AM_DEFAULT);
-    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Way", GetWayAttribute, SetWayAttribute, VariantVector, Variant::emptyVariantVector, AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Hash", GetHash, SetHash, Urho3D::StringHash, Urho3D::StringHash ("nothing"), Urho3D::AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Owner Player Name", GetOwnerPlayerName, SetOwnerPlayerName, Urho3D::String, Urho3D::String ("Unit without owner"), Urho3D::AM_DEFAULT);
+    URHO3D_ENUM_ACCESSOR_ATTRIBUTE ("Unit Type", GetUnitType, SetUnitType, UnitType, unitTypesNames, UNIT_FLEET, Urho3D::AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Position Hash", GetPositionHash, SetPositionHash, Urho3D::StringHash, Urho3D::StringHash ("nothing"), Urho3D::AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_VARIANT_VECTOR_STRUCTURE_ATTRIBUTE ("Way", GetWayAttribute, SetWayAttribute, Urho3D::VariantVector, Urho3D::Variant::emptyVariantVector, wayStructureElementsNames, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Way To Next District Progress In Percents",
                                GetWayToNextDistrictProgressInPercents,
                                SetWayToNextDistrictProgressInPercents,
-                               float, 0.0f, AM_DEFAULT);
+                               float, 0.0f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("[Fleet Only] War Ships Count",
                                FleetUnitGetWarShipsCount,
-                               FleetUnitSetWarShipsCount, int, 0, AM_DEFAULT);
+                               FleetUnitSetWarShipsCount, int, 0, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("[Traders Only] Trade Goods Cost",
                                TradersUnitGetTradeGoodsCost,
-                               TradersUnitSetTradeGoodsCost, float, 0.0f, AM_DEFAULT);
+                               TradersUnitSetTradeGoodsCost, float, 0.0f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("[Colonizators Only] Colonizators Count",
                                ColonizatorsUnitGetColonizatorsCount,
-                               ColonizatorsUnitSetColonizatorsCount, int, 0, AM_DEFAULT);
+                               ColonizatorsUnitSetColonizatorsCount, int, 0, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("[Army Only] War Ships Count",
                                ArmyUnitGetSoldiersCount,
-                               ArmyUnitSetSoldiersCount, int, 0, AM_DEFAULT);
+                               ArmyUnitSetSoldiersCount, int, 0, Urho3D::AM_DEFAULT);
 }
 
 void Unit::UpdateHash (UnitsManager *owner)
@@ -126,6 +133,7 @@ void Unit::SetWay (Urho3D::PODVector <Urho3D::StringHash> way)
 Urho3D::VariantVector Unit::GetWayAttribute () const
 {
     Urho3D::VariantVector variantVector;
+    variantVector.Push (Urho3D::Variant (way_.Size ()));
     for (int index = 0; index < way_.Size (); index++)
         variantVector.Push (Urho3D::Variant (way_.At (index)));
     return variantVector;
@@ -134,8 +142,8 @@ Urho3D::VariantVector Unit::GetWayAttribute () const
 void Unit::SetWayAttribute (const Urho3D::VariantVector &way)
 {
     way_.Clear ();
-    if (!way.Empty ())
-        for (int index = 0; index < way.Size (); index++)
+    if (way.Size () > 1)
+        for (int index = 1; index < way.Size (); index++)
             way_.Push (way.At (index).GetStringHash ());
 }
 

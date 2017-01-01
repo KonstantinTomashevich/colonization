@@ -3,6 +3,7 @@
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/IO/Log.h>
 #include <Colonization/Utils/Categories.hpp>
+#include <Colonization/Utils/AttributeMacro.hpp>
 
 namespace Colonization
 {
@@ -21,10 +22,9 @@ PlayerInfo::~PlayerInfo ()
 void PlayerInfo::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <PlayerInfo> (COLONIZATION_CORE_CATEGORY);
-    using namespace Urho3D;
 
-    URHO3D_ACCESSOR_ATTRIBUTE ("Name", GetName, SetName, String, String ("NoName"), AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Points", GetPoints, SetPoints, float, 0.0f, AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Name", GetName, SetName, Urho3D::String, Urho3D::String ("NoName"), Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Points", GetPoints, SetPoints, float, 0.0f, Urho3D::AM_DEFAULT);
 }
 
 const Urho3D::String &PlayerInfo::GetName () const
