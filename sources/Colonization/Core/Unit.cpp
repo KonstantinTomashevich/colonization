@@ -143,9 +143,18 @@ Urho3D::VariantVector Unit::GetWayAttribute () const
 void Unit::SetWayAttribute (const Urho3D::VariantVector &way)
 {
     way_.Clear ();
-    if (way.Size () > 1)
-        for (int index = 1; index < way.Size (); index++)
-            way_.Push (way.At (index).GetStringHash ());
+    if (!way.Empty ())
+    {
+        int requestedSize = way.At (0).GetInt ();
+        if (requestedSize > 0)
+            for (int index = 0; index < requestedSize; index++)
+            {
+                if (index + 1 < way.Size ())
+                    way_.Push (way.At (index + 1).GetStringHash ());
+                else
+                    way_.Push (Urho3D::StringHash ());
+            }
+    }
 }
 
 float Unit::GetWayToNextDistrictProgressInPercents () const

@@ -12,7 +12,7 @@ namespace Colonization
 const char *polygonPointsStructureElementsNames [] =
 {
     "Polygon Points Count",
-    "***Points",
+    "***Point",
     0
 };
 
@@ -232,9 +232,18 @@ Urho3D::VariantVector District::GetPolygonPointsAttribute () const
 void District::SetPolygonPointsAttribute (const Urho3D::VariantVector &polygonPoints)
 {
     polygonPoints_.Clear ();
-    if (polygonPoints.Size () > 1)
-        for (int index = 0; index < polygonPoints.Size (); index++)
-            polygonPoints_.Push (polygonPoints.At (index).GetVector3 ());
+    if (!polygonPoints.Empty ())
+    {
+        int requestedSize = polygonPoints.At (0).GetInt ();
+        if (requestedSize > 0)
+            for (int index = 0; index < requestedSize; index++)
+            {
+                if (index + 1 < polygonPoints.Size ())
+                    polygonPoints_.Push (polygonPoints.At (index + 1).GetVector3 ());
+                else
+                    polygonPoints_.Push (Urho3D::Vector3 ());
+            }
+    }
 }
 
 Urho3D::Vector3 District::GetUnitPosition () const
@@ -279,9 +288,18 @@ Urho3D::VariantVector District::GetNeighborsHashesAttribute() const
 void District::SetNeighborsHashesAttribute (const Urho3D::VariantVector &neighbors)
 {
     neighbors_.Clear ();
-    if (neighbors.Size () > 1)
-        for (int index = 1; index < neighbors.Size (); index++)
-            neighbors_.Push (neighbors.At (index).GetStringHash ());
+    if (!neighbors.Empty ())
+    {
+        int requestedSize = neighbors.At (0).GetInt ();
+        if (requestedSize > 0)
+            for (int index = 0; index < requestedSize; index++)
+            {
+                if (index + 1 < neighbors.Size ())
+                    neighbors_.Push (neighbors.At (index + 1).GetStringHash ());
+                else
+                    neighbors_.Push (Urho3D::StringHash ());
+            }
+    }
 }
 
 float District::GetFarmingSquare () const

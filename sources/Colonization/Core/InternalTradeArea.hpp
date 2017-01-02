@@ -43,7 +43,6 @@ class InternalTradeArea : public Urho3D::Component
 URHO3D_OBJECT (InternalTradeArea, Component)
 protected:
     Urho3D::PODVector <Urho3D::StringHash> districtsHashes_;
-    Urho3D::VariantVector districtsHashesVariant_;
 
     void ConstructVectorOfRealDistricts (Map *map, Urho3D::PODVector <District *> &output);
     float CalculateTotalEvolutionOf (Urho3D::StringHash evolutionBranch, Urho3D::PODVector <District *> &realDistricts);
