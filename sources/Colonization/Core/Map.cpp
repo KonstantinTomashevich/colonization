@@ -5,7 +5,9 @@
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/Scene/Scene.h>
+
 #include <Colonization/Utils/Categories.hpp>
+#include <Colonization/Utils/AttributeMacro.hpp>
 
 namespace Colonization
 {

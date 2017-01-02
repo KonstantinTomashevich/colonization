@@ -4,8 +4,10 @@
 #include <Urho3D/Network/NetworkEvents.h>
 #include <Urho3D/Network/Connection.h>
 #include <Urho3D/IO/Log.h>
+
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Utils/Categories.hpp>
+#include <Colonization/Utils/AttributeMacro.hpp>
 
 namespace Colonization
 {

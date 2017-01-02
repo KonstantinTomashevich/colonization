@@ -10,6 +10,7 @@
 #include <Colonization/Backend/MessagesHandler.hpp>
 #include <Colonization/Core/PlayerInfo.hpp>
 #include <Colonization/Utils/Categories.hpp>
+#include <Colonization/Utils/AttributeMacro.hpp>
 
 namespace Colonization
 {

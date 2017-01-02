@@ -9,6 +9,7 @@
 #include <Colonization/Utils/Categories.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
+#include <Colonization/Utils/AttributeMacro.hpp>
 
 namespace Colonization
 {

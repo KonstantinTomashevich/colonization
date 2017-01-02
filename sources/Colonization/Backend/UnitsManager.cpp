@@ -7,6 +7,7 @@
 
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Utils/Categories.hpp>
+#include <Colonization/Utils/AttributeMacro.hpp>
 
 namespace Colonization
 {

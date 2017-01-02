@@ -7,6 +7,7 @@
 
 #include <Colonization/Utils/Categories.hpp>
 #include <cmath>
+#include <Colonization/Utils/AttributeMacro.hpp>
 
 namespace Colonization
 {
