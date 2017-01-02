@@ -25,7 +25,7 @@ MessagesHandler::~MessagesHandler ()
 void MessagesHandler::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <MessagesHandler> (COLONIZATION_SERVER_ONLY_CATEGORY);
-    URHO3D_ACCESSOR_ATTRIBUTE("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
 }
 
 void MessagesHandler::HandleClientIdentity (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)

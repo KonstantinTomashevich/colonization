@@ -7,6 +7,7 @@
 #include <Urho3D/Scene/Scene.h>
 
 #include <Colonization/Utils/Categories.hpp>
+#include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Utils/AttributeMacro.hpp>
 
 namespace Colonization
@@ -25,7 +26,7 @@ Map::~Map ()
 void Map::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <Map> (COLONIZATION_SHARED_CATEGORY);
-    URHO3D_ACCESSOR_ATTRIBUTE("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
 }
 
 District *Map::GetDistrictByIndex (int index)
@@ -118,10 +119,12 @@ Urho3D::PODVector <Urho3D::StringHash> Map::FindPath (
                         "canGoTroughColonies: " + Urho3D::String (canGoThroughColonies) + "\n"
                         "isColonizator: " + Urho3D::String (isColonizator) + "\n");
 
-    float sailSpeed = context_->GetGlobalVar ("sailSpeed").GetFloat ();
-    float marchSpeed = context_->GetGlobalVar ("marchSpeed").GetFloat ();
-    float embarkationSpeed = context_->GetGlobalVar ("embarkationSpeed").GetFloat ();
-    float disembarkationSpeed = context_->GetGlobalVar ("disembarkationSpeed").GetFloat ();
+    GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
+    assert (configuration);
+    float sailSpeed = configuration->GetSailSpeed ();
+    float marchSpeed = configuration->GetMarchSpeed ();
+    float embarkationSpeed = configuration->GetEmbarkationSpeed ();
+    float disembarkationSpeed = configuration->GetDisembarkationSpeed ();
 
     Urho3D::Log::Write (Urho3D::LOG_DEBUG,
                         "\n"

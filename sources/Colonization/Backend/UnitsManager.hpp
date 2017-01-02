@@ -2,6 +2,7 @@
 #include <Urho3D/Core/Object.h>
 #include <Urho3D/Scene/Component.h>
 #include <Colonization/Core/Unit.hpp>
+#include <Colonization/Core/GameConfiguration.hpp>
 
 namespace Colonization
 {
@@ -13,7 +14,7 @@ protected:
 
     void UpdateUnitsList ();
     void SettleColonizator (Unit *unit, Map *map);
-    void ProcessTrader (Unit *unit);
+    void ProcessTrader (GameConfiguration *configuration, Unit *unit);
 
 public:
     UnitsManager (Urho3D::Context *context);

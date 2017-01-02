@@ -9,6 +9,7 @@
 #include <Colonization/Backend/UnitsManager.hpp>
 
 #include <Colonization/Core/District.hpp>
+#include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Core/InternalTradeArea.hpp>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/PlayerInfo.hpp>
@@ -25,6 +26,7 @@ void RegisterAllObjects (Urho3D::Context *context)
     UnitsManager::RegisterObject (context);
 
     District::RegisterObject (context);
+    GameConfiguration::RegisterObject (context);
     InternalTradeArea::RegisterObject (context);
     Map::RegisterObject (context);
     PlayerInfo::RegisterObject (context);

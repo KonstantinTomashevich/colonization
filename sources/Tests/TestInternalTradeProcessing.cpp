@@ -7,6 +7,7 @@
 #include <Colonization/Core/District.hpp>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/InternalTradeArea.hpp>
+#include <Colonization/Core/GameConfiguration.hpp>
 
 #include <Colonization/Backend/TradeProcessor.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
@@ -48,27 +49,9 @@ void TestInternalTradeProcessingApplication::Start ()
     Urho3D::Log *log = context_->GetSubsystem <Urho3D::Log> ();
     log->SetLevel (Urho3D::LOG_DEBUG);
 
-    context_->SetGlobalVar ("oneColonistFarmsProductionConsumption", 0.01f);
-    context_->SetGlobalVar ("farmsProductionMinesConsumption", 0.005f);
-    context_->SetGlobalVar ("farmsProductionIndustryConsumption", 0.3f);
-
-    context_->SetGlobalVar ("oneColonistMinesProductionConsumption", 0.002f);
-    context_->SetGlobalVar ("minesProductionFarmsConsumption", 0.2f);
-    context_->SetGlobalVar ("minesProductionIndustryConsumption", 0.9f);
-
-    context_->SetGlobalVar ("oneColonistIndustryProductionConsumption", 0.003f);
-    context_->SetGlobalVar ("industryProductionFarmsConsumption", 0.15f);
-    context_->SetGlobalVar ("industryProductionMinesConsumption", 0.25f);
-
-    context_->SetGlobalVar ("farmsProductionInternalCost", 1.0f);
-    context_->SetGlobalVar ("minesProductionInternalCost", 1.5f);
-    context_->SetGlobalVar ("industryProductionInternalCost", 5.0f);
-
-    context_->SetGlobalVar ("internalTaxes", 0.2f);
-    context_->SetGlobalVar ("externalTaxes", 0.2f);
-
     Colonization::RegisterAllObjects (context_);
     scene_ = Urho3D::SharedPtr <Urho3D::Scene> (new Urho3D::Scene (context_));
+    scene_->CreateComponent <Colonization::GameConfiguration> ();
     Colonization::Map *map = scene_->CreateChild ("map")->CreateComponent <Colonization::Map> ();
     const int mapWidth = 4;
     const int mapHeight = 4;

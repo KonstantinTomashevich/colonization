@@ -2,6 +2,7 @@
 #include <Urho3D/Core/Object.h>
 #include <Urho3D/Container/Vector.h>
 #include <Urho3D/Scene/Component.h>
+#include <Colonization/Core/GameConfiguration.hpp>
 
 namespace Colonization
 {
@@ -46,11 +47,11 @@ protected:
 
     void ConstructVectorOfRealDistricts (Map *map, Urho3D::PODVector <District *> &output);
     float CalculateTotalEvolutionOf (Urho3D::StringHash evolutionBranch, Urho3D::PODVector <District *> &realDistricts);
-    float CalculateTotalProductionConsumptionOf (Urho3D::StringHash evolutionBranch, Urho3D::PODVector <District *> &realDistricts);
+    float CalculateTotalProductionConsumptionOf (GameConfiguration *configuration, Urho3D::StringHash evolutionBranch, Urho3D::PODVector <District *> &realDistricts);
 
-    float CalculateDistrictProductionConsumptionOfFarms (District *district);
-    float CalculateDistrictProductionConsumptionOfMines (District *district);
-    float CalculateDistrictProductionConsumptionOfIndustry (District *district);
+    float CalculateDistrictProductionConsumptionOfFarms (GameConfiguration *configuration, District *district);
+    float CalculateDistrictProductionConsumptionOfMines (GameConfiguration *configuration, District *district);
+    float CalculateDistrictProductionConsumptionOfIndustry (GameConfiguration *configuration, District *district);
 
 public:
     InternalTradeArea (Urho3D::Context *context);

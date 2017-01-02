@@ -1,11 +1,12 @@
 #include "TestMapPathFinding.hpp"
 #include <Urho3D/Input/Input.h>
 #include <Urho3D/Core/CoreEvents.h>
-
 #include <Urho3D/Scene/Scene.h>
 #include <Urho3D/IO/Log.h>
+
 #include <Colonization/Core/District.hpp>
 #include <Colonization/Core/Map.hpp>
+#include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Utils/RegisterAllObjects.hpp>
 
 URHO3D_DEFINE_APPLICATION_MAIN (Tests::TestMapPathFindingApplication)
@@ -41,13 +42,9 @@ void TestMapPathFindingApplication::Start ()
     Urho3D::Log *log = context_->GetSubsystem <Urho3D::Log> ();
     log->SetLevel (Urho3D::LOG_DEBUG);
 
-    context_->SetGlobalVar ("sailSpeed", 0.3f);
-    context_->SetGlobalVar ("marchSpeed", 0.1f);
-    context_->SetGlobalVar ("embarkationSpeed", 0.15f);
-    context_->SetGlobalVar ("disembarkationSpeed", 0.2f);
-
     Colonization::RegisterAllObjects (context_);
     Urho3D::SharedPtr <Urho3D::Scene> scene (new Urho3D::Scene (context_));
+    scene->CreateComponent <Colonization::GameConfiguration> ();
     Colonization::Map *map = scene->CreateChild ("map")->CreateComponent <Colonization::Map> ();
     const int mapWidth = 5;
     const int mapHeight = 5;

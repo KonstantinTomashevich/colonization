@@ -7,6 +7,7 @@
 #include <Colonization/Core/District.hpp>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/InternalTradeArea.hpp>
+#include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Utils/RegisterAllObjects.hpp>
 
 URHO3D_DEFINE_APPLICATION_MAIN (Tests::TestInternalTradeAreaApplication)
@@ -42,28 +43,9 @@ void TestInternalTradeAreaApplication::Start ()
     Urho3D::Log *log = context_->GetSubsystem <Urho3D::Log> ();
     log->SetLevel (Urho3D::LOG_DEBUG);
 
-    context_->SetGlobalVar ("oneColonistFarmsProductionConsumption", 0.01f);
-    context_->SetGlobalVar ("farmsProductionMinesConsumption", 0.005f);
-    context_->SetGlobalVar ("farmsProductionIndustryConsumption", 0.3f);
-
-    context_->SetGlobalVar ("oneColonistMinesProductionConsumption", 0.002f);
-    context_->SetGlobalVar ("minesProductionFarmsConsumption", 0.2f);
-    context_->SetGlobalVar ("minesProductionIndustryConsumption", 0.9f);
-
-    context_->SetGlobalVar ("oneColonistIndustryProductionConsumption", 0.003f);
-    context_->SetGlobalVar ("industryProductionFarmsConsumption", 0.15f);
-    context_->SetGlobalVar ("industryProductionMinesConsumption", 0.25f);
-
-    context_->SetGlobalVar ("farmsProductionInternalCost", 1.0f);
-    context_->SetGlobalVar ("minesProductionInternalCost", 1.5f);
-    context_->SetGlobalVar ("industryProductionInternalCost", 5.0f);
-
-    context_->SetGlobalVar ("farmsProductionExternalCost", 0.5f);
-    context_->SetGlobalVar ("minesProductionExternalCost", 1.0f);
-    context_->SetGlobalVar ("industryProductionExternalCost", 3.0f);
-
     Colonization::RegisterAllObjects (context_);
     Urho3D::SharedPtr <Urho3D::Scene> scene (new Urho3D::Scene (context_));
+    scene->CreateComponent <Colonization::GameConfiguration> ();
     Colonization::Map *map = scene->CreateChild ("map")->CreateComponent <Colonization::Map> ();
     const int mapWidth = 2;
     const int mapHeight = 2;
@@ -114,11 +96,11 @@ void TestInternalTradeAreaApplication::Start ()
 
     map->GetDistrictByIndex (3)->SetFarmsEvolutionPoints (2.0f);
     map->GetDistrictByIndex (3)->SetMinesEvolutionPoints (2.0f);
-    map->GetDistrictByIndex (3)->SetIndustryEvolutionPoints (7.0f);
+    map->GetDistrictByIndex (3)->SetIndustryEvolutionPoints (9.0f);
     map->GetDistrictByIndex (3)->SetLogisticsEvolutionPoints (4.0f);
     map->GetDistrictByIndex (3)->SetDefenseEvolutionPoints (1.0f);
 
-    Urho3D::SharedPtr <Colonization::InternalTradeArea> internalTradeArea (new Colonization::InternalTradeArea (context_));
+    Colonization::InternalTradeArea *internalTradeArea = scene->CreateComponent <Colonization::InternalTradeArea> ();
     internalTradeArea->AddDistrictHash (map->GetDistrictByIndex (0)->GetHash ());
     internalTradeArea->AddDistrictHash (map->GetDistrictByIndex (1)->GetHash ());
     internalTradeArea->AddDistrictHash (map->GetDistrictByIndex (2)->GetHash ());

@@ -134,7 +134,7 @@ PlayersManager::~PlayersManager ()
 void PlayersManager::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <PlayersManager> (COLONIZATION_SERVER_ONLY_CATEGORY);
-    URHO3D_ACCESSOR_ATTRIBUTE("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
 }
 
 void PlayersManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)

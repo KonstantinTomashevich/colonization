@@ -9,6 +9,7 @@
 #include <Colonization/Core/District.hpp>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/Unit.hpp>
+#include <Colonization/Core/GameConfiguration.hpp>
 
 #include <Colonization/Backend/ColoniesManager.hpp>
 #include <Colonization/Backend/MessagesHandler.hpp>
@@ -127,35 +128,7 @@ void HostActivity::DisposeWaitingForPlayersState ()
 
 void HostActivity::SetupPlayingState ()
 {
-    // TODO: Maybe create special configuration component instead of using context's global vars?
-    context_->SetGlobalVar ("sailSpeed", 0.3f);
-    context_->SetGlobalVar ("marchSpeed", 0.1f);
-    context_->SetGlobalVar ("embarkationSpeed", 0.15f);
-    context_->SetGlobalVar ("disembarkationSpeed", 0.2f);
-
-    context_->SetGlobalVar ("oneColonistFarmsProductionConsumption", 0.01f);
-    context_->SetGlobalVar ("farmsProductionMinesConsumption", 0.005f);
-    context_->SetGlobalVar ("farmsProductionIndustryConsumption", 0.3f);
-
-    context_->SetGlobalVar ("oneColonistMinesProductionConsumption", 0.002f);
-    context_->SetGlobalVar ("minesProductionFarmsConsumption", 0.2f);
-    context_->SetGlobalVar ("minesProductionIndustryConsumption", 0.9f);
-
-    context_->SetGlobalVar ("oneColonistIndustryProductionConsumption", 0.003f);
-    context_->SetGlobalVar ("industryProductionFarmsConsumption", 0.15f);
-    context_->SetGlobalVar ("industryProductionMinesConsumption", 0.25f);
-
-    context_->SetGlobalVar ("farmsProductionInternalCost", 1.0f);
-    context_->SetGlobalVar ("minesProductionInternalCost", 1.5f);
-    context_->SetGlobalVar ("industryProductionInternalCost", 5.0f);
-
-    context_->SetGlobalVar ("farmsProductionExternalCost", 0.5f);
-    context_->SetGlobalVar ("minesProductionExternalCost", 1.0f);
-    context_->SetGlobalVar ("industryProductionExternalCost", 3.0f);
-
-    context_->SetGlobalVar ("internalTaxes", 0.2f);
-    context_->SetGlobalVar ("externalTaxes", 0.2f);
-
+    scene_->CreateComponent <GameConfiguration> (Urho3D::REPLICATED);
     Map *map = scene_->CreateChild ("map", Urho3D::REPLICATED)->CreateComponent <Map> (Urho3D::REPLICATED);
     CreateTestMap (map);
     map->GetNode ()->SetVar ("PrefabXMLPath", "Objects/TestMapLocal.xml");

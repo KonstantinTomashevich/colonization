@@ -62,7 +62,7 @@ void UnitsManager::SettleColonizator (Unit *unit, Map *map)
     }
 }
 
-void UnitsManager::ProcessTrader (Unit *unit)
+void UnitsManager::ProcessTrader (GameConfiguration *configuration , Unit *unit)
 {
     assert (unit);
     assert (unit->GetUnitType () == UNIT_TRADERS);
@@ -73,7 +73,7 @@ void UnitsManager::ProcessTrader (Unit *unit)
     Player *player = playersManager->GetPlayer (Urho3D::String (unit->GetOwnerPlayerName ()));
     assert (player);
 
-    float externalTaxes = context_->GetGlobalVar ("externalTaxes").GetFloat ();
+    float externalTaxes = configuration->GetExternalTaxes ();
     player->SetGold (player->GetGold () + unit->TradersUnitGetTradeGoodsCost () * externalTaxes);
     unit->GetNode ()->Remove ();
 }
@@ -92,7 +92,7 @@ UnitsManager::~UnitsManager ()
 void UnitsManager::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <UnitsManager> (COLONIZATION_SERVER_ONLY_CATEGORY);
-    URHO3D_ACCESSOR_ATTRIBUTE("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
 }
 
 void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
@@ -101,13 +101,15 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
     {
         UpdateUnitsList ();
         Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
+        GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
         assert (map);
+        assert (configuration);
 
         float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
-        float sailSpeed = context_->GetGlobalVar ("sailSpeed").GetFloat ();
-        float marchSpeed = context_->GetGlobalVar ("marchSpeed").GetFloat ();
-        float embarkationSpeed = context_->GetGlobalVar ("embarkationSpeed").GetFloat ();
-        float disembarkationSpeed = context_->GetGlobalVar ("disembarkationSpeed").GetFloat ();
+        float sailSpeed = configuration->GetSailSpeed ();
+        float marchSpeed = configuration->GetMarchSpeed ();
+        float embarkationSpeed = configuration->GetEmbarkationSpeed ();
+        float disembarkationSpeed = configuration->GetDisembarkationSpeed ();
 
         for (int index = 0; index < units_.Size (); index++)
         {
@@ -155,7 +157,7 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
                     if (unitWay.Empty () && unit->GetUnitType () == UNIT_COLONIZATORS)
                         SettleColonizator (unit, map);
                     else if (unitWay.Empty () && unit->GetUnitType () == UNIT_TRADERS)
-                        ProcessTrader (unit);
+                        ProcessTrader (configuration, unit);
                 }
                 unit->MarkNetworkUpdate ();
             }

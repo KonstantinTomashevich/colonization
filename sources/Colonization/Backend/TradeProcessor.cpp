@@ -145,7 +145,10 @@ void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map
                             map->GetDistrictByHash (tradeArea->GetDistrictHashByIndex (0))->GetColonyOwnerName () + ".");
     else
     {
-        float internalTaxes = context_->GetGlobalVar ("internalTaxes").GetFloat ();
+        GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
+        assert (configuration);
+        float internalTaxes = configuration->GetInternalTaxes ();
+
         Urho3D::SharedPtr <TradeDistrictProcessingInfo> result = tradeArea->ProcessTrade (map);
         float playersIncome = result->GetSoldTradeGoodsCost () * result->GetLogisticsBonus () *
                 result->GetDefenseBonus () * updateDelay * internalTaxes;
@@ -194,7 +197,7 @@ TradeProcessor::~TradeProcessor ()
 void TradeProcessor::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <TradeProcessor> (COLONIZATION_SERVER_ONLY_CATEGORY);
-    URHO3D_ACCESSOR_ATTRIBUTE("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
 }
 
 void TradeProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
