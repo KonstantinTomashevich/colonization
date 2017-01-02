@@ -23,6 +23,7 @@ void PlayerInfo::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <PlayerInfo> (COLONIZATION_CORE_CATEGORY);
 
+    URHO3D_ACCESSOR_ATTRIBUTE("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Name", GetName, SetName, Urho3D::String, Urho3D::String ("NoName"), Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Points", GetPoints, SetPoints, float, 0.0f, Urho3D::AM_DEFAULT);
 }

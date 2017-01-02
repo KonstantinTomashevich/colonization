@@ -296,8 +296,8 @@ ColoniesManager::~ColoniesManager ()
 void ColoniesManager::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <ColoniesManager> (COLONIZATION_SERVER_ONLY_CATEGORY);
-    using namespace Urho3D;
 
+    URHO3D_ACCESSOR_ATTRIBUTE("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Colonies Basic Population Increase", GetColoniesBasicPopulationIncrease,
                                SetColoniesBasicPopulationIncrease, float, 0.005f, Urho3D::AM_DEFAULT);
 

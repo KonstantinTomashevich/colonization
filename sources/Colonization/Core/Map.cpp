@@ -23,6 +23,7 @@ Map::~Map ()
 void Map::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <Map> (COLONIZATION_SHARED_CATEGORY);
+    URHO3D_ACCESSOR_ATTRIBUTE("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
 }
 
 District *Map::GetDistrictByIndex (int index)

@@ -111,6 +111,7 @@ InternalTradeArea::~InternalTradeArea ()
 void InternalTradeArea::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <InternalTradeArea> (COLONIZATION_CORE_CATEGORY);
+    URHO3D_ACCESSOR_ATTRIBUTE("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
     URHO3D_MIXED_ACCESSOR_VARIANT_VECTOR_STRUCTURE_ATTRIBUTE ("Districts hashes", GetDistrictsHashesArrayAttribute, SetDistrictsHashesArrayAttribute,
                                                               Urho3D::VariantVector, Urho3D::Variant::emptyVariantVector,
                                                               districtsHashesStructureElementsNames, Urho3D::AM_DEFAULT);

@@ -91,6 +91,7 @@ UnitsManager::~UnitsManager ()
 void UnitsManager::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <UnitsManager> (COLONIZATION_SERVER_ONLY_CATEGORY);
+    URHO3D_ACCESSOR_ATTRIBUTE("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
 }
 
 void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
