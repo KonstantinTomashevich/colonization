@@ -97,7 +97,7 @@ void UnitsManager::RegisterObject (Urho3D::Context *context)
 
 void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    if (enabled_)
+    if (enabled_ && node_ && node_->GetScene () && node_->GetScene ()->IsUpdateEnabled ())
     {
         UpdateUnitsList ();
         Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();

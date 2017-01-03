@@ -297,7 +297,7 @@ void ColoniesManager::RegisterObject (Urho3D::Context *context)
 
 void ColoniesManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    if (enabled_)
+    if (enabled_ && node_ && node_->GetScene () && node_->GetScene ()->IsUpdateEnabled ())
     {
         Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
         GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();

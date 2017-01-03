@@ -202,7 +202,7 @@ void TradeProcessor::RegisterObject (Urho3D::Context *context)
 
 void TradeProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    if (enabled_)
+    if (enabled_ && node_ && node_->GetScene () && node_->GetScene ()->IsUpdateEnabled ())
     {
         float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
         // WARNING: Maybe rename all "before*" to "until*"? And do it in AngelScript too.
