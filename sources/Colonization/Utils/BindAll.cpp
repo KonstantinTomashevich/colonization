@@ -3,6 +3,7 @@
 
 #include <Colonization/AngelScriptBinders/BindActivity.hpp>
 #include <Colonization/AngelScriptBinders/BindDistrict.hpp>
+#include <Colonization/AngelScriptBinders/BindGameConfiguration.hpp>
 #include <Colonization/AngelScriptBinders/BindMap.hpp>
 #include <Colonization/AngelScriptBinders/BindNetworkMessageType.hpp>
 
@@ -23,6 +24,7 @@ void BindAll (Urho3D::Script *script)
     BindActivity (script);
     BindActivitiesApplication (script);
     BindDistrict (script);
+    BindGameConfiguration (script);
     BindMap (script);
     BindNetworkMessageType (script);
     BindHostActivity (script);
