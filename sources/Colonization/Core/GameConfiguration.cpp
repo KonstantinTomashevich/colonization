@@ -6,7 +6,15 @@
 
 namespace Colonization
 {
+const char *wayToEuropeStructureElementsNames [] =
+{
+    "Way To Europe Districts Count",
+    "***District Hash",
+    0
+};
+
 GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Component (context),
+    wayToEuropeDistricts_ (),
     sailSpeed_ (0.40f),
     marchSpeed_ (0.15f),
     embarkationSpeed_ (0.075f),
@@ -24,13 +32,13 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
     industryProductionFarmsConsumption_ (0.15f),
     industryProductionMinesConsumption_ (0.25f),
 
-    farmsProductionInternalCost_ (1.0f),
-    minesProductionInternalCost_ (1.5f),
-    industryProductionInternalCost_ (5.0f),
+    farmsProductionInternalCost_ (2.0f),
+    minesProductionInternalCost_ (4.0f),
+    industryProductionInternalCost_ (10.0f),
 
-    farmsProductionExternalCost_ (0.5f),
-    minesProductionExternalCost_ (1.0f),
-    industryProductionExternalCost_ (3.0f),
+    farmsProductionExternalCost_ (1.0f),
+    minesProductionExternalCost_ (3.5f),
+    industryProductionExternalCost_ (6.0f),
 
     internalTaxes_ (0.2f),
     externalTaxes_ (0.2f),
@@ -54,6 +62,10 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <GameConfiguration> (COLONIZATION_CORE_CATEGORY);
 
+    URHO3D_MIXED_ACCESSOR_VARIANT_VECTOR_STRUCTURE_ATTRIBUTE ("Way To Europe Districts", GetWayToEuropeDistrictsAttribute, SetWayToEuropeDistrictsAttribute,
+                                                              Urho3D::VariantVector, Urho3D::Variant::emptyVariantVector,
+                                                              wayToEuropeStructureElementsNames, Urho3D::AM_DEFAULT);
+
     URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Sail Speed", GetSailSpeed, SetSailSpeed, float, 0.40f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("March Speed", GetMarchSpeed, SetMarchSpeed, float, 0.15f, Urho3D::AM_DEFAULT);
@@ -72,13 +84,13 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
     URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Farms Consumption", GetIndustryProductionFarmsConsumption, SetIndustryProductionFarmsConsumption, float, 0.15f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Industry Consumption", GetIndustryProductionMinesConsumption, SetIndustryProductionMinesConsumption, float, 0.25f, Urho3D::AM_DEFAULT);
 
-    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Internal Cost", GetFarmsProductionInternalCost, SetFarmsProductionInternalCost, float, 1.0f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production Internal Cost", GetMinesProductionInternalCost, SetMinesProductionInternalCost, float, 1.5f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Internal Cost", GetIndustryProductionInternalCost, SetIndustryProductionInternalCost, float, 5.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Internal Cost", GetFarmsProductionInternalCost, SetFarmsProductionInternalCost, float, 2.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production Internal Cost", GetMinesProductionInternalCost, SetMinesProductionInternalCost, float, 4.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Internal Cost", GetIndustryProductionInternalCost, SetIndustryProductionInternalCost, float, 10.0f, Urho3D::AM_DEFAULT);
 
-    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production External Cost", GetFarmsProductionExternalCost, SetFarmsProductionExternalCost, float, 0.5f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production External Cost", GetMinesProductionExternalCost, SetMinesProductionExternalCost, float, 1.0f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production External Cost", GetIndustryProductionExternalCost, SetIndustryProductionExternalCost, float, 3.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production External Cost", GetFarmsProductionExternalCost, SetFarmsProductionExternalCost, float, 1.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production External Cost", GetMinesProductionExternalCost, SetMinesProductionExternalCost, float, 3.5f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production External Cost", GetIndustryProductionExternalCost, SetIndustryProductionExternalCost, float, 6.0f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Internal Taxes", GetInternalTaxes, SetInternalTaxes, float, 0.2f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("External Taxes", GetExternalTaxes, SetExternalTaxes, float, 0.2f, Urho3D::AM_DEFAULT);
@@ -100,6 +112,42 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Investitions Efficiency", GetInvestitionsEfficiency,
                                SetInvestitionsEfficiency, float, 9.0f, Urho3D::AM_DEFAULT);
+}
+
+Urho3D::PODVector <Urho3D::StringHash> GameConfiguration::GetWayToEuropeDistricts () const
+{
+    return wayToEuropeDistricts_;
+}
+
+void GameConfiguration::SetWayToEuropeDistricts (Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts)
+{
+    wayToEuropeDistricts_ = wayToEuropeDistricts;
+}
+
+Urho3D::VariantVector GameConfiguration::GetWayToEuropeDistrictsAttribute () const
+{
+    Urho3D::VariantVector variantVector;
+    variantVector.Push (Urho3D::Variant (wayToEuropeDistricts_.Size ()));
+    for (int index = 0; index < wayToEuropeDistricts_.Size (); index++)
+        variantVector.Push (Urho3D::Variant (wayToEuropeDistricts_.At (index)));
+    return variantVector;
+}
+
+void GameConfiguration::SetWayToEuropeDistrictsAttribute (const Urho3D::VariantVector &wayToEuropeDistricts)
+{
+    wayToEuropeDistricts_.Clear ();
+    if (!wayToEuropeDistricts.Empty ())
+    {
+        int requestedSize = wayToEuropeDistricts.At (0).GetInt ();
+        if (requestedSize > 0)
+            for (int index = 0; index < requestedSize; index++)
+            {
+                if (index + 1 < wayToEuropeDistricts.Size ())
+                    wayToEuropeDistricts_.Push (wayToEuropeDistricts.At (index + 1).GetStringHash ());
+                else
+                    wayToEuropeDistricts_.Push (Urho3D::StringHash ());
+            }
+    }
 }
 
 float GameConfiguration::GetSailSpeed () const

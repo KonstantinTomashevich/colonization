@@ -7,6 +7,7 @@ class GameConfiguration : public Urho3D::Component
 {
 URHO3D_OBJECT (GameConfiguration, Component)
 protected:
+    Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts_;
     float sailSpeed_;
     float marchSpeed_;
     float embarkationSpeed_;
@@ -46,6 +47,11 @@ public:
     GameConfiguration (Urho3D::Context *context);
     virtual ~GameConfiguration ();
     static void RegisterObject (Urho3D::Context *context);
+
+    Urho3D::PODVector <Urho3D::StringHash> GetWayToEuropeDistricts () const;
+    void SetWayToEuropeDistricts (Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts);
+    Urho3D::VariantVector GetWayToEuropeDistrictsAttribute () const;
+    void SetWayToEuropeDistrictsAttribute (const Urho3D::VariantVector &wayToEuropeDistricts);
 
     float GetSailSpeed () const;
     void SetSailSpeed (float sailSpeed);

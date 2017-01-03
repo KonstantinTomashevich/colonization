@@ -6,6 +6,17 @@
 
 namespace Colonization
 {
+Urho3D::CScriptArray *GameConfiguration_GetWayToEuropeDistricts (GameConfiguration *object)
+{
+    Urho3D::PODVector <Urho3D::StringHash> array = object->GetWayToEuropeDistricts ();
+    return Urho3D::VectorToArray <Urho3D::StringHash> (array, "Array<StringHash>");
+}
+
+void GameConfiguration_SetWayToEuropeDistricts (GameConfiguration *object, Urho3D::CScriptArray *array)
+{
+    object->SetWayToEuropeDistricts (Urho3D::ArrayToPODVector <Urho3D::StringHash> (array));
+}
+
 void BindGameConfiguration (Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
@@ -16,6 +27,9 @@ void BindGameConfiguration (Urho3D::Script *script)
 void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String className)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
+    engine->RegisterObjectMethod (className.CString (), "Array <StringHash> @get_wayToEuropeDistricts ()", asFUNCTION (GameConfiguration_GetWayToEuropeDistricts), asCALL_CDECL_OBJFIRST);
+    engine->RegisterObjectMethod (className.CString (), "void set_wayToEuropeDistricts (Array <StringHash> @wayToEuropeDistricts)", asFUNCTION (GameConfiguration_SetWayToEuropeDistricts), asCALL_CDECL_OBJFIRST);
+
     engine->RegisterObjectMethod (className.CString (), "float get_sailSpeed () const", asMETHOD (GameConfiguration, GetSailSpeed), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_sailSpeed (float sailSpeed)", asMETHOD (GameConfiguration, SetSailSpeed), asCALL_THISCALL);
 
