@@ -38,33 +38,33 @@ void BindUnitType(Urho3D::Script *script)
 void BindUnitInterface (Urho3D::Script *script, Urho3D::String className)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
-    engine->RegisterObjectMethod (className.CString (), "StringHash get_hash ()", asMETHOD (Unit, GetHash), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "StringHash get_hash () const", asMETHOD (Unit, GetHash), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod (className.CString (), "UnitType get_unitType ()", asMETHOD (Unit, GetUnitType), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "UnitType get_unitType () const", asMETHOD (Unit, GetUnitType), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_unitType (UnitType unitType)", asMETHOD (Unit, SetUnitType), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod (className.CString (), "String get_ownerPlayerName ()", asMETHOD (Unit, GetOwnerPlayerName), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "String get_ownerPlayerName () const", asMETHOD (Unit, GetOwnerPlayerName), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_ownerPlayerName (String ownerPlayerName)", asMETHOD (Unit, SetOwnerPlayerName), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod (className.CString (), "StringHash get_positionHash ()", asMETHOD (Unit, GetPositionHash), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "StringHash get_positionHash () const", asMETHOD (Unit, GetPositionHash), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_positionHash (StringHash positionHash)", asMETHOD (Unit, SetPositionHash), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod (className.CString (), "Array <StringHash> @GetWay ()", asFUNCTION (Unit_GetWay), asCALL_CDECL_OBJFIRST);
+    engine->RegisterObjectMethod (className.CString (), "Array <StringHash> @GetWay () const", asFUNCTION (Unit_GetWay), asCALL_CDECL_OBJFIRST);
     engine->RegisterObjectMethod (className.CString (), "void SetWay (Array <StringHash> @way)", asFUNCTION (Unit_SetWay), asCALL_CDECL_OBJFIRST);
 
-    engine->RegisterObjectMethod (className.CString (), "float get_wayToNextDistrictProgressInPercents ()", asMETHOD (Unit, GetWayToNextDistrictProgressInPercents), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "float get_wayToNextDistrictProgressInPercents () const", asMETHOD (Unit, GetWayToNextDistrictProgressInPercents), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_wayToNextDistrictProgressInPercents (float wayToNextDistrictProgressInPercents)", asMETHOD (Unit, SetWayToNextDistrictProgressInPercents), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod (className.CString (), "int get_fleetUnitWarShipsCount ()", asMETHOD (Unit, FleetUnitGetWarShipsCount), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "int get_fleetUnitWarShipsCount () const", asMETHOD (Unit, FleetUnitGetWarShipsCount), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_fleetUnitWarShipsCount (int fleetUnitWarShipsCount)", asMETHOD (Unit, FleetUnitSetWarShipsCount), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod (className.CString (), "float get_tradersUnitTradeGoodsCost ()", asMETHOD (Unit, TradersUnitGetTradeGoodsCost), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "float get_tradersUnitTradeGoodsCost () const", asMETHOD (Unit, TradersUnitGetTradeGoodsCost), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_tradersUnitTradeGoodsCost (float tradersUnitTradeGoodsCost)", asMETHOD (Unit, TradersUnitSetTradeGoodsCost), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod (className.CString (), "int get_colonizatorsUnitColonizatorsCount ()", asMETHOD (Unit, ColonizatorsUnitGetColonizatorsCount), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "int get_colonizatorsUnitColonizatorsCount () const", asMETHOD (Unit, ColonizatorsUnitGetColonizatorsCount), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_colonizatorsUnitColonizatorsCount (int colonizatorsUnitColonizatorsCount)", asMETHOD (Unit, ColonizatorsUnitSetColonizatorsCount), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod (className.CString (), "int get_armyUnitSoldiersCount ()", asMETHOD (Unit, ArmyUnitGetSoldiersCount), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "int get_armyUnitSoldiersCount () const", asMETHOD (Unit, ArmyUnitGetSoldiersCount), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_armyUnitSoldiersCount (int armyUnitSoldiersCount)", asMETHOD (Unit, ArmyUnitSetSoldiersCount), asCALL_THISCALL);
 }
 }
