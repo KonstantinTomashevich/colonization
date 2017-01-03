@@ -109,6 +109,20 @@ InternalTradeArea::~InternalTradeArea ()
 
 }
 
+void InternalTradeArea::DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest)
+{
+    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
+    assert (map);
+
+    if (!districtsHashes_.Empty ())
+        for (int index = 0; index < districtsHashes_.Size (); index++)
+        {
+            District *district = map->GetDistrictByHash (districtsHashes_.At (index));
+            if (district)
+                district->DrawDebugGeometry (debug, depthTest);
+        }
+}
+
 void InternalTradeArea::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <InternalTradeArea> (COLONIZATION_CORE_CATEGORY);

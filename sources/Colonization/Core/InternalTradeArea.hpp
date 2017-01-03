@@ -57,6 +57,7 @@ public:
     InternalTradeArea (Urho3D::Context *context);
     virtual ~InternalTradeArea ();
 
+    virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);
     static void RegisterObject (Urho3D::Context *context);
     Urho3D::SharedPtr <TradeDistrictProcessingInfo> ProcessTrade (Map *map);
 
