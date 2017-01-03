@@ -10,7 +10,7 @@ URHO3D_OBJECT (TestInternalTradeProcessingApplication, Object)
 protected:
     Urho3D::SharedPtr <Urho3D::Scene> scene_;
     Urho3D::SharedPtr <Urho3D::Scene> sceneForReplication_;
-    float timeBeforeAutoExit_;
+    float timeUntilAutoExit_;
 
 public:
     TestInternalTradeProcessingApplication (Urho3D::Context *context);

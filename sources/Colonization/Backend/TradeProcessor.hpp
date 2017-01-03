@@ -10,7 +10,7 @@ class TradeProcessor : public Urho3D::Component
 URHO3D_OBJECT (TradeProcessor, Component)
 protected:
     Urho3D::Vector <Urho3D::SharedPtr <InternalTradeArea> > tradeAreas_;
-    float beforeTradeAreasUpdate_;
+    float untilTradeAreasUpdate_;
 
     void UpdateTradeAreas (float updateDelay);
     void UpdateTradeArea (InternalTradeArea *tradeArea, Map *map, District *start, Urho3D::PODVector <District *> &unscannedList);

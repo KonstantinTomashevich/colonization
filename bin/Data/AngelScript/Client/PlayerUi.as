@@ -1,7 +1,7 @@
 class PlayerUi : ScriptObject
 {
     protected bool isSceneLoaded_;
-    protected float beforeSelectionUpdate_;
+    protected float untilSelectionUpdate_;
     
     protected void CheckIsSceneLoaded ()
     {
@@ -270,7 +270,7 @@ class PlayerUi : ScriptObject
     PlayerUi ()
     {
         isSceneLoaded_ = false;
-        beforeSelectionUpdate_ = 0.001f;
+        untilSelectionUpdate_ = 0.001f;
     }
     
     ~PlayerUi ()
@@ -323,7 +323,7 @@ class PlayerUi : ScriptObject
     
     void Update (float timeStep)
     {
-        beforeSelectionUpdate_ -= timeStep;
+        untilSelectionUpdate_ -= timeStep;
         
         Text @playerStatsText = ui.root.GetChild ("ingame").GetChild ("playerStatsInfo");
         String playerStatsInfo = "";
@@ -335,10 +335,10 @@ class PlayerUi : ScriptObject
         if (!isSceneLoaded_)
             CheckIsSceneLoaded ();
             
-        if (isSceneLoaded_ and beforeSelectionUpdate_ <= 0.0f)
+        if (isSceneLoaded_ and untilSelectionUpdate_ <= 0.0f)
         {
             UpdateSelection ();
-            beforeSelectionUpdate_ = 1.0f / 30.0f;
+            untilSelectionUpdate_ = 1.0f / 30.0f;
         }
     }
     

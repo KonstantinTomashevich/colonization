@@ -123,14 +123,14 @@ void TestInternalTradeProcessingApplication::Start ()
     network->Connect ("localhost", 3793, sceneForReplication_, identity);
 
     SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (TestInternalTradeProcessingApplication, Update));
-    timeBeforeAutoExit_ = 2.5f;
+    timeUntilAutoExit_ = 2.5f;
 }
 
 void TestInternalTradeProcessingApplication::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
-    timeBeforeAutoExit_ -= timeStep;
-    if (timeBeforeAutoExit_ <= 0.0f)
+    timeUntilAutoExit_ -= timeStep;
+    if (timeUntilAutoExit_ <= 0.0f)
         ErrorExit ("Time elapsed!");
 
     Colonization::PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <Colonization::PlayersManager> ();

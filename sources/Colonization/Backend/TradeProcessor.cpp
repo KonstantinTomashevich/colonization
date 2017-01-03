@@ -186,7 +186,7 @@ void TradeProcessor::ClearTradeAreas ()
 TradeProcessor::TradeProcessor (Urho3D::Context *context) : Urho3D::Component (context)
 {
     SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (TradeProcessor, Update));
-    beforeTradeAreasUpdate_ = 0.0001f;
+    untilTradeAreasUpdate_ = 0.0001f;
 }
 
 TradeProcessor::~TradeProcessor ()
@@ -205,12 +205,11 @@ void TradeProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &e
     if (enabled_ && node_ && node_->GetScene () && node_->GetScene ()->IsUpdateEnabled ())
     {
         float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
-        // WARNING: Maybe rename all "before*" to "until*"? And do it in AngelScript too.
-        beforeTradeAreasUpdate_ -= timeStep;
-        if (beforeTradeAreasUpdate_ <= 0.0f)
+        untilTradeAreasUpdate_ -= timeStep;
+        if (untilTradeAreasUpdate_ <= 0.0f)
         {
             UpdateTradeAreas (10.0f);
-            beforeTradeAreasUpdate_ = 10.0f;
+            untilTradeAreasUpdate_ = 10.0f;
         }
     }
 }

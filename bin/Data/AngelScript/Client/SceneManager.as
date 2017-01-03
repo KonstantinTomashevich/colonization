@@ -3,8 +3,8 @@ class SceneManager : ScriptObject
     protected float CAMERA_MOVE_SPEED = 2.5f;
     protected Node @cameraNode_;
     protected bool isSceneLoaded_;
-    protected float beforeDistrictsUpdate_;
-    protected float beforeUnitsUpdate_;
+    protected float untilDistrictsUpdate_;
+    protected float untilUnitsUpdate_;
     
     protected void CheckIsSceneLoaded ()
     {
@@ -153,8 +153,8 @@ class SceneManager : ScriptObject
     SceneManager ()
     {
         isSceneLoaded_ = false;
-        beforeDistrictsUpdate_ = 0.001f;
-        beforeUnitsUpdate_ = 0.001f;
+        untilDistrictsUpdate_ = 0.001f;
+        untilUnitsUpdate_ = 0.001f;
     }
     
     ~SceneManager ()
@@ -183,19 +183,19 @@ class SceneManager : ScriptObject
             
         if (isSceneLoaded_)
         {
-            beforeDistrictsUpdate_ -= timeStep;
-            beforeUnitsUpdate_ -= timeStep;
+            untilDistrictsUpdate_ -= timeStep;
+            untilUnitsUpdate_ -= timeStep;
             
-            if (beforeDistrictsUpdate_ <= 0.0f)
+            if (untilDistrictsUpdate_ <= 0.0f)
             {
                 UpdateDistricts ();
-                beforeDistrictsUpdate_ = 1.0f;
+                untilDistrictsUpdate_ = 1.0f;
             }
             
-            if (beforeUnitsUpdate_ <= 0.0f)
+            if (untilUnitsUpdate_ <= 0.0f)
             {
                 UpdateUnits ();
-                beforeUnitsUpdate_ = 0.1f;
+                untilUnitsUpdate_ = 0.1f;
             }
         }
     }
