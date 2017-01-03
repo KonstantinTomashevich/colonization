@@ -23,6 +23,12 @@ Map::~Map ()
     districts_.Clear ();
 }
 
+void Map::DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest)
+{
+    for (int index = 0; index < districts_.Size (); index++)
+        districts_.At (index)->DrawDebugGeometry (debug, depthTest);
+}
+
 void Map::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <Map> (COLONIZATION_SHARED_CATEGORY);

@@ -16,6 +16,8 @@ protected:
 public:
     Map (Urho3D::Context *context);
     virtual ~Map ();
+
+    virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);
     static void RegisterObject (Urho3D::Context *context);
 
     District *GetDistrictByIndex (int index);
