@@ -32,6 +32,8 @@ public:
     virtual ~Unit ();
 
     static void RegisterObject (Urho3D::Context *context);
+    virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);
+
     void UpdateHash (UnitsManager *owner);
     Urho3D::StringHash GetHash () const;
     void SetHash (const Urho3D::StringHash &hash);

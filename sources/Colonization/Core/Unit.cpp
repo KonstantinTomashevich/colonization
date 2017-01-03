@@ -2,7 +2,11 @@
 #include "Unit.hpp"
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/Core/Context.h>
+#include <Urho3D/Graphics/DebugRenderer.h>
+#include <Urho3D/Scene/Scene.h>
+
 #include <Colonization/Backend/UnitsManager.hpp>
+#include <Colonization/Core/Map.hpp>
 #include <Colonization/Utils/Categories.hpp>
 #include <Colonization/Utils/AttributeMacro.hpp>
 
@@ -71,6 +75,19 @@ void Unit::RegisterObject (Urho3D::Context *context)
     URHO3D_ACCESSOR_ATTRIBUTE ("[Army Only] War Ships Count",
                                ArmyUnitGetSoldiersCount,
                                ArmyUnitSetSoldiersCount, int, 0, Urho3D::AM_DEFAULT);
+}
+
+void Unit::DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest)
+{
+    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
+    assert (map);
+
+    District *district = map->GetDistrictByHash (positionHash_);
+    if (district)
+    {
+        Urho3D::Sphere sphere (district->GetUnitPosition (), 0.15f);
+        debug->AddSphere (sphere, Urho3D::Color::GREEN, depthTest);
+    }
 }
 
 void Unit::UpdateHash (UnitsManager *owner)
