@@ -71,6 +71,7 @@ public:
     District (Urho3D::Context *context);
     virtual ~District ();
 
+    virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);
     static void RegisterObject (Urho3D::Context *context);
     void CalculateNeighbors (Urho3D::Vector <Urho3D::SharedPtr <District> > &allDistricts);
 

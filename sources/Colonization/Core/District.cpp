@@ -2,6 +2,7 @@
 #include "District.hpp"
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/Core/Context.h>
+#include <Urho3D/Graphics/DebugRenderer.h>
 
 #include <Colonization/Utils/Categories.hpp>
 #include <Colonization/Core/Map.hpp>
@@ -88,6 +89,31 @@ District::District (Urho3D::Context *context) : Urho3D::Component (context),
 District::~District ()
 {
 
+}
+
+void District::DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest)
+{
+    if (!polygonPoints_.Empty ())
+    {
+        for (int index = 0; index < polygonPoints_.Size (); index++)
+        {
+            Urho3D::Vector3 firstPoint = polygonPoints_.At (index);
+            Urho3D::Vector3 secondPoint;
+
+            if (index + 1 < polygonPoints_.Size ())
+                secondPoint = polygonPoints_.At (index + 1);
+            else
+                secondPoint = polygonPoints_.At (0);
+
+            debug->AddLine (firstPoint, secondPoint, Urho3D::Color::RED, depthTest);
+        }
+    }
+
+    Urho3D::Sphere colonySphere (colonyPosition_, 0.25f);
+    debug->AddSphere (colonySphere, Urho3D::Color::YELLOW, depthTest);
+
+    Urho3D::Sphere unitSphere (unitPosition_, 0.15f);
+    debug->AddSphere (unitSphere, Urho3D::Color::GREEN, depthTest);
 }
 
 void District::RegisterObject (Urho3D::Context *context)
