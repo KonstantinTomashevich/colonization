@@ -128,13 +128,21 @@ void HostActivity::DisposeWaitingForPlayersState ()
 
 void HostActivity::SetupPlayingState ()
 {
-    scene_->CreateComponent <GameConfiguration> (Urho3D::REPLICATED);
+    GameConfiguration *configuration = scene_->CreateComponent <GameConfiguration> (Urho3D::REPLICATED);
     Map *map = scene_->CreateChild ("map", Urho3D::REPLICATED)->CreateComponent <Map> (Urho3D::REPLICATED);
     CreateTestMap (map);
     map->GetNode ()->SetVar ("PrefabXMLPath", "Objects/TestMapLocal.xml");
 
     UnitsManager *unitsManager = scene_->CreateChild ("units", Urho3D::REPLICATED)->CreateComponent <UnitsManager> (Urho3D::LOCAL);
     AddTestFleetUnits (unitsManager, map, Urho3D::Random (5, 15));
+
+    Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts;
+    // [X * HEIGHT + Y] = (X, Y)
+    wayToEuropeDistricts.Push (map->GetDistrictByIndex (0 + 5 * 0)->GetHash ());
+    wayToEuropeDistricts.Push (map->GetDistrictByIndex (0 + 5 * 4)->GetHash ());
+    wayToEuropeDistricts.Push (map->GetDistrictByIndex (4 + 5 * 4)->GetHash ());
+    wayToEuropeDistricts.Push (map->GetDistrictByIndex (4 + 5 * 0)->GetHash ());
+    configuration->SetWayToEuropeDistricts (wayToEuropeDistricts);
 
     scene_->CreateComponent <ColoniesManager> (Urho3D::LOCAL);
     scene_->CreateComponent <TradeProcessor> (Urho3D::LOCAL);

@@ -168,8 +168,26 @@ void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map
             unit->SetOwnerPlayerName (district->GetColonyOwnerName ());
             unit->SetPositionHash (district->GetHash ());
 
-            // TODO: Path is temporary!
-            unit->SetWay (map->FindPath (unit->GetPositionHash (), map->GetDistrictByIndex (0)->GetHash (),
+            GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
+            District *nearestEuropeDistrict = 0;
+            Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts = configuration->GetWayToEuropeDistricts ();
+            nearestEuropeDistrict = map->GetDistrictByHash (wayToEuropeDistricts.At (0));
+            assert (nearestEuropeDistrict);
+            float minDistance = (nearestEuropeDistrict->GetUnitPosition () - district->GetUnitPosition ()).Length ();
+
+            if (wayToEuropeDistricts.Size () > 1)
+                for (int index = 1; index < wayToEuropeDistricts.Size (); index++)
+                {
+                    District *europeDistrict = map->GetDistrictByHash (wayToEuropeDistricts.At (index));
+                    assert (district);
+                    if ((europeDistrict->GetUnitPosition () - district->GetUnitPosition ()).Length () < minDistance)
+                    {
+                        nearestEuropeDistrict = europeDistrict;
+                        minDistance = (europeDistrict->GetUnitPosition () - district->GetUnitPosition ()).Length ();
+                    }
+                }
+
+            unit->SetWay (map->FindPath (unit->GetPositionHash (), nearestEuropeDistrict->GetHash (),
                                          unit->GetOwnerPlayerName (), true, false));
             unit->UpdateHash (unitsManager);
         }

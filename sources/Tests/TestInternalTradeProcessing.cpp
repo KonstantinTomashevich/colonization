@@ -51,7 +51,7 @@ void TestInternalTradeProcessingApplication::Start ()
 
     Colonization::RegisterAllObjects (context_);
     scene_ = Urho3D::SharedPtr <Urho3D::Scene> (new Urho3D::Scene (context_));
-    scene_->CreateComponent <Colonization::GameConfiguration> ();
+    Colonization::GameConfiguration *configuration = scene_->CreateComponent <Colonization::GameConfiguration> ();
     Colonization::Map *map = scene_->CreateChild ("map")->CreateComponent <Colonization::Map> ();
     const int mapWidth = 4;
     const int mapHeight = 4;
@@ -110,6 +110,10 @@ void TestInternalTradeProcessingApplication::Start ()
         district->SetLogisticsEvolutionPoints (coordinate.z_);
         district->SetDefenseEvolutionPoints (5.0f);
     }
+
+    Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts;
+    wayToEuropeDistricts.Push (map->GetDistrictByIndex (0)->GetHash ());
+    configuration->SetWayToEuropeDistricts (wayToEuropeDistricts);
 
     scene_->CreateComponent <Colonization::MessagesHandler> ();
     scene_->CreateChild ("players")->CreateComponent <Colonization::PlayersManager> ();

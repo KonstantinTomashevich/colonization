@@ -90,8 +90,26 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
         unit->ColonizatorsUnitSetColonizatorsCount (100);
         unit->SetOwnerPlayerName (name_);
 
-        // TODO: Position is temporary! Will be rewrited!
-        unit->SetPositionHash (map->GetDistrictByIndex (0 * 5 + 0)->GetHash ()); // [X * HEIGHT + Y] = (X, Y)
+        GameConfiguration *configuration = scene_->GetComponent <GameConfiguration> ();
+        District *nearestEuropeDistrict = 0;
+        Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts = configuration->GetWayToEuropeDistricts ();
+        nearestEuropeDistrict = map->GetDistrictByHash (wayToEuropeDistricts.At (0));
+        assert (nearestEuropeDistrict);
+        float minDistance = (nearestEuropeDistrict->GetUnitPosition () - targetDistrict->GetUnitPosition ()).Length ();
+
+        if (wayToEuropeDistricts.Size () > 1)
+            for (int index = 1; index < wayToEuropeDistricts.Size (); index++)
+            {
+                District *district = map->GetDistrictByHash (wayToEuropeDistricts.At (index));
+                assert (district);
+                if ((district->GetUnitPosition () - targetDistrict->GetUnitPosition ()).Length () < minDistance)
+                {
+                    nearestEuropeDistrict = district;
+                    minDistance = (district->GetUnitPosition () - targetDistrict->GetUnitPosition ()).Length ();
+                }
+            }
+
+        unit->SetPositionHash (nearestEuropeDistrict->GetHash ());
         unit->SetWay (map->FindPath (unit->GetPositionHash (), targetDistrict->GetHash (), name_, true, true));
         unit->UpdateHash (unitsManager);
         unit->MarkNetworkUpdate ();
