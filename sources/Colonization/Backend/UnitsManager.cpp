@@ -89,6 +89,12 @@ UnitsManager::~UnitsManager ()
     units_.Clear ();
 }
 
+void UnitsManager::DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest)
+{
+    for (int index = 0; index < units_.Size (); index++)
+        units_.At (index)->DrawDebugGeometry (debug, depthTest);
+}
+
 void UnitsManager::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <UnitsManager> (COLONIZATION_SERVER_ONLY_CATEGORY);

@@ -19,6 +19,8 @@ protected:
 public:
     UnitsManager (Urho3D::Context *context);
     virtual ~UnitsManager ();
+
+    virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);
     static void RegisterObject (Urho3D::Context *context);
 
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
