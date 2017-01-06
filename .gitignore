@@ -39,3 +39,6 @@ AngelScriptAPI.hpp
 bin/CoreData/*
 bin/Urho3DEditorData/*
 urho3d-cmake/*
+
+# Blender temporary files.
+*.blend1
