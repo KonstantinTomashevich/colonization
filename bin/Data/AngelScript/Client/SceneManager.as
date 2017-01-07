@@ -62,7 +62,7 @@ class SceneManager : ScriptObject
             if (district.hasColony)
             {
                 if (districtNode.GetChild ("localColony") is null)
-                    LoadPrefabOf (districtNode, true, "localColony", "Objects/ColonyLocal.xml");
+                    LoadPrefabOf (districtNode, true, "localColony", "Objects/ColonyIconLocal.xml");
                 
                 Vector3 colonyPosition = district.colonyPosition;
                 districtNode.GetChild ("localColony").position = colonyPosition;

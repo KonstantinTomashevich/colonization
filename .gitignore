@@ -32,7 +32,7 @@
 AngelScriptAPI.hpp
 
 # Local files
-*.user
+*.user*
 *.layout
 
 # Urho3D's local files.

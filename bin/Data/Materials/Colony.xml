@@ -1,0 +1,6 @@
+<material>
+	<technique name="Techniques/Diff.xml"/>
+	<texture name="Textures/Colony.png" unit="diffuse"/>
+	<parameter name="MatDiffColor" value="0.8 0.8 0.8 1"/>
+	<parameter name="MatSpecColor" value="0.0673077 0.0673077 0.0673077 50"/>
+</material>

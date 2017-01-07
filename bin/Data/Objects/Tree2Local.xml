@@ -8,8 +8,8 @@
 	<attribute name="Scale" value="1 1 1" />
 	<attribute name="Variables" />
 	<component type="StaticModel" id="16777228">
-		<attribute name="Model" value="Model;Models/Colony.mdl" />
-		<attribute name="Material" value="Material;Materials/colony.xml" />
+		<attribute name="Model" value="Model;Models/Tree2.mdl" />
+		<attribute name="Material" value="Material;Materials/Tree2.xml" />
 		<attribute name="Cast Shadows" value="true" />
 	</component>
 </node>
