@@ -11,6 +11,13 @@
 
 namespace Colonization
 {
+// TODO: Maybe use another production system? See next lines.
+// districtProduction (type) = colonistsCount * evolution (type) * basicProduction (type)
+// It will be much more readable and easier to set correct configuration constants.
+// And with it, all configuration constants will be updated.
+
+// TODO: Will climate affect cost of farms production? I think yes.
+
 const char *districtsHashesStructureElementsNames [] =
 {
     "Districts In Area Count",
@@ -32,6 +39,7 @@ float InternalTradeArea::CalculateTotalEvolutionOf (Urho3D::StringHash evolution
         District *district = realDistricts.At (index);
         assert (district);
         if (evolutionBranch == Urho3D::StringHash ("farms"))
+            // FIXME: It will be multipled by land average fertility.
             totalEvolution += district->GetFarmsEvolutionPoints ();
         else if (evolutionBranch == Urho3D::StringHash ("mines"))
             totalEvolution += district->GetMinesEvolutionPoints ();
@@ -68,6 +76,7 @@ float InternalTradeArea::CalculateDistrictProductionConsumptionOfFarms (GameConf
     float minesConsumption = configuration->GetFarmsProductionMinesConsumption ();
     float industryConsumption = configuration->GetFarmsProductionIndustryConsumption ();
 
+    // FIXME: Add local army consumption!
     float totalConsumption = oneColonistConsumption * (district->GetMenCount () + district->GetWomenCount ());
     totalConsumption += minesConsumption * district->GetMinesEvolutionPoints ();
     totalConsumption += industryConsumption * district->GetIndustryEvolutionPoints ();
