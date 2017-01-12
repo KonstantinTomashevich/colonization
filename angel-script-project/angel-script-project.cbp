@@ -25,6 +25,7 @@
 		<Unit filename="../bin/Data/AngelScript/Client/SceneManager.as" />
 		<Unit filename="../bin/Data/AngelScript/Client/ScreenPressesHandler.as" />
 		<Unit filename="../bin/Data/AngelScript/MainMenu.as" />
+		<Unit filename="../bin/Data/AngelScript/Utils/AdvancedSceneSaver.as" />
 		<Unit filename="AngelScriptAPI.hpp" />
 		<Extensions>
 			<code_completion />
