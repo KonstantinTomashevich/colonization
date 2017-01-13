@@ -13,7 +13,8 @@
 namespace Colonization
 {
 Map::Map (Urho3D::Context *context) : Urho3D::Component (context),
-    districts_ ()
+    districts_ (),
+    recalculateDistrictsHashesNextFrame_ (false)
 {
     SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (Map, Update));
 }
@@ -33,6 +34,7 @@ void Map::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <Map> (COLONIZATION_SHARED_CATEGORY);
     URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Recalculate Districts Hashes Next Frame", WillRecalculateDistrictsHashesNextFrame, SetRecalculateDistrictsHashesNextFrame, bool, false, Urho3D::AM_DEFAULT);
 }
 
 District *Map::GetDistrictByIndex (int index)
@@ -87,7 +89,19 @@ void Map::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
             if (districtNode->GetID () < Urho3D::FIRST_LOCAL_ID)
                 districts_.Push (Urho3D::SharedPtr <District> (districtNode->GetComponent <District> ()));
         }
+
+        if (recalculateDistrictsHashesNextFrame_)
+        {
+            RecalculateDistrictsHashes ();
+            recalculateDistrictsHashesNextFrame_ = false;
+        }
     }
+}
+
+void Map::RecalculateDistrictsHashes ()
+{
+    for (int index = 0; index < districts_.Size (); index++)
+        districts_.At (index)->UpdateHash (this);
 }
 
 void Map::RecalculateDistrictsNeighbors ()
@@ -237,6 +251,16 @@ Urho3D::PODVector <Urho3D::StringHash> Map::FindPath (
     // Failure.
     Urho3D::PODVector <Urho3D::StringHash> empty;
     return empty;
+}
+
+bool Map::WillRecalculateDistrictsHashesNextFrame () const
+{
+    return recalculateDistrictsHashesNextFrame_;
+}
+
+void Map::SetRecalculateDistrictsHashesNextFrame (bool recalculateDistrictsHashesNextFrame)
+{
+    recalculateDistrictsHashesNextFrame_ = recalculateDistrictsHashesNextFrame;
 }
 
 float HeuristicDistanceForPathFinding (District *goal, District *next)
