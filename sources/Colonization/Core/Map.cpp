@@ -74,7 +74,7 @@ District *Map::CreateDistrict (Urho3D::String districtName)
 
 void Map::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    if (enabled_)
+    if (enabled_ && node_ && node_->GetScene ()->IsUpdateEnabled ())
     {
         // Reload districts array from child nodes.
         assert (node_);

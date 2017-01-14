@@ -15,6 +15,8 @@
 #include <Colonization/Core/PlayerInfo.hpp>
 #include <Colonization/Core/Unit.hpp>
 
+#include <Colonization/Frontend/FogOfWarCalculator.hpp>
+
 namespace Colonization
 {
 void RegisterAllObjects (Urho3D::Context *context)
@@ -31,5 +33,7 @@ void RegisterAllObjects (Urho3D::Context *context)
     Map::RegisterObject (context);
     PlayerInfo::RegisterObject (context);
     Unit::RegisterObject (context);
+
+    FogOfWarCalculator::RegisterObject (context);
 }
 }
