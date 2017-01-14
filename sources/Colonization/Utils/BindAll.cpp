@@ -16,6 +16,7 @@
 #include <Colonization/AngelScriptBinders/BindInternalTradeArea.hpp>
 #include <Colonization/AngelScriptBinders/BindPlayerInfo.hpp>
 #include <Colonization/AngelScriptBinders/BindActivitiesApplication.hpp>
+#include <Colonization/AngelScriptBinders/BindFogOfWarCalculator.hpp>
 
 namespace Colonization
 {
@@ -34,5 +35,6 @@ void BindAll (Urho3D::Script *script)
     BindPlayerActionType (script);
     BindInternalTradeArea (script);
     BindPlayerInfo (script);
+    BindFogOfWarCalculator (script);
 }
 }
