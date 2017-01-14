@@ -6,6 +6,7 @@
 #include <Colonization/Utils/Categories.hpp>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/Unit.hpp>
+#include <Colonization/Utils/AttributeMacro.hpp>
 
 namespace Colonization
 {
