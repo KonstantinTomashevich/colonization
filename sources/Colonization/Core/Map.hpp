@@ -12,7 +12,6 @@ class Map : public Urho3D::Component
 URHO3D_OBJECT (Map, Component)
 protected:
     Urho3D::Vector <Urho3D::SharedPtr <District> > districts_;
-    bool recalculateDistrictsHashesNextFrame_;
 
 public:
     Map (Urho3D::Context *context);
@@ -34,8 +33,5 @@ public:
     Urho3D::PODVector <Urho3D::StringHash> FindPath(
             Urho3D::StringHash startDistrictHash, Urho3D::StringHash targetDistrictHash,
             Urho3D::String playerName, bool canGoThroughColonies, bool isColonizator);
-
-    bool WillRecalculateDistrictsHashesNextFrame () const;
-    void SetRecalculateDistrictsHashesNextFrame (bool recalculateDistrictsHashesNextFrame);
 };
 }
