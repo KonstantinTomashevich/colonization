@@ -9,7 +9,7 @@ namespace Colonization
 const char *wayToEuropeStructureElementsNames [] =
 {
     "Way To Europe Districts Count",
-    "***District Hash",
+    "   District Hash",
     0
 };
 

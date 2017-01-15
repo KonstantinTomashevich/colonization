@@ -21,7 +21,7 @@ namespace Colonization
 const char *districtsHashesStructureElementsNames [] =
 {
     "Districts In Area Count",
-    "***District Hash",
+    "   District Hash",
     0
 };
 

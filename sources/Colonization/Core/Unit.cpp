@@ -15,7 +15,7 @@ namespace Colonization
 const char *wayStructureElementsNames [] =
 {
     "Waypoints Count",
-    "***District Hash",
+    "   District Hash",
     0
 };
 

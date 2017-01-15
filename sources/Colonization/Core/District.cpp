@@ -13,14 +13,14 @@ namespace Colonization
 const char *polygonPointsStructureElementsNames [] =
 {
     "Polygon Points Count",
-    "***Point",
+    "   Point",
     0
 };
 
 const char *neighborsHashesStructureElementsNames [] =
 {
     "Neighbors Count",
-    "***District Hash",
+    "   District Hash",
     0
 };
 
