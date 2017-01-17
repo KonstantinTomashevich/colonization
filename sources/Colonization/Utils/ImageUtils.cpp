@@ -6,7 +6,7 @@ namespace Colonization
 {
 namespace ImageUtils
 {
-void DrawLine (Urho3D::Image *image, Urho3D::Color color, int x1, int y1, int x2, int y2)
+void DrawLine (Urho3D::Image *image, Urho3D::Color color, int x1, int y1, int x2, int y2, int width)
 {
     float xDiff = x2 - x1;
     float yDiff = y2 - y1;
@@ -34,10 +34,18 @@ void DrawLine (Urho3D::Image *image, Urho3D::Color color, int x1, int y1, int x2
         }
 
         float tangent = yDiff / xDiff;
-        for (float x = xMin; x <= xMax; x += 1.0f)
+        for (float x = xMin; x <= xMax; x += width)
         {
             float y = y1 + (x - x1) * tangent;
-            image->SetPixel (x, y, color);
+            if (width <= 1)
+                image->SetPixel (x, y, color);
+            else
+            {
+                int halfWidth = static_cast <int> (std::floor (width * 0.5f));
+                for (int xOffset = -halfWidth; xOffset <= halfWidth; xOffset++)
+                    for (int yOffset = -halfWidth; yOffset <= halfWidth; yOffset++)
+                        image->SetPixel (x + xOffset, y + yOffset, color);
+            }
         }
     }
     else
@@ -75,10 +83,10 @@ void DrawCircle (Urho3D::Image *image, Urho3D::Color color, int x, int y, int ra
     {
         if (fill)
         {
-            DrawLine (image, color, x - drawX, y + drawY, x + drawX, y + drawY);
-            DrawLine (image, color, x - drawY, y + drawX, x + drawY, y + drawX);
-            DrawLine (image, color, x - drawY, y - drawX, x + drawY, y - drawX);
-            DrawLine (image, color, x - drawX, y - drawY, x + drawX, y - drawY);
+            DrawLine (image, color, x - drawX, y + drawY, x + drawX, y + drawY, 1);
+            DrawLine (image, color, x - drawY, y + drawX, x + drawY, y + drawX, 1);
+            DrawLine (image, color, x - drawY, y - drawX, x + drawY, y - drawX, 1);
+            DrawLine (image, color, x - drawX, y - drawY, x + drawX, y - drawY, 1);
         }
         else
         {
