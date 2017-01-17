@@ -1,6 +1,8 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "FogOfWarCalculator.hpp"
+
 #include <Urho3D/Core/Context.h>
+#include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/Scene/Scene.h>
 
 #include <Colonization/Utils/Categories.hpp>
@@ -22,7 +24,7 @@ FogOfWarCalculator::FogOfWarCalculator (Urho3D::Context *context) : Urho3D::Comp
     playerNameHash_ (),
     fogOfWarMap_ ()
 {
-
+    SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (FogOfWarCalculator, Update));
 }
 
 FogOfWarCalculator::~FogOfWarCalculator ()
