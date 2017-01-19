@@ -16,6 +16,7 @@
 
 #include <Colonization/Utils/Categories.hpp>
 #include <Colonization/Utils/ImageUtils.hpp>
+#include <Colonization/Utils/VectorUtils.hpp>
 #include <Colonization/Utils/AttributeMacro.hpp>
 
 namespace Colonization
@@ -112,9 +113,10 @@ void MapMaskUpdater::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &e
             District *district = map->GetDistrictByIndex (districtIndex);
             bool visible = fogOfWarCalculator->IsDistrictVisible (district->GetHash ());
 
-            int districtIndexInColorToDistrictMap = districtColorToDistrictHash_.Values ().Find (district->GetHash ()) -
-                    districtColorToDistrictHash_.Values ().Begin ();
-            packedFogOfWarImage_->SetPixelInt (2 * districtIndex, 1, districtColorToDistrictHash_.Keys ().
+            Urho3D::Vector <Urho3D::StringHash> districtColorToDistrictHashValues = districtColorToDistrictHash_.Values ();
+            int districtIndexInColorToDistrictMap = VectorUtils::GetElementIndex (
+                        districtColorToDistrictHashValues, district->GetHash ());
+            packedFogOfWarImage_->SetPixelInt (2 * districtIndex, 0, districtColorToDistrictHash_.Keys ().
                                                At (districtIndexInColorToDistrictMap).Value ());
 
             Urho3D::Color color;
@@ -129,7 +131,7 @@ void MapMaskUpdater::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &e
                 color.g_ *= MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER;
                 color.b_ *= MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER;
             }
-            packedFogOfWarImage_->SetPixel (2 * districtIndex + 1, 1, color);
+            packedFogOfWarImage_->SetPixel (2 * districtIndex + 1, 0, color);
         }
     }
 }
