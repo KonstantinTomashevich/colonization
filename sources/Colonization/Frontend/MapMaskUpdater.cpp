@@ -1,5 +1,6 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "MapMaskUpdater.hpp"
+#include <Urho3D/IO/Log.h>
 
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/Core/Context.h>
@@ -55,15 +56,21 @@ void MapMaskUpdater::DrawDistrictBorders (District *district)
 }
 
 MapMaskUpdater::MapMaskUpdater (Urho3D::Context *context) : Urho3D::Component (context),
+    packedFogOfWarImage_ (new Urho3D::Image (context)),
+    packedFogOfWarTexture_ (new Urho3D::Texture2D (context)),
+
     maskImage_ (new Urho3D::Image (context)),
     maskTexture_ (new Urho3D::Texture2D (context)),
 
     mapMinPoint_ (),
     mapMaxPoint_ (),
-    districtColorToDistrictHash_ ()
+    districtColorToDistrictHash_ (),
+    selectedDistrictHash_ ()
 {
-    maskImage_->SetSize (MAP_MASK_WIDTH, MAP_MASK_HEIGHT, Urho3D::Graphics::GetRGBFormat ());
+    maskImage_->SetSize (MAP_MASK_WIDTH, MAP_MASK_HEIGHT, MAP_MASK_COMPONENTS);
     maskTexture_->SetData (maskImage_, false);
+
+    packedFogOfWarImage_->SetSize (1, 1, MAP_MASK_COMPONENTS);
     SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (MapMaskUpdater, Update));
 }
 
@@ -79,56 +86,87 @@ void MapMaskUpdater::RegisterObject (Urho3D::Context *context)
     URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
     URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Map Min Point", GetMapMinPoint, SetMapMinPoint, Urho3D::Vector3, Urho3D::Vector3::ZERO, Urho3D::AM_DEFAULT);
     URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Map Max Point", GetMapMaxPoint, SetMapMaxPoint, Urho3D::Vector3, Urho3D::Vector3::ZERO, Urho3D::AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Selected District Hash", GetSelectedDistrictHash, SetSelectedDistrictHash, Urho3D::StringHash, Urho3D::StringHash::ZERO, Urho3D::AM_DEFAULT);
 }
 
 void MapMaskUpdater::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     if (enabled_ && node_ && node_->GetScene ()->IsUpdateEnabled ())
     {
-        maskImage_->Clear (Urho3D::Color (1.0f, 1.0f, 1.0f, 1.0f));
+        // Update packed fog of war data.
         Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
         assert (map);
+
+        if (packedFogOfWarImage_->GetWidth () != map->GetDistrictsCount () * 2 ||
+                packedFogOfWarImage_->GetHeight () != 1)
+        {
+            packedFogOfWarImage_->SetSize (map->GetDistrictsCount () * 2, 1, MAP_MASK_COMPONENTS);
+        }
+        packedFogOfWarImage_->Clear (Urho3D::Color::WHITE);
 
         FogOfWarCalculator *fogOfWarCalculator = node_->GetScene ()->GetComponent <FogOfWarCalculator> ();
         assert (fogOfWarCalculator);
 
-        // Create mask image with district borders and information about fog of war.
-        for (int index = 0; index < map->GetDistrictsCount (); index++)
+        for (int districtIndex = 0; districtIndex < map->GetDistrictsCount (); districtIndex++)
         {
-            District *district = map->GetDistrictByIndex (index);
-            DrawDistrictBorders (district);
-            Urho3D::IntVector2 colonyPositionOnMap = WorldPointToMapPoint (district->GetColonyPosition ());
-            // TODO: Later implement flood fill for political map.
-            ImageUtils::FloodFill (maskImage_,
-                                   fogOfWarCalculator->IsDistrictVisible (district->GetHash ()) ?
-                                       MAP_MASK_VISIBLE_DISTRICT_COLOR : MAP_MASK_DISTRICT_UNDER_FOG_COLOR,
-                                   colonyPositionOnMap.x_, colonyPositionOnMap.y_);
-        }
+            District *district = map->GetDistrictByIndex (districtIndex);
+            bool visible = fogOfWarCalculator->IsDistrictVisible (district->GetHash ());
 
-        // Update mask texture.
-        maskTexture_->SetData (maskImage_, false);
+            int districtIndexInColorToDistrictMap = districtColorToDistrictHash_.Values ().Find (district->GetHash ()) -
+                    districtColorToDistrictHash_.Values ().Begin ();
+            packedFogOfWarImage_->SetPixelInt (2 * districtIndex, 1, districtColorToDistrictHash_.Keys ().
+                                               At (districtIndexInColorToDistrictMap).Value ());
 
-        // Flood image with district-specific colors for later determination which district is pressed by user.
-        districtColorToDistrictHash_.Clear ();
-        for (int index = 0; index < map->GetDistrictsCount (); index++)
-        {
-            District *district = map->GetDistrictByIndex (index);
-            Urho3D::Color districtColor;
-            do
-                districtColor = Urho3D::Color (1.0f / (1.0f * Urho3D::Random (0, 256)),
-                                               1.0f / (1.0f * Urho3D::Random (0, 256)),
-                                               1.0f / (1.0f * Urho3D::Random (0, 256)),
-                                               1.0f);
-            while (districtColorToDistrictHash_.Keys ().Contains (Urho3D::StringHash (districtColor.ToUInt ())) ||
-                   districtColor == MAP_MASK_DISTRICT_BORDER_LINE_COLOR ||
-                   districtColor == MAP_MASK_VISIBLE_DISTRICT_COLOR ||
-                   districtColor == MAP_MASK_DISTRICT_UNDER_FOG_COLOR);
+            Urho3D::Color color;
+            if (visible)
+                color = MAP_MASK_VISIBLE_DISTRICT_COLOR;
+            else
+                color = MAP_MASK_DISTRICT_UNDER_FOG_COLOR;
 
-            districtColorToDistrictHash_ [Urho3D::StringHash (districtColor.ToUInt ())] = district->GetHash ();
-            Urho3D::IntVector2 colonyPositionOnMap = WorldPointToMapPoint (district->GetColonyPosition ());
-            ImageUtils::FloodFill (maskImage_, districtColor, colonyPositionOnMap.x_, colonyPositionOnMap.y_);
+            if (district->GetHash () == selectedDistrictHash_)
+            {
+                color.r_ *= MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER;
+                color.g_ *= MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER;
+                color.b_ *= MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER;
+            }
+            packedFogOfWarImage_->SetPixel (2 * districtIndex + 1, 1, color);
         }
     }
+}
+
+void MapMaskUpdater::RecaulculateMaskImage ()
+{
+    maskImage_->Clear (Urho3D::Color (1.0f, 1.0f, 1.0f, 1.0f));
+    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
+    assert (map);
+
+    FogOfWarCalculator *fogOfWarCalculator = node_->GetScene ()->GetComponent <FogOfWarCalculator> ();
+    assert (fogOfWarCalculator);
+
+    districtColorToDistrictHash_.Clear ();
+    // Create mask image with district borders and flood districts areas with their special color.
+    for (int index = 0; index < map->GetDistrictsCount (); index++)
+    {
+        District *district = map->GetDistrictByIndex (index);
+        DrawDistrictBorders (district);
+        Urho3D::Color districtColor;
+        do
+            districtColor = Urho3D::Color (1.0f / (1.0f * Urho3D::Random (1, 256)),
+                                           1.0f / (1.0f * Urho3D::Random (1, 256)),
+                                           1.0f / (1.0f * Urho3D::Random (1, 256)),
+                                           1.0f);
+        while (districtColorToDistrictHash_.Keys ().Contains (Urho3D::StringHash (districtColor.ToUInt ())) ||
+               districtColor == MAP_MASK_DISTRICT_BORDER_LINE_COLOR ||
+               districtColor == MAP_MASK_VISIBLE_DISTRICT_COLOR ||
+               districtColor == MAP_MASK_DISTRICT_UNDER_FOG_COLOR);
+
+        districtColorToDistrictHash_ [Urho3D::StringHash (districtColor.ToUInt ())] = district->GetHash ();
+        Urho3D::IntVector2 colonyPositionOnMap = WorldPointToMapPoint (district->GetColonyPosition ());
+        ImageUtils::FloodFill (maskImage_, districtColor, colonyPositionOnMap.x_, colonyPositionOnMap.y_);
+    }
+
+    // Apply changes to mask texture.
+    maskTexture_->SetData (maskImage_, false);
 }
 
 Urho3D::StringHash MapMaskUpdater::GetDistrictByPoint (Urho3D::Vector3 point)
@@ -140,6 +178,16 @@ Urho3D::StringHash MapMaskUpdater::GetDistrictByPoint (Urho3D::Vector3 point)
         return Urho3D::StringHash::ZERO;
     else
         return districtColorToDistrictHash_ [Urho3D::StringHash (color.ToUInt ())];
+}
+
+Urho3D::Image *MapMaskUpdater::GetPackedFogOfWarImage () const
+{
+    return packedFogOfWarImage_;
+}
+
+Urho3D::Texture2D *MapMaskUpdater::GetPackedFogOfWarTexture () const
+{
+    return packedFogOfWarTexture_;
 }
 
 Urho3D::Image *MapMaskUpdater::GetMaskImage () const
@@ -159,9 +207,9 @@ Urho3D::Vector3 MapMaskUpdater::GetMapMinPoint () const
 
 void MapMaskUpdater::SetMapMinPoint (const Urho3D::Vector3 &mapMinPoint)
 {
-    assert (mapMinPoint.x_ < mapMaxPoint_.x_);
-    assert (mapMinPoint.y_ < mapMaxPoint_.y_);
-    assert (mapMinPoint.z_ < mapMaxPoint_.z_);
+    assert (mapMinPoint.x_ <= mapMaxPoint_.x_);
+    assert (mapMinPoint.y_ <= mapMaxPoint_.y_);
+    assert (mapMinPoint.z_ <= mapMaxPoint_.z_);
     mapMinPoint_ = mapMinPoint;
 }
 
@@ -172,10 +220,20 @@ Urho3D::Vector3 MapMaskUpdater::GetMapMaxPoint () const
 
 void MapMaskUpdater::SetMapMaxPoint (const Urho3D::Vector3 &mapMaxPoint)
 {
-    assert (mapMaxPoint.x_ > mapMinPoint_.x_);
-    assert (mapMaxPoint.y_ > mapMinPoint_.y_);
-    assert (mapMaxPoint.z_ > mapMinPoint_.z_);
+    assert (mapMaxPoint.x_ >= mapMinPoint_.x_);
+    assert (mapMaxPoint.y_ >= mapMinPoint_.y_);
+    assert (mapMaxPoint.z_ >= mapMinPoint_.z_);
     mapMaxPoint_ = mapMaxPoint;
+}
+
+Urho3D::StringHash MapMaskUpdater::GetSelectedDistrictHash () const
+{
+    return selectedDistrictHash_;
+}
+
+void MapMaskUpdater::SetSelectedDistrictHash (const Urho3D::StringHash &selectedDistrictHash)
+{
+    selectedDistrictHash_ = selectedDistrictHash;
 }
 }
 
