@@ -1,5 +1,6 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "ImageUtils.hpp"
+#include <Urho3D/IO/Log.h>
 #include <cmath>
 
 namespace Colonization
@@ -68,7 +69,15 @@ void DrawLine (Urho3D::Image *image, Urho3D::Color color, int x1, int y1, int x2
         for (float y = yMin; y <= yMax; y += 1.0f)
         {
             float x = x1 + (y - y1) * tangent;
-            image->SetPixel (x, y, color);
+            if (width <= 1)
+                image->SetPixel (x, y, color);
+            else
+            {
+                int halfWidth = static_cast <int> (std::floor (width * 0.5f));
+                for (int xOffset = -halfWidth; xOffset <= halfWidth; xOffset++)
+                    for (int yOffset = -halfWidth; yOffset <= halfWidth; yOffset++)
+                        image->SetPixel (x + xOffset, y + yOffset, color);
+            }
         }
     }
 }
@@ -116,19 +125,37 @@ void DrawCircle (Urho3D::Image *image, Urho3D::Color color, int x, int y, int ra
 
 void FloodFill (Urho3D::Image *image, Urho3D::Color color, int x, int y)
 {
-    Urho3D::Color sourceColor = image->GetPixel (x, y);
-    image->SetPixel (x, y, color);
+    unsigned sourceColor = image->GetPixelInt (x, y);
+    unsigned fillColor = color.ToUInt ();
 
-    for (int pointX = x - 1; pointX <= x + 1; pointX++)
+    // FIXME: Current implementation is VERY slow! Fix it. Maybe use lines algorithm or something else.
+    if (sourceColor != fillColor)
     {
-        for (int pointY = y - 1; pointY <= y + 1; pointY++)
+        Urho3D::PODVector <Urho3D::IntVector2> toSet;
+        toSet.Push (Urho3D::IntVector2 (x, y));
+        int index = 0;
+
+        while (index < toSet.Size ())
         {
-            if (pointX > 0 && pointX < image->GetWidth () &&
-                    pointY > 0 && pointY < image->GetWidth () &&
-                    image->GetPixel (pointX, pointY) == sourceColor)
+            Urho3D::IntVector2 point = toSet.At (index);
+            Urho3D::Log::Write (Urho3D::LOG_INFO, Urho3D::String (point.x_) + " " + Urho3D::String (point.y_));
+            if (image->GetPixelInt (point.x_, point.y_) == sourceColor)
             {
-                FloodFill (image, color, pointX, pointY);
+                image->SetPixelInt (point.x_, point.y_, fillColor);
+
+                if (image->GetPixelInt (point.x_ - 1, point.y_) == sourceColor)
+                    toSet.Push (Urho3D::IntVector2 (point.x_ - 1, point.y_));
+
+                if (image->GetPixelInt (point.x_ + 1, point.y_) == sourceColor)
+                    toSet.Push (Urho3D::IntVector2 (point.x_ + 1, point.y_));
+
+                if (image->GetPixelInt (point.x_, point.y_ - 1) == sourceColor)
+                    toSet.Push (Urho3D::IntVector2 (point.x_, point.y_ - 1));
+
+                if (image->GetPixelInt (point.x_, point.y_ + 1) == sourceColor)
+                    toSet.Push (Urho3D::IntVector2 (point.x_, point.y_ + 1));
             }
+            index++;
         }
     }
 }
