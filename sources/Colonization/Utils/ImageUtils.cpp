@@ -138,7 +138,6 @@ void FloodFill (Urho3D::Image *image, Urho3D::Color color, int x, int y)
         while (index < toSet.Size ())
         {
             Urho3D::IntVector2 point = toSet.At (index);
-            Urho3D::Log::Write (Urho3D::LOG_INFO, Urho3D::String (point.x_) + " " + Urho3D::String (point.y_));
             if (image->GetPixelInt (point.x_, point.y_) == sourceColor)
             {
                 image->SetPixelInt (point.x_, point.y_, fillColor);

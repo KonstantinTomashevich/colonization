@@ -134,7 +134,7 @@ void MapMaskUpdater::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &e
     }
 }
 
-void MapMaskUpdater::RecaulculateMaskImage ()
+void MapMaskUpdater::RecalculateMaskImage ()
 {
     maskImage_->Clear (Urho3D::Color (1.0f, 1.0f, 1.0f, 1.0f));
     Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();

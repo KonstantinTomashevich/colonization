@@ -45,7 +45,7 @@ public:
     static void RegisterObject (Urho3D::Context *context);
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
 
-    void RecaulculateMaskImage ();
+    void RecalculateMaskImage ();
     Urho3D::StringHash GetDistrictByPoint (Urho3D::Vector3 point);
 
     Urho3D::Image *GetPackedFogOfWarImage () const;
