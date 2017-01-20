@@ -6,6 +6,7 @@
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Math/MathDefs.h>
 
+#include <Urho3D/Resource/ResourceCache.h>
 #include <Urho3D/Scene/Node.h>
 #include <Urho3D/Scene/Scene.h>
 #include <Urho3D/Graphics/Graphics.h>
@@ -69,15 +70,23 @@ MapMaskUpdater::MapMaskUpdater (Urho3D::Context *context) : Urho3D::Component (c
     selectedDistrictHash_ ()
 {
     maskImage_->SetSize (MAP_MASK_WIDTH, MAP_MASK_HEIGHT, MAP_MASK_COMPONENTS);
+    maskTexture_->SetName ("maskTexture");
     maskTexture_->SetData (maskImage_, false);
 
     packedFogOfWarImage_->SetSize (1, 1, MAP_MASK_COMPONENTS);
+    packedFogOfWarTexture_->SetName ("packedFogOfWarTexture");
     SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (MapMaskUpdater, Update));
+
+    Urho3D::ResourceCache *resourceCache = context_->GetSubsystem <Urho3D::ResourceCache> ();
+    resourceCache->AddManualResource (maskTexture_);
+    resourceCache->AddManualResource (packedFogOfWarTexture_);
 }
 
 MapMaskUpdater::~MapMaskUpdater ()
 {
-
+    Urho3D::ResourceCache *resourceCache = context_->GetSubsystem <Urho3D::ResourceCache> ();
+    resourceCache->ReleaseResource (Urho3D::Texture2D::GetTypeStatic (), maskTexture_->GetName (), true);
+    resourceCache->ReleaseResource (Urho3D::Texture2D::GetTypeStatic (), packedFogOfWarTexture_->GetName (), true);
 }
 
 void MapMaskUpdater::RegisterObject (Urho3D::Context *context)
