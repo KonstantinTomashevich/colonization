@@ -1,4 +1,4 @@
-set (ANGELSCRIPT_API_HEADER_OUTPUT "\"${CMAKE_SOURCE_DIR}/angel-script-project/AngelScriptAPI.hpp\"")
+set (ANGELSCRIPT_API_HEADER_OUTPUT "\"${CMAKE_SOURCE_DIR}/bin/AngelScriptAPI.hpp\"")
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/Defines.hpp.cmake ${CMAKE_CURRENT_SOURCE_DIR}/Defines.hpp)
 set (TARGET_NAME AngelScriptAPIHeaderGenerator)
 define_source_files ()
