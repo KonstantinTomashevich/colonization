@@ -27,3 +27,10 @@ set (SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/TestFogOfWarCalculator.hpp ${CMAKE
 setup_executable ()
 target_link_libraries (TestFogOfWarCalculator Colonization)
 add_test (NAME test_fog_of_war_calculator COMMAND TestFogOfWarCalculator)
+
+set (TARGET_NAME TestMapMaskGeneration)
+set (SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/TestMapMaskGeneration.hpp ${CMAKE_CURRENT_SOURCE_DIR}/TestMapMaskGeneration.cpp)
+setup_executable ()
+target_link_libraries (TestMapMaskGeneration Colonization)
+add_test (NAME test_map_mask_generation COMMAND TestMapMaskGeneration)
+
