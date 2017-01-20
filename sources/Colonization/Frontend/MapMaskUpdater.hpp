@@ -47,6 +47,9 @@ public:
 
     void RecalculateMaskImage ();
     Urho3D::StringHash GetDistrictByPoint (Urho3D::Vector3 point);
+    Urho3D::StringHash GetDistrictByColor (Urho3D::Color color);
+    Urho3D::StringHash GetDistrictByColorInt (unsigned color);
+    unsigned GetDistrictColorInt (Urho3D::StringHash districtHash);
 
     Urho3D::Image *GetPackedFogOfWarImage () const;
     Urho3D::Texture2D *GetPackedFogOfWarTexture () const;

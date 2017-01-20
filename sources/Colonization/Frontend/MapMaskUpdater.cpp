@@ -112,12 +112,7 @@ void MapMaskUpdater::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &e
         {
             District *district = map->GetDistrictByIndex (districtIndex);
             bool visible = fogOfWarCalculator->IsDistrictVisible (district->GetHash ());
-
-            Urho3D::Vector <Urho3D::StringHash> districtColorToDistrictHashValues = districtColorToDistrictHash_.Values ();
-            int districtIndexInColorToDistrictMap = VectorUtils::GetElementIndex (
-                        districtColorToDistrictHashValues, district->GetHash ());
-            packedFogOfWarImage_->SetPixelInt (2 * districtIndex, 0, districtColorToDistrictHash_.Keys ().
-                                               At (districtIndexInColorToDistrictMap).Value ());
+            packedFogOfWarImage_->SetPixelInt (2 * districtIndex, 0, GetDistrictColorInt (district->GetHash ()));
 
             Urho3D::Color color;
             if (visible)
@@ -180,6 +175,23 @@ Urho3D::StringHash MapMaskUpdater::GetDistrictByPoint (Urho3D::Vector3 point)
         return Urho3D::StringHash::ZERO;
     else
         return districtColorToDistrictHash_ [Urho3D::StringHash (color.ToUInt ())];
+}
+
+Urho3D::StringHash MapMaskUpdater::GetDistrictByColor (Urho3D::Color color)
+{
+    return districtColorToDistrictHash_ [Urho3D::StringHash (color.ToUInt ())];
+}
+
+Urho3D::StringHash MapMaskUpdater::GetDistrictByColorInt (unsigned color)
+{
+    return districtColorToDistrictHash_ [Urho3D::StringHash (color)];
+}
+
+unsigned MapMaskUpdater::GetDistrictColorInt (Urho3D::StringHash districtHash)
+{
+    Urho3D::Vector <Urho3D::StringHash> districtColorToDistrictHashValues = districtColorToDistrictHash_.Values ();
+    int districtIndexInColorToDistrictMap = VectorUtils::GetElementIndex (districtColorToDistrictHashValues, districtHash);
+    return districtColorToDistrictHash_.Keys ().At (districtIndexInColorToDistrictMap).Value ();
 }
 
 Urho3D::Image *MapMaskUpdater::GetPackedFogOfWarImage () const

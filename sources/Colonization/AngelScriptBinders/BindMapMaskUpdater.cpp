@@ -19,6 +19,10 @@ void BindMapMaskUpdaterInterface (Urho3D::Script *script, Urho3D::String classNa
     engine->RegisterObjectMethod (className.CString (), "void RecalculateMaskImage ()", asMETHOD (MapMaskUpdater, RecalculateMaskImage), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "StringHash GetDistrictByPoint (Vector3 point)", asMETHOD (MapMaskUpdater, GetDistrictByPoint), asCALL_THISCALL);
 
+    engine->RegisterObjectMethod (className.CString (), "StringHash GetDistrictByColor (Color color)", asMETHOD (MapMaskUpdater, GetDistrictByColor), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "StringHash GetDistrictByColorInt (uint color)", asMETHOD (MapMaskUpdater, GetDistrictByColorInt), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "uint GetDistrictColorInt (StringHash districtHash)", asMETHOD (MapMaskUpdater, GetDistrictColorInt), asCALL_THISCALL);
+
     engine->RegisterObjectMethod (className.CString (), "Image @+ get_packedFogOfWarImage () const", asMETHOD (MapMaskUpdater, GetPackedFogOfWarImage), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "Texture2D @+ get_packedFogOfWarTexture () const", asMETHOD (MapMaskUpdater, GetPackedFogOfWarTexture), asCALL_THISCALL);
 
