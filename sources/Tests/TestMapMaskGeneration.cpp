@@ -165,8 +165,6 @@ void TestMapMaskGenerationApplication::Start ()
             assert (false);
         }
     }
-
-    mapMaskUpdater->GetMaskImage ()->SavePNG ("temp.png");
     engine_->Exit ();
 }
 
