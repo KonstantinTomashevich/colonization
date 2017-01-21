@@ -127,7 +127,8 @@ void TestFogOfWarCalculatorApplication::Start ()
     Urho3D::HashMap <Urho3D::StringHash, bool> resultMap = fogOfWarCalculator->GetFogOfWarMap ();
     Urho3D::Log::Write (Urho3D::LOG_INFO, "Result fog of war map:");
     for (int index = 0; index < resultMap.Size (); index++)
-        Urho3D::Log::Write (Urho3D::LOG_INFO, "    " + Urho3D::String (resultMap.Keys ().At (index).Value ()) + ": " +
+        Urho3D::Log::Write (Urho3D::LOG_INFO, "    " +
+                            map->GetDistrictByHash (resultMap.Keys ().At (index))->GetName () + ": " +
                             Urho3D::String (resultMap.Values ().At (index)));
 
     Urho3D::HashMap <Urho3D::StringHash, bool> expectedMap;
@@ -137,18 +138,13 @@ void TestFogOfWarCalculatorApplication::Start ()
     // array (X * HEIGHT + Y) = (X, Y)
     expectedMap [map->GetDistrictByIndex (0 * mapHeight + 4)->GetHash ()] = true;
     expectedMap [map->GetDistrictByIndex (1 * mapHeight + 4)->GetHash ()] = true;
-    expectedMap [map->GetDistrictByIndex (1 * mapHeight + 3)->GetHash ()] = true;
     expectedMap [map->GetDistrictByIndex (0 * mapHeight + 3)->GetHash ()] = true;
 
-    expectedMap [map->GetDistrictByIndex (1 * mapHeight + 2)->GetHash ()] = true;
-    expectedMap [map->GetDistrictByIndex (2 * mapHeight + 2)->GetHash ()] = true;
-    expectedMap [map->GetDistrictByIndex (3 * mapHeight + 2)->GetHash ()] = true;
-    expectedMap [map->GetDistrictByIndex (1 * mapHeight + 1)->GetHash ()] = true;
     expectedMap [map->GetDistrictByIndex (2 * mapHeight + 1)->GetHash ()] = true;
     expectedMap [map->GetDistrictByIndex (3 * mapHeight + 1)->GetHash ()] = true;
-    expectedMap [map->GetDistrictByIndex (1 * mapHeight + 0)->GetHash ()] = true;
+    expectedMap [map->GetDistrictByIndex (1 * mapHeight + 1)->GetHash ()] = true;
+    expectedMap [map->GetDistrictByIndex (2 * mapHeight + 2)->GetHash ()] = true;
     expectedMap [map->GetDistrictByIndex (2 * mapHeight + 0)->GetHash ()] = true;
-    expectedMap [map->GetDistrictByIndex (3 * mapHeight + 0)->GetHash ()] = true;
 
     expectedMap [map->GetDistrictByIndex (4 * mapHeight + 2)->GetHash ()] = true;
     expectedMap [map->GetDistrictByIndex (4 * mapHeight + 1)->GetHash ()] = true;
@@ -156,10 +152,11 @@ void TestFogOfWarCalculatorApplication::Start ()
 
     Urho3D::Log::Write (Urho3D::LOG_INFO, "Expected fog of war map:");
     for (int index = 0; index < expectedMap.Size (); index++)
-        Urho3D::Log::Write (Urho3D::LOG_INFO, "    " + Urho3D::String (expectedMap.Keys ().At (index).Value ()) + ": " +
+        Urho3D::Log::Write (Urho3D::LOG_INFO, "    " +
+                            map->GetDistrictByHash (resultMap.Keys ().At (index))->GetName () + ": " +
                             Urho3D::String (expectedMap.Values ().At (index)));
 
-    if (resultMap != resultMap)
+    if (resultMap != expectedMap)
         ErrorExit ("Result fog of war map don't match expected!");
     else
         engine_->Exit ();
