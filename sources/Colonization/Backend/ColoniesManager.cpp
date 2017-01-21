@@ -302,7 +302,7 @@ void ColoniesManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &
 
     assert (map);
     assert (configuration);
-    float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
+    float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
 
     for (int index = 0; index < map->GetDistrictsCount (); index++)
     {

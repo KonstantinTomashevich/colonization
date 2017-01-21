@@ -141,7 +141,7 @@ void PlayersManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &e
 {
     MessagesHandler *messagesHandler = node_->GetScene ()->GetComponent <MessagesHandler> ();
     assert (messagesHandler);
-    float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
+    float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
     UpdatePlayers (messagesHandler, timeStep);
     UpdateConnectionsWithoudId (timeStep);
     UpdatePlayersInfos ();

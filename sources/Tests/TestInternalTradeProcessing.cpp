@@ -1,6 +1,7 @@
 #include "TestInternalTradeProcessing.hpp"
 #include <Urho3D/Input/Input.h>
 #include <Urho3D/Core/CoreEvents.h>
+#include <Urho3D/Scene/SceneEvents.h>
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/Network/Network.h>
 
@@ -150,8 +151,8 @@ void TestInternalTradeProcessingApplication::Update (Urho3D::StringHash eventTyp
                 scene_->CreateChild ("units", Urho3D::REPLICATED)->CreateComponent <Colonization::UnitsManager> ();
 
         Urho3D::VariantMap eventData;
-        eventData [Urho3D::Update::P_TIMESTEP] = 0.1f;
-        tradeProcessor->Update (Urho3D::E_UPDATE, eventData);
+        eventData [Urho3D::SceneUpdate::P_TIMESTEP] = 0.1f;
+        tradeProcessor->Update (Urho3D::E_SCENEUPDATE, eventData);
 
         Urho3D::Log::Write (Urho3D::LOG_INFO, "Trade areas count: " + Urho3D::String (tradeProcessor->GetTradeAreasCount ()));
         for (int index = 0; index < tradeProcessor->GetTradeAreasCount (); index++)

@@ -220,7 +220,7 @@ void TradeProcessor::RegisterObject (Urho3D::Context *context)
 
 void TradeProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
+    float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
     untilTradeAreasUpdate_ -= timeStep;
     if (untilTradeAreasUpdate_ <= 0.0f)
     {

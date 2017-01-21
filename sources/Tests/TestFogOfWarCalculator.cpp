@@ -2,6 +2,7 @@
 #include <Urho3D/Input/Input.h>
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/Scene/Scene.h>
+#include <Urho3D/Scene/SceneEvents.h>
 #include <Urho3D/IO/Log.h>
 
 #include <Colonization/Core/District.hpp>
@@ -120,8 +121,8 @@ void TestFogOfWarCalculatorApplication::Start ()
     Colonization::FogOfWarCalculator *fogOfWarCalculator = scene->CreateComponent <Colonization::FogOfWarCalculator> ();
     fogOfWarCalculator->SetPlayerNameHash ("PlayerX");
     Urho3D::VariantMap eventData;
-    eventData [Urho3D::Update::P_TIMESTEP] = 1.0f / 60.0f;
-    fogOfWarCalculator->Update (Urho3D::E_UPDATE, eventData);
+    eventData [Urho3D::SceneUpdate::P_TIMESTEP] = 1.0f / 60.0f;
+    fogOfWarCalculator->Update (Urho3D::E_SCENEUPDATE, eventData);
 
     Urho3D::HashMap <Urho3D::StringHash, bool> resultMap = fogOfWarCalculator->GetFogOfWarMap ();
     Urho3D::Log::Write (Urho3D::LOG_INFO, "Result fog of war map:");

@@ -109,7 +109,7 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
     assert (map);
     assert (configuration);
 
-    float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
+    float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
     float sailSpeed = configuration->GetSailSpeed ();
     float marchSpeed = configuration->GetMarchSpeed ();
     float embarkationSpeed = configuration->GetEmbarkationSpeed ();
