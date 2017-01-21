@@ -1,7 +1,7 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "TradeProcessor.hpp"
 #include <Urho3D/Core/Context.h>
-#include <Urho3D/Core/CoreEvents.h>
+#include <Urho3D/Scene/SceneEvents.h>
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/Scene/Scene.h>
 
@@ -203,7 +203,7 @@ void TradeProcessor::ClearTradeAreas ()
 
 TradeProcessor::TradeProcessor (Urho3D::Context *context) : Urho3D::Component (context)
 {
-    SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (TradeProcessor, Update));
+    SubscribeToEvent (Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (TradeProcessor, Update));
     untilTradeAreasUpdate_ = 0.0001f;
 }
 
@@ -220,15 +220,12 @@ void TradeProcessor::RegisterObject (Urho3D::Context *context)
 
 void TradeProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    if (enabled_ && node_ && node_->GetScene () && node_->GetScene ()->IsUpdateEnabled ())
+    float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
+    untilTradeAreasUpdate_ -= timeStep;
+    if (untilTradeAreasUpdate_ <= 0.0f)
     {
-        float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
-        untilTradeAreasUpdate_ -= timeStep;
-        if (untilTradeAreasUpdate_ <= 0.0f)
-        {
-            UpdateTradeAreas (10.0f);
-            untilTradeAreasUpdate_ = 10.0f;
-        }
+        UpdateTradeAreas (10.0f);
+        untilTradeAreasUpdate_ = 10.0f;
     }
 }
 

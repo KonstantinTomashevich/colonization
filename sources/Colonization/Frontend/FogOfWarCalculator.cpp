@@ -2,7 +2,7 @@
 #include "FogOfWarCalculator.hpp"
 
 #include <Urho3D/Core/Context.h>
-#include <Urho3D/Core/CoreEvents.h>
+#include <Urho3D/Scene/SceneEvents.h>
 #include <Urho3D/Scene/Scene.h>
 
 #include <Colonization/Utils/Categories.hpp>
@@ -24,7 +24,7 @@ FogOfWarCalculator::FogOfWarCalculator (Urho3D::Context *context) : Urho3D::Comp
     playerNameHash_ (),
     fogOfWarMap_ ()
 {
-    SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (FogOfWarCalculator, Update));
+    SubscribeToEvent (Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (FogOfWarCalculator, Update));
 }
 
 FogOfWarCalculator::~FogOfWarCalculator ()
@@ -42,33 +42,30 @@ void FogOfWarCalculator::RegisterObject (Urho3D::Context *context)
 
 void FogOfWarCalculator::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    if (enabled_ && node_ && node_->GetScene ()->IsUpdateEnabled ())
+    fogOfWarMap_.Clear ();
+    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
+    Urho3D::PODVector <District *> districtsToOpen;
+
+    for (int index = 0; index < map->GetDistrictsCount (); index++)
     {
-        fogOfWarMap_.Clear ();
-        Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
-        Urho3D::PODVector <District *> districtsToOpen;
-
-        for (int index = 0; index < map->GetDistrictsCount (); index++)
-        {
-            District *district = map->GetDistrictByIndex (index);
-            if (district->HasColony () && Urho3D::StringHash (district->GetColonyOwnerName ()) == playerNameHash_)
-                districtsToOpen.Push (district);
-        }
-
-        Urho3D::PODVector <Urho3D::Node *> unitsNodes;
-        node_->GetScene ()->GetChild ("units")->GetChildrenWithComponent (unitsNodes, Unit::GetTypeStatic ());
-        for (int index = 0; index < unitsNodes.Size (); index++)
-        {
-            Unit *unit = unitsNodes.At (index)->GetComponent <Unit> ();
-            District *position = map->GetDistrictByHash (unit->GetPositionHash ());
-            assert (position);
-            if (!districtsToOpen.Contains (position))
-                districtsToOpen.Push (position);
-        }
-
-        for (int index = 0; index < districtsToOpen.Size (); index++)
-            OpenDistrictAndNeighbors (districtsToOpen.At (index));
+        District *district = map->GetDistrictByIndex (index);
+        if (district->HasColony () && Urho3D::StringHash (district->GetColonyOwnerName ()) == playerNameHash_)
+            districtsToOpen.Push (district);
     }
+
+    Urho3D::PODVector <Urho3D::Node *> unitsNodes;
+    node_->GetScene ()->GetChild ("units")->GetChildrenWithComponent (unitsNodes, Unit::GetTypeStatic ());
+    for (int index = 0; index < unitsNodes.Size (); index++)
+    {
+        Unit *unit = unitsNodes.At (index)->GetComponent <Unit> ();
+        District *position = map->GetDistrictByHash (unit->GetPositionHash ());
+        assert (position);
+        if (!districtsToOpen.Contains (position))
+            districtsToOpen.Push (position);
+    }
+
+    for (int index = 0; index < districtsToOpen.Size (); index++)
+        OpenDistrictAndNeighbors (districtsToOpen.At (index));
 }
 
 Urho3D::StringHash FogOfWarCalculator::GetPlayerNameHash () const

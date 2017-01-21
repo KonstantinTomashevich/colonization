@@ -1,7 +1,7 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "ColoniesManager.hpp"
 #include <Urho3D/Core/Context.h>
-#include <Urho3D/Core/CoreEvents.h>
+#include <Urho3D/Scene/SceneEvents.h>
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/Scene/Scene.h>
 
@@ -280,7 +280,7 @@ void ColoniesManager::ProcessColonyDefenseEvolution (GameConfiguration *configur
 ColoniesManager::ColoniesManager (Urho3D::Context *context) : Urho3D::Component (context),
     investitions_ ()
 {
-    SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (ColoniesManager, Update));
+    SubscribeToEvent (Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (ColoniesManager, Update));
 }
 
 ColoniesManager::~ColoniesManager ()
@@ -297,21 +297,18 @@ void ColoniesManager::RegisterObject (Urho3D::Context *context)
 
 void ColoniesManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    if (enabled_ && node_ && node_->GetScene () && node_->GetScene ()->IsUpdateEnabled ())
+    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
+    GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
+
+    assert (map);
+    assert (configuration);
+    float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
+
+    for (int index = 0; index < map->GetDistrictsCount (); index++)
     {
-        Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
-        GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
-
-        assert (map);
-        assert (configuration);
-        float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
-
-        for (int index = 0; index < map->GetDistrictsCount (); index++)
-        {
-            District *district = map->GetDistrictByIndex (index);
-            if (district->HasColony ())
-                ProcessColony (configuration, district, timeStep);
-        }
+        District *district = map->GetDistrictByIndex (index);
+        if (district->HasColony ())
+            ProcessColony (configuration, district, timeStep);
     }
 }
 

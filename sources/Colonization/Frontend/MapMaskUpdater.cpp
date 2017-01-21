@@ -2,7 +2,7 @@
 #include "MapMaskUpdater.hpp"
 #include <Urho3D/IO/Log.h>
 
-#include <Urho3D/Core/CoreEvents.h>
+#include <Urho3D/Scene/SceneEvents.h>
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Math/MathDefs.h>
 
@@ -75,7 +75,7 @@ MapMaskUpdater::MapMaskUpdater (Urho3D::Context *context) : Urho3D::Component (c
 
     packedFogOfWarImage_->SetSize (1, 1, MAP_MASK_COMPONENTS);
     packedFogOfWarTexture_->SetName ("packedFogOfWarTexture");
-    SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (MapMaskUpdater, Update));
+    SubscribeToEvent (Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (MapMaskUpdater, Update));
 
     Urho3D::ResourceCache *resourceCache = context_->GetSubsystem <Urho3D::ResourceCache> ();
     resourceCache->AddManualResource (maskTexture_);
@@ -85,8 +85,14 @@ MapMaskUpdater::MapMaskUpdater (Urho3D::Context *context) : Urho3D::Component (c
 MapMaskUpdater::~MapMaskUpdater ()
 {
     Urho3D::ResourceCache *resourceCache = context_->GetSubsystem <Urho3D::ResourceCache> ();
-    resourceCache->ReleaseResource (Urho3D::Texture2D::GetTypeStatic (), maskTexture_->GetName (), true);
-    resourceCache->ReleaseResource (Urho3D::Texture2D::GetTypeStatic (), packedFogOfWarTexture_->GetName (), true);
+    Urho3D::String maskTextureName = maskTexture_->GetName ();
+    Urho3D::String packedFogOfWarTextureName = packedFogOfWarTexture_->GetName ();
+
+    maskTexture_.Reset ();
+    packedFogOfWarTexture_.Reset ();
+
+    resourceCache->ReleaseResource (Urho3D::Texture2D::GetTypeStatic (), maskTextureName);
+    resourceCache->ReleaseResource (Urho3D::Texture2D::GetTypeStatic (), packedFogOfWarTextureName);
 }
 
 void MapMaskUpdater::RegisterObject (Urho3D::Context *context)
@@ -101,42 +107,39 @@ void MapMaskUpdater::RegisterObject (Urho3D::Context *context)
 
 void MapMaskUpdater::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    if (enabled_ && node_ && node_->GetScene ()->IsUpdateEnabled ())
+    // Update packed fog of war data.
+    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
+    assert (map);
+
+    if (packedFogOfWarImage_->GetWidth () != map->GetDistrictsCount () * 2 ||
+            packedFogOfWarImage_->GetHeight () != 1)
     {
-        // Update packed fog of war data.
-        Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
-        assert (map);
+        packedFogOfWarImage_->SetSize (map->GetDistrictsCount () * 2, 1, MAP_MASK_COMPONENTS);
+    }
+    packedFogOfWarImage_->Clear (Urho3D::Color::WHITE);
 
-        if (packedFogOfWarImage_->GetWidth () != map->GetDistrictsCount () * 2 ||
-                packedFogOfWarImage_->GetHeight () != 1)
+    FogOfWarCalculator *fogOfWarCalculator = node_->GetScene ()->GetComponent <FogOfWarCalculator> ();
+    assert (fogOfWarCalculator);
+
+    for (int districtIndex = 0; districtIndex < map->GetDistrictsCount (); districtIndex++)
+    {
+        District *district = map->GetDistrictByIndex (districtIndex);
+        bool visible = fogOfWarCalculator->IsDistrictVisible (district->GetHash ());
+        packedFogOfWarImage_->SetPixelInt (2 * districtIndex, 0, GetDistrictColorInt (district->GetHash ()));
+
+        Urho3D::Color color;
+        if (visible)
+            color = MAP_MASK_VISIBLE_DISTRICT_COLOR;
+        else
+            color = MAP_MASK_DISTRICT_UNDER_FOG_COLOR;
+
+        if (district->GetHash () == selectedDistrictHash_)
         {
-            packedFogOfWarImage_->SetSize (map->GetDistrictsCount () * 2, 1, MAP_MASK_COMPONENTS);
+            color.r_ *= MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER;
+            color.g_ *= MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER;
+            color.b_ *= MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER;
         }
-        packedFogOfWarImage_->Clear (Urho3D::Color::WHITE);
-
-        FogOfWarCalculator *fogOfWarCalculator = node_->GetScene ()->GetComponent <FogOfWarCalculator> ();
-        assert (fogOfWarCalculator);
-
-        for (int districtIndex = 0; districtIndex < map->GetDistrictsCount (); districtIndex++)
-        {
-            District *district = map->GetDistrictByIndex (districtIndex);
-            bool visible = fogOfWarCalculator->IsDistrictVisible (district->GetHash ());
-            packedFogOfWarImage_->SetPixelInt (2 * districtIndex, 0, GetDistrictColorInt (district->GetHash ()));
-
-            Urho3D::Color color;
-            if (visible)
-                color = MAP_MASK_VISIBLE_DISTRICT_COLOR;
-            else
-                color = MAP_MASK_DISTRICT_UNDER_FOG_COLOR;
-
-            if (district->GetHash () == selectedDistrictHash_)
-            {
-                color.r_ *= MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER;
-                color.g_ *= MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER;
-                color.b_ *= MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER;
-            }
-            packedFogOfWarImage_->SetPixel (2 * districtIndex + 1, 0, color);
-        }
+        packedFogOfWarImage_->SetPixel (2 * districtIndex + 1, 0, color);
     }
 }
 
@@ -154,6 +157,7 @@ void MapMaskUpdater::RecalculateMaskImage ()
     for (int index = 0; index < map->GetDistrictsCount (); index++)
     {
         District *district = map->GetDistrictByIndex (index);
+        Urho3D::Log::Write (Urho3D::LOG_INFO, district->GetName ());
         DrawDistrictBorders (district);
         Urho3D::Color districtColor;
         do
@@ -166,6 +170,7 @@ void MapMaskUpdater::RecalculateMaskImage ()
                districtColor == MAP_MASK_VISIBLE_DISTRICT_COLOR ||
                districtColor == MAP_MASK_DISTRICT_UNDER_FOG_COLOR);
 
+        Urho3D::Log::Write (Urho3D::LOG_INFO, districtColor.ToString ());
         districtColorToDistrictHash_ [Urho3D::StringHash (districtColor.ToUInt ())] = district->GetHash ();
         Urho3D::IntVector2 colonyPositionOnMap = WorldPointToMapPoint (district->GetColonyPosition ());
         ImageUtils::FloodFill (maskImage_, districtColor, colonyPositionOnMap.x_, colonyPositionOnMap.y_);

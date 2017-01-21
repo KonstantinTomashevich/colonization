@@ -1,7 +1,7 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "PlayersManager.hpp"
 #include <Urho3D/Core/Context.h>
-#include <Urho3D/Core/CoreEvents.h>
+#include <Urho3D/Scene/SceneEvents.h>
 #include <Urho3D/Scene/Component.h>
 #include <Urho3D/Scene/Scene.h>
 #include <Urho3D/Network/NetworkEvents.h>
@@ -117,7 +117,7 @@ PlayersManager::PlayersManager (Urho3D::Context *context) : Urho3D::Component (c
     connectionHashToNameHashMap_ (),
     connectionsWithoutId_ ()
 {
-    SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (PlayersManager, Update));
+    SubscribeToEvent (Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (PlayersManager, Update));
     SubscribeToEvent (Urho3D::E_CLIENTCONNECTED, URHO3D_HANDLER (PlayersManager, HandlePlayerConnected));
     SubscribeToEvent (Urho3D::E_CLIENTDISCONNECTED, URHO3D_HANDLER (PlayersManager, HandlePlayerDisconnected));
 }
@@ -139,43 +139,34 @@ void PlayersManager::RegisterObject (Urho3D::Context *context)
 
 void PlayersManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    if (enabled_ && node_ && node_->GetScene () && node_->GetScene ()->IsUpdateEnabled ())
-    {
-        MessagesHandler *messagesHandler = node_->GetScene ()->GetComponent <MessagesHandler> ();
-        assert (messagesHandler);
-        float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
-        UpdatePlayers (messagesHandler, timeStep);
-        UpdateConnectionsWithoudId (timeStep);
-        UpdatePlayersInfos ();
-    }
+    MessagesHandler *messagesHandler = node_->GetScene ()->GetComponent <MessagesHandler> ();
+    assert (messagesHandler);
+    float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
+    UpdatePlayers (messagesHandler, timeStep);
+    UpdateConnectionsWithoudId (timeStep);
+    UpdatePlayersInfos ();
 }
 
 void PlayersManager::HandlePlayerConnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    if (enabled_ && node_ && node_->GetScene () && node_->GetScene ()->IsUpdateEnabled ())
-    {
-        Urho3D::Connection *connection = (Urho3D::Connection *)
-                eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
-        connectionsWithoutId_.Push (Urho3D::Pair <float, Urho3D::Connection *> (1.0f, connection));
-    }
+    Urho3D::Connection *connection = (Urho3D::Connection *)
+            eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
+    connectionsWithoutId_.Push (Urho3D::Pair <float, Urho3D::Connection *> (1.0f, connection));
 }
 
 void PlayersManager::HandlePlayerDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    if (enabled_ && node_ && node_->GetScene () && node_->GetScene ()->IsUpdateEnabled ())
-    {
-        Urho3D::Connection *connection = (Urho3D::Connection *)
-                eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
-        MessagesHandler *messagesHandler = node_->GetScene ()->GetComponent <MessagesHandler> ();
-        assert (messagesHandler);
+    Urho3D::Connection *connection = (Urho3D::Connection *)
+            eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
+    MessagesHandler *messagesHandler = node_->GetScene ()->GetComponent <MessagesHandler> ();
+    assert (messagesHandler);
 
-        Player *player = GetPlayer (connection);
-        if (player)
-        {
-            Urho3D::Vector <Player *> allPlayers = players_.Values ();
-            messagesHandler->SendTextInfoFromServer (GetPlayer (connection)->GetName () + " left game!", allPlayers);
-            DisconnectPlayer (connection);
-        }
+    Player *player = GetPlayer (connection);
+    if (player)
+    {
+        Urho3D::Vector <Player *> allPlayers = players_.Values ();
+        messagesHandler->SendTextInfoFromServer (GetPlayer (connection)->GetName () + " left game!", allPlayers);
+        DisconnectPlayer (connection);
     }
 }
 

@@ -5,7 +5,8 @@ class MapUpdater : ScriptObject
     bool updateDistrictsNeighborsNextFrame_;
     bool calculateUnitsPositionsAsCentersNextFrame_;
     bool setCorrectYForUnitsAndColoniesPositionNextFrame_;
-    
+    bool recalculateMapMaskNextFrame_;
+
     protected void CalculateUnitPositionAsCenter (District @district)
     {
         Array <Vector3> polygonPoints = district.polygonPoints;
@@ -18,39 +19,40 @@ class MapUpdater : ScriptObject
         }
         district.unitPosition = sum / polygonPoints.length;
     }
-    
+
     protected void CorrectYForUnitAndColonyPosition (District @district, Terrain @terrain)
     {
         float unitHeight = terrain.GetHeight (district.unitPosition);
         float colonyHeight = terrain.GetHeight (district.colonyPosition);
-        
+
         Vector3 newUnitPosition = district.unitPosition;
         newUnitPosition.y = unitHeight;
         district.unitPosition = newUnitPosition;
-        
+
         Vector3 newColonyPosition = district.colonyPosition;
         newColonyPosition.y = colonyHeight;
         district.colonyPosition = newColonyPosition;
     }
-    
+
     MapUpdater ()
     {
         updateDistrictsHashesNextFrame_ = false;
         updateDistrictsNeighborsNextFrame_ = false;
         calculateUnitsPositionsAsCentersNextFrame_ = false;
         setCorrectYForUnitsAndColoniesPositionNextFrame_ = false;
+        recalculateMapMaskNextFrame_ = false;
     }
-    
+
     ~MapUpdater ()
     {
-        
+
     }
-    
+
     void Start ()
     {
-        
+
     }
-    
+
     void Update (float timeStep)
     {
         if (updateDistrictsHashesNextFrame_)
@@ -59,14 +61,14 @@ class MapUpdater : ScriptObject
             map.RecalculateDistrictsHashes ();
             updateDistrictsHashesNextFrame_ = false;
         }
-        
+
         if (updateDistrictsNeighborsNextFrame_)
         {
             Map @map = scene.GetNode (mapNodeId_).GetComponent ("Map");
             map.RecalculateDistrictsNeighbors ();
             updateDistrictsNeighborsNextFrame_ = false;
         }
-        
+
         if (calculateUnitsPositionsAsCentersNextFrame_)
         {
             Map @map = scene.GetNode (mapNodeId_).GetComponent ("Map");
@@ -74,7 +76,7 @@ class MapUpdater : ScriptObject
                 CalculateUnitPositionAsCenter (map.GetDistrictByIndex (index));
             calculateUnitsPositionsAsCentersNextFrame_ = false;
         }
-        
+
         if (setCorrectYForUnitsAndColoniesPositionNextFrame_)
         {
             Map @map = scene.GetNode (mapNodeId_).GetComponent ("Map");
@@ -83,10 +85,18 @@ class MapUpdater : ScriptObject
                 CorrectYForUnitAndColonyPosition (map.GetDistrictByIndex (index), terrain);
             setCorrectYForUnitsAndColoniesPositionNextFrame_ = false;
         }
+
+        if (recalculateMapMaskNextFrame_)
+        {
+            MapMaskUpdater @mapMaskUpdater = scene.GetComponent ("MapMaskUpdater");
+            mapMaskUpdater.RecalculateMaskImage ();
+            mapMaskUpdater.maskImage.SavePNG ("temp.png");
+            recalculateMapMaskNextFrame_ = false;
+        }
     }
-    
+
     void Stop ()
     {
-        
+
     }
 };

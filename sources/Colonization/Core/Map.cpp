@@ -3,7 +3,7 @@
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/Container/HashMap.h>
 #include <Urho3D/Core/Context.h>
-#include <Urho3D/Core/CoreEvents.h>
+#include <Urho3D/Scene/SceneEvents.h>
 #include <Urho3D/Scene/Scene.h>
 
 #include <Colonization/Utils/Categories.hpp>
@@ -15,7 +15,7 @@ namespace Colonization
 Map::Map (Urho3D::Context *context) : Urho3D::Component (context),
     districts_ ()
 {
-    SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (Map, Update));
+    SubscribeToEvent (Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (Map, Update));
 }
 
 Map::~Map ()
@@ -74,19 +74,16 @@ District *Map::CreateDistrict (Urho3D::String districtName)
 
 void Map::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    if (enabled_ && node_ && node_->GetScene ()->IsUpdateEnabled ())
+    // Reload districts array from child nodes.
+    districts_.Clear ();
+    Urho3D::PODVector <Urho3D::Node *> districtsNodes;
+    node_->GetChildrenWithComponent (districtsNodes, District::GetTypeStatic ());
+    Urho3D::Log::Write (Urho3D::LOG_INFO, Urho3D::String (districtsNodes.Size ()));
+    for (int index = 0; index < districtsNodes.Size (); index++)
     {
-        // Reload districts array from child nodes.
-        assert (node_);
-        districts_.Clear ();
-        Urho3D::PODVector <Urho3D::Node *> districtsNodes;
-        node_->GetChildrenWithComponent (districtsNodes, District::GetTypeStatic ());
-        for (int index = 0; index < districtsNodes.Size (); index++)
-        {
-            Urho3D::Node *districtNode = districtsNodes.At (index);
-            if (districtNode->GetID () < Urho3D::FIRST_LOCAL_ID)
-                districts_.Push (Urho3D::SharedPtr <District> (districtNode->GetComponent <District> ()));
-        }
+        Urho3D::Node *districtNode = districtsNodes.At (index);
+        if (districtNode->GetID () < Urho3D::FIRST_LOCAL_ID)
+            districts_.Push (Urho3D::SharedPtr <District> (districtNode->GetComponent <District> ()));
     }
 }
 
