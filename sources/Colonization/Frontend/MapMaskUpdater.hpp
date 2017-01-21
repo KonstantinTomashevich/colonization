@@ -6,8 +6,8 @@
 namespace Colonization
 {
 class District;
-const int MAP_MASK_WIDTH = 256;
-const int MAP_MASK_HEIGHT = 256;
+const int MAP_MASK_WIDTH = 512;
+const int MAP_MASK_HEIGHT = 512;
 const int MAP_MASK_COMPONENTS = 4;
 const int MAP_MASK_DISTRICT_BORDER_LINE_WIDTH = 1;
 const float MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER = 1.0f / 0.9f;

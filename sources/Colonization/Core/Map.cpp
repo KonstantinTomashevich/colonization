@@ -85,7 +85,6 @@ void Map::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
     districts_.Clear ();
     Urho3D::PODVector <Urho3D::Node *> districtsNodes;
     node_->GetChildrenWithComponent (districtsNodes, District::GetTypeStatic ());
-    Urho3D::Log::Write (Urho3D::LOG_INFO, Urho3D::String (districtsNodes.Size ()));
     for (int index = 0; index < districtsNodes.Size (); index++)
     {
         Urho3D::Node *districtNode = districtsNodes.At (index);

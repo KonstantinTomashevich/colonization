@@ -133,11 +133,12 @@ void FloodFill (Urho3D::Image *image, Urho3D::Color color, int x, int y)
     {
         Urho3D::PODVector <Urho3D::IntVector2> toSet;
         toSet.Push (Urho3D::IntVector2 (x, y));
-        int index = 0;
 
-        while (index < toSet.Size ())
+        while (toSet.Size ())
         {
-            Urho3D::IntVector2 point = toSet.At (index);
+            Urho3D::IntVector2 point = toSet.Back ();
+            toSet.Remove (point);
+
             if (image->GetPixelInt (point.x_, point.y_) == sourceColor)
             {
                 image->SetPixelInt (point.x_, point.y_, fillColor);
@@ -154,7 +155,6 @@ void FloodFill (Urho3D::Image *image, Urho3D::Color color, int x, int y)
                 if (image->GetPixelInt (point.x_, point.y_ + 1) == sourceColor)
                     toSet.Push (Urho3D::IntVector2 (point.x_, point.y_ + 1));
             }
-            index++;
         }
     }
 }
