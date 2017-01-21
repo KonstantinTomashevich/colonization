@@ -90,15 +90,7 @@ MapMaskUpdater::MapMaskUpdater (Urho3D::Context *context) : Urho3D::Component (c
 
 MapMaskUpdater::~MapMaskUpdater ()
 {
-    Urho3D::ResourceCache *resourceCache = context_->GetSubsystem <Urho3D::ResourceCache> ();
-    Urho3D::String maskTextureName = maskTexture_->GetName ();
-    Urho3D::String packedFogOfWarTextureName = packedFogOfWarTexture_->GetName ();
 
-    maskTexture_.Reset ();
-    packedFogOfWarTexture_.Reset ();
-
-    resourceCache->ReleaseResource (Urho3D::Texture2D::GetTypeStatic (), maskTextureName);
-    resourceCache->ReleaseResource (Urho3D::Texture2D::GetTypeStatic (), packedFogOfWarTextureName);
 }
 
 void MapMaskUpdater::RegisterObject (Urho3D::Context *context)
