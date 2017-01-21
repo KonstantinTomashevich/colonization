@@ -17,6 +17,7 @@ protected:
     void ProcessTradeAreaDistrict (Map *map, District *district, Urho3D::PODVector <District *> &areaDistricts, Urho3D::PODVector <District *> &unscannedList);
     void ProcessTradeAreaIncome (PlayersManager *playersManager, Map *map, InternalTradeArea *tradeArea, float updateDelay);
     void ClearTradeAreas ();
+    virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:
     TradeProcessor (Urho3D::Context *context);

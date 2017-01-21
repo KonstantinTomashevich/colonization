@@ -57,6 +57,13 @@ void MapMaskUpdater::DrawDistrictBorders (District *district)
     }
 }
 
+void MapMaskUpdater::OnSceneSet (Urho3D::Scene *scene)
+{
+    UnsubscribeFromAllEvents ();
+    Urho3D::Component::OnSceneSet (scene);
+    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (MapMaskUpdater, Update));
+}
+
 MapMaskUpdater::MapMaskUpdater (Urho3D::Context *context) : Urho3D::Component (context),
     packedFogOfWarImage_ (new Urho3D::Image (context)),
     packedFogOfWarTexture_ (new Urho3D::Texture2D (context)),
@@ -75,7 +82,6 @@ MapMaskUpdater::MapMaskUpdater (Urho3D::Context *context) : Urho3D::Component (c
 
     packedFogOfWarImage_->SetSize (1, 1, MAP_MASK_COMPONENTS);
     packedFogOfWarTexture_->SetName ("packedFogOfWarTexture");
-    SubscribeToEvent (Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (MapMaskUpdater, Update));
 
     Urho3D::ResourceCache *resourceCache = context_->GetSubsystem <Urho3D::ResourceCache> ();
     resourceCache->AddManualResource (maskTexture_);
@@ -107,39 +113,42 @@ void MapMaskUpdater::RegisterObject (Urho3D::Context *context)
 
 void MapMaskUpdater::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    // Update packed fog of war data.
-    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
-    assert (map);
-
-    if (packedFogOfWarImage_->GetWidth () != map->GetDistrictsCount () * 2 ||
-            packedFogOfWarImage_->GetHeight () != 1)
+    if (enabled_)
     {
-        packedFogOfWarImage_->SetSize (map->GetDistrictsCount () * 2, 1, MAP_MASK_COMPONENTS);
-    }
-    packedFogOfWarImage_->Clear (Urho3D::Color::WHITE);
+        // Update packed fog of war data.
+        Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
+        assert (map);
 
-    FogOfWarCalculator *fogOfWarCalculator = node_->GetScene ()->GetComponent <FogOfWarCalculator> ();
-    assert (fogOfWarCalculator);
-
-    for (int districtIndex = 0; districtIndex < map->GetDistrictsCount (); districtIndex++)
-    {
-        District *district = map->GetDistrictByIndex (districtIndex);
-        bool visible = fogOfWarCalculator->IsDistrictVisible (district->GetHash ());
-        packedFogOfWarImage_->SetPixelInt (2 * districtIndex, 0, GetDistrictColorInt (district->GetHash ()));
-
-        Urho3D::Color color;
-        if (visible)
-            color = MAP_MASK_VISIBLE_DISTRICT_COLOR;
-        else
-            color = MAP_MASK_DISTRICT_UNDER_FOG_COLOR;
-
-        if (district->GetHash () == selectedDistrictHash_)
+        if (packedFogOfWarImage_->GetWidth () != map->GetDistrictsCount () * 2 ||
+                packedFogOfWarImage_->GetHeight () != 1)
         {
-            color.r_ *= MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER;
-            color.g_ *= MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER;
-            color.b_ *= MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER;
+            packedFogOfWarImage_->SetSize (map->GetDistrictsCount () * 2, 1, MAP_MASK_COMPONENTS);
         }
-        packedFogOfWarImage_->SetPixel (2 * districtIndex + 1, 0, color);
+        packedFogOfWarImage_->Clear (Urho3D::Color::WHITE);
+
+        FogOfWarCalculator *fogOfWarCalculator = node_->GetScene ()->GetComponent <FogOfWarCalculator> ();
+        assert (fogOfWarCalculator);
+
+        for (int districtIndex = 0; districtIndex < map->GetDistrictsCount (); districtIndex++)
+        {
+            District *district = map->GetDistrictByIndex (districtIndex);
+            bool visible = fogOfWarCalculator->IsDistrictVisible (district->GetHash ());
+            packedFogOfWarImage_->SetPixelInt (2 * districtIndex, 0, GetDistrictColorInt (district->GetHash ()));
+
+            Urho3D::Color color;
+            if (visible)
+                color = MAP_MASK_VISIBLE_DISTRICT_COLOR;
+            else
+                color = MAP_MASK_DISTRICT_UNDER_FOG_COLOR;
+
+            if (district->GetHash () == selectedDistrictHash_)
+            {
+                color.r_ *= MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER;
+                color.g_ *= MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER;
+                color.b_ *= MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER;
+            }
+            packedFogOfWarImage_->SetPixel (2 * districtIndex + 1, 0, color);
+        }
     }
 }
 

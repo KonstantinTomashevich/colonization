@@ -20,6 +20,7 @@ protected:
     void ProcessColonyIndustryEvolution (GameConfiguration *configuration, District *colony, float timeStep);
     void ProcessColonyLogisticsEvolution (GameConfiguration *configuration, District *colony, float timeStep);
     void ProcessColonyDefenseEvolution (GameConfiguration *configuration, District *colony, float timeStep);
+    virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:
     ColoniesManager (Urho3D::Context *context);

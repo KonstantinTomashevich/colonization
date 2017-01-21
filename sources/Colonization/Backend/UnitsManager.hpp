@@ -15,6 +15,7 @@ protected:
     void UpdateUnitsList ();
     void SettleColonizator (Unit *unit, Map *map);
     void ProcessTrader (GameConfiguration *configuration, Unit *unit);
+    virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:
     UnitsManager (Urho3D::Context *context);

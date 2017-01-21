@@ -12,6 +12,7 @@ protected:
     // If true -- district visible.
     Urho3D::HashMap <Urho3D::StringHash, bool> fogOfWarMap_;
     void OpenDistrictAndNeighbors (District *district);
+    virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:
     FogOfWarCalculator (Urho3D::Context *context);

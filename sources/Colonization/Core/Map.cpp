@@ -12,10 +12,17 @@
 
 namespace Colonization
 {
+void Map::OnSceneSet (Urho3D::Scene *scene)
+{
+    UnsubscribeFromAllEvents ();
+    Urho3D::Component::OnSceneSet (scene);
+    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (Map, Update));
+}
+
 Map::Map (Urho3D::Context *context) : Urho3D::Component (context),
     districts_ ()
 {
-    SubscribeToEvent (Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (Map, Update));
+
 }
 
 Map::~Map ()

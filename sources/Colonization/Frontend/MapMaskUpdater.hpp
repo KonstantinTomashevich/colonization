@@ -37,6 +37,7 @@ protected:
 
     Urho3D::IntVector2 WorldPointToMapPoint (Urho3D::Vector3 worldPoint);
     void DrawDistrictBorders (District *district);
+    virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:
     MapMaskUpdater (Urho3D::Context *context);

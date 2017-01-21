@@ -12,6 +12,7 @@ class Map : public Urho3D::Component
 URHO3D_OBJECT (Map, Component)
 protected:
     Urho3D::Vector <Urho3D::SharedPtr <District> > districts_;
+    virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:
     Map (Urho3D::Context *context);

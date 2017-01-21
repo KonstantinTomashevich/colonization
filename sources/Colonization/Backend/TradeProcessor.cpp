@@ -201,9 +201,15 @@ void TradeProcessor::ClearTradeAreas ()
     tradeAreas_.Clear ();
 }
 
+void TradeProcessor::OnSceneSet (Urho3D::Scene *scene)
+{
+    UnsubscribeFromAllEvents ();
+    Urho3D::Component::OnSceneSet (scene);
+    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (TradeProcessor, Update));
+}
+
 TradeProcessor::TradeProcessor (Urho3D::Context *context) : Urho3D::Component (context)
 {
-    SubscribeToEvent (Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (TradeProcessor, Update));
     untilTradeAreasUpdate_ = 0.0001f;
 }
 
@@ -220,12 +226,15 @@ void TradeProcessor::RegisterObject (Urho3D::Context *context)
 
 void TradeProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
-    untilTradeAreasUpdate_ -= timeStep;
-    if (untilTradeAreasUpdate_ <= 0.0f)
+    if (enabled_)
     {
-        UpdateTradeAreas (10.0f);
-        untilTradeAreasUpdate_ = 10.0f;
+        float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
+        untilTradeAreasUpdate_ -= timeStep;
+        if (untilTradeAreasUpdate_ <= 0.0f)
+        {
+            UpdateTradeAreas (10.0f);
+            untilTradeAreasUpdate_ = 10.0f;
+        }
     }
 }
 

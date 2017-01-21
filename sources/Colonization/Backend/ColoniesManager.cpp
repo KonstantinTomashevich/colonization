@@ -277,10 +277,17 @@ void ColoniesManager::ProcessColonyDefenseEvolution (GameConfiguration *configur
     colony->SetDefenseEvolutionPoints (colony->GetDefenseEvolutionPoints () + configuration->GetColoniesBasicEvolution () * modifer * timeStep);
 }
 
+void ColoniesManager::OnSceneSet (Urho3D::Scene *scene)
+{
+    UnsubscribeFromAllEvents ();
+    Urho3D::Component::OnSceneSet (scene);
+    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (ColoniesManager, Update));
+}
+
 ColoniesManager::ColoniesManager (Urho3D::Context *context) : Urho3D::Component (context),
     investitions_ ()
 {
-    SubscribeToEvent (Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (ColoniesManager, Update));
+
 }
 
 ColoniesManager::~ColoniesManager ()
@@ -297,18 +304,21 @@ void ColoniesManager::RegisterObject (Urho3D::Context *context)
 
 void ColoniesManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
-    GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
-
-    assert (map);
-    assert (configuration);
-    float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
-
-    for (int index = 0; index < map->GetDistrictsCount (); index++)
+    if (enabled_)
     {
-        District *district = map->GetDistrictByIndex (index);
-        if (district->HasColony ())
-            ProcessColony (configuration, district, timeStep);
+        Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
+        GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
+
+        assert (map);
+        assert (configuration);
+        float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
+
+        for (int index = 0; index < map->GetDistrictsCount (); index++)
+        {
+            District *district = map->GetDistrictByIndex (index);
+            if (district->HasColony ())
+                ProcessColony (configuration, district, timeStep);
+        }
     }
 }
 

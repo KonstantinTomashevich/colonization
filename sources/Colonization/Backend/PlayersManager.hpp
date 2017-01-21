@@ -20,6 +20,7 @@ protected:
     void UpdatePlayers (MessagesHandler *messagesHandler, float timeStep);
     void UpdateConnectionsWithoudId (float timeStep);
     void UpdatePlayersInfos ();
+    virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:
     PlayersManager (Urho3D::Context *context);
