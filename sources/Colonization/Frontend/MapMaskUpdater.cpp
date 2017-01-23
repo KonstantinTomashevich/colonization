@@ -18,7 +18,6 @@
 #include <Colonization/Utils/Categories.hpp>
 #include <Colonization/Utils/ImageUtils.hpp>
 #include <Colonization/Utils/VectorUtils.hpp>
-#include <Colonization/Utils/MathUtils.hpp>
 #include <Colonization/Utils/AttributeMacro.hpp>
 
 namespace Colonization

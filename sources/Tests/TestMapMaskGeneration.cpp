@@ -122,7 +122,7 @@ void TestMapMaskGenerationApplication::Start ()
     unit2->SetPositionHash (map->GetDistrictByIndex (4 * mapHeight + 1)->GetHash ());
 
     Colonization::FogOfWarCalculator *fogOfWarCalculator = scene->CreateComponent <Colonization::FogOfWarCalculator> ();
-    fogOfWarCalculator->SetPlayerNameHash ("PlayerX");
+    fogOfWarCalculator->SetPlayerName ("PlayerX");
     Urho3D::VariantMap eventData;
     eventData [Urho3D::SceneUpdate::P_TIMESTEP] = 1.0f / 60.0f;
     fogOfWarCalculator->Update (Urho3D::E_SCENEUPDATE, eventData);

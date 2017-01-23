@@ -8,7 +8,7 @@ class FogOfWarCalculator : public Urho3D::Component
 {
 URHO3D_OBJECT (FogOfWarCalculator, Component)
 protected:
-    Urho3D::StringHash playerNameHash_;
+    Urho3D::String playerName_;
     // If true -- district visible.
     Urho3D::HashMap <Urho3D::StringHash, bool> fogOfWarMap_;
     void OpenDistrictAndNeighbors (District *district);
@@ -21,8 +21,8 @@ public:
     static void RegisterObject (Urho3D::Context *context);
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
 
-    Urho3D::StringHash GetPlayerNameHash () const;
-    void SetPlayerNameHash (const Urho3D::StringHash &playerNameHash);
+    Urho3D::String GetPlayerName () const;
+    void SetPlayerName (const Urho3D::String &playerName);
 
     bool IsDistrictVisible (Urho3D::StringHash districtHash);
     Urho3D::HashMap <Urho3D::StringHash, bool> GetFogOfWarMap ();

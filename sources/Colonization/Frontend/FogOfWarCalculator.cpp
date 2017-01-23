@@ -29,7 +29,7 @@ void FogOfWarCalculator::OnSceneSet (Urho3D::Scene *scene)
 }
 
 FogOfWarCalculator::FogOfWarCalculator (Urho3D::Context *context) : Urho3D::Component (context),
-    playerNameHash_ (),
+    playerName_ (),
     fogOfWarMap_ ()
 {
 
@@ -45,13 +45,14 @@ void FogOfWarCalculator::RegisterObject (Urho3D::Context *context)
     context->RegisterFactory <FogOfWarCalculator> (COLONIZATION_CLIENT_ONLY_CATEGORY);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
-    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Player Name Hash", GetPlayerNameHash, SetPlayerNameHash, Urho3D::StringHash, Urho3D::StringHash::ZERO, Urho3D::AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Player Name", GetPlayerName, SetPlayerName, Urho3D::String, Urho3D::String::EMPTY, Urho3D::AM_DEFAULT);
 }
 
 void FogOfWarCalculator::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     if (enabled_)
     {
+        Urho3D::StringHash playerNameHash = Urho3D::StringHash (playerName_);
         fogOfWarMap_.Clear ();
         Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
         assert (map);
@@ -60,7 +61,7 @@ void FogOfWarCalculator::Update (Urho3D::StringHash eventType, Urho3D::VariantMa
         for (int index = 0; index < map->GetDistrictsCount (); index++)
         {
             District *district = map->GetDistrictByIndex (index);
-            if (district->HasColony () && Urho3D::StringHash (district->GetColonyOwnerName ()) == playerNameHash_)
+            if (district->HasColony () && Urho3D::StringHash (district->GetColonyOwnerName ()) == playerNameHash)
                 districtsToOpen.Push (district);
             else
                 fogOfWarMap_ [district->GetHash ()] = false;
@@ -74,10 +75,13 @@ void FogOfWarCalculator::Update (Urho3D::StringHash eventType, Urho3D::VariantMa
             for (int index = 0; index < unitsNodes.Size (); index++)
             {
                 Unit *unit = unitsNodes.At (index)->GetComponent <Unit> ();
-                District *position = map->GetDistrictByHash (unit->GetPositionHash ());
-                assert (position);
-                if (!districtsToOpen.Contains (position))
-                    districtsToOpen.Push (position);
+                if (Urho3D::StringHash (unit->GetOwnerPlayerName ()) == playerNameHash)
+                {
+                    District *position = map->GetDistrictByHash (unit->GetPositionHash ());
+                    assert (position);
+                    if (!districtsToOpen.Contains (position))
+                        districtsToOpen.Push (position);
+                }
             }
         }
 
@@ -86,14 +90,14 @@ void FogOfWarCalculator::Update (Urho3D::StringHash eventType, Urho3D::VariantMa
     }
 }
 
-Urho3D::StringHash FogOfWarCalculator::GetPlayerNameHash () const
+Urho3D::String FogOfWarCalculator::GetPlayerName () const
 {
-    return playerNameHash_;
+    return playerName_;
 }
 
-void FogOfWarCalculator::SetPlayerNameHash (const Urho3D::StringHash &playerNameHash)
+void FogOfWarCalculator::SetPlayerName (const Urho3D::String &playerName)
 {
-    playerNameHash_ = playerNameHash;
+    playerName_ = playerName;
 }
 
 bool FogOfWarCalculator::IsDistrictVisible (Urho3D::StringHash districtHash)
