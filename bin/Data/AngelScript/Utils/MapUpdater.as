@@ -90,7 +90,6 @@ class MapUpdater : ScriptObject
         {
             MapMaskUpdater @mapMaskUpdater = scene.GetComponent ("MapMaskUpdater");
             mapMaskUpdater.RecalculateMaskImage ();
-            mapMaskUpdater.maskImage.SavePNG ("temp.png");
             recalculateMapMaskNextFrame_ = false;
         }
     }

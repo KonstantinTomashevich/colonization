@@ -1,0 +1,27 @@
+<rendertarget>
+    <!-- Standart ForwardHWDepth render path from engine core. -->
+    <rendertarget name="depth" sizedivisor="1 1" format="readabledepth" />
+    <command type="clear" color="fog" depth="1.0" stencil="0" depthstencil="depth" />
+    <command type="scenepass" pass="base" vertexlights="true" metadata="base" depthstencil="depth" />
+    <command type="forwardlights" pass="light" depthstencil="depth" />
+    <command type="scenepass" pass="postopaque" depthstencil="depth" />
+    <command type="scenepass" pass="refract" depthstencil="depth">
+        <texture unit="environment" name="viewport" />
+    </command>
+    <command type="scenepass" pass="alpha" vertexlights="true" sort="backtofront" metadata="alpha" depthstencil="depth" psdefines="HWDEPTH">
+        <texture unit="depth" name="depth" />
+    </command>
+    <command type="scenepass" pass="postalpha" sort="backtofront" depthstencil="depth" />
+
+    <!-- Additional shaders of game. -->
+    <command type="quad" tag="MapMask" vs="MapMask" ps="MapMask" output="viewport" >
+        <parameter name="MapMinPoint" value="-8.0 -5.0 -8.0" />
+        <parameter name="MapMaxPoint" value="8.0 5.0 8.0" />
+        <parameter name="DefaultColor" value="0.05 0.05 0.05 1.0" />
+
+        <!-- Write viewport to diffuse texture slot. -->
+        <texture unit="diffuse" name="viewport" />
+        <!-- Write map mask to normal texture slot. -->
+        <texture unit="normal" name="fogOfWarMaskTexture" />
+    </command>
+</rendertarget>
