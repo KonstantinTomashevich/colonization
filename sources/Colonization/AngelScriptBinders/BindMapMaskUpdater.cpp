@@ -23,8 +23,8 @@ void BindMapMaskUpdaterInterface (Urho3D::Script *script, Urho3D::String classNa
     engine->RegisterObjectMethod (className.CString (), "StringHash GetDistrictByColorInt (uint color)", asMETHOD (MapMaskUpdater, GetDistrictByColorInt), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "uint GetDistrictColorInt (StringHash districtHash)", asMETHOD (MapMaskUpdater, GetDistrictColorInt), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod (className.CString (), "Image @+ get_packedFogOfWarImage () const", asMETHOD (MapMaskUpdater, GetPackedFogOfWarImage), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className.CString (), "Texture2D @+ get_packedFogOfWarTexture () const", asMETHOD (MapMaskUpdater, GetPackedFogOfWarTexture), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "Image @+ get_fogOfWarMaskImage () const", asMETHOD (MapMaskUpdater, GetFogOfWarMaskImage), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "Texture2D @+ get_fogOfWarMaskTexture () const", asMETHOD (MapMaskUpdater, GetFogOfWarMaskTexture), asCALL_THISCALL);
 
     engine->RegisterObjectMethod (className.CString (), "Image @+ get_maskImage () const", asMETHOD (MapMaskUpdater, GetMaskImage), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "Texture2D @+ get_maskTexture () const", asMETHOD (MapMaskUpdater, GetMaskTexture), asCALL_THISCALL);

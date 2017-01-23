@@ -10,21 +10,19 @@ const int MAP_MASK_WIDTH = 512;
 const int MAP_MASK_HEIGHT = 512;
 const int MAP_MASK_COMPONENTS = 4;
 const int MAP_MASK_DISTRICT_BORDER_LINE_WIDTH = 1;
-const float MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER = 1.0f / 0.9f;
+const float MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER = 1.0f / 0.85f;
 
 const Urho3D::Color MAP_MASK_DISTRICT_BORDER_LINE_COLOR (0.1f, 0.1f, 0.1f, 1.0f);
-const Urho3D::Color MAP_MASK_VISIBLE_DISTRICT_COLOR (0.9f, 0.9f, 0.9f, 1.0f);
+const Urho3D::Color MAP_MASK_VISIBLE_DISTRICT_COLOR (0.85f, 0.85f, 0.85f, 1.0f);
 const Urho3D::Color MAP_MASK_DISTRICT_UNDER_FOG_COLOR (0.35f, 0.35f, 0.35f, 1.0f);
 
 class MapMaskUpdater : public Urho3D::Component
 {
 URHO3D_OBJECT (MapMaskUpdater, Component)
 protected:
-    /// Used for transporting fog of war data into shader.
-    /// Size will be (districts-count * 2, 1).
-    /// Content: [pixel 2n] = district-color (from special map); [pixel 2n + 1] = color which modifies districts' colors.
-    Urho3D::SharedPtr <Urho3D::Image> packedFogOfWarImage_;
-    Urho3D::SharedPtr <Urho3D::Texture2D> packedFogOfWarTexture_;
+    /// Rendered fog of war mask.
+    Urho3D::SharedPtr <Urho3D::Image> fogOfWarMaskImage_;
+    Urho3D::SharedPtr <Urho3D::Texture2D> fogOfWarMaskTexture_;
 
     /// Used for determinating which district is on this point. Also contains districts borders lines.
     Urho3D::SharedPtr <Urho3D::Image> maskImage_;
@@ -35,7 +33,6 @@ protected:
     Urho3D::HashMap <Urho3D::StringHash, Urho3D::StringHash> districtColorToDistrictHash_;
     Urho3D::StringHash selectedDistrictHash_;
 
-    Urho3D::IntVector2 WorldPointToMapPoint (Urho3D::Vector3 worldPoint);
     void DrawDistrictBorders (District *district);
     virtual void OnSceneSet (Urho3D::Scene* scene);
 
@@ -50,10 +47,12 @@ public:
     Urho3D::StringHash GetDistrictByPoint (Urho3D::Vector3 point);
     Urho3D::StringHash GetDistrictByColor (Urho3D::Color color);
     Urho3D::StringHash GetDistrictByColorInt (unsigned color);
+
+    Urho3D::IntVector2 WorldPointToMapPoint (Urho3D::Vector3 worldPoint);
     unsigned GetDistrictColorInt (Urho3D::StringHash districtHash);
 
-    Urho3D::Image *GetPackedFogOfWarImage () const;
-    Urho3D::Texture2D *GetPackedFogOfWarTexture () const;
+    Urho3D::Image *GetFogOfWarMaskImage () const;
+    Urho3D::Texture2D *GetFogOfWarMaskTexture () const;
 
     Urho3D::Image *GetMaskImage () const;
     Urho3D::Texture2D *GetMaskTexture () const;

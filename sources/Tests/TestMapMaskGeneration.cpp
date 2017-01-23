@@ -147,22 +147,20 @@ void TestMapMaskGenerationApplication::Start ()
     }
 
     mapMaskUpdater->Update (Urho3D::E_SCENEUPDATE, eventData);
-    for (int districtPixelIndex = 0;
-         districtPixelIndex < mapMaskUpdater->GetPackedFogOfWarImage ()->GetWidth () / 2;
-         districtPixelIndex++)
+    mapMaskUpdater->GetFogOfWarMaskImage ()->SavePNG ("temp.png");
+    for (int districtIndex = 0; districtIndex < map->GetDistrictsCount (); districtIndex++)
     {
-        Urho3D::StringHash districtHash = mapMaskUpdater->GetDistrictByColorInt (
-                    mapMaskUpdater->GetPackedFogOfWarImage ()->GetPixelInt (2 * districtPixelIndex, 0));
+        Colonization::District *district = map->GetDistrictByIndex (districtIndex);
+        Urho3D::IntVector2 position = mapMaskUpdater->WorldPointToMapPoint (district->GetUnitPosition ());
+        Urho3D::Color color = mapMaskUpdater->GetFogOfWarMaskImage ()->GetPixel (position.x_, position.y_);
+        bool willBeVisible = fogOfWarCalculator->IsDistrictVisible (district->GetHash ());
 
-        int color = mapMaskUpdater->GetPackedFogOfWarImage ()->GetPixelInt (2 * districtPixelIndex + 1, 0);
-        assert (map->GetDistrictByHash (districtHash));
-
-        if ((fogOfWarCalculator->IsDistrictVisible (districtHash) &&
-             color != Colonization::MAP_MASK_VISIBLE_DISTRICT_COLOR.ToUInt ()) ||
-                (!fogOfWarCalculator->IsDistrictVisible (districtHash) &&
-                 color != Colonization::MAP_MASK_DISTRICT_UNDER_FOG_COLOR.ToUInt ()))
+        if ((willBeVisible && color.ToUInt () != Colonization::MAP_MASK_VISIBLE_DISTRICT_COLOR.ToUInt ()) ||
+                (!willBeVisible && color.ToUInt () != Colonization::MAP_MASK_DISTRICT_UNDER_FOG_COLOR.ToUInt ()))
         {
-            ErrorExit ("Error in packed fog of war info of district with hash " + Urho3D::String (districtHash) + "!");
+            ErrorExit ("Error in FogOfWar map with distirct " + district->GetName () + "! It will " +
+                       (willBeVisible ? Urho3D::String (" ") : Urho3D::String ("not ")) +
+                       Urho3D::String ("be visible!"));
             assert (false);
         }
     }
