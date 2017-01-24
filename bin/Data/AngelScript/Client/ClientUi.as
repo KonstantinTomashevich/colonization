@@ -1,22 +1,9 @@
+#include "AngelScript/Client/CheckIsSceneLoaded.as"
+
 class ClientUi : ScriptObject
 {
     protected bool isSceneLoaded_;
     protected float untilSelectionUpdate_;
-
-    protected void CheckIsSceneLoaded ()
-    {
-        if (scene.vars ["ReplicatedNodesCount"].GetInt () != 0)
-        {
-            Array <Node @> children = scene.GetChildren (true);
-            int replicated = 0;
-            for (int index = 0; index < children.length; index++)
-                if (children [index].id < FIRST_LOCAL_ID)
-                    replicated++;
-            isSceneLoaded_ = (replicated == scene.vars ["ReplicatedNodesCount"].GetInt ());
-        }
-        else
-            isSceneLoaded_ = false;
-    }
 
     protected void UpdateSelection ()
     {
@@ -333,9 +320,8 @@ class ClientUi : ScriptObject
         playerStatsText.text = playerStatsInfo;
 
         if (!isSceneLoaded_)
-            CheckIsSceneLoaded ();
-
-        if (isSceneLoaded_ and untilSelectionUpdate_ <= 0.0f)
+            isSceneLoaded_ = CheckIsSceneLoaded (scene);
+        else if (untilSelectionUpdate_ <= 0.0f)
         {
             UpdateSelection ();
             untilSelectionUpdate_ = 1.0f / 30.0f;

@@ -1,23 +1,10 @@
+#include "AngelScript/Client/CheckIsSceneLoaded.as"
+
 class Client : ScriptObject
 {
     protected ActivitiesApplication @activitiesApplication_;
     protected String playerName_;
     protected bool isSceneLoaded_;
-
-    protected void CheckIsSceneLoaded ()
-    {
-        if (scene.vars ["ReplicatedNodesCount"].GetInt () != 0)
-        {
-            Array <Node @> children = scene.GetChildren (true);
-            int replicated = 0;
-            for (int index = 0; index < children.length; index++)
-                if (children [index].id < FIRST_LOCAL_ID)
-                    replicated++;
-            isSceneLoaded_ = (replicated == scene.vars ["ReplicatedNodesCount"].GetInt ());
-        }
-        else
-            isSceneLoaded_ = false;
-    }
 
     Client ()
     {
@@ -73,7 +60,7 @@ class Client : ScriptObject
             GoToMainMenuState ();
 
         if (!isSceneLoaded_)
-            CheckIsSceneLoaded ();
+            isSceneLoaded_ = CheckIsSceneLoaded (scene);
     }
 
     void Stop ()
