@@ -9,7 +9,7 @@
 
 #include <Colonization/AngelScriptBinders/BindHostActivity.hpp>
 #include <Colonization/AngelScriptBinders/BindMainMenuActivity.hpp>
-#include <Colonization/AngelScriptBinders/BindIngamePlayerActivity.hpp>
+#include <Colonization/AngelScriptBinders/BindIngameClientActivity.hpp>
 #include <Colonization/AngelScriptBinders/BindUnit.hpp>
 
 #include <Colonization/AngelScriptBinders/BindPlayerActionType.hpp>
@@ -32,7 +32,7 @@ void BindAll (Urho3D::Script *script)
     BindNetworkMessageType (script);
     BindHostActivity (script);
     BindMainMenuActivity (script);
-    BindIngamePlayerActivity (script);
+    BindIngameClientActivity (script);
     BindUnit (script);
     BindPlayerActionType (script);
     BindInternalTradeArea (script);

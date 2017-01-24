@@ -1,21 +1,21 @@
-class PlayerNetwork : ScriptObject
+class ClientNetwork : ScriptObject
 {
-    PlayerNetwork ()
+    ClientNetwork ()
     {
-        
+
     }
-    
-    ~PlayerNetwork ()
+
+    ~ClientNetwork ()
     {
-        
+
     }
-    
+
     void Start ()
     {
         node.vars ["TasksList"] = Array <Variant> ();
         SubscribeToEvent ("NetworkMessage", "HandleNetworkMessage");
     }
-    
+
     void Update (float timeStep)
     {
         Array <Variant> tasksList = node.vars ["TasksList"].GetVariantVector ();
@@ -23,7 +23,7 @@ class PlayerNetwork : ScriptObject
         {
             VariantMap taskData = tasksList [0].GetVariantMap ();
             int taskType = taskData ["type"].GetInt ();
-            
+
             if (taskType == CTS_NETWORK_MESSAGE_SEND_CHAT_MESSAGE or
                 taskType == CTS_NETWORK_MESSAGE_SEND_PRIVATE_MESSAGE or
                 taskType == CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION)
@@ -35,18 +35,18 @@ class PlayerNetwork : ScriptObject
         }
         node.vars ["TasksList"] = tasksList;
     }
-    
+
     void Stop ()
     {
-        
+
     }
-    
+
     void HandleNetworkMessage (StringHash eventType, VariantMap &eventData)
     {
         if (eventData ["MessageID"].GetInt () == STC_NETWORK_MESSAGE_SEND_PLAYER_STATS)
             HandlePlayerStatsMessage (eventData);
     }
-    
+
     void HandlePlayerStatsMessage (VariantMap &eventData)
     {
         VectorBuffer buffer = eventData ["Data"].GetBuffer ();

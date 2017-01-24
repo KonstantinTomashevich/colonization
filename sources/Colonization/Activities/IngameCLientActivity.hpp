@@ -5,9 +5,9 @@
 
 namespace Colonization
 {
-class IngamePlayerActivity : public Activity
+class IngameClientActivity : public Activity
 {
-URHO3D_OBJECT (IngamePlayerActivity, Activity)
+URHO3D_OBJECT (IngameClientActivity, Activity)
 protected:
     Urho3D::Scene *scene_;
     Urho3D::ScriptInstance *angelScript_;
@@ -16,8 +16,8 @@ protected:
     unsigned short serverPort_;
     Urho3D::String playerName_;
 public:
-    IngamePlayerActivity (Urho3D::Context *context);
-    virtual ~IngamePlayerActivity ();
+    IngameClientActivity (Urho3D::Context *context);
+    virtual ~IngameClientActivity ();
 
     virtual void Start ();
     virtual void Update (float timeStep);

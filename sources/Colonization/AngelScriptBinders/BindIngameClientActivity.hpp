@@ -2,5 +2,5 @@
 #include <Urho3D/AngelScript/Script.h>
 namespace Colonization
 {
-void BindIngamePlayerActivity (Urho3D::Script *script);
+void BindIngameClientActivity (Urho3D::Script *script);
 }
