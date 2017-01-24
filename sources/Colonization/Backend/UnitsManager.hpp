@@ -12,7 +12,6 @@ URHO3D_OBJECT (UnitsManager, Component)
 protected:
     Urho3D::Vector <Urho3D::SharedPtr <Unit> > units_;
 
-    void UpdateUnitsList ();
     void SettleColonizator (Unit *unit, Map *map);
     void ProcessTrader (GameConfiguration *configuration, Unit *unit);
     virtual void OnSceneSet (Urho3D::Scene* scene);
@@ -26,6 +25,8 @@ public:
 
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     int GetUnitsCount ();
+    void UpdateUnitsList ();
+
     Unit *GetUnitByIndex (int index);
     Unit *GetUnitByHash (Urho3D::StringHash hash);
     Unit *CreateUnit ();

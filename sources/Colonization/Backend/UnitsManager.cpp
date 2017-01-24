@@ -11,21 +11,6 @@
 
 namespace Colonization
 {
-void UnitsManager::UpdateUnitsList ()
-{
-    // Reload units array from child nodes.
-    assert (node_);
-    units_.Clear ();
-    Urho3D::PODVector <Urho3D::Node *> unitsNodes;
-    node_->GetChildrenWithComponent (unitsNodes, Unit::GetTypeStatic ());
-    for (int index = 0; index < unitsNodes.Size (); index++)
-    {
-        Urho3D::Node *unitNode = unitsNodes.At (index);
-        if (unitNode->GetID () < Urho3D::FIRST_LOCAL_ID)
-            units_.Push (Urho3D::SharedPtr <Unit> (unitNode->GetComponent <Unit> ()));
-    }
-}
-
 void UnitsManager::SettleColonizator (Unit *unit, Map *map)
 {
     assert (unit);
@@ -178,6 +163,21 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
     }
 
     // TODO: To be continued...
+}
+
+void UnitsManager::UpdateUnitsList ()
+{
+    // Reload units array from child nodes.
+    assert (node_);
+    units_.Clear ();
+    Urho3D::PODVector <Urho3D::Node *> unitsNodes;
+    node_->GetChildrenWithComponent (unitsNodes, Unit::GetTypeStatic ());
+    for (int index = 0; index < unitsNodes.Size (); index++)
+    {
+        Urho3D::Node *unitNode = unitsNodes.At (index);
+        if (unitNode->GetID () < Urho3D::FIRST_LOCAL_ID)
+            units_.Push (Urho3D::SharedPtr <Unit> (unitNode->GetComponent <Unit> ()));
+    }
 }
 
 int UnitsManager::GetUnitsCount ()
