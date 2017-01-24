@@ -30,12 +30,12 @@ void BindMapMaskUpdaterInterface (Urho3D::Script *script, Urho3D::String classNa
     engine->RegisterObjectMethod (className.CString (), "Texture2D @+ get_maskTexture () const", asMETHOD (MapMaskUpdater, GetMaskTexture), asCALL_THISCALL);
 
     engine->RegisterObjectMethod (className.CString (), "Vector3 get_mapMinPoint () const", asMETHOD (MapMaskUpdater, GetMapMinPoint), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className.CString (), "Vector3 set_mapMinPoint (Vector3 mapMinPoint) const", asMETHOD (MapMaskUpdater, SetMapMinPoint), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_mapMinPoint (Vector3 mapMinPoint) const", asMETHOD (MapMaskUpdater, SetMapMinPoint), asCALL_THISCALL);
 
     engine->RegisterObjectMethod (className.CString (), "Vector3 get_mapMaxPoint () const", asMETHOD (MapMaskUpdater, GetMapMaxPoint), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className.CString (), "Vector3 set_mapMaxPoint (Vector3 mapMaxPoint) const", asMETHOD (MapMaskUpdater, SetMapMaxPoint), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_mapMaxPoint (Vector3 mapMaxPoint)", asMETHOD (MapMaskUpdater, SetMapMaxPoint), asCALL_THISCALL);
 
     engine->RegisterObjectMethod (className.CString (), "StringHash get_selectedDistrictHash () const", asMETHOD (MapMaskUpdater, GetSelectedDistrictHash), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className.CString (), "StringHash set_selectedDistrictHash (StringHash selectedDistrictHash) const", asMETHOD (MapMaskUpdater, SetSelectedDistrictHash), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_selectedDistrictHash (StringHash selectedDistrictHash)", asMETHOD (MapMaskUpdater, SetSelectedDistrictHash), asCALL_THISCALL);
 }
 }

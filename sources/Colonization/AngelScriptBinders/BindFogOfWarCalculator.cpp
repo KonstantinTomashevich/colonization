@@ -26,7 +26,7 @@ void BindFogOfWarCalculatorInterface (Urho3D::Script *script, Urho3D::String cla
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
     engine->RegisterObjectMethod (className.CString (), "String get_playerName () const", asMETHOD (FogOfWarCalculator, GetPlayerName), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className.CString (), "String set_playerName (String playerName) const", asMETHOD (FogOfWarCalculator, SetPlayerName), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_playerName (String playerName)", asMETHOD (FogOfWarCalculator, SetPlayerName), asCALL_THISCALL);
 
     engine->RegisterObjectMethod (className.CString (), "bool IsDistrictVisible (StringHash districtHash)", asMETHOD (FogOfWarCalculator, IsDistrictVisible), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "VariantMap get_fogOfWarMap ()", asFUNCTION (FogOfWarCalculator_GetFogOfWarMap), asCALL_CDECL_OBJFIRST);
