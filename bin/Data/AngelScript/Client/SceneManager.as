@@ -4,7 +4,9 @@ class SceneManager : ScriptObject
 {
     protected float CAMERA_MOVE_SPEED = 2.5f;
     protected Node @cameraNode_;
+    protected Node @lightNode_;
     protected bool isSceneLoaded_;
+    protected bool renderPathUpdaterWillBeCreated_;
     protected float untilDistrictsUpdate_;
     protected float untilUnitsUpdate_;
 
@@ -106,18 +108,49 @@ class SceneManager : ScriptObject
         }
     }
 
+    protected void CreateLocalLight ()
+    {
+        lightNode_ = scene.CreateChild ("light", LOCAL);
+        lightNode_.rotation = Quaternion (65.0f, 0.0f, 0.0f);
+        lightNode_.position = Vector3 (0.0f, 0.0f, 0.0f);
+
+        Light @light = lightNode_.CreateComponent ("Light", LOCAL);
+        light.castShadows = true;
+        light.lightType = LIGHT_DIRECTIONAL;
+    }
+
     protected void CreateLocalCamera ()
     {
         cameraNode_ = scene.CreateChild ("camera", LOCAL);
-        cameraNode_.rotation = Quaternion (90, 0, 0);
-        cameraNode_.position = Vector3 (2.5f, 2.5f, 2.5f);
+        cameraNode_.rotation = Quaternion (45, 0, 0);
+        cameraNode_.position = Vector3 (2.5f, 4.0f, 2.5f);
 
         cameraNode_.CreateComponent ("SoundListener", LOCAL);
         Camera @camera = cameraNode_.CreateComponent ("Camera", LOCAL);
-        camera.farClip = 50.0f;
+        camera.farClip = 100.0f;
 
         Viewport @viewport = Viewport (scene, cameraNode_.GetComponent ("Camera"));
         renderer.viewports [0] = viewport;
+    }
+
+    protected void CreateFogOfWarProcessors ()
+    {
+        FogOfWarCalculator @fogOfWarCalculator = scene.CreateComponent ("FogOfWarCalculator", LOCAL);
+        fogOfWarCalculator.playerName = node.parent.vars ["playerName"].GetString ();
+
+        Node @mapNode = scene.GetChild ("map");
+        MapMaskUpdater @mapMaskUpdater = scene.CreateComponent ("MapMaskUpdater", LOCAL);
+        mapMaskUpdater.mapMinPoint = mapNode.vars ["mapMinPoint"].GetVector3 ();
+        mapMaskUpdater.mapMaxPoint = mapNode.vars ["mapMaxPoint"].GetVector3 ();
+    }
+
+    protected void CreateRenderPathUpdater ()
+    {
+        Node @renderPathUpdateScriptNode = node.parent.CreateChild ("renderPathUpdaterScriptNode", LOCAL);
+        ScriptInstance @renderPathUpdaterScript = renderPathUpdateScriptNode.CreateComponent ("ScriptInstance", LOCAL);
+        renderPathUpdaterScript.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Client/RenderPathUpdater.as"),
+                                              "RenderPathUpdater");
     }
 
     protected void UpdateCameraPositionByKeyboardInput (float timeStep)
@@ -160,10 +193,22 @@ class SceneManager : ScriptObject
             isSceneLoaded_ = CheckIsSceneLoaded (scene);
         else
         {
-            if (scene.GetChild ("locals").GetChild ("map") is null)
+            if (renderPathUpdaterWillBeCreated_)
             {
-                LoadPrefabOf (scene.GetChild ("map"), false, "map");
+                MapMaskUpdater @mapMaskUpdater = scene.GetComponent ("MapMaskUpdater");
+                mapMaskUpdater.RecalculateMaskImage ();
+
+                CreateRenderPathUpdater ();
+                renderPathUpdaterWillBeCreated_ = false;
+            }
+
+            if (scene.GetChild ("map").GetChild ("local") is null)
+            {
+                LoadPrefabOf (scene.GetChild ("map"), true, "local");
+                CreateLocalLight ();
                 CreateLocalCamera ();
+                CreateFogOfWarProcessors ();
+                renderPathUpdaterWillBeCreated_ = true;
             }
 
             if (cameraNode_ !is null)

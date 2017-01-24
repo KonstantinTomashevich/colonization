@@ -53,6 +53,6 @@ class RenderPathUpdater : ScriptObject
 
     void Stop ()
     {
-        renderer.viewports [0].renderPath.RemoveCommands ("MapMask");
+
     }
 }
