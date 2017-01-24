@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<node id="49">
+	<attribute name="Is Enabled" value="true" />
+	<attribute name="Name" value="configuration" />
+	<attribute name="Tags" />
+	<attribute name="Position" value="0 0 0" />
+	<attribute name="Rotation" value="1 0 0 0" />
+	<attribute name="Scale" value="1 1 1" />
+	<attribute name="Variables" />
+	<component type="GameConfiguration" id="51">
+		<attribute name="Way To Europe Districts">
+			<variant type="Int" value="2" />
+			<variant type="Int" value="2062458627" />
+			<variant type="Int" value="1498060215" />
+		</attribute>
+		<attribute name="Embarkation Speed" value="0.075" />
+		<attribute name="Disembarkation Speed" value="0.1" />
+	</component>
+</node>
