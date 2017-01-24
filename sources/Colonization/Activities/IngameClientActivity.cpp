@@ -1,5 +1,5 @@
 #include <Colonization/BuildConfiguration.hpp>
-#include "IngameCLientActivity.hpp"
+#include "IngameClientActivity.hpp"
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Resource/ResourceCache.h>
 #include <Urho3D/AngelScript/ScriptFile.h>
