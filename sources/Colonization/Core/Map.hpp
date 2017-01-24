@@ -28,9 +28,11 @@ public:
     District *CreateDistrict (Urho3D::String districtName);
 
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void UpdateDistrictsList ();
+    void ClearAndRemoveDistricts ();
+
     void RecalculateDistrictsHashes ();
     void RecalculateDistrictsNeighbors ();
-    void ClearAndRemoveDistricts ();
     Urho3D::PODVector <Urho3D::StringHash> FindPath(
             Urho3D::StringHash startDistrictHash, Urho3D::StringHash targetDistrictHash,
             Urho3D::String playerName, bool canGoThroughColonies, bool isColonizator);

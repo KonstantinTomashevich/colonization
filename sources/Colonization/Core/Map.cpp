@@ -82,6 +82,11 @@ District *Map::CreateDistrict (Urho3D::String districtName)
 void Map::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     // Reload districts array from child nodes.
+    UpdateDistrictsList ();
+}
+
+void Map::UpdateDistrictsList ()
+{
     districts_.Clear ();
     Urho3D::PODVector <Urho3D::Node *> districtsNodes;
     node_->GetChildrenWithComponent (districtsNodes, District::GetTypeStatic ());
@@ -91,6 +96,16 @@ void Map::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
         if (districtNode->GetID () < Urho3D::FIRST_LOCAL_ID)
             districts_.Push (Urho3D::SharedPtr <District> (districtNode->GetComponent <District> ()));
     }
+}
+
+void Map::ClearAndRemoveDistricts ()
+{
+    assert (node_);
+    districts_.Clear ();
+    Urho3D::PODVector <Urho3D::Node *> districtsNodes;
+    node_->GetChildrenWithComponent (districtsNodes, District::GetTypeStatic ());
+    for (int index = 0; index < districtsNodes.Size (); index++)
+        node_->RemoveChild (districtsNodes.At (index));
 }
 
 void Map::RecalculateDistrictsHashes ()
@@ -103,16 +118,6 @@ void Map::RecalculateDistrictsNeighbors ()
 {
     for (int index = 0; index < districts_.Size (); index++)
         districts_.At (index)->CalculateNeighbors (districts_);
-}
-
-void Map::ClearAndRemoveDistricts ()
-{
-    assert (node_);
-    districts_.Clear ();
-    Urho3D::PODVector <Urho3D::Node *> districtsNodes;
-    node_->GetChildrenWithComponent (districtsNodes, District::GetTypeStatic ());
-    for (int index = 0; index < districtsNodes.Size (); index++)
-        node_->RemoveChild (districtsNodes.At (index));
 }
 
 Urho3D::PODVector <Urho3D::StringHash> Map::FindPath (
