@@ -4,7 +4,10 @@
 #include <Urho3D/Network/Network.h>
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/IO/Log.h>
+
 #include <Urho3D/Graphics/Octree.h>
+#include <Urho3D/Resource/ResourceCache.h>
+#include <Urho3D/Resource/XMLFile.h>
 
 #include <Colonization/Core/District.hpp>
 #include <Colonization/Core/Map.hpp>
@@ -19,101 +22,6 @@
 
 namespace Colonization
 {
-void CreateTestMap (Map *map)
-{
-    // Map from TestMapPathFinding.
-    const int mapWidth = 5;
-    const int mapHeight = 5;
-
-    for (int x = 0; x < mapWidth; x++)
-        for (int y = 0; y < mapHeight; y++)
-        {
-            Colonization::District *district = map->CreateDistrict (
-                        "(" + Urho3D::String (x) + "; " + Urho3D::String (y) + ")");
-
-            Urho3D::PODVector <Urho3D::Vector3> polygonPoints;
-            polygonPoints.Push (Urho3D::Vector3 (x, 0.0f, y ));
-            polygonPoints.Push (Urho3D::Vector3 (x + 1.0f, 0.0f, y));
-            polygonPoints.Push (Urho3D::Vector3 (x + 1.0f, 0.0f, y + 1.0f));
-            polygonPoints.Push (Urho3D::Vector3 (x, 0.0f, y + 1.0f));
-            district->SetPolygonPoints (polygonPoints);
-
-            district->SetClimate (CLIMATE_TEMPERATE);
-            district->SetFarmingSquare (Urho3D::Random (100.0f, 300.0f));
-            district->SetLandAverageFertility (Urho3D::Random (0.75f, 1.25f));
-            district->SetForestsSquare (400.0f - district->GetFarmingSquare ());
-            district->SetForestsReproductivity (Urho3D::Random (0.25f, 1.0f));
-
-            district->SetFarmsEvolutionPoints (2.0f);
-            district->SetMinesEvolutionPoints (0.5f);
-            district->SetIndustryEvolutionPoints (0.1f);
-            district->SetLogisticsEvolutionPoints (0.5f);
-            district->SetDefenseEvolutionPoints (0.25f);
-
-            district->SetCoalDeposits (Urho3D::Random (0, 100) < 50);
-            district->SetIronDeposits (Urho3D::Random (0, 100) < 40);
-            district->SetSilverDeposits (Urho3D::Random (0, 100) < 20);
-            district->SetGoldDeposits (Urho3D::Random (0, 100) < 10);
-
-            district->SetUnitPosition (Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.65f));
-            district->SetColonyPosition (Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.2f));
-            district->UpdateHash (map);
-        }
-
-    // Map: (~ -- sea, = -- terrain, @ -- colony)
-    //   0 1 2 3 4
-    // 4 ~ ~ ~ ~ ~
-    // 3 ~ = @ = ~
-    // 2 ~ ~ ~ = ~
-    // 1 ~ = @ = ~
-    // 0 ~ = ~ ~ ~
-    // Start point: (0, 2).
-    // End point: (4, 4).
-
-    // array (X * HEIGHT + Y) = (X, Y)
-    map->GetDistrictByIndex (1 * mapHeight + 3)->SetIsSea (false);
-    map->GetDistrictByIndex (2 * mapHeight + 3)->SetIsSea (false);
-    map->GetDistrictByIndex (3 * mapHeight + 3)->SetIsSea (false);
-    map->GetDistrictByIndex (3 * mapHeight + 2)->SetIsSea (false);
-    map->GetDistrictByIndex (3 * mapHeight + 1)->SetIsSea (false);
-    map->GetDistrictByIndex (2 * mapHeight + 1)->SetIsSea (false);
-    map->GetDistrictByIndex (1 * mapHeight + 1)->SetIsSea (false);
-    map->GetDistrictByIndex (1 * mapHeight + 0)->SetIsSea (false);
-
-    map->GetDistrictByIndex (2 * mapHeight + 3)->SetColony (true);
-    map->GetDistrictByIndex (2 * mapHeight + 3)->SetColonyOwnerName ("Konstant");
-    map->GetDistrictByIndex (2 * mapHeight + 3)->SetMenCount (50);
-    map->GetDistrictByIndex (2 * mapHeight + 3)->SetWomenCount (50);
-
-    map->GetDistrictByIndex (1 * mapHeight + 0)->SetColony (true);
-    map->GetDistrictByIndex (1 * mapHeight + 0)->SetColonyOwnerName ("AIPlayer");
-    map->GetDistrictByIndex (1 * mapHeight + 0)->SetMenCount (50);
-    map->GetDistrictByIndex (1 * mapHeight + 0)->SetWomenCount (50);
-    map->RecalculateDistrictsNeighbors ();
-}
-
-void AddTestFleetUnits (UnitsManager *manager, Map *map, int count)
-{
-    for (int index = 0; index < count; index++)
-    {
-        Unit *unit = manager->CreateUnit ();
-        unit->SetUnitType (UNIT_FLEET);
-        unit->FleetUnitSetWarShipsCount (Urho3D::Random (5, 15));
-
-        int districtIndex;
-        do
-            districtIndex = Urho3D::Random (0, map->GetDistrictsCount ());
-        while (!map->GetDistrictByIndex (districtIndex)->IsSea ());
-
-        unit->SetPositionHash (map->GetDistrictByIndex (districtIndex)->GetHash ());
-        if (Urho3D::Random () < 0.5f)
-            unit->SetOwnerPlayerName ("Konstant");
-        else
-            unit->SetOwnerPlayerName ("AIPlayer");
-        unit->UpdateHash (manager);
-    }
-}
-
 void HostActivity::SetupWaitingForPlayersState ()
 {
     scene_->CreateComponent <Urho3D::Octree> (Urho3D::REPLICATED);
@@ -128,22 +36,33 @@ void HostActivity::DisposeWaitingForPlayersState ()
 
 void HostActivity::SetupPlayingState ()
 {
-    GameConfiguration *configuration = scene_->CreateComponent <GameConfiguration> (Urho3D::REPLICATED);
-    Map *map = scene_->CreateChild ("map", Urho3D::REPLICATED)->CreateComponent <Map> (Urho3D::REPLICATED);
-    CreateTestMap (map);
-    map->GetNode ()->SetVar ("PrefabXMLPath", "Objects/TestMapLocal.xml");
+    Urho3D::ResourceCache *resourceCache = context_->GetSubsystem <Urho3D::ResourceCache> ();
+    // Load game configuration.
+    Urho3D::Node *configurationNode = scene_->CreateChild ("configuration", Urho3D::LOCAL);
+    configurationNode->LoadXML (resourceCache->GetResource <Urho3D::XMLFile> ("Maps/BasicLevel/configuration.xml")->GetRoot ());
+    GameConfiguration *configuration = configurationNode->GetComponent <GameConfiguration> ();
+    scene_->CloneComponent (configuration, Urho3D::REPLICATED);
+    configuration->Remove ();
 
-    UnitsManager *unitsManager = scene_->CreateChild ("units", Urho3D::REPLICATED)->CreateComponent <UnitsManager> (Urho3D::LOCAL);
-    AddTestFleetUnits (unitsManager, map, Urho3D::Random (5, 15));
+    // Load game map.
+    Urho3D::Node *mapNode = scene_->CreateChild ("map", Urho3D::REPLICATED);
+    mapNode->LoadXML (resourceCache->GetResource <Urho3D::XMLFile> ("Maps/BasicLevel/map.xml")->GetRoot ());
+    Map *map = mapNode->GetComponent <Map> ();
+    map->UpdateDistrictsList ();
 
-    Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts;
-    // [X * HEIGHT + Y] = (X, Y)
-    wayToEuropeDistricts.Push (map->GetDistrictByIndex (0 + 5 * 0)->GetHash ());
-    wayToEuropeDistricts.Push (map->GetDistrictByIndex (0 + 5 * 4)->GetHash ());
-    wayToEuropeDistricts.Push (map->GetDistrictByIndex (4 + 5 * 4)->GetHash ());
-    wayToEuropeDistricts.Push (map->GetDistrictByIndex (4 + 5 * 0)->GetHash ());
-    configuration->SetWayToEuropeDistricts (wayToEuropeDistricts);
+    // Load units and create units manager.
+    Urho3D::Node *unitsNode = scene_->CreateChild ("units", Urho3D::REPLICATED);
+    unitsNode->LoadXML (resourceCache->GetResource <Urho3D::XMLFile> ("Maps/BasicLevel/units.xml")->GetRoot ());
+    UnitsManager *unitsManager = unitsNode->CreateComponent <UnitsManager> (Urho3D::LOCAL);
+    unitsManager->UpdateUnitsList ();
 
+    // Recalculate units hashes.
+    Urho3D::PODVector <Urho3D::Node *> units;
+    unitsNode->GetChildrenWithComponent <Unit> (units);
+    for (int index = 0; index < units.Size (); index++)
+        units.At (index)->GetComponent <Unit> ()->UpdateHash (unitsManager);
+
+    // Create server side components.
     scene_->CreateComponent <ColoniesManager> (Urho3D::LOCAL);
     scene_->CreateComponent <TradeProcessor> (Urho3D::LOCAL);
 }
