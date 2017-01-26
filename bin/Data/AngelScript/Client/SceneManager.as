@@ -61,50 +61,76 @@ class SceneManager : ScriptObject
         }
     }
 
+    protected void PlaceUnit (Unit @unit, Map @map)
+    {
+        if (unit.node.GetChild ("local") is null)
+        {
+            // TODO: Create prefabs for all unit types, not only for fleets.
+            if (unit.unitType == UNIT_FLEET)
+                LoadPrefabOf (unit.node, true, "local", "Objects/ShipLocal.xml");
+            else if (unit.unitType == UNIT_TRADERS)
+                LoadPrefabOf (unit.node, true, "local", "Objects/ShipLocal.xml");
+            else if (unit.unitType == UNIT_COLONIZATORS)
+                LoadPrefabOf (unit.node, true, "local", "Objects/ShipLocal.xml");
+            else if (unit.unitType == UNIT_ARMY)
+                LoadPrefabOf (unit.node, true, "local", "Objects/ShipLocal.xml");
+        }
+
+        unit.node.GetChild ("local").enabled = true;
+        District @district = map.GetDistrictByHash (unit.positionHash);
+        unit.node.GetChild ("local").worldPosition = district.unitPosition;
+
+        if (unit.GetWay ().length > 0)
+        {
+            Array <StringHash> unitWay = unit.GetWay ();
+            District @nextWaypoint = map.GetDistrictByHash (unitWay [0]);
+            unit.node.GetChild ("local").LookAt (nextWaypoint.unitPosition);
+            Quaternion rotation = unit.node.GetChild ("local").worldRotation;
+            unit.node.GetChild ("local").worldRotation = Quaternion (0.0f, rotation.yaw, 0.0f);
+        }
+        else
+            unit.node.GetChild ("local").worldRotation = Quaternion ();
+    }
+
     protected void UpdateUnits ()
     {
         Map @map = scene.GetChild ("map").GetComponent ("Map");
         Array <Node @> unitsNodes = scene.GetChild ("units").GetChildrenWithComponent ("Unit");
-        VariantMap unitsInDistrictsCounts;
-        VariantMap placedUnitsInDistrictsCounts;
+        VariantMap isDistrictOccupied;
 
-        for (int index = 0; index < unitsNodes.length; index++)
+        StringHash selectionType = node.parent.GetChild ("screenPressesHandlerScriptNode").
+                                    vars ["selectionType"].GetStringHash ();
+        StringHash unitHash;
+        // Firstly place selected unit (if any unit selected).
+        if (selectionType == StringHash ("Unit") and unitsNodes.length > 0)
         {
-            Unit @unit = unitsNodes [index].GetComponent ("Unit");
-            unitsInDistrictsCounts [unit.positionHash] =
-                unitsInDistrictsCounts [unit.positionHash].GetInt () + 1;
+            unitHash = node.parent.GetChild ("screenPressesHandlerScriptNode").
+                                    vars ["selectedHash"].GetStringHash ();
+            Unit @unit = unitsNodes [0].GetComponent ("Unit");
+            int index = 1;
+            while (unit.hash != unitHash and index < unitsNodes.length)
+            {
+                unit = unitsNodes [index].GetComponent ("Unit");
+                index++;
+            }
+
+            isDistrictOccupied [unit.positionHash] = true;
+            PlaceUnit (unit, map);
         }
 
         for (int index = 0; index < unitsNodes.length; index++)
         {
-            Node @unitNode = unitsNodes [index];
-            Unit @unit = unitNode.GetComponent ("Unit");
-
-            if (unitNode.GetChild ("local") is null)
+            Unit @unit = unitsNodes [index].GetComponent ("Unit");
+            if (!isDistrictOccupied [unit.positionHash].GetBool ())
             {
-                if (unit.unitType == UNIT_FLEET)
-                    LoadPrefabOf (unitNode, true, "local", "Objects/FleetUnitLocal.xml");
-                else if (unit.unitType == UNIT_TRADERS)
-                    LoadPrefabOf (unitNode, true, "local", "Objects/TradersUnitLocal.xml");
-                else if (unit.unitType == UNIT_COLONIZATORS)
-                    LoadPrefabOf (unitNode, true, "local", "Objects/ColonizatorsUnitLocal.xml");
-                else if (unit.unitType == UNIT_ARMY)
-                    LoadPrefabOf (unitNode, true, "local", "Objects/ArmyUnitLocal.xml");
+                isDistrictOccupied [unit.positionHash] = true;
+                PlaceUnit (unit, map);
             }
-
-            int unitsCount = unitsInDistrictsCounts [unit.positionHash].GetInt ();
-            int placedUnitsCount = placedUnitsInDistrictsCounts [unit.positionHash].GetInt ();
-            placedUnitsInDistrictsCounts [unit.positionHash] = placedUnitsCount + 1;
-
-            float placeAmplitude = 0.25f;
-            float placeStep = 2 * placeAmplitude / unitsCount;
-            Vector3 position = map.GetDistrictByHash (unit.positionHash).unitPosition;
-            position.x += placedUnitsCount * placeStep - placeAmplitude;
-            position.y += placedUnitsCount * 0.035f;
-            unitNode.GetChild ("local").worldPosition = position;
-
-            Text3D @text = unitNode.GetChild ("local").GetChild ("playerText").GetComponent ("Text3D");
-            text.text = unit.ownerPlayerName;
+            else if (unit.hash != unitHash)
+            {
+                if (unit.node.GetChild ("local") !is null)
+                    unit.node.GetChild ("local").enabled = false;
+            }
         }
     }
 
