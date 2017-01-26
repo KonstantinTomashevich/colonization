@@ -39,24 +39,18 @@ class SceneManager : ScriptObject
             Node @districtNode = districtsNodes [index];
             District @district = districtNode.GetComponent ("District");
 
-            if (districtNode.GetChild ("localName") is null)
-                LoadPrefabOf (districtNode, true, "localName", "Objects/DistrictNameLocal.xml");
-
-            Vector3 position = district.colonyPosition;
-            position.z += Abs (district.unitPosition.z - district.colonyPosition.z) / 2;
-            districtNode.GetChild ("localName").worldPosition = position;
-            Text3D @text = districtNode.GetChild ("localName").GetChild ("text").GetComponent ("Text3D");
-            text.text = district.name;
-
             if (district.hasColony)
             {
-                if (districtNode.GetChild ("localColony") is null)
-                    LoadPrefabOf (districtNode, true, "localColony", "Objects/ColonyIconLocal.xml");
+                if (districtNode.GetChild ("local") is null)
+                    LoadPrefabOf (districtNode, true, "local", "Objects/ColonyLocal.xml");
+                district.node.GetChild ("local").enabled = true;
 
                 Vector3 colonyPosition = district.colonyPosition;
-                districtNode.GetChild ("localColony").position = colonyPosition;
-                Text3D @colonyText = districtNode.GetChild ("localColony").GetChild ("playerText").GetComponent ("Text3D");
-                colonyText.text = district.colonyOwnerName;
+                districtNode.GetChild ("local").position = colonyPosition;
+            }
+            else if (district.node.GetChild ("local") !is null)
+            {
+                district.node.GetChild ("local").enabled = false;
             }
         }
     }
@@ -126,10 +120,9 @@ class SceneManager : ScriptObject
                 isDistrictOccupied [unit.positionHash] = true;
                 PlaceUnit (unit, map);
             }
-            else if (unit.hash != unitHash)
+            else if (unit.hash != unitHash and unit.node.GetChild ("local") !is null)
             {
-                if (unit.node.GetChild ("local") !is null)
-                    unit.node.GetChild ("local").enabled = false;
+                unit.node.GetChild ("local").enabled = false;
             }
         }
     }
@@ -148,8 +141,8 @@ class SceneManager : ScriptObject
     protected void CreateLocalCamera ()
     {
         cameraNode_ = scene.CreateChild ("camera", LOCAL);
-        cameraNode_.rotation = Quaternion (45, 0, 0);
-        cameraNode_.position = Vector3 (2.5f, 4.0f, 2.5f);
+        cameraNode_.rotation = Quaternion (90, 0, 0);
+        cameraNode_.position = Vector3 (2.5f, 8.0f, 2.5f);
 
         cameraNode_.CreateComponent ("SoundListener", LOCAL);
         Camera @camera = cameraNode_.CreateComponent ("Camera", LOCAL);
