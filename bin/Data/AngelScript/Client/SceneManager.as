@@ -141,8 +141,8 @@ class SceneManager : ScriptObject
     protected void CreateLocalCamera ()
     {
         cameraNode_ = scene.CreateChild ("camera", LOCAL);
-        cameraNode_.rotation = Quaternion (90, 0, 0);
-        cameraNode_.position = Vector3 (2.5f, 8.0f, 2.5f);
+        cameraNode_.rotation = Quaternion (90.0f, 0.0f, 0.0f);
+        cameraNode_.position = Vector3 (2.5f, 15.0f, 2.5f);
 
         cameraNode_.CreateComponent ("SoundListener", LOCAL);
         Camera @camera = cameraNode_.CreateComponent ("Camera", LOCAL);
