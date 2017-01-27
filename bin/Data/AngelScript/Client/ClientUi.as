@@ -1,4 +1,4 @@
-#include "AngelScript/Client/CheckIsSceneLoaded.as"
+#include "AngelScript/Utils/CheckIsSceneLoaded.as"
 
 class ClientUi : ScriptObject
 {
