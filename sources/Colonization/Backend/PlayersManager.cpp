@@ -102,6 +102,12 @@ void PlayersManager::UpdatePlayersInfos ()
                 changed = true;
             }
 
+            if (playerInfo->GetColor () != player->GetColor ())
+            {
+                playerInfo->SetColor (player->GetColor ());
+                changed = true;
+            }
+
             if (changed)
                 playerInfo->MarkNetworkUpdate ();
         }
@@ -228,10 +234,10 @@ Urho3D::Vector <Player *> PlayersManager::GetAllPlayers ()
     return players_.Values ();
 }
 
-void PlayersManager::PlayerIdentified (Urho3D::Connection *connection, Urho3D::String name)
+void PlayersManager::PlayerIdentified (Urho3D::Connection *connection, Urho3D::String name, Urho3D::Color color)
 {
     DeleteIdentificatedConnection (connection);
-    Player *player = new Player (context_, name, connection, node_->GetScene ());
+    Player *player = new Player (context_, name, color, connection, node_->GetScene ());
     players_ [name] = player;
     connectionHashToNameHashMap_ [connection->GetAddress ()] = name;
     player->SetGold (1000.0f);

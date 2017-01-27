@@ -40,9 +40,14 @@ void MessagesHandler::HandleClientIdentity (Urho3D::StringHash eventType, Urho3D
         Urho3D::String name = connection->GetIdentity () ["Name"].GetString ();
         // TODO: Currently we disconnect player if it sends identity with name which is already used by another player.
         if (playersManager->GetPlayer (name))
+        {
             connection->Disconnect ();
+        }
         else
-            playersManager->PlayerIdentified (connection, connection->GetIdentity () ["Name"].GetString ());
+        {
+            Urho3D::Color color = connection->GetIdentity () ["Color"].GetColor ();
+            playersManager->PlayerIdentified (connection, name, color);
+        }
     }
 }
 

@@ -117,10 +117,11 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
     }
 }
 
-Player::Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Connection *connection, Urho3D::Scene *scene) :
+Player::Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Color color, Urho3D::Connection *connection, Urho3D::Scene *scene) :
     Urho3D::Object (context),
     scene_ (scene),
     name_ (name),
+    color_ (color),
     gold_ (0.0f),
     points_ (0.0f),
     actionsSequence_ (),
@@ -190,6 +191,11 @@ int Player::GetActionsCount ()
 Urho3D::String Player::GetName ()
 {
     return name_;
+}
+
+Urho3D::Color Player::GetColor ()
+{
+    return color_;
 }
 
 float Player::GetGold ()

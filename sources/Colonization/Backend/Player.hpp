@@ -34,6 +34,7 @@ URHO3D_OBJECT (Player, Object)
 protected:
     Urho3D::Scene *scene_;
     Urho3D::String name_;
+    Urho3D::Color color_;
     float points_;
     float gold_;
     Urho3D::Vector <Urho3D::Pair <PlayerActionType, Urho3D::Variant> > actionsSequence_;
@@ -43,7 +44,7 @@ protected:
     void ProcessInvestToColonyAction (Urho3D::VectorBuffer data);
     void ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer data);
 public:
-    Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Connection *connection, Urho3D::Scene *scene);
+    Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Color color, Urho3D::Connection *connection, Urho3D::Scene *scene);
     virtual ~Player ();
 
     void Update (float delta);
@@ -55,6 +56,8 @@ public:
     int GetActionsCount ();
 
     Urho3D::String GetName ();
+    Urho3D::Color GetColor ();
+
     Urho3D::Connection *GetConnection ();
     Urho3D::Scene *GetScene ();
 

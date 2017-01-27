@@ -38,7 +38,7 @@ public:
     Player *GetPlayer (Urho3D::Connection *connection);
     Urho3D::Vector <Player *> GetAllPlayers ();
 
-    void PlayerIdentified (Urho3D::Connection *connection, Urho3D::String name);
+    void PlayerIdentified (Urho3D::Connection *connection, Urho3D::String name, Urho3D::Color color);
     void DisconnectPlayer (Urho3D::StringHash nameHash);
     void DisconnectPlayer (Urho3D::Connection *connection);
 };
