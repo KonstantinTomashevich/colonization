@@ -509,8 +509,7 @@ class ClientUi : ScriptObject
         taskData ["type"] = CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION;
 
         Map @map = node.parent.vars ["map"].GetPtr ();
-        StringHash districtHash = node.parent.GetChild ("screenPressesHandlerScriptNode").
-                                vars ["selectedHash"].GetStringHash ();
+        StringHash districtHash = node.parent.vars ["selectedHash"].GetStringHash ();
 
         VectorBuffer buffer = VectorBuffer ();
         buffer.WriteInt (PLAYER_ACTION_REQUEST_COLONIZATORS_FROM_EUROPE);
