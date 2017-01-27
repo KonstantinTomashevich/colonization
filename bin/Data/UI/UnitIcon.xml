@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<element>
+	<attribute name="Name" value="unitIcon" />
+	<attribute name="Position" value="400 300" />
+	<attribute name="Size" value="100 100" />
+	<attribute name="Pivot" value="0 0" />
+	<element type="Button">
+		<attribute name="Name" value="background" />
+		<attribute name="Size" value="100 100" />
+		<attribute name="Max Anchor" value="1 1" />
+		<attribute name="Pivot" value="0 0" />
+		<attribute name="Enable Anchor" value="true" />
+		<attribute name="Texture" value="Texture2D;Textures/UnitBackground.png" />
+		<attribute name="Image Rect" value="0 0 128 128" />
+		<attribute name="Border" value="0 0 0 0" />
+		<attribute name="Hover Image Offset" value="0 0" />
+		<attribute name="Pressed Image Offset" value="0 0" />
+		<attribute name="Pressed Child Offset" value="0 0" />
+	</element>
+	<element type="BorderImage">
+		<attribute name="Name" value="typeIcon" />
+		<attribute name="Size" value="100 100" />
+		<attribute name="Max Anchor" value="1 1" />
+		<attribute name="Pivot" value="0 0" />
+		<attribute name="Enable Anchor" value="true" />
+		<attribute name="Texture" value="Texture2D;Textures/TradersIcon.png" />
+		<attribute name="Image Rect" value="0 0 128 128" />
+	</element>
+</element>

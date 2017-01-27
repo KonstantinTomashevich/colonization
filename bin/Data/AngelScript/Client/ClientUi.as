@@ -1,10 +1,16 @@
 #include "AngelScript/Utils/CheckIsSceneLoaded.as"
 #include "AngelScript/Utils/GetUnitByHash.as"
+#include "AngelScript/Utils/GetPlayerInfoByName.as"
+#include "AngelScript/Utils/GetUnitsInDistrict.as"
 
 class ClientUi : ScriptObject
 {
     protected bool isSceneLoaded_;
     protected float untilSelectionUpdate_;
+    protected UIElement @billboardsRoot_;
+    protected XMLFile @style_;
+    protected XMLFile @billboardXML_;
+    protected XMLFile @unitIconXML_;
 
     protected void UpdateSelection ()
     {
@@ -253,6 +259,122 @@ class ClientUi : ScriptObject
         informationTextUi.text = infoText;
     }
 
+    protected void ProcessDistrictBillboards ()
+    {
+        Map @map = scene.GetChild ("map").GetComponent ("Map");
+        Node @cameraNode = scene.GetChild ("camera");
+        int nextBillboardIndex = 0;
+
+        if (cameraNode !is null)
+        {
+            Camera @camera = cameraNode.GetComponent ("Camera");
+            for (int index = 0; index < map.GetDistrictsCount (); index++)
+            {
+                District @district = map.GetDistrictByIndex (index);
+                Vector2 screenPoint = camera.WorldToScreenPoint (district.unitPosition + Vector3 (0.0f, 2.5f, 0.0f));
+                if (screenPoint.x > -0.1f and screenPoint.x < 1.1f and
+                    screenPoint.y > -0.1f and screenPoint.y < 1.1f)
+                {
+                    if (nextBillboardIndex == billboardsRoot_.GetNumChildren (false))
+                    {
+                        billboardsRoot_.LoadChildXML (billboardXML_.GetRoot (), style_);
+                    }
+
+                    UIElement @billboard = billboardsRoot_.GetChildren () [nextBillboardIndex];
+                    billboard.SetSize (graphics.height * 0.3f, graphics.height * 0.075f);
+                    billboard.SetPosition (screenPoint.x * graphics.width - billboard.width / 2,
+                        screenPoint.y * graphics.height - billboard.height / 2);
+
+                    Text @title = billboard.GetChild ("title");
+                    title.fontSize = graphics.height * 0.01f;
+                    String titleText = district.name + "\n";
+                    if (district.isSea)
+                        titleText += "[under water]";
+                    else if (district.isImpassable)
+                        titleText += "[impassable]";
+                    else if (district.hasColony)
+                        titleText += "[colony of " + district.colonyOwnerName + "]";
+                    else
+                        titleText += "[can be colonized]";
+                    title.text = titleText;
+
+                    BorderImage @background = billboard.GetChild ("background");
+                    if (district.hasColony)
+                    {
+                        PlayerInfo @playerInfo = GetPlayerInfoByName (scene, district.colonyOwnerName);
+                        if (playerInfo !is null)
+                        {
+                            background.color = playerInfo.color;
+                        }
+                        else
+                        {
+                            background.color = Color (0.5f, 0.5f, 0.5f, 1.0f);
+                        }
+                    }
+                    else
+                    {
+                        background.color = Color (0.5f, 0.5f, 0.5f, 1.0f);
+                    }
+
+                    // TODO: This algorithm can be optimized!
+                    Array <Unit @> unitsInDistrict = GetUnitsInDistrict (scene, district.hash);
+                    UIElement @unitsElement = billboard.GetChild ("units");
+                    unitsElement.RemoveAllChildren ();
+
+                    if (unitsInDistrict.length > 0)
+                    {
+                        for (int index = 0; index < unitsInDistrict.length; index++)
+                        {
+                            Unit @unit = unitsInDistrict [index];
+                            PlayerInfo @playerInfo = GetPlayerInfoByName (scene, unit.ownerPlayerName);
+                            int size = billboard.height * 0.45f;
+                            int offset = billboard.height * 0.1f + size * index * 1.1f;
+
+                            unitsElement.LoadChildXML (unitIconXML_.GetRoot (), style_);
+                            UIElement @unitElement = unitsElement.GetChildren () [index];
+                            unitElement.SetSize (size, size);
+                            unitElement.SetPosition (offset, billboard.height * 0.5f);
+
+                            BorderImage @typeIcon = unitElement.GetChild ("typeIcon");
+                            if (unit.unitType == UNIT_FLEET)
+                            {
+                                typeIcon.texture = cache.GetResource ("Texture2D", "Textures/FleetIcon.png");
+                            }
+                            else if (unit.unitType == UNIT_COLONIZATORS)
+                            {
+                                typeIcon.texture = cache.GetResource ("Texture2D", "Textures/ColonizatorsIcon.png");
+                            }
+                            else if (unit.unitType == UNIT_TRADERS)
+                            {
+                                typeIcon.texture = cache.GetResource ("Texture2D", "Textures/TradersIcon.png");
+                            }
+                            else if (unit.unitType == UNIT_ARMY)
+                            {
+                                typeIcon.texture = cache.GetResource ("Texture2D", "Textures/ArmyIcon.png");
+                            }
+
+                            Button @backgroundButton = unitElement.GetChild ("background");
+                            if (playerInfo !is null)
+                            {
+                                backgroundButton.color = playerInfo.color;
+                            }
+                            else
+                                backgroundButton.color = Color (0.5f, 0.5f, 0.5f, 1.0f);
+                        }
+                    }
+
+                    nextBillboardIndex++;
+                }
+            }
+        }
+
+        while (nextBillboardIndex < billboardsRoot_.GetNumChildren (false))
+        {
+            billboardsRoot_.GetChildren () [nextBillboardIndex].visible = false;
+            nextBillboardIndex++;
+        }
+    }
+
     ClientUi ()
     {
         isSceneLoaded_ = false;
@@ -267,12 +389,15 @@ class ClientUi : ScriptObject
     void Start ()
     {
         ui.root.RemoveAllChildren ();
-        XMLFile@ style = cache.GetResource ("XMLFile", "UI/DefaultStyle.xml");
-        ui.root.defaultStyle = style;
+        style_ = cache.GetResource ("XMLFile", "UI/DefaultStyle.xml");
+        billboardXML_ = cache.GetResource ("XMLFile", "UI/Billboard.xml");
+        unitIconXML_ = cache.GetResource ("XMLFile", "UI/UnitIcon.xml");
+        ui.root.defaultStyle = style_;
 
+        billboardsRoot_ = ui.root.CreateChild ("UIElement");
         UIElement @uiRoot = ui.LoadLayout (cache.GetResource ("XMLFile", "UI/Ingame.xml"));
         ui.root.AddChild (uiRoot);
-        uiRoot.defaultStyle = style;
+        uiRoot.defaultStyle = style_;
         uiRoot.name = "ingame";
         ClearSelection ();
 
@@ -320,10 +445,14 @@ class ClientUi : ScriptObject
 
         if (!isSceneLoaded_)
             isSceneLoaded_ = CheckIsSceneLoaded (scene);
-        else if (untilSelectionUpdate_ <= 0.0f)
+        else
         {
-            UpdateSelection ();
-            untilSelectionUpdate_ = 1.0f / 30.0f;
+            ProcessDistrictBillboards ();
+            if (untilSelectionUpdate_ <= 0.0f)
+            {
+                UpdateSelection ();
+                untilSelectionUpdate_ = 1.0f / 30.0f;
+            }
         }
     }
 
