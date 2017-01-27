@@ -14,12 +14,30 @@ class ScreenPressesHandler : ScriptObject
     {
         node.vars ["selectionType"] = StringHash ("Unit");
         node.vars ["selectedHash"] = unit.hash;
+
+        // Inform map mask updater about selection.
+        MapMaskUpdater @mapMaskUpdater = scene.GetComponent ("MapMaskUpdater");
+        mapMaskUpdater.selectedDistrictHash = StringHash (0);
     }
 
     protected void DistrictSelected (District @district)
     {
         node.vars ["selectionType"] = StringHash ("District");
         node.vars ["selectedHash"] = district.hash;
+
+        // Inform map mask updater about selection.
+        MapMaskUpdater @mapMaskUpdater = scene.GetComponent ("MapMaskUpdater");
+        mapMaskUpdater.selectedDistrictHash = district.hash;
+    }
+
+    protected void ClearSelection ()
+    {
+        node.vars ["selectionType"] = StringHash ("None");
+        node.vars ["selectedHash"] = StringHash ();
+
+        // Inform map mask updater about selection.
+        MapMaskUpdater @mapMaskUpdater = scene.GetComponent ("MapMaskUpdater");
+        mapMaskUpdater.selectedDistrictHash = StringHash (0);
     }
 
     protected void SetUnitMoveTarget (Unit @unit, District @target)
@@ -77,12 +95,6 @@ class ScreenPressesHandler : ScriptObject
         {
             ClearSelection ();
         }
-    }
-
-    protected void ClearSelection ()
-    {
-        node.vars ["selectionType"] = StringHash ("None");
-        node.vars ["selectedHash"] = StringHash ();
     }
 
     ScreenPressesHandler ()
