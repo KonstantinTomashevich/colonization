@@ -271,7 +271,7 @@ class ClientUi : ScriptObject
             for (int index = 0; index < map.GetDistrictsCount (); index++)
             {
                 District @district = map.GetDistrictByIndex (index);
-                Vector2 screenPoint = camera.WorldToScreenPoint (district.unitPosition + Vector3 (0.0f, 0.0f, 0.0f));
+                Vector2 screenPoint = camera.WorldToScreenPoint (district.unitPosition + Vector3 (0.0f, 3.5f, 0.0f));
                 if (screenPoint.x > -0.1f and screenPoint.x < 1.1f and
                     screenPoint.y > -0.1f and screenPoint.y < 1.1f)
                 {
@@ -285,98 +285,9 @@ class ClientUi : ScriptObject
                     billboard.SetPosition (screenPoint.x * graphics.width - billboard.width / 2,
                         screenPoint.y * graphics.height - billboard.height / 2);
 
-                    Text @title = billboard.GetChild ("title");
-                    title.fontSize = graphics.height * 0.01f;
-                    String titleText = district.name + "\n";
-                    if (district.isSea)
-                        titleText += "[under water]";
-                    else if (district.isImpassable)
-                        titleText += "[impassable]";
-                    else if (district.hasColony)
-                        titleText += "[colony of " + district.colonyOwnerName + "]";
-                    else
-                        titleText += "[can be colonized]";
-                    title.text = titleText;
-
-                    BorderImage @background = billboard.GetChild ("background");
-                    if (district.hasColony)
-                    {
-                        PlayerInfo @playerInfo = GetPlayerInfoByName (scene, district.colonyOwnerName);
-                        if (playerInfo !is null)
-                        {
-                            background.color = playerInfo.color;
-                        }
-                        else
-                        {
-                            background.color = Color (0.5f, 0.5f, 0.5f, 1.0f);
-                        }
-                    }
-                    else
-                    {
-                        background.color = Color (0.5f, 0.5f, 0.5f, 1.0f);
-                    }
-
-                    // TODO: This algorithm can be optimized!
-                    Array <Unit @> unitsInDistrict = GetUnitsInDistrict (scene, district.hash);
-                    UIElement @unitsElement = billboard.GetChild ("units");
-
-                    if (unitsInDistrict.length > 0)
-                    {
-                        int index = 0;
-                        for (index = 0; index < unitsInDistrict.length; index++)
-                        {
-                            Unit @unit = unitsInDistrict [index];
-                            PlayerInfo @playerInfo = GetPlayerInfoByName (scene, unit.ownerPlayerName);
-                            int size = billboard.height * 0.45f;
-                            int offset = billboard.height * 0.1f + size * index * 1.1f;
-
-                            if (index == unitsElement.GetNumChildren (false))
-                            {
-                                unitsElement.LoadChildXML (unitIconXML_.GetRoot (), style_);
-                            }
-                            UIElement @unitElement = unitsElement.GetChildren () [index];
-                            unitElement.SetSize (size, size);
-                            unitElement.SetPosition (offset, billboard.height * 0.5f);
-
-                            BorderImage @typeIcon = unitElement.GetChild ("typeIcon");
-                            if (unit.unitType == UNIT_FLEET)
-                            {
-                                typeIcon.texture = cache.GetResource ("Texture2D", "Textures/FleetIcon.png");
-                            }
-                            else if (unit.unitType == UNIT_COLONIZATORS)
-                            {
-                                typeIcon.texture = cache.GetResource ("Texture2D", "Textures/ColonizatorsIcon.png");
-                            }
-                            else if (unit.unitType == UNIT_TRADERS)
-                            {
-                                typeIcon.texture = cache.GetResource ("Texture2D", "Textures/TradersIcon.png");
-                            }
-                            else if (unit.unitType == UNIT_ARMY)
-                            {
-                                typeIcon.texture = cache.GetResource ("Texture2D", "Textures/ArmyIcon.png");
-                            }
-
-                            Button @backgroundButton = unitElement.GetChild ("background");
-                            backgroundButton.vars ["unitHash"] = Variant (unit.hash);
-                            SubscribeToEvent (backgroundButton, "Released", "SelectUnitClick");
-                            if (playerInfo !is null)
-                            {
-                                backgroundButton.color = playerInfo.color;
-                            }
-                            else
-                                backgroundButton.color = Color (0.5f, 0.5f, 0.5f, 1.0f);
-                        }
-
-                        while (index < unitsElement.GetNumChildren (false))
-                        {
-                            unitsElement.GetChildren () [index].Remove ();
-                        }
-                    }
-                    else
-                    {
-                        unitsElement.RemoveAllChildren ();
-                    }
-
+                    UpdateDistrictBillboardTitle (billboard, district);
+                    UpdateDistrictBillboardBackground (billboard, district);
+                    UpdateDistrictBillboardUnitsSection (billboard, district);
                     nextBillboardIndex++;
                 }
             }
@@ -386,6 +297,118 @@ class ClientUi : ScriptObject
         {
             billboardsRoot_.GetChildren () [nextBillboardIndex].Remove ();
         }
+    }
+
+    protected void UpdateDistrictBillboardTitle (UIElement @billboard, District @district)
+    {
+        Text @title = billboard.GetChild ("title");
+        title.fontSize = graphics.height * 0.01f;
+        String titleText = district.name + "\n";
+        if (district.isSea)
+            titleText += "[under water]";
+        else if (district.isImpassable)
+            titleText += "[impassable]";
+        else if (district.hasColony)
+            titleText += "[colony of " + district.colonyOwnerName + "]";
+        else
+            titleText += "[can be colonized]";
+        title.text = titleText;
+    }
+
+    protected void UpdateDistrictBillboardBackground (UIElement @billboard, District @district)
+    {
+        BorderImage @background = billboard.GetChild ("background");
+        if (district.hasColony)
+        {
+            PlayerInfo @playerInfo = GetPlayerInfoByName (scene, district.colonyOwnerName);
+            if (playerInfo !is null)
+            {
+                background.color = playerInfo.color;
+            }
+            else
+            {
+                background.color = Color (0.5f, 0.5f, 0.5f, 1.0f);
+            }
+        }
+        else
+        {
+            background.color = Color (0.5f, 0.5f, 0.5f, 1.0f);
+        }
+    }
+
+    protected void UpdateDistrictBillboardUnitsSection (UIElement @billboard, District @district)
+    {
+        // TODO: This algorithm can be optimized!
+        Array <Unit @> unitsInDistrict = GetUnitsInDistrict (scene, district.hash);
+        UIElement @unitsElement = billboard.GetChild ("units");
+
+        if (unitsInDistrict.length > 0)
+        {
+            int index = 0;
+            for (index = 0; index < unitsInDistrict.length; index++)
+            {
+                Unit @unit = unitsInDistrict [index];
+                int size = billboard.height * 0.45f;
+                int offset = billboard.height * 0.1f + size * index * 1.1f;
+
+                if (index == unitsElement.GetNumChildren (false))
+                {
+                    unitsElement.LoadChildXML (unitIconXML_.GetRoot (), style_);
+                }
+
+                UIElement @unitElement = unitsElement.GetChildren () [index];
+                unitElement.SetSize (size, size);
+                unitElement.SetPosition (offset, billboard.height * 0.5f);
+
+                UpdateUnitIconTypeIcon (unitElement, unit);
+                UpdateUnitIconButton (unitElement, unit);
+            }
+
+            while (index < unitsElement.GetNumChildren (false))
+            {
+                unitsElement.GetChildren () [index].Remove ();
+            }
+        }
+        else
+        {
+            unitsElement.RemoveAllChildren ();
+        }
+    }
+
+    protected void UpdateUnitIconTypeIcon (UIElement @unitElement, Unit @unit)
+    {
+        BorderImage @typeIcon = unitElement.GetChild ("typeIcon");
+        if (unit.unitType == UNIT_FLEET)
+        {
+            typeIcon.texture = cache.GetResource ("Texture2D", "Textures/FleetIcon.png");
+        }
+        else if (unit.unitType == UNIT_COLONIZATORS)
+        {
+            typeIcon.texture = cache.GetResource ("Texture2D", "Textures/ColonizatorsIcon.png");
+        }
+        else if (unit.unitType == UNIT_TRADERS)
+        {
+            typeIcon.texture = cache.GetResource ("Texture2D", "Textures/TradersIcon.png");
+        }
+        else if (unit.unitType == UNIT_ARMY)
+        {
+            typeIcon.texture = cache.GetResource ("Texture2D", "Textures/ArmyIcon.png");
+        }
+    }
+
+    protected void UpdateUnitIconButton (UIElement @unitElement, Unit @unit)
+    {
+        Button @backgroundButton = unitElement.GetChild ("background");
+        PlayerInfo @playerInfo = GetPlayerInfoByName (scene, unit.ownerPlayerName);
+        backgroundButton.vars ["unitHash"] = Variant (unit.hash);
+
+        SubscribeToEvent (backgroundButton, "Released", "SelectUnitClick");
+        if (playerInfo !is null)
+        {
+            backgroundButton.color = playerInfo.color;
+        }
+        else
+            backgroundButton.color = Color (0.5f, 0.5f, 0.5f, 1.0f);
     }
 
     ClientUi ()
