@@ -14,8 +14,7 @@ class ClientUi : ScriptObject
 
     protected void UpdateSelection ()
     {
-        StringHash selectionType = node.parent.GetChild ("screenPressesHandlerScriptNode").
-                                    vars ["selectionType"].GetStringHash ();
+        StringHash selectionType = node.parent.vars ["selectionType"].GetStringHash ();
         if (selectionType == StringHash ("Unit"))
             UpdateUnitSelection ();
         else if (selectionType == StringHash ("District"))
@@ -33,8 +32,7 @@ class ClientUi : ScriptObject
         Window @unitInfoWindow = ui.root.GetChild ("ingame").GetChild ("unitInfoWindow");
         unitInfoWindow.visible = true;
 
-        StringHash unitHash = node.parent.GetChild ("screenPressesHandlerScriptNode").
-                                vars ["selectedHash"].GetStringHash ();
+        StringHash unitHash = node.parent.vars ["selectedHash"].GetStringHash ();
         Unit @unit = GetUnitByHash (scene, unitHash);
         if (unit !is null)
         {
@@ -97,8 +95,7 @@ class ClientUi : ScriptObject
         districtInfoWindow.visible = true;
 
         Map @map = scene.GetChild ("map").GetComponent ("Map");
-        StringHash districtHash = node.parent.GetChild ("screenPressesHandlerScriptNode").
-                                vars ["selectedHash"].GetStringHash ();
+        StringHash districtHash = node.parent.vars ["selectedHash"].GetStringHash ();
         District @district = map.GetDistrictByHash (districtHash);
 
         String playerName = node.parent.vars ["playerName"].GetString ();
@@ -140,6 +137,9 @@ class ClientUi : ScriptObject
 
         Window @unitInfoWindow = ui.root.GetChild ("ingame").GetChild ("unitInfoWindow");
         unitInfoWindow.visible = false;
+
+        node.parent.vars ["selectionType"] = StringHash ("None");
+        node.parent.vars ["selectedHash"] = StringHash ();
     }
 
     protected void UpdateDistrictBasicInfo (District @district, Window @districtInfoWindow)
@@ -319,18 +319,21 @@ class ClientUi : ScriptObject
                     // TODO: This algorithm can be optimized!
                     Array <Unit @> unitsInDistrict = GetUnitsInDistrict (scene, district.hash);
                     UIElement @unitsElement = billboard.GetChild ("units");
-                    unitsElement.RemoveAllChildren ();
 
                     if (unitsInDistrict.length > 0)
                     {
-                        for (int index = 0; index < unitsInDistrict.length; index++)
+                        int index = 0;
+                        for (index = 0; index < unitsInDistrict.length; index++)
                         {
                             Unit @unit = unitsInDistrict [index];
                             PlayerInfo @playerInfo = GetPlayerInfoByName (scene, unit.ownerPlayerName);
                             int size = billboard.height * 0.45f;
                             int offset = billboard.height * 0.1f + size * index * 1.1f;
 
-                            unitsElement.LoadChildXML (unitIconXML_.GetRoot (), style_);
+                            if (index == unitsElement.GetNumChildren (false))
+                            {
+                                unitsElement.LoadChildXML (unitIconXML_.GetRoot (), style_);
+                            }
                             UIElement @unitElement = unitsElement.GetChildren () [index];
                             unitElement.SetSize (size, size);
                             unitElement.SetPosition (offset, billboard.height * 0.5f);
@@ -354,6 +357,8 @@ class ClientUi : ScriptObject
                             }
 
                             Button @backgroundButton = unitElement.GetChild ("background");
+                            backgroundButton.vars ["unitHash"] = Variant (unit.hash);
+                            SubscribeToEvent (backgroundButton, "Released", "SelectUnitClick");
                             if (playerInfo !is null)
                             {
                                 backgroundButton.color = playerInfo.color;
@@ -361,6 +366,16 @@ class ClientUi : ScriptObject
                             else
                                 backgroundButton.color = Color (0.5f, 0.5f, 0.5f, 1.0f);
                         }
+
+                        while (index < unitsElement.GetNumChildren (false))
+                        {
+                            unitsElement.GetChildren () [index].Remove ();
+                            index++;
+                        }
+                    }
+                    else
+                    {
+                        unitsElement.RemoveAllChildren ();
                     }
 
                     nextBillboardIndex++;
@@ -529,5 +544,13 @@ class ClientUi : ScriptObject
         taskData ["buffer"] = buffer;
         networkTasks.Push (Variant (taskData));
         node.parent.GetChild ("networkScriptNode").vars ["tasksList"] = networkTasks;
+    }
+
+    void SelectUnitClick (StringHash eventType, VariantMap &eventData)
+    {
+        UIElement @element = eventData ["Element"].GetPtr ();
+        StringHash unitHash = element.vars ["unitHash"].GetStringHash ();
+        node.parent.vars ["selectionType"] = StringHash ("Unit");
+        node.parent.vars ["selectedHash"] = unitHash;
     }
 };

@@ -12,8 +12,8 @@ class ScreenPressesHandler : ScriptObject
 
     protected void UnitSelected (Unit @unit)
     {
-        node.vars ["selectionType"] = StringHash ("Unit");
-        node.vars ["selectedHash"] = unit.hash;
+        node.parent.vars ["selectionType"] = StringHash ("Unit");
+        node.parent.vars ["selectedHash"] = unit.hash;
 
         // Inform map mask updater about selection.
         MapMaskUpdater @mapMaskUpdater = scene.GetComponent ("MapMaskUpdater");
@@ -22,8 +22,8 @@ class ScreenPressesHandler : ScriptObject
 
     protected void DistrictSelected (District @district)
     {
-        node.vars ["selectionType"] = StringHash ("District");
-        node.vars ["selectedHash"] = district.hash;
+        node.parent.vars ["selectionType"] = StringHash ("District");
+        node.parent.vars ["selectedHash"] = district.hash;
 
         // Inform map mask updater about selection.
         MapMaskUpdater @mapMaskUpdater = scene.GetComponent ("MapMaskUpdater");
@@ -32,8 +32,8 @@ class ScreenPressesHandler : ScriptObject
 
     protected void ClearSelection ()
     {
-        node.vars ["selectionType"] = StringHash ("None");
-        node.vars ["selectedHash"] = StringHash ();
+        node.parent.vars ["selectionType"] = StringHash ("None");
+        node.parent.vars ["selectedHash"] = StringHash ();
 
         // Inform map mask updater about selection.
         MapMaskUpdater @mapMaskUpdater = scene.GetComponent ("MapMaskUpdater");
@@ -69,7 +69,7 @@ class ScreenPressesHandler : ScriptObject
 
         if (district !is null)
         {
-            StringHash command = node.vars ["command"].GetStringHash ();
+            StringHash command = node.parent.vars ["currentClickCommand"].GetStringHash ();
             if (command == StringHash ("NoCommand"))
             {
                 DistrictSelected (district);
@@ -78,7 +78,7 @@ class ScreenPressesHandler : ScriptObject
             else if (command == StringHash ("MoveUnit"))
             {
                 // Get selected unit.
-                StringHash selectedHash = node.vars ["selectedHash"].GetStringHash ();
+                StringHash selectedHash = node.parent.vars ["selectedHash"].GetStringHash ();
                 Unit @unit = GetUnitByHash (scene, selectedHash);
                 if (unit !is null)
                 {
@@ -110,7 +110,7 @@ class ScreenPressesHandler : ScriptObject
     void Start ()
     {
         SubscribeToEvent ("UIMouseClick", "HandleScreenPress");
-        node.vars ["command"] = StringHash ("NoCommand");
+        node.parent.vars ["currentClickCommand"] = StringHash ("NoCommand");
     }
 
     void Update (float timeStep)
