@@ -1,4 +1,5 @@
 #include "AngelScript/Utils/CheckIsSceneLoaded.as"
+#include "AngelScript/Utils/GetUnitByHash.as"
 
 class ClientUi : ScriptObject
 {
@@ -28,16 +29,9 @@ class ClientUi : ScriptObject
 
         StringHash unitHash = node.parent.GetChild ("screenPressesHandlerScriptNode").
                                 vars ["selectedHash"].GetStringHash ();
-        Array <Node@> unitsNodes = scene.GetChild ("units").GetChildrenWithComponent ("Unit");
-        if (unitsNodes.length > 0)
+        Unit @unit = GetUnitByHash (scene, unitHash);
+        if (unit !is null)
         {
-            Unit @unit = unitsNodes [0].GetComponent ("Unit");
-            int index = 1;
-            while (unit.hash != unitHash and index < unitsNodes.length)
-            {
-                unit = unitsNodes [index].GetComponent ("Unit");
-                index++;
-            }
 
             Text @ownerText = unitInfoWindow.GetChild ("ownerText");
             ownerText.text = unit.ownerPlayerName + "'s";
@@ -80,6 +74,11 @@ class ClientUi : ScriptObject
 
             Text @anotherText = unitInfoWindow.GetChild ("anotherText");
             anotherText.text = additionalInfo;
+        }
+        else
+        {
+            // Clear selection if unit isn't exists.
+            ClearSelection ();
         }
     }
 

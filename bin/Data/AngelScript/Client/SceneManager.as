@@ -1,4 +1,5 @@
 #include "AngelScript/Utils/CheckIsSceneLoaded.as"
+#include "AngelScript/Utils/GetUnitByHash.as"
 
 class SceneManager : ScriptObject
 {
@@ -100,16 +101,12 @@ class SceneManager : ScriptObject
         {
             unitHash = node.parent.GetChild ("screenPressesHandlerScriptNode").
                                     vars ["selectedHash"].GetStringHash ();
-            Unit @unit = unitsNodes [0].GetComponent ("Unit");
-            int index = 1;
-            while (unit.hash != unitHash and index < unitsNodes.length)
+            Unit @unit = GetUnitByHash (scene, unitHash);
+            if (unit !is null)
             {
-                unit = unitsNodes [index].GetComponent ("Unit");
-                index++;
+                isDistrictOccupied [unit.positionHash] = true;
+                PlaceUnit (unit, map);
             }
-
-            isDistrictOccupied [unit.positionHash] = true;
-            PlaceUnit (unit, map);
         }
 
         for (int index = 0; index < unitsNodes.length; index++)

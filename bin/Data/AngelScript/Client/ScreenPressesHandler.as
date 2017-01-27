@@ -1,3 +1,5 @@
+#include "AngelScript/Utils/GetUnitByHash.as"
+
 class ScreenPressesHandler : ScriptObject
 {
     protected Node @GetFirstReplicatedParentOf (Node @localNode)
@@ -59,16 +61,16 @@ class ScreenPressesHandler : ScriptObject
             {
                 // Get selected unit.
                 StringHash selectedHash = node.vars ["selectedHash"].GetStringHash ();
-                Array <Node @> unitsNodes = scene.GetChild ("units").GetChildrenWithComponent ("Unit");
-                Unit @unit = unitsNodes [0].GetComponent ("Unit");
-                int index = 1;
-                while (unit.hash != selectedHash and index < unitsNodes.length)
+                Unit @unit = GetUnitByHash (scene, selectedHash);
+                if (unit !is null)
                 {
-                    unit = unitsNodes [index].GetComponent ("Unit");
-                    index++;
+                    SetUnitMoveTarget (unit, district);
                 }
-
-                SetUnitMoveTarget (unit, district);
+                // If unit no longer exists, select district instead.
+                else
+                {
+                    DistrictSelected (district);
+                }
             }
         }
         else
