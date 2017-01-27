@@ -15,6 +15,7 @@ protected:
     Urho3D::String serverAdress_;
     unsigned short serverPort_;
     Urho3D::String playerName_;
+    Urho3D::Color playerColor_;
 public:
     IngameClientActivity (Urho3D::Context *context);
     virtual ~IngameClientActivity ();
@@ -31,5 +32,8 @@ public:
 
     Urho3D::String GetPlayerName ();
     void SetPlayerName (Urho3D::String playerName);
+
+    Urho3D::Color GetPlayerColor ();
+    void SetPlayerColor (Urho3D::Color playerColor);
 };
 }

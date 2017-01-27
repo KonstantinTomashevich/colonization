@@ -12,7 +12,8 @@ IngameClientActivity::IngameClientActivity (Urho3D::Context *context) : Activity
     angelScript_ (0),
     serverAdress_ ("localhost"),
     serverPort_ (13534),
-    playerName_ ("Human")
+    playerName_ ("Human"),
+    playerColor_ (Urho3D::Color::GRAY)
 {
 
 }
@@ -42,6 +43,7 @@ void IngameClientActivity::Start ()
     Urho3D::Network *network = context_->GetSubsystem <Urho3D::Network> ();
     Urho3D::VariantMap identity;
     identity ["Name"] = playerName_;
+    identity ["Color"] = playerColor_;
     network->Connect (serverAdress_, serverPort_, scene_, identity);
 }
 
@@ -85,5 +87,15 @@ Urho3D::String IngameClientActivity::GetPlayerName ()
 void IngameClientActivity::SetPlayerName (Urho3D::String playerName)
 {
     playerName_ = playerName;
+}
+
+Urho3D::Color IngameClientActivity::GetPlayerColor ()
+{
+    return playerColor_;
+}
+
+void IngameClientActivity::SetPlayerColor (Urho3D::Color playerColor)
+{
+    playerColor_ = playerColor;
 }
 }

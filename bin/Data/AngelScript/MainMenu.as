@@ -62,6 +62,7 @@ class MainMenu : ScriptObject
         ingameClientActivity.serverAdress = "localhost";
         ingameClientActivity.serverPort = 13768;
         ingameClientActivity.playerName = "Konstant";
+        ingameClientActivity.playerColor = Color (0.1f, 0.1f, 0.7f, 1.0f);
         activitiesApplication_.SetupActivityNextFrame (ingameClientActivity);
     }
 
