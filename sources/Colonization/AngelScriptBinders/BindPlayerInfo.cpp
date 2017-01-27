@@ -20,6 +20,9 @@ void BindPlayerInfoInterface (Urho3D::Script *script, Urho3D::String className)
     engine->RegisterObjectMethod (className.CString (), "void set_name (String name)", asMETHOD (PlayerInfo, SetName), asCALL_THISCALL);
 
     engine->RegisterObjectMethod (className.CString (), "float get_points () const", asMETHOD (PlayerInfo, GetPoints), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className.CString (), "void set_points (float Points)", asMETHOD (PlayerInfo, SetPoints), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_points (float points)", asMETHOD (PlayerInfo, SetPoints), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "Color get_color () const", asMETHOD (PlayerInfo, GetColor), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_color (Color color)", asMETHOD (PlayerInfo, SetColor), asCALL_THISCALL);
 }
 }
