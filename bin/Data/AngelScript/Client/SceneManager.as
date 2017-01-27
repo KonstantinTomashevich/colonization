@@ -81,7 +81,7 @@ class SceneManager : ScriptObject
             District @nextWaypoint = map.GetDistrictByHash (unitWay [0]);
             unit.node.GetChild ("local").LookAt (nextWaypoint.unitPosition);
             Quaternion rotation = unit.node.GetChild ("local").worldRotation;
-            unit.node.GetChild ("local").worldRotation = Quaternion (0.0f, rotation.yaw, 0.0f);
+            unit.node.GetChild ("local").worldRotation = Quaternion (0.0f, 180.0f + rotation.yaw, 0.0f);
         }
         else
             unit.node.GetChild ("local").worldRotation = Quaternion ();
