@@ -1,7 +1,4 @@
-#include "AngelScript/Utils/CheckIsSceneLoaded.as"
-#include "AngelScript/Utils/GetUnitByHash.as"
-#include "AngelScript/Utils/GetPlayerInfoByName.as"
-#include "AngelScript/Utils/GetUnitsInDistrict.as"
+#include "AngelScript/Utils/ClientUtils.as"
 
 class ClientUi : ScriptObject
 {

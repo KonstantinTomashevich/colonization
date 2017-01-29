@@ -1,4 +1,4 @@
-#include "AngelScript/Utils/GetUnitByHash.as"
+#include "AngelScript/Utils/ClientUtils.as"
 
 class ScreenPressesHandler : ScriptObject
 {
