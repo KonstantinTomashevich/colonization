@@ -48,9 +48,22 @@ class UiResizer : ScriptObject
         float xModifer = element.vars ["XModifer"].GetFloat ();
         float yModifer = element.vars ["YModifer"].GetFloat ();
 
-        element.SetPosition (dependenciesMap [xDependency].GetFloat () * xModifer,
-                             dependenciesMap [yDependency].GetFloat () * yModifer);
+        float xPos = dependenciesMap [xDependency].GetFloat () * xModifer;
+        float yPos = dependenciesMap [yDependency].GetFloat () * yModifer;
 
+        if (element.vars ["InvertXPosition"].GetBool ())
+        {
+            StringHash invDependency = StringHash (element.vars ["InvertXDependency"].GetString ());
+            xPos = (dependenciesMap [invDependency].GetFloat () - xPos);
+        }
+
+        if (element.vars ["InvertYPosition"].GetBool ())
+        {
+            StringHash invDependency = StringHash (element.vars ["InvertYDependency"].GetString ());
+            yPos = (dependenciesMap [invDependency].GetFloat () - yPos);
+        }
+
+        element.SetPosition (xPos, yPos);
         element.SetSize (dependenciesMap [widthDependency].GetFloat () * widthModifer,
                          dependenciesMap [heightDependency].GetFloat () * heightModifer);
 
