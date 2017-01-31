@@ -23,7 +23,9 @@ void MainMenuActivity::Start ()
     // TODO: Maybe create beatiful scene later? After first prototype of course.
     Urho3D::ResourceCache *resourceCache = context_->GetSubsystem <Urho3D::ResourceCache> ();
     backgroundScene_ = new Urho3D::Scene (context_);
-    angelScriptGUI_ = backgroundScene_->CreateComponent <Urho3D::ScriptInstance> (Urho3D::LOCAL);
+    backgroundScene_->AddRef ();
+    angelScriptGUI_ = backgroundScene_->CreateChild ("script_main", Urho3D::LOCAL)->
+            CreateComponent <Urho3D::ScriptInstance> (Urho3D::LOCAL);
     angelScriptGUI_->CreateObject (resourceCache->GetResource <Urho3D::ScriptFile> ("AngelScript/MainMenu.as"), "MainMenu");
 
     Urho3D::VariantVector executionParameters;
