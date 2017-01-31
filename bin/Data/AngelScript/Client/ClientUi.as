@@ -278,7 +278,6 @@ class ClientUi : ScriptObject
                     }
 
                     UIElement @billboard = billboardsRoot_.GetChildren () [nextBillboardIndex];
-                    billboard.SetSize (graphics.height * 0.3f, graphics.height * 0.075f);
                     billboard.SetPosition (screenPoint.x * graphics.width - billboard.width / 2,
                         screenPoint.y * graphics.height - billboard.height / 2);
 
@@ -299,7 +298,6 @@ class ClientUi : ScriptObject
     protected void UpdateDistrictBillboardTitle (UIElement @billboard, District @district)
     {
         Text @title = billboard.GetChild ("title");
-        title.fontSize = graphics.height * 0.01f;
         String titleText = district.name + "\n";
         if (district.isSea)
             titleText += "[under water]";
@@ -345,17 +343,13 @@ class ClientUi : ScriptObject
             for (index = 0; index < unitsInDistrict.length; index++)
             {
                 Unit @unit = unitsInDistrict [index];
-                int size = billboard.height * 0.45f;
-                int offset = billboard.height * 0.1f + size * index * 1.1f;
-
                 if (index == unitsElement.GetNumChildren (false))
                 {
                     unitsElement.LoadChildXML (unitIconXML_.GetRoot (), style_);
                 }
 
                 UIElement @unitElement = unitsElement.GetChildren () [index];
-                unitElement.SetSize (size, size);
-                unitElement.SetPosition (offset, billboard.height * 0.5f);
+                unitElement.SetPosition (unitElement.width * index, 0);
 
                 UpdateUnitIconTypeIcon (unitElement, unit);
                 UpdateUnitIconButton (unitElement, unit);
@@ -377,25 +371,25 @@ class ClientUi : ScriptObject
         BorderImage @typeIcon = unitElement.GetChild ("typeIcon");
         if (unit.unitType == UNIT_FLEET)
         {
-            typeIcon.texture = cache.GetResource ("Texture2D", "Textures/FleetIcon.png");
+            typeIcon.SetStyle ("FleetIcon", style_);
         }
         else if (unit.unitType == UNIT_COLONIZATORS)
         {
-            typeIcon.texture = cache.GetResource ("Texture2D", "Textures/ColonizatorsIcon.png");
+            typeIcon.SetStyle ("ColonizatorsIcon", style_);
         }
         else if (unit.unitType == UNIT_TRADERS)
         {
-            typeIcon.texture = cache.GetResource ("Texture2D", "Textures/TradersIcon.png");
+            typeIcon.SetStyle ("TradersIcon", style_);
         }
         else if (unit.unitType == UNIT_ARMY)
         {
-            typeIcon.texture = cache.GetResource ("Texture2D", "Textures/ArmyIcon.png");
+            typeIcon.SetStyle ("ArmyIcon", style_);
         }
     }
 
     protected void UpdateUnitIconButton (UIElement @unitElement, Unit @unit)
     {
-        Button @backgroundButton = unitElement.GetChild ("background");
+        Button @backgroundButton = unitElement.GetChild ("selectButton");
         PlayerInfo @playerInfo = GetPlayerInfoByName (scene, unit.ownerPlayerName);
         backgroundButton.vars ["unitHash"] = Variant (unit.hash);
 
@@ -422,12 +416,13 @@ class ClientUi : ScriptObject
     void Start ()
     {
         ui.root.RemoveAllChildren ();
-        style_ = cache.GetResource ("XMLFile", "UI/DefaultStyle.xml");
+        style_ = cache.GetResource ("XMLFile", "UI/ColonizationUIStyle.xml");
         billboardXML_ = cache.GetResource ("XMLFile", "UI/Billboard.xml");
         unitIconXML_ = cache.GetResource ("XMLFile", "UI/UnitIcon.xml");
         ui.root.defaultStyle = style_;
 
         billboardsRoot_ = ui.root.CreateChild ("UIElement");
+        billboardsRoot_.AddTag ("EnableUiResizer");
         UIElement @uiRoot = ui.LoadLayout (cache.GetResource ("XMLFile", "UI/Ingame.xml"));
         ui.root.AddChild (uiRoot);
         uiRoot.defaultStyle = style_;
@@ -463,6 +458,13 @@ class ClientUi : ScriptObject
         SubscribeToEvent (investToIndustryButton, "Released", "HandleInvestClick");
         SubscribeToEvent (investToLogisticsButton, "Released", "HandleInvestClick");
         SubscribeToEvent (investToDefenseButton, "Released", "HandleInvestClick");
+
+        ScriptInstance @uiResizerInstance = node.CreateChild ("UiResizer", LOCAL).CreateComponent ("ScriptInstance");
+        uiResizerInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Utils/UiResizer.as"),
+                                        "UiResizer");
+        uiResizerInstance.SetAttribute ("startElementName_", Variant ("UIRoot"));
+        uiResizerInstance.SetAttribute ("continuousResize_", Variant (true));
     }
 
     void Update (float timeStep)

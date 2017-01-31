@@ -12,4 +12,42 @@
         <attribute name="Pressed Image Offset" value="0 257" />
         <attribute name="Hover Image Offset" value="0 -514" />
     </element>
+
+    <element type="BillboardBackground" auto="false">
+        <attribute name="Texture" value="Texture2D;Textures/ColonizatorsUI.png" />
+        <attribute name="Blend Mode" value="alpha" />
+        <attribute name="Image Rect" value="1 130 1025 386" />
+    </element>
+
+    <element type="UnitIconButton" auto="false">
+        <attribute name="Texture" value="Texture2D;Textures/ColonizatorsUI.png" />
+        <attribute name="Blend Mode" value="alpha" />
+        <attribute name="Image Rect" value="517 1 645 129" />
+        <attribute name="Pressed Image Offset" value="0 0" />
+        <attribute name="Hover Image Offset" value="0 0" />
+    </element>
+
+    <element type="ArmyIcon" auto="false">
+        <attribute name="Texture" value="Texture2D;Textures/ColonizatorsUI.png" />
+        <attribute name="Blend Mode" value="alpha" />
+        <attribute name="Image Rect" value="1 1 129 129" />
+    </element>
+
+    <element type="ColonizatorsIcon" auto="false">
+        <attribute name="Texture" value="Texture2D;Textures/ColonizatorsUI.png" />
+        <attribute name="Blend Mode" value="alpha" />
+        <attribute name="Image Rect" value="130 1 258 129" />
+    </element>
+
+    <element type="FleetIcon" auto="false">
+        <attribute name="Texture" value="Texture2D;Textures/ColonizatorsUI.png" />
+        <attribute name="Blend Mode" value="alpha" />
+        <attribute name="Image Rect" value="259 1 387 129" />
+    </element>
+
+    <element type="TradersIcon" auto="false">
+        <attribute name="Texture" value="Texture2D;Textures/ColonizatorsUI.png" />
+        <attribute name="Blend Mode" value="alpha" />
+        <attribute name="Image Rect" value="388 1 516 129" />
+    </element>
 </elements>
