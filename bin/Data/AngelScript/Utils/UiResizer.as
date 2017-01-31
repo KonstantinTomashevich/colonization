@@ -54,29 +54,35 @@ class UiResizer : ScriptObject
         if (element.vars ["InvertXPosition"].GetBool ())
         {
             StringHash invDependency = StringHash (element.vars ["InvertXDependency"].GetString ());
-            xPos = (dependenciesMap [invDependency].GetFloat () - xPos);
+            float invertedPositionModifer = element.vars ["InvertXModifer"].GetFloat ();
+            xPos = (dependenciesMap [invDependency].GetFloat () * invertedPositionModifer - xPos);
         }
 
         if (element.vars ["InvertYPosition"].GetBool ())
         {
             StringHash invDependency = StringHash (element.vars ["InvertYDependency"].GetString ());
-            yPos = (dependenciesMap [invDependency].GetFloat () - yPos);
+            float invertedPositionModifer = element.vars ["InvertYModifer"].GetFloat ();
+            yPos = (dependenciesMap [invDependency].GetFloat () * invertedPositionModifer - yPos);
         }
 
-        element.SetPosition (xPos, yPos);
-        element.SetSize (dependenciesMap [widthDependency].GetFloat () * widthModifer,
-                         dependenciesMap [heightDependency].GetFloat () * heightModifer);
+        if (xDependency != StringHash ("disable") and yDependency != StringHash ("disable"))
+        {
+            element.SetPosition (xPos, yPos);
+        }
 
-        if (element.vars ["FontSizeModifer"].GetFloat () != 0.0f)
+        if (widthDependency != StringHash ("disable") and heightDependency != StringHash ("disable"))
+        {
+            element.SetSize (dependenciesMap [widthDependency].GetFloat () * widthModifer,
+                             dependenciesMap [heightDependency].GetFloat () * heightModifer);
+        }
+
+        if (element.typeName == "Text")
         {
             StringHash fontSizeDependency = StringHash (element.vars ["FontSizeDependency"].GetString ());
             float fontSizeModifer = element.vars ["FontSizeModifer"].GetFloat ();
 
-            if (element.typeName == "Text")
-            {
-                Text @text = element;
-                text.fontSize = dependenciesMap [fontSizeDependency].GetFloat () * fontSizeModifer;
-            }
+            Text @text = element;
+            text.fontSize = dependenciesMap [fontSizeDependency].GetFloat () * fontSizeModifer;
         }
     }
 
