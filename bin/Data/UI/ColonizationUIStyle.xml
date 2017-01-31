@@ -1,0 +1,15 @@
+<elements>
+    <element type="Text" auto="true">
+        <attribute name="Font" value="Font;Fonts/BlueHighway.ttf" />
+        <attribute name="Font Size" value="15" />
+        <attribute name="Color" value="0.9 0.9 0.9 1.0" />
+    </element>
+
+    <element type="TextButton" auto="false">
+        <attribute name="Texture" value="Texture2D;Textures/ColonizatorsUI.png" />
+        <attribute name="Blend Mode" value="alpha" />
+        <attribute name="Image Rect" value="1 901 1025 1157" />
+        <attribute name="Pressed Image Offset" value="0 257" />
+        <attribute name="Hover Image Offset" value="0 -514" />
+    </element>
+</elements>

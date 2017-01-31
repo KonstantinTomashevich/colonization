@@ -15,18 +15,24 @@ class MainMenu : ScriptObject
     void Start ()
     {
         ui.root.RemoveAllChildren ();
-        XMLFile@ style = cache.GetResource ("XMLFile", "UI/DefaultStyle.xml");
+        XMLFile@ style = cache.GetResource ("XMLFile", "UI/ColonizationUIStyle.xml");
         ui.root.defaultStyle = style;
 
         UIElement @uiRoot = ui.LoadLayout (cache.GetResource ("XMLFile", "UI/MainMenu.xml"));
         ui.root.AddChild (uiRoot);
-        uiRoot.name = "main_menu";
+        uiRoot.name = "main_menu_root";
 
-        Button @startGameButton = uiRoot.GetChild ("startGameButton");
-        Button @exitButton = uiRoot.GetChild ("exitButton");
+        Button @startGameButton = uiRoot.GetChild ("start_game_button");
+        Button @exitButton = uiRoot.GetChild ("exit_from_game_button");
 
         SubscribeToEvent (startGameButton, "Released", "HandleStartGameClick");
         SubscribeToEvent (exitButton, "Released", "HandleExitClick");
+
+        ScriptInstance @uiResizerInstance = node.CreateChild ("UiResizer", LOCAL).CreateComponent ("ScriptInstance");
+        uiResizerInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Utils/UiResizer.as"),
+                                        "UiResizer");
+        uiResizerInstance.SetAttribute ("startElementName_", Variant ("main_menu_root"));
     }
 
     void Update (float timeStep)
