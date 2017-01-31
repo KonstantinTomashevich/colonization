@@ -2,6 +2,7 @@ class UiResizer : ScriptObject
 {
     protected IntVector2 lastScreenSize_;
     String startElementName_;
+    bool continuousResize_;
 
     protected void ResizeUi ()
     {
@@ -88,7 +89,8 @@ class UiResizer : ScriptObject
 
     UiResizer ()
     {
-
+        startElementName_ = "UIRoot";
+        continuousResize_ = false;
     }
 
     ~UiResizer ()
@@ -103,7 +105,7 @@ class UiResizer : ScriptObject
 
     void Update (float timeStep)
     {
-        if (lastScreenSize_.x != graphics.width or lastScreenSize_.y != graphics.height)
+        if (lastScreenSize_.x != graphics.width or lastScreenSize_.y != graphics.height or continuousResize_)
         {
             ResizeUi ();
             lastScreenSize_.x = graphics.width;
