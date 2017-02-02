@@ -145,6 +145,23 @@ Urho3D::PODVector <Urho3D::StringHash> Unit::GetWay () const
 
 void Unit::SetWay (Urho3D::PODVector <Urho3D::StringHash> way)
 {
+    Urho3D::StringHash oldNextTarget;
+    if (!way_.Empty ())
+        if (way_.At (0) == positionHash_)
+            oldNextTarget = way_.At (1);
+        else
+            oldNextTarget = way_.At (0);
+
+    Urho3D::StringHash newNextTarget;
+    if (!way.Empty ())
+        if (way.At (0) == positionHash_)
+            newNextTarget = way.At (1);
+        else
+            newNextTarget = way.At (0);
+
+    if (oldNextTarget != newNextTarget ||
+            oldNextTarget == Urho3D::StringHash::ZERO || newNextTarget == Urho3D::StringHash::ZERO)
+        wayToNextDistrictProgressInPercents_ = 0.0f;
     way_ = way;
 }
 
@@ -159,7 +176,7 @@ Urho3D::VariantVector Unit::GetWayAttribute () const
 
 void Unit::SetWayAttribute (const Urho3D::VariantVector &way)
 {
-    way_.Clear ();
+    Urho3D::PODVector <Urho3D::StringHash> newWay;
     if (!way.Empty ())
     {
         int requestedSize = way.At (0).GetInt ();
@@ -167,11 +184,12 @@ void Unit::SetWayAttribute (const Urho3D::VariantVector &way)
             for (int index = 0; index < requestedSize; index++)
             {
                 if (index + 1 < way.Size ())
-                    way_.Push (way.At (index + 1).GetStringHash ());
+                    newWay.Push (way.At (index + 1).GetStringHash ());
                 else
-                    way_.Push (Urho3D::StringHash ());
+                    newWay.Push (Urho3D::StringHash ());
             }
     }
+    SetWay (newWay);
 }
 
 float Unit::GetWayToNextDistrictProgressInPercents () const
