@@ -32,7 +32,6 @@ class ClientUi : ScriptObject
         Unit @unit = GetUnitByHash (scene, unitHash);
         if (unit !is null)
         {
-
             Text @ownerText = unitInfoWindow.GetChild ("ownerText");
             ownerText.text = unit.ownerPlayerName + "'s";
 
@@ -45,6 +44,12 @@ class ClientUi : ScriptObject
                 typeText.text = "Colonizators";
             else if (unit.unitType == UNIT_ARMY)
                 typeText.text = "Army";
+
+            Button @moveToButton = unitInfoWindow.GetChild ("moveToButton");
+            if (unit.unitType == UNIT_FLEET or unit.unitType == UNIT_ARMY)
+                moveToButton.visible = true;
+            else
+                moveToButton.visible = false;
 
             Map @map = scene.GetChild ("map").GetComponent ("Map");
             Text @positionText = unitInfoWindow.GetChild ("positionText");
@@ -391,7 +396,7 @@ class ClientUi : ScriptObject
         PlayerInfo @playerInfo = GetPlayerInfoByName (scene, unit.ownerPlayerName);
         backgroundButton.vars ["unitHash"] = Variant (unit.hash);
 
-        SubscribeToEvent (backgroundButton, "Released", "SelectUnitClick");
+        SubscribeToEvent (backgroundButton, "Released", "HandleSelectUnitClick");
         if (playerInfo !is null)
         {
             backgroundButton.color = playerInfo.color;
@@ -429,13 +434,14 @@ class ClientUi : ScriptObject
 
         Button @exitButton = uiRoot.GetChild ("exitButton");
         Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
-        Button @sendColonizatorsButton = districtInfoWindow.GetChild ("sendColonizatorsButton");
+        Window @unitInfoWindow = ui.root.GetChild ("ingame").GetChild ("unitInfoWindow");
         districtInfoWindow.vars ["infoType"] = StringHash ("Basic");
 
         Button @basicInfoButton = districtInfoWindow.GetChild ("basicInfoButton");
         Button @resourcesInfoButton = districtInfoWindow.GetChild ("resourcesInfoButton");
         Button @populationInfoButton = districtInfoWindow.GetChild ("populationInfoButton");
         Button @colonyEvolutionInfoButton = districtInfoWindow.GetChild ("colonyEvolutionInfoButton");
+        Button @sendColonizatorsButton = districtInfoWindow.GetChild ("sendColonizatorsButton");
 
         UIElement @investButtons = districtInfoWindow.GetChild ("investButtons");
         Button @investToFarmsButton = investButtons.GetChild ("investToFarms");
@@ -443,6 +449,7 @@ class ClientUi : ScriptObject
         Button @investToIndustryButton = investButtons.GetChild ("investToIndustry");
         Button @investToLogisticsButton = investButtons.GetChild ("investToLogistics");
         Button @investToDefenseButton = investButtons.GetChild ("investToDefense");
+        Button @moveToButton = unitInfoWindow.GetChild ("moveToButton");
 
         SubscribeToEvent (exitButton, "Released", "HandleExitClick");
         SubscribeToEvent (basicInfoButton, "Released", "HandleBasicInfoClick");
@@ -456,6 +463,7 @@ class ClientUi : ScriptObject
         SubscribeToEvent (investToIndustryButton, "Released", "HandleInvestClick");
         SubscribeToEvent (investToLogisticsButton, "Released", "HandleInvestClick");
         SubscribeToEvent (investToDefenseButton, "Released", "HandleInvestClick");
+        SubscribeToEvent (moveToButton, "Released", "HandleMoveUnitToClick");
 
         ScriptInstance @uiResizerInstance = node.CreateChild ("UiResizer", LOCAL).CreateComponent ("ScriptInstance");
         uiResizerInstance.CreateObject (cache.GetResource ("ScriptFile",
@@ -562,11 +570,16 @@ class ClientUi : ScriptObject
         node.parent.GetChild ("networkScriptNode").vars ["tasksList"] = networkTasks;
     }
 
-    void SelectUnitClick (StringHash eventType, VariantMap &eventData)
+    void HandleSelectUnitClick (StringHash eventType, VariantMap &eventData)
     {
         UIElement @element = eventData ["Element"].GetPtr ();
         StringHash unitHash = element.vars ["unitHash"].GetStringHash ();
         node.parent.vars ["selectionType"] = StringHash ("Unit");
         node.parent.vars ["selectedHash"] = unitHash;
+    }
+
+    void HandleMoveUnitToClick ()
+    {
+        node.parent.vars ["currentClickCommand"] = StringHash ("MoveUnit");
     }
 };

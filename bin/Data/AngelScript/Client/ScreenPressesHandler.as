@@ -57,6 +57,7 @@ class ScreenPressesHandler : ScriptObject
             networkTasks.Push (Variant (taskData));
             node.parent.GetChild ("networkScriptNode").vars ["tasksList"] = networkTasks;
         }
+        node.parent.vars ["currentClickCommand"] = StringHash ("NoCommand");
     }
 
     protected void ProcessDistrictSelection (Vector3 hitPosition)
