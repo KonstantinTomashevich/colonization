@@ -109,6 +109,12 @@ class ClientUi : ScriptObject
                                  node.parent.vars ["gold"].GetFloat () >= 100.0f and
                                  district.colonyOwnerName == playerName);
 
+        Button @sendColonizatorsButton = districtInfoWindow.GetChild ("sendColonizatorsButton");
+        sendColonizatorsButton.visible = (infoType == StringHash ("Basic")) and
+                                         not district.isSea and
+                                         not district.isImpassable and
+                                         (district.colonyOwnerName == playerName or not district.hasColony);
+
         if (infoType == StringHash ("Basic"))
             UpdateDistrictBasicInfo (district, districtInfoWindow);
         else if (infoType == StringHash ("Resources"))
@@ -423,6 +429,7 @@ class ClientUi : ScriptObject
 
         Button @exitButton = uiRoot.GetChild ("exitButton");
         Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
+        Button @sendColonizatorsButton = districtInfoWindow.GetChild ("sendColonizatorsButton");
         districtInfoWindow.vars ["infoType"] = StringHash ("Basic");
 
         Button @basicInfoButton = districtInfoWindow.GetChild ("basicInfoButton");
@@ -442,6 +449,7 @@ class ClientUi : ScriptObject
         SubscribeToEvent (resourcesInfoButton, "Released", "HandleResourcesInfoClick");
         SubscribeToEvent (populationInfoButton, "Released", "HandlePopulationInfoClick");
         SubscribeToEvent (colonyEvolutionInfoButton, "Released", "HandleColonyEvolutionInfoClick");
+        SubscribeToEvent (sendColonizatorsButton, "Released", "HandleSendColonizatorsClick");
 
         SubscribeToEvent (investToFarmsButton, "Released", "HandleInvestClick");
         SubscribeToEvent (investToMinesButton, "Released", "HandleInvestClick");
