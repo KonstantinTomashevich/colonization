@@ -11,7 +11,7 @@
         <attribute name="Image Rect" value="1 901 1025 1157" />
         <attribute name="Pressed Image Offset" value="0 257" />
         <attribute name="Hover Image Offset" value="0 -514" />
-        <attribute name="Border" value="5 5 5 5" />
+        <attribute name="Border" value="0 0 0 0" />
     </element>
 
     <element type="BillboardBackground" auto="false">
@@ -56,6 +56,6 @@
         <attribute name="Texture" value="Texture2D;Textures/ColonizatorsUI.png" />
         <attribute name="Blend Mode" value="alpha" />
         <attribute name="Image Rect" value="1 1158 513 1670" />
-        <attribute name="Border" value="95 95 95 95" />
+        <attribute name="Border" value="0 0 0 0" />
     </element>
 </elements>
