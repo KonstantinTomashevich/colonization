@@ -50,4 +50,11 @@
         <attribute name="Blend Mode" value="alpha" />
         <attribute name="Image Rect" value="388 1 516 129" />
     </element>
+
+    <element type="Window" auto="false">
+        <attribute name="Texture" value="Texture2D;Textures/ColonizatorsUI.png" />
+        <attribute name="Blend Mode" value="alpha" />
+        <attribute name="Image Rect" value="1 1158 513 1670" />
+        <attribute name="Border" value="95 95 95 95" />
+    </element>
 </elements>

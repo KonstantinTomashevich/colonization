@@ -12,6 +12,7 @@
       <spr name="FleetIcon" x="259" y="1" w="128" h="128"/>
       <spr name="TradersIcon" x="388" y="1" w="128" h="128"/>
       <spr name="UnitBackground" x="517" y="1" w="128" h="128"/>
+      <spr name="WindowBackground" x="1" y="1158" w="512" h="512"/>
     </dir>
   </definitions>
 </img>
