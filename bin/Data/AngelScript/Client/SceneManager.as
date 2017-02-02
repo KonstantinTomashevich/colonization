@@ -94,13 +94,12 @@ class SceneManager : ScriptObject
 
         StringHash selectionType = node.parent.GetChild ("screenPressesHandlerScriptNode").
                                     vars ["selectionType"].GetStringHash ();
-        StringHash unitHash;
+        StringHash selectedUnitHash;
         // Firstly place selected unit (if any unit selected).
         if (selectionType == StringHash ("Unit") and unitsNodes.length > 0)
         {
-            unitHash = node.parent.GetChild ("screenPressesHandlerScriptNode").
-                                    vars ["selectedHash"].GetStringHash ();
-            Unit @unit = GetUnitByHash (scene, unitHash);
+            selectedUnitHash = node.parent.vars ["selectedHash"].GetStringHash ();
+            Unit @unit = GetUnitByHash (scene, selectedUnitHash);
             if (unit !is null)
             {
                 isDistrictOccupied [unit.positionHash] = true;
@@ -116,7 +115,7 @@ class SceneManager : ScriptObject
                 isDistrictOccupied [unit.positionHash] = true;
                 PlaceUnit (unit, map);
             }
-            else if (unit.hash != unitHash and unit.node.GetChild ("local") !is null)
+            else if (unit.hash != selectedUnitHash and unit.node.GetChild ("local") !is null)
             {
                 unit.node.GetChild ("local").enabled = false;
             }
