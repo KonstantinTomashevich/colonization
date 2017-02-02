@@ -22,7 +22,6 @@ class ClientUi : ScriptObject
 
     protected void UpdateUnitSelection ()
     {
-        ui.root.GetChild ("ingame").GetChild ("sendColonizatorsButton").visible = false;
         Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
         districtInfoWindow.visible = false;
 
@@ -96,12 +95,6 @@ class ClientUi : ScriptObject
         District @district = map.GetDistrictByHash (districtHash);
 
         String playerName = node.parent.vars ["playerName"].GetString ();
-        ui.root.GetChild ("ingame").GetChild ("sendColonizatorsButton").visible =
-                                        (!district.isImpassable &&
-                                         !district.isSea && (!district.hasColony ||
-                                                             (district.hasColony &&
-                                                             district.colonyOwnerName == playerName)));
-
         Text@ nameText = districtInfoWindow.GetChild ("nameText");
         nameText.text = district.name;
 
@@ -114,7 +107,7 @@ class ClientUi : ScriptObject
         investButtons.visible = (infoType == StringHash ("ColonyEvolution") and
                                  district.hasColony and
                                  node.parent.vars ["gold"].GetFloat () >= 100.0f and
-                                 ui.root.GetChild ("ingame").GetChild ("sendColonizatorsButton").visible);
+                                 district.colonyOwnerName == playerName);
 
         if (infoType == StringHash ("Basic"))
             UpdateDistrictBasicInfo (district, districtInfoWindow);
@@ -128,7 +121,6 @@ class ClientUi : ScriptObject
 
     protected void ClearSelection ()
     {
-        ui.root.GetChild ("ingame").GetChild ("sendColonizatorsButton").visible = false;
         Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
         districtInfoWindow.visible = false;
 
@@ -430,7 +422,6 @@ class ClientUi : ScriptObject
         ClearSelection ();
 
         Button @exitButton = uiRoot.GetChild ("exitButton");
-        Button @sendColonizatorsButton = uiRoot.GetChild ("sendColonizatorsButton");
         Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
         districtInfoWindow.vars ["infoType"] = StringHash ("Basic");
 
@@ -447,7 +438,6 @@ class ClientUi : ScriptObject
         Button @investToDefenseButton = investButtons.GetChild ("investToDefense");
 
         SubscribeToEvent (exitButton, "Released", "HandleExitClick");
-        SubscribeToEvent (sendColonizatorsButton, "Released", "HandleSendColonizatorsClick");
         SubscribeToEvent (basicInfoButton, "Released", "HandleBasicInfoClick");
         SubscribeToEvent (resourcesInfoButton, "Released", "HandleResourcesInfoClick");
         SubscribeToEvent (populationInfoButton, "Released", "HandlePopulationInfoClick");
@@ -471,7 +461,7 @@ class ClientUi : ScriptObject
     {
         untilSelectionUpdate_ -= timeStep;
 
-        Text @playerStatsText = ui.root.GetChild ("ingame").GetChild ("playerStatsInfo");
+        Text @playerStatsText = ui.root.GetChild ("ingame").GetChild ("playerStatsWindow").GetChild ("playerStatsInfo");
         String playerStatsInfo = "";
         playerStatsInfo += node.parent.vars ["playerName"].GetString () + "\n";
         playerStatsInfo += "Gold: " + node.parent.vars ["gold"].GetFloat () + "\n";
@@ -551,8 +541,7 @@ class ClientUi : ScriptObject
         Array <Variant> networkTasks = node.parent.GetChild ("networkScriptNode").vars ["tasksList"].GetVariantVector ();
         VariantMap taskData;
         taskData ["type"] = CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION;
-        StringHash districtHash = node.parent.GetChild ("screenPressesHandlerScriptNode").
-                                vars ["selectedHash"].GetStringHash ();
+        StringHash districtHash = node.parent.vars ["selectedHash"].GetStringHash ();
 
         VectorBuffer buffer = VectorBuffer ();
         buffer.WriteInt (PLAYER_ACTION_INVEST_TO_COLONY);
