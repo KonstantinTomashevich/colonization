@@ -23,9 +23,6 @@ class Client : ScriptObject
 
     void Start ()
     {
-        XMLFile@ style = cache.GetResource ("XMLFile", "UI/DefaultStyle.xml");
-        ui.root.defaultStyle = style;
-
         Node @uiScriptNode = node.CreateChild ("uiScriptNode", LOCAL);
         ScriptInstance @uiScript = uiScriptNode.CreateComponent ("ScriptInstance", LOCAL);
         uiScript.CreateObject (cache.GetResource ("ScriptFile",

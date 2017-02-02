@@ -11,6 +11,7 @@
 		<attribute name="Max Anchor" value="0.2 0.1" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Enable Anchor" value="true" />
+		<attribute name="Color" value="0.85 0.85 0.85 1" />
 		<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
 		<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
 		<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
@@ -21,7 +22,7 @@
 		<attribute name="Text" value="Player Name..." />
 		<attribute name="Text Effect" value="Stroke" />
 	</element>
-	<element type="Button">
+	<element type="Button" style="TextButton">
 		<attribute name="Name" value="exitButton" />
 		<attribute name="Size" value="204 70" />
 		<attribute name="Min Anchor" value="0.85 0" />
@@ -35,6 +36,7 @@
 			<attribute name="Min Anchor" value="0.5 0.5" />
 			<attribute name="Max Anchor" value="0.5 0.5" />
 			<attribute name="Pivot" value="0.5 0.5" />
+			<attribute name="Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
@@ -42,6 +44,8 @@
 			<attribute name="Font Size" value="20" />
 			<attribute name="Text" value="Exit" />
 			<attribute name="Text Alignment" value="Center" />
+			<attribute name="Text Effect" value="Stroke" />
+			<attribute name="Stroke Thickness" value="2" />
 		</element>
 	</element>
 	<element type="Window">
@@ -57,12 +61,15 @@
 			<attribute name="Max Anchor" value="0.45 0.3" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Enable Anchor" value="true" />
+			<attribute name="Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Font Size" value="30" />
 			<attribute name="Text" value="AiPlayer's" />
+			<attribute name="Text Effect" value="Stroke" />
+			<attribute name="Stroke Thickness" value="3" />
 		</element>
 		<element type="Text">
 			<attribute name="Name" value="typeText" />
@@ -70,12 +77,14 @@
 			<attribute name="Max Anchor" value="0.45 0.6" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Enable Anchor" value="true" />
+			<attribute name="Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Font Size" value="20" />
 			<attribute name="Text" value="Fleet" />
+			<attribute name="Text Effect" value="Stroke" />
 		</element>
 		<element type="Text">
 			<attribute name="Name" value="positionText" />
@@ -83,12 +92,14 @@
 			<attribute name="Max Anchor" value="0.45 0.95" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Enable Anchor" value="true" />
+			<attribute name="Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Font Size" value="20" />
 			<attribute name="Text" value="in Green Harbor" />
+			<attribute name="Text Effect" value="Stroke" />
 		</element>
 		<element type="Text">
 			<attribute name="Name" value="anotherText" />
@@ -96,12 +107,13 @@
 			<attribute name="Max Anchor" value="0.95 0.95" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Enable Anchor" value="true" />
+			<attribute name="Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
-			<attribute name="Font Size" value="15" />
 			<attribute name="Text" value="Another info:" />
+			<attribute name="Text Effect" value="Stroke" />
 		</element>
 	</element>
 	<element type="Window">
@@ -117,14 +129,17 @@
 			<attribute name="Max Anchor" value="0.4 0.2" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Enable Anchor" value="true" />
+			<attribute name="Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Font Size" value="30" />
 			<attribute name="Text" value="DistrictX" />
+			<attribute name="Text Effect" value="Stroke" />
+			<attribute name="Stroke Thickness" value="3" />
 		</element>
-		<element type="Button">
+		<element type="Button" style="TextButton">
 			<attribute name="Name" value="basicInfoButton" />
 			<attribute name="Size" value="256 37" />
 			<attribute name="Min Anchor" value="0.025 0.25" />
@@ -136,15 +151,16 @@
 				<attribute name="Min Anchor" value="0.5 0.5" />
 				<attribute name="Max Anchor" value="0.5 0.5" />
 				<attribute name="Pivot" value="0.5 0.5" />
+				<attribute name="Color" value="0.85 0.85 0.85 1" />
 				<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
 				<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
 				<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
 				<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
-				<attribute name="Font Size" value="15" />
 				<attribute name="Text" value="Basic information" />
+				<attribute name="Text Effect" value="Stroke" />
 			</element>
 		</element>
-		<element type="Button">
+		<element type="Button" style="TextButton">
 			<attribute name="Name" value="resourcesInfoButton" />
 			<attribute name="Size" value="256 37" />
 			<attribute name="Min Anchor" value="0.025 0.4" />
@@ -156,15 +172,16 @@
 				<attribute name="Min Anchor" value="0.5 0.5" />
 				<attribute name="Max Anchor" value="0.5 0.5" />
 				<attribute name="Pivot" value="0.5 0.5" />
+				<attribute name="Color" value="0.85 0.85 0.85 1" />
 				<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
 				<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
 				<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
 				<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
-				<attribute name="Font Size" value="15" />
 				<attribute name="Text" value="Resources information" />
+				<attribute name="Text Effect" value="Stroke" />
 			</element>
 		</element>
-		<element type="Button">
+		<element type="Button" style="TextButton">
 			<attribute name="Name" value="populationInfoButton" />
 			<attribute name="Size" value="256 37" />
 			<attribute name="Min Anchor" value="0.025 0.55" />
@@ -176,15 +193,16 @@
 				<attribute name="Min Anchor" value="0.5 0.5" />
 				<attribute name="Max Anchor" value="0.5 0.5" />
 				<attribute name="Pivot" value="0.5 0.5" />
+				<attribute name="Color" value="0.85 0.85 0.85 1" />
 				<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
 				<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
 				<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
 				<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
-				<attribute name="Font Size" value="15" />
 				<attribute name="Text" value="Population information" />
+				<attribute name="Text Effect" value="Stroke" />
 			</element>
 		</element>
-		<element type="Button">
+		<element type="Button" style="TextButton">
 			<attribute name="Name" value="colonyEvolutionInfoButton" />
 			<attribute name="Size" value="256 37" />
 			<attribute name="Min Anchor" value="0.025 0.7" />
@@ -196,12 +214,13 @@
 				<attribute name="Min Anchor" value="0.5 0.5" />
 				<attribute name="Max Anchor" value="0.5 0.5" />
 				<attribute name="Pivot" value="0.5 0.5" />
+				<attribute name="Color" value="0.85 0.85 0.85 1" />
 				<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
 				<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
 				<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
 				<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
-				<attribute name="Font Size" value="15" />
 				<attribute name="Text" value="Colony information" />
+				<attribute name="Text Effect" value="Stroke" />
 			</element>
 		</element>
 		<element type="Text">
@@ -210,11 +229,12 @@
 			<attribute name="Max Anchor" value="0.975 0.95" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Enable Anchor" value="true" />
+			<attribute name="Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
-			<attribute name="Font Size" value="15" />
+			<attribute name="Text Effect" value="Stroke" />
 		</element>
 		<element>
 			<attribute name="Name" value="investButtons" />
@@ -223,7 +243,7 @@
 			<attribute name="Max Anchor" value="0.95 0.93" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Enable Anchor" value="true" />
-			<element type="Button">
+			<element type="Button" style="TextButton">
 				<attribute name="Name" value="investToFarms" />
 				<attribute name="Size" value="136 25" />
 				<attribute name="Max Anchor" value="1 0.15" />
@@ -237,15 +257,16 @@
 					<attribute name="Min Anchor" value="0.5 0.5" />
 					<attribute name="Max Anchor" value="0.5 0.5" />
 					<attribute name="Pivot" value="0.5 0.5" />
+					<attribute name="Color" value="0.85 0.85 0.85 1" />
 					<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
 					<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
 					<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
 					<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
-					<attribute name="Font Size" value="15" />
 					<attribute name="Text" value="Invest 100 gold" />
+					<attribute name="Text Effect" value="Stroke" />
 				</element>
 			</element>
-			<element type="Button">
+			<element type="Button" style="TextButton">
 				<attribute name="Name" value="investToMines" />
 				<attribute name="Size" value="136 25" />
 				<attribute name="Min Anchor" value="0 0.15" />
@@ -260,15 +281,16 @@
 					<attribute name="Min Anchor" value="0.5 0.5" />
 					<attribute name="Max Anchor" value="0.5 0.5" />
 					<attribute name="Pivot" value="0.5 0.5" />
+					<attribute name="Color" value="0.85 0.85 0.85 1" />
 					<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
 					<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
 					<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
 					<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
-					<attribute name="Font Size" value="15" />
 					<attribute name="Text" value="Invest 100 gold" />
+					<attribute name="Text Effect" value="Stroke" />
 				</element>
 			</element>
-			<element type="Button">
+			<element type="Button" style="TextButton">
 				<attribute name="Name" value="investToIndustry" />
 				<attribute name="Size" value="136 25" />
 				<attribute name="Min Anchor" value="0 0.3" />
@@ -283,15 +305,16 @@
 					<attribute name="Min Anchor" value="0.5 0.5" />
 					<attribute name="Max Anchor" value="0.5 0.5" />
 					<attribute name="Pivot" value="0.5 0.5" />
+					<attribute name="Color" value="0.85 0.85 0.85 1" />
 					<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
 					<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
 					<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
 					<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
-					<attribute name="Font Size" value="15" />
 					<attribute name="Text" value="Invest 100 gold" />
+					<attribute name="Text Effect" value="Stroke" />
 				</element>
 			</element>
-			<element type="Button">
+			<element type="Button" style="TextButton">
 				<attribute name="Name" value="investToLogistics" />
 				<attribute name="Size" value="136 25" />
 				<attribute name="Min Anchor" value="0 0.45" />
@@ -306,15 +329,16 @@
 					<attribute name="Min Anchor" value="0.5 0.5" />
 					<attribute name="Max Anchor" value="0.5 0.5" />
 					<attribute name="Pivot" value="0.5 0.5" />
+					<attribute name="Color" value="0.85 0.85 0.85 1" />
 					<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
 					<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
 					<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
 					<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
-					<attribute name="Font Size" value="15" />
 					<attribute name="Text" value="Invest 100 gold" />
+					<attribute name="Text Effect" value="Stroke" />
 				</element>
 			</element>
-			<element type="Button">
+			<element type="Button" style="TextButton">
 				<attribute name="Name" value="investToDefense" />
 				<attribute name="Size" value="136 25" />
 				<attribute name="Min Anchor" value="0 0.6" />
@@ -329,17 +353,18 @@
 					<attribute name="Min Anchor" value="0.5 0.5" />
 					<attribute name="Max Anchor" value="0.5 0.5" />
 					<attribute name="Pivot" value="0.5 0.5" />
+					<attribute name="Color" value="0.85 0.85 0.85 1" />
 					<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
 					<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
 					<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
 					<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
-					<attribute name="Font Size" value="15" />
 					<attribute name="Text" value="Invest 100 gold" />
+					<attribute name="Text Effect" value="Stroke" />
 				</element>
 			</element>
 		</element>
 	</element>
-	<element type="Button">
+	<element type="Button" style="TextButton">
 		<attribute name="Name" value="sendColonizatorsButton" />
 		<attribute name="Size" value="683 70" />
 		<attribute name="Min Anchor" value="0 0.9" />
@@ -351,12 +376,14 @@
 			<attribute name="Min Anchor" value="0.5 0.5" />
 			<attribute name="Max Anchor" value="0.5 0.5" />
 			<attribute name="Pivot" value="0.5 0.5" />
+			<attribute name="Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Font Size" value="20" />
 			<attribute name="Text" value="Send colonizators to selected district" />
+			<attribute name="Text Effect" value="Stroke" />
 		</element>
 	</element>
 </element>

@@ -11,6 +11,7 @@
         <attribute name="Image Rect" value="1 901 1025 1157" />
         <attribute name="Pressed Image Offset" value="0 257" />
         <attribute name="Hover Image Offset" value="0 -514" />
+        <attribute name="Border" value="5 5 5 5" />
     </element>
 
     <element type="BillboardBackground" auto="false">
