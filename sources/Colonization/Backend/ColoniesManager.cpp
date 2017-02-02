@@ -36,6 +36,7 @@ void ColoniesManager::ProcessColony (GameConfiguration *configuration, District 
 
 void ColoniesManager::ProcessColonyPopulation (GameConfiguration *configuration, District *colony, float timeStep)
 {
+    // TODO: If colony population is very big, stop grow. Maybe automatically send colonists from it.
     float sexRatio = colony->GetMenCount () / colony->GetWomenCount ();
     float increaseModifer = 1.0f - Urho3D::Abs (1.0f - sexRatio);
     float populationIncrease = (colony->GetMenCount () * colony->GetWomenCount ()) *

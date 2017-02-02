@@ -43,7 +43,7 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
     internalTaxes_ (0.2f),
     externalTaxes_ (0.2f),
 
-    coloniesBasicPopulationIncrease_ (0.0075f),
+    coloniesBasicPopulationIncrease_ (0.0005f),
     coloniesBasicEvolution_ (0.0035f),
     canBePlantedByOneColonist_ (0.5f),
     forestCanBeCutDownByOneColonist_ (0.025f),
@@ -96,7 +96,7 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
     URHO3D_ACCESSOR_ATTRIBUTE ("External Taxes", GetExternalTaxes, SetExternalTaxes, float, 0.2f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Colonies Basic Population Increase", GetColoniesBasicPopulationIncrease,
-                               SetColoniesBasicPopulationIncrease, float, 0.0075f, Urho3D::AM_DEFAULT);
+                               SetColoniesBasicPopulationIncrease, float, 0.0005f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Colonies Basic Evolution", GetColoniesBasicEvolution,
                                SetColoniesBasicEvolution, float, 0.0035f, Urho3D::AM_DEFAULT);

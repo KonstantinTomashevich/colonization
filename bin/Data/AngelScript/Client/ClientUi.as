@@ -125,7 +125,7 @@ class ClientUi : ScriptObject
         else if (infoType == StringHash ("Resources"))
             UpdateDistrictResourcesInfo (district, districtInfoWindow);
         else if (infoType == StringHash ("Population"))
-            UpdateDistrictRopulationInfo (district, districtInfoWindow);
+            UpdateDistrictPopulationInfo (district, districtInfoWindow);
         else if (infoType == StringHash ("ColonyEvolution"))
             UpdateDistrictColonyEvolutionInfo (district, districtInfoWindow);
     }
@@ -208,12 +208,12 @@ class ClientUi : ScriptObject
         informationTextUi.text = infoText;
     }
 
-    protected void UpdateDistrictRopulationInfo (District @district, Window @districtInfoWindow)
+    protected void UpdateDistrictPopulationInfo (District @district, Window @districtInfoWindow)
     {
         String infoText = "";
         if (district.hasColony)
         {
-            infoText += "Colony total population: " + Floor (district.menCount + district.womenCount) + ".\n";
+            infoText += "Colony total population: " + (Floor (district.menCount) + Floor (district.womenCount)) + ".\n";
             infoText += "Men: " + Floor (district.menCount) + ". Women: " + Floor (district.womenCount) + ".\n";
             infoText += "Average level of life: " + Floor (district.averageLevelOfLifePoints * 100.0f) / 100.0f + ".\n";
             infoText += "\n";
