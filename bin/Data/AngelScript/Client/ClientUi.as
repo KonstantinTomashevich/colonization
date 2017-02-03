@@ -271,7 +271,7 @@ class ClientUi : ScriptObject
             for (int index = 0; index < map.GetDistrictsCount (); index++)
             {
                 District @district = map.GetDistrictByIndex (index);
-                Vector2 screenPoint = camera.WorldToScreenPoint (district.unitPosition + Vector3 (0.0f, 3.5f, 0.0f));
+                Vector2 screenPoint = camera.WorldToScreenPoint (district.unitPosition + Vector3 (0.0f, 1.0f, 0.0f));
                 if (screenPoint.x > -0.1f and screenPoint.x < 1.1f and
                     screenPoint.y > -0.1f and screenPoint.y < 1.1f)
                 {
