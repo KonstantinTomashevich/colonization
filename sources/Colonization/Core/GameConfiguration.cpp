@@ -17,8 +17,8 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
     wayToEuropeDistricts_ (),
     sailSpeed_ (0.40f),
     marchSpeed_ (0.15f),
-    embarkationSpeed_ (0.075f),
-    disembarkationSpeed_ (0.10f),
+    embarkationSpeed_ (0.11f),
+    disembarkationSpeed_ (0.11f),
 
     oneColonistFarmsProductionConsumption_ (0.01f),
     farmsProductionMinesConsumption_ (0.005f),
@@ -32,19 +32,19 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
     industryProductionFarmsConsumption_ (0.15f),
     industryProductionMinesConsumption_ (0.25f),
 
-    farmsProductionInternalCost_ (2.0f),
-    minesProductionInternalCost_ (4.0f),
-    industryProductionInternalCost_ (10.0f),
+    farmsProductionInternalCost_ (5.0f),
+    minesProductionInternalCost_ (10.0f),
+    industryProductionInternalCost_ (25.0f),
 
-    farmsProductionExternalCost_ (1.0f),
-    minesProductionExternalCost_ (3.5f),
-    industryProductionExternalCost_ (6.0f),
+    farmsProductionExternalCost_ (3.0f),
+    minesProductionExternalCost_ (7.0f),
+    industryProductionExternalCost_ (18.0f),
 
-    internalTaxes_ (0.2f),
-    externalTaxes_ (0.2f),
+    internalTaxes_ (0.25f),
+    externalTaxes_ (0.25f),
 
     coloniesBasicPopulationIncrease_ (0.0005f),
-    coloniesBasicEvolution_ (0.0035f),
+    coloniesBasicEvolution_ (0.005f),
     canBePlantedByOneColonist_ (0.5f),
     forestCanBeCutDownByOneColonist_ (0.025f),
     investitionsConsumption_ (3.5f),
@@ -69,8 +69,8 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
     URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Sail Speed", GetSailSpeed, SetSailSpeed, float, 0.40f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("March Speed", GetMarchSpeed, SetMarchSpeed, float, 0.15f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Embarkation Speed", GetEmbarkationSpeed, SetEmbarkationSpeed, float, 0.05f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Disembarkation Speed", GetDisembarkationSpeed, SetDisembarkationSpeed, float, 0.075f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Embarkation Speed", GetEmbarkationSpeed, SetEmbarkationSpeed, float, 0.11f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Disembarkation Speed", GetDisembarkationSpeed, SetDisembarkationSpeed, float, 0.11f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("One Colonist Farms Production Consumption", GetOneColonistFarmsProductionConsumption, SetOneColonistFarmsProductionConsumption, float, 0.01f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Mines Consumption", GetFarmsProductionMinesConsumption, SetFarmsProductionMinesConsumption, float, 0.005f, Urho3D::AM_DEFAULT);
@@ -84,22 +84,22 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
     URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Farms Consumption", GetIndustryProductionFarmsConsumption, SetIndustryProductionFarmsConsumption, float, 0.15f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Industry Consumption", GetIndustryProductionMinesConsumption, SetIndustryProductionMinesConsumption, float, 0.25f, Urho3D::AM_DEFAULT);
 
-    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Internal Cost", GetFarmsProductionInternalCost, SetFarmsProductionInternalCost, float, 2.0f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production Internal Cost", GetMinesProductionInternalCost, SetMinesProductionInternalCost, float, 4.0f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Internal Cost", GetIndustryProductionInternalCost, SetIndustryProductionInternalCost, float, 10.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Internal Cost", GetFarmsProductionInternalCost, SetFarmsProductionInternalCost, float, 5.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production Internal Cost", GetMinesProductionInternalCost, SetMinesProductionInternalCost, float, 10.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Internal Cost", GetIndustryProductionInternalCost, SetIndustryProductionInternalCost, float, 25.0f, Urho3D::AM_DEFAULT);
 
-    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production External Cost", GetFarmsProductionExternalCost, SetFarmsProductionExternalCost, float, 1.0f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production External Cost", GetMinesProductionExternalCost, SetMinesProductionExternalCost, float, 3.5f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production External Cost", GetIndustryProductionExternalCost, SetIndustryProductionExternalCost, float, 6.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production External Cost", GetFarmsProductionExternalCost, SetFarmsProductionExternalCost, float, 3.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production External Cost", GetMinesProductionExternalCost, SetMinesProductionExternalCost, float, 7.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production External Cost", GetIndustryProductionExternalCost, SetIndustryProductionExternalCost, float, 18.0f, Urho3D::AM_DEFAULT);
 
-    URHO3D_ACCESSOR_ATTRIBUTE ("Internal Taxes", GetInternalTaxes, SetInternalTaxes, float, 0.2f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("External Taxes", GetExternalTaxes, SetExternalTaxes, float, 0.2f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Internal Taxes", GetInternalTaxes, SetInternalTaxes, float, 0.25f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("External Taxes", GetExternalTaxes, SetExternalTaxes, float, 0.25f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Colonies Basic Population Increase", GetColoniesBasicPopulationIncrease,
                                SetColoniesBasicPopulationIncrease, float, 0.0005f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Colonies Basic Evolution", GetColoniesBasicEvolution,
-                               SetColoniesBasicEvolution, float, 0.0035f, Urho3D::AM_DEFAULT);
+                               SetColoniesBasicEvolution, float, 0.005f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Can Be Planted By One Colonist", GetCanBePlantedByOneColonist,
                                SetCanBePlantedByOneColonist, float, 0.5f, Urho3D::AM_DEFAULT);

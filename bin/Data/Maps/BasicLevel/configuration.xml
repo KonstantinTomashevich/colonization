@@ -13,7 +13,5 @@
 			<variant type="Int" value="2062458627" />
 			<variant type="Int" value="1498060215" />
 		</attribute>
-		<attribute name="Embarkation Speed" value="0.075" />
-		<attribute name="Disembarkation Speed" value="0.1" />
 	</component>
 </node>
