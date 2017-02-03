@@ -148,16 +148,30 @@ void Unit::SetWay (Urho3D::PODVector <Urho3D::StringHash> way)
     Urho3D::StringHash oldNextTarget;
     if (!way_.Empty ())
         if (way_.At (0) == positionHash_)
-            oldNextTarget = way_.At (1);
+        {
+            if (way_.Size () > 1)
+                oldNextTarget = way_.At (1);
+            else
+                oldNextTarget = Urho3D::StringHash::ZERO;
+        }
         else
+        {
             oldNextTarget = way_.At (0);
+        }
 
     Urho3D::StringHash newNextTarget;
     if (!way.Empty ())
         if (way.At (0) == positionHash_)
-            newNextTarget = way.At (1);
+        {
+            if (way.Size () > 1)
+                newNextTarget = way.At (1);
+            else
+                newNextTarget = Urho3D::StringHash::ZERO;
+        }
         else
+        {
             newNextTarget = way.At (0);
+        }
 
     if (oldNextTarget != newNextTarget ||
             oldNextTarget == Urho3D::StringHash::ZERO || newNextTarget == Urho3D::StringHash::ZERO)

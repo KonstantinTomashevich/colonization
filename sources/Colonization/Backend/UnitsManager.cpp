@@ -47,7 +47,7 @@ void UnitsManager::SettleColonizator (Unit *unit, Map *map)
     }
 }
 
-void UnitsManager::ProcessTrader (GameConfiguration *configuration , Unit *unit)
+void UnitsManager::ProcessTrader (GameConfiguration *configuration, Unit *unit)
 {
     assert (unit);
     assert (unit->GetUnitType () == UNIT_TRADERS);
@@ -112,7 +112,7 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
         for (int index = 0; index < units_.Size (); index++)
         {
             Unit *unit = units_.At (index);
-            Urho3D::PODVector <Urho3D::StringHash>  unitWay = unit->GetWay ();
+            Urho3D::PODVector <Urho3D::StringHash> unitWay = unit->GetWay ();
             if (!unitWay.Empty ())
             {
                 if (unit->GetPositionHash () == unitWay.At (0))
@@ -149,15 +149,17 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
                 {
                     unit->SetPositionHash (unitWay.At (0));
                     unitWay.Remove (unitWay.At (0));
-                    unit->SetWayToNextDistrictProgressInPercents (0.0f);
                     unit->SetWay (unitWay);
+                    unit->SetWayToNextDistrictProgressInPercents (0.0f);
 
                     if (unitWay.Empty () && unit->GetUnitType () == UNIT_COLONIZATORS)
                         SettleColonizator (unit, map);
                     else if (unitWay.Empty () && unit->GetUnitType () == UNIT_TRADERS)
                         ProcessTrader (configuration, unit);
                 }
-                unit->MarkNetworkUpdate ();
+
+                if (unit->GetNode ())
+                    unit->MarkNetworkUpdate ();
             }
         }
     }
