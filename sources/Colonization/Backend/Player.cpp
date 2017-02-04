@@ -84,12 +84,6 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
         assert (!targetDistrict->IsImpassable ());
         assert (!targetDistrict->HasColony () || (targetDistrict->HasColony () && targetDistrict->GetColonyOwnerName () == name_));
 
-        gold_ -= 100.0f;
-        Unit *unit = unitsManager->CreateUnit ();
-        unit->SetUnitType (UNIT_COLONIZATORS);
-        unit->ColonizatorsUnitSetColonizatorsCount (100);
-        unit->SetOwnerPlayerName (name_);
-
         GameConfiguration *configuration = scene_->GetComponent <GameConfiguration> ();
         District *nearestEuropeDistrict = 0;
         Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts = configuration->GetWayToEuropeDistricts ();
@@ -109,11 +103,28 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
                 }
             }
 
-        unit->SetPositionHash (nearestEuropeDistrict->GetHash ());
-        unit->SetWay (map->FindPath (unit->GetPositionHash (), targetDistrict->GetHash (), name_, true, true));
-        unit->UpdateHash (unitsManager);
-        unit->MarkNetworkUpdate ();
-        assert (!unit->GetWay ().Empty ());
+        Urho3D::PODVector <Urho3D::StringHash> way = map->FindPath (
+                    nearestEuropeDistrict->GetHash (), targetDistrict->GetHash (), name_, true, true);
+
+        if (!way.Empty ())
+        {
+            gold_ -= 100.0f;
+            Unit *unit = unitsManager->CreateUnit ();
+            unit->SetUnitType (UNIT_COLONIZATORS);
+            unit->ColonizatorsUnitSetColonizatorsCount (100);
+            unit->SetOwnerPlayerName (name_);
+
+            unit->SetPositionHash (nearestEuropeDistrict->GetHash ());
+            unit->SetWay (way);
+            unit->UpdateHash (unitsManager);
+            unit->MarkNetworkUpdate ();
+        }
+        else
+        {
+            Urho3D::Log::Write (Urho3D::LOG_ERROR, "Can't send colonizators. Can't find way from " +
+                                nearestEuropeDistrict->GetName () + " to " +
+                                targetDistrict->GetName () + "!");
+        }
     }
 }
 

@@ -118,7 +118,8 @@ class ClientUi : ScriptObject
         sendColonizatorsButton.visible = (infoType == StringHash ("Basic")) and
                                          not district.isSea and
                                          not district.isImpassable and
-                                         (district.colonyOwnerName == playerName or not district.hasColony);
+                                         (district.colonyOwnerName == playerName or not district.hasColony) and
+                                         node.parent.vars ["gold"].GetFloat () > 100.0f;
 
         if (infoType == StringHash ("Basic"))
             UpdateDistrictBasicInfo (district, districtInfoWindow);
