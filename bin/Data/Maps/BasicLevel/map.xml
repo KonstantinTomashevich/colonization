@@ -7,7 +7,7 @@
 	<attribute name="Rotation" value="1 0 0 0" />
 	<attribute name="Scale" value="1 1 1" />
 	<attribute name="Variables">
-		<variant hash="3861259544" type="String" value="Objects/BasicLevelMapLocal.xml" />
+		<variant hash="3861259544" type="String" value="Maps/BasicLevel/local.xml" />
 		<variant hash="560533306" type="Vector3" value="-16 -2 -16" />
 		<variant hash="1305307048" type="Vector3" value="16 2 16" />
 	</attribute>
