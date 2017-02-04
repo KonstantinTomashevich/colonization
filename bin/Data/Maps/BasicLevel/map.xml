@@ -78,6 +78,10 @@
 				<variant type="Int" value="-1476734136" />
 				<variant type="Int" value="-1937044537" />
 			</attribute>
+			<attribute name="Farming Square" value="60" />
+			<attribute name="Forests Square" value="100" />
+			<attribute name="Land Average Fertility" value="1.1" />
+			<attribute name="Forests Reproductivity" value="0.5" />
 			<attribute name="Natives Aggressiveness" value="0" />
 		</component>
 	</node>
@@ -115,7 +119,8 @@
 				<variant type="Int" value="-512951459" />
 			</attribute>
 			<attribute name="Farming Square" value="100" />
-			<attribute name="Forests Square" value="50" />
+			<attribute name="Forests Square" value="80" />
+			<attribute name="Land Average Fertility" value="1.15" />
 			<attribute name="Forests Reproductivity" value="0.5" />
 			<attribute name="Natives Aggressiveness" value="0" />
 			<attribute name="Has Colony" value="true" />
@@ -311,6 +316,11 @@
 				<variant type="Int" value="13502466" />
 				<variant type="Int" value="-1990477551" />
 			</attribute>
+			<attribute name="Farming Square" value="40" />
+			<attribute name="Forests Square" value="60" />
+			<attribute name="Forests Reproductivity" value="0.6" />
+			<attribute name="Has Coal Deposits" value="true" />
+			<attribute name="Has Iron Deposits" value="true" />
 			<attribute name="Natives Aggressiveness" value="0" />
 		</component>
 	</node>
@@ -471,6 +481,11 @@
 				<variant type="Int" value="492037234" />
 				<variant type="Int" value="-1990477551" />
 			</attribute>
+			<attribute name="Farming Square" value="130" />
+			<attribute name="Forests Square" value="20" />
+			<attribute name="Land Average Fertility" value="0.9" />
+			<attribute name="Forests Reproductivity" value="0.3" />
+			<attribute name="Has Silver Deposits" value="true" />
 			<attribute name="Natives Aggressiveness" value="0" />
 		</component>
 	</node>
@@ -508,6 +523,11 @@
 				<variant type="Int" value="1575484394" />
 				<variant type="Int" value="492037234" />
 			</attribute>
+			<attribute name="Farming Square" value="100" />
+			<attribute name="Forests Square" value="90" />
+			<attribute name="Forests Reproductivity" value="0.5" />
+			<attribute name="Has Coal Deposits" value="true" />
+			<attribute name="Has Silver Deposits" value="true" />
 			<attribute name="Natives Aggressiveness" value="0" />
 		</component>
 	</node>
@@ -655,6 +675,10 @@
 				<variant type="Int" value="-1501256321" />
 				<variant type="Int" value="-1473185500" />
 			</attribute>
+			<attribute name="Farming Square" value="50" />
+			<attribute name="Forests Square" value="70" />
+			<attribute name="Forests Reproductivity" value="0.5" />
+			<attribute name="Has Gold Deposits" value="true" />
 			<attribute name="Natives Aggressiveness" value="0" />
 		</component>
 	</node>
@@ -688,6 +712,10 @@
 				<variant type="Int" value="334510985" />
 				<variant type="Int" value="-1501256321" />
 			</attribute>
+			<attribute name="Farming Square" value="90" />
+			<attribute name="Forests Square" value="45" />
+			<attribute name="Forests Reproductivity" value="0.6" />
+			<attribute name="Has Silver Deposits" value="true" />
 			<attribute name="Natives Aggressiveness" value="0" />
 		</component>
 	</node>
@@ -724,6 +752,13 @@
 				<variant type="Int" value="-1990477551" />
 				<variant type="Int" value="657129826" />
 			</attribute>
+			<attribute name="Farming Square" value="90" />
+			<attribute name="Forests Square" value="80" />
+			<attribute name="Land Average Fertility" value="0.85" />
+			<attribute name="Forests Reproductivity" value="0.6" />
+			<attribute name="Has Coal Deposits" value="true" />
+			<attribute name="Has Iron Deposits" value="true" />
+			<attribute name="Has Silver Deposits" value="true" />
 			<attribute name="Natives Aggressiveness" value="0" />
 		</component>
 	</node>
@@ -759,6 +794,11 @@
 				<variant type="Int" value="-623850067" />
 				<variant type="Int" value="657129826" />
 			</attribute>
+			<attribute name="Farming Square" value="130" />
+			<attribute name="Forests Square" value="60" />
+			<attribute name="Land Average Fertility" value="1.1" />
+			<attribute name="Forests Reproductivity" value="0.6" />
+			<attribute name="Has Coal Deposits" value="true" />
 			<attribute name="Natives Aggressiveness" value="0" />
 		</component>
 	</node>
@@ -791,6 +831,12 @@
 				<variant type="Int" value="2101706864" />
 				<variant type="Int" value="-1501256321" />
 			</attribute>
+			<attribute name="Farming Square" value="70" />
+			<attribute name="Forests Square" value="100" />
+			<attribute name="Land Average Fertility" value="0.9" />
+			<attribute name="Forests Reproductivity" value="0.7" />
+			<attribute name="Has Iron Deposits" value="true" />
+			<attribute name="Has Gold Deposits" value="true" />
 			<attribute name="Natives Aggressiveness" value="0" />
 		</component>
 	</node>
@@ -823,6 +869,11 @@
 				<variant type="Int" value="-1382009138" />
 				<variant type="Int" value="-614641749" />
 			</attribute>
+			<attribute name="Farming Square" value="150" />
+			<attribute name="Forests Square" value="50" />
+			<attribute name="Land Average Fertility" value="1.2" />
+			<attribute name="Forests Reproductivity" value="0.8" />
+			<attribute name="Has Coal Deposits" value="true" />
 			<attribute name="Natives Aggressiveness" value="0" />
 		</component>
 	</node>
@@ -856,6 +907,11 @@
 				<variant type="Int" value="-614641749" />
 				<variant type="Int" value="1274742436" />
 			</attribute>
+			<attribute name="Farming Square" value="80" />
+			<attribute name="Forests Square" value="100" />
+			<attribute name="Land Average Fertility" value="1.1" />
+			<attribute name="Forests Reproductivity" value="0.6" />
+			<attribute name="Has Coal Deposits" value="true" />
 			<attribute name="Natives Aggressiveness" value="0" />
 		</component>
 	</node>
@@ -888,6 +944,11 @@
 				<variant type="Int" value="-1382009138" />
 				<variant type="Int" value="-623850067" />
 			</attribute>
+			<attribute name="Farming Square" value="90" />
+			<attribute name="Forests Square" value="50" />
+			<attribute name="Forests Reproductivity" value="0.5" />
+			<attribute name="Has Coal Deposits" value="true" />
+			<attribute name="Has Iron Deposits" value="true" />
 			<attribute name="Natives Aggressiveness" value="0" />
 		</component>
 	</node>
@@ -924,6 +985,9 @@
 				<variant type="Int" value="-512951459" />
 				<variant type="Int" value="-1119706917" />
 			</attribute>
+			<attribute name="Farming Square" value="60" />
+			<attribute name="Forests Square" value="100" />
+			<attribute name="Forests Reproductivity" value="0.7" />
 			<attribute name="Natives Aggressiveness" value="0" />
 		</component>
 	</node>
@@ -957,6 +1021,11 @@
 				<variant type="Int" value="1641210011" />
 				<variant type="Int" value="-839661238" />
 			</attribute>
+			<attribute name="Farming Square" value="40" />
+			<attribute name="Forests Square" value="150" />
+			<attribute name="Land Average Fertility" value="0.9" />
+			<attribute name="Forests Reproductivity" value="1.2" />
+			<attribute name="Has Iron Deposits" value="true" />
 			<attribute name="Natives Aggressiveness" value="0" />
 		</component>
 	</node>
@@ -993,6 +1062,10 @@
 				<variant type="Int" value="-313693502" />
 				<variant type="Int" value="-621214046" />
 			</attribute>
+			<attribute name="Farming Square" value="130" />
+			<attribute name="Forests Square" value="40" />
+			<attribute name="Land Average Fertility" value="1.1" />
+			<attribute name="Forests Reproductivity" value="0.6" />
 			<attribute name="Natives Aggressiveness" value="0" />
 		</component>
 	</node>
@@ -1030,6 +1103,10 @@
 				<variant type="Int" value="-621214046" />
 				<variant type="Int" value="-1119706917" />
 			</attribute>
+			<attribute name="Farming Square" value="100" />
+			<attribute name="Forests Square" value="50" />
+			<attribute name="Land Average Fertility" value="1.1" />
+			<attribute name="Forests Reproductivity" value="0.5" />
 			<attribute name="Natives Aggressiveness" value="0" />
 		</component>
 	</node>
@@ -1063,6 +1140,11 @@
 				<variant type="Int" value="-1869921087" />
 				<variant type="Int" value="-623850067" />
 			</attribute>
+			<attribute name="Farming Square" value="90" />
+			<attribute name="Forests Square" value="40" />
+			<attribute name="Land Average Fertility" value="1.1" />
+			<attribute name="Forests Reproductivity" value="0.6" />
+			<attribute name="Has Coal Deposits" value="true" />
 			<attribute name="Natives Aggressiveness" value="0" />
 		</component>
 	</node>
