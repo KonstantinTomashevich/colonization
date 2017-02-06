@@ -8,8 +8,8 @@
 	<attribute name="Scale" value="1 1 1" />
 	<attribute name="Variables" />
 	<component type="Terrain" id="16778591">
-		<attribute name="Height Map" value="Image;Textures/BasicLevelHeighmap.png" />
-		<attribute name="Material" value="Material;Materials/BasicLevelMap.xml" />
+		<attribute name="Height Map" value="Image;Maps/BasicLevel/heightmap.png" />
+		<attribute name="Material" value="Material;Maps/BasicLevel/terrain_material.xml" />
 		<attribute name="Vertex Spacing" value="0.25 0.035 0.25" />
 		<attribute name="Smooth Height Map" value="true" />
 		<attribute name="Cast Shadows" value="true" />
