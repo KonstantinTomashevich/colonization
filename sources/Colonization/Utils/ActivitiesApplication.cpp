@@ -1,6 +1,5 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "ActivitiesApplication.hpp"
-#include <Urho3D/Input/Input.h>
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/AngelScript/Script.h>
 
@@ -32,11 +31,6 @@ void ActivitiesApplication::Setup ()
 
 void ActivitiesApplication::Start ()
 {
-    Urho3D::Input *input = GetSubsystem <Urho3D::Input> ();
-    input->SetMouseVisible (true);
-    input->SetMouseMode (Urho3D::MM_FREE);
-
-    Urho3D::SetRandomSeed (Urho3D::Time::GetTimeSinceEpoch ());
     SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (ActivitiesApplication, UpdateActivities));
 
     if (!currentActivities_.Empty ())

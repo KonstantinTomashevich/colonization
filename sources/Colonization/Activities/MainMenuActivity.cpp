@@ -20,7 +20,6 @@ MainMenuActivity::~MainMenuActivity ()
 
 void MainMenuActivity::Start ()
 {
-    // TODO: Maybe create beatiful scene later? After first prototype of course.
     Urho3D::ResourceCache *resourceCache = context_->GetSubsystem <Urho3D::ResourceCache> ();
     backgroundScene_ = new Urho3D::Scene (context_);
     backgroundScene_->AddRef ();
