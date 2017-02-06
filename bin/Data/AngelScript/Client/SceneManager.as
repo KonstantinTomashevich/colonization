@@ -143,7 +143,7 @@ class SceneManager : ScriptObject
         Camera @camera = cameraNode_.CreateComponent ("Camera", LOCAL);
         camera.farClip = 100.0f;
 
-        Viewport @viewport = Viewport (scene, cameraNode_.GetComponent ("Camera"));
+        Viewport @viewport = Viewport (scene, camera);
         renderer.viewports [0] = viewport;
     }
 

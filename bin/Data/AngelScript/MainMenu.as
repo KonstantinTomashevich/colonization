@@ -2,6 +2,19 @@ class MainMenu : ScriptObject
 {
     protected ActivitiesApplication @activitiesApplication_;
 
+    protected void SetupBackground ()
+    {
+        scene.CreateComponent ("Octree");
+        XMLFile @backgroundXML = cache.GetResource ("XMLFile", "Objects/MainMenuBackground.xml");
+        Node @backgroundNode = node.CreateChild ("background", LOCAL);
+        backgroundNode.LoadXML (backgroundXML.root);
+
+        Node @cameraNode = node.GetChild ("background").GetChild ("camera");
+        Camera @camera = cameraNode.GetComponent ("Camera");
+        Viewport @viewport = Viewport (scene, camera);
+        renderer.viewports [0] = viewport;
+    }
+
     MainMenu ()
     {
 
@@ -33,6 +46,7 @@ class MainMenu : ScriptObject
                                                          "AngelScript/Utils/UiResizer.as"),
                                         "UiResizer");
         uiResizerInstance.SetAttribute ("startElementName_", Variant ("main_menu_root"));
+        SetupBackground ();
     }
 
     void Update (float timeStep)

@@ -1,0 +1,1446 @@
+<?xml version="1.0"?>
+<node id="16777217">
+	<attribute name="Is Enabled" value="true" />
+	<attribute name="Name" value="background" />
+	<attribute name="Tags" />
+	<attribute name="Position" value="0 0 0" />
+	<attribute name="Rotation" value="1 0 0 0" />
+	<attribute name="Scale" value="1 1 1" />
+	<attribute name="Variables" />
+	<node id="16777218">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="terrain" />
+		<attribute name="Tags" />
+		<attribute name="Position" value="0 0 0" />
+		<attribute name="Rotation" value="1 0 0 0" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="Terrain" id="16777228">
+			<attribute name="Height Map" value="Image;Textures/MainMenuBackgroundTerrainHeightmap.png" />
+			<attribute name="Material" value="Material;Materials/MainMenuBackgroundTerrainMaterial.xml" />
+			<attribute name="Vertex Spacing" value="1 0.15 1" />
+		</component>
+	</node>
+	<node id="16777223">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="light" />
+		<attribute name="Tags" />
+		<attribute name="Position" value="0 0 0" />
+		<attribute name="Rotation" value="0.92388 0.382683 0 0" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="Light" id="16777233">
+			<attribute name="Light Type" value="Directional" />
+			<attribute name="Cast Shadows" value="true" />
+		</component>
+	</node>
+	<node id="16777224">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="objects" />
+		<attribute name="Tags" />
+		<attribute name="Position" value="0 0 0" />
+		<attribute name="Rotation" value="1 0 0 0" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<node id="5">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-11.0137 4.39876 -7.94049" />
+			<attribute name="Rotation" value="0.839572 0 0.543249 0" />
+			<attribute name="Scale" value="3.24885 3.24885 3.24885" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777237">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="3">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-7.41407 4.4817 -1.82243" />
+			<attribute name="Rotation" value="0.589266 0 -0.807939 0" />
+			<attribute name="Scale" value="4.11991 4.11991 4.11991" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777235">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="4">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-14.9782 4.3551 -2.12275" />
+			<attribute name="Rotation" value="0.632295 0 -0.774728 0" />
+			<attribute name="Scale" value="3.45599 3.45599 3.45599" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777236">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="6">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-8.15088 4.07157 3.14999" />
+			<attribute name="Rotation" value="0.942345 0 -0.334642 0" />
+			<attribute name="Scale" value="3.01337 3.01337 3.01337" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777238">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="7">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-1.08902 4.12676 -0.0886879" />
+			<attribute name="Rotation" value="0.980276 0 0.197635 0" />
+			<attribute name="Scale" value="3.91075 3.91075 3.91075" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777239">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="8">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="1.60202 4.07171 -5.51327" />
+			<attribute name="Rotation" value="0.519575 0 0.854425 0" />
+			<attribute name="Scale" value="3.08556 3.08556 3.08556" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777240">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="9">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-3.69322 5.07475 -8.97863" />
+			<attribute name="Rotation" value="-0.207821 0 0.978167 0" />
+			<attribute name="Scale" value="3.45292 3.45293 3.45292" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777241">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="10">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-6.81422 4.40626 -17.7875" />
+			<attribute name="Rotation" value="0.146023 0 0.989281 0" />
+			<attribute name="Scale" value="3.80903 3.80903 3.80903" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777242">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="11">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-3.89777 4.07214 -18.3427" />
+			<attribute name="Rotation" value="0.971752 0 -0.236006 0" />
+			<attribute name="Scale" value="3.3144 3.3144 3.3144" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777243">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="12">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="2.89542 4.23299 -16.9175" />
+			<attribute name="Rotation" value="0.555067 0 -0.831806 0" />
+			<attribute name="Scale" value="3.91725 3.91725 3.91725" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777244">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="13">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="3.62427 4.2222 -12.1671" />
+			<attribute name="Rotation" value="-0.101693 0 0.994816 0" />
+			<attribute name="Scale" value="3.03562 3.03562 3.03562" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777245">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="14">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="1.78928 4.10118 -9.19663" />
+			<attribute name="Rotation" value="0.83538 0 0.549672 0" />
+			<attribute name="Scale" value="3.01318 3.01318 3.01318" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777246">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="15">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-0.520333 4.08311 -13.0636" />
+			<attribute name="Rotation" value="-0.161939 0 0.986801 0" />
+			<attribute name="Scale" value="4.03677 4.03677 4.03677" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777247">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="16">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-6.71254 4.50434 -12.0962" />
+			<attribute name="Rotation" value="0.147161 0 0.989112 0" />
+			<attribute name="Scale" value="4.1156 4.1156 4.1156" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777248">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="17">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-5.75984 5.20578 -6.50521" />
+			<attribute name="Rotation" value="0.965317 0 -0.261079 0" />
+			<attribute name="Scale" value="3.16242 3.16242 3.16242" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777249">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="18">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-10.7083 4.60481 -1.17241" />
+			<attribute name="Rotation" value="0.751087 0 -0.660203 0" />
+			<attribute name="Scale" value="3.85861 3.85861 3.85861" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777250">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="19">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="13.8126 4.51391 7.1097" />
+			<attribute name="Rotation" value="0.579853 0 0.814721 0" />
+			<attribute name="Scale" value="4.20432 4.20432 4.20432" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777251">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="20">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="15.9665 4.5137 4.51426" />
+			<attribute name="Rotation" value="0.998023 0 -0.062854 0" />
+			<attribute name="Scale" value="3.25347 3.25347 3.25347" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777252">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="21">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="12.4476 4.1404 5.00461" />
+			<attribute name="Rotation" value="0.998704 0 -0.0508886 0" />
+			<attribute name="Scale" value="3.75721 3.75721 3.75721" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777253">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="22">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="15.2728 4.14132 1.54983" />
+			<attribute name="Rotation" value="0.950244 0 -0.311505 0" />
+			<attribute name="Scale" value="4.03934 4.03934 4.03934" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777254">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="23">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="16.9207 4.35999 -3.31299" />
+			<attribute name="Rotation" value="0.895406 0 -0.445251 0" />
+			<attribute name="Scale" value="4.02478 4.02478 4.02478" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777255">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="24">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="29.0736 4.07209 -6.73806" />
+			<attribute name="Rotation" value="0.717052 0 -0.697019 0" />
+			<attribute name="Scale" value="3.28703 3.28703 3.28703" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777256">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="25">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="25.0285 4.21823 -6.99301" />
+			<attribute name="Rotation" value="-0.409762 0 0.912193 0" />
+			<attribute name="Scale" value="3.75588 3.75588 3.75588" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777257">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="26">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="27.0572 4.0735 -9.41538" />
+			<attribute name="Rotation" value="0.829162 0 -0.559008 0" />
+			<attribute name="Scale" value="4.02336 4.02336 4.02336" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777258">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="27">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="25.188 4.0726 -8.6675" />
+			<attribute name="Rotation" value="0.175547 0 0.984471 0" />
+			<attribute name="Scale" value="3.55171 3.55171 3.55171" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777259">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="28">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="23.5265 4.07277 -10.73" />
+			<attribute name="Rotation" value="0.975785 0 0.218734 0" />
+			<attribute name="Scale" value="3.63933 3.63933 3.63933" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777260">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="29">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="23.058 4.07253 -7.0154" />
+			<attribute name="Rotation" value="0.949766 0 -0.312963 0" />
+			<attribute name="Scale" value="3.51898 3.51898 3.51898" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777261">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="30">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="19.5951 4.1379 -4.37915" />
+			<attribute name="Rotation" value="0.707022 0 -0.707192 0" />
+			<attribute name="Scale" value="3.68415 3.68415 3.68415" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777262">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="31">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="17.4823 4.4523 0.321493" />
+			<attribute name="Rotation" value="0.994281 0 -0.106794 0" />
+			<attribute name="Scale" value="3.85092 3.85092 3.85092" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777263">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="32">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="15.5709 4.1376 -1.17008" />
+			<attribute name="Rotation" value="-0.0710327 0 0.997474 0" />
+			<attribute name="Scale" value="3.75135 3.75135 3.75135" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777264">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="33">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="13.932 4.27087 12.3907" />
+			<attribute name="Rotation" value="0.985145 0 0.171723 0" />
+			<attribute name="Scale" value="3.07576 3.07576 3.07576" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777265">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="34">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="11.6749 4.17506 9.75978" />
+			<attribute name="Rotation" value="0.344247 0 0.938879 0" />
+			<attribute name="Scale" value="3.98642 3.98642 3.98642" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777266">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="35">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="14.9822 4.07368 28.5683" />
+			<attribute name="Rotation" value="0.547227 0 -0.836984 0" />
+			<attribute name="Scale" value="4.11469 4.11469 4.11469" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777267">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="36">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="20.4415 4.21127 28.0211" />
+			<attribute name="Rotation" value="0.932227 0 -0.361873 0" />
+			<attribute name="Scale" value="3.21039 3.21039 3.21039" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777268">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="37">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="19.4677 4.2669 24.4077" />
+			<attribute name="Rotation" value="0.506986 0 -0.861955 0" />
+			<attribute name="Scale" value="4.12082 4.12082 4.12082" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777269">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="38">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="14.2057 4.49463 21.7688" />
+			<attribute name="Rotation" value="0.615512 0 0.788127 0" />
+			<attribute name="Scale" value="4.20936 4.20936 4.20936" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777270">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="39">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="12.2464 4.55276 19.312" />
+			<attribute name="Rotation" value="0.245172 0 0.969479 0" />
+			<attribute name="Scale" value="3.02138 3.02138 3.02138" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777271">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="40">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="12.8626 4.0731 22.9715" />
+			<attribute name="Rotation" value="0.959434 0 -0.281933 0" />
+			<attribute name="Scale" value="3.81516 3.81516 3.81516" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777272">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="41">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="16.8538 4.27754 26.5086" />
+			<attribute name="Rotation" value="0.921993 0 -0.387207 0" />
+			<attribute name="Scale" value="3.43553 3.43553 3.43553" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777273">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="42">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-10.7825 4.07335 8.21675" />
+			<attribute name="Rotation" value="0.110178 0 0.993912 0" />
+			<attribute name="Scale" value="3.94302 3.94302 3.94302" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777274">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="43">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-6.57832 4.22478 2.70659" />
+			<attribute name="Rotation" value="0.999663 0 0.0259797 0" />
+			<attribute name="Scale" value="4.3872 4.3872 4.3872" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777275">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="44">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-3.54353 4.38601 -2.85621" />
+			<attribute name="Rotation" value="0.514158 0 -0.857695 0" />
+			<attribute name="Scale" value="3.68616 3.68616 3.68616" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777276">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="45">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-0.2853 4.63061 -8.23329" />
+			<attribute name="Rotation" value="0.818126 0 0.575039 0" />
+			<attribute name="Scale" value="3.65659 3.65659 3.65659" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777277">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="46">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-7.40288 5.26002 -6.21319" />
+			<attribute name="Rotation" value="0.954053 0 0.299638 0" />
+			<attribute name="Scale" value="3.34095 3.34095 3.34095" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777278">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="47">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-5.53865 4.82608 -10.1631" />
+			<attribute name="Rotation" value="0.846737 0 -0.532012 0" />
+			<attribute name="Scale" value="3.90622 3.90622 3.90622" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777279">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="48">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-3.28485 4.62638 -12.6426" />
+			<attribute name="Rotation" value="0.977736 0 -0.209837 0" />
+			<attribute name="Scale" value="4.28219 4.28219 4.28219" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777280">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="49">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-13.5399 4.33406 -7.22487" />
+			<attribute name="Rotation" value="0.708106 0 0.706106 0" />
+			<attribute name="Scale" value="3.5627 3.5627 3.5627" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777281">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="50">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-11.6365 4.215 -11.0309" />
+			<attribute name="Rotation" value="0.0759091 0 0.997115 0" />
+			<attribute name="Scale" value="3.3643 3.3643 3.3643" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777282">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="51">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-8.32587 4.12749 -15.4353" />
+			<attribute name="Rotation" value="0.791216 0 0.611537 0" />
+			<attribute name="Scale" value="3.52695 3.52695 3.52695" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777283">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="52">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-3.43957 4.39607 -14.8815" />
+			<attribute name="Rotation" value="0.875136 0 0.483876 0" />
+			<attribute name="Scale" value="3.93057 3.93057 3.93057" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777284">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="53">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-1.61415 4.25109 -17.7814" />
+			<attribute name="Rotation" value="-0.335952 0 0.941879 0" />
+			<attribute name="Scale" value="4.3016 4.3016 4.3016" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777285">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="54">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-6.68628 4.06415 -20.8425" />
+			<attribute name="Rotation" value="0.75134 0 0.659915 0" />
+			<attribute name="Scale" value="4.00166 4.00166 4.00166" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777286">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="55">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="1.43353 4.31642 -14.1784" />
+			<attribute name="Rotation" value="-0.397217 0 0.917725 0" />
+			<attribute name="Scale" value="3.26089 3.26089 3.26089" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777287">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="56">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="20.6475 4.06447 -6.79712" />
+			<attribute name="Rotation" value="0.680161 0 -0.733063 0" />
+			<attribute name="Scale" value="3.23232 3.23232 3.23232" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777288">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="57">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="20.3548 4.06405 -8.34328" />
+			<attribute name="Rotation" value="0.878273 0 0.47816 0" />
+			<attribute name="Scale" value="4.23 4.23 4.23" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777289">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="58">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="22.3137 4.06427 -9.15169" />
+			<attribute name="Rotation" value="0.947613 0 -0.319421 0" />
+			<attribute name="Scale" value="3.69834 3.69834 3.69834" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777290">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="59">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="29.0514 4.06437 -8.62739" />
+			<attribute name="Rotation" value="0.574216 0 0.818704 0" />
+			<attribute name="Scale" value="3.47082 3.47082 3.47082" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777291">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="60">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="27.5728 4.19278 -5.38098" />
+			<attribute name="Rotation" value="0.967121 0 -0.254317 0" />
+			<attribute name="Scale" value="3.45009 3.45009 3.45009" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777292">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="61">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="17.9725 4.06423 -5.54887" />
+			<attribute name="Rotation" value="0.697122 0 0.716952 0" />
+			<attribute name="Scale" value="3.78687 3.78687 3.78687" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777293">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="62">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="18.2815 4.06415 -7.59509" />
+			<attribute name="Rotation" value="0.962224 0 -0.27226 0" />
+			<attribute name="Scale" value="3.98079 3.98079 3.98079" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777294">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="63">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="10.3516 4.15172 19.3771" />
+			<attribute name="Rotation" value="0.790922 0 0.611917 0" />
+			<attribute name="Scale" value="3.43544 3.43544 3.43544" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777295">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="64">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="9.40433 4.21845 15.1681" />
+			<attribute name="Rotation" value="0.948771 0 0.315966 0" />
+			<attribute name="Scale" value="3.73881 3.73881 3.73881" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777296">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="65">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="11.3952 4.38193 15.4796" />
+			<attribute name="Rotation" value="0.999799 0 -0.0200368 0" />
+			<attribute name="Scale" value="3.57355 3.57355 3.57355" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777297">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="66">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="10.7008 4.06456 12.2813" />
+			<attribute name="Rotation" value="0.979665 0 0.200641 0" />
+			<attribute name="Scale" value="3.00884 3.00884 3.00884" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777298">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="67">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-7.92932 4.21442 7.29165" />
+			<attribute name="Rotation" value="0.806723 0 0.59093 0" />
+			<attribute name="Scale" value="3.73725 3.73725 3.73725" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777299">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="68">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-10.4168 4.06422 5.02076" />
+			<attribute name="Rotation" value="0.999811 0 -0.0194617 0" />
+			<attribute name="Scale" value="3.82922 3.82922 3.82922" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777300">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="69">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-4.85114 4.49953 6.26087" />
+			<attribute name="Rotation" value="0.961542 0 -0.274658 0" />
+			<attribute name="Scale" value="3.56137 3.56137 3.56137" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777301">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="70">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-2.45808 4.06455 3.69885" />
+			<attribute name="Rotation" value="0.042221 0 0.999108 0" />
+			<attribute name="Scale" value="3.04175 3.04175 3.04175" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777302">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="71">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-2.83357 4.44544 16.262" />
+			<attribute name="Rotation" value="0.938929 0 0.344111 0" />
+			<attribute name="Scale" value="4.27061 4.27061 4.27061" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777303">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="72">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-4.7624 4.64435 12.9755" />
+			<attribute name="Rotation" value="0.82038 0 0.571819 0" />
+			<attribute name="Scale" value="3.02202 3.02202 3.02202" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777304">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="73">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-1.87191 4.62205 13.8435" />
+			<attribute name="Rotation" value="0.261403 0 0.96523 0" />
+			<attribute name="Scale" value="3.09893 3.09893 3.09893" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777305">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="74">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="2.56635 4.57564 14.8729" />
+			<attribute name="Rotation" value="0.711079 0 0.703113 0" />
+			<attribute name="Scale" value="3.55135 3.55135 3.55135" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777306">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="75">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-1.29353 4.51594 12.1334" />
+			<attribute name="Rotation" value="-0.323279 0 0.946304 0" />
+			<attribute name="Scale" value="3.91665 3.91665 3.91665" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777307">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="76">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="0.881126 4.53821 15.6611" />
+			<attribute name="Rotation" value="0.811232 0 -0.584725 0" />
+			<attribute name="Scale" value="3.60363 3.60363 3.60363" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777308">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="77">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="4.35255 4.04303 8.64644" />
+			<attribute name="Rotation" value="0.654024 0 0.756474 0" />
+			<attribute name="Scale" value="1.82086 1.82086 1.82086" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777309">
+				<attribute name="Model" value="Model;Models/Colony.mdl" />
+				<attribute name="Material" value="Material;Materials/colony.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="80">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-16.3145 4.14697 -5.21336" />
+			<attribute name="Rotation" value="-0.246473 0 0.96915 0" />
+			<attribute name="Scale" value="1.77084 1.77084 1.77084" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777312">
+				<attribute name="Model" value="Model;Models/Colony.mdl" />
+				<attribute name="Material" value="Material;Materials/colony.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="81">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="5.05355 4.06582 -14.3131" />
+			<attribute name="Rotation" value="0.134727 0 0.990883 0" />
+			<attribute name="Scale" value="1.68716 1.68716 1.68716" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777313">
+				<attribute name="Model" value="Model;Models/Colony.mdl" />
+				<attribute name="Material" value="Material;Materials/colony.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="84">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-10.4676 4.06582 12.8454" />
+			<attribute name="Rotation" value="0.706683 0 0.70753 0" />
+			<attribute name="Scale" value="1.53532 1.53532 1.53532" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777316">
+				<attribute name="Model" value="Model;Models/Colony.mdl" />
+				<attribute name="Material" value="Material;Materials/colony.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="85">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="20.1791 4.06582 -10.028" />
+			<attribute name="Rotation" value="0.516623 0 -0.856213 0" />
+			<attribute name="Scale" value="1.82459 1.82459 1.82459" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777317">
+				<attribute name="Model" value="Model;Models/Colony.mdl" />
+				<attribute name="Material" value="Material;Materials/colony.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="90">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="19.2655 6.06335 8.74093" />
+			<attribute name="Rotation" value="-0.225231 0 0.974305 0" />
+			<attribute name="Scale" value="3.33349 3.33349 3.33349" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777322">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="91">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="27.1132 6.0139 14.3961" />
+			<attribute name="Rotation" value="0.99964 0 0.0268421 0" />
+			<attribute name="Scale" value="3.9899 3.9899 3.9899" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777323">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="92">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="27.0162 6.84816 3.60687" />
+			<attribute name="Rotation" value="0.918124 0 0.396293 0" />
+			<attribute name="Scale" value="4.03723 4.03723 4.03723" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777324">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="93">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="28.7569 4.90251 -1.43978" />
+			<attribute name="Rotation" value="0.982126 0 0.188227 0" />
+			<attribute name="Scale" value="4.03426 4.03426 4.03426" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777325">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="94">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="19.1663 5.51556 3.28966" />
+			<attribute name="Rotation" value="-0.173375 0 0.984856 0" />
+			<attribute name="Scale" value="3.96678 3.96678 3.96678" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777326">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="95">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="23.9313 4.64343 27.5357" />
+			<attribute name="Rotation" value="0.859294 0 0.511483 0" />
+			<attribute name="Scale" value="3.08817 3.08817 3.08817" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777327">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="96">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="24.5229 6.41671 10.4997" />
+			<attribute name="Rotation" value="0.61203 0 0.790835 0" />
+			<attribute name="Scale" value="3.43837 3.43837 3.43837" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777328">
+				<attribute name="Model" value="Model;Models/Tree1.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree1.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="97">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="22.5661 6.13298 7.42413" />
+			<attribute name="Rotation" value="0.673173 0 -0.739486 0" />
+			<attribute name="Scale" value="3.23388 3.23388 3.23388" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777329">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="98">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="29.4255 6.95289 2.98099" />
+			<attribute name="Rotation" value="0.990941 0 0.1343 0" />
+			<attribute name="Scale" value="4.35397 4.35397 4.35397" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777330">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="99">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="24.3578 6.76148 -1.03343" />
+			<attribute name="Rotation" value="0.87597 0 0.482365 0" />
+			<attribute name="Scale" value="4.46159 4.46159 4.46159" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777331">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="100">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="21.003 8.84969 13.9122" />
+			<attribute name="Rotation" value="0.686321 0 -0.727298 0" />
+			<attribute name="Scale" value="3.00563 3.00563 3.00563" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777332">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="101">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="29.5287 8.30982 8.60507" />
+			<attribute name="Rotation" value="0.754055 0 0.656812 0" />
+			<attribute name="Scale" value="4.48892 4.48892 4.48892" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777333">
+				<attribute name="Model" value="Model;Models/Tree2.mdl" />
+				<attribute name="Material" value="Material;Materials/Tree2.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="105">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-21.1435 3.1623 -9.68015" />
+			<attribute name="Rotation" value="0.583908 0 0.81182 0" />
+			<attribute name="Scale" value="1.81653 1.81653 1.81653" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777338">
+				<attribute name="Model" value="Model;Models/Ship.mdl" />
+				<attribute name="Material" value="Material;Materials/ship.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="106">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="8.29989 3.36731 1.07927" />
+			<attribute name="Rotation" value="0.967679 0 0.252184 0" />
+			<attribute name="Scale" value="1.69147 1.69147 1.69147" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777339">
+				<attribute name="Model" value="Model;Models/Ship.mdl" />
+				<attribute name="Material" value="Material;Materials/ship.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="107">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-17.8255 3.11264 18.4738" />
+			<attribute name="Rotation" value="0.589111 0 -0.808052 0" />
+			<attribute name="Scale" value="1.64738 1.64738 1.64738" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777340">
+				<attribute name="Model" value="Model;Models/Ship.mdl" />
+				<attribute name="Material" value="Material;Materials/ship.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="108">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-21.933 3.20456 13.5559" />
+			<attribute name="Rotation" value="0.76817 0 -0.640246 0" />
+			<attribute name="Scale" value="1.64825 1.64825 1.64825" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777341">
+				<attribute name="Model" value="Model;Models/Ship.mdl" />
+				<attribute name="Material" value="Material;Materials/ship.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="109">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="-7.42425 3.31367 22.575" />
+			<attribute name="Rotation" value="0.616192 0 0.787596 0" />
+			<attribute name="Scale" value="2.02301 2.02301 2.02301" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777342">
+				<attribute name="Model" value="Model;Models/Ship.mdl" />
+				<attribute name="Material" value="Material;Materials/ship.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="110">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="21.4917 3.06429 -18.7457" />
+			<attribute name="Rotation" value="0.400207 0 0.916425 0" />
+			<attribute name="Scale" value="1.94416 1.94416 1.94416" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777343">
+				<attribute name="Model" value="Model;Models/Ship.mdl" />
+				<attribute name="Material" value="Material;Materials/ship.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="111">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="18.077 3.13751 -21.1359" />
+			<attribute name="Rotation" value="0.950005 0 -0.312234 0" />
+			<attribute name="Scale" value="2.24059 2.24059 2.24059" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777344">
+				<attribute name="Model" value="Model;Models/Ship.mdl" />
+				<attribute name="Material" value="Material;Materials/ship.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+		<node id="112">
+			<attribute name="Is Enabled" value="true" />
+			<attribute name="Name" value="local" />
+			<attribute name="Tags" />
+			<attribute name="Position" value="24.8233 3.07377 -25.5495" />
+			<attribute name="Rotation" value="0.792913 0 -0.609335 0" />
+			<attribute name="Scale" value="1.9705 1.9705 1.9705" />
+			<attribute name="Variables" />
+			<component type="StaticModel" id="16777345">
+				<attribute name="Model" value="Model;Models/Ship.mdl" />
+				<attribute name="Material" value="Material;Materials/ship.xml" />
+				<attribute name="Cast Shadows" value="true" />
+			</component>
+		</node>
+	</node>
+	<node id="16777225">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="camera" />
+		<attribute name="Tags" />
+		<attribute name="Position" value="0 15 0" />
+		<attribute name="Rotation" value="0.853553 0.353553 0.353553 -0.146447" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="SoundListener" id="16777346" />
+		<component type="Camera" id="16777347">
+			<attribute name="Far Clip" value="400" />
+			<attribute name="Aspect Ratio" value="1.78534" />
+		</component>
+	</node>
+</node>
