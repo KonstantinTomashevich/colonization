@@ -25,6 +25,7 @@
 		<attribute name="Max Anchor" value="1 1" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Enable Anchor" value="true" />
+        <attribute name="Opacity" value="0.65" />
 	</element>
 	<element type="Text">
 		<attribute name="Name" value="title" />
@@ -37,6 +38,7 @@
 		<attribute name="Top Right Color" value="0.6 0.6 0.6 1" />
 		<attribute name="Bottom Left Color" value="0.6 0.6 0.6 1" />
 		<attribute name="Bottom Right Color" value="0.6 0.6 0.6 1" />
+        <attribute name="Opacity" value="1" />
 		<attribute name="Variables">
 			<variant hash="234597041" type="String" value="disable" name="WidthDependency" />
 			<variant hash="2184685394" type="String" value="disable" name="HeightDependency" />

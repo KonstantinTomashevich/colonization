@@ -24,6 +24,7 @@
 		<attribute name="Name" value="playerStatsWindow" />
 		<attribute name="Size" value="282 141" />
 		<attribute name="Pivot" value="0 0" />
+        <attribute name="Opacity" value="0.65" />
 		<attribute name="Variables">
 			<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 			<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -81,6 +82,7 @@
 		<attribute name="Enable Anchor" value="true" />
 		<attribute name="Bring To Front" value="true" />
 		<attribute name="Bring To Back" value="false" />
+        <attribute name="Opacity" value="0.65" />
 		<attribute name="Variables">
 			<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 			<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -138,6 +140,7 @@
 		<attribute name="Position" value="683 458" />
 		<attribute name="Size" value="683 247" />
 		<attribute name="Pivot" value="0 0" />
+        <attribute name="Opacity" value="0.65" />
 		<attribute name="Variables">
 			<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 			<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -283,6 +286,7 @@
 			<attribute name="Position" value="20 143" />
 			<attribute name="Size" value="239 37" />
 			<attribute name="Pivot" value="0 0" />
+            <attribute name="Opacity" value="0.65" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -341,6 +345,7 @@
 		<attribute name="Size" value="683 247" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Is Visible" value="false" />
+        <attribute name="Opacity" value="0.65" />
 		<attribute name="Variables">
 			<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 			<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -398,6 +403,7 @@
 			<attribute name="Position" value="20 74" />
 			<attribute name="Size" value="239 37" />
 			<attribute name="Pivot" value="0 0" />
+            <attribute name="Opacity" value="0.65" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -454,6 +460,7 @@
 			<attribute name="Position" value="20 111" />
 			<attribute name="Size" value="239 37" />
 			<attribute name="Pivot" value="0 0" />
+            <attribute name="Opacity" value="0.65" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -510,6 +517,7 @@
 			<attribute name="Position" value="20 148" />
 			<attribute name="Size" value="239 37" />
 			<attribute name="Pivot" value="0 0" />
+            <attribute name="Opacity" value="0.65" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -566,6 +574,7 @@
 			<attribute name="Position" value="20 185" />
 			<attribute name="Size" value="239 37" />
 			<attribute name="Pivot" value="0 0" />
+            <attribute name="Opacity" value="0.65" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -674,6 +683,7 @@
 				<attribute name="Name" value="investToFarms" />
 				<attribute name="Size" value="170 29" />
 				<attribute name="Pivot" value="0 0" />
+                <attribute name="Opacity" value="0.65" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -731,6 +741,7 @@
 				<attribute name="Position" value="0 29" />
 				<attribute name="Size" value="170 29" />
 				<attribute name="Pivot" value="0 0" />
+                <attribute name="Opacity" value="0.65" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -788,6 +799,7 @@
 				<attribute name="Position" value="0 59" />
 				<attribute name="Size" value="170 29" />
 				<attribute name="Pivot" value="0 0" />
+                <attribute name="Opacity" value="0.65" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -845,6 +857,7 @@
 				<attribute name="Position" value="0 88" />
 				<attribute name="Size" value="170 29" />
 				<attribute name="Pivot" value="0 0" />
+                <attribute name="Opacity" value="0.65" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -902,6 +915,7 @@
 				<attribute name="Position" value="0 118" />
 				<attribute name="Size" value="170 29" />
 				<attribute name="Pivot" value="0 0" />
+                <attribute name="Opacity" value="0.65" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -960,6 +974,7 @@
 			<attribute name="Position" value="273 185" />
 			<attribute name="Size" value="375 37" />
 			<attribute name="Pivot" value="0 0" />
+            <attribute name="Opacity" value="0.65" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />

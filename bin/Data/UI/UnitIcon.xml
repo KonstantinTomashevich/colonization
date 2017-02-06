@@ -23,6 +23,7 @@
 		<attribute name="Max Anchor" value="1 1" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Enable Anchor" value="true" />
+        <attribute name="Opacity" value="0.65" />
 	</element>
 	<element type="BorderImage" style="ArmyIcon">
 		<attribute name="Name" value="typeIcon" />
@@ -30,5 +31,6 @@
 		<attribute name="Max Anchor" value="1 1" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Enable Anchor" value="true" />
+        <attribute name="Opacity" value="1" />
 	</element>
 </element>
