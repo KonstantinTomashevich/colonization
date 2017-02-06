@@ -13,6 +13,10 @@ class MainMenu : ScriptObject
         Camera @camera = cameraNode.GetComponent ("Camera");
         Viewport @viewport = Viewport (scene, camera);
         renderer.viewports [0] = viewport;
+
+        XMLFile @renderPathAddition = cache.GetResource ("XMLFile", "RenderPath/Ingame_DeferredHWDepth.xml");
+        renderer.viewports [0].renderPath.Load (renderPathAddition);
+        renderer.viewports [0].renderPath.SetEnabled ("MapMask", false);
     }
 
     MainMenu ()

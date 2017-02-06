@@ -39,10 +39,9 @@ class RenderPathUpdater : ScriptObject
 
     void Start ()
     {
-        renderer.viewports [0].renderPath.RemoveCommands ("MapMask");
-
-        XMLFile @renderPathAddition = cache.GetResource ("XMLFile", "RenderPath/Ingame_DeferredHWDepth.xml");
-        renderer.viewports [0].renderPath.Load (renderPathAddition);
+        XMLFile @renderPathXML = cache.GetResource ("XMLFile", "RenderPath/Ingame_DeferredHWDepth.xml");
+        renderer.viewports [0].renderPath.Load (renderPathXML);
+        renderer.viewports [0].renderPath.SetEnabled ("MapMask", true);
         UpdateShader ();
     }
 
