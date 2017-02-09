@@ -9,8 +9,9 @@ class ClientUi : ScriptObject
     protected XMLFile @style_;
     protected XMLFile @billboardXML_;
     protected XMLFile @unitIconXML_;
+    protected int messagesShowOffset_;
 
-    protected int MAX_MESSAGES_IN_CACHE_COUNT = 7;
+    protected int MAX_MESSAGES_IN_CACHE_COUNT = 40;
     protected int MAX_MESSAGES_IN_PAGE_COUNT = 7;
 
     protected void UpdateSelection ()
@@ -419,9 +420,24 @@ class ClientUi : ScriptObject
         }
 
         String chatText = "";
+        Window @chatWindow = ui.root.GetChild ("ingame").GetChild ("chatWindow");
         if (messagesList.length > 0)
         {
-            for (int index = 0; index < messagesList.length; index++)
+            if (messagesShowOffset_ < MAX_MESSAGES_IN_PAGE_COUNT)
+                messagesShowOffset_ = MAX_MESSAGES_IN_PAGE_COUNT;
+            else if (messagesShowOffset_ > messagesList.length and messagesList.length > MAX_MESSAGES_IN_PAGE_COUNT)
+                messagesShowOffset_ = messagesList.length;
+
+            int startIndex = messagesList.length - messagesShowOffset_;
+            if (startIndex < 0)
+                startIndex = 0;
+
+            Text @messagesInfo = chatWindow.GetChild ("messagesInfo");
+            messagesInfo.text = "Showing messages from " + startIndex + " to " + (startIndex + MAX_MESSAGES_IN_PAGE_COUNT) + ".";
+
+            for (int index = startIndex;
+                (index < messagesList.length) and (index < (startIndex + MAX_MESSAGES_IN_PAGE_COUNT));
+                index++)
             {
                 VariantMap messageData = messagesList [index].GetVariantMap ();
                 bool isPrivate = messageData ["isPrivate"].GetBool ();
@@ -434,7 +450,6 @@ class ClientUi : ScriptObject
             }
         }
 
-        Window @chatWindow = ui.root.GetChild ("ingame").GetChild ("chatWindow");
         Text @chatMessagesText = chatWindow.GetChild ("chatMessages");
         chatMessagesText.text = chatText;
     }
@@ -443,6 +458,7 @@ class ClientUi : ScriptObject
     {
         isSceneLoaded_ = false;
         untilSelectionUpdate_ = 0.001f;
+        messagesShowOffset_ = MAX_MESSAGES_IN_PAGE_COUNT;
     }
 
     ~ClientUi ()
@@ -489,6 +505,8 @@ class ClientUi : ScriptObject
         Button @showHideButton = chatWindow.GetChild ("showHideButton");
         Button @sendPublicMessageButton = chatWindow.GetChild ("sendPublicMessage");
         Button @sendPrivateMessageButton = chatWindow.GetChild ("sendPrivateMessage");
+        Button @earlierMessagesButton = chatWindow.GetChild ("earlierMessagesButton");
+        Button @laterMessagesButton = chatWindow.GetChild ("laterMessagesButton");
 
         SubscribeToEvent (exitButton, "Released", "HandleExitClick");
         SubscribeToEvent (basicInfoButton, "Released", "HandleBasicInfoClick");
@@ -507,6 +525,8 @@ class ClientUi : ScriptObject
         SubscribeToEvent (showHideButton, "Released", "HandleToggleChatWindowClick");
         SubscribeToEvent (sendPublicMessageButton, "Released", "HandleSendPublicMessageClick");
         SubscribeToEvent (sendPrivateMessageButton, "Released", "HandleSendPrivateMessageClick");
+        SubscribeToEvent (earlierMessagesButton, "Released", "HandleShowEarlierMessagesClick");
+        SubscribeToEvent (laterMessagesButton, "Released", "HandleShowLaterMessagesClick");
 
         ScriptInstance @uiResizerInstance = node.CreateChild ("UiResizer", LOCAL).CreateComponent ("ScriptInstance");
         uiResizerInstance.CreateObject (cache.GetResource ("ScriptFile",
@@ -667,5 +687,15 @@ class ClientUi : ScriptObject
     void HandleSendPrivateMessageClick ()
     {
 
+    }
+
+    void HandleShowEarlierMessagesClick ()
+    {
+        messagesShowOffset_ += 1;
+    }
+
+    void HandleShowLaterMessagesClick ()
+    {
+        messagesShowOffset_ -= 1;
     }
 };
