@@ -168,19 +168,22 @@ class SceneManager : ScriptObject
 
     protected void UpdateCameraPositionByKeyboardInput (float timeStep)
     {
-        Vector3 positionDelta;
-        if (input.keyDown [KEY_A])
-            positionDelta.x -= CAMERA_MOVE_SPEED;
-        if (input.keyDown [KEY_D])
-            positionDelta.x += CAMERA_MOVE_SPEED;
+        if (not ui.root.GetChild ("ingame").GetChild ("chatWindow").GetChild ("messageEdit").focus)
+        {
+            Vector3 positionDelta;
+            if (input.keyDown [KEY_A])
+                positionDelta.x -= CAMERA_MOVE_SPEED;
+            if (input.keyDown [KEY_D])
+                positionDelta.x += CAMERA_MOVE_SPEED;
 
-        if (input.keyDown [KEY_S])
-            positionDelta.z -= CAMERA_MOVE_SPEED;
-        if (input.keyDown [KEY_W])
-            positionDelta.z += CAMERA_MOVE_SPEED;
+            if (input.keyDown [KEY_S])
+                positionDelta.z -= CAMERA_MOVE_SPEED;
+            if (input.keyDown [KEY_W])
+                positionDelta.z += CAMERA_MOVE_SPEED;
 
-        positionDelta = positionDelta * timeStep;
-        cameraNode_.worldPosition = cameraNode_.worldPosition + positionDelta;
+            positionDelta = positionDelta * timeStep;
+            cameraNode_.worldPosition = cameraNode_.worldPosition + positionDelta;
+        }
     }
 
     SceneManager ()

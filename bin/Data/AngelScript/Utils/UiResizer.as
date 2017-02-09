@@ -24,8 +24,11 @@ class UiResizer : ScriptObject
         for (int index = 0; index < children.length; index++)
         {
             UIElement @childElement = children [index];
-            ProcessElement (childElement);
-            ProcessChildren (childElement);
+            if (not childElement.internal)
+            {
+                ProcessElement (childElement);
+                ProcessChildren (childElement);
+            }
         }
     }
 
@@ -77,13 +80,21 @@ class UiResizer : ScriptObject
                              dependenciesMap [heightDependency].GetFloat () * heightModifer);
         }
 
-        if (element.typeName == "Text")
+        if (element.typeName == "Text" || element.typeName == "LineEdit")
         {
             StringHash fontSizeDependency = StringHash (element.vars ["FontSizeDependency"].GetString ());
             float fontSizeModifer = element.vars ["FontSizeModifer"].GetFloat ();
 
-            Text @text = element;
-            text.fontSize = dependenciesMap [fontSizeDependency].GetFloat () * fontSizeModifer;
+            if (element.typeName == "Text")
+            {
+                Text @text = element;
+                text.fontSize = dependenciesMap [fontSizeDependency].GetFloat () * fontSizeModifer;
+            }
+            else if (element.typeName == "LineEdit")
+            {
+                LineEdit @lineEdit = element;
+                lineEdit.textElement.fontSize = dependenciesMap [fontSizeDependency].GetFloat () * fontSizeModifer;
+            }
         }
     }
 

@@ -58,4 +58,28 @@
         <attribute name="Image Rect" value="1 1158 513 1670" />
         <attribute name="Border" value="0 0 0 0" />
     </element>
+
+    <element type="LineEdit">
+        <attribute name="Texture" value="Texture2D;Textures/ColonizatorsUI.png" />
+        <attribute name="Blend Mode" value="alpha" />
+        <attribute name="Image Rect" value="1 901 1025 1157" />
+        <attribute name="Border" value="0 0 0 0" />
+        <element type="Text" internal="true">
+            <attribute name="Font" value="Font;Fonts/BlueHighway.ttf" />
+            <attribute name="Font Size" value="30" />
+            <attribute name="Color" value="0.8 0.8 0.8 1.0" />
+            <attribute name="Text Effect" value="Stroke" />
+            <attribute name="Stroke Thickness" value="1" />
+        </element>
+        <element type="BorderImage" internal="true">
+            <attribute name="Texture" value="Texture2D;Textures/ColonizatorsUI.png" />
+            <attribute name="Size" value="1 1" />
+            <attribute name="Priority" value="1" />
+            <attribute name="Image Rect" value="1 901 2 902" />
+            <attribute name="Vert Alignment" value="Center" />
+            <attribute name="Horiz Alignment" value="Center" />
+            <attribute name="Min Size" value="2 2" />
+            <attribute name="Opacity" value="0.65" />
+        </element>
+    </element>
 </elements>

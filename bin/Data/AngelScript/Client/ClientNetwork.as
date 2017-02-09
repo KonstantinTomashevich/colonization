@@ -45,6 +45,8 @@ class ClientNetwork : ScriptObject
     {
         if (eventData ["MessageID"].GetInt () == STC_NETWORK_MESSAGE_SEND_PLAYER_STATS)
             HandlePlayerStatsMessage (eventData);
+        else if (eventData ["MessageID"].GetInt () == STC_NETWORK_MESSAGE_CHAT_MESSAGE)
+            HandleChatMessage (eventData);
     }
 
     void HandlePlayerStatsMessage (VariantMap &eventData)
@@ -54,5 +56,24 @@ class ClientNetwork : ScriptObject
         float points = buffer.ReadFloat ();
         node.parent.vars ["gold"] = gold;
         node.parent.vars ["points"] = points;
+    }
+
+    void HandleChatMessage (VariantMap &eventData)
+    {
+        VectorBuffer buffer = eventData ["Data"].GetBuffer ();
+        bool isPrivate = buffer.ReadBool ();
+        String sender = buffer.ReadString ();
+        String message = buffer.ReadString ();
+        String timeStamp = time.timeStamp;
+        timeStamp = timeStamp.Substring (8, 11);
+
+        Array <Variant> messagesList = node.parent.GetChild ("uiScriptNode").vars ["messagesList"].GetVariantVector ();
+        VariantMap messageData = VariantMap ();
+        messageData ["isPrivate"] = Variant (isPrivate);
+        messageData ["sender"] = Variant (sender);
+        messageData ["message"] = Variant (message);
+        messageData ["timeStamp"] = Variant (timeStamp);
+        messagesList.Push (Variant (messageData));
+        node.parent.GetChild ("uiScriptNode").vars ["messagesList"] = Variant (messagesList);
     }
 };

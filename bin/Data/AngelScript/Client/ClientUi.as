@@ -10,6 +10,9 @@ class ClientUi : ScriptObject
     protected XMLFile @billboardXML_;
     protected XMLFile @unitIconXML_;
 
+    protected int MAX_MESSAGES_IN_CACHE_COUNT = 7;
+    protected int MAX_MESSAGES_IN_PAGE_COUNT = 7;
+
     protected void UpdateSelection ()
     {
         StringHash selectionType = node.parent.vars ["selectionType"].GetStringHash ();
@@ -407,6 +410,35 @@ class ClientUi : ScriptObject
             backgroundButton.color = Color (0.5f, 0.5f, 0.5f, 1.0f);
     }
 
+    protected void UpdateChatMessages ()
+    {
+        Array <Variant> messagesList = node.vars ["messagesList"].GetVariantVector ();
+        while (messagesList.length > MAX_MESSAGES_IN_CACHE_COUNT)
+        {
+            messagesList.Erase (0);
+        }
+
+        String chatText = "";
+        if (messagesList.length > 0)
+        {
+            for (int index = 0; index < messagesList.length; index++)
+            {
+                VariantMap messageData = messagesList [index].GetVariantMap ();
+                bool isPrivate = messageData ["isPrivate"].GetBool ();
+                String sender = messageData ["sender"].GetString ();
+                String message = messageData ["message"].GetString ();
+                String timeStamp = messageData ["timeStamp"].GetString ();
+
+                chatText += (isPrivate ? "[Private] [" : "[Public] [") + timeStamp + "] " +
+                            sender + ": " + message + "\n";
+            }
+        }
+
+        Window @chatWindow = ui.root.GetChild ("ingame").GetChild ("chatWindow");
+        Text @chatMessagesText = chatWindow.GetChild ("chatMessages");
+        chatMessagesText.text = chatText;
+    }
+
     ClientUi ()
     {
         isSceneLoaded_ = false;
@@ -437,6 +469,7 @@ class ClientUi : ScriptObject
         Button @exitButton = uiRoot.GetChild ("exitButton");
         Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
         Window @unitInfoWindow = ui.root.GetChild ("ingame").GetChild ("unitInfoWindow");
+        Window @chatWindow = ui.root.GetChild ("ingame").GetChild ("chatWindow");
         districtInfoWindow.vars ["infoType"] = StringHash ("Basic");
 
         Button @basicInfoButton = districtInfoWindow.GetChild ("basicInfoButton");
@@ -453,6 +486,10 @@ class ClientUi : ScriptObject
         Button @investToDefenseButton = investButtons.GetChild ("investToDefense");
         Button @moveToButton = unitInfoWindow.GetChild ("moveToButton");
 
+        Button @showHideButton = chatWindow.GetChild ("showHideButton");
+        Button @sendPublicMessageButton = chatWindow.GetChild ("sendPublicMessage");
+        Button @sendPrivateMessageButton = chatWindow.GetChild ("sendPrivateMessage");
+
         SubscribeToEvent (exitButton, "Released", "HandleExitClick");
         SubscribeToEvent (basicInfoButton, "Released", "HandleBasicInfoClick");
         SubscribeToEvent (resourcesInfoButton, "Released", "HandleResourcesInfoClick");
@@ -467,6 +504,10 @@ class ClientUi : ScriptObject
         SubscribeToEvent (investToDefenseButton, "Released", "HandleInvestClick");
         SubscribeToEvent (moveToButton, "Released", "HandleMoveUnitToClick");
 
+        SubscribeToEvent (showHideButton, "Released", "HandleToggleChatWindowClick");
+        SubscribeToEvent (sendPublicMessageButton, "Released", "HandleSendPublicMessageClick");
+        SubscribeToEvent (sendPrivateMessageButton, "Released", "HandleSendPrivateMessageClick");
+
         ScriptInstance @uiResizerInstance = node.CreateChild ("UiResizer", LOCAL).CreateComponent ("ScriptInstance");
         uiResizerInstance.CreateObject (cache.GetResource ("ScriptFile",
                                                          "AngelScript/Utils/UiResizer.as"),
@@ -477,6 +518,7 @@ class ClientUi : ScriptObject
 
     void Update (float timeStep)
     {
+        UpdateChatMessages ();
         untilSelectionUpdate_ -= timeStep;
 
         Text @playerStatsText = ui.root.GetChild ("ingame").GetChild ("playerStatsWindow").GetChild ("playerStatsInfo");
@@ -583,5 +625,47 @@ class ClientUi : ScriptObject
     void HandleMoveUnitToClick ()
     {
         node.parent.vars ["currentClickCommand"] = StringHash ("MoveUnit");
+    }
+
+    void HandleToggleChatWindowClick ()
+    {
+        Window @chatWindow = ui.root.GetChild ("ingame").GetChild ("chatWindow");
+        float windowYModifer = chatWindow.vars ["YModifer"].GetFloat ();
+        if (windowYModifer == 0.1f)
+        {
+            chatWindow.vars ["YModifer"] = Variant (0.35f);
+            Text @text = chatWindow.GetChild ("showHideButton").GetChild ("text");
+            text.text = "Hide";
+        }
+        else
+        {
+            chatWindow.vars ["YModifer"] = Variant (0.1f);
+            Text @text = chatWindow.GetChild ("showHideButton").GetChild ("text");
+            text.text = "Show";
+        }
+    }
+
+    void HandleSendPublicMessageClick ()
+    {
+        Window @chatWindow = ui.root.GetChild ("ingame").GetChild ("chatWindow");
+        LineEdit @messageEdit = chatWindow.GetChild ("messageEdit");
+        String message = messageEdit.text;
+        messageEdit.text = "";
+
+        Array <Variant> networkTasks = node.parent.GetChild ("networkScriptNode").vars ["tasksList"].GetVariantVector ();
+        VariantMap taskData;
+        taskData ["type"] = CTS_NETWORK_MESSAGE_SEND_CHAT_MESSAGE;
+
+        VectorBuffer buffer = VectorBuffer ();
+        buffer.WriteString (message);
+
+        taskData ["buffer"] = buffer;
+        networkTasks.Push (Variant (taskData));
+        node.parent.GetChild ("networkScriptNode").vars ["tasksList"] = networkTasks;
+    }
+
+    void HandleSendPrivateMessageClick ()
+    {
+
     }
 };
