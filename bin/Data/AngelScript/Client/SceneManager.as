@@ -59,7 +59,6 @@ class SceneManager : ScriptObject
     {
         if (unit.node.GetChild ("local") is null)
         {
-            // TODO: Create prefabs for all unit types, not only for fleets.
             if (unit.unitType == UNIT_FLEET)
                 LoadPrefabOf (unit.node, true, "local", "Objects/ShipLocal.xml");
             else if (unit.unitType == UNIT_TRADERS)

@@ -1,5 +1,6 @@
 #include "AngelScript/Utils/ClientUtils.as"
 
+// TODO: Set some ui elements color to player color.
 class ClientUi : ScriptObject
 {
     protected bool isSceneLoaded_;

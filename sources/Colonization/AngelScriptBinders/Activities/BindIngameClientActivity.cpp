@@ -4,7 +4,7 @@
 #include <Urho3D/AngelScript/APITemplates.h>
 #include <Colonization/Utils/Activity.hpp>
 #include <Colonization/Activities/IngameClientActivity.hpp>
-#include <Colonization/AngelScriptBinders/BindActivity.hpp>
+#include <Colonization/AngelScriptBinders/Activities/BindActivity.hpp>
 
 namespace Colonization
 {
