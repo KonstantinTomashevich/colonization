@@ -3,14 +3,17 @@
 // TODO: Set some ui elements color to player color.
 class ClientUi : ScriptObject
 {
-    protected bool isSceneLoaded_;
-    protected float untilSelectionUpdate_;
     protected UIElement @billboardsRoot_;
     protected XMLFile @style_;
     protected XMLFile @billboardXML_;
     protected XMLFile @unitIconXML_;
-    protected int messagesShowOffset_;
 
+    protected bool isSceneLoaded_;
+    protected float untilSelectionUpdate_;
+    protected int messagesShowOffset_;
+    protected float untilMessagesScrollUpdate_;
+
+    protected int MESSAGES_SCROLL_SPEED = 5;
     protected int MAX_MESSAGES_IN_CACHE_COUNT = 40;
     protected int MAX_MESSAGES_IN_PAGE_COUNT = 7;
 
@@ -411,6 +414,22 @@ class ClientUi : ScriptObject
             backgroundButton.color = Color (0.5f, 0.5f, 0.5f, 1.0f);
     }
 
+    protected void UpdateChatMessagesScroll ()
+    {
+        Window @chatWindow = ui.root.GetChild ("ingame").GetChild ("chatWindow");
+        Button @earlierMessagesButton = chatWindow.GetChild ("earlierMessagesButton");
+        Button @laterMessagesButton = chatWindow.GetChild ("laterMessagesButton");
+
+        if (earlierMessagesButton.pressed)
+        {
+            messagesShowOffset_ += 1;
+        }
+        else if (laterMessagesButton.pressed)
+        {
+            messagesShowOffset_ -= 1;
+        }
+    }
+
     protected void UpdateChatMessages ()
     {
         Array <Variant> messagesList = node.vars ["messagesList"].GetVariantVector ();
@@ -458,6 +477,7 @@ class ClientUi : ScriptObject
     {
         isSceneLoaded_ = false;
         untilSelectionUpdate_ = 0.001f;
+        untilMessagesScrollUpdate_ = 1.0f / (MESSAGES_SCROLL_SPEED * 1.0f);
         messagesShowOffset_ = MAX_MESSAGES_IN_PAGE_COUNT;
     }
 
@@ -505,8 +525,6 @@ class ClientUi : ScriptObject
         Button @showHideButton = chatWindow.GetChild ("showHideButton");
         Button @sendPublicMessageButton = chatWindow.GetChild ("sendPublicMessage");
         Button @sendPrivateMessageButton = chatWindow.GetChild ("sendPrivateMessage");
-        Button @earlierMessagesButton = chatWindow.GetChild ("earlierMessagesButton");
-        Button @laterMessagesButton = chatWindow.GetChild ("laterMessagesButton");
 
         SubscribeToEvent (exitButton, "Released", "HandleExitClick");
         SubscribeToEvent (basicInfoButton, "Released", "HandleBasicInfoClick");
@@ -525,8 +543,6 @@ class ClientUi : ScriptObject
         SubscribeToEvent (showHideButton, "Released", "HandleToggleChatWindowClick");
         SubscribeToEvent (sendPublicMessageButton, "Released", "HandleSendPublicMessageClick");
         SubscribeToEvent (sendPrivateMessageButton, "Released", "HandleSendPrivateMessageClick");
-        SubscribeToEvent (earlierMessagesButton, "Released", "HandleShowEarlierMessagesClick");
-        SubscribeToEvent (laterMessagesButton, "Released", "HandleShowLaterMessagesClick");
 
         ScriptInstance @uiResizerInstance = node.CreateChild ("UiResizer", LOCAL).CreateComponent ("ScriptInstance");
         uiResizerInstance.CreateObject (cache.GetResource ("ScriptFile",
@@ -538,6 +554,15 @@ class ClientUi : ScriptObject
 
     void Update (float timeStep)
     {
+        if (untilMessagesScrollUpdate_ > -1.0f)
+            untilMessagesScrollUpdate_ -= timeStep;
+
+        if (untilMessagesScrollUpdate_ <= 0.0f)
+        {
+            UpdateChatMessagesScroll ();
+            untilMessagesScrollUpdate_ = 1.0f / (MESSAGES_SCROLL_SPEED * 1.0f);
+        }
+
         UpdateChatMessages ();
         untilSelectionUpdate_ -= timeStep;
 
@@ -687,15 +712,5 @@ class ClientUi : ScriptObject
     void HandleSendPrivateMessageClick ()
     {
 
-    }
-
-    void HandleShowEarlierMessagesClick ()
-    {
-        messagesShowOffset_ += 1;
-    }
-
-    void HandleShowLaterMessagesClick ()
-    {
-        messagesShowOffset_ -= 1;
     }
 };
