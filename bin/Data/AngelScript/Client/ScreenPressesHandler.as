@@ -8,7 +8,9 @@ class ScreenPressesHandler : ScriptObject
     {
         Node @scanningNode = localNode;
         while (scanningNode !is null and scanningNode.id >= FIRST_LOCAL_ID)
+        {
             scanningNode = scanningNode.parent;
+        }
         return scanningNode;
     }
 

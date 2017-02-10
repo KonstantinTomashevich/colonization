@@ -34,11 +34,17 @@ class ClientUi : ScriptObject
     {
         StringHash selectionType = node.parent.vars ["selectionType"].GetStringHash ();
         if (selectionType == StringHash ("Unit"))
+        {
             UpdateUnitSelection ();
+        }
         else if (selectionType == StringHash ("District"))
+        {
             UpdateDistrictSelection ();
+        }
         else
+        {
             ClearSelection ();
+        }
     }
 
     protected void UpdateUnitSelection ()
@@ -58,19 +64,31 @@ class ClientUi : ScriptObject
 
             Text @typeText = unitInfoWindow.GetChild ("typeText");
             if (unit.unitType == UNIT_FLEET)
+            {
                 typeText.text = "Fleet";
+            }
             else if (unit.unitType == UNIT_TRADERS)
+            {
                 typeText.text = "Traders";
+            }
             else if (unit.unitType == UNIT_COLONIZATORS)
+            {
                 typeText.text = "Colonizators";
+            }
             else if (unit.unitType == UNIT_ARMY)
+            {
                 typeText.text = "Army";
+            }
 
             Button @moveToButton = unitInfoWindow.GetChild ("moveToButton");
             if (unit.unitType == UNIT_FLEET or unit.unitType == UNIT_ARMY)
+            {
                 moveToButton.visible = true;
+            }
             else
+            {
                 moveToButton.visible = false;
+            }
 
             Map @map = scene.GetChild ("map").GetComponent ("Map");
             Text @positionText = unitInfoWindow.GetChild ("positionText");
@@ -78,16 +96,24 @@ class ClientUi : ScriptObject
 
             String additionalInfo;
             if (unit.unitType == UNIT_FLEET)
+            {
                 additionalInfo += "War ships count: " + unit.fleetUnitWarShipsCount + ".\n";
+            }
 
             else if (unit.unitType == UNIT_TRADERS)
+            {
                 additionalInfo += "Trade goods cost: " + Floor (unit.tradersUnitTradeGoodsCost * 100.0f) / 100.0f + ".\n";
+            }
 
             else if (unit.unitType == UNIT_COLONIZATORS)
+            {
                 additionalInfo += "Colonizators count: " + unit.colonizatorsUnitColonizatorsCount + ".\n";
+            }
 
             else if (unit.unitType == UNIT_ARMY)
+            {
                 additionalInfo += "Soldiers count: " + unit.armyUnitSoldiersCount + ".\n";
+            }
 
             if (unit.GetWay ().length > 0)
             {
@@ -143,13 +169,21 @@ class ClientUi : ScriptObject
                                          node.parent.vars ["gold"].GetFloat () >= COLONIZATORS_EXPEDITION_COST;
 
         if (infoType == StringHash ("Basic"))
+        {
             UpdateDistrictBasicInfo (district, districtInfoWindow);
+        }
         else if (infoType == StringHash ("Resources"))
+        {
             UpdateDistrictResourcesInfo (district, districtInfoWindow);
+        }
         else if (infoType == StringHash ("Population"))
+        {
             UpdateDistrictPopulationInfo (district, districtInfoWindow);
+        }
         else if (infoType == StringHash ("ColonyEvolution"))
+        {
             UpdateDistrictColonyEvolutionInfo (district, districtInfoWindow);
+        }
     }
 
     protected void ClearSelection ()
@@ -168,27 +202,47 @@ class ClientUi : ScriptObject
     {
         String infoText = "";
         if (district.isSea)
+        {
             infoText += "Sea district.\n";
+        }
         else if (district.hasColony)
+        {
             infoText += "Colonized by " + district.colonyOwnerName + ".\n";
+        }
         else if (district.isImpassable)
+        {
             infoText += "Uninhabitable.\n";
+        }
         else
+        {
             infoText += "Can be colonized.\n";
+        }
 
         infoText += "Climate: ";
         if (district.climate == CLIMATE_COLD)
+        {
             infoText += "cold.\n";
+        }
         else if (district.climate == CLIMATE_DESERT)
+        {
             infoText += "desert.\n";
+        }
         else if (district.climate == CLIMATE_HOT)
+        {
             infoText += "hot.\n";
+        }
         else if (district.climate == CLIMATE_TEMPERATE)
+        {
             infoText += "temperate.\n";
+        }
         else if (district.climate == CLIMATE_TEMPERATE_CONTINENTAL)
+        {
             infoText += "temperate continental.\n";
+        }
         else if (district.climate == CLIMATE_TROPICAL)
+        {
             infoText += "tropical.\n";
+        }
 
         Text @informationTextUi = districtInfoWindow.GetChild ("informationText");
         informationTextUi.text = infoText;
@@ -202,29 +256,49 @@ class ClientUi : ScriptObject
 
         infoText += "Climate: ";
         if (district.climate == CLIMATE_COLD)
+        {
             infoText += "cold.\n";
+        }
         else if (district.climate == CLIMATE_DESERT)
+        {
             infoText += "desert.\n";
+        }
         else if (district.climate == CLIMATE_HOT)
+        {
             infoText += "hot.\n";
+        }
         else if (district.climate == CLIMATE_TEMPERATE)
+        {
             infoText += "temperate.\n";
+        }
         else if (district.climate == CLIMATE_TEMPERATE_CONTINENTAL)
+        {
             infoText += "temperate continental.\n";
+        }
         else if (district.climate == CLIMATE_TROPICAL)
+        {
             infoText += "tropical.\n";
+        }
 
         infoText += "Forest square: " + FloorToInt (district.forestsSquare) + ".\n";
         infoText += "Forest reproductivity: " + Floor (district.forestsReproductivity * 100) / 100 + ".\n";
 
         if (district.hasCoalDeposits)
+        {
             infoText += "Has coal deposits.\n";
+        }
         if (district.hasIronDeposits)
+        {
             infoText += "Has iron deposits.\n";
+        }
         if (district.hasSilverDeposits)
+        {
             infoText += "Has silver deposits.\n";
+        }
         if (district.hasGoldDeposits)
+        {
             infoText += "Has gold deposits.\n";
+        }
 
         Text @informationTextUi = districtInfoWindow.GetChild ("informationText");
         informationTextUi.text = infoText;
@@ -325,13 +399,21 @@ class ClientUi : ScriptObject
         Text @title = billboard.GetChild ("title");
         String titleText = district.name + "\n";
         if (district.isSea)
+        {
             titleText += "[under water]";
+        }
         else if (district.isImpassable)
+        {
             titleText += "[impassable]";
+        }
         else if (district.hasColony)
+        {
             titleText += "[colony of " + district.colonyOwnerName + "]";
+        }
         else
+        {
             titleText += "[can be colonized]";
+        }
         title.text = titleText;
     }
 
@@ -424,7 +506,9 @@ class ClientUi : ScriptObject
             backgroundButton.color = playerInfo.color;
         }
         else
+        {
             backgroundButton.color = NEUTRAL_COLOR;
+        }
     }
 
     protected void UpdateChatMessagesScroll ()
@@ -456,13 +540,19 @@ class ClientUi : ScriptObject
         if (messagesList.length > 0)
         {
             if (messagesShowOffset_ < MAX_MESSAGES_IN_PAGE_COUNT)
+            {
                 messagesShowOffset_ = MAX_MESSAGES_IN_PAGE_COUNT;
+            }
             else if (messagesShowOffset_ > messagesList.length and messagesList.length > MAX_MESSAGES_IN_PAGE_COUNT)
+            {
                 messagesShowOffset_ = messagesList.length;
+            }
 
             int startIndex = messagesList.length - messagesShowOffset_;
             if (startIndex < 0)
+            {
                 startIndex = 0;
+            }
 
             Text @messagesInfo = chatWindow.GetChild ("messagesInfo");
             messagesInfo.text = "Showing messages from " + startIndex + " to " + (startIndex + MAX_MESSAGES_IN_PAGE_COUNT) + ".";
@@ -571,7 +661,9 @@ class ClientUi : ScriptObject
         untilMessagesScrollUpdate_ -= timeStep;
         untilSelectionUpdate_ -= timeStep;
         if (untilNewMessage_ >= 0.0f)
+        {
             untilNewMessage_ -= timeStep;
+        }
 
         if (untilMessagesScrollUpdate_ <= 0.0f)
         {
@@ -591,7 +683,9 @@ class ClientUi : ScriptObject
         playerStatsText.text = playerStatsInfo;
 
         if (!isSceneLoaded_)
+        {
             isSceneLoaded_ = CheckIsSceneLoaded (scene);
+        }
         else
         {
             ProcessDistrictBillboards ();

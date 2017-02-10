@@ -54,10 +54,14 @@ class Client : ScriptObject
     void Update (float timeStep)
     {
         if (node.vars ["goToMenuCalled"].GetBool ())
+        {
             GoToMainMenuState ();
+        }
 
         if (!isSceneLoaded_)
+        {
             isSceneLoaded_ = CheckIsSceneLoaded (scene);
+        }
     }
 
     void Stop ()
@@ -95,7 +99,9 @@ class Client : ScriptObject
     void GoToMainMenuState ()
     {
         for (int index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
+        {
             activitiesApplication_.StopActivityNextFrame (activitiesApplication_.GetActivityByIndex (index));
+        }
 
         MainMenuActivity @mainMenuActivity = MainMenuActivity ();
         activitiesApplication_.SetupActivityNextFrame (mainMenuActivity);

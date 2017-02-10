@@ -8,12 +8,16 @@ class UiResizer : ScriptObject
     {
         UIElement @uiRoot = ui.root;
         if (startElementName_ != "UIRoot")
+        {
             uiRoot = ui.root.GetChild (startElementName_, true);
+        }
 
         if (uiRoot !is null)
         {
             if (uiRoot !is ui.root)
+            {
                 ProcessElement (uiRoot);
+            }
             ProcessChildren (uiRoot);
         }
     }

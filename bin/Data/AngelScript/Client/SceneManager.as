@@ -26,15 +26,23 @@ class SceneManager : ScriptObject
     {
         Node @localNode;
         if (asChild)
+        {
             localNode = replicatedNode.CreateChild ("local", LOCAL);
+        }
         else
+        {
             localNode = scene.GetChild ("locals").CreateChild (replicatedNode.name, LOCAL);
+        }
 
         String prefabPath;
         if (overridePrefabPath.empty)
+        {
             prefabPath = replicatedNode.vars ["PrefabXMLPath"].GetString ();
+        }
         else
+        {
             prefabPath = overridePrefabPath;
+        }
 
         XMLFile @prefabXML = cache.GetResource ("XMLFile", prefabPath);
         localNode.LoadXML (prefabXML.root);
@@ -54,13 +62,15 @@ class SceneManager : ScriptObject
             if (district.hasColony)
             {
                 if (districtNode.GetChild ("local") is null)
+                {
                     LoadPrefabOf (districtNode, true, "local", "Objects/ColonyLocal.xml");
+                }
                 district.node.GetChild ("local").enabled = true;
 
                 Vector3 colonyPosition = district.colonyPosition;
                 districtNode.GetChild ("local").position = colonyPosition;
             }
-            else if (district.node.GetChild ("local") !is null)
+            else if (districtNode.GetChild ("local") !is null)
             {
                 district.node.GetChild ("local").enabled = false;
             }
@@ -72,13 +82,21 @@ class SceneManager : ScriptObject
         if (unit.node.GetChild ("local") is null)
         {
             if (unit.unitType == UNIT_FLEET)
+            {
                 LoadPrefabOf (unit.node, true, "local", "Objects/ShipLocal.xml");
+            }
             else if (unit.unitType == UNIT_TRADERS)
+            {
                 LoadPrefabOf (unit.node, true, "local", "Objects/ShipLocal.xml");
+            }
             else if (unit.unitType == UNIT_COLONIZATORS)
+            {
                 LoadPrefabOf (unit.node, true, "local", "Objects/ShipLocal.xml");
+            }
             else if (unit.unitType == UNIT_ARMY)
+            {
                 LoadPrefabOf (unit.node, true, "local", "Objects/ShipLocal.xml");
+            }
         }
 
         unit.node.GetChild ("local").enabled = true;
@@ -184,14 +202,21 @@ class SceneManager : ScriptObject
         {
             Vector3 positionDelta;
             if (input.keyDown [KEY_GO_LEFT])
+            {
                 positionDelta.x -= CAMERA_MOVE_SPEED;
+            }
             if (input.keyDown [KEY_GO_RIGHT])
+            {
                 positionDelta.x += CAMERA_MOVE_SPEED;
-
+            }
             if (input.keyDown [KEY_GO_BACK])
+            {
                 positionDelta.z -= CAMERA_MOVE_SPEED;
+            }
             if (input.keyDown [KEY_GO_FORWARD])
+            {
                 positionDelta.z += CAMERA_MOVE_SPEED;
+            }
 
             positionDelta = positionDelta * timeStep;
             cameraNode_.worldPosition = cameraNode_.worldPosition + positionDelta;
@@ -240,7 +265,9 @@ class SceneManager : ScriptObject
             }
 
             if (cameraNode_ !is null)
+            {
                 UpdateCameraPositionByKeyboardInput (timeStep);
+            }
 
             untilDistrictsUpdate_ -= timeStep;
             untilUnitsUpdate_ -= timeStep;

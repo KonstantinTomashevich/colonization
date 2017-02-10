@@ -5,8 +5,12 @@ shared bool CheckIsSceneLoaded (Scene @scene_)
         Array <Node @> children = scene_.GetChildren (true);
         int replicated = 0;
         for (int index = 0; index < children.length; index++)
+        {
             if (children [index].id < FIRST_LOCAL_ID)
+            {
                 replicated++;
+            }
+        }
         return (replicated == scene_.vars ["ReplicatedNodesCount"].GetInt ());
     }
     else
@@ -25,9 +29,13 @@ shared PlayerInfo @GetPlayerInfoByName (Scene @scene_, String playerName)
     }
 
     if (playerInfo.name == playerName)
+    {
         return playerInfo;
+    }
     else
+    {
         return null;
+    }
 }
 
 shared Unit @GetUnitByHash (Scene @scene_, StringHash unitHash)
@@ -42,9 +50,13 @@ shared Unit @GetUnitByHash (Scene @scene_, StringHash unitHash)
     }
 
     if (unit.hash == unitHash)
+    {
         return unit;
+    }
     else
+    {
         return null;
+    }
 }
 
 shared Array <Unit @> GetUnitsInDistrict (Scene @scene_, StringHash districtHash)
@@ -56,7 +68,9 @@ shared Array <Unit @> GetUnitsInDistrict (Scene @scene_, StringHash districtHash
     {
         Unit @unit = unitsNodes [index].GetComponent ("Unit");
         if (unit.positionHash == districtHash)
+        {
             unitsInDistrict.Push (unit);
+        }
     }
 
     return unitsInDistrict;

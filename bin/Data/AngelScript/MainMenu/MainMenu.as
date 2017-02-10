@@ -77,7 +77,9 @@ class MainMenu : ScriptObject
     void HandleStartGameClick ()
     {
         for (int index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
+        {
             activitiesApplication_.StopActivityNextFrame (activitiesApplication_.GetActivityByIndex (index));
+        }
 
         HostActivity @hostActivity = HostActivity ();
         hostActivity.serverPort = NEW_GAME_SERVER_PORT;
@@ -94,7 +96,9 @@ class MainMenu : ScriptObject
     void HandleExitClick ()
     {
         for (int index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
+        {
             activitiesApplication_.StopActivityNextFrame (activitiesApplication_.GetActivityByIndex (index));
+        }
         engine.Exit ();
     }
 };

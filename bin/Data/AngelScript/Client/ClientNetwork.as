@@ -47,9 +47,13 @@ class ClientNetwork : ScriptObject
     void HandleNetworkMessage (StringHash eventType, VariantMap &eventData)
     {
         if (eventData ["MessageID"].GetInt () == STC_NETWORK_MESSAGE_SEND_PLAYER_STATS)
+        {
             HandlePlayerStatsMessage (eventData);
+        }
         else if (eventData ["MessageID"].GetInt () == STC_NETWORK_MESSAGE_CHAT_MESSAGE)
+        {
             HandleChatMessage (eventData);
+        }
     }
 
     void HandlePlayerStatsMessage (VariantMap &eventData)
