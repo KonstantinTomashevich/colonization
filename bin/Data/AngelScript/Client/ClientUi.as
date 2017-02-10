@@ -12,10 +12,12 @@ class ClientUi : ScriptObject
     protected float untilSelectionUpdate_;
     protected int messagesShowOffset_;
     protected float untilMessagesScrollUpdate_;
+    protected float untilNewMessage_;
 
     protected int MESSAGES_SCROLL_SPEED = 5;
     protected int MAX_MESSAGES_IN_CACHE_COUNT = 40;
     protected int MAX_MESSAGES_IN_PAGE_COUNT = 7;
+    protected float NEW_MESSAGE_DELAY = 1.0f;
 
     protected void UpdateSelection ()
     {
@@ -479,6 +481,7 @@ class ClientUi : ScriptObject
         untilSelectionUpdate_ = 0.001f;
         untilMessagesScrollUpdate_ = 1.0f / (MESSAGES_SCROLL_SPEED * 1.0f);
         messagesShowOffset_ = MAX_MESSAGES_IN_PAGE_COUNT;
+        untilNewMessage_ = 0.0f;
     }
 
     ~ClientUi ()
@@ -554,8 +557,10 @@ class ClientUi : ScriptObject
 
     void Update (float timeStep)
     {
-        if (untilMessagesScrollUpdate_ > -1.0f)
-            untilMessagesScrollUpdate_ -= timeStep;
+        untilMessagesScrollUpdate_ -= timeStep;
+        untilSelectionUpdate_ -= timeStep;
+        if (untilNewMessage_ >= 0.0f)
+            untilNewMessage_ -= timeStep;
 
         if (untilMessagesScrollUpdate_ <= 0.0f)
         {
@@ -564,7 +569,8 @@ class ClientUi : ScriptObject
         }
 
         UpdateChatMessages ();
-        untilSelectionUpdate_ -= timeStep;
+        ui.root.GetChild ("ingame").GetChild ("chatWindow").GetChild ("sendPublicMessage").visible = (untilNewMessage_ <= 0.0f);
+        ui.root.GetChild ("ingame").GetChild ("chatWindow").GetChild ("sendPrivateMessage").visible = (untilNewMessage_ <= 0.0f);
 
         Text @playerStatsText = ui.root.GetChild ("ingame").GetChild ("playerStatsWindow").GetChild ("playerStatsInfo");
         String playerStatsInfo = "";
@@ -692,6 +698,7 @@ class ClientUi : ScriptObject
 
     void HandleSendPublicMessageClick ()
     {
+        untilNewMessage_ = NEW_MESSAGE_DELAY;
         Window @chatWindow = ui.root.GetChild ("ingame").GetChild ("chatWindow");
         LineEdit @messageEdit = chatWindow.GetChild ("messageEdit");
         String message = messageEdit.text;
@@ -711,6 +718,6 @@ class ClientUi : ScriptObject
 
     void HandleSendPrivateMessageClick ()
     {
-
+        untilNewMessage_ = NEW_MESSAGE_DELAY;
     }
 };
