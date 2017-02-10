@@ -10,11 +10,11 @@ const int MAP_MASK_WIDTH = 512;
 const int MAP_MASK_HEIGHT = 512;
 const int MAP_MASK_COMPONENTS = 4;
 const int MAP_MASK_DISTRICT_BORDER_LINE_WIDTH = 1;
-const float MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER = 1.0f / 0.85f;
+const float MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER = 1.0f / 0.75f;
 
-const Urho3D::Color MAP_MASK_DISTRICT_BORDER_LINE_COLOR (0.1f, 0.1f, 0.1f, 1.0f);
-const Urho3D::Color MAP_MASK_VISIBLE_DISTRICT_COLOR (0.85f, 0.85f, 0.85f, 1.0f);
-const Urho3D::Color MAP_MASK_DISTRICT_UNDER_FOG_COLOR (0.35f, 0.35f, 0.35f, 1.0f);
+const Urho3D::Color MAP_MASK_DISTRICT_BORDER_LINE_COLOR (0.10f, 0.10f, 0.10f, 1.00f);
+const Urho3D::Color MAP_MASK_VISIBLE_DISTRICT_COLOR (0.75f, 0.75f, 0.75f, 1.00f);
+const Urho3D::Color MAP_MASK_DISTRICT_UNDER_FOG_COLOR (0.30f, 0.30f, 0.30f, 1.00f);
 
 class MapMaskUpdater : public Urho3D::Component
 {
