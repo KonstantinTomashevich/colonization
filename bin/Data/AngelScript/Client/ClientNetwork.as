@@ -1,5 +1,8 @@
 class ClientNetwork : ScriptObject
 {
+    protected int TIME_STAMP_SUBSCTRING_START = 11;
+    protected int TIME_STAMP_SUBSCTRING_LENGTH = 8;
+
     ClientNetwork ()
     {
 
@@ -65,7 +68,7 @@ class ClientNetwork : ScriptObject
         String sender = buffer.ReadString ();
         String message = buffer.ReadString ();
         String timeStamp = time.timeStamp;
-        timeStamp = timeStamp.Substring (11, 8);
+        timeStamp = timeStamp.Substring (TIME_STAMP_SUBSCTRING_START, TIME_STAMP_SUBSCTRING_LENGTH);
 
         Array <Variant> messagesList = node.parent.GetChild ("uiScriptNode").vars ["messagesList"].GetVariantVector ();
         VariantMap messageData = VariantMap ();

@@ -2,13 +2,25 @@
 
 class SceneManager : ScriptObject
 {
-    protected float CAMERA_MOVE_SPEED = 2.5f;
     protected Node @cameraNode_;
     protected Node @lightNode_;
     protected bool isSceneLoaded_;
     protected bool renderPathUpdaterWillBeCreated_;
     protected float untilDistrictsUpdate_;
     protected float untilUnitsUpdate_;
+
+    protected float CAMERA_MOVE_SPEED = 2.5f;
+    protected Quaternion SUN_LIGHT_ROTATION = Quaternion (65.0f, 0.0f, 0.0f);
+    protected Vector3 CAMERA_DEFAULT_POSITION = Vector3 (2.5f, 8.0f, 2.5f);
+    protected Quaternion CAMERA_DEFAULT_ROTATION = Quaternion (50.0f, 0.0f, 0.0f);
+    protected float CAMERA_DEFAULT_FAR_CLIP = 100.0f;
+
+    protected float DISTRICTS_UPDATE_DELAY = 1.0f;
+    protected float UNITS_UPDATE_DELAY = 0.1f;
+    protected int KEY_GO_LEFT = KEY_A;
+    protected int KEY_GO_RIGHT = KEY_D;
+    protected int KEY_GO_FORWARD = KEY_W;
+    protected int KEY_GO_BACK = KEY_S;
 
     protected void LoadPrefabOf (Node @replicatedNode, bool asChild, String name, String overridePrefabPath = "")
     {
@@ -124,7 +136,7 @@ class SceneManager : ScriptObject
     protected void CreateLocalLight ()
     {
         lightNode_ = scene.CreateChild ("light", LOCAL);
-        lightNode_.rotation = Quaternion (65.0f, 0.0f, 0.0f);
+        lightNode_.rotation = SUN_LIGHT_ROTATION;
         lightNode_.position = Vector3 (0.0f, 0.0f, 0.0f);
 
         Light @light = lightNode_.CreateComponent ("Light", LOCAL);
@@ -135,12 +147,12 @@ class SceneManager : ScriptObject
     protected void CreateLocalCamera ()
     {
         cameraNode_ = scene.CreateChild ("camera", LOCAL);
-        cameraNode_.position = Vector3 (2.5f, 8.0f, 2.5f);
-        cameraNode_.rotation = Quaternion (50.0f, 0.0f, 0.0f);
+        cameraNode_.position = CAMERA_DEFAULT_POSITION;
+        cameraNode_.rotation = CAMERA_DEFAULT_ROTATION;
 
         cameraNode_.CreateComponent ("SoundListener", LOCAL);
         Camera @camera = cameraNode_.CreateComponent ("Camera", LOCAL);
-        camera.farClip = 100.0f;
+        camera.farClip = CAMERA_DEFAULT_FAR_CLIP;
 
         Viewport @viewport = Viewport (scene, camera);
         renderer.viewports [0] = viewport;
@@ -171,14 +183,14 @@ class SceneManager : ScriptObject
         if (not ui.root.GetChild ("ingame").GetChild ("chatWindow").GetChild ("messageEdit").focus)
         {
             Vector3 positionDelta;
-            if (input.keyDown [KEY_A])
+            if (input.keyDown [KEY_GO_LEFT])
                 positionDelta.x -= CAMERA_MOVE_SPEED;
-            if (input.keyDown [KEY_D])
+            if (input.keyDown [KEY_GO_RIGHT])
                 positionDelta.x += CAMERA_MOVE_SPEED;
 
-            if (input.keyDown [KEY_S])
+            if (input.keyDown [KEY_GO_BACK])
                 positionDelta.z -= CAMERA_MOVE_SPEED;
-            if (input.keyDown [KEY_W])
+            if (input.keyDown [KEY_GO_FORWARD])
                 positionDelta.z += CAMERA_MOVE_SPEED;
 
             positionDelta = positionDelta * timeStep;
@@ -189,8 +201,8 @@ class SceneManager : ScriptObject
     SceneManager ()
     {
         isSceneLoaded_ = false;
-        untilDistrictsUpdate_ = 0.001f;
-        untilUnitsUpdate_ = 0.001f;
+        untilDistrictsUpdate_ = 0.0f;
+        untilUnitsUpdate_ = 0.0f;
     }
 
     ~SceneManager ()
@@ -236,13 +248,13 @@ class SceneManager : ScriptObject
             if (untilDistrictsUpdate_ <= 0.0f)
             {
                 UpdateDistricts ();
-                untilDistrictsUpdate_ = 1.0f;
+                untilDistrictsUpdate_ = DISTRICTS_UPDATE_DELAY;
             }
 
             if (untilUnitsUpdate_ <= 0.0f)
             {
                 UpdateUnits ();
-                untilUnitsUpdate_ = 0.1f;
+                untilUnitsUpdate_ = UNITS_UPDATE_DELAY;
             }
         }
     }

@@ -1,6 +1,7 @@
 class MainMenu : ScriptObject
 {
     protected ActivitiesApplication @activitiesApplication_;
+    protected int NEW_GAME_SERVER_PORT = 13768;
 
     protected void SetupBackground ()
     {
@@ -79,12 +80,12 @@ class MainMenu : ScriptObject
             activitiesApplication_.StopActivityNextFrame (activitiesApplication_.GetActivityByIndex (index));
 
         HostActivity @hostActivity = HostActivity ();
-        hostActivity.serverPort = 13768;
+        hostActivity.serverPort = NEW_GAME_SERVER_PORT;
         activitiesApplication_.SetupActivityNextFrame (hostActivity);
 
         IngameClientActivity @ingameClientActivity = IngameClientActivity ();
         ingameClientActivity.serverAdress = "localhost";
-        ingameClientActivity.serverPort = 13768;
+        ingameClientActivity.serverPort = NEW_GAME_SERVER_PORT;
         ingameClientActivity.playerName = "Konstant";
         ingameClientActivity.playerColor = Color (0.1f, 0.1f, 0.7f, 1.0f);
         activitiesApplication_.SetupActivityNextFrame (ingameClientActivity);

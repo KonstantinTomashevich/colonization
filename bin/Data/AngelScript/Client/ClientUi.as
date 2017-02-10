@@ -19,6 +19,17 @@ class ClientUi : ScriptObject
     protected int MAX_MESSAGES_IN_PAGE_COUNT = 7;
     protected float NEW_MESSAGE_DELAY = 1.0f;
 
+    protected float COLONIZATORS_EXPEDITION_COST = 100.0f;
+    protected float DEFAULT_INVESTITION_SIZE = 100.0f;
+    protected Color NEUTRAL_COLOR = Color (0.5f, 0.5f, 0.5f, 1.0f);
+    protected float SELECTION_UPDATE_DELAY = 0.02f;
+
+    protected Vector3 BILLBOARD_WORLD_POSITION_OFFSET = Vector3 (0.0f, 1.0f, 0.0f);
+    protected Vector2 BILLBOARD_MIN_SCREEN_POINT = Vector2 (-0.2f, -0.2f);
+    protected Vector2 BILLBOARD_MAX_SCREEN_POINT = Vector2 (1.2f, 1.2f);
+    protected float CHAT_WINDOW_OPENED_YMODIFER = 0.35f;
+    protected float CHAT_WINDOW_CLOSED_YMODIFER = 0.10f;
+
     protected void UpdateSelection ()
     {
         StringHash selectionType = node.parent.vars ["selectionType"].GetStringHash ();
@@ -121,7 +132,7 @@ class ClientUi : ScriptObject
         UIElement @investButtons = districtInfoWindow.GetChild ("investButtons");
         investButtons.visible = (infoType == StringHash ("ColonyEvolution") and
                                  district.hasColony and
-                                 node.parent.vars ["gold"].GetFloat () >= 100.0f and
+                                 node.parent.vars ["gold"].GetFloat () >= DEFAULT_INVESTITION_SIZE and
                                  district.colonyOwnerName == playerName);
 
         Button @sendColonizatorsButton = districtInfoWindow.GetChild ("sendColonizatorsButton");
@@ -129,7 +140,7 @@ class ClientUi : ScriptObject
                                          not district.isSea and
                                          not district.isImpassable and
                                          (district.colonyOwnerName == playerName or not district.hasColony) and
-                                         node.parent.vars ["gold"].GetFloat () > 100.0f;
+                                         node.parent.vars ["gold"].GetFloat () >= COLONIZATORS_EXPEDITION_COST;
 
         if (infoType == StringHash ("Basic"))
             UpdateDistrictBasicInfo (district, districtInfoWindow);
@@ -282,9 +293,9 @@ class ClientUi : ScriptObject
             for (int index = 0; index < map.GetDistrictsCount (); index++)
             {
                 District @district = map.GetDistrictByIndex (index);
-                Vector2 screenPoint = camera.WorldToScreenPoint (district.unitPosition + Vector3 (0.0f, 1.0f, 0.0f));
-                if (screenPoint.x > -0.1f and screenPoint.x < 1.1f and
-                    screenPoint.y > -0.1f and screenPoint.y < 1.1f)
+                Vector2 screenPoint = camera.WorldToScreenPoint (district.unitPosition + BILLBOARD_WORLD_POSITION_OFFSET);
+                if (screenPoint.x > BILLBOARD_MIN_SCREEN_POINT.x and screenPoint.x < BILLBOARD_MAX_SCREEN_POINT.x and
+                    screenPoint.y > BILLBOARD_MIN_SCREEN_POINT.y and screenPoint.y < BILLBOARD_MAX_SCREEN_POINT.y)
                 {
                     if (nextBillboardIndex == billboardsRoot_.GetNumChildren (false))
                     {
@@ -336,12 +347,12 @@ class ClientUi : ScriptObject
             }
             else
             {
-                background.color = Color (0.5f, 0.5f, 0.5f, 1.0f);
+                background.color = NEUTRAL_COLOR;
             }
         }
         else
         {
-            background.color = Color (0.5f, 0.5f, 0.5f, 1.0f);
+            background.color = NEUTRAL_COLOR;
         }
     }
 
@@ -413,7 +424,7 @@ class ClientUi : ScriptObject
             backgroundButton.color = playerInfo.color;
         }
         else
-            backgroundButton.color = Color (0.5f, 0.5f, 0.5f, 1.0f);
+            backgroundButton.color = NEUTRAL_COLOR;
     }
 
     protected void UpdateChatMessagesScroll ()
@@ -478,10 +489,10 @@ class ClientUi : ScriptObject
     ClientUi ()
     {
         isSceneLoaded_ = false;
-        untilSelectionUpdate_ = 0.001f;
+        untilSelectionUpdate_ = 0.0f;
+        untilNewMessage_ = 0.0f;
         untilMessagesScrollUpdate_ = 1.0f / (MESSAGES_SCROLL_SPEED * 1.0f);
         messagesShowOffset_ = MAX_MESSAGES_IN_PAGE_COUNT;
-        untilNewMessage_ = 0.0f;
     }
 
     ~ClientUi ()
@@ -587,7 +598,7 @@ class ClientUi : ScriptObject
             if (untilSelectionUpdate_ <= 0.0f)
             {
                 UpdateSelection ();
-                untilSelectionUpdate_ = 1.0f / 30.0f;
+                untilSelectionUpdate_ = SELECTION_UPDATE_DELAY;
             }
         }
     }
@@ -658,7 +669,7 @@ class ClientUi : ScriptObject
         buffer.WriteInt (PLAYER_ACTION_INVEST_TO_COLONY);
         buffer.WriteStringHash (districtHash);
         buffer.WriteStringHash (investTypeHash);
-        buffer.WriteFloat (100.0f);
+        buffer.WriteFloat (DEFAULT_INVESTITION_SIZE);
 
         taskData ["buffer"] = buffer;
         networkTasks.Push (Variant (taskData));
@@ -682,15 +693,15 @@ class ClientUi : ScriptObject
     {
         Window @chatWindow = ui.root.GetChild ("ingame").GetChild ("chatWindow");
         float windowYModifer = chatWindow.vars ["YModifer"].GetFloat ();
-        if (windowYModifer == 0.1f)
+        if (windowYModifer == CHAT_WINDOW_CLOSED_YMODIFER)
         {
-            chatWindow.vars ["YModifer"] = Variant (0.35f);
+            chatWindow.vars ["YModifer"] = Variant (CHAT_WINDOW_OPENED_YMODIFER);
             Text @text = chatWindow.GetChild ("showHideButton").GetChild ("text");
             text.text = "Hide";
         }
         else
         {
-            chatWindow.vars ["YModifer"] = Variant (0.1f);
+            chatWindow.vars ["YModifer"] = Variant (CHAT_WINDOW_CLOSED_YMODIFER);
             Text @text = chatWindow.GetChild ("showHideButton").GetChild ("text");
             text.text = "Show";
         }
