@@ -6,6 +6,11 @@
 
 namespace Colonization
 {
+float get_PLAYER_NEW_CHAT_MESSAGE_DELAY ()
+{
+    return PLAYER_NEW_CHAT_MESSAGE_DELAY;
+}
+
 void BindPlayerActionType(Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
@@ -28,6 +33,7 @@ void BindPlayerActionType(Urho3D::Script *script)
     engine->RegisterEnumValue ("PlayerActionType", "PLAYER_ACTION_SEND_PEACE_TREATY", PLAYER_ACTION_SEND_PEACE_TREATY);
     engine->RegisterEnumValue ("PlayerActionType", "PLAYER_ACTION_ACCEPT_PEACE_TREATY", PLAYER_ACTION_ACCEPT_PEACE_TREATY);
     engine->RegisterEnumValue ("PlayerActionType", "PLAYER_ACTION_SEND_GIFT_TO_THE_KING", PLAYER_ACTION_SEND_GIFT_TO_THE_KING);
+    engine->RegisterGlobalFunction ("float get_PLAYER_NEW_CHAT_MESSAGE_DELAY ()", asFUNCTION (get_PLAYER_NEW_CHAT_MESSAGE_DELAY), asCALL_CDECL);
 }
 }
 

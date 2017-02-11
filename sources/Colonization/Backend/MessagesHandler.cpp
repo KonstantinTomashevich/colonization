@@ -67,13 +67,14 @@ void MessagesHandler::HandleNetworkMessage (Urho3D::StringHash eventType, Urho3D
                     eventData [Urho3D::NetworkMessage::P_MESSAGEID].GetInt ());
         Urho3D::VectorBuffer messageData = eventData [Urho3D::NetworkMessage::P_DATA].GetVectorBuffer ();
 
-        if (messageType == CTS_NETWORK_MESSAGE_SEND_CHAT_MESSAGE)
+        if (messageType == CTS_NETWORK_MESSAGE_SEND_CHAT_MESSAGE && player->GetTimeUntilNewChatMessage () <= 0.0f)
         {
             Urho3D::Vector <Player *> players = playersManager->GetAllPlayers ();
             SendChatMessage (player->GetName (), messageData.ReadString (), players, false);
+            player->OnChatMessageSended ();
         }
 
-        else if (messageType == CTS_NETWORK_MESSAGE_SEND_PRIVATE_MESSAGE)
+        else if (messageType == CTS_NETWORK_MESSAGE_SEND_PRIVATE_MESSAGE && player->GetTimeUntilNewChatMessage () <= 0.0f)
         {
             Urho3D::String message = messageData.ReadString ();
             Urho3D::Vector <Urho3D::StringHash> recievers;
@@ -81,6 +82,7 @@ void MessagesHandler::HandleNetworkMessage (Urho3D::StringHash eventType, Urho3D
                 recievers.Push (Urho3D::StringHash (messageData.ReadString ()));
             Urho3D::Vector <Player *> players = playersManager->GetPlayersByNames (recievers);
             SendChatMessage (player->GetName (), message, players, true);
+            player->OnChatMessageSended ();
         }
 
         else if (messageType == CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION)

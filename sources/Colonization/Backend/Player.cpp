@@ -135,6 +135,7 @@ Player::Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Color col
     color_ (color),
     gold_ (0.0f),
     points_ (0.0f),
+    timeUntilNewChatMessage_ (0.0f),
     actionsSequence_ (),
     connection_ (connection)
 {
@@ -148,8 +149,13 @@ Player::~Player ()
 
 }
 
-void Player::Update (float delta)
+void Player::Update (float timeStep)
 {
+    if (timeUntilNewChatMessage_ >= 0.0f)
+    {
+        timeUntilNewChatMessage_ -= timeStep;
+    }
+
     while (!actionsSequence_.Empty ())
     {
         Urho3D::Pair <PlayerActionType, Urho3D::Variant> action = actionsSequence_.At (0);
@@ -237,5 +243,15 @@ float Player::GetPoints ()
 void Player::SetPoints (float points)
 {
     points_ = points;
+}
+
+float Player::GetTimeUntilNewChatMessage ()
+{
+    return timeUntilNewChatMessage_;
+}
+
+void Player::OnChatMessageSended ()
+{
+    timeUntilNewChatMessage_ = PLAYER_NEW_CHAT_MESSAGE_DELAY;
 }
 }

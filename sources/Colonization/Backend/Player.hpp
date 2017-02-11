@@ -4,6 +4,7 @@
 
 namespace Colonization
 {
+const float PLAYER_NEW_CHAT_MESSAGE_DELAY = 1.0f;
 enum PlayerActionType
 {
     PLAYER_ACTION_NONE = 0,
@@ -37,6 +38,7 @@ protected:
     Urho3D::Color color_;
     float points_;
     float gold_;
+    float timeUntilNewChatMessage_;
     Urho3D::Vector <Urho3D::Pair <PlayerActionType, Urho3D::Variant> > actionsSequence_;
     Urho3D::Connection *connection_;
 
@@ -47,7 +49,7 @@ public:
     Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Color color, Urho3D::Connection *connection, Urho3D::Scene *scene);
     virtual ~Player ();
 
-    void Update (float delta);
+    void Update (float timeStep);
     Urho3D::Pair <PlayerActionType, Urho3D::Variant> GetAction (int index);
     void RemoveAction (int index);
     bool RemoveAction (Urho3D::Pair <PlayerActionType, Urho3D::Variant> &action);
@@ -66,5 +68,8 @@ public:
 
     float GetPoints ();
     void SetPoints (float points);
+
+    float GetTimeUntilNewChatMessage ();
+    void OnChatMessageSended ();
 };
 }

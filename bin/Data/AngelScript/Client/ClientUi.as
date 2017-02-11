@@ -17,7 +17,6 @@ class ClientUi : ScriptObject
     protected int MESSAGES_SCROLL_SPEED = 5;
     protected int MAX_MESSAGES_IN_CACHE_COUNT = 40;
     protected int MAX_MESSAGES_IN_PAGE_COUNT = 7;
-    protected float NEW_MESSAGE_DELAY = 1.0f;
 
     protected float COLONIZATORS_EXPEDITION_COST = 100.0f;
     protected float DEFAULT_INVESTITION_SIZE = 100.0f;
@@ -803,7 +802,7 @@ class ClientUi : ScriptObject
 
     void HandleSendPublicMessageClick ()
     {
-        untilNewMessage_ = NEW_MESSAGE_DELAY;
+        untilNewMessage_ = PLAYER_NEW_CHAT_MESSAGE_DELAY;
         Window @chatWindow = ui.root.GetChild ("ingame").GetChild ("chatWindow");
         LineEdit @messageEdit = chatWindow.GetChild ("messageEdit");
         String message = messageEdit.text;
@@ -823,6 +822,6 @@ class ClientUi : ScriptObject
 
     void HandleSendPrivateMessageClick ()
     {
-        untilNewMessage_ = NEW_MESSAGE_DELAY;
+        untilNewMessage_ = PLAYER_NEW_CHAT_MESSAGE_DELAY;
     }
 };
