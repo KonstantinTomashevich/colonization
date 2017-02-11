@@ -16,6 +16,7 @@
 		<variant hash="2971843571" type="None" value="" name="YModifer" />
 		<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 		<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+		<variant hash="820293360" type="None" value="" name="InvertWidth" />
 	</attribute>
 	<attribute name="Tags">
 		<string value="EnableUiResizer" />
@@ -36,6 +37,7 @@
 			<variant hash="2971843571" type="Float" value="0" name="YModifer" />
 			<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 			<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+			<variant hash="820293360" type="None" value="" name="InvertWidth" />
 		</attribute>
 		<attribute name="Tags">
 			<string value="EnableUiResizer" />
@@ -64,6 +66,7 @@
 				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 				<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 				<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -97,6 +100,7 @@
 			<variant hash="208094698" type="Float" value="1" name="InvertXModifer" />
 			<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
 			<variant hash="156785404" type="None" value="" name="FontSizeModifer" />
+			<variant hash="820293360" type="None" value="" name="InvertWidth" />
 		</attribute>
 		<attribute name="Tags">
 			<string value="EnableUiResizer" />
@@ -124,6 +128,7 @@
 				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 				<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 				<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -156,6 +161,7 @@
 			<variant hash="3918619308" type="Bool" value="true" name="InvertYPosition" />
 			<variant hash="2943940521" type="Float" value="1" name="InvertYModifer" />
 			<variant hash="1295402318" type="String" value="ParentHeight" name="InvertYDependency" />
+			<variant hash="820293360" type="None" value="" name="InvertWidth" />
 		</attribute>
 		<attribute name="Tags">
 			<string value="EnableUiResizer" />
@@ -182,6 +188,7 @@
 				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 				<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 				<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -213,6 +220,7 @@
 				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 				<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 				<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -243,6 +251,7 @@
 				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 				<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 				<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -273,6 +282,7 @@
 				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 				<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 				<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -302,6 +312,7 @@
 				<variant hash="3918619308" type="Bool" value="false" name="InvertYPosition" />
 				<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
 				<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -329,6 +340,7 @@
 					<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 					<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 					<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+					<variant hash="820293360" type="None" value="" name="InvertWidth" />
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
@@ -361,6 +373,7 @@
 			<variant hash="3918619308" type="Bool" value="true" name="InvertYPosition" />
 			<variant hash="2943940521" type="Float" value="1" name="InvertYModifer" />
 			<variant hash="1295402318" type="String" value="ParentHeight" name="InvertYDependency" />
+			<variant hash="820293360" type="None" value="" name="InvertWidth" />
 		</attribute>
 		<attribute name="Tags">
 			<string value="EnableUiResizer" />
@@ -389,6 +402,7 @@
 				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 				<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 				<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -419,6 +433,7 @@
 				<variant hash="3918619308" type="Bool" value="false" name="InvertYPosition" />
 				<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
 				<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -446,6 +461,7 @@
 					<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 					<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 					<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+					<variant hash="820293360" type="None" value="" name="InvertWidth" />
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
@@ -476,6 +492,7 @@
 				<variant hash="3918619308" type="Bool" value="false" name="InvertYPosition" />
 				<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
 				<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -503,6 +520,7 @@
 					<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 					<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 					<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+					<variant hash="820293360" type="None" value="" name="InvertWidth" />
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
@@ -533,6 +551,7 @@
 				<variant hash="3918619308" type="Bool" value="false" name="InvertYPosition" />
 				<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
 				<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -560,6 +579,7 @@
 					<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 					<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 					<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+					<variant hash="820293360" type="None" value="" name="InvertWidth" />
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
@@ -590,6 +610,7 @@
 				<variant hash="3918619308" type="Bool" value="false" name="InvertYPosition" />
 				<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
 				<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -617,6 +638,7 @@
 					<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 					<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 					<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+					<variant hash="820293360" type="None" value="" name="InvertWidth" />
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
@@ -648,6 +670,7 @@
 				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 				<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 				<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -675,6 +698,7 @@
 				<variant hash="3918619308" type="Bool" value="false" name="InvertYPosition" />
 				<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
 				<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -700,6 +724,7 @@
 					<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
 					<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
 					<variant hash="2829176418" type="String" value="farms" name="investitionType" />
+					<variant hash="820293360" type="None" value="" name="InvertWidth" />
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
@@ -727,6 +752,7 @@
 						<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 						<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 						<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+						<variant hash="820293360" type="None" value="" name="InvertWidth" />
 					</attribute>
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
@@ -758,6 +784,7 @@
 					<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
 					<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
 					<variant hash="2829176418" type="String" value="mines" name="investitionType" />
+					<variant hash="820293360" type="None" value="" name="InvertWidth" />
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
@@ -785,6 +812,7 @@
 						<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 						<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 						<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+						<variant hash="820293360" type="None" value="" name="InvertWidth" />
 					</attribute>
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
@@ -816,6 +844,7 @@
 					<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
 					<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
 					<variant hash="2829176418" type="String" value="industry" name="investitionType" />
+					<variant hash="820293360" type="None" value="" name="InvertWidth" />
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
@@ -843,6 +872,7 @@
 						<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 						<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 						<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+						<variant hash="820293360" type="None" value="" name="InvertWidth" />
 					</attribute>
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
@@ -874,6 +904,7 @@
 					<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
 					<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
 					<variant hash="2829176418" type="String" value="logistics" name="investitionType" />
+					<variant hash="820293360" type="None" value="" name="InvertWidth" />
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
@@ -901,6 +932,7 @@
 						<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 						<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 						<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+						<variant hash="820293360" type="None" value="" name="InvertWidth" />
 					</attribute>
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
@@ -932,6 +964,7 @@
 					<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
 					<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
 					<variant hash="2829176418" type="String" value="defense" name="investitionType" />
+					<variant hash="820293360" type="None" value="" name="InvertWidth" />
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
@@ -959,6 +992,7 @@
 						<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 						<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 						<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+						<variant hash="820293360" type="None" value="" name="InvertWidth" />
 					</attribute>
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
@@ -990,6 +1024,7 @@
 				<variant hash="3918619308" type="Bool" value="false" name="InvertYPosition" />
 				<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
 				<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -1017,6 +1052,7 @@
 					<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 					<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 					<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+					<variant hash="820293360" type="None" value="" name="InvertWidth" />
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
@@ -1048,6 +1084,7 @@
 			<variant hash="3918619308" type="Bool" value="true" name="InvertYPosition" />
 			<variant hash="2943940521" type="Float" value="1" name="InvertYModifer" />
 			<variant hash="1295402318" type="String" value="ParentHeight" name="InvertYDependency" />
+			<variant hash="820293360" type="None" value="" name="InvertWidth" />
 		</attribute>
 		<attribute name="Tags">
 			<string value="EnableUiResizer" />
@@ -1073,6 +1110,7 @@
 				<variant hash="3918619308" type="Bool" value="false" name="InvertYPosition" />
 				<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
 				<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -1100,6 +1138,7 @@
 					<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 					<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 					<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+					<variant hash="820293360" type="None" value="" name="InvertWidth" />
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
@@ -1131,6 +1170,7 @@
 				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 				<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 				<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -1142,24 +1182,27 @@
 		</element>
 		<element type="LineEdit">
 			<attribute name="Name" value="messageEdit" />
-			<attribute name="Position" value="164 209" />
-			<attribute name="Size" value="308 29" />
+			<attribute name="Position" value="12 209" />
+			<attribute name="Size" value="460 29" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
 				<variant hash="511642371" type="String" value="ParentHeight" name="XDependency" />
 				<variant hash="2232932484" type="String" value="ParentHeight" name="YDependency" />
-				<variant hash="4144064518" type="Float" value="1.25" name="WidthModifer" />
+				<variant hash="4144064518" type="Float" value="0.9" name="WidthModifer" />
 				<variant hash="4127232677" type="Float" value="0.12" name="HeightModifer" />
-				<variant hash="235997748" type="Float" value="2.1" name="XModifer" />
+				<variant hash="235997748" type="Float" value="0.05" name="XModifer" />
 				<variant hash="2971843571" type="Float" value="0.85" name="YModifer" />
 				<variant hash="156785404" type="Float" value="0.06" name="FontSizeModifer" />
 				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
-				<variant hash="376939691" type="Bool" value="true" name="InvertXPosition" />
-				<variant hash="3869079501" type="String" value="ParentWidth" name="InvertXDependency" />
-				<variant hash="208094698" type="Float" value="1" name="InvertXModifer" />
+				<variant hash="376939691" type="Bool" value="false" name="InvertXPosition" />
+				<variant hash="3869079501" type="String" value="" name="InvertXDependency" />
+				<variant hash="208094698" type="Float" value="0" name="InvertXModifer" />
 				<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+				<variant hash="820293360" type="Bool" value="true" name="InvertWidth" />
+				<variant hash="1219562875" type="String" value="ParentWidth" name="InvertWidthDependency" />
+				<variant hash="2739416508" type="Float" value="1" name="InvertWidthModifer" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -1203,6 +1246,7 @@
 				<variant hash="3918619308" type="Bool" value="false" name="InvertYPosition" />
 				<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
 				<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -1230,6 +1274,7 @@
 					<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 					<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 					<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+					<variant hash="820293360" type="None" value="" name="InvertWidth" />
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
@@ -1260,6 +1305,7 @@
 				<variant hash="3918619308" type="Bool" value="false" name="InvertYPosition" />
 				<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
 				<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -1287,6 +1333,7 @@
 					<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 					<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 					<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+					<variant hash="820293360" type="None" value="" name="InvertWidth" />
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
@@ -1318,6 +1365,7 @@
 				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 				<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 				<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -1347,6 +1395,7 @@
 				<variant hash="3918619308" type="Bool" value="false" name="InvertYPosition" />
 				<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
 				<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -1374,6 +1423,7 @@
 					<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 					<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 					<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+					<variant hash="820293360" type="None" value="" name="InvertWidth" />
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
@@ -1404,6 +1454,7 @@
 				<variant hash="3918619308" type="Bool" value="false" name="InvertYPosition" />
 				<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
 				<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -1431,6 +1482,7 @@
 					<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 					<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 					<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+					<variant hash="820293360" type="None" value="" name="InvertWidth" />
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
@@ -1466,6 +1518,7 @@
 				<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
 				<variant hash="3272003643" type="None" value="" name="FontSizeDependency" />
 				<variant hash="156785404" type="None" value="" name="FontSizeModifer" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -1496,6 +1549,7 @@
 				<variant hash="3918619308" type="Bool" value="false" name="InvertYPosition" />
 				<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
 				<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -1523,6 +1577,7 @@
 					<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 					<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 					<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+					<variant hash="820293360" type="None" value="" name="InvertWidth" />
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
@@ -1553,6 +1608,7 @@
 				<variant hash="3918619308" type="Bool" value="false" name="InvertYPosition" />
 				<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
 				<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
@@ -1580,6 +1636,7 @@
 					<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 					<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 					<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+					<variant hash="820293360" type="None" value="" name="InvertWidth" />
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
