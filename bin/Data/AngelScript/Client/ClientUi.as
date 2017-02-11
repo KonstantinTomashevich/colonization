@@ -16,7 +16,7 @@ class ClientUi : ScriptObject
         StringHash selectionType = node.parent.vars ["selectionType"].GetStringHash ();
         if (selectionType == StringHash ("Unit"))
         {
-            UpdateUnitSelection ();
+
         }
         else if (selectionType == StringHash ("District"))
         {
@@ -24,93 +24,6 @@ class ClientUi : ScriptObject
         }
         else
         {
-            ClearSelection ();
-        }
-    }
-
-    protected void UpdateUnitSelection ()
-    {
-        Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
-        districtInfoWindow.visible = false;
-
-        Window @unitInfoWindow = ui.root.GetChild ("ingame").GetChild ("unitInfoWindow");
-        unitInfoWindow.visible = true;
-
-        StringHash unitHash = node.parent.vars ["selectedHash"].GetStringHash ();
-        Unit @unit = GetUnitByHash (scene, unitHash);
-        if (unit !is null)
-        {
-            Text @ownerText = unitInfoWindow.GetChild ("ownerText");
-            ownerText.text = unit.ownerPlayerName + "'s";
-
-            Text @typeText = unitInfoWindow.GetChild ("typeText");
-            if (unit.unitType == UNIT_FLEET)
-            {
-                typeText.text = "Fleet";
-            }
-            else if (unit.unitType == UNIT_TRADERS)
-            {
-                typeText.text = "Traders";
-            }
-            else if (unit.unitType == UNIT_COLONIZATORS)
-            {
-                typeText.text = "Colonizators";
-            }
-            else if (unit.unitType == UNIT_ARMY)
-            {
-                typeText.text = "Army";
-            }
-
-            Button @moveToButton = unitInfoWindow.GetChild ("moveToButton");
-            if (unit.unitType == UNIT_FLEET or unit.unitType == UNIT_ARMY)
-            {
-                moveToButton.visible = true;
-            }
-            else
-            {
-                moveToButton.visible = false;
-            }
-
-            Map @map = scene.GetChild ("map").GetComponent ("Map");
-            Text @positionText = unitInfoWindow.GetChild ("positionText");
-            positionText.text = "in " + map.GetDistrictByHash (unit.positionHash).name;
-
-            String additionalInfo;
-            if (unit.unitType == UNIT_FLEET)
-            {
-                additionalInfo += "War ships count: " + unit.fleetUnitWarShipsCount + ".\n";
-            }
-
-            else if (unit.unitType == UNIT_TRADERS)
-            {
-                additionalInfo += "Trade goods cost: " + Floor (unit.tradersUnitTradeGoodsCost * 100.0f) / 100.0f + ".\n";
-            }
-
-            else if (unit.unitType == UNIT_COLONIZATORS)
-            {
-                additionalInfo += "Colonizators count: " + unit.colonizatorsUnitColonizatorsCount + ".\n";
-            }
-
-            else if (unit.unitType == UNIT_ARMY)
-            {
-                additionalInfo += "Soldiers count: " + unit.armyUnitSoldiersCount + ".\n";
-            }
-
-            if (unit.GetWay ().length > 0)
-            {
-                Array <StringHash> unitWay = unit.GetWay ();
-                additionalInfo += "Going to: " + map.GetDistrictByHash (unitWay [unitWay.length - 1]).name + ".\n";
-                additionalInfo += "Next waypoint: " + map.GetDistrictByHash (unitWay [0]).name + "\n";
-                additionalInfo += "Traveled to next waypoit: " +
-                                    FloorToInt (unit.wayToNextDistrictProgressInPercents) + "%.\n";
-            }
-
-            Text @anotherText = unitInfoWindow.GetChild ("anotherText");
-            anotherText.text = additionalInfo;
-        }
-        else
-        {
-            // Clear selection if unit isn't exists.
             ClearSelection ();
         }
     }
@@ -361,7 +274,6 @@ class ClientUi : ScriptObject
         ClearSelection ();
 
         Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
-        Window @unitInfoWindow = ui.root.GetChild ("ingame").GetChild ("unitInfoWindow");
         districtInfoWindow.vars ["infoType"] = StringHash ("Basic");
 
         Button @basicInfoButton = districtInfoWindow.GetChild ("basicInfoButton");
@@ -376,7 +288,6 @@ class ClientUi : ScriptObject
         Button @investToIndustryButton = investButtons.GetChild ("investToIndustry");
         Button @investToLogisticsButton = investButtons.GetChild ("investToLogistics");
         Button @investToDefenseButton = investButtons.GetChild ("investToDefense");
-        Button @moveToButton = unitInfoWindow.GetChild ("moveToButton");
 
         SubscribeToEvent (basicInfoButton, "Released", "HandleBasicInfoClick");
         SubscribeToEvent (resourcesInfoButton, "Released", "HandleResourcesInfoClick");
@@ -389,7 +300,6 @@ class ClientUi : ScriptObject
         SubscribeToEvent (investToIndustryButton, "Released", "HandleInvestClick");
         SubscribeToEvent (investToLogisticsButton, "Released", "HandleInvestClick");
         SubscribeToEvent (investToDefenseButton, "Released", "HandleInvestClick");
-        SubscribeToEvent (moveToButton, "Released", "HandleMoveUnitToClick");
 
         ScriptInstance @playerInfoWindowInstance = node.CreateChild ("PlayerInfoWindow", LOCAL).CreateComponent ("ScriptInstance");
         playerInfoWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
@@ -410,6 +320,11 @@ class ClientUi : ScriptObject
         chatWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
                                                       "AngelScript/Client/UiHandlers/ChatWindow.as"),
                                          "ChatWindow");
+
+        ScriptInstance @unitSelectedWindowInstance = node.CreateChild ("UnitSelectedWindow", LOCAL).CreateComponent ("ScriptInstance");
+        unitSelectedWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                      "AngelScript/Client/UiHandlers/UnitSelectedWindow.as"),
+                                         "UnitSelectedWindow");
 
         ScriptInstance @uiResizerInstance = node.CreateChild ("UiResizer", LOCAL).CreateComponent ("ScriptInstance");
         uiResizerInstance.CreateObject (cache.GetResource ("ScriptFile",
@@ -502,10 +417,5 @@ class ClientUi : ScriptObject
         taskData ["buffer"] = buffer;
         networkTasks.Push (Variant (taskData));
         node.parent.GetChild ("networkScriptNode").vars ["tasksList"] = networkTasks;
-    }
-
-    void HandleMoveUnitToClick ()
-    {
-        node.parent.vars ["currentClickCommand"] = StringHash ("MoveUnit");
     }
 };
