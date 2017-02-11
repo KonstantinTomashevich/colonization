@@ -653,6 +653,11 @@ class ClientUi : ScriptObject
                                         "UiResizer");
         uiResizerInstance.SetAttribute ("startElementName_", Variant ("UIRoot"));
         uiResizerInstance.SetAttribute ("continuousResize_", Variant (true));
+
+        ScriptInstance @playerInfoWindowInstance = node.CreateChild ("PlayerInfoWindow", LOCAL).CreateComponent ("ScriptInstance");
+        playerInfoWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Client/UiHandlers/PlayerInfoWindow.as"),
+                                               "PlayerInfoWindow");
     }
 
     void Update (float timeStep)
@@ -673,13 +678,6 @@ class ClientUi : ScriptObject
         UpdateChatMessages ();
         ui.root.GetChild ("ingame").GetChild ("chatWindow").GetChild ("sendPublicMessage").visible = (untilNewMessage_ <= 0.0f);
         ui.root.GetChild ("ingame").GetChild ("chatWindow").GetChild ("sendPrivateMessage").visible = (untilNewMessage_ <= 0.0f);
-
-        Text @playerStatsText = ui.root.GetChild ("ingame").GetChild ("playerStatsWindow").GetChild ("playerStatsInfo");
-        String playerStatsInfo = "";
-        playerStatsInfo += node.parent.vars ["playerName"].GetString () + "\n";
-        playerStatsInfo += "Gold: " + node.parent.vars ["gold"].GetFloat () + "\n";
-        playerStatsInfo += "Points: " + node.parent.vars ["points"].GetFloat ();
-        playerStatsText.text = playerStatsInfo;
 
         if (!isSceneLoaded_)
         {
