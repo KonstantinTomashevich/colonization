@@ -59,6 +59,9 @@ class UiResizer : ScriptObject
         float xPos = dependenciesMap [xDependency].GetFloat () * xModifer;
         float yPos = dependenciesMap [yDependency].GetFloat () * yModifer;
 
+        float width = dependenciesMap [widthDependency].GetFloat () * widthModifer;
+        float height = dependenciesMap [heightDependency].GetFloat () * heightModifer;
+
         if (element.vars ["InvertXPosition"].GetBool ())
         {
             StringHash invDependency = StringHash (element.vars ["InvertXDependency"].GetString ());
@@ -73,6 +76,20 @@ class UiResizer : ScriptObject
             yPos = (dependenciesMap [invDependency].GetFloat () * invertedPositionModifer - yPos);
         }
 
+        if (element.vars ["InvertWidth"].GetBool ())
+        {
+            StringHash invDependency = StringHash (element.vars ["InvertWidthDependency"].GetString ());
+            float invertedPositionModifer = element.vars ["InvertWidthModifer"].GetFloat ();
+            width = (dependenciesMap [invDependency].GetFloat () * invertedPositionModifer - width);
+        }
+
+        if (element.vars ["InvertHeight"].GetBool ())
+        {
+            StringHash invDependency = StringHash (element.vars ["InvertHeightDependency"].GetString ());
+            float invertedPositionModifer = element.vars ["InvertHeightModifer"].GetFloat ();
+            height = (dependenciesMap [invDependency].GetFloat () * invertedPositionModifer - height);
+        }
+
         if (xDependency != StringHash ("disable") and yDependency != StringHash ("disable"))
         {
             element.SetPosition (xPos, yPos);
@@ -80,8 +97,7 @@ class UiResizer : ScriptObject
 
         if (widthDependency != StringHash ("disable") and heightDependency != StringHash ("disable"))
         {
-            element.SetSize (dependenciesMap [widthDependency].GetFloat () * widthModifer,
-                             dependenciesMap [heightDependency].GetFloat () * heightModifer);
+            element.SetSize (width, height);
         }
 
         if (element.typeName == "Text" || element.typeName == "LineEdit")
