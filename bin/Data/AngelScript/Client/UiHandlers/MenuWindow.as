@@ -23,9 +23,8 @@ class MenuWindow : ScriptObject
 
     void Stop ()
     {
-
+        UnsubscribeFromAllEvents ();
     }
-
 
     void HandleExitClick ()
     {

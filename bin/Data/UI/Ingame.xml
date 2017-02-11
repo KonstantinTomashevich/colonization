@@ -1516,14 +1516,14 @@
 				<variant hash="3918619308" type="Bool" value="false" name="InvertYPosition" />
 				<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
 				<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
-				<variant hash="3272003643" type="None" value="" name="FontSizeDependency" />
-				<variant hash="156785404" type="None" value="" name="FontSizeModifer" />
+				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
+				<variant hash="156785404" type="Float" value="0.035" name="FontSizeModifer" />
 				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
 			</attribute>
-			<attribute name="Font Size" value="1" />
+			<attribute name="Font Size" value="8" />
 			<attribute name="Text" value="Showing messages from 0 to 7" />
 			<attribute name="Word Wrap" value="true" />
 			<attribute name="Text Effect" value="Stroke" />

@@ -171,7 +171,7 @@ class MapBillboards : ScriptObject
 
     MapBillboards ()
     {
-
+        isSceneLoaded_ = false;
     }
 
     ~MapBillboards ()
@@ -202,7 +202,7 @@ class MapBillboards : ScriptObject
 
     void Stop ()
     {
-
+        UnsubscribeFromAllEvents ();
     }
 
     void HandleSelectUnitClick (StringHash eventType, VariantMap &eventData)
