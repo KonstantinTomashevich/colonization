@@ -605,7 +605,6 @@ class ClientUi : ScriptObject
         uiRoot.name = "ingame";
         ClearSelection ();
 
-        Button @exitButton = uiRoot.GetChild ("exitButton");
         Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
         Window @unitInfoWindow = ui.root.GetChild ("ingame").GetChild ("unitInfoWindow");
         Window @chatWindow = ui.root.GetChild ("ingame").GetChild ("chatWindow");
@@ -629,7 +628,6 @@ class ClientUi : ScriptObject
         Button @sendPublicMessageButton = chatWindow.GetChild ("sendPublicMessage");
         Button @sendPrivateMessageButton = chatWindow.GetChild ("sendPrivateMessage");
 
-        SubscribeToEvent (exitButton, "Released", "HandleExitClick");
         SubscribeToEvent (basicInfoButton, "Released", "HandleBasicInfoClick");
         SubscribeToEvent (resourcesInfoButton, "Released", "HandleResourcesInfoClick");
         SubscribeToEvent (populationInfoButton, "Released", "HandlePopulationInfoClick");
@@ -658,6 +656,11 @@ class ClientUi : ScriptObject
         playerInfoWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
                                                          "AngelScript/Client/UiHandlers/PlayerInfoWindow.as"),
                                                "PlayerInfoWindow");
+
+        ScriptInstance @menuInstance = node.CreateChild ("MenuWindow", LOCAL).CreateComponent ("ScriptInstance");
+        menuInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                      "AngelScript/Client/UiHandlers/MenuWindow.as"),
+                                   "MenuWindow");
     }
 
     void Update (float timeStep)
@@ -697,11 +700,6 @@ class ClientUi : ScriptObject
     void Stop ()
     {
         UnsubscribeFromAllEvents ();
-    }
-
-    void HandleExitClick ()
-    {
-        node.parent.vars ["goToMenuCalled"] = true;
     }
 
     void HandleSendColonizatorsClick ()
