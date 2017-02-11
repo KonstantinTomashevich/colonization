@@ -92,15 +92,6 @@ class UnitSelectedWindow : ScriptObject
         }
     }
 
-    protected void ClearSelection ()
-    {
-        Window @unitInfoWindow = ui.root.GetChild ("ingame").GetChild ("unitInfoWindow");
-        unitInfoWindow.visible = false;
-
-        node.parent.vars ["selectionType"] = StringHash ("None");
-        node.parent.vars ["selectedHash"] = StringHash ();
-    }
-
     UnitSelectedWindow ()
     {
         isSceneLoaded_ = false;
@@ -148,7 +139,7 @@ class UnitSelectedWindow : ScriptObject
 
     void Stop ()
     {
-
+        UnsubscribeFromAllEvents ();
     }
 
     void HandleMoveUnitToClick ()
