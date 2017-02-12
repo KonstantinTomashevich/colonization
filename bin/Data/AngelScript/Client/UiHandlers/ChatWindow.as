@@ -55,7 +55,7 @@ class ChatWindow : ScriptObject
             }
 
             Text @messagesInfo = chatWindow.GetChild ("messagesInfo");
-            messagesInfo.text = "Showing messages from " + startIndex + " to " + (startIndex + MAX_MESSAGES_IN_PAGE_COUNT) + ".";
+            messagesInfo.text = "Showing messages from " + (startIndex + 1) + " to " + (startIndex + MAX_MESSAGES_IN_PAGE_COUNT + 1) + ".";
 
             for (int index = startIndex;
                 (index < messagesList.length) and (index < (startIndex + MAX_MESSAGES_IN_PAGE_COUNT));
@@ -94,10 +94,14 @@ class ChatWindow : ScriptObject
         Button @showHideButton = chatWindow.GetChild ("showHideButton");
         Button @sendPublicMessageButton = chatWindow.GetChild ("sendPublicMessage");
         Button @sendPrivateMessageButton = chatWindow.GetChild ("sendPrivateMessage");
+        Button @showBlockedUsersButton = chatWindow.GetChild ("showBlockedUsersButton");
+        Button @showPrivateUsersButton = chatWindow.GetChild ("showPrivateUsersButton");
 
         SubscribeToEvent (showHideButton, "Released", "HandleToggleChatWindowClick");
         SubscribeToEvent (sendPublicMessageButton, "Released", "HandleSendPublicMessageClick");
         SubscribeToEvent (sendPrivateMessageButton, "Released", "HandleSendPrivateMessageClick");
+        SubscribeToEvent (showBlockedUsersButton, "Released", "HandleShowBlockedUsersClick");
+        SubscribeToEvent (showPrivateUsersButton, "Released", "HandleShowPrivateUsersClick");
     }
 
     void Update (float timeStep)
@@ -165,5 +169,15 @@ class ChatWindow : ScriptObject
     void HandleSendPrivateMessageClick ()
     {
         untilNewMessage_ = PLAYER_NEW_CHAT_MESSAGE_DELAY;
+    }
+
+    void HandleShowBlockedUsersClick ()
+    {
+        ui.root.GetChild ("ingame").GetChild ("chatBlockedPlayersWindow").visible = true;
+    }
+
+    void HandleShowPrivateUsersClick ()
+    {
+
     }
 }

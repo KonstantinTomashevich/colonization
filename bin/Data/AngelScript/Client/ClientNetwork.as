@@ -74,13 +74,17 @@ class ClientNetwork : ScriptObject
         String timeStamp = time.timeStamp;
         timeStamp = timeStamp.Substring (TIME_STAMP_SUBSCTRING_START, TIME_STAMP_SUBSCTRING_LENGTH);
 
-        Array <Variant> messagesList = node.parent.GetChild ("uiScriptNode").vars ["messagesList"].GetVariantVector ();
-        VariantMap messageData = VariantMap ();
-        messageData ["isPrivate"] = Variant (isPrivate);
-        messageData ["sender"] = Variant (sender);
-        messageData ["message"] = Variant (message);
-        messageData ["timeStamp"] = Variant (timeStamp);
-        messagesList.Push (Variant (messageData));
-        node.parent.GetChild ("uiScriptNode").vars ["messagesList"] = Variant (messagesList);
+        Array <String> blockedUsersList = node.parent.GetChild ("uiScriptNode").vars ["chatBlockedPlayersList"].GetStringVector ();
+        if (blockedUsersList.Find (sender) < 0)
+        {
+            Array <Variant> messagesList = node.parent.GetChild ("uiScriptNode").vars ["messagesList"].GetVariantVector ();
+            VariantMap messageData = VariantMap ();
+            messageData ["isPrivate"] = Variant (isPrivate);
+            messageData ["sender"] = Variant (sender);
+            messageData ["message"] = Variant (message);
+            messageData ["timeStamp"] = Variant (timeStamp);
+            messagesList.Push (Variant (messageData));
+            node.parent.GetChild ("uiScriptNode").vars ["messagesList"] = Variant (messagesList);
+        }
     }
 };
