@@ -1,3 +1,5 @@
+#include "AngelScript/Utils/ClientUtils.as"
+
 class ChatBlockedPlayersListEditor : ScriptObject
 {
     protected int elementsShowOffset_;
@@ -113,6 +115,9 @@ class ChatBlockedPlayersListEditor : ScriptObject
             Button @removeButton = elementsUi [index].GetChild ("removeButton");
             SubscribeToEvent (removeButton, "Released", "HandleRemoveElementClick");
         }
+
+        LineEdit @elementToAddEdit = chatBlockedPlayersWindow.GetChild ("elementToAddEdit");
+        RegisterLineEdit (node.parent.parent, elementToAddEdit);
     }
 
     void Update (float timeStep)

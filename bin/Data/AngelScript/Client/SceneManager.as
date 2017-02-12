@@ -198,7 +198,7 @@ class SceneManager : ScriptObject
 
     protected void UpdateCameraPositionByKeyboardInput (float timeStep)
     {
-        if (not ui.root.GetChild ("ingame").GetChild ("chatWindow").GetChild ("messageEdit").focus)
+        if (not IsAnyLineEditFocused (node.parent))
         {
             Vector3 positionDelta;
             if (input.keyDown [KEY_GO_LEFT])

@@ -75,3 +75,48 @@ shared Array <Unit @> GetUnitsInDistrict (Scene @scene_, StringHash districtHash
 
     return unitsInDistrict;
 }
+
+shared void RegisterLineEdit (Node @scriptMain, LineEdit @lineEdit)
+{
+    Array <Variant> lineEditVector = scriptMain.vars ["lineEditVector"].GetVariantVector ();
+    lineEditVector.Push (Variant (lineEdit));
+    scriptMain.vars ["lineEditVector"] = Variant (lineEditVector);
+}
+
+shared void UnregisterLineEdit (Node @scriptMain, LineEdit @lineEdit)
+{
+    Array <Variant> lineEditVector = scriptMain.vars ["lineEditVector"].GetVariantVector ();
+    int foundIndex = 0;
+    int index = 0;
+    while (foundIndex < 0 and index < lineEditVector.length)
+    {
+        LineEdit @lineEditFromVector = lineEditVector [index].GetPtr ();
+        if (lineEditFromVector is lineEdit)
+        {
+            foundIndex = index;
+        }
+        else
+        {
+            index++;
+        }
+    }
+    if (foundIndex >= 0)
+    {
+        lineEditVector.Erase (foundIndex);
+    }
+    scriptMain.vars ["lineEditVector"] = Variant (lineEditVector);
+}
+
+shared bool IsAnyLineEditFocused (Node @scriptMain)
+{
+    Array <Variant> lineEditVector = scriptMain.vars ["lineEditVector"].GetVariantVector ();
+    for (int index = 0; index < lineEditVector.length; index++)
+    {
+        LineEdit @lineEdit = lineEditVector [index].GetPtr ();
+        if (lineEdit.focus)
+        {
+            return true;
+        }
+    }
+    return false;
+}

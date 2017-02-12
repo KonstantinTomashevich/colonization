@@ -1,3 +1,5 @@
+#include "AngelScript/Utils/ClientUtils.as"
+
 class ChatWindow : ScriptObject
 {
     protected int messagesShowOffset_;
@@ -102,6 +104,9 @@ class ChatWindow : ScriptObject
         SubscribeToEvent (sendPrivateMessageButton, "Released", "HandleSendPrivateMessageClick");
         SubscribeToEvent (showBlockedUsersButton, "Released", "HandleShowBlockedUsersClick");
         SubscribeToEvent (showPrivateUsersButton, "Released", "HandleShowPrivateUsersClick");
+
+        LineEdit @messageEdit = chatWindow.GetChild ("messageEdit");
+        RegisterLineEdit (node.parent.parent, messageEdit);
     }
 
     void Update (float timeStep)
