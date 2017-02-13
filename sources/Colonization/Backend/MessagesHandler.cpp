@@ -78,6 +78,7 @@ void MessagesHandler::HandleNetworkMessage (Urho3D::StringHash eventType, Urho3D
         {
             Urho3D::String message = messageData.ReadString ();
             Urho3D::Vector <Urho3D::StringHash> recievers;
+            recievers.Push (Urho3D::StringHash (player->GetName ()));
             while (!messageData.IsEof ())
                 recievers.Push (Urho3D::StringHash (messageData.ReadString ()));
             Urho3D::Vector <Player *> players = playersManager->GetPlayersByNames (recievers);

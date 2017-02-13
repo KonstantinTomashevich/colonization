@@ -217,7 +217,13 @@ Urho3D::Vector <Player *> PlayersManager::GetPlayersByNames (Urho3D::Vector <Urh
 {
     Urho3D::Vector <Player *> players;
     for (int index = 0; index < namesHashes.Size (); index++)
-        players.Push (players_ [namesHashes.At (index)]);
+    {
+        Player *player = players_ [namesHashes.At (index)];
+        if (player)
+        {
+            players.Push (player);
+        }
+    }
     return players;
 }
 

@@ -174,6 +174,26 @@ class ChatWindow : ScriptObject
     void HandleSendPrivateMessageClick ()
     {
         untilNewMessage_ = PLAYER_NEW_CHAT_MESSAGE_DELAY;
+        Window @chatWindow = ui.root.GetChild ("ingame").GetChild ("chatWindow");
+        LineEdit @messageEdit = chatWindow.GetChild ("messageEdit");
+        String message = messageEdit.text;
+        Array <String> receivers = node.parent.vars ["chatPrivateReceiversList"].GetStringVector ();
+        messageEdit.text = "";
+
+        Array <Variant> networkTasks = node.parent.parent.GetChild ("networkScriptNode").vars ["tasksList"].GetVariantVector ();
+        VariantMap taskData;
+        taskData ["type"] = CTS_NETWORK_MESSAGE_SEND_PRIVATE_MESSAGE;
+
+        VectorBuffer buffer = VectorBuffer ();
+        buffer.WriteString (message);
+        for (int index = 0; index < receivers.length; index++)
+        {
+            buffer.WriteString (receivers [index]);
+        }
+
+        taskData ["buffer"] = buffer;
+        networkTasks.Push (Variant (taskData));
+        node.parent.parent.GetChild ("networkScriptNode").vars ["tasksList"] = networkTasks;
     }
 
     void HandleShowBlockedUsersClick ()
