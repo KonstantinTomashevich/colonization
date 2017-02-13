@@ -39,13 +39,19 @@ void DrawLine (Urho3D::Image *image, Urho3D::Color color, int x1, int y1, int x2
         {
             float y = y1 + (x - x1) * tangent;
             if (width <= 1)
+            {
                 image->SetPixel (x, y, color);
+            }
             else
             {
                 int halfWidth = static_cast <int> (std::floor (width * 0.5f));
                 for (int xOffset = -halfWidth; xOffset <= halfWidth; xOffset++)
+                {
                     for (int yOffset = -halfWidth; yOffset <= halfWidth; yOffset++)
+                    {
                         image->SetPixel (x + xOffset, y + yOffset, color);
+                    }
+                }
             }
         }
     }
@@ -70,13 +76,19 @@ void DrawLine (Urho3D::Image *image, Urho3D::Color color, int x1, int y1, int x2
         {
             float x = x1 + (y - y1) * tangent;
             if (width <= 1)
+            {
                 image->SetPixel (x, y, color);
+            }
             else
             {
                 int halfWidth = static_cast <int> (std::floor (width * 0.5f));
                 for (int xOffset = -halfWidth; xOffset <= halfWidth; xOffset++)
+                {
                     for (int yOffset = -halfWidth; yOffset <= halfWidth; yOffset++)
+                    {
                         image->SetPixel (x + xOffset, y + yOffset, color);
+                    }
+                }
             }
         }
     }
@@ -144,16 +156,24 @@ void FloodFill (Urho3D::Image *image, Urho3D::Color color, int x, int y)
                 image->SetPixelInt (point.x_, point.y_, fillColor);
 
                 if (image->GetPixelInt (point.x_ - 1, point.y_) == sourceColor)
+                {
                     toSet.Push (Urho3D::IntVector2 (point.x_ - 1, point.y_));
+                }
 
                 if (image->GetPixelInt (point.x_ + 1, point.y_) == sourceColor)
+                {
                     toSet.Push (Urho3D::IntVector2 (point.x_ + 1, point.y_));
+                }
 
                 if (image->GetPixelInt (point.x_, point.y_ - 1) == sourceColor)
+                {
                     toSet.Push (Urho3D::IntVector2 (point.x_, point.y_ - 1));
+                }
 
                 if (image->GetPixelInt (point.x_, point.y_ + 1) == sourceColor)
+                {
                     toSet.Push (Urho3D::IntVector2 (point.x_, point.y_ + 1));
+                }
             }
         }
     }

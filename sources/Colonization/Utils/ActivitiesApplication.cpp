@@ -34,8 +34,12 @@ void ActivitiesApplication::Start ()
     SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (ActivitiesApplication, UpdateActivities));
 
     if (!currentActivities_.Empty ())
+    {
         for (int index = 0; index < currentActivities_.Size (); index++)
+        {
             currentActivities_.At (index)->Start ();
+        }
+    }
 
     RegisterAllObjects (context_);
     Urho3D::Script *script = new Urho3D::Script (context_);
@@ -47,6 +51,7 @@ void ActivitiesApplication::UpdateActivities (Urho3D::StringHash eventType, Urho
 {
     float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
     if (!activitiesToStop_.Empty ())
+    {
         while (!activitiesToStop_.Empty ())
         {
             Urho3D::SharedPtr <Activity> activity = activitiesToStop_.Front ();
@@ -55,8 +60,10 @@ void ActivitiesApplication::UpdateActivities (Urho3D::StringHash eventType, Urho
             currentActivities_.Remove (activity);
             activity->Stop ();
         }
+    }
 
     if (!activitiesToSetup_.Empty ())
+    {
         while (!activitiesToSetup_.Empty ())
         {
             Urho3D::SharedPtr <Activity> activity = activitiesToSetup_.Front ();
@@ -66,17 +73,26 @@ void ActivitiesApplication::UpdateActivities (Urho3D::StringHash eventType, Urho
             activity->SetApplication (this);
             activity->Start ();
         }
+    }
 
     if (!currentActivities_.Empty ())
+    {
         for (int index = 0; index < currentActivities_.Size (); index++)
+        {
             currentActivities_.At (index)->Update (timeStep);
+        }
+    }
 }
 
 void ActivitiesApplication::Stop ()
 {
     if (!currentActivities_.Empty ())
+    {
         for (int index = 0; index < currentActivities_.Size (); index++)
+        {
             currentActivities_.At (index)->Stop ();
+        }
+    }
 }
 
 void ActivitiesApplication::SetupActivityNextFrame (Activity *activity)
