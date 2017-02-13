@@ -40,7 +40,7 @@ void EditorLauncher::Start ()
     scriptFile_ = GetSubsystem <Urho3D::ResourceCache> ()->GetResource <Urho3D::ScriptFile> ("Scripts/Editor.as");
 
     // If script loading is successful, proceed to main loop
-    if (scriptFile_ && scriptFile_->Execute ("void Start()"))
+    if (scriptFile_ && scriptFile_->Execute ("void Start ()"))
     {
         // Subscribe to script's reload event to allow live-reload of the application
         SubscribeToEvent (scriptFile_, Urho3D::E_RELOADSTARTED, URHO3D_HANDLER (EditorLauncher, HandleScriptReloadStarted));
@@ -49,7 +49,9 @@ void EditorLauncher::Start ()
         return;
     }
     else
+    {
         ErrorExit ("Error loading editor scripts!");
+    }
 }
 
 void EditorLauncher::Stop ()
@@ -57,21 +59,25 @@ void EditorLauncher::Stop ()
     if (scriptFile_)
     {
         // Execute the optional stop function
-        if (scriptFile_->GetFunction ("void Stop()"))
-            scriptFile_->Execute ("void Stop()");
+        if (scriptFile_->GetFunction ("void Stop ()"))
+        {
+            scriptFile_->Execute ("void Stop ()");
+        }
     }
 }
 
 void EditorLauncher::HandleScriptReloadStarted (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    if (scriptFile_->GetFunction("void Stop()"))
-        scriptFile_->Execute("void Stop()");
+    if (scriptFile_->GetFunction("void Stop ()"))
+    {
+        scriptFile_->Execute("void Stop ()");
+    }
 }
 
 void EditorLauncher::HandleScriptReloadFinished (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     // Restart the script application after reload
-    if (!scriptFile_->Execute ("void Start()"))
+    if (!scriptFile_->Execute ("void Start ()"))
     {
         scriptFile_.Reset ();
         ErrorExit ();
