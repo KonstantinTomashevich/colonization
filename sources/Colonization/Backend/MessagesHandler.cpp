@@ -80,7 +80,10 @@ void MessagesHandler::HandleNetworkMessage (Urho3D::StringHash eventType, Urho3D
             Urho3D::Vector <Urho3D::StringHash> recievers;
             recievers.Push (Urho3D::StringHash (player->GetName ()));
             while (!messageData.IsEof ())
+            {
                 recievers.Push (Urho3D::StringHash (messageData.ReadString ()));
+            }
+
             Urho3D::Vector <Player *> players = playersManager->GetPlayersByNames (recievers);
             SendChatMessage (player->GetName (), message, players, true);
             player->OnChatMessageSended ();
@@ -113,7 +116,9 @@ void MessagesHandler::SendChatMessage (Urho3D::String senderName, Urho3D::String
     messageData.WriteString (message);
 
     for (int index = 0; index < recieviers.Size (); index++)
+    {
         recieviers.At (index)->GetConnection ()->SendMessage (STC_NETWORK_MESSAGE_CHAT_MESSAGE, true, false, messageData);
+    }
 }
 
 void MessagesHandler::SendTextInfoFromServer (Urho3D::String info, Urho3D::Vector <Player *> &recieviers)
@@ -121,7 +126,9 @@ void MessagesHandler::SendTextInfoFromServer (Urho3D::String info, Urho3D::Vecto
     Urho3D::VectorBuffer messageData;
     messageData.WriteString (info);
     for (int index = 0; index < recieviers.Size (); index++)
+    {
         recieviers.At (index)->GetConnection ()->SendMessage (STC_NETWORK_MESSAGE_TEXT_INFO_FROM_SERVER, true, false, messageData);
+    }
 }
 
 void MessagesHandler::SendGameState (GameStateType gameState, Urho3D::Vector<Player *> &recieviers)
@@ -129,6 +136,8 @@ void MessagesHandler::SendGameState (GameStateType gameState, Urho3D::Vector<Pla
     Urho3D::VectorBuffer messageData;
     messageData.WriteInt (static_cast <int> (gameState));
     for (int index = 0; index < recieviers.Size (); index++)
+    {
         recieviers.At (index)->GetConnection ()->SendMessage (STC_NETWORK_MESSAGE_SEND_GAME_STATE, true, false, messageData);
+    }
 }
 }

@@ -26,7 +26,9 @@ bool PlayersManager::DeleteIdentificatedConnection (Urho3D::Connection *connecti
             isFinded = true;
         }
         else
+        {
             index++;
+        }
     }
     return isFinded;
 }
@@ -38,7 +40,9 @@ void PlayersManager::UpdatePlayers (MessagesHandler *messagesHandler, float time
     {
         Player *player = players_.Values ().At (index);
         if (!player)
+        {
             players_.Erase (players_.Keys ().At (index));
+        }
         else
         {
             player->Update (timeStep);
@@ -61,7 +65,9 @@ void PlayersManager::UpdateConnectionsWithoudId (float timeStep)
             connection->Disconnect ();
         }
         else
+        {
             index++;
+        }
     }
 }
 
@@ -79,7 +85,9 @@ void PlayersManager::UpdatePlayersInfos ()
             Player *player = players_.Values ().At (index);
             Urho3D::Node *infoNode;
             if (index < playersInfosNodes.Size ())
+            {
                 infoNode = playersInfosNodes.At (index);
+            }
             else
             {
                 infoNode = node_->CreateChild (player->GetName (), Urho3D::REPLICATED);
@@ -109,11 +117,14 @@ void PlayersManager::UpdatePlayersInfos ()
             }
 
             if (changed)
+            {
                 playerInfo->MarkNetworkUpdate ();
+            }
         }
         else
+        {
             playersInfosNodes.At (index)->Remove ();
-
+        }
         index++;
     }
 }
@@ -141,7 +152,9 @@ PlayersManager::~PlayersManager ()
     DisconnectAllUnidentificatedConnections ();
 
     while (!players_.Keys ().Empty ())
+    {
         DisconnectPlayer (players_.Keys ().Front ());
+    }
 }
 
 void PlayersManager::RegisterObject (Urho3D::Context *context)
@@ -230,9 +243,13 @@ Urho3D::Vector <Player *> PlayersManager::GetPlayersByNames (Urho3D::Vector <Urh
 Player *PlayersManager::GetPlayer (Urho3D::Connection *connection)
 {
     if (connectionHashToNameHashMap_ [connection->GetAddress ()].Value ())
+    {
         return players_ [connectionHashToNameHashMap_ [connection->GetAddress ()]];
+    }
     else
+    {
         return 0;
+    }
 }
 
 Urho3D::Vector <Player *> PlayersManager::GetAllPlayers ()
@@ -270,6 +287,8 @@ void PlayersManager::DisconnectPlayer (Urho3D::StringHash nameHash)
 void PlayersManager::DisconnectPlayer (Urho3D::Connection *connection)
 {
     if (connectionHashToNameHashMap_ [connection->GetAddress ()].Value ())
+    {
         DisconnectPlayer (connectionHashToNameHashMap_ [connection->GetAddress ()]);
+    }
 }
 }

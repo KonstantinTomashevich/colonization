@@ -24,17 +24,21 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
         District *district = map->GetDistrictByIndex (index);
         if (district->HasColony ())
         {
-            float evolutionPoints = district->GetLogisticsEvolutionPoints ();
-            while (toScanHashMap [Urho3D::StringHash (static_cast <int> (evolutionPoints * 1000))])
-                evolutionPoints += 0.001f;
-            toScanHashMap [Urho3D::StringHash (static_cast <int> (evolutionPoints * 1000))] = district;
+            float logisticsEvolutionPoints = district->GetLogisticsEvolutionPoints ();
+            while (toScanHashMap [Urho3D::StringHash (static_cast <int> (logisticsEvolutionPoints * 1000))])
+            {
+                logisticsEvolutionPoints += 0.001f;
+            }
+            toScanHashMap [Urho3D::StringHash (static_cast <int> (logisticsEvolutionPoints * 1000))] = district;
         }
     }
 
     toScanHashMap.Sort ();
     Urho3D::PODVector <District *> toScan;
     for (int index = toScanHashMap.Values ().Size () - 1; index >= 0; index--)
+    {
         toScan.Push (toScanHashMap.Values ().At (index));
+    }
 
     assert (node_);
     Urho3D::PODVector <Urho3D::Node *> tradeAreasNodes;
@@ -47,7 +51,9 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
         {
             Urho3D::Node *node;
             if (tradeAreaIndex < tradeAreasNodes.Size ())
+            {
                 node = tradeAreasNodes.At (tradeAreaIndex);
+            }
             else
             {
                 node = node_->CreateChild ("InternalTradeArea" + Urho3D::String (tradeAreaIndex), Urho3D::REPLICATED);
@@ -64,14 +70,15 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
             Urho3D::Node *node = tradeAreasNodes.At (tradeAreaIndex);
             node->Remove ();
         }
-
         tradeAreaIndex++;
     }
     tradeAreasNodes.Clear ();
 
     PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
     for (int index = 0; index < tradeAreas_.Size (); index++)
+    {
         ProcessTradeAreaIncome (playersManager, map, tradeAreas_.At (index), updateDelay);
+    }
 
 }
 
@@ -82,16 +89,22 @@ void TradeProcessor::UpdateTradeArea (InternalTradeArea *tradeArea, Map *map, Di
 
     Urho3D::PODVector <Urho3D::StringHash> areaDistrictsHashes;
     for (int index = 0; index < areaDistricts.Size (); index++)
+    {
         areaDistrictsHashes.Push (areaDistricts.At (index)->GetHash ());
+    }
 
     assert (node_);
     if (tradeArea->GetDistrictsHashesArray () != areaDistrictsHashes)
     {
         while (tradeArea->GetDistrictsHashesCount ())
+        {
             tradeArea->RemoveDistrictHash (tradeArea->GetDistrictHashByIndex (0));
+        }
 
         for (int index = 0; index < areaDistrictsHashes.Size (); index++)
+        {
             tradeArea->AddDistrictHash (areaDistrictsHashes.At (index));
+        }
     }
 }
 
@@ -110,7 +123,9 @@ void TradeProcessor::ProcessTradeAreaDistrict (Map *map, District *district, Urh
             assert (neighbor);
 
             if (neighbor->HasColony () && neighbor->GetColonyOwnerName () == district->GetColonyOwnerName ())
+            {
                 neighbors.Push (neighbor);
+            }
 
             else if (district->GetLogisticsEvolutionPoints () >= 6.0f && neighbor->IsSea () && !neighbor->IsImpassable ())
             {
@@ -119,19 +134,25 @@ void TradeProcessor::ProcessTradeAreaDistrict (Map *map, District *district, Urh
                 {
                     District *neighborOfNeighbor = map->GetDistrictByHash (neighborsOfNeighborsHashes.At (neighborOfNeighboarIndex));
                     if (neighborOfNeighbor->HasColony () && neighborOfNeighbor->GetColonyOwnerName () == district->GetColonyOwnerName ())
+                    {
                         neighbors.Push (neighborOfNeighbor);
+                    }
                 }
             }
         }
     }
 
     if (!neighbors.Empty ())
+    {
         for (int index = 0; index < neighbors.Size (); index++)
         {
             District *neighbor = neighbors.At (index);
             if (unscannedList.Contains (neighbor))
+            {
                 ProcessTradeAreaDistrict (map, neighbor, areaDistricts, unscannedList);
+            }
         }
+    }
 }
 
 void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map *map, InternalTradeArea *tradeArea, float updateDelay)
@@ -140,9 +161,11 @@ void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map
                                                     map->GetDistrictByHash (tradeArea->GetDistrictHashByIndex (0))->
                                                     GetColonyOwnerName ()));
     if (!player)
+    {
         Urho3D::Log::Write (Urho3D::LOG_ERROR, "Found colony of null player! Colony: " +
                             map->GetDistrictByHash (tradeArea->GetDistrictHashByIndex (0))->GetName () + ", player: " +
                             map->GetDistrictByHash (tradeArea->GetDistrictHashByIndex (0))->GetColonyOwnerName () + ".");
+    }
     else
     {
         GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
@@ -176,6 +199,7 @@ void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map
             float minDistance = (nearestEuropeDistrict->GetUnitPosition () - district->GetUnitPosition ()).Length ();
 
             if (wayToEuropeDistricts.Size () > 1)
+            {
                 for (int index = 1; index < wayToEuropeDistricts.Size (); index++)
                 {
                     District *europeDistrict = map->GetDistrictByHash (wayToEuropeDistricts.At (index));
@@ -186,6 +210,7 @@ void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map
                         minDistance = (europeDistrict->GetUnitPosition () - district->GetUnitPosition ()).Length ();
                     }
                 }
+            }
 
             unit->SetWay (map->FindPath (unit->GetPositionHash (), nearestEuropeDistrict->GetHash (),
                                          unit->GetOwnerPlayerName (), true, false));
@@ -197,7 +222,9 @@ void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map
 void TradeProcessor::ClearTradeAreas ()
 {
     for (int index = 0; index < tradeAreas_.Size (); index++)
+    {
         tradeAreas_.At (index)->GetNode ()->Remove ();
+    }
     tradeAreas_.Clear ();
 }
 

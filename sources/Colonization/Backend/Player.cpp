@@ -30,7 +30,9 @@ void Player::ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data)
     assert (target);
 
     if (unit->GetOwnerPlayerName () != name_)
+    {
         return;
+    }
 
     if ((unit->GetUnitType () == UNIT_FLEET && target->IsSea ()) ||
             (unit->GetUnitType () != UNIT_FLEET && target->HasColony () && target->GetColonyOwnerName () == name_) ||
@@ -92,6 +94,7 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
         float minDistance = (nearestEuropeDistrict->GetUnitPosition () - targetDistrict->GetUnitPosition ()).Length ();
 
         if (wayToEuropeDistricts.Size () > 1)
+        {
             for (int index = 1; index < wayToEuropeDistricts.Size (); index++)
             {
                 District *district = map->GetDistrictByHash (wayToEuropeDistricts.At (index));
@@ -102,10 +105,10 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
                     minDistance = (district->GetUnitPosition () - targetDistrict->GetUnitPosition ()).Length ();
                 }
             }
+        }
 
         Urho3D::PODVector <Urho3D::StringHash> way = map->FindPath (
                     nearestEuropeDistrict->GetHash (), targetDistrict->GetHash (), name_, true, true);
-
         if (!way.Empty ())
         {
             gold_ -= 100.0f;
@@ -159,16 +162,18 @@ void Player::Update (float timeStep)
     while (!actionsSequence_.Empty ())
     {
         Urho3D::Pair <PlayerActionType, Urho3D::Variant> action = actionsSequence_.At (0);
-
         if (action.first_ == PLAYER_ACTION_SET_UNIT_MOVE_TARGET)
+        {
             ProcessSetUnitMoveTargetAction (action.second_.GetVectorBuffer ());
-
+        }
         else if (action.first_ == PLAYER_ACTION_INVEST_TO_COLONY)
+        {
             ProcessInvestToColonyAction (action.second_.GetVectorBuffer ());
-
+        }
         else if (action.first_ == PLAYER_ACTION_REQUEST_COLONIZATORS_FROM_EUROPE)
+        {
             ProcessRequestColonizatorsFromEuropeAction (action.second_.GetVectorBuffer ());
-
+        }
         actionsSequence_.Remove (actionsSequence_.At (0));
     }
 }

@@ -73,17 +73,29 @@ void ColoniesManager::ProcessColonyFarmsEvolution (GameConfiguration *configurat
 
     float climateModifer = 1.0f;
     if (colony->GetClimate () == CLIMATE_TEMPERATE)
+    {
         climateModifer = 1.0f;
+    }
     else if (colony->GetClimate () == CLIMATE_TEMPERATE_CONTINENTAL)
+    {
         climateModifer = 0.8f;
+    }
     else if (colony->GetClimate () == CLIMATE_TROPICAL)
+    {
         climateModifer = 1.5f;
+    }
     else if (colony->GetClimate () == CLIMATE_HOT)
+    {
         climateModifer = 1.25f;
+    }
     else if (colony->GetClimate () == CLIMATE_COLD)
+    {
         climateModifer = 0.5f;
+    }
     else if (colony->GetClimate () == CLIMATE_DESERT)
+    {
         climateModifer = 0.25f;
+    }
 
     float investitions = investitions_ [colony->GetHash ()] ["farms"];
     float investitionsModifer = 1.0f;
@@ -101,7 +113,9 @@ void ColoniesManager::ProcessColonyFarmsEvolution (GameConfiguration *configurat
         evolutionModifer *= investitionsModifer;
     }
     else
+    {
         evolutionModifer = 0.0f;
+    }
 
     colony->SetFarmsEvolutionPoints (colony->GetFarmsEvolutionPoints () + configuration->GetColoniesBasicEvolution () * evolutionModifer * timeStep);
 }
@@ -115,25 +129,38 @@ void ColoniesManager::ProcessColonyMinesEvolution (GameConfiguration *configurat
     float perspective = 1.0f;
 
     if (colony->GetForestsSquare () < (colony->GetForestsSquare () + colony->GetFarmingSquare ()) * 0.15f)
+    {
         perspective -= 1.0;
+    }
     else if (colony->GetForestsSquare () < (colony->GetForestsSquare () + colony->GetFarmingSquare ()) * 0.25f)
+    {
         perspective -= 0.75f;
+    }
     else if (colony->GetForestsSquare () > (colony->GetForestsSquare () + colony->GetFarmingSquare ()) * 0.5f)
+    {
         perspective += 0.5f;
+    }
     else if (colony->GetForestsSquare () > colony->GetForestsSquare () < (colony->GetForestsSquare () + colony->GetFarmingSquare ()) * 0.75f)
+    {
         perspective += 1.0f;
+    }
 
     if (colony->HasCoalDeposits ())
+    {
         perspective += 0.5f;
-
+    }
     if (colony->HasIronDeposits ())
+    {
         perspective += 0.75f;
-
+    }
     if (colony->HasSilverDeposits ())
+    {
         perspective += 1.25f;
-
+    }
     if (colony->HasGoldDeposits ())
+    {
         perspective += 1.5f;
+    }
 
     if (colony->GetForestsSquare () > (colony->GetForestsSquare () + colony->GetFarmingSquare ()) * 0.15f)
     {
@@ -152,16 +179,21 @@ void ColoniesManager::ProcessColonyMinesEvolution (GameConfiguration *configurat
     float modifer = sqrt (perspective);
 
     if (minesEvolutionInColonyEvolution > 0.25f)
+    {
         modifer *= 0.25f;
-
+    }
     else if (minesEvolutionInColonyEvolution > 0.5f)
+    {
         modifer *= 0.15f;
-
+    }
     else if (colonyMinesEvolution > 1.5f * colony->GetFarmsEvolutionPoints ())
+    {
         modifer *= 0.1f;
-
+    }
     else
+    {
         modifer *= 0.5f;
+    }
 
     colony->SetMinesEvolutionPoints (colony->GetMinesEvolutionPoints () + configuration->GetColoniesBasicEvolution () * modifer * timeStep);
 }
@@ -177,11 +209,17 @@ void ColoniesManager::ProcessColonyIndustryEvolution (GameConfiguration *configu
     perspective += sqrt (colony->GetLogisticsEvolutionPoints ()) * 0.75f;
 
     if (colony->HasCoalDeposits () && colony->HasIronDeposits ())
+    {
         perspective += 2.0f;
+    }
     else if (colony->HasCoalDeposits ())
+    {
         perspective += 0.5f;
+    }
     else if (colony->HasIronDeposits ())
+    {
         perspective += 1.0f;
+    }
 
     float investitions = investitions_ [colony->GetHash ()] ["industry"];
     if (investitions > 0.0f)
@@ -193,16 +231,21 @@ void ColoniesManager::ProcessColonyIndustryEvolution (GameConfiguration *configu
     float modifer = sqrt (perspective);
 
     if (industryEvolutionInColonyEvolution > 0.5f)
+    {
         modifer *= 0.3f;
-
+    }
     else if (industryEvolutionInColonyEvolution > 0.75f)
+    {
         modifer *= 0.15f;
-
+    }
     else if (colonyIndustryEvolution > 5.0f * colony->GetFarmsEvolutionPoints ())
+    {
         modifer *= 0.1f;
-
+    }
     else
+    {
         modifer *= 0.5f;
+    }
 
     colony->SetIndustryEvolutionPoints (colony->GetIndustryEvolutionPoints () + configuration->GetColoniesBasicEvolution () * modifer * timeStep);
 }
@@ -229,22 +272,29 @@ void ColoniesManager::ProcessColonyLogisticsEvolution (GameConfiguration *config
     float modifer = sqrt (perspective);
 
     if (logisticsEvolutionInColonyEvolution > 0.1f)
+    {
         modifer *= 0.35f;
-
+    }
     else if (logisticsEvolutionInColonyEvolution > 0.15f)
+    {
         modifer *= 0.2f;
-
+    }
     else if (logisticsEvolutionInColonyEvolution > 0.2f)
+    {
         modifer *= 0.1f;
-
+    }
     else if (logisticsEvolutionInColonyEvolution > 0.25f)
+    {
         modifer *= 0.05f;
-
+    }
     else if (logisticsEvolutionInColonyEvolution > 0.30f)
+    {
         modifer *= 0.0f;
-
+    }
     else
+    {
         modifer *= 0.5f;
+    }
 
     colony->SetLogisticsEvolutionPoints (colony->GetLogisticsEvolutionPoints () + configuration->GetColoniesBasicEvolution () * modifer * timeStep);
 }
@@ -257,16 +307,21 @@ void ColoniesManager::ProcessColonyDefenseEvolution (GameConfiguration *configur
     float modifer = 1.0f;
 
     if (defenseEvolutionInColonyEvolution > 0.1f)
+    {
         modifer *= 0.4f;
-
+    }
     else if (defenseEvolutionInColonyEvolution > 0.2f)
+    {
         modifer *= 0.1f;
-
+    }
     else if (defenseEvolutionInColonyEvolution > 0.5f)
+    {
         modifer *= 0.0f;
-
+    }
     else
+    {
         modifer *= 0.5f;
+    }
 
     float investitions = investitions_ [colony->GetHash ()] ["defense"];
     if (investitions > 0.0f)
@@ -318,7 +373,9 @@ void ColoniesManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &
         {
             District *district = map->GetDistrictByIndex (index);
             if (district->HasColony ())
+            {
                 ProcessColony (configuration, district, timeStep);
+            }
         }
     }
 }

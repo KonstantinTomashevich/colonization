@@ -84,7 +84,9 @@ UnitsManager::~UnitsManager ()
 void UnitsManager::DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest)
 {
     for (int index = 0; index < units_.Size (); index++)
+    {
         units_.At (index)->DrawDebugGeometry (debug, depthTest);
+    }
 }
 
 void UnitsManager::RegisterObject (Urho3D::Context *context)
@@ -132,15 +134,25 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
                 float speed;
 
                 if (unitPosition->IsSea () && nextTarget->IsSea ())
+                {
                     speed = sailSpeed;
+                }
                 else if (!unitPosition->IsSea () && !nextTarget->IsSea ())
+                {
                     speed = marchSpeed;
+                }
                 else if (!unitPosition->IsSea () && nextTarget->IsSea ())
+                {
                     speed = embarkationSpeed;
+                }
                 else if (unitPosition->IsSea () && !nextTarget->IsSea ())
+                {
                     speed = disembarkationSpeed;
+                }
                 else
+                {
                     speed = 0.0f;
+                }
 
                 float addition = (100.0f * speed * timeStep) / distance;
                 unit->SetWayToNextDistrictProgressInPercents (unit->GetWayToNextDistrictProgressInPercents () + addition);
@@ -153,13 +165,19 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
                     unit->SetWayToNextDistrictProgressInPercents (0.0f);
 
                     if (unitWay.Empty () && unit->GetUnitType () == UNIT_COLONIZATORS)
+                    {
                         SettleColonizator (unit, map);
+                    }
                     else if (unitWay.Empty () && unit->GetUnitType () == UNIT_TRADERS)
+                    {
                         ProcessTrader (configuration, unit);
+                    }
                 }
 
                 if (unit->GetNode ())
+                {
                     unit->MarkNetworkUpdate ();
+                }
             }
         }
     }
@@ -178,7 +196,9 @@ void UnitsManager::UpdateUnitsList ()
     {
         Urho3D::Node *unitNode = unitsNodes.At (index);
         if (unitNode->GetID () < Urho3D::FIRST_LOCAL_ID)
+        {
             units_.Push (Urho3D::SharedPtr <Unit> (unitNode->GetComponent <Unit> ()));
+        }
     }
 }
 
@@ -196,8 +216,12 @@ Unit *UnitsManager::GetUnitByIndex (int index)
 Unit *UnitsManager::GetUnitByHash (Urho3D::StringHash hash)
 {
     for (int index = 0; index < units_.Size (); index++)
+    {
         if (units_.At (index)->GetHash () == hash)
+        {
             return units_.At (index);
+        }
+    }
     return 0;
 }
 
