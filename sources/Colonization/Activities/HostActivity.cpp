@@ -60,7 +60,9 @@ void HostActivity::SetupPlayingState ()
     Urho3D::PODVector <Urho3D::Node *> units;
     unitsNode->GetChildrenWithComponent <Unit> (units);
     for (int index = 0; index < units.Size (); index++)
+    {
         units.At (index)->GetComponent <Unit> ()->UpdateHash (unitsManager);
+    }
 
     // Create server side components.
     scene_->CreateComponent <ColoniesManager> (Urho3D::LOCAL);
@@ -94,22 +96,34 @@ void HostActivity::SetupState (GameStateType state)
 {
     DisposeCurrentState ();
     if (state == GAME_STATE_WAITING_FOR_PLAYERS)
+    {
         SetupWaitingForPlayersState ();
+    }
     else if (state == GAME_STATE_PLAYING)
+    {
         SetupPlayingState ();
+    }
     else if (state == GAME_STATE_FINISHED)
+    {
         SetupFinishedState ();
+    }
     currentState_ = state;
 }
 
 void HostActivity::DisposeCurrentState ()
 {
     if (currentState_ == GAME_STATE_WAITING_FOR_PLAYERS)
+    {
         DisposeWaitingForPlayersState ();
+    }
     else if (currentState_ == GAME_STATE_PLAYING)
+    {
         DisposePlayingState ();
+    }
     else if (currentState_ == GAME_STATE_FINISHED)
+    {
         DisposeFinishedState ();
+    }
     currentState_ = GAME_STATE_UNITIALIZED;
 }
 
@@ -167,15 +181,23 @@ void HostActivity::Update (float timeStep)
     scene_->GetChildren (children, true);
     int replicated = 0;
     for (int index = 0; index < children.Size (); index++)
+    {
         if (children.At (index)->GetID () < Urho3D::FIRST_LOCAL_ID)
+        {
             replicated++;
+        }
+    }
     scene_->SetVar ("ReplicatedNodesCount", replicated);
 
     // Go to next state if needed.
     if (currentState_ == GAME_STATE_WAITING_FOR_PLAYERS && WillIGoFromWaitingForPlayersToPlayingState ())
+    {
         SetupState (GAME_STATE_PLAYING);
+    }
     else if (currentState_ == GAME_STATE_PLAYING && WillIGoFromPlayingToFinishedState ())
+    {
         SetupState (GAME_STATE_FINISHED);
+    }
 }
 
 void HostActivity::Stop ()
