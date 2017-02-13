@@ -93,8 +93,10 @@ void Unit::DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest)
 void Unit::UpdateHash (UnitsManager *owner)
 {
     do
+    {
         hash_ = Urho3D::StringHash (ownerPlayerName_ + Urho3D::String (static_cast <int> (unitType_)) +
                                     Urho3D::String (Urho3D::Random (0, 100000)));
+    }
     while (owner->GetUnitByHash (hash_) != this);
 }
 
@@ -147,35 +149,49 @@ void Unit::SetWay (Urho3D::PODVector <Urho3D::StringHash> way)
 {
     Urho3D::StringHash oldNextTarget;
     if (!way_.Empty ())
+    {
         if (way_.At (0) == positionHash_)
         {
             if (way_.Size () > 1)
+            {
                 oldNextTarget = way_.At (1);
+            }
             else
+            {
                 oldNextTarget = Urho3D::StringHash::ZERO;
+            }
         }
         else
         {
             oldNextTarget = way_.At (0);
         }
+    }
 
     Urho3D::StringHash newNextTarget;
     if (!way.Empty ())
+    {
         if (way.At (0) == positionHash_)
         {
             if (way.Size () > 1)
+            {
                 newNextTarget = way.At (1);
+            }
             else
+            {
                 newNextTarget = Urho3D::StringHash::ZERO;
+            }
         }
         else
         {
             newNextTarget = way.At (0);
         }
+    }
 
     if (oldNextTarget != newNextTarget ||
             oldNextTarget == Urho3D::StringHash::ZERO || newNextTarget == Urho3D::StringHash::ZERO)
+    {
         wayToNextDistrictProgressInPercents_ = 0.0f;
+    }
     way_ = way;
 }
 
@@ -184,7 +200,9 @@ Urho3D::VariantVector Unit::GetWayAttribute () const
     Urho3D::VariantVector variantVector;
     variantVector.Push (Urho3D::Variant (way_.Size ()));
     for (int index = 0; index < way_.Size (); index++)
+    {
         variantVector.Push (Urho3D::Variant (way_.At (index)));
+    }
     return variantVector;
 }
 
@@ -195,13 +213,19 @@ void Unit::SetWayAttribute (const Urho3D::VariantVector &way)
     {
         int requestedSize = way.At (0).GetInt ();
         if (requestedSize > 0)
+        {
             for (int index = 0; index < requestedSize; index++)
             {
                 if (index + 1 < way.Size ())
+                {
                     newWay.Push (way.At (index + 1).GetStringHash ());
+                }
                 else
+                {
                     newWay.Push (Urho3D::StringHash ());
+                }
             }
+        }
     }
     SetWay (newWay);
 }
@@ -220,9 +244,13 @@ int Unit::FleetUnitGetWarShipsCount () const
 {
     Urho3D::Variant *value = unitTypeSpecificVars_ ["WarShipsCount"];
     if (value)
+    {
         return value->GetInt ();
+    }
     else
+    {
         return 0;
+    }
 }
 
 void Unit::FleetUnitSetWarShipsCount (int warShipsCount)
@@ -234,9 +262,13 @@ float Unit::TradersUnitGetTradeGoodsCost () const
 {
     Urho3D::Variant *value = unitTypeSpecificVars_ ["TradeGoodsCost"];
     if (value)
+    {
         return value->GetFloat ();
+    }
     else
+    {
         return 0.0f;
+    }
 }
 
 void Unit::TradersUnitSetTradeGoodsCost (float tradeGoodsCost)
@@ -248,9 +280,13 @@ int Unit::ColonizatorsUnitGetColonizatorsCount () const
 {
     Urho3D::Variant *value = unitTypeSpecificVars_ ["ColonizatorsCount"];
     if (value)
+    {
         return value->GetInt ();
+    }
     else
+    {
         return 0;
+    }
 }
 
 void Unit::ColonizatorsUnitSetColonizatorsCount (int colonizatorsCount)
@@ -262,9 +298,13 @@ int Unit::ArmyUnitGetSoldiersCount () const
 {
     Urho3D::Variant *value = unitTypeSpecificVars_ ["SoldiersCount"];
     if (value)
+    {
         return value->GetInt ();
+    }
     else
+    {
         return 0;
+    }
 }
 
 void Unit::ArmyUnitSetSoldiersCount (int soldiersCount)

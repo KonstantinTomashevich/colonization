@@ -28,7 +28,9 @@ const char *districtsHashesStructureElementsNames [] =
 void InternalTradeArea::ConstructVectorOfRealDistricts (Map *map, Urho3D::PODVector <District *> &output)
 {
     for (int index = 0; index < districtsHashes_.Size (); index++)
+    {
         output.Push (map->GetDistrictByHash (districtsHashes_.At (index)));
+    }
 }
 
 float InternalTradeArea::CalculateTotalEvolutionOf (Urho3D::StringHash evolutionBranch, Urho3D::PODVector <District *> &realDistricts)
@@ -39,16 +41,26 @@ float InternalTradeArea::CalculateTotalEvolutionOf (Urho3D::StringHash evolution
         District *district = realDistricts.At (index);
         assert (district);
         if (evolutionBranch == Urho3D::StringHash ("farms"))
+        {
             // FIXME: It will be multipled by land average fertility.
             totalEvolution += district->GetFarmsEvolutionPoints ();
+        }
         else if (evolutionBranch == Urho3D::StringHash ("mines"))
+        {
             totalEvolution += district->GetMinesEvolutionPoints ();
+        }
         else if (evolutionBranch == Urho3D::StringHash ("industry"))
+        {
             totalEvolution += district->GetIndustryEvolutionPoints ();
+        }
         else if (evolutionBranch == Urho3D::StringHash ("logistics"))
+        {
             totalEvolution += district->GetLogisticsEvolutionPoints ();
+        }
         else if (evolutionBranch == Urho3D::StringHash ("defense"))
+        {
             totalEvolution += district->GetDefenseEvolutionPoints ();
+        }
     }
     return totalEvolution;
 }
@@ -61,11 +73,17 @@ float InternalTradeArea::CalculateTotalProductionConsumptionOf (GameConfiguratio
         District *district = realDistricts.At (index);
         assert (district);
         if (evolutionBranch == Urho3D::StringHash ("farms"))
+        {
             totalConsumption += CalculateDistrictProductionConsumptionOfFarms (configuration, district);
+        }
         else if (evolutionBranch == Urho3D::StringHash ("mines"))
+        {
             totalConsumption += CalculateDistrictProductionConsumptionOfMines (configuration, district);
+        }
         else if (evolutionBranch == Urho3D::StringHash ("industry"))
+        {
             totalConsumption += CalculateDistrictProductionConsumptionOfIndustry (configuration, district);
+        }
     }
     return totalConsumption;
 }
@@ -124,12 +142,16 @@ void InternalTradeArea::DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool de
     assert (map);
 
     if (!districtsHashes_.Empty ())
+    {
         for (int index = 0; index < districtsHashes_.Size (); index++)
         {
             District *district = map->GetDistrictByHash (districtsHashes_.At (index));
             if (district)
+            {
                 district->DrawDebugGeometry (debug, depthTest);
+            }
         }
+    }
 }
 
 void InternalTradeArea::RegisterObject (Urho3D::Context *context)
@@ -226,7 +248,9 @@ Urho3D::VariantVector InternalTradeArea::GetDistrictsHashesArrayAttribute () con
     Urho3D::VariantVector variantVector;
     variantVector.Push (districtsHashes_.Size ());
     for (int index = 0; index < districtsHashes_.Size (); index++)
+    {
         variantVector.Push (Urho3D::Variant (districtsHashes_.At (index)));
+    }
     return variantVector;
 }
 
@@ -237,13 +261,19 @@ void InternalTradeArea::SetDistrictsHashesArrayAttribute (const Urho3D::VariantV
     {
         int requestedSize = attribute.At (0).GetInt ();
         if (requestedSize > 0)
+        {
             for (int index = 0; index < requestedSize; index++)
             {
                 if (index + 1 < attribute.Size ())
+                {
                     districtsHashes_.Push (attribute.At (index + 1).GetStringHash ());
+                }
                 else
+                {
                     districtsHashes_.Push (Urho3D::StringHash ());
+                }
             }
+        }
     }
 }
 

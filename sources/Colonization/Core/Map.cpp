@@ -33,7 +33,9 @@ Map::~Map ()
 void Map::DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest)
 {
     for (int index = 0; index < districts_.Size (); index++)
+    {
         districts_.At (index)->DrawDebugGeometry (debug, depthTest);
+    }
 }
 
 void Map::RegisterObject (Urho3D::Context *context)
@@ -51,16 +53,24 @@ District *Map::GetDistrictByIndex (int index)
 District *Map::GetDistrictByNameHash (Urho3D::StringHash nameHash)
 {
     for (int index = 0; index < districts_.Size (); index++)
+    {
         if (Urho3D::StringHash (districts_.At (index)->GetName ()) == nameHash)
+        {
             return districts_.At (index);
+        }
+    }
     return 0;
 }
 
 District *Map::GetDistrictByHash (Urho3D::StringHash hash)
 {
     for (int index = 0; index < districts_.Size (); index++)
+    {
         if (districts_.At (index)->GetHash () == hash)
+        {
             return districts_.At (index);
+        }
+    }
     return 0;
 }
 
@@ -94,7 +104,9 @@ void Map::UpdateDistrictsList ()
     {
         Urho3D::Node *districtNode = districtsNodes.At (index);
         if (districtNode->GetID () < Urho3D::FIRST_LOCAL_ID)
+        {
             districts_.Push (Urho3D::SharedPtr <District> (districtNode->GetComponent <District> ()));
+        }
     }
 }
 
@@ -105,19 +117,25 @@ void Map::ClearAndRemoveDistricts ()
     Urho3D::PODVector <Urho3D::Node *> districtsNodes;
     node_->GetChildrenWithComponent (districtsNodes, District::GetTypeStatic ());
     for (int index = 0; index < districtsNodes.Size (); index++)
+    {
         node_->RemoveChild (districtsNodes.At (index));
+    }
 }
 
 void Map::RecalculateDistrictsHashes ()
 {
     for (int index = 0; index < districts_.Size (); index++)
+    {
         districts_.At (index)->UpdateHash (this);
+    }
 }
 
 void Map::RecalculateDistrictsNeighbors ()
 {
     for (int index = 0; index < districts_.Size (); index++)
+    {
         districts_.At (index)->CalculateNeighbors (districts_);
+    }
 }
 
 Urho3D::PODVector <Urho3D::StringHash> Map::FindPath (
@@ -190,7 +208,9 @@ Urho3D::PODVector <Urho3D::StringHash> Map::FindPath (
 
             Urho3D::PODVector <Urho3D::StringHash> way;
             for (int index = reversedWay.Size () - 1; index >= 0; index--)
+            {
                 way.Push (reversedWay.At (index));
+            }
             way.Push (target->GetHash ());
             return way;
         }
@@ -218,22 +238,31 @@ Urho3D::PODVector <Urho3D::StringHash> Map::FindPath (
                 float distance = (current->GetUnitPosition () - next->GetUnitPosition ()).Length ();
 
                 if (current->IsSea () && next->IsSea ())
+                {
                     newCost += (distance / sailSpeed);
+                }
                 else if (!current->IsSea () && !next->IsSea ())
+                {
                     newCost += (distance / marchSpeed);
+                }
                 else if (!current->IsSea () && next->IsSea ())
+                {
                     newCost += (distance / embarkationSpeed);
+                }
                 else if (current->IsSea () && !next->IsSea ())
+                {
                     newCost += (distance / disembarkationSpeed);
+                }
 
                 Urho3D::Log::Write (Urho3D::LOG_DEBUG, "Cost: " + Urho3D::String (newCost));
-
 
                 if (!costSoFar.Contains (next->GetName ()) || newCost < costSoFar [next->GetName ()])
                 {
                     int priority = 1 + static_cast <int> (HeuristicDistanceForPathFinding (target, next) * 1000);
                     while (frontier [Urho3D::StringHash (priority)] && frontier [Urho3D::StringHash (priority)] != next)
+                    {
                         priority++;
+                    }
 
                     costSoFar [next->GetName ()] = newCost;
                     frontier [Urho3D::StringHash (priority)] = next;

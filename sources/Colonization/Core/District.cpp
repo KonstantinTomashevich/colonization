@@ -101,9 +101,13 @@ void District::DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest)
             Urho3D::Vector3 secondPoint;
 
             if (index + 1 < polygonPoints_.Size ())
+            {
                 secondPoint = polygonPoints_.At (index + 1);
+            }
             else
+            {
                 secondPoint = polygonPoints_.At (0);
+            }
 
             debug->AddLine (firstPoint, secondPoint, Urho3D::Color::RED, depthTest);
         }
@@ -174,16 +178,24 @@ void District::CalculateNeighbors (Urho3D::Vector<Urho3D::SharedPtr<District> > 
             int contactsCount = 0;
             for (int anotherPolygonPointIndex = 0;
                  anotherPolygonPointIndex < anotherPolygonPoints.Size (); anotherPolygonPointIndex++)
+            {
 
                 for (int thisPolygonPointIndex = 0;
                      thisPolygonPointIndex < polygonPoints_.Size (); thisPolygonPointIndex++)
+                {
 
                     if (anotherPolygonPoints.At (anotherPolygonPointIndex) ==
                             polygonPoints_.At (thisPolygonPointIndex))
+                    {
                         contactsCount += 1;
+                    }
+                }
+            }
 
             if (contactsCount >= 2)
+            {
                 neighbors_.Push (another->GetHash ());
+            }
         }
     }
 }
@@ -191,7 +203,9 @@ void District::CalculateNeighbors (Urho3D::Vector<Urho3D::SharedPtr<District> > 
 void District::UpdateHash (Map *owner)
 {
     do
+    {
         hash_ = Urho3D::StringHash (name_ + Urho3D::String (Urho3D::Random (0, 1000)));
+    }
     while (owner->GetDistrictByHash (hash_) != this);
 }
 
@@ -251,7 +265,9 @@ Urho3D::VariantVector District::GetPolygonPointsAttribute () const
     Urho3D::VariantVector variantVector;
     variantVector.Push (polygonPoints_.Size ());
     for (int index = 0; index < polygonPoints_.Size (); index++)
+    {
         variantVector.Push (Urho3D::Variant (polygonPoints_.At (index)));
+    }
     return variantVector;
 }
 
@@ -262,13 +278,19 @@ void District::SetPolygonPointsAttribute (const Urho3D::VariantVector &polygonPo
     {
         int requestedSize = polygonPoints.At (0).GetInt ();
         if (requestedSize > 0)
+        {
             for (int index = 0; index < requestedSize; index++)
             {
                 if (index + 1 < polygonPoints.Size ())
+                {
                     polygonPoints_.Push (polygonPoints.At (index + 1).GetVector3 ());
+                }
                 else
+                {
                     polygonPoints_.Push (Urho3D::Vector3 ());
+                }
             }
+        }
     }
 }
 
@@ -307,7 +329,9 @@ Urho3D::VariantVector District::GetNeighborsHashesAttribute() const
     Urho3D::VariantVector variantVector;
     variantVector.Push (Urho3D::Variant (neighbors_.Size ()));
     for (int index = 0; index < neighbors_.Size (); index++)
+    {
         variantVector.Push (Urho3D::Variant (neighbors_.At (index)));
+    }
     return variantVector;
 }
 
@@ -318,13 +342,19 @@ void District::SetNeighborsHashesAttribute (const Urho3D::VariantVector &neighbo
     {
         int requestedSize = neighbors.At (0).GetInt ();
         if (requestedSize > 0)
+        {
             for (int index = 0; index < requestedSize; index++)
             {
                 if (index + 1 < neighbors.Size ())
+                {
                     neighbors_.Push (neighbors.At (index + 1).GetStringHash ());
+                }
                 else
+                {
                     neighbors_.Push (Urho3D::StringHash ());
+                }
             }
+        }
     }
 }
 

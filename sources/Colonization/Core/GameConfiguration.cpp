@@ -129,7 +129,9 @@ Urho3D::VariantVector GameConfiguration::GetWayToEuropeDistrictsAttribute () con
     Urho3D::VariantVector variantVector;
     variantVector.Push (Urho3D::Variant (wayToEuropeDistricts_.Size ()));
     for (int index = 0; index < wayToEuropeDistricts_.Size (); index++)
+    {
         variantVector.Push (Urho3D::Variant (wayToEuropeDistricts_.At (index)));
+    }
     return variantVector;
 }
 
@@ -140,13 +142,19 @@ void GameConfiguration::SetWayToEuropeDistrictsAttribute (const Urho3D::VariantV
     {
         int requestedSize = wayToEuropeDistricts.At (0).GetInt ();
         if (requestedSize > 0)
+        {
             for (int index = 0; index < requestedSize; index++)
             {
                 if (index + 1 < wayToEuropeDistricts.Size ())
+                {
                     wayToEuropeDistricts_.Push (wayToEuropeDistricts.At (index + 1).GetStringHash ());
+                }
                 else
+                {
                     wayToEuropeDistricts_.Push (Urho3D::StringHash ());
+                }
             }
+        }
     }
 }
 
