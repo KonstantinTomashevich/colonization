@@ -20,11 +20,20 @@ class ChatBlockedPlayersListEditor : StringListEditorUiHandler
 
     protected String ProcessElementText (String text) override
     {
-        return text;
+        PlayerInfo @playerInfo = GetPlayerInfoByName (scene, text);
+        if (playerInfo !is null)
+        {
+            return (text + " [Found]");
+        }
+        else
+        {
+            return (text + " [Not found]");
+        }
     }
 
     protected bool IsElementToAddCorrect (String element) override
     {
-        return true;
+        String playerName = node.parent.parent.vars ["playerName"].GetString ();
+        return (playerName != element);
     }
 }
