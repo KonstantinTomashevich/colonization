@@ -183,6 +183,6 @@ class ChatWindow : ScriptObject
 
     void HandleShowPrivateUsersClick ()
     {
-
+        ui.root.GetChild ("ingame").GetChild ("chatPrivateReceiversWindow").visible = true;
     }
 }
