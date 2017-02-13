@@ -78,22 +78,28 @@ void TestDistrictsNeighborsCalculationApplication::Start ()
 
     if (!districtA->GetNeighborsHashes ().Contains (districtB->GetHash ()) ||
             !districtA->GetNeighborsHashes ().Contains (districtD->GetHash ()))
+    {
         ErrorExit ("Incorrect A neighbors!");
-
+    }
     else if (!districtB->GetNeighborsHashes ().Contains (districtA->GetHash ()) ||
              !districtB->GetNeighborsHashes ().Contains (districtD->GetHash ()))
+    {
         ErrorExit ("Incorrect B neighbors!");
-
+    }
     else if (!districtC->GetNeighborsHashes ().Contains (districtD->GetHash ()))
+    {
         ErrorExit ("Incorrect C neighbors!");
-
+    }
     else if (!districtD->GetNeighborsHashes ().Contains (districtA->GetHash ()) ||
              !districtD->GetNeighborsHashes ().Contains (districtB->GetHash ()) ||
              !districtD->GetNeighborsHashes ().Contains (districtC->GetHash ()))
+    {
         ErrorExit ("Incorrect D neighbors!");
-
+    }
     else
+    {
         engine_->Exit ();
+    }
 }
 
 void TestDistrictsNeighborsCalculationApplication::Stop ()

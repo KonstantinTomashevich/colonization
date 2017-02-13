@@ -58,6 +58,7 @@ void TestMapMaskGenerationApplication::Start ()
     const int mapHeight = 5;
 
     for (int x = 0; x < mapWidth; x++)
+    {
         for (int y = 0; y < mapHeight; y++)
         {
             Colonization::District *district = map->CreateDistrict (
@@ -81,7 +82,7 @@ void TestMapMaskGenerationApplication::Start ()
             district->SetColonyOwnerName ("PlayerX");
             district->UpdateHash (map);
         }
-
+    }
     // Map: (~ -- sea, = -- terrain, @ -- colony)
     //   0 1 2 3 4
     // 4 ~ ~ ~ ~ ~

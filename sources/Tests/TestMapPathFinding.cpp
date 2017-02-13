@@ -50,6 +50,7 @@ void TestMapPathFindingApplication::Start ()
     const int mapHeight = 5;
 
     for (int x = 0; x < mapWidth; x++)
+    {
         for (int y = 0; y < mapHeight; y++)
         {
             Colonization::District *district = map->CreateDistrict (
@@ -73,6 +74,7 @@ void TestMapPathFindingApplication::Start ()
             district->SetColonyOwnerName ("PlayerX");
             district->UpdateHash (map);
         }
+    }
 
     // Map: (~ -- sea, = -- terrain, @ -- colony)
     //   0 1 2 3 4
@@ -105,28 +107,38 @@ void TestMapPathFindingApplication::Start ()
 
     Urho3D::String calculatedWay = "";
     for (int index = 0; index < way.Size (); index++)
+    {
         calculatedWay += map->GetDistrictByHash (way.At (index))->GetName () + "\n";
+    }
 
     Urho3D::Log::Write (Urho3D::LOG_INFO, "First calculated way:\n" + calculatedWay);
     if (way.Size () != 5)
+    {
         ErrorExit ("First way points size don't match expected.");
+    }
     else if (way.At (0) != map->GetDistrictByIndex (4 * mapHeight + 0)->GetHash ()||
              way.At (1) != map->GetDistrictByIndex (3 * mapHeight + 0)->GetHash () ||
              way.At (2) != map->GetDistrictByIndex (2 * mapHeight + 0)->GetHash () ||
              way.At (3) != map->GetDistrictByIndex (2 * mapHeight + 1)->GetHash () ||
              way.At (4) != map->GetDistrictByIndex (2 * mapHeight + 2)->GetHash ())
+    {
         ErrorExit ("First way don't match expected.");
+    }
     else
     {
         way = map->FindPath (map->GetDistrictByIndex (4 * mapHeight + 0)->GetHash (),
                              map->GetDistrictByIndex (2 * mapHeight + 2)->GetHash (), "PlayerY", true, false);
         calculatedWay = "";
         for (int index = 0; index < way.Size (); index++)
+        {
             calculatedWay += map->GetDistrictByHash (way.At (index))->GetName () + "\n";
+        }
 
         Urho3D::Log::Write (Urho3D::LOG_INFO, "Second calculated way:\n" + calculatedWay);
         if (way.Size () != 13)
+        {
             ErrorExit ("Second way points size don't match expected.");
+        }
         else if (way.At (0) != map->GetDistrictByIndex (4 * mapHeight + 0)->GetHash () ||
                  way.At (1) != map->GetDistrictByIndex (4 * mapHeight + 1)->GetHash () ||
                  way.At (2) != map->GetDistrictByIndex (4 * mapHeight + 2)->GetHash () ||
@@ -140,9 +152,13 @@ void TestMapPathFindingApplication::Start ()
                  way.At (10) != map->GetDistrictByIndex (0 * mapHeight + 2)->GetHash () ||
                  way.At (11) != map->GetDistrictByIndex (1 * mapHeight + 2)->GetHash () ||
                  way.At (12) != map->GetDistrictByIndex (2 * mapHeight + 2)->GetHash ())
+        {
             ErrorExit ("Second way don't match expected.");
+        }
         else
+        {
             engine_->Exit ();
+        }
     }
 }
 

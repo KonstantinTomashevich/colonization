@@ -51,6 +51,7 @@ void TestInternalTradeAreaApplication::Start ()
     const int mapHeight = 2;
 
     for (int x = 0; x < mapWidth; x++)
+    {
         for (int y = 0; y < mapHeight; y++)
         {
             Colonization::District *district = map->CreateDistrict (
@@ -74,6 +75,7 @@ void TestInternalTradeAreaApplication::Start ()
             district->SetColonyOwnerName ("PlayerX");
             district->UpdateHash (map);
         }
+    }
     map->RecalculateDistrictsNeighbors ();
 
     map->GetDistrictByIndex (0)->SetFarmsEvolutionPoints (9.0f);
@@ -116,20 +118,34 @@ void TestInternalTradeAreaApplication::Start ()
     Urho3D::Log::Write (Urho3D::LOG_INFO, "Defense bonus: " + Urho3D::String (result->GetDefenseBonus ()));
 
     if (result->GetUnusedEvolutionPointsOf ("farms") <= 0.0f)
+    {
         ErrorExit ("Expected unused farms production > 0.0.");
+    }
     else if (result->GetUnusedEvolutionPointsOf ("mines") >= 0.0f)
+    {
         ErrorExit ("Expected unused mines production < 0.0.");
+    }
     else if (result->GetUnusedEvolutionPointsOf ("industry") <= 0.0f)
+    {
         ErrorExit ("Expected unused industry production > 0.0.");
+    }
     else if (result->GetUnsoldTradeGoodsCost () / (result->GetUnsoldTradeGoodsCost () + result->GetSoldTradeGoodsCost ()) < 0.1f ||
              result->GetUnsoldTradeGoodsCost () / (result->GetUnsoldTradeGoodsCost () + result->GetSoldTradeGoodsCost ()) > 0.5f)
+    {
         ErrorExit ("Expected unsold / (unsold + sold) production in (0.1; 0.5).");
+    }
     else if (result->GetLogisticsBonus () >= 1.0f)
+    {
         ErrorExit ("Expected logistics bonus < 1.0.");
+    }
     else if (result->GetDefenseBonus () >= 1.0f)
+    {
         ErrorExit ("Expected logistics bonus < 1.0.");
+    }
     else
+    {
         engine_->Exit ();
+    }
 }
 
 void TestInternalTradeAreaApplication::Stop ()

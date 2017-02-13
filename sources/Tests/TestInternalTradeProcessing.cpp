@@ -58,6 +58,7 @@ void TestInternalTradeProcessingApplication::Start ()
     const int mapHeight = 4;
 
     for (int x = 0; x < mapWidth; x++)
+    {
         for (int y = 0; y < mapHeight; y++)
         {
             Colonization::District *district = map->CreateDistrict (
@@ -80,6 +81,7 @@ void TestInternalTradeProcessingApplication::Start ()
             district->SetColonyPosition (Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.2f));
             district->UpdateHash (map);
         }
+    }
     map->RecalculateDistrictsNeighbors ();
 
     // Map: (~ -- sea, = -- terrain, numbers -- colonies with equal logistics level)
@@ -136,7 +138,9 @@ void TestInternalTradeProcessingApplication::Update (Urho3D::StringHash eventTyp
     float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
     timeUntilAutoExit_ -= timeStep;
     if (timeUntilAutoExit_ <= 0.0f)
+    {
         ErrorExit ("Time elapsed!");
+    }
 
     Colonization::PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <Colonization::PlayersManager> ();
     if (playersManager->GetPlayer ("PlayerX"))
@@ -161,8 +165,10 @@ void TestInternalTradeProcessingApplication::Update (Urho3D::StringHash eventTyp
             Urho3D::Log::Write (Urho3D::LOG_INFO, "Trade area: " + Urho3D::String (index) + ", districts:");
 
             for (int districtIndex = 0; districtIndex < tradeArea->GetDistrictsHashesCount (); districtIndex++)
+            {
                 Urho3D::Log::Write (Urho3D::LOG_INFO, map->GetDistrictByHash (
                                         tradeArea->GetDistrictHashByIndex (districtIndex))->GetName ());
+            }
 
             Urho3D::Log::Write (Urho3D::LOG_INFO, "");
         }
@@ -171,13 +177,21 @@ void TestInternalTradeProcessingApplication::Update (Urho3D::StringHash eventTyp
         Urho3D::Log::Write (Urho3D::LOG_INFO, "Sended traders: " + Urho3D::String (unitsManager->GetUnitsCount ()));
 
         if (tradeProcessor->GetTradeAreasCount () != 2)
+        {
             ErrorExit ("Expected 2 trade areas!");
+        }
         else if (playerX->GetGold () <= 5.0f)
+        {
             ErrorExit ("Expected that PlayerX has more than 5.0 gold!");
+        }
         else if (unitsManager->GetUnitsCount () != 7)
+        {
             ErrorExit ("Expected that PlayerX sended 7 traders!");
+        }
         else
+        {
             engine_->Exit ();
+        }
     }
 }
 

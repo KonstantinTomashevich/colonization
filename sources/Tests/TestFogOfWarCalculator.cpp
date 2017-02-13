@@ -55,6 +55,7 @@ void TestFogOfWarCalculatorApplication::Start ()
     const int mapHeight = 5;
 
     for (int x = 0; x < mapWidth; x++)
+    {
         for (int y = 0; y < mapHeight; y++)
         {
             Colonization::District *district = map->CreateDistrict (
@@ -78,6 +79,7 @@ void TestFogOfWarCalculatorApplication::Start ()
             district->SetColonyOwnerName ("PlayerX");
             district->UpdateHash (map);
         }
+    }
 
     // Map: (~ -- sea, = -- terrain, @ -- colony)
     //   0 1 2 3 4
@@ -127,13 +129,17 @@ void TestFogOfWarCalculatorApplication::Start ()
     Urho3D::HashMap <Urho3D::StringHash, bool> resultMap = fogOfWarCalculator->GetFogOfWarMap ();
     Urho3D::Log::Write (Urho3D::LOG_INFO, "Result fog of war map:");
     for (int index = 0; index < resultMap.Size (); index++)
+    {
         Urho3D::Log::Write (Urho3D::LOG_INFO, "    " +
                             map->GetDistrictByHash (resultMap.Keys ().At (index))->GetName () + ": " +
                             Urho3D::String (resultMap.Values ().At (index)));
+    }
 
     Urho3D::HashMap <Urho3D::StringHash, bool> expectedMap;
     for (int index = 0; index < mapWidth * mapHeight; index++)
+    {
         expectedMap [map->GetDistrictByIndex (index)->GetHash ()] = false;
+    }
 
     // array (X * HEIGHT + Y) = (X, Y)
     expectedMap [map->GetDistrictByIndex (0 * mapHeight + 4)->GetHash ()] = true;
@@ -152,14 +158,19 @@ void TestFogOfWarCalculatorApplication::Start ()
 
     Urho3D::Log::Write (Urho3D::LOG_INFO, "Expected fog of war map:");
     for (int index = 0; index < expectedMap.Size (); index++)
+    {
         Urho3D::Log::Write (Urho3D::LOG_INFO, "    " +
                             map->GetDistrictByHash (resultMap.Keys ().At (index))->GetName () + ": " +
                             Urho3D::String (expectedMap.Values ().At (index)));
-
+    }
     if (resultMap != expectedMap)
+    {
         ErrorExit ("Result fog of war map don't match expected!");
+    }
     else
+    {
         engine_->Exit ();
+    }
 }
 
 void TestFogOfWarCalculatorApplication::Stop ()
