@@ -43,9 +43,13 @@ void MapMaskUpdater::DrawDistrictBorders (District *district)
         Urho3D::Vector3 secondPoint;
 
         if (index + 1 < polygonPoints.Size ())
+        {
             secondPoint = polygonPoints.At (index + 1);
+        }
         else
+        {
             secondPoint = polygonPoints.At (0);
+        }
 
         Urho3D::IntVector2 firstOnMap = WorldPointToMapPoint (firstPoint);
         Urho3D::IntVector2 secondOnMap = WorldPointToMapPoint (secondPoint);
@@ -166,10 +170,12 @@ void MapMaskUpdater::RecalculateMaskImage ()
         DrawDistrictBorders (district);
         Urho3D::Color districtColor;
         do
+        {
             districtColor = Urho3D::Color (1.0f / (1.0f * Urho3D::Random (1, 256)),
                                            1.0f / (1.0f * Urho3D::Random (1, 256)),
                                            1.0f / (1.0f * Urho3D::Random (1, 256)),
                                            1.0f);
+        }
         while (districtColorToDistrictHash_.Keys ().Contains (Urho3D::StringHash (districtColor.ToUInt ())) ||
                districtColor == MAP_MASK_DISTRICT_BORDER_LINE_COLOR ||
                districtColor == MAP_MASK_VISIBLE_DISTRICT_COLOR ||
@@ -190,9 +196,13 @@ Urho3D::StringHash MapMaskUpdater::GetDistrictByPoint (Urho3D::Vector3 point)
     Urho3D::Color color = maskImage_->GetPixel (mapPoint.x_, mapPoint.y_);
 
     if (color == MAP_MASK_DISTRICT_BORDER_LINE_COLOR)
+    {
         return Urho3D::StringHash::ZERO;
+    }
     else
+    {
         return districtColorToDistrictHash_ [Urho3D::StringHash (color.ToUInt ())];
+    }
 }
 
 Urho3D::StringHash MapMaskUpdater::GetDistrictByColor (Urho3D::Color color)
@@ -210,9 +220,13 @@ unsigned MapMaskUpdater::GetDistrictColorInt (Urho3D::StringHash districtHash)
     Urho3D::Vector <Urho3D::StringHash> districtColorToDistrictHashValues = districtColorToDistrictHash_.Values ();
     int districtIndexInColorToDistrictMap = VectorUtils::GetElementIndex (districtColorToDistrictHashValues, districtHash);
     if (districtIndexInColorToDistrictMap != -1)
+    {
         return districtColorToDistrictHash_.Keys ().At (districtIndexInColorToDistrictMap).Value ();
+    }
     else
+    {
         return 0;
+    }
 }
 
 Urho3D::Image *MapMaskUpdater::GetFogOfWarMaskImage () const
