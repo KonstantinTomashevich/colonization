@@ -17,6 +17,7 @@
 #include <Colonization/Backend/ColoniesManager.hpp>
 #include <Colonization/Backend/MessagesHandler.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
+#include <Colonization/Backend/PlayersPointsCalculator.hpp>
 #include <Colonization/Backend/TradeProcessor.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
 
@@ -67,6 +68,7 @@ void HostActivity::SetupPlayingState ()
     // Create server side components.
     scene_->CreateComponent <ColoniesManager> (Urho3D::LOCAL);
     scene_->CreateComponent <TradeProcessor> (Urho3D::LOCAL);
+    scene_->CreateComponent <PlayersPointsCalculator> (Urho3D::LOCAL);
 }
 
 void HostActivity::DisposePlayingState ()
@@ -75,6 +77,7 @@ void HostActivity::DisposePlayingState ()
     scene_->GetChild ("units")->GetComponent <UnitsManager> ()->Remove ();
     scene_->GetComponent <ColoniesManager> ()->Remove ();
     scene_->GetComponent <TradeProcessor> ()->Remove ();
+    scene_->GetComponent <PlayersPointsCalculator> ()->Remove ();
 
     // TODO: This is temporary!
     currentState_ = GAME_STATE_UNITIALIZED;
