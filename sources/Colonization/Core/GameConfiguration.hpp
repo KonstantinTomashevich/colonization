@@ -43,6 +43,12 @@ protected:
     float investitionsConsumption_;
     float investitionsEfficiency_;
 
+    float colonyPointsModifer_;
+    float unitFleetPointsModifer_;
+    float unitTradersPointsModifer_;
+    float unitColonizatorsPointsModifer_;
+    float unitArmyPointsModifer_;
+
 public:
     GameConfiguration (Urho3D::Context *context);
     virtual ~GameConfiguration ();
@@ -133,5 +139,20 @@ public:
 
     float GetInvestitionsEfficiency () const;
     void SetInvestitionsEfficiency (float investitionsEfficiency);
+
+    float GetColonyPointsModifer () const;
+    void SetColonyPointsModifer (float colonyPointsModifer);
+
+    float GetUnitFleetPointsModifer () const;
+    void SetUnitFleetPointsModifer (float unitFleetPointsModifer);
+
+    float GetUnitTradersPointsModifer () const;
+    void SetUnitTradersPointsModifer (float unitTradersPointsModifer);
+
+    float GetUnitColonizatorsPointsModifer () const;
+    void SetUnitColonizatorsPointsModifer (float unitColonizatorsPointsModifer);
+
+    float GetUnitArmyPointsModifer () const;
+    void SetUnitArmyPointsModifer (float unitArmyPointsModifer);
 };
 }
