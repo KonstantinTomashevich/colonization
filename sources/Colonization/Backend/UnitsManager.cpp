@@ -225,6 +225,20 @@ Unit *UnitsManager::GetUnitByHash (Urho3D::StringHash hash)
     return 0;
 }
 
+Urho3D::PODVector <Urho3D::StringHash> UnitsManager::GetUnitsOfPlayer (Urho3D::StringHash playerNameHash)
+{
+    Urho3D::PODVector <Urho3D::StringHash> units;
+    for (int index = 0; index < units_.Size (); index++)
+    {
+        Unit *unit = units_.At (index);
+        if (Urho3D::StringHash (unit->GetOwnerPlayerName ()) == playerNameHash)
+        {
+            units.Push (unit->GetHash());
+        }
+    }
+    return units;
+}
+
 Unit *UnitsManager::CreateUnit ()
 {
     assert (node_);

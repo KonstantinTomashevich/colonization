@@ -29,6 +29,7 @@ public:
 
     Unit *GetUnitByIndex (int index);
     Unit *GetUnitByHash (Urho3D::StringHash hash);
+    Urho3D::PODVector <Urho3D::StringHash> GetUnitsOfPlayer (Urho3D::StringHash playerNameHash);
     Unit *CreateUnit ();
 };
 }
