@@ -20,8 +20,8 @@ class PlayerInfoWindow : ScriptObject
         Text @playerStatsText = ui.root.GetChild ("ingame").GetChild ("playerStatsWindow").GetChild ("playerStatsInfo");
         String playerStatsInfo = "";
         playerStatsInfo += node.parent.parent.vars ["playerName"].GetString () + "\n";
-        playerStatsInfo += "Gold: " + node.parent.parent.vars ["gold"].GetFloat () + "\n";
-        playerStatsInfo += "Points: " + node.parent.parent.vars ["points"].GetFloat ();
+        playerStatsInfo += "Gold: " + Floor (node.parent.parent.vars ["gold"].GetFloat ()) + "\n";
+        playerStatsInfo += "Points: " + Floor (node.parent.parent.vars ["points"].GetFloat ());
         playerStatsText.text = playerStatsInfo;
     }
 
