@@ -25,6 +25,7 @@ public:
     District *GetDistrictByNameHash (Urho3D::StringHash nameHash);
     District *GetDistrictByHash (Urho3D::StringHash hash);
     int GetDistrictsCount ();
+    Urho3D::PODVector <Urho3D::StringHash> GetColoniesOfPlayer (Urho3D::StringHash playerNameHash);
     District *CreateDistrict (Urho3D::String districtName);
 
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);

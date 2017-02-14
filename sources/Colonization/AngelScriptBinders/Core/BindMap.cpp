@@ -15,6 +15,12 @@ Urho3D::CScriptArray *Map_FindPath (Map *map, Urho3D::StringHash startDistrictHa
     return Urho3D::VectorToArray <Urho3D::StringHash> (result, "Array<StringHash>");
 }
 
+Urho3D::CScriptArray *Map_GetColoniesOfPlayer (Map *map, Urho3D::StringHash playerNameHash)
+{
+    Urho3D::PODVector <Urho3D::StringHash> colonies = map->GetColoniesOfPlayer (playerNameHash);
+    return Urho3D::VectorToArray <Urho3D::StringHash> (colonies, "Array<StringHash>");
+}
+
 void BindMap (Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
@@ -38,5 +44,6 @@ void BindMapInterface (Urho3D::Script *script, Urho3D::String className)
     engine->RegisterObjectMethod (className.CString (),
                 "Array<StringHash> @FindPath (StringHash startDistrictHash, StringHash targetDistrictHash, String playerName, bool canGoThroughColonies, bool isColonizator)",
                 asFUNCTION (Map_FindPath), asCALL_CDECL_OBJFIRST);
+    engine->RegisterObjectMethod (className.CString (), "Array<StringHash> @GetColoniesOfPlayer (StringHash playerNameHash)", asFUNCTION (Map_GetColoniesOfPlayer), asCALL_CDECL_OBJFIRST);
 }
 }

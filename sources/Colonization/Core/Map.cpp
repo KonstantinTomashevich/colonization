@@ -79,6 +79,20 @@ int Map::GetDistrictsCount ()
     return districts_.Size ();
 }
 
+Urho3D::PODVector <Urho3D::StringHash> Map::GetColoniesOfPlayer (Urho3D::StringHash playerNameHash)
+{
+    Urho3D::PODVector <Urho3D::StringHash> colonies;
+    for (int index = 0; index < districts_.Size (); index++)
+    {
+        District *district = districts_.At (index);
+        if (district->HasColony () && Urho3D::StringHash (district->GetColonyOwnerName ()) == playerNameHash)
+        {
+            colonies.Push (district->GetHash ());
+        }
+    }
+    return colonies;
+}
+
 District *Map::CreateDistrict (Urho3D::String districtName)
 {
     assert (node_);
