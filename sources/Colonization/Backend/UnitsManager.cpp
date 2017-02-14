@@ -55,7 +55,7 @@ void UnitsManager::ProcessTrader (GameConfiguration *configuration, Unit *unit)
     PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
     assert (playersManager);
 
-    Player *player = playersManager->GetPlayer (Urho3D::String (unit->GetOwnerPlayerName ()));
+    Player *player = playersManager->GetPlayerByNameHash (Urho3D::String (unit->GetOwnerPlayerName ()));
     assert (player);
 
     float externalTaxes = configuration->GetExternalTaxes ();

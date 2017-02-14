@@ -157,7 +157,7 @@ void TradeProcessor::ProcessTradeAreaDistrict (Map *map, District *district, Urh
 
 void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map *map, InternalTradeArea *tradeArea, float updateDelay)
 {
-    Player *player = playersManager->GetPlayer (Urho3D::StringHash (
+    Player *player = playersManager->GetPlayerByNameHash (Urho3D::StringHash (
                                                     map->GetDistrictByHash (tradeArea->GetDistrictHashByIndex (0))->
                                                     GetColonyOwnerName ()));
     if (!player)

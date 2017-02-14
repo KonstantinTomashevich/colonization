@@ -32,10 +32,11 @@ public:
     void HandlePlayerDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
 
     int GetPlayersCount ();
+    Player *GetPlayerByIndex (int index);
     void DisconnectAllUnidentificatedConnections ();
-    Player *GetPlayer (Urho3D::StringHash nameHash);
+    Player *GetPlayerByNameHash (Urho3D::StringHash nameHash);
     Urho3D::Vector <Player *> GetPlayersByNames (Urho3D::Vector <Urho3D::StringHash> namesHashes);
-    Player *GetPlayer (Urho3D::Connection *connection);
+    Player *GetPlayerByConnection (Urho3D::Connection *connection);
     Urho3D::Vector <Player *> GetAllPlayers ();
 
     void PlayerIdentified (Urho3D::Connection *connection, Urho3D::String name, Urho3D::Color color);

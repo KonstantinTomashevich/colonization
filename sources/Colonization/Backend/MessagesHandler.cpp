@@ -39,7 +39,7 @@ void MessagesHandler::HandleClientIdentity (Urho3D::StringHash eventType, Urho3D
 
         Urho3D::String name = connection->GetIdentity () ["Name"].GetString ();
         // TODO: Currently we disconnect player if it sends identity with name which is already used by another player.
-        if (playersManager->GetPlayer (name))
+        if (playersManager->GetPlayerByNameHash (name))
         {
             connection->Disconnect ();
         }
@@ -60,7 +60,7 @@ void MessagesHandler::HandleNetworkMessage (Urho3D::StringHash eventType, Urho3D
 
         Urho3D::Connection *connection = (Urho3D::Connection *)
                 eventData [Urho3D::NetworkMessage::P_CONNECTION].GetPtr ();
-        Player *player = playersManager->GetPlayer (connection);
+        Player *player = playersManager->GetPlayerByConnection (connection);
         assert (player);
 
         NetworkMessageType messageType = static_cast <NetworkMessageType> (

@@ -195,11 +195,11 @@ void PlayersManager::HandlePlayerDisconnected (Urho3D::StringHash eventType, Urh
         MessagesHandler *messagesHandler = node_->GetScene ()->GetComponent <MessagesHandler> ();
         assert (messagesHandler);
 
-        Player *player = GetPlayer (connection);
+        Player *player = GetPlayerByConnection (connection);
         if (player)
         {
             Urho3D::Vector <Player *> allPlayers = players_.Values ();
-            messagesHandler->SendTextInfoFromServer (GetPlayer (connection)->GetName () + " left game!", allPlayers);
+            messagesHandler->SendTextInfoFromServer (GetPlayerByConnection (connection)->GetName () + " left game!", allPlayers);
             DisconnectPlayer (connection);
         }
     }
@@ -208,6 +208,12 @@ void PlayersManager::HandlePlayerDisconnected (Urho3D::StringHash eventType, Urh
 int PlayersManager::GetPlayersCount ()
 {
     return players_.Values ().Size ();
+}
+
+Player *PlayersManager::GetPlayerByIndex (int index)
+{
+    assert (index < players_.Values ().Size ());
+    return players_.Values ().At (index);
 }
 
 void PlayersManager::DisconnectAllUnidentificatedConnections ()
@@ -221,7 +227,7 @@ void PlayersManager::DisconnectAllUnidentificatedConnections ()
     }
 }
 
-Player *PlayersManager::GetPlayer (Urho3D::StringHash nameHash)
+Player *PlayersManager::GetPlayerByNameHash (Urho3D::StringHash nameHash)
 {
     return players_ [nameHash];
 }
@@ -240,7 +246,7 @@ Urho3D::Vector <Player *> PlayersManager::GetPlayersByNames (Urho3D::Vector <Urh
     return players;
 }
 
-Player *PlayersManager::GetPlayer (Urho3D::Connection *connection)
+Player *PlayersManager::GetPlayerByConnection (Urho3D::Connection *connection)
 {
     if (connectionHashToNameHashMap_ [connection->GetAddress ()].Value ())
     {

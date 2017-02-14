@@ -143,10 +143,10 @@ void TestInternalTradeProcessingApplication::Update (Urho3D::StringHash eventTyp
     }
 
     Colonization::PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <Colonization::PlayersManager> ();
-    if (playersManager->GetPlayer ("PlayerX"))
+    if (playersManager->GetPlayerByNameHash ("PlayerX"))
     {
         Colonization::Map *map = scene_->GetChild ("map")->GetComponent <Colonization::Map> ();
-        Colonization::Player *playerX = playersManager->GetPlayer ("PlayerX");
+        Colonization::Player *playerX = playersManager->GetPlayerByNameHash ("PlayerX");
 
         Colonization::TradeProcessor *tradeProcessor =
                 scene_->CreateComponent <Colonization::TradeProcessor> ();
