@@ -199,10 +199,12 @@ class ChatWindow : ScriptObject
     void HandleShowBlockedUsersClick ()
     {
         ui.root.GetChild ("ingame").GetChild ("chatBlockedPlayersWindow").visible = true;
+        ui.root.GetChild ("ingame").GetChild ("chatPrivateReceiversWindow").visible = false;
     }
 
     void HandleShowPrivateUsersClick ()
     {
+        ui.root.GetChild ("ingame").GetChild ("chatBlockedPlayersWindow").visible = false;
         ui.root.GetChild ("ingame").GetChild ("chatPrivateReceiversWindow").visible = true;
     }
 }
