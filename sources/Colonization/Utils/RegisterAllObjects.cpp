@@ -8,6 +8,7 @@
 #include <Colonization/Backend/PlayersPointsCalculator.hpp>
 #include <Colonization/Backend/TradeProcessor.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
+#include <Colonization/Backend/VictoryProgressUpdater.hpp>
 
 #include <Colonization/Core/District.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
@@ -29,6 +30,7 @@ void RegisterAllObjects (Urho3D::Context *context)
     PlayersPointsCalculator::RegisterObject (context);
     TradeProcessor::RegisterObject (context);
     UnitsManager::RegisterObject (context);
+    VictoryProgressUpdater::RegisterObject (context);
 
     District::RegisterObject (context);
     GameConfiguration::RegisterObject (context);

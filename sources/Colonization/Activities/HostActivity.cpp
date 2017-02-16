@@ -20,6 +20,7 @@
 #include <Colonization/Backend/PlayersPointsCalculator.hpp>
 #include <Colonization/Backend/TradeProcessor.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
+#include <Colonization/Backend/VictoryProgressUpdater.hpp>
 
 namespace Colonization
 {
@@ -69,6 +70,7 @@ void HostActivity::SetupPlayingState ()
     scene_->CreateComponent <ColoniesManager> (Urho3D::LOCAL);
     scene_->CreateComponent <TradeProcessor> (Urho3D::LOCAL);
     scene_->CreateComponent <PlayersPointsCalculator> (Urho3D::LOCAL);
+    scene_->CreateComponent <VictoryProgressUpdater> (Urho3D::LOCAL);
 }
 
 void HostActivity::DisposePlayingState ()
@@ -78,6 +80,7 @@ void HostActivity::DisposePlayingState ()
     scene_->GetComponent <ColoniesManager> ()->Remove ();
     scene_->GetComponent <TradeProcessor> ()->Remove ();
     scene_->GetComponent <PlayersPointsCalculator> ()->Remove ();
+    scene_->GetComponent <VictoryProgressUpdater> ()->Remove ();
 
     // TODO: This is temporary!
     currentState_ = GAME_STATE_UNITIALIZED;
