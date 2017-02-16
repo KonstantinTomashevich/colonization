@@ -110,6 +110,24 @@ void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String clas
 
     engine->RegisterObjectMethod (className.CString (), "float get_investitionsEfficiency () const", asMETHOD (GameConfiguration, GetInvestitionsEfficiency), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_investitionsEfficiency (float investitionsEfficiency)", asMETHOD (GameConfiguration, SetInvestitionsEfficiency), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_maximumGameDuration () const", asMETHOD (GameConfiguration, GetMaximumGameDuration), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_maximumGameDuration (float maximumGameDuration)", asMETHOD (GameConfiguration, SetMaximumGameDuration), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_colonyPointsModifer () const", asMETHOD (GameConfiguration, GetColonyPointsModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_colonyPointsModifer (float colonyPointsModifer)", asMETHOD (GameConfiguration, SetColonyPointsModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_unitFleetPointsModifer () const", asMETHOD (GameConfiguration, GetUnitFleetPointsModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_unitFleetPointsModifer (float unitFleetPointsModifer)", asMETHOD (GameConfiguration, SetUnitFleetPointsModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_unitTradersPointsModifer () const", asMETHOD (GameConfiguration, GetUnitTradersPointsModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_unitTradersPointsModifer (float unitTradersPointsModifer)", asMETHOD (GameConfiguration, SetUnitTradersPointsModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_unitColonizatorsPointsModifer () const", asMETHOD (GameConfiguration, GetUnitColonizatorsPointsModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_unitColonizatorsPointsModifer (float unitColonizatorsPointsModifer)", asMETHOD (GameConfiguration, SetUnitColonizatorsPointsModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_unitArmyPointsModifer () const", asMETHOD (GameConfiguration, GetUnitArmyPointsModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_unitArmyPointsModifer (float unitArmyPointsModifer)", asMETHOD (GameConfiguration, SetUnitArmyPointsModifer), asCALL_THISCALL);
 }
 }
 
