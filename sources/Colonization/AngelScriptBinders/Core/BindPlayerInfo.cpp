@@ -24,5 +24,12 @@ void BindPlayerInfoInterface (Urho3D::Script *script, Urho3D::String className)
 
     engine->RegisterObjectMethod (className.CString (), "Color get_color () const", asMETHOD (PlayerInfo, GetColor), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_color (Color color)", asMETHOD (PlayerInfo, SetColor), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "VariantMap get_progressToVictory () const", asMETHOD (PlayerInfo, GetProgressToVictory), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_progressToVictory (VariantMap progressToVictory)", asMETHOD (PlayerInfo, SetProgressToVictory), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float GetProgressToVictoryOfType (StringHash victoryType) const", asMETHOD (PlayerInfo, GetProgressToVictoryOfType), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "VariantMap GetProgressToVictoryOfTypeInfo (StringHash victoryType) const", asMETHOD (PlayerInfo, GetProgressToVictoryOfTypeInfo), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void SetProgressToVictoryOfType (StringHash victoryType, VariantMap progressToVictoryInfo)", asMETHOD (PlayerInfo, SetProgressToVictoryOfTypeInfo), asCALL_THISCALL);
 }
 }

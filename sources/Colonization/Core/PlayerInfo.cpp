@@ -10,7 +10,8 @@ namespace Colonization
 PlayerInfo::PlayerInfo (Urho3D::Context *context) : Urho3D::Component (context),
     name_ ("NoName"),
     points_ (0.0f),
-    color_ (Urho3D::Color::GRAY)
+    color_ (Urho3D::Color::GRAY),
+    progressToVictory_ ()
 {
 
 }
@@ -28,6 +29,8 @@ void PlayerInfo::RegisterObject (Urho3D::Context *context)
     URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Name", GetName, SetName, Urho3D::String, Urho3D::String ("NoName"), Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Points", GetPoints, SetPoints, float, 0.0f, Urho3D::AM_DEFAULT);
     URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Color", GetColor, SetColor, Urho3D::Color, Urho3D::Color::GRAY, Urho3D::AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Progress To Victory", GetProgressToVictory, SetProgressToVictory,
+                                     Urho3D::VariantMap, Urho3D::Variant::emptyVariantVector, Urho3D::AM_DEFAULT);
 }
 
 Urho3D::String PlayerInfo::GetName () const
@@ -58,5 +61,47 @@ Urho3D::Color PlayerInfo::GetColor () const
 void PlayerInfo::SetColor (const Urho3D::Color &color)
 {
     color_ = color;
+}
+
+Urho3D::VariantMap PlayerInfo::GetProgressToVictory () const
+{
+    return progressToVictory_;
+}
+
+void PlayerInfo::SetProgressToVictory (const Urho3D::VariantMap &progressToVictory)
+{
+    progressToVictory_ = progressToVictory;
+}
+
+float PlayerInfo::GetProgressToVictoryOfType (Urho3D::StringHash victoryType) const
+{
+    Urho3D::Variant *value = progressToVictory_ [victoryType];
+    if (value && value->GetType () == Urho3D::VAR_VARIANTMAP)
+    {
+        return value->GetVariantMap () ["Progress"]->GetFloat ();
+    }
+    else
+    {
+        return 0.0f;
+    }
+}
+
+Urho3D::VariantMap PlayerInfo::GetProgressToVictoryOfTypeInfo (Urho3D::StringHash victoryType) const
+{
+    Urho3D::Variant *value = progressToVictory_ [victoryType];
+    if (value && value->GetType () == Urho3D::VAR_VARIANTMAP)
+    {
+        Urho3D::VariantMap progressToVictoryInfo = value->GetVariantMap ();
+        return progressToVictoryInfo;
+    }
+    else
+    {
+        return Urho3D::Variant::emptyVariantMap;
+    }
+}
+
+void PlayerInfo::SetProgressToVictoryOfTypeInfo (Urho3D::StringHash victoryType, const Urho3D::VariantMap &progressToVictoryInfo)
+{
+    progressToVictory_ [victoryType] = progressToVictoryInfo;
 }
 }
