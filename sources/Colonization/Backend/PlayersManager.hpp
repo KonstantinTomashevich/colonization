@@ -3,8 +3,10 @@
 #include <Urho3D/Scene/Component.h>
 #include <Urho3D/Container/HashMap.h>
 #include <Urho3D/Network/Connection.h>
+
 #include <Colonization/Backend/Player.hpp>
 #include <Colonization/Backend/MessagesHandler.hpp>
+#include <Colonization/Core/PlayerInfo.hpp>
 
 namespace Colonization
 {
@@ -33,10 +35,14 @@ public:
 
     int GetPlayersCount ();
     Player *GetPlayerByIndex (int index);
-    void DisconnectAllUnidentificatedConnections ();
-    Player *GetPlayerByNameHash (Urho3D::StringHash nameHash);
-    Urho3D::Vector <Player *> GetPlayersByNames (Urho3D::Vector <Urho3D::StringHash> namesHashes);
     Player *GetPlayerByConnection (Urho3D::Connection *connection);
+    Player *GetPlayerByNameHash (Urho3D::StringHash nameHash);
+
+    PlayerInfo *GetPlayerInfoByPointer (Player *player);
+    PlayerInfo *GetPlayerInfoByNameHash (Urho3D::StringHash nameHash);
+
+    void DisconnectAllUnidentificatedConnections ();
+    Urho3D::Vector <Player *> GetPlayersByNames (Urho3D::Vector <Urho3D::StringHash> namesHashes);
     Urho3D::Vector <Player *> GetAllPlayers ();
 
     void PlayerIdentified (Urho3D::Connection *connection, Urho3D::String name, Urho3D::Color color);
