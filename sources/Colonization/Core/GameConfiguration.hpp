@@ -43,6 +43,7 @@ protected:
     float investitionsConsumption_;
     float investitionsEfficiency_;
 
+    float maximumGameDuration_;
     float colonyPointsModifer_;
     float unitFleetPointsModifer_;
     float unitTradersPointsModifer_;
@@ -139,6 +140,9 @@ public:
 
     float GetInvestitionsEfficiency () const;
     void SetInvestitionsEfficiency (float investitionsEfficiency);
+
+    float GetMaximumGameDuration () const;
+    void SetMaximumGameDuration (float maximumGameDuration);
 
     float GetColonyPointsModifer () const;
     void SetColonyPointsModifer (float colonyPointsModifer);

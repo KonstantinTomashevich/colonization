@@ -50,6 +50,7 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
     investitionsConsumption_ (3.5f),
     investitionsEfficiency_ (9.0f),
 
+    maximumGameDuration_ (1200.0f),
     colonyPointsModifer_ (0.15f),
     unitFleetPointsModifer_ (0.5f),
     unitTradersPointsModifer_ (0.02f),
@@ -133,6 +134,8 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
     URHO3D_ACCESSOR_ATTRIBUTE ("Investitions Efficiency", GetInvestitionsEfficiency,
                                SetInvestitionsEfficiency, float, 9.0f, Urho3D::AM_DEFAULT);
 
+    URHO3D_ACCESSOR_ATTRIBUTE ("Maximum Game Duration", GetMaximumGameDuration,
+                               SetMaximumGameDuration, float, 600.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Colony Points Modifer", GetColonyPointsModifer,
                                SetColonyPointsModifer, float, 0.15f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Unit Fleet Points Modifer", GetUnitFleetPointsModifer,
@@ -457,6 +460,16 @@ float GameConfiguration::GetInvestitionsEfficiency () const
 void GameConfiguration::SetInvestitionsEfficiency (float investitionsEfficiency)
 {
     investitionsEfficiency_ = investitionsEfficiency;
+}
+
+float GameConfiguration::GetMaximumGameDuration () const
+{
+
+}
+
+void GameConfiguration::SetMaximumGameDuration (float maximumGameDuration)
+{
+
 }
 
 float GameConfiguration::GetColonyPointsModifer () const
