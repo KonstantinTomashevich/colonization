@@ -81,10 +81,6 @@ void HostActivity::DisposePlayingState ()
     scene_->GetComponent <TradeProcessor> ()->Remove ();
     scene_->GetComponent <PlayersPointsCalculator> ()->Remove ();
     scene_->GetComponent <VictoryProgressUpdater> ()->Remove ();
-
-    // TODO: This is temporary!
-    currentState_ = GAME_STATE_UNITIALIZED;
-    SetupState (GAME_STATE_FINISHED);
 }
 
 void HostActivity::SetupFinishedState ()
@@ -143,7 +139,8 @@ bool HostActivity::WillIGoFromWaitingForPlayersToPlayingState ()
 bool HostActivity::WillIGoFromPlayingToFinishedState ()
 {
     // TODO: Implement later.
-    return false;
+    VictoryProgressUpdater *victoryProgressUpdater = scene_->GetComponent <VictoryProgressUpdater> ();
+    return victoryProgressUpdater->IsAnyoneWon ();
 }
 
 HostActivity::HostActivity (Urho3D::Context *context) : Activity (context),
