@@ -37,9 +37,75 @@ void VictoryProgressUpdater::UpdateVictoryByPointsProgresses ()
     {
         Player *player = playersByPoints.Values ().At (index);
         PlayerInfo *playerInfo = playersManager->GetPlayerInfoByPointer (player);
+        assert (playerInfo);
         Urho3D::VariantMap victoryInfo = playerInfo->GetProgressToVictoryOfTypeInfo ("ByPoints");
-        victoryInfo ["Progress"] = 100.0f * (index * 1.0f * playersByPoints.Size ());
+        victoryInfo ["Name"] = "by points";
+        victoryInfo ["Progress"] = 99.0f * (index * 1.0f / playersByPoints.Size ());
         playerInfo->SetProgressToVictoryOfTypeInfo ("ByPoints", victoryInfo);
+    }
+}
+
+void VictoryProgressUpdater::SetWinnerFromVictoryByPoints ()
+{
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
+    Urho3D::Vector <Player *>  players = playersManager->GetAllPlayers ();
+    int currentBiggestIndex = -1;
+    float currentBiggestPoints = -1.0f;
+
+    for (int index = 0; index < players.Size (); index++)
+    {
+        Player *player = players.At (index);
+        if (player)
+        {
+            float points = player->GetPoints ();
+            if (points > currentBiggestPoints)
+            {
+                currentBiggestIndex = index;
+                currentBiggestPoints = points;
+            }
+        }
+    }
+
+    assert (currentBiggestIndex >= 0);
+    assert (currentBiggestPoints >= 0.0f);
+    isAnyoneWin_ = true;
+    winnerName_ = players.At (currentBiggestIndex)->GetName ();
+    victoryType_ = "by points";
+}
+
+void VictoryProgressUpdater::CheckForAnyVictory ()
+{
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
+    Urho3D::Vector <Player *>  players = playersManager->GetAllPlayers ();
+
+    int index = 0;
+    while (index < players.Size () && !isAnyoneWin_)
+    {
+        Player *player = players.At (index);
+        if (player)
+        {
+            PlayerInfo *playerInfo = playersManager->GetPlayerInfoByPointer (player);
+            assert (playerInfo);
+
+            Urho3D::VariantMap progressToVictory = playerInfo->GetProgressToVictory ();
+            int victoryTypeIndex = 0;
+            while (victoryTypeIndex < progressToVictory.Size () && !isAnyoneWin_)
+            {
+                Urho3D::Variant value = progressToVictory.Values ().At (victoryTypeIndex);
+                if (value.GetType () == Urho3D::VAR_VARIANTMAP)
+                {
+                    float progress = value.GetVariantMap () ["Progress"]->GetFloat ();
+                    if (progress >= 0.0f)
+                    {
+                        isAnyoneWin_ = true;
+                        winnerName_ = player->GetName ();
+                        victoryType_ = value.GetVariantMap () ["Name"]->GetString ();
+                    }
+                }
+                victoryTypeIndex++;
+            }
+        }
+        index++;
     }
 }
 
@@ -57,7 +123,9 @@ void VictoryProgressUpdater::OnSceneSet (Urho3D::Scene *scene)
 }
 
 VictoryProgressUpdater::VictoryProgressUpdater (Urho3D::Context *context) : Urho3D::Component (context),
-    timeUntilGameEnd_ (99999.0f)
+    timeUntilGameEnd_ (99999.0f),
+    isAnyoneWin_ (false),
+    winnerName_ (Urho3D::String::EMPTY)
 {
 
 }
@@ -80,11 +148,32 @@ void VictoryProgressUpdater::Update (Urho3D::StringHash eventType, Urho3D::Varia
         float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
         timeUntilGameEnd_ -= timeStep;
         UpdateVictoryByPointsProgresses ();
+
+        CheckForAnyVictory ();
+        if (timeUntilGameEnd_ <= 0.0f)
+        {
+            SetWinnerFromVictoryByPoints ();
+        }
     }
 }
 
 float VictoryProgressUpdater::GetTimeUntilGameEnd ()
 {
     return timeUntilGameEnd_;
+}
+
+bool VictoryProgressUpdater::IsAnyoneWin ()
+{
+    return isAnyoneWin_;
+}
+
+Urho3D::String VictoryProgressUpdater::GetWinnerName ()
+{
+    return winnerName_;
+}
+
+Urho3D::String VictoryProgressUpdater::GetVictoryType ()
+{
+    return victoryType_;
 }
 }

@@ -235,6 +235,7 @@ Player *PlayersManager::GetPlayerByNameHash (Urho3D::StringHash nameHash)
 
 PlayerInfo *PlayersManager::GetPlayerInfoByPointer (Player *player)
 {
+    assert (player);
     return GetPlayerInfoByNameHash (Urho3D::StringHash (player->GetName ()));
 }
 
