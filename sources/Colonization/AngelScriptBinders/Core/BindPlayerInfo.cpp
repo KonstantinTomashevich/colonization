@@ -6,11 +6,37 @@
 
 namespace Colonization
 {
+// To register constants to AngelScript, we have to create getters for them.
+Urho3D::StringHash GetConst_PLAYER_INFO_VICTORY_TYPE_NAME_KEY ()
+{
+    return PLAYER_INFO_VICTORY_TYPE_NAME_KEY;
+}
+
+Urho3D::StringHash GetConst_PLAYER_INFO_VICTORY_TYPE_PROGRESS_KEY ()
+{
+    return PLAYER_INFO_VICTORY_TYPE_PROGRESS_KEY;
+}
+
+Urho3D::StringHash GetConst_VICTORY_TYPE_BY_POINTS ()
+{
+    return VICTORY_TYPE_BY_POINTS;
+}
+
+Urho3D::String GetConst_VICTORY_TYPE_BY_POINTS_NAME ()
+{
+    return VICTORY_TYPE_BY_POINTS_NAME;
+}
+
 void BindPlayerInfo (Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
     Urho3D::RegisterComponent <PlayerInfo> (engine, "PlayerInfo");
     BindPlayerInfoInterface (script, "PlayerInfo");
+
+    engine->RegisterGlobalFunction ("StringHash get_PLAYER_INFO_VICTORY_TYPE_NAME_KEY ()", asFUNCTION (GetConst_PLAYER_INFO_VICTORY_TYPE_NAME_KEY), asCALL_CDECL);
+    engine->RegisterGlobalFunction ("StringHash get_PLAYER_INFO_VICTORY_TYPE_PROGRESS_KEY ()", asFUNCTION (GetConst_PLAYER_INFO_VICTORY_TYPE_PROGRESS_KEY), asCALL_CDECL);
+    engine->RegisterGlobalFunction ("StringHash get_VICTORY_TYPE_BY_POINTS ()", asFUNCTION (GetConst_VICTORY_TYPE_BY_POINTS), asCALL_CDECL);
+    engine->RegisterGlobalFunction ("String get_VICTORY_TYPE_BY_POINTS_NAME ()", asFUNCTION (GetConst_VICTORY_TYPE_BY_POINTS_NAME), asCALL_CDECL);
 }
 
 void BindPlayerInfoInterface (Urho3D::Script *script, Urho3D::String className)

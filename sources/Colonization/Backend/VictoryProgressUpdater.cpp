@@ -38,10 +38,10 @@ void VictoryProgressUpdater::UpdateVictoryByPointsProgresses ()
         Player *player = playersByPoints.Values ().At (index);
         PlayerInfo *playerInfo = playersManager->GetPlayerInfoByPointer (player);
         assert (playerInfo);
-        Urho3D::VariantMap victoryInfo = playerInfo->GetProgressToVictoryOfTypeInfo ("ByPoints");
-        victoryInfo ["Name"] = "by points";
-        victoryInfo ["Progress"] = 99.0f * (index * 1.0f / playersByPoints.Size ());
-        playerInfo->SetProgressToVictoryOfTypeInfo ("ByPoints", victoryInfo);
+        Urho3D::VariantMap victoryInfo = playerInfo->GetProgressToVictoryOfTypeInfo (VICTORY_TYPE_BY_POINTS);
+        victoryInfo [PLAYER_INFO_VICTORY_TYPE_NAME_KEY] = VICTORY_TYPE_BY_POINTS_NAME;
+        victoryInfo [PLAYER_INFO_VICTORY_TYPE_PROGRESS_KEY] = 99.0f * (index * 1.0f / playersByPoints.Size ());
+        playerInfo->SetProgressToVictoryOfTypeInfo (VICTORY_TYPE_BY_POINTS, victoryInfo);
     }
 }
 
@@ -70,7 +70,7 @@ void VictoryProgressUpdater::SetWinnerFromVictoryByPoints ()
     assert (currentBiggestPoints >= 0.0f);
     isAnyoneWin_ = true;
     winnerName_ = players.At (currentBiggestIndex)->GetName ();
-    victoryType_ = "by points";
+    victoryType_ = VICTORY_TYPE_BY_POINTS_NAME;
 }
 
 void VictoryProgressUpdater::CheckForAnyVictory ()
@@ -94,12 +94,12 @@ void VictoryProgressUpdater::CheckForAnyVictory ()
                 Urho3D::Variant value = progressToVictory.Values ().At (victoryTypeIndex);
                 if (value.GetType () == Urho3D::VAR_VARIANTMAP)
                 {
-                    float progress = value.GetVariantMap () ["Progress"]->GetFloat ();
+                    float progress = value.GetVariantMap () [PLAYER_INFO_VICTORY_TYPE_PROGRESS_KEY]->GetFloat ();
                     if (progress >= 0.0f)
                     {
                         isAnyoneWin_ = true;
                         winnerName_ = player->GetName ();
-                        victoryType_ = value.GetVariantMap () ["Name"]->GetString ();
+                        victoryType_ = value.GetVariantMap () [PLAYER_INFO_VICTORY_TYPE_NAME_KEY]->GetString ();
                     }
                 }
                 victoryTypeIndex++;

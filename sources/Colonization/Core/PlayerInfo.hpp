@@ -3,6 +3,11 @@
 
 namespace Colonization
 {
+const Urho3D::StringHash PLAYER_INFO_VICTORY_TYPE_NAME_KEY ("Name");
+const Urho3D::StringHash PLAYER_INFO_VICTORY_TYPE_PROGRESS_KEY ("Progress");
+const Urho3D::StringHash VICTORY_TYPE_BY_POINTS ("ByPoints");
+const Urho3D::String VICTORY_TYPE_BY_POINTS_NAME ("by points");
+
 class PlayerInfo : public Urho3D::Component
 {
 URHO3D_OBJECT (PlayerInfo, Component)

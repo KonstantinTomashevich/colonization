@@ -78,7 +78,7 @@ float PlayerInfo::GetProgressToVictoryOfType (Urho3D::StringHash victoryType) co
     Urho3D::Variant *value = progressToVictory_ [victoryType];
     if (value && value->GetType () == Urho3D::VAR_VARIANTMAP)
     {
-        return value->GetVariantMap () ["Progress"]->GetFloat ();
+        return value->GetVariantMap () [PLAYER_INFO_VICTORY_TYPE_PROGRESS_KEY]->GetFloat ();
     }
     else
     {
