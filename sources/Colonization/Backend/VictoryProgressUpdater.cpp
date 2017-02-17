@@ -68,7 +68,7 @@ void VictoryProgressUpdater::SetWinnerFromVictoryByPoints ()
 
     assert (currentBiggestIndex >= 0);
     assert (currentBiggestPoints >= 0.0f);
-    isAnyoneWin_ = true;
+    isAnyoneWon_ = true;
     winnerName_ = players.At (currentBiggestIndex)->GetName ();
     victoryType_ = VICTORY_TYPE_BY_POINTS_NAME;
 }
@@ -79,7 +79,7 @@ void VictoryProgressUpdater::CheckForAnyVictory ()
     Urho3D::Vector <Player *>  players = playersManager->GetAllPlayers ();
 
     int index = 0;
-    while (index < players.Size () && !isAnyoneWin_)
+    while (index < players.Size () && !isAnyoneWon_)
     {
         Player *player = players.At (index);
         if (player)
@@ -89,15 +89,15 @@ void VictoryProgressUpdater::CheckForAnyVictory ()
 
             Urho3D::VariantMap progressToVictory = playerInfo->GetProgressToVictory ();
             int victoryTypeIndex = 0;
-            while (victoryTypeIndex < progressToVictory.Size () && !isAnyoneWin_)
+            while (victoryTypeIndex < progressToVictory.Size () && !isAnyoneWon_)
             {
                 Urho3D::Variant value = progressToVictory.Values ().At (victoryTypeIndex);
                 if (value.GetType () == Urho3D::VAR_VARIANTMAP)
                 {
                     float progress = value.GetVariantMap () [PLAYER_INFO_VICTORY_TYPE_PROGRESS_KEY]->GetFloat ();
-                    if (progress >= 0.0f)
+                    if (progress >= 100.0f)
                     {
-                        isAnyoneWin_ = true;
+                        isAnyoneWon_ = true;
                         winnerName_ = player->GetName ();
                         victoryType_ = value.GetVariantMap () [PLAYER_INFO_VICTORY_TYPE_NAME_KEY]->GetString ();
                     }
@@ -124,7 +124,7 @@ void VictoryProgressUpdater::OnSceneSet (Urho3D::Scene *scene)
 
 VictoryProgressUpdater::VictoryProgressUpdater (Urho3D::Context *context) : Urho3D::Component (context),
     timeUntilGameEnd_ (99999.0f),
-    isAnyoneWin_ (false),
+    isAnyoneWon_ (false),
     winnerName_ (Urho3D::String::EMPTY)
 {
 
@@ -162,9 +162,9 @@ float VictoryProgressUpdater::GetTimeUntilGameEnd ()
     return timeUntilGameEnd_;
 }
 
-bool VictoryProgressUpdater::IsAnyoneWin ()
+bool VictoryProgressUpdater::IsAnyoneWon ()
 {
-    return isAnyoneWin_;
+    return isAnyoneWon_;
 }
 
 Urho3D::String VictoryProgressUpdater::GetWinnerName ()

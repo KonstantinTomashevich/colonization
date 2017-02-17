@@ -8,7 +8,7 @@ class VictoryProgressUpdater : public Urho3D::Component
 URHO3D_OBJECT (VictoryProgressUpdater, Component)
 protected:
     float timeUntilGameEnd_;
-    bool isAnyoneWin_;
+    bool isAnyoneWon_;
     Urho3D::String winnerName_;
     Urho3D::String victoryType_;
 
@@ -25,7 +25,7 @@ public:
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
 
     float GetTimeUntilGameEnd ();
-    bool IsAnyoneWin ();
+    bool IsAnyoneWon ();
     Urho3D::String GetWinnerName ();
     Urho3D::String GetVictoryType ();
 };
