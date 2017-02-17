@@ -44,11 +44,11 @@ public:
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
 
     void RecalculateMaskImage ();
-    Urho3D::StringHash GetDistrictByPoint (Urho3D::Vector3 point);
-    Urho3D::StringHash GetDistrictByColor (Urho3D::Color color);
-    Urho3D::StringHash GetDistrictByColorInt (unsigned color);
+    Urho3D::StringHash GetDistrictByPoint (Urho3D::Vector3 point) const;
+    Urho3D::StringHash GetDistrictByColor (Urho3D::Color color) const;
+    Urho3D::StringHash GetDistrictByColorInt (unsigned color) const;
 
-    Urho3D::IntVector2 WorldPointToMapPoint (Urho3D::Vector3 worldPoint);
+    Urho3D::IntVector2 WorldPointToMapPoint (Urho3D::Vector3 worldPoint) const;
     unsigned GetDistrictColorInt (Urho3D::StringHash districtHash);
 
     Urho3D::Image *GetFogOfWarMaskImage () const;

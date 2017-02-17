@@ -22,7 +22,7 @@
 
 namespace Colonization
 {
-Urho3D::IntVector2 MapMaskUpdater::WorldPointToMapPoint (Urho3D::Vector3 worldPoint)
+Urho3D::IntVector2 MapMaskUpdater::WorldPointToMapPoint (Urho3D::Vector3 worldPoint) const
 {
     Urho3D::Vector3 delta = worldPoint - mapMinPoint_;
     float mapWidth = mapMaxPoint_.x_ - mapMinPoint_.x_;
@@ -190,29 +190,37 @@ void MapMaskUpdater::RecalculateMaskImage ()
     maskTexture_->SetData (maskImage_, false);
 }
 
-Urho3D::StringHash MapMaskUpdater::GetDistrictByPoint (Urho3D::Vector3 point)
+Urho3D::StringHash MapMaskUpdater::GetDistrictByPoint (Urho3D::Vector3 point) const
 {
     Urho3D::IntVector2 mapPoint = WorldPointToMapPoint (point);
-    Urho3D::Color color = maskImage_->GetPixel (mapPoint.x_, mapPoint.y_);
+    int color = maskImage_->GetPixelInt (mapPoint.x_, mapPoint.y_);
 
-    if (color == MAP_MASK_DISTRICT_BORDER_LINE_COLOR)
+    if (color == MAP_MASK_DISTRICT_BORDER_LINE_COLOR.ToUInt ())
     {
         return Urho3D::StringHash::ZERO;
     }
     else
     {
-        return districtColorToDistrictHash_ [Urho3D::StringHash (color.ToUInt ())];
+        return GetDistrictByColorInt (color);
     }
 }
 
-Urho3D::StringHash MapMaskUpdater::GetDistrictByColor (Urho3D::Color color)
+Urho3D::StringHash MapMaskUpdater::GetDistrictByColor (Urho3D::Color color) const
 {
-    return districtColorToDistrictHash_ [Urho3D::StringHash (color.ToUInt ())];
+    return GetDistrictByColorInt (color.ToUInt ());
 }
 
-Urho3D::StringHash MapMaskUpdater::GetDistrictByColorInt (unsigned color)
+Urho3D::StringHash MapMaskUpdater::GetDistrictByColorInt (unsigned color) const
 {
-    return districtColorToDistrictHash_ [Urho3D::StringHash (color)];
+    Urho3D::StringHash *value = districtColorToDistrictHash_ [Urho3D::StringHash (color)];
+    if (value)
+    {
+        return *value;
+    }
+    else
+    {
+        return Urho3D::StringHash::ZERO;
+    }
 }
 
 unsigned MapMaskUpdater::GetDistrictColorInt (Urho3D::StringHash districtHash)
