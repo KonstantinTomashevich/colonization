@@ -46,7 +46,11 @@ class ClientNetwork : ScriptObject
 
     void HandleNetworkMessage (StringHash eventType, VariantMap &eventData)
     {
-        if (eventData ["MessageID"].GetInt () == STC_NETWORK_MESSAGE_SEND_PLAYER_STATS)
+        if (eventData ["MessageID"].GetInt () == STC_NETWORK_MESSAGE_SEND_GAME_STATE)
+        {
+            HandleGameStateMessage (eventData);
+        }
+        else if (eventData ["MessageID"].GetInt () == STC_NETWORK_MESSAGE_SEND_PLAYER_STATS)
         {
             HandlePlayerStatsMessage (eventData);
         }
@@ -54,6 +58,12 @@ class ClientNetwork : ScriptObject
         {
             HandleChatMessage (eventData);
         }
+    }
+
+    void HandleGameStateMessage (VariantMap &eventData)
+    {
+        VectorBuffer buffer = eventData ["Data"].GetBuffer ();
+        node.parent.vars ["gameState"] = Variant (buffer.ReadInt ());
     }
 
     void HandlePlayerStatsMessage (VariantMap &eventData)
