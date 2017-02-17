@@ -75,12 +75,12 @@ void HostActivity::SetupPlayingState ()
 
 void HostActivity::DisposePlayingState ()
 {
-    scene_->GetChild ("map")->GetComponent <Map> ()->Remove ();
     scene_->GetChild ("units")->GetComponent <UnitsManager> ()->Remove ();
     scene_->GetComponent <ColoniesManager> ()->Remove ();
     scene_->GetComponent <TradeProcessor> ()->Remove ();
     scene_->GetComponent <PlayersPointsCalculator> ()->Remove ();
     scene_->GetComponent <VictoryProgressUpdater> ()->Remove ();
+    scene_->SetUpdateEnabled (false);
 }
 
 void HostActivity::SetupFinishedState ()
@@ -92,6 +92,7 @@ void HostActivity::DisposeFinishedState ()
 {
     scene_->GetComponent <MessagesHandler> ()->Remove ();
     scene_->GetChild ("players")->GetComponent <PlayersManager> ()->Remove ();
+    scene_->GetChild ("map")->GetComponent <Map> ()->Remove ();
 }
 
 void HostActivity::SetupState (GameStateType state)
@@ -138,7 +139,6 @@ bool HostActivity::WillIGoFromWaitingForPlayersToPlayingState ()
 
 bool HostActivity::WillIGoFromPlayingToFinishedState ()
 {
-    // TODO: Implement later.
     VictoryProgressUpdater *victoryProgressUpdater = scene_->GetComponent <VictoryProgressUpdater> ();
     return victoryProgressUpdater->IsAnyoneWon ();
 }
@@ -200,6 +200,15 @@ void HostActivity::Update (float timeStep)
     else if (currentState_ == GAME_STATE_PLAYING && WillIGoFromPlayingToFinishedState ())
     {
         SetupState (GAME_STATE_FINISHED);
+    }
+
+    // Send current state to clients.
+    PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
+    MessagesHandler *messagesHandler = scene_->GetComponent <MessagesHandler> ();
+    if (playersManager && messagesHandler)
+    {
+        Urho3D::Vector <Player *> players = playersManager->GetAllPlayers ();
+        messagesHandler->SendGameState (currentState_, players);
     }
 }
 
