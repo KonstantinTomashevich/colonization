@@ -20,6 +20,11 @@ shared bool CheckIsSceneLoaded (Scene @scene_)
 shared PlayerInfo @GetPlayerInfoByName (Scene @scene_, String playerName)
 {
     Array <Node @> playersNodes = scene_.GetChild ("players").GetChildrenWithComponent ("PlayerInfo");
+    if (playersNodes.empty)
+    {
+        return null;
+    }
+
     PlayerInfo @playerInfo = playersNodes [0].GetComponent ("PlayerInfo");
     int index = 1;
     while (playerInfo.name != playerName and index < playersNodes.length)
