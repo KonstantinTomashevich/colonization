@@ -199,6 +199,19 @@ void HostActivity::Update (float timeStep)
     }
     else if (currentState_ == GAME_STATE_PLAYING && WillIGoFromPlayingToFinishedState ())
     {
+        // Send information about game end to players.
+        VictoryProgressUpdater *victoryProgressUpdater = scene_->GetComponent <VictoryProgressUpdater> ();
+        PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
+        MessagesHandler *messagesHandler = scene_->GetComponent <MessagesHandler> ();
+
+        if (victoryProgressUpdater && playersManager && messagesHandler)
+        {
+            Urho3D::Vector <Player *> players = playersManager->GetAllPlayers ();
+            messagesHandler->SendGameEnded (victoryProgressUpdater->GetWinnerName (),
+                                            victoryProgressUpdater->GetVictoryType (),
+                                            victoryProgressUpdater->GetVictoryInfo (),
+                                            players);
+        }
         SetupState (GAME_STATE_FINISHED);
     }
 

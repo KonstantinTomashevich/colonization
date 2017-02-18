@@ -18,5 +18,6 @@ void BindNetworkMessageType(Urho3D::Script *script)
     engine->RegisterEnumValue ("NetworkMessageType", "STC_NETWORK_MESSAGE_CHAT_MESSAGE", STC_NETWORK_MESSAGE_CHAT_MESSAGE);
     engine->RegisterEnumValue ("NetworkMessageType", "STC_NETWORK_MESSAGE_TEXT_INFO_FROM_SERVER", STC_NETWORK_MESSAGE_TEXT_INFO_FROM_SERVER);
     engine->RegisterEnumValue ("NetworkMessageType", "STC_NETWORK_MESSAGE_SEND_GAME_STATE", STC_NETWORK_MESSAGE_SEND_GAME_STATE);
+    engine->RegisterEnumValue ("NetworkMessageType", "STC_NETWORK_MESSAGE_GAME_ENDED", STC_NETWORK_MESSAGE_GAME_ENDED);
 }
 }

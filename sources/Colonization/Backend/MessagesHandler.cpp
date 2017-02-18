@@ -143,4 +143,20 @@ void MessagesHandler::SendGameState (GameStateType gameState, Urho3D::Vector <Pl
         }
     }
 }
+
+void MessagesHandler::SendGameEnded (Urho3D::String winnerName, Urho3D::String victoryType, Urho3D::String victoryInfo, Urho3D::Vector<Player *> &recieviers)
+{
+    Urho3D::VectorBuffer messageData;
+    messageData.WriteString (winnerName);
+    messageData.WriteString (victoryType);
+    messageData.WriteString (victoryInfo);
+
+    for (int index = 0; index < recieviers.Size (); index++)
+    {
+        if (recieviers.At (index))
+        {
+            recieviers.At (index)->GetConnection ()->SendMessage (STC_NETWORK_MESSAGE_GAME_ENDED, true, false, messageData);
+        }
+    }
+}
 }

@@ -58,6 +58,10 @@ class ClientNetwork : ScriptObject
         {
             HandleChatMessage (eventData);
         }
+        else if (eventData ["MessageID"].GetInt () == STC_NETWORK_MESSAGE_GAME_ENDED)
+        {
+            HandleGameEndedMessage (eventData);
+        }
     }
 
     void HandleGameStateMessage (VariantMap &eventData)
@@ -96,5 +100,16 @@ class ClientNetwork : ScriptObject
             messagesList.Push (Variant (messageData));
             node.parent.GetChild ("uiScriptNode").vars ["messagesList"] = Variant (messagesList);
         }
+    }
+
+    void HandleGameEndedMessage (VariantMap &eventData)
+    {
+        VectorBuffer buffer = eventData ["Data"].GetBuffer ();
+        String winnerName = buffer.ReadString ();
+        String victoryType = buffer.ReadString ();
+        String victoryInfo = buffer.ReadString ();
+        log.Info ("Game ended!\nWinner name: " + winnerName +
+                  "\nVictory type: " + victoryType +
+                  "\nVictory info: " + victoryInfo + ".");
     }
 };
