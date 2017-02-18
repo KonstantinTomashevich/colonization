@@ -68,6 +68,11 @@ class ClientUi : ScriptObject
                                                       "AngelScript/Client/UiHandlers/ChatPrivateReceiversListEditor.as"),
                                          "ChatPrivateReceiversListEditor");
 
+        ScriptInstance @gameEndedWindowInstance = node.CreateChild ("GameEndedWindow", LOCAL).CreateComponent ("ScriptInstance");
+        gameEndedWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Client/UiHandlers/GameEndedWindow.as"),
+                                               "GameEndedWindow");
+
         ScriptInstance @uiResizerInstance = node.CreateChild ("UiResizer", LOCAL).CreateComponent ("ScriptInstance");
         uiResizerInstance.CreateObject (cache.GetResource ("ScriptFile",
                                                          "AngelScript/Utils/UiResizer.as"),

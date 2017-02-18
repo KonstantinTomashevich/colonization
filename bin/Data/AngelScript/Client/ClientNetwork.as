@@ -108,8 +108,11 @@ class ClientNetwork : ScriptObject
         String winnerName = buffer.ReadString ();
         String victoryType = buffer.ReadString ();
         String victoryInfo = buffer.ReadString ();
-        log.Info ("Game ended!\nWinner name: " + winnerName +
-                  "\nVictory type: " + victoryType +
-                  "\nVictory info: " + victoryInfo + ".");
+
+        VariantMap gameEndedEventData;
+        gameEndedEventData ["winnerName"] = Variant (winnerName);
+        gameEndedEventData ["victoryType"] = Variant (victoryType);
+        gameEndedEventData ["victoryInfo"] = Variant (victoryInfo);
+        SendEvent ("GameEnded", gameEndedEventData);
     }
 };
