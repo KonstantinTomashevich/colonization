@@ -1,6 +1,5 @@
 #include "AngelScript/Utils/ClientUtils.as"
 
-// TODO: Set some ui elements color to player color.
 class ClientUi : ScriptObject
 {
     protected XMLFile @style_;
@@ -75,6 +74,11 @@ class ClientUi : ScriptObject
                                         "UiResizer");
         uiResizerInstance.SetAttribute ("startElementName_", Variant ("UIRoot"));
         uiResizerInstance.SetAttribute ("continuousResize_", Variant (true));
+
+        ScriptInstance @uiPlayerColorPainterInstance = node.CreateChild ("UiPlayerColorPainter", LOCAL).CreateComponent ("ScriptInstance");
+        uiPlayerColorPainterInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Utils/UiPlayerColorPainter.as"),
+                                        "UiPlayerColorPainter");
     }
 
     void Update (float timeStep)
@@ -82,6 +86,13 @@ class ClientUi : ScriptObject
         if (!isSceneLoaded_)
         {
             isSceneLoaded_ = CheckIsSceneLoaded (scene);
+        }
+
+        PlayerInfo @playerInfo = GetPlayerInfoByName (scene, node.parent.vars ["playerName"].GetString ());
+        if (playerInfo !is null)
+        {
+            ScriptInstance @uiPlayerColorPainterInstance = node.GetChild ("UiPlayerColorPainter").GetComponent ("ScriptInstance");
+            uiPlayerColorPainterInstance.SetAttribute ("playerColor_", Variant (playerInfo.color));
         }
     }
 
