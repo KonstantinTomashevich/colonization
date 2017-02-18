@@ -87,12 +87,14 @@ class ClientUi : ScriptObject
         {
             isSceneLoaded_ = CheckIsSceneLoaded (scene);
         }
-
-        PlayerInfo @playerInfo = GetPlayerInfoByName (scene, node.parent.vars ["playerName"].GetString ());
-        if (playerInfo !is null)
+        else
         {
-            ScriptInstance @uiPlayerColorPainterInstance = node.GetChild ("UiPlayerColorPainter").GetComponent ("ScriptInstance");
-            uiPlayerColorPainterInstance.SetAttribute ("playerColor_", Variant (playerInfo.color));
+            PlayerInfo @playerInfo = GetPlayerInfoByName (scene, node.parent.vars ["playerName"].GetString ());
+            if (playerInfo !is null)
+            {
+                ScriptInstance @uiPlayerColorPainterInstance = node.GetChild ("UiPlayerColorPainter").GetComponent ("ScriptInstance");
+                uiPlayerColorPainterInstance.SetAttribute ("playerColor_", Variant (playerInfo.color));
+            }
         }
     }
 
