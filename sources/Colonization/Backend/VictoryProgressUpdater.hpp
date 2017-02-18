@@ -11,6 +11,7 @@ protected:
     bool isAnyoneWon_;
     Urho3D::String winnerName_;
     Urho3D::String victoryType_;
+    Urho3D::String victoryInfo_;
 
     void UpdateVictoryByPointsProgresses ();
     void SetWinnerFromVictoryByPoints ();
@@ -28,5 +29,6 @@ public:
     bool IsAnyoneWon ();
     Urho3D::String GetWinnerName ();
     Urho3D::String GetVictoryType ();
+    Urho3D::String GetVictoryInfo ();
 };
 }

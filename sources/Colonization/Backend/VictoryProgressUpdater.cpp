@@ -40,6 +40,7 @@ void VictoryProgressUpdater::UpdateVictoryByPointsProgresses ()
         assert (playerInfo);
         Urho3D::VariantMap victoryInfo = playerInfo->GetProgressToVictoryOfTypeInfo (VICTORY_TYPE_BY_POINTS);
         victoryInfo [PLAYER_INFO_VICTORY_TYPE_NAME_KEY] = VICTORY_TYPE_BY_POINTS_NAME;
+        victoryInfo [PLAYER_INFO_VICTORY_TYPE_INFO_KEY] = VICTORY_TYPE_BY_POINTS_INFO;
         victoryInfo [PLAYER_INFO_VICTORY_TYPE_PROGRESS_KEY] = 99.0f * (index * 1.0f / playersByPoints.Size ());
         playerInfo->SetProgressToVictoryOfTypeInfo (VICTORY_TYPE_BY_POINTS, victoryInfo);
     }
@@ -71,6 +72,10 @@ void VictoryProgressUpdater::SetWinnerFromVictoryByPoints ()
     isAnyoneWon_ = true;
     winnerName_ = players.At (currentBiggestIndex)->GetName ();
     victoryType_ = VICTORY_TYPE_BY_POINTS_NAME;
+
+    Urho3D::String rawVictoryInfo = VICTORY_TYPE_BY_POINTS_INFO;
+    rawVictoryInfo.Replace ("${PlayerName}", winnerName_);
+    victoryInfo_ = rawVictoryInfo;
 }
 
 void VictoryProgressUpdater::CheckForAnyVictory ()
@@ -100,6 +105,10 @@ void VictoryProgressUpdater::CheckForAnyVictory ()
                         isAnyoneWon_ = true;
                         winnerName_ = player->GetName ();
                         victoryType_ = value.GetVariantMap () [PLAYER_INFO_VICTORY_TYPE_NAME_KEY]->GetString ();
+
+                        Urho3D::String rawVictoryInfo = value.GetVariantMap () [PLAYER_INFO_VICTORY_TYPE_INFO_KEY]->GetString ();
+                        rawVictoryInfo.Replace ("${PlayerName}", winnerName_);
+                        victoryInfo_ = rawVictoryInfo;
                     }
                 }
                 victoryTypeIndex++;
@@ -125,7 +134,8 @@ void VictoryProgressUpdater::OnSceneSet (Urho3D::Scene *scene)
 VictoryProgressUpdater::VictoryProgressUpdater (Urho3D::Context *context) : Urho3D::Component (context),
     timeUntilGameEnd_ (99999.0f),
     isAnyoneWon_ (false),
-    winnerName_ (Urho3D::String::EMPTY)
+    winnerName_ (Urho3D::String::EMPTY),
+    victoryInfo_ (Urho3D::String::EMPTY)
 {
 
 }
@@ -175,5 +185,10 @@ Urho3D::String VictoryProgressUpdater::GetWinnerName ()
 Urho3D::String VictoryProgressUpdater::GetVictoryType ()
 {
     return victoryType_;
+}
+
+Urho3D::String VictoryProgressUpdater::GetVictoryInfo ()
+{
+    return victoryInfo_;
 }
 }
