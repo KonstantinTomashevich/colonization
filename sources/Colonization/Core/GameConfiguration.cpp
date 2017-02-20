@@ -55,7 +55,8 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
     unitFleetPointsModifer_ (0.5f),
     unitTradersPointsModifer_ (0.02f),
     unitColonizatorsPointsModifer_ (0.02f),
-    unitArmyPointsModifer_ (0.02f)
+    unitArmyPointsModifer_ (0.02f),
+    victoryTypesProcessorScriptPath_ ("AngelScript/Utils/DefaultVictoryTypesProcessor.as")
 {
 
 }
@@ -146,6 +147,10 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
                                SetUnitColonizatorsPointsModifer, float, 0.02f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Unit Army Points Modifer", GetUnitArmyPointsModifer,
                                SetUnitArmyPointsModifer, float, 0.02f, Urho3D::AM_DEFAULT);
+
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Victory Types Processor Script Path", GetVictoryTypesProcessorScriptPath,
+                                     SetVictoryTypesProcessorScriptPath, Urho3D::String,
+                                     Urho3D::String ("AngelScript/Utils/DefaultVictoryTypesProcessor.as"), Urho3D::AM_DEFAULT);
 }
 
 Urho3D::PODVector <Urho3D::StringHash> GameConfiguration::GetWayToEuropeDistricts () const
@@ -520,6 +525,16 @@ float GameConfiguration::GetUnitArmyPointsModifer () const
 void GameConfiguration::SetUnitArmyPointsModifer (float unitArmyPointsModifer)
 {
     unitArmyPointsModifer_ = unitArmyPointsModifer;
+}
+
+Urho3D::String GameConfiguration::GetVictoryTypesProcessorScriptPath () const
+{
+    return victoryTypesProcessorScriptPath_;
+}
+
+void GameConfiguration::SetVictoryTypesProcessorScriptPath (const Urho3D::String &victoryTypesProcessorScriptPath)
+{
+    victoryTypesProcessorScriptPath_ = victoryTypesProcessorScriptPath;
 }
 }
 

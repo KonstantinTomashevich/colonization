@@ -49,6 +49,7 @@ protected:
     float unitTradersPointsModifer_;
     float unitColonizatorsPointsModifer_;
     float unitArmyPointsModifer_;
+    Urho3D::String victoryTypesProcessorScriptPath_;
 
 public:
     GameConfiguration (Urho3D::Context *context);
@@ -158,5 +159,8 @@ public:
 
     float GetUnitArmyPointsModifer () const;
     void SetUnitArmyPointsModifer (float unitArmyPointsModifer);
+
+    Urho3D::String GetVictoryTypesProcessorScriptPath () const;
+    void SetVictoryTypesProcessorScriptPath (const Urho3D::String &victoryTypesProcessorScriptPath);
 };
 }

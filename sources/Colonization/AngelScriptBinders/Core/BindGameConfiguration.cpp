@@ -128,6 +128,9 @@ void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String clas
 
     engine->RegisterObjectMethod (className.CString (), "float get_unitArmyPointsModifer () const", asMETHOD (GameConfiguration, GetUnitArmyPointsModifer), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_unitArmyPointsModifer (float unitArmyPointsModifer)", asMETHOD (GameConfiguration, SetUnitArmyPointsModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "String get_victoryTypesProcessorScriptPath () const", asMETHOD (GameConfiguration, GetVictoryTypesProcessorScriptPath), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_victoryTypesProcessorScriptPath (String victoryTypesProcessorScriptPath)", asMETHOD (GameConfiguration, SetVictoryTypesProcessorScriptPath), asCALL_THISCALL);
 }
 }
 
