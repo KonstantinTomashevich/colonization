@@ -5,6 +5,7 @@
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/Scene/Scene.h>
 
+#include <Colonization/Backend/NetworkUpdateCounter.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Utils/Categories.hpp>
 #include <Colonization/Utils/AttributeMacro.hpp>
@@ -39,11 +40,17 @@ void UnitsManager::SettleColonizator (Unit *unit, Map *map)
     }
     else
     {
-        float mansPercent = Urho3D::Random (0.4f, 0.6f);
-        colony->SetMenCount (colony->GetMenCount () + unit->ColonizatorsUnitGetColonizatorsCount () * 1.0f * mansPercent);
-        colony->SetWomenCount (colony->GetWomenCount () + unit->ColonizatorsUnitGetColonizatorsCount () * 1.0f * (1.0f - mansPercent));
+        float menPercent = Urho3D::Random (0.4f, 0.6f);
+        colony->SetMenCount (colony->GetMenCount () + unit->ColonizatorsUnitGetColonizatorsCount () * 1.0f * menPercent);
+        colony->SetWomenCount (colony->GetWomenCount () + unit->ColonizatorsUnitGetColonizatorsCount () * 1.0f * (1.0f - menPercent));
         unit->GetNode ()->Remove ();
-        colony->MarkNetworkUpdate ();
+
+        NetworkUpdateCounter *counter = colony->GetNode ()->GetComponent <NetworkUpdateCounter> ();
+        if (!counter)
+        {
+            counter = CreateNetworkUpdateCounterForComponent (colony);
+        }
+        counter->AddUpdatePoints (100.0f);
     }
 }
 
@@ -117,11 +124,12 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
             Urho3D::PODVector <Urho3D::StringHash> unitWay = unit->GetWay ();
             if (!unitWay.Empty ())
             {
+                float updatePoints = 0.0f;
                 if (unit->GetPositionHash () == unitWay.At (0))
                 {
                     unitWay.Remove (unitWay.At (0));
                     unit->SetWay (unitWay);
-                    unit->MarkNetworkUpdate ();
+                    updatePoints += 100.0f;
                 }
 
                 District *unitPosition = map->GetDistrictByHash (unit->GetPositionHash ());
@@ -155,8 +163,10 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
                 }
 
                 float addition = (100.0f * speed * timeStep) / distance;
-                unit->SetWayToNextDistrictProgressInPercents (unit->GetWayToNextDistrictProgressInPercents () + addition);
+                float oldProgress = unit->GetWayToNextDistrictProgressInPercents ();
+                unit->SetWayToNextDistrictProgressInPercents (oldProgress + addition);
 
+                bool exists = true;
                 if (unit->GetWayToNextDistrictProgressInPercents () >= 100.0f)
                 {
                     unit->SetPositionHash (unitWay.At (0));
@@ -167,16 +177,31 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
                     if (unitWay.Empty () && unit->GetUnitType () == UNIT_COLONIZATORS)
                     {
                         SettleColonizator (unit, map);
+                        exists = false;
                     }
                     else if (unitWay.Empty () && unit->GetUnitType () == UNIT_TRADERS)
                     {
                         ProcessTrader (configuration, unit);
+                        exists = false;
+                    }
+                    else
+                    {
+                        updatePoints += 100.0f;
                     }
                 }
-
-                if (unit->GetNode ())
+                else
                 {
-                    unit->MarkNetworkUpdate ();
+                    updatePoints += (addition * 20.0f);
+                }
+
+                if (unit->GetNode () && exists)
+                {
+                    NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
+                    if (!counter)
+                    {
+                        counter = CreateNetworkUpdateCounterForComponent (unit);
+                    }
+                    counter->AddUpdatePoints (updatePoints);
                 }
             }
         }

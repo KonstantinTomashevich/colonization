@@ -7,6 +7,7 @@
 #include <Urho3D/Network/NetworkEvents.h>
 #include <Urho3D/IO/Log.h>
 
+#include <Colonization/Backend/NetworkUpdateCounter.hpp>
 #include <Colonization/Backend/MessagesHandler.hpp>
 #include <Colonization/Core/PlayerInfo.hpp>
 #include <Colonization/Utils/Categories.hpp>
@@ -96,30 +97,33 @@ void PlayersManager::UpdatePlayersInfos ()
 
             infoNode->SetName (player->GetName ());
             PlayerInfo *playerInfo = infoNode->GetComponent <PlayerInfo> ();
-            bool changed = false;
+            float updatePoints = 0.0f;
 
             if (playerInfo->GetName () != player->GetName ())
             {
                 playerInfo->SetName (player->GetName ());
-                changed = true;
+                updatePoints += 100.0f;
             }
 
             if (playerInfo->GetPoints () != player->GetPoints ())
             {
+                float change = Urho3D::Abs (playerInfo->GetPoints () - player->GetPoints ());
                 playerInfo->SetPoints (player->GetPoints ());
-                changed = true;
+                updatePoints += change * 50.0f / player->GetPoints ();
             }
 
             if (playerInfo->GetColor () != player->GetColor ())
             {
                 playerInfo->SetColor (player->GetColor ());
-                changed = true;
+                updatePoints += 100.0f;
             }
 
-            if (changed)
+            NetworkUpdateCounter *counter = playerInfo->GetNode ()->GetComponent <NetworkUpdateCounter> ();
+            if (!counter)
             {
-                playerInfo->MarkNetworkUpdate ();
+                counter = CreateNetworkUpdateCounterForComponent (playerInfo);
             }
+            counter->AddUpdatePoints (updatePoints);
         }
         else
         {

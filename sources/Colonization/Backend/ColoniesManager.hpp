@@ -13,13 +13,13 @@ protected:
 
     float GetTotalColonyEvolution (District *colony);
     void ProcessColony (GameConfiguration *configuration, District *colony, float timeStep);
-    void ProcessColonyPopulation (GameConfiguration *configuration, District *colony, float timeStep);
-    void ProcessColonyForests (GameConfiguration *configuration, District *colony, float timeStep);
-    void ProcessColonyFarmsEvolution (GameConfiguration *configuration, District *colony, float timeStep);
-    void ProcessColonyMinesEvolution (GameConfiguration *configuration, District *colony, float timeStep);
-    void ProcessColonyIndustryEvolution (GameConfiguration *configuration, District *colony, float timeStep);
-    void ProcessColonyLogisticsEvolution (GameConfiguration *configuration, District *colony, float timeStep);
-    void ProcessColonyDefenseEvolution (GameConfiguration *configuration, District *colony, float timeStep);
+    float ProcessColonyPopulation (GameConfiguration *configuration, District *colony, float timeStep);
+    float ProcessColonyForests (GameConfiguration *configuration, District *colony, float timeStep);
+    float ProcessColonyFarmsEvolution (GameConfiguration *configuration, District *colony, float timeStep);
+    float ProcessColonyMinesEvolution (GameConfiguration *configuration, District *colony, float timeStep);
+    float ProcessColonyIndustryEvolution (GameConfiguration *configuration, District *colony, float timeStep);
+    float ProcessColonyLogisticsEvolution (GameConfiguration *configuration, District *colony, float timeStep);
+    float ProcessColonyDefenseEvolution (GameConfiguration *configuration, District *colony, float timeStep);
     virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:

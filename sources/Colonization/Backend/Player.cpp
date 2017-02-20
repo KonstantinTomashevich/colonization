@@ -5,6 +5,7 @@
 #include <Urho3D/Scene/Scene.h>
 
 #include <Colonization/Core/Map.hpp>
+#include <Colonization/Backend/NetworkUpdateCounter.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Backend/ColoniesManager.hpp>
 
@@ -40,7 +41,13 @@ void Player::ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data)
     {
         unit->SetWay (map->FindPath (unit->GetPositionHash (), target->GetHash (), name_,
                                      unit->GetUnitType () != UNIT_FLEET, unit->GetUnitType () == UNIT_COLONIZATORS));
-        unit->MarkNetworkUpdate ();
+
+        NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
+        if (!counter)
+        {
+            counter = CreateNetworkUpdateCounterForComponent (unit);
+        }
+        counter->AddUpdatePoints (100.0f);
     }
 }
 
@@ -122,7 +129,13 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
             unit->SetPositionHash (nearestEuropeDistrict->GetHash ());
             unit->SetWay (way);
             unit->UpdateHash (unitsManager);
-            unit->MarkNetworkUpdate ();
+
+            NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
+            if (!counter)
+            {
+                counter = CreateNetworkUpdateCounterForComponent (unit);
+            }
+            counter->AddUpdatePoints (100.0f);
         }
         else
         {

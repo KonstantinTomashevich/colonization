@@ -7,6 +7,7 @@
 
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Utils/Categories.hpp>
+#include <Colonization/Backend/NetworkUpdateCounter.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Utils/AttributeMacro.hpp>
@@ -61,9 +62,15 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
             }
 
             Urho3D::SharedPtr <InternalTradeArea> tradeAreaSharedPtr (node->GetComponent <InternalTradeArea> ());
-            UpdateTradeArea (tradeAreaSharedPtr, map, toScan.At (0), toScan);
+            float updatePoints = UpdateTradeArea (tradeAreaSharedPtr, map, toScan.At (0), toScan);
             tradeAreas_.Push (tradeAreaSharedPtr);
-            tradeAreaSharedPtr->MarkNetworkUpdate ();
+
+            NetworkUpdateCounter *counter = tradeAreaSharedPtr->GetNode ()->GetComponent <NetworkUpdateCounter> ();
+            if (!counter)
+            {
+                counter = CreateNetworkUpdateCounterForComponent (tradeAreaSharedPtr);
+            }
+            counter->AddUpdatePoints (updatePoints);
         }
         else
         {
@@ -82,7 +89,7 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
 
 }
 
-void TradeProcessor::UpdateTradeArea (InternalTradeArea *tradeArea, Map *map, District *start, Urho3D::PODVector<District *> &unscannedList)
+float TradeProcessor::UpdateTradeArea (InternalTradeArea *tradeArea, Map *map, District *start, Urho3D::PODVector<District *> &unscannedList)
 {
     Urho3D::PODVector <District *> areaDistricts;
     ProcessTradeAreaDistrict (map, start, areaDistricts, unscannedList);
@@ -93,7 +100,6 @@ void TradeProcessor::UpdateTradeArea (InternalTradeArea *tradeArea, Map *map, Di
         areaDistrictsHashes.Push (areaDistricts.At (index)->GetHash ());
     }
 
-    assert (node_);
     if (tradeArea->GetDistrictsHashesArray () != areaDistrictsHashes)
     {
         while (tradeArea->GetDistrictsHashesCount ())
@@ -105,6 +111,12 @@ void TradeProcessor::UpdateTradeArea (InternalTradeArea *tradeArea, Map *map, Di
         {
             tradeArea->AddDistrictHash (areaDistrictsHashes.At (index));
         }
+
+        return 100.0f;
+    }
+    else
+    {
+        return 0.0f;
     }
 }
 
