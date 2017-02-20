@@ -60,10 +60,12 @@ void Player::ProcessInvestToColonyAction (Urho3D::VectorBuffer data)
 
     Urho3D::StringHash investitionType = data.ReadStringHash ();
     float money = data.ReadFloat ();
-    assert (money <= gold_);
 
-    coloniesManager->Invest (targetDistrict, investitionType, money);
-    gold_ -= money;
+    if (gold_ >= money)
+    {
+        coloniesManager->Invest (targetDistrict, investitionType, money);
+        gold_ -= money;
+    }
 }
 
 void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer data)
