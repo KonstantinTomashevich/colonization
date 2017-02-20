@@ -1,12 +1,24 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "VictoryProgressUpdater.hpp"
+
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Scene/SceneEvents.h>
 #include <Urho3D/Scene/Scene.h>
-#include <Urho3D/IO/Log.h>
 
+#include <Urho3D/IO/Log.h>
+#include <Urho3D/Resource/ResourceCache.h>
+#include <Urho3D/ThirdParty/AngelScript/angelscript.h>
+#include <Urho3D/AngelScript/APITemplates.h>
+
+#include <Colonization/Core/Map.hpp>
+#include <Colonization/Core/InternalTradeArea.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
+
 #include <Colonization/Backend/PlayersManager.hpp>
+#include <Colonization/Backend/UnitsManager.hpp>
+#include <Colonization/Backend/TradeProcessor.hpp>
+#include <Colonization/Backend/NetworkUpdateCounter.hpp>
+
 #include <Colonization/Utils/Categories.hpp>
 #include <Colonization/Utils/AttributeMacro.hpp>
 
@@ -118,6 +130,55 @@ void VictoryProgressUpdater::CheckForAnyVictory ()
     }
 }
 
+void VictoryProgressUpdater::ProcessScriptedVictoryTypes (float timeStep)
+{
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
+    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
+    UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
+    TradeProcessor *tradeProcessor = node_->GetScene ()->GetComponent <TradeProcessor> ();
+
+    Urho3D::SharedPtr <VictoryTypesProcessorScriptDataAccessor> dataAccessor (new VictoryTypesProcessorScriptDataAccessor (context_));
+    dataAccessor->Setup (map, unitsManager, tradeProcessor);
+
+    Urho3D::VariantVector executionParameters;
+    executionParameters.Push (Urho3D::Variant (timeStep));
+    executionParameters.Push (Urho3D::Variant (dataAccessor.Get ()));
+    executionParameters.Push (Urho3D::Variant (Urho3D::VariantMap ()));
+
+    for (int index = 0; index < playersManager->GetPlayersCount (); index++)
+    {
+        Player *player = playersManager->GetPlayerByIndex (index);
+        if (player)
+        {
+            PlayerInfo *playerInfo = playersManager->GetPlayerInfoByPointer (player);
+            assert (playerInfo);
+            dataAccessor->SetPlayerInfo (playerInfo);
+            executionParameters.At (2) = Urho3D::Variant (Urho3D::VariantMap ());
+            victoryTypesProcessor_->Execute (
+                        "void Process (float, const VictoryTypesProcessorScriptDataAccessor @+, VariantMap &out)",
+                        executionParameters);
+
+            Urho3D::VariantMap output = executionParameters.At (2).GetVariantMap ();
+            for (int victoryTypeIndex = 0; victoryTypeIndex < output.Size (); victoryTypeIndex++)
+            {
+                Urho3D::Variant value = output.Values ().At (victoryTypeIndex);
+                if (value.GetType () == Urho3D::VAR_VARIANTMAP)
+                {
+                    playerInfo->SetProgressToVictoryOfTypeInfo (output.Keys ().At (victoryTypeIndex),
+                                                                value.GetVariantMap ());
+                }
+            }
+
+            NetworkUpdateCounter *counter = playerInfo->GetNode ()->GetComponent <NetworkUpdateCounter> ();
+            if (!counter)
+            {
+                counter = CreateNetworkUpdateCounterForComponent (playerInfo);
+            }
+            counter->AddUpdatePoints (20.0f * timeStep);
+        }
+    }
+}
+
 void VictoryProgressUpdater::OnSceneSet (Urho3D::Scene *scene)
 {
     UnsubscribeFromAllEvents ();
@@ -128,10 +189,17 @@ void VictoryProgressUpdater::OnSceneSet (Urho3D::Scene *scene)
     {
         GameConfiguration *configuration = scene->GetComponent <GameConfiguration> ();
         timeUntilGameEnd_ = configuration->GetMaximumGameDuration ();
+
+        Urho3D::ResourceCache *resourceCache = context_->GetSubsystem <Urho3D::ResourceCache> ();
+        victoryTypesProcessor_ = resourceCache->GetResource <Urho3D::ScriptFile> (
+                    configuration->GetVictoryTypesProcessorScriptPath ());
+        assert (victoryTypesProcessor_.NotNull ());
+        assert (victoryTypesProcessor_->IsCompiled ());
     }
 }
 
 VictoryProgressUpdater::VictoryProgressUpdater (Urho3D::Context *context) : Urho3D::Component (context),
+    victoryTypesProcessor_ (),
     timeUntilGameEnd_ (99999.0f),
     isAnyoneWon_ (false),
     winnerName_ (Urho3D::String::EMPTY),
@@ -158,7 +226,7 @@ void VictoryProgressUpdater::Update (Urho3D::StringHash eventType, Urho3D::Varia
         float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
         timeUntilGameEnd_ -= timeStep;
         UpdateVictoryByPointsProgresses ();
-
+        ProcessScriptedVictoryTypes (timeStep);
         CheckForAnyVictory ();
         if (timeUntilGameEnd_ <= 0.0f)
         {
@@ -190,5 +258,78 @@ Urho3D::String VictoryProgressUpdater::GetVictoryType ()
 Urho3D::String VictoryProgressUpdater::GetVictoryInfo ()
 {
     return victoryInfo_;
+}
+
+VictoryTypesProcessorScriptDataAccessor::VictoryTypesProcessorScriptDataAccessor (Urho3D::Context *context) : Urho3D::Object (context),
+    map_ (0),
+    unitsManager_ (0),
+    tradeProcessor_ (0),
+    playerInfo_ (0)
+{
+
+}
+
+VictoryTypesProcessorScriptDataAccessor::~VictoryTypesProcessorScriptDataAccessor ()
+{
+
+}
+
+void VictoryTypesProcessorScriptDataAccessor::Setup (Map *map, UnitsManager *unitsManager, TradeProcessor *tradeProcessor)
+{
+    assert (map);
+    assert (unitsManager);
+    assert (tradeProcessor);
+
+    map_ = map;
+    unitsManager_ = unitsManager;
+    tradeProcessor_ = tradeProcessor;
+}
+
+void VictoryTypesProcessorScriptDataAccessor::SetPlayerInfo (PlayerInfo *playerInfo)
+{
+    assert (playerInfo);
+    playerInfo_ = playerInfo;
+}
+
+const PlayerInfo *VictoryTypesProcessorScriptDataAccessor::GetPlayerInfo () const
+{
+    assert (playerInfo_);
+    return playerInfo_;
+}
+
+int VictoryTypesProcessorScriptDataAccessor::GetDistrictsCount () const
+{
+    assert (map_);
+    return map_->GetDistrictsCount ();
+}
+
+const District *VictoryTypesProcessorScriptDataAccessor::GetDistrictByIndex (int index) const
+{
+    assert (map_);
+    return map_->GetDistrictByIndex (index);
+}
+
+int VictoryTypesProcessorScriptDataAccessor::GetUnitsCount () const
+{
+    assert (unitsManager_);
+    return unitsManager_->GetUnitsCount ();
+}
+
+const Unit *VictoryTypesProcessorScriptDataAccessor::GetUnitByIndex (int index) const
+{
+    assert (unitsManager_);
+    return unitsManager_->GetUnitByIndex (index);
+}
+
+int VictoryTypesProcessorScriptDataAccessor::GetInternalTradeAreasCount ()
+{
+    assert (tradeProcessor_);
+    return tradeProcessor_->GetTradeAreasCount ();
+}
+
+const InternalTradeArea *VictoryTypesProcessorScriptDataAccessor::GetInternalTradeAreaByIndex (int index) const
+{
+    assert (tradeProcessor_);
+    return tradeProcessor_->GetTradeAreaByIndex (index);
 }
 }

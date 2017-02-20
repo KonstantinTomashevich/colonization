@@ -26,6 +26,7 @@ void MainMenuActivity::Start ()
     angelScriptGUI_ = backgroundScene_->CreateChild ("script_main", Urho3D::LOCAL)->
             CreateComponent <Urho3D::ScriptInstance> (Urho3D::LOCAL);
     angelScriptGUI_->CreateObject (resourceCache->GetResource <Urho3D::ScriptFile> ("AngelScript/MainMenu/MainMenu.as"), "MainMenu");
+    assert (angelScriptGUI_->GetScriptFile ()->IsCompiled ());
 
     Urho3D::VariantVector executionParameters;
     executionParameters.Push (application_);

@@ -31,6 +31,7 @@ void IngameClientActivity::Start ()
     scene_->AddRef ();
     angelScript_ = scene_->CreateChild ("script_main", Urho3D::LOCAL)->CreateComponent <Urho3D::ScriptInstance> (Urho3D::LOCAL);
     angelScript_->CreateObject (resourceCache->GetResource <Urho3D::ScriptFile> ("AngelScript/Client/Client.as"), "Client");
+    assert (angelScript_->GetScriptFile ()->IsCompiled ());
 
     Urho3D::VariantVector executionParameters;
     executionParameters.Push (application_);

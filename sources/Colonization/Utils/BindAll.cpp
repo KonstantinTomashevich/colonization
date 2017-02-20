@@ -6,15 +6,16 @@
 #include <Colonization/AngelScriptBinders/Activities/BindIngameClientActivity.hpp>
 #include <Colonization/AngelScriptBinders/Activities/BindMainMenuActivity.hpp>
 
-#include <Colonization/AngelScriptBinders/Backend/BindNetworkMessageType.hpp>
-#include <Colonization/AngelScriptBinders/Backend/BindPlayerActionType.hpp>
-
 #include <Colonization/AngelScriptBinders/Core/BindDistrict.hpp>
 #include <Colonization/AngelScriptBinders/Core/BindGameConfiguration.hpp>
 #include <Colonization/AngelScriptBinders/Core/BindInternalTradeArea.hpp>
 #include <Colonization/AngelScriptBinders/Core/BindMap.hpp>
 #include <Colonization/AngelScriptBinders/Core/BindPlayerInfo.hpp>
 #include <Colonization/AngelScriptBinders/Core/BindUnit.hpp>
+
+#include <Colonization/AngelScriptBinders/Backend/BindNetworkMessageType.hpp>
+#include <Colonization/AngelScriptBinders/Backend/BindPlayerActionType.hpp>
+#include <Colonization/AngelScriptBinders/Backend/BindVictoryTypesProcessorScriptDataAccessor.hpp>
 
 #include <Colonization/AngelScriptBinders/Frontend/BindFogOfWarCalculator.hpp>
 #include <Colonization/AngelScriptBinders/Frontend/BindMapMaskUpdater.hpp>
@@ -29,15 +30,16 @@ void BindAll (Urho3D::Script *script)
     BindIngameClientActivity (script);
     BindMainMenuActivity (script);
 
-    BindNetworkMessageType (script);
-    BindPlayerActionType (script);
-
     BindDistrict (script);
     BindGameConfiguration (script);
     BindMap (script);
     BindInternalTradeArea (script);
     BindPlayerInfo (script);
     BindUnit (script);
+
+    BindNetworkMessageType (script);
+    BindPlayerActionType (script);
+    BindVictoryTypesProcessorScriptDataAccessor (script);
 
     BindFogOfWarCalculator (script);
     BindMapMaskUpdater (script);
