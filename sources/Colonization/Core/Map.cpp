@@ -44,13 +44,13 @@ void Map::RegisterObject (Urho3D::Context *context)
     URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
 }
 
-District *Map::GetDistrictByIndex (int index)
+District *Map::GetDistrictByIndex (int index) const
 {
     assert (index < districts_.Size ());
     return districts_.At (index);
 }
 
-District *Map::GetDistrictByNameHash (Urho3D::StringHash nameHash)
+District *Map::GetDistrictByNameHash (Urho3D::StringHash nameHash) const
 {
     for (int index = 0; index < districts_.Size (); index++)
     {
@@ -62,7 +62,7 @@ District *Map::GetDistrictByNameHash (Urho3D::StringHash nameHash)
     return 0;
 }
 
-District *Map::GetDistrictByHash (Urho3D::StringHash hash)
+District *Map::GetDistrictByHash (Urho3D::StringHash hash) const
 {
     for (int index = 0; index < districts_.Size (); index++)
     {
@@ -74,7 +74,7 @@ District *Map::GetDistrictByHash (Urho3D::StringHash hash)
     return 0;
 }
 
-int Map::GetDistrictsCount ()
+int Map::GetDistrictsCount () const
 {
     return districts_.Size ();
 }

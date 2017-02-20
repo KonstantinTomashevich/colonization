@@ -25,7 +25,7 @@ public:
     static void RegisterObject (Urho3D::Context *context);
 
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
-    int GetTradeAreasCount ();
-    InternalTradeArea *GetTradeAreaByIndex (int index);
+    int GetTradeAreasCount () const;
+    InternalTradeArea *GetTradeAreaByIndex (int index) const;
 };
 }

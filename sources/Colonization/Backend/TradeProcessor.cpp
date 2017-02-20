@@ -277,12 +277,12 @@ void TradeProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &e
     }
 }
 
-int TradeProcessor::GetTradeAreasCount ()
+int TradeProcessor::GetTradeAreasCount () const
 {
     return tradeAreas_.Size ();
 }
 
-InternalTradeArea *TradeProcessor::GetTradeAreaByIndex (int index)
+InternalTradeArea *TradeProcessor::GetTradeAreaByIndex (int index) const
 {
     assert (index < tradeAreas_.Size ());
     return tradeAreas_.At (index);

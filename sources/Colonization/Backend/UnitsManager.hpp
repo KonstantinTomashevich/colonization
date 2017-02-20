@@ -24,11 +24,11 @@ public:
     static void RegisterObject (Urho3D::Context *context);
 
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
-    int GetUnitsCount ();
+    int GetUnitsCount () const;
     void UpdateUnitsList ();
 
-    Unit *GetUnitByIndex (int index);
-    Unit *GetUnitByHash (Urho3D::StringHash hash);
+    Unit *GetUnitByIndex (int index) const;
+    Unit *GetUnitByHash (Urho3D::StringHash hash) const;
     Urho3D::PODVector <Urho3D::StringHash> GetUnitsOfPlayer (Urho3D::StringHash playerNameHash);
     Unit *CreateUnit ();
 };

@@ -227,18 +227,18 @@ void UnitsManager::UpdateUnitsList ()
     }
 }
 
-int UnitsManager::GetUnitsCount ()
+int UnitsManager::GetUnitsCount () const
 {
     return units_.Size ();
 }
 
-Unit *UnitsManager::GetUnitByIndex (int index)
+Unit *UnitsManager::GetUnitByIndex (int index) const
 {
     assert (index < units_.Size ());
     return units_.At (index);
 }
 
-Unit *UnitsManager::GetUnitByHash (Urho3D::StringHash hash)
+Unit *UnitsManager::GetUnitByHash (Urho3D::StringHash hash) const
 {
     for (int index = 0; index < units_.Size (); index++)
     {

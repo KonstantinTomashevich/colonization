@@ -21,10 +21,10 @@ public:
     virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);
     static void RegisterObject (Urho3D::Context *context);
 
-    District *GetDistrictByIndex (int index);
-    District *GetDistrictByNameHash (Urho3D::StringHash nameHash);
-    District *GetDistrictByHash (Urho3D::StringHash hash);
-    int GetDistrictsCount ();
+    District *GetDistrictByIndex (int index) const;
+    District *GetDistrictByNameHash (Urho3D::StringHash nameHash) const;
+    District *GetDistrictByHash (Urho3D::StringHash hash) const;
+    int GetDistrictsCount () const;
     Urho3D::PODVector <Urho3D::StringHash> GetColoniesOfPlayer (Urho3D::StringHash playerNameHash);
     District *CreateDistrict (Urho3D::String districtName);
 
