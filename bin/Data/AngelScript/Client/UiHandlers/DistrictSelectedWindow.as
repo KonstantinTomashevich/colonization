@@ -303,6 +303,11 @@ class DistrictSelectedWindow : ScriptObject
         taskData ["buffer"] = buffer;
         networkTasks.Push (Variant (taskData));
         node.parent.parent.GetChild ("networkScriptNode").vars ["tasksList"] = networkTasks;
+
+        // Client side prediction.
+        float gold = node.parent.parent.vars ["gold"].GetFloat ();
+        gold -= COLONIZATORS_EXPEDITION_COST;
+        node.parent.parent.vars ["gold"] = Variant (gold);
     }
 
     void HandleBasicInfoClick ()
@@ -348,5 +353,10 @@ class DistrictSelectedWindow : ScriptObject
         taskData ["buffer"] = buffer;
         networkTasks.Push (Variant (taskData));
         node.parent.parent.GetChild ("networkScriptNode").vars ["tasksList"] = networkTasks;
+
+        // Client side prediction.
+        float gold = node.parent.parent.vars ["gold"].GetFloat ();
+        gold -= DEFAULT_INVESTITION_SIZE;
+        node.parent.parent.vars ["gold"] = Variant (gold);
     }
 }
