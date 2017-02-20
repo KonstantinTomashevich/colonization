@@ -114,7 +114,7 @@ class MapBillboards : ScriptObject
                 }
 
                 UIElement @unitElement = unitsElement.GetChildren () [index];
-                unitElement.SetPosition (unitElement.width * index, 0);
+                unitElement.SetPosition (unitsElement.height * index, 0);
 
                 UpdateUnitIconTypeIcon (unitElement, unit);
                 UpdateUnitIconButton (unitElement, unit);

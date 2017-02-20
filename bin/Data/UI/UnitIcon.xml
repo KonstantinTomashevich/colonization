@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <element>
 	<attribute name="Name" value="unitIcon" />
-	<attribute name="Position" value="500 300" />
-	<attribute name="Size" value="128 128" />
+	<attribute name="Position" value="0 0" />
+	<attribute name="Size" value="0 0" />
 	<attribute name="Pivot" value="0 0" />
     <attribute name="Variables">
 		<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
@@ -19,7 +19,7 @@
     </attribute>
 	<element type="Button" style="UnitIconButton">
 		<attribute name="Name" value="selectButton" />
-		<attribute name="Size" value="128 128" />
+		<attribute name="Size" value="0 0" />
 		<attribute name="Max Anchor" value="1 1" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Enable Anchor" value="true" />
@@ -27,7 +27,7 @@
 	</element>
 	<element type="BorderImage" style="ArmyIcon">
 		<attribute name="Name" value="typeIcon" />
-		<attribute name="Size" value="128 128" />
+		<attribute name="Size" value="0 0" />
 		<attribute name="Max Anchor" value="1 1" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Enable Anchor" value="true" />
