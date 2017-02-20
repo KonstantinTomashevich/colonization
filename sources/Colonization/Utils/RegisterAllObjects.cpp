@@ -3,6 +3,7 @@
 
 #include <Colonization/Backend/ColoniesManager.hpp>
 #include <Colonization/Backend/MessagesHandler.hpp>
+#include <Colonization/Backend/NetworkUpdateCounter.hpp>
 #include <Colonization/Backend/Player.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/PlayersPointsCalculator.hpp>
@@ -26,6 +27,7 @@ void RegisterAllObjects (Urho3D::Context *context)
 {
     ColoniesManager::RegisterObject (context);
     MessagesHandler::RegisterObject (context);
+    NetworkUpdateCounter::RegisterObject (context);
     PlayersManager::RegisterObject (context);
     PlayersPointsCalculator::RegisterObject (context);
     TradeProcessor::RegisterObject (context);
