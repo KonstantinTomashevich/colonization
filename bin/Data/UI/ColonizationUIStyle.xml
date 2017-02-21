@@ -80,7 +80,8 @@
             <attribute name="Horiz Alignment" value="Left" />
             <attribute name="Pivot" value="0 0.5" />
             <attribute name="Min Size" value="2 2" />
-            <attribute name="Opacity" value="1" />
+            <attribute name="Opacity" value="0.8" />
+            <attribute name="Use Derived Opacity" value="false" />
         </element>
     </element>
 
