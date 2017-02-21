@@ -63,6 +63,11 @@ class MainMenu : ScriptObject
                                                          "AngelScript/Utils/UiResizer.as"),
                                         "UiResizer");
         uiResizerInstance.SetAttribute ("startElementName_", Variant ("mainMenu"));
+
+        ScriptInstance @screenShotTakerInstance = node.CreateChild ("ScreenShotTaker", LOCAL).CreateComponent ("ScriptInstance");
+        screenShotTakerInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Utils/ScreenShotTaker.as"),
+                                        "ScreenShotTaker");
         SetupBackground ();
 
         SubscribeToEvent ("StartGameRequest", "HandleStartGameRequest");

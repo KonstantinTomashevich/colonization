@@ -47,6 +47,11 @@ class Client : ScriptObject
                                                          "AngelScript/Client/ScreenPressesHandler.as"),
                                      "ScreenPressesHandler");
 
+        ScriptInstance @screenShotTakerInstance = node.CreateChild ("ScreenShotTaker", LOCAL).CreateComponent ("ScriptInstance");
+        screenShotTakerInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Utils/ScreenShotTaker.as"),
+                                        "ScreenShotTaker");
+
         SubscribeToEvent ("ServerDisconnected", "HandleServerDisconnected");
         SubscribeToEvent ("ConnectFailed", "HandleConnectFailed");
     }
