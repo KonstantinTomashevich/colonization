@@ -40,11 +40,10 @@ class MainMenu : ScriptObject
         ui.root.AddChild (uiRoot);
         uiRoot.name = "main_menu_root";
 
-        Button @startGameButton = uiRoot.GetChild ("start_game_button");
-        Button @exitButton = uiRoot.GetChild ("exit_from_game_button");
-
-        SubscribeToEvent (startGameButton, "Released", "HandleStartGameClick");
-        SubscribeToEvent (exitButton, "Released", "HandleExitClick");
+        ScriptInstance @primaryMenuInstance = node.CreateChild ("PrimaryMenu", LOCAL).CreateComponent ("ScriptInstance");
+        primaryMenuInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/MainMenu/UiHandlers/PrimaryMenu.as"),
+                                        "PrimaryMenu");
 
         ScriptInstance @uiResizerInstance = node.CreateChild ("UiResizer", LOCAL).CreateComponent ("ScriptInstance");
         uiResizerInstance.CreateObject (cache.GetResource ("ScriptFile",
@@ -52,6 +51,9 @@ class MainMenu : ScriptObject
                                         "UiResizer");
         uiResizerInstance.SetAttribute ("startElementName_", Variant ("main_menu_root"));
         SetupBackground ();
+
+        SubscribeToEvent ("StartGameRequest", "HandleStartGameRequest");
+        SubscribeToEvent ("ExitRequest", "HandleExitRequest");
     }
 
     void Update (float timeStep)
@@ -74,7 +76,7 @@ class MainMenu : ScriptObject
         activitiesApplication_ = activitiesApplication;
     }
 
-    void HandleStartGameClick ()
+    void HandleStartGameRequest ()
     {
         for (int index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
         {
@@ -93,7 +95,7 @@ class MainMenu : ScriptObject
         activitiesApplication_.SetupActivityNextFrame (ingameClientActivity);
     }
 
-    void HandleExitClick ()
+    void HandleExitRequest ()
     {
         for (int index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
         {
