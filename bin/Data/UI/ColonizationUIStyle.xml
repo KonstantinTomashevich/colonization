@@ -77,7 +77,8 @@
             <attribute name="Priority" value="1" />
             <attribute name="Image Rect" value="646 1 662 65" />
             <attribute name="Vert Alignment" value="Center" />
-            <attribute name="Horiz Alignment" value="Top" />
+            <attribute name="Horiz Alignment" value="Left" />
+            <attribute name="Pivot" value="0 0.5" />
             <attribute name="Min Size" value="2 2" />
             <attribute name="Opacity" value="1" />
         </element>

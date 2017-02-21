@@ -1275,13 +1275,14 @@
 				<attribute name="Bottom Left Color" value="0.9 0.9 0.9 1" />
 				<attribute name="Bottom Right Color" value="0.9 0.9 0.9 1" />
 				<attribute name="Font Size" value="14" />
+				<attribute name="Text" value="" />
 				<attribute name="Selection Color" value="0.1 0.1 0.7 0.5" />
 			</element>
 			<element type="BorderImage" internal="true">
 				<attribute name="Size" value="3 23" />
 				<attribute name="Min Anchor" value="0 0.5" />
 				<attribute name="Max Anchor" value="0 0.5" />
-				<attribute name="Pivot" value="0 0" />
+				<attribute name="Pivot" value="0 0.5" />
 			</element>
 		</element>
 		<element type="Button" style="TextButton">
@@ -3026,7 +3027,7 @@
 				<attribute name="Size" value="3 24" />
 				<attribute name="Min Anchor" value="0 0.5" />
 				<attribute name="Max Anchor" value="0 0.5" />
-				<attribute name="Pivot" value="0 0" />
+				<attribute name="Pivot" value="0 0.5" />
 			</element>
 		</element>
 	</element>
@@ -4329,7 +4330,7 @@
 				<attribute name="Size" value="3 24" />
 				<attribute name="Min Anchor" value="0 0.5" />
 				<attribute name="Max Anchor" value="0 0.5" />
-				<attribute name="Pivot" value="0 0" />
+				<attribute name="Pivot" value="0 0.5" />
 			</element>
 		</element>
 	</element>
@@ -4394,7 +4395,6 @@
 				<string value="EnableUiResizer" />
 			</attribute>
 			<attribute name="Font Size" value="21" />
-			<attribute name="Text" value="" />
 			<attribute name="Word Wrap" value="true" />
 			<attribute name="Text Effect" value="Stroke" />
 		</element>
