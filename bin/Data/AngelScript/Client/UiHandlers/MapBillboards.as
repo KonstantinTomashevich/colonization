@@ -181,6 +181,7 @@ class MapBillboards : ScriptObject
 
     void Start ()
     {
+        style_ = cache.GetResource ("XMLFile", "UI/ColonizationUIStyle.xml");
         billboardXML_ = cache.GetResource ("XMLFile", "UI/Billboard.xml");
         unitIconXML_ = cache.GetResource ("XMLFile", "UI/UnitIcon.xml");
 

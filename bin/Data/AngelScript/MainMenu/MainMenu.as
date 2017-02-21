@@ -53,6 +53,11 @@ class MainMenu : ScriptObject
                                                          "AngelScript/MainMenu/UiHandlers/StartGameMenu.as"),
                                         "StartGameMenu");
 
+        ScriptInstance @mapsListInstance = node.CreateChild ("MapsList", LOCAL).CreateComponent ("ScriptInstance");
+        mapsListInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/MainMenu/UiHandlers/MapsList.as"),
+                                        "MapsList");
+
         ScriptInstance @uiResizerInstance = node.CreateChild ("UiResizer", LOCAL).CreateComponent ("ScriptInstance");
         uiResizerInstance.CreateObject (cache.GetResource ("ScriptFile",
                                                          "AngelScript/Utils/UiResizer.as"),

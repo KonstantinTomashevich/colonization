@@ -1,5 +1,5 @@
 <elements>
-    <element type="Text" auto="true">
+    <element type="Text">
         <attribute name="Font" value="Font;Fonts/BlueHighway.ttf" />
         <attribute name="Font Size" value="15" />
         <attribute name="Color" value="0.9 0.9 0.9 1.0" />

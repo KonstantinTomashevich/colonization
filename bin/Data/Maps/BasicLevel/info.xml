@@ -1,0 +1,15 @@
+<mapInfo>
+    <mapFiles
+        gameConfigurationXML="/configuration.xml"
+        mapXML="/map.xml"
+        unitsXML="/units.xml"
+        preview="/terrain_texture.png"
+        />
+
+    <userInformation
+        name="Basic Map For Testing"
+        shortInfo="This is basic map for game testing."
+        maxPlayers="4"
+        supportedVictoryTypes="by points, by colonized square"
+        />
+</mapInfo>
