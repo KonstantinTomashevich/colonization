@@ -7,21 +7,4 @@
 	<attribute name="Rotation" value="1 0 0 0" />
 	<attribute name="Scale" value="1 1 1" />
 	<attribute name="Variables" />
-	<node id="48">
-		<attribute name="Is Enabled" value="true" />
-		<attribute name="Name" value="Unit48" />
-		<attribute name="Tags" />
-		<attribute name="Position" value="0 0 0" />
-		<attribute name="Rotation" value="1 0 0 0" />
-		<attribute name="Scale" value="1 1 1" />
-		<attribute name="Variables" />
-		<component type="Unit" id="50">
-			<attribute name="Owner Player Name" value="Konstant" />
-			<attribute name="Position Hash" value="-1370075746" />
-			<attribute name="Way">
-				<variant type="Int" value="0" />
-			</attribute>
-			<attribute name="[Fleet Only] War Ships Count" value="10" />
-		</component>
-	</node>
 </node>
