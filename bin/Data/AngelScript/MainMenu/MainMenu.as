@@ -38,18 +38,26 @@ class MainMenu : ScriptObject
 
         UIElement @uiRoot = ui.LoadLayout (cache.GetResource ("XMLFile", "UI/MainMenu.xml"));
         ui.root.AddChild (uiRoot);
-        uiRoot.name = "main_menu_root";
+        uiRoot.name = "mainMenu";
+
+        uiRoot.GetChild ("primaryMenu").visible = true;
+        uiRoot.GetChild ("startGameMenu").visible = false;
 
         ScriptInstance @primaryMenuInstance = node.CreateChild ("PrimaryMenu", LOCAL).CreateComponent ("ScriptInstance");
         primaryMenuInstance.CreateObject (cache.GetResource ("ScriptFile",
                                                          "AngelScript/MainMenu/UiHandlers/PrimaryMenu.as"),
                                         "PrimaryMenu");
 
+        ScriptInstance @startGameMenuInstance = node.CreateChild ("StartGameMenu", LOCAL).CreateComponent ("ScriptInstance");
+        startGameMenuInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/MainMenu/UiHandlers/StartGameMenu.as"),
+                                        "StartGameMenu");
+
         ScriptInstance @uiResizerInstance = node.CreateChild ("UiResizer", LOCAL).CreateComponent ("ScriptInstance");
         uiResizerInstance.CreateObject (cache.GetResource ("ScriptFile",
                                                          "AngelScript/Utils/UiResizer.as"),
                                         "UiResizer");
-        uiResizerInstance.SetAttribute ("startElementName_", Variant ("main_menu_root"));
+        uiResizerInstance.SetAttribute ("startElementName_", Variant ("mainMenu"));
         SetupBackground ();
 
         SubscribeToEvent ("StartGameRequest", "HandleStartGameRequest");
@@ -90,8 +98,8 @@ class MainMenu : ScriptObject
         IngameClientActivity @ingameClientActivity = IngameClientActivity ();
         ingameClientActivity.serverAdress = "localhost";
         ingameClientActivity.serverPort = NEW_GAME_SERVER_PORT;
-        ingameClientActivity.playerName = "Konstant";
-        ingameClientActivity.playerColor = Color (0.1f, 0.1f, 0.7f, 1.0f);
+        ingameClientActivity.playerName = node.vars ["nickname"].GetString ();
+        ingameClientActivity.playerColor = node.vars ["color"].GetColor ();
         activitiesApplication_.SetupActivityNextFrame (ingameClientActivity);
     }
 

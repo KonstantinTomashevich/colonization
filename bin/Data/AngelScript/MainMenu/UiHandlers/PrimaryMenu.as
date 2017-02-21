@@ -12,9 +12,9 @@ class PrimaryMenu : ScriptObject
 
     void Start ()
     {
-        UIElement @primaryMenu = ui.root.GetChild ("main_menu_root").GetChild ("primary_menu");
-        Button @startGameButton = primaryMenu.GetChild ("start_game_button");
-        Button @exitButton = primaryMenu.GetChild ("exit_from_game_button");
+        Window @primaryMenu = ui.root.GetChild ("mainMenu").GetChild ("primaryMenu");
+        Button @startGameButton = primaryMenu.GetChild ("startGameButton");
+        Button @exitButton = primaryMenu.GetChild ("exitFromGameButton");
 
         SubscribeToEvent (startGameButton, "Released", "HandleStartGameClick");
         SubscribeToEvent (exitButton, "Released", "HandleExitClick");
@@ -32,7 +32,8 @@ class PrimaryMenu : ScriptObject
 
     void HandleStartGameClick ()
     {
-        SendEvent ("StartGameRequest");
+        ui.root.GetChild ("mainMenu").GetChild ("primaryMenu").visible = false;
+        ui.root.GetChild ("mainMenu").GetChild ("startGameMenu").visible = true;
     }
 
     void HandleExitClick ()
