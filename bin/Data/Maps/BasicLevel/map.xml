@@ -123,17 +123,6 @@
 			<attribute name="Land Average Fertility" value="1.15" />
 			<attribute name="Forests Reproductivity" value="0.5" />
 			<attribute name="Natives Aggressiveness" value="0" />
-			<attribute name="Has Colony" value="true" />
-			<attribute name="Colony Owner Name" value="Konstant" />
-			<attribute name="Men Count" value="50" />
-			<attribute name="Women Count" value="50" />
-			<attribute name="Local Army Size" value="10" />
-			<attribute name="Farms Evolution Points" value="2" />
-			<attribute name="Mines Evolution Points" value="1" />
-			<attribute name="Industry Evolution Points" value="0.25" />
-			<attribute name="Logistics Evolution Points" value="0.5" />
-			<attribute name="Defense Evolution Points" value="0.5" />
-			<attribute name="Average Level Of Life Points" value="1" />
 		</component>
 	</node>
 	<node id="6">
