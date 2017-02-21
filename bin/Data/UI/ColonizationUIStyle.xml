@@ -82,4 +82,14 @@
             <attribute name="Opacity" value="1" />
         </element>
     </element>
+
+    <element type="Slider" style="BorderImage">
+        <attribute name="Texture" value="Texture2D;Textures/ColonizatorsUI.png" />
+        <attribute name="Image Rect" value="1 901 1025 1157" />
+        <element type="BorderImage" internal="true">
+            <attribute name="Texture" value="Texture2D;Textures/ColonizatorsUI.png" />
+            <attribute name="Image Rect" value="1 901 1025 1157" />
+            <attribute name="Hover Image Offset" value="0 -514" />
+        </element>
+    </element>
 </elements>
