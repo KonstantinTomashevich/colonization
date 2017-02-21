@@ -3,8 +3,8 @@
 
 namespace Colonization
 {
-char *COLONIZATION_CORE_CATEGORY = "Colonization Core";
-char *COLONIZATION_SERVER_ONLY_CATEGORY = "Colonization Server";
-char *COLONIZATION_SHARED_CATEGORY = "Colonization Shared";
-char *COLONIZATION_CLIENT_ONLY_CATEGORY = "Colonization Client";
+char const *COLONIZATION_CORE_CATEGORY = "Colonization Core";
+char const *COLONIZATION_SERVER_ONLY_CATEGORY = "Colonization Server";
+char const *COLONIZATION_SHARED_CATEGORY = "Colonization Shared";
+char const *COLONIZATION_CLIENT_ONLY_CATEGORY = "Colonization Client";
 }
