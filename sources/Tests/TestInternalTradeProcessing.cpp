@@ -13,6 +13,7 @@
 #include <Colonization/Backend/TradeProcessor.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
+#include <Colonization/Utils/Network/NetworkUpdateSmoother.hpp>
 #include <Colonization/Utils/Hubs/RegisterAllObjects.hpp>
 
 URHO3D_DEFINE_APPLICATION_MAIN (Tests::TestInternalTradeProcessingApplication)
@@ -120,6 +121,7 @@ void TestInternalTradeProcessingApplication::Start ()
 
     scene_->CreateComponent <Colonization::MessagesHandler> ();
     scene_->CreateChild ("players")->CreateComponent <Colonization::PlayersManager> ();
+    scene_->CreateComponent <Colonization::NetworkUpdateSmoother> ();
 
     Urho3D::Network *network = context_->GetSubsystem <Urho3D::Network> ();
     network->StartServer (3793);

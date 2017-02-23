@@ -3,7 +3,6 @@
 
 #include <Colonization/Backend/ColoniesManager.hpp>
 #include <Colonization/Backend/MessagesHandler.hpp>
-#include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
 #include <Colonization/Backend/Player.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/PlayersPointsCalculator.hpp>
@@ -21,13 +20,15 @@
 #include <Colonization/Frontend/FogOfWarCalculator.hpp>
 #include <Colonization/Frontend/MapMaskUpdater.hpp>
 
+#include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
+#include <Colonization/Utils/Network/NetworkUpdateSmoother.hpp>
+
 namespace Colonization
 {
 void RegisterAllObjects (Urho3D::Context *context)
 {
     ColoniesManager::RegisterObject (context);
     MessagesHandler::RegisterObject (context);
-    NetworkUpdateCounter::RegisterObject (context);
     PlayersManager::RegisterObject (context);
     PlayersPointsCalculator::RegisterObject (context);
     TradeProcessor::RegisterObject (context);
@@ -43,5 +44,8 @@ void RegisterAllObjects (Urho3D::Context *context)
 
     FogOfWarCalculator::RegisterObject (context);
     MapMaskUpdater::RegisterObject (context);
+
+    NetworkUpdateCounter::RegisterObject (context);
+    NetworkUpdateSmoother::RegisterObject (context);
 }
 }

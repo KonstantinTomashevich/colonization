@@ -2,7 +2,9 @@
 #include "NetworkUpdateCounter.hpp"
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Scene/Node.h>
+#include <Urho3D/Scene/Scene.h>
 
+#include <Colonization/Utils/Network/NetworkUpdateSmoother.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
@@ -49,7 +51,8 @@ void NetworkUpdateCounter::AddUpdatePoints (float points)
     {
         if (object_)
         {
-            object_->MarkNetworkUpdate ();
+            NetworkUpdateSmoother *smoother = node_->GetScene ()->GetComponent <NetworkUpdateSmoother> ();
+            smoother->RequestNetworkUpdate (object_);
         }
         accumulatedUpdatePoints_ = 0.0f;
     }
