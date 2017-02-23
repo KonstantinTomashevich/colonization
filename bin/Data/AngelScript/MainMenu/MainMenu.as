@@ -69,6 +69,7 @@ class MainMenu : ScriptObject
                                                          "AngelScript/Utils/ScreenShotTaker.as"),
                                         "ScreenShotTaker");
         SetupBackground ();
+        node.vars ["serverPort"] = Variant (NEW_GAME_SERVER_PORT);
 
         SubscribeToEvent ("StartGameRequest", "HandleStartGameRequest");
         SubscribeToEvent ("ExitRequest", "HandleExitRequest");

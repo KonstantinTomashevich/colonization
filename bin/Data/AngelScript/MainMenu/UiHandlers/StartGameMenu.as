@@ -99,6 +99,10 @@ class StartGameMenu : ScriptObject
         LineEdit @nicknameEdit = startGameMenu.GetChild ("nicknameEdit");
         startGameButton.visible = (nicknameEdit.text != "");
         UpdateMapInfo ();
+
+        int serverPort = node.parent.vars ["serverPort"].GetInt ();
+        Text @serverPortLabel = startGameMenu.GetChild ("serverPortLabel");
+        serverPortLabel.text = "Server will be started at port " + serverPort + ".";
     }
 
     void Stop ()
