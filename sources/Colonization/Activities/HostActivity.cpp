@@ -104,7 +104,7 @@ void HostActivity::DisposeFinishedState ()
 void HostActivity::SetupState (GameStateType state)
 {
     DisposeCurrentState ();
-    if (state == GAME_STATE_WAITING_FOR_PLAYERS)
+    if (state == GAME_STATE_WAITING_FOR_START)
     {
         SetupWaitingForPlayersState ();
     }
@@ -121,7 +121,7 @@ void HostActivity::SetupState (GameStateType state)
 
 void HostActivity::DisposeCurrentState ()
 {
-    if (currentState_ == GAME_STATE_WAITING_FOR_PLAYERS)
+    if (currentState_ == GAME_STATE_WAITING_FOR_START)
     {
         DisposeWaitingForPlayersState ();
     }
@@ -153,7 +153,7 @@ bool HostActivity::LoadAndParseMapInfo (Urho3D::String &configurationPath, Urho3
     return true;
 }
 
-bool HostActivity::WillIGoFromWaitingForPlayersToPlayingState ()
+bool HostActivity::WillIGoFromWaitingForStartToPlayingState ()
 {
     PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
     // TODO: Reimplement later!
@@ -219,7 +219,7 @@ void HostActivity::SetMapInfoPath (Urho3D::String mapInfoPath)
 void HostActivity::Start ()
 {
     context_->GetSubsystem <Urho3D::Network> ()->StartServer (serverPort_);
-    SetupState (GAME_STATE_WAITING_FOR_PLAYERS);
+    SetupState (GAME_STATE_WAITING_FOR_START);
 }
 
 void HostActivity::Update (float timeStep)
@@ -238,7 +238,7 @@ void HostActivity::Update (float timeStep)
     scene_->SetVar ("ReplicatedNodesCount", replicated);
 
     // Go to next state if needed.
-    if (currentState_ == GAME_STATE_WAITING_FOR_PLAYERS && WillIGoFromWaitingForPlayersToPlayingState ())
+    if (currentState_ == GAME_STATE_WAITING_FOR_START && WillIGoFromWaitingForStartToPlayingState ())
     {
         SetupState (GAME_STATE_PLAYING);
     }

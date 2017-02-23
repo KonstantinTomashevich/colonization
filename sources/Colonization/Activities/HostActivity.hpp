@@ -7,7 +7,7 @@ namespace Colonization
 enum GameStateType
 {
     GAME_STATE_UNITIALIZED = -1,
-    GAME_STATE_WAITING_FOR_PLAYERS = 0,
+    GAME_STATE_WAITING_FOR_START = 0,
     GAME_STATE_PLAYING = 1,
     GAME_STATE_FINISHED = 2
 };
@@ -36,7 +36,7 @@ protected:
 
     // Parameters are parse output.
     bool LoadAndParseMapInfo (Urho3D::String &configurationPath, Urho3D::String &mapPath, Urho3D::String &unitsPath);
-    bool WillIGoFromWaitingForPlayersToPlayingState ();
+    bool WillIGoFromWaitingForStartToPlayingState ();
     bool WillIGoFromPlayingToFinishedState ();
 public:
     HostActivity (Urho3D::Context *context);
