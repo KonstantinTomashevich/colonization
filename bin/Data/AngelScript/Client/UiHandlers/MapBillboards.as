@@ -195,7 +195,7 @@ class MapBillboards : ScriptObject
         {
             isSceneLoaded_ = CheckIsSceneLoaded (scene);
         }
-        else
+        else if (node.parent.parent.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
         {
             ProcessMapBillboards ();
         }

@@ -13,7 +13,7 @@ void BindGameStateType(Urho3D::Script *script)
     asIScriptEngine *engine = script->GetScriptEngine ();
     engine->RegisterEnum ("GameStateType");
     engine->RegisterEnumValue ("GameStateType", "GAME_STATE_UNITIALIZED", GAME_STATE_UNITIALIZED);
-    engine->RegisterEnumValue ("GameStateType", "GAME_STATE_WAITING_FOR_PLAYERS", GAME_STATE_WAITING_FOR_PLAYERS);
+    engine->RegisterEnumValue ("GameStateType", "GAME_STATE_WAITING_FOR_START", GAME_STATE_WAITING_FOR_START);
     engine->RegisterEnumValue ("GameStateType", "GAME_STATE_PLAYING", GAME_STATE_PLAYING);
     engine->RegisterEnumValue ("GameStateType", "GAME_STATE_FINISHED", GAME_STATE_FINISHED);
 }
@@ -26,7 +26,19 @@ void BindHostActivity (Urho3D::Script *script)
     Urho3D::RegisterObjectConstructor <HostActivity> (engine, "HostActivity");
     Urho3D::RegisterSubclass <Activity, HostActivity> (engine, "Activity", "HostActivity");
     BindActivityInterface (script, "HostActivity");
-    engine->RegisterObjectMethod ("HostActivity", "int get_serverPort ()", asMETHOD (HostActivity, GetServerPort), asCALL_THISCALL);
-    engine->RegisterObjectMethod ("HostActivity", "void set_serverPort (int serverPort)", asMETHOD (HostActivity, SetServerPort), asCALL_THISCALL);
+    BindHostActivityInterface (script, "HostActivity");
+}
+
+void BindHostActivityInterface (Urho3D::Script *script, Urho3D::String className)
+{
+    asIScriptEngine *engine = script->GetScriptEngine ();
+    engine->RegisterObjectMethod (className.CString (), "int get_serverPort ()", asMETHOD (HostActivity, GetServerPort), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_serverPort (int serverPort)", asMETHOD (HostActivity, SetServerPort), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "String get_mapFolder () const", asMETHOD (HostActivity, GetMapFolder), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_mapFolder (String mapFolder)", asMETHOD (HostActivity, SetMapFolder), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "String get_mapInfoPath () const", asMETHOD (HostActivity, GetMapInfoPath), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_mapInfoPath (String mapInfoPath)", asMETHOD (HostActivity, SetMapInfoPath), asCALL_THISCALL);
 }
 }

@@ -103,6 +103,8 @@ class MainMenu : ScriptObject
 
         HostActivity @hostActivity = HostActivity ();
         hostActivity.serverPort = NEW_GAME_SERVER_PORT;
+        hostActivity.mapFolder = node.vars ["selectedMapFolder"].GetString ();
+        hostActivity.mapInfoPath = node.vars ["selectedMapInfo"].GetString ();
         activitiesApplication_.SetupActivityNextFrame (hostActivity);
 
         IngameClientActivity @ingameClientActivity = IngameClientActivity ();

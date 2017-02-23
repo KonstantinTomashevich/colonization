@@ -244,7 +244,7 @@ class SceneManager : ScriptObject
     {
         if (!isSceneLoaded_)
             isSceneLoaded_ = CheckIsSceneLoaded (scene);
-        else
+        else if (node.parent.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
         {
             if (renderPathUpdaterWillBeCreated_)
             {

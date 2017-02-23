@@ -4,4 +4,5 @@ namespace Colonization
 {
 void BindGameStateType(Urho3D::Script *script);
 void BindHostActivity (Urho3D::Script *script);
+void BindHostActivityInterface (Urho3D::Script *script, Urho3D::String className);
 }

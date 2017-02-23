@@ -39,22 +39,28 @@ void HostActivity::DisposeWaitingForPlayersState ()
 void HostActivity::SetupPlayingState ()
 {
     Urho3D::ResourceCache *resourceCache = context_->GetSubsystem <Urho3D::ResourceCache> ();
+    // Load map info and parse it.
+    Urho3D::String configurationPath;
+    Urho3D::String mapPath;
+    Urho3D::String unitsPath;
+    assert (LoadAndParseMapInfo (configurationPath, mapPath, unitsPath));
+
     // Load game configuration.
     Urho3D::Node *configurationNode = scene_->CreateChild ("configuration", Urho3D::LOCAL);
-    configurationNode->LoadXML (resourceCache->GetResource <Urho3D::XMLFile> ("Maps/BasicLevel/configuration.xml")->GetRoot ());
+    configurationNode->LoadXML (resourceCache->GetResource <Urho3D::XMLFile> (configurationPath)->GetRoot ());
     GameConfiguration *configuration = configurationNode->GetComponent <GameConfiguration> ();
     scene_->CloneComponent (configuration, Urho3D::REPLICATED);
     configuration->Remove ();
 
     // Load game map.
     Urho3D::Node *mapNode = scene_->CreateChild ("map", Urho3D::REPLICATED);
-    mapNode->LoadXML (resourceCache->GetResource <Urho3D::XMLFile> ("Maps/BasicLevel/map.xml")->GetRoot ());
+    mapNode->LoadXML (resourceCache->GetResource <Urho3D::XMLFile> (mapPath)->GetRoot ());
     Map *map = mapNode->GetComponent <Map> ();
     map->UpdateDistrictsList ();
 
     // Load units and create units manager.
     Urho3D::Node *unitsNode = scene_->CreateChild ("units", Urho3D::REPLICATED);
-    unitsNode->LoadXML (resourceCache->GetResource <Urho3D::XMLFile> ("Maps/BasicLevel/units.xml")->GetRoot ());
+    unitsNode->LoadXML (resourceCache->GetResource <Urho3D::XMLFile> (unitsPath)->GetRoot ());
     UnitsManager *unitsManager = unitsNode->CreateComponent <UnitsManager> (Urho3D::LOCAL);
     unitsManager->UpdateUnitsList ();
 
@@ -98,7 +104,7 @@ void HostActivity::DisposeFinishedState ()
 void HostActivity::SetupState (GameStateType state)
 {
     DisposeCurrentState ();
-    if (state == GAME_STATE_WAITING_FOR_PLAYERS)
+    if (state == GAME_STATE_WAITING_FOR_START)
     {
         SetupWaitingForPlayersState ();
     }
@@ -115,7 +121,7 @@ void HostActivity::SetupState (GameStateType state)
 
 void HostActivity::DisposeCurrentState ()
 {
-    if (currentState_ == GAME_STATE_WAITING_FOR_PLAYERS)
+    if (currentState_ == GAME_STATE_WAITING_FOR_START)
     {
         DisposeWaitingForPlayersState ();
     }
@@ -130,11 +136,29 @@ void HostActivity::DisposeCurrentState ()
     currentState_ = GAME_STATE_UNITIALIZED;
 }
 
-bool HostActivity::WillIGoFromWaitingForPlayersToPlayingState ()
+bool HostActivity::LoadAndParseMapInfo (Urho3D::String &configurationPath, Urho3D::String &mapPath, Urho3D::String &unitsPath)
+{
+    Urho3D::ResourceCache *resourceCache = context_->GetSubsystem <Urho3D::ResourceCache> ();
+    Urho3D::XMLFile *infoFile = resourceCache->GetResource <Urho3D::XMLFile> (mapInfoPath_);
+
+    if (!infoFile || !infoFile->GetRoot ().HasChild ("mapFiles"))
+    {
+        return false;
+    }
+
+    Urho3D::XMLElement filesInfoRoot = infoFile->GetRoot ().GetChild ("mapFiles");
+    configurationPath = mapFolder_ + filesInfoRoot.GetAttribute ("gameConfigurationXML");
+    mapPath = mapFolder_ + filesInfoRoot.GetAttribute ("mapXML");
+    unitsPath = mapFolder_ + filesInfoRoot.GetAttribute ("unitsXML");
+    return true;
+}
+
+bool HostActivity::WillIGoFromWaitingForStartToPlayingState ()
 {
     PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
     // TODO: Reimplement later!
-    return (playersManager->GetAllPlayers ().Size () > 0);
+    return (playersManager->GetAllPlayers ().Size () > 0 &&
+            mapFolder_ != Urho3D::String::EMPTY && mapInfoPath_ != Urho3D::String::EMPTY);
 }
 
 bool HostActivity::WillIGoFromPlayingToFinishedState ()
@@ -145,6 +169,8 @@ bool HostActivity::WillIGoFromPlayingToFinishedState ()
 
 HostActivity::HostActivity (Urho3D::Context *context) : Activity (context),
     serverPort_ (13534),
+    mapFolder_ (Urho3D::String::EMPTY),
+    mapInfoPath_ (Urho3D::String::EMPTY),
     scene_ (new Urho3D::Scene (context))
 {
 
@@ -155,7 +181,7 @@ HostActivity::~HostActivity ()
     DisposeCurrentState ();
 }
 
-unsigned short HostActivity::GetServerPort()
+unsigned short HostActivity::GetServerPort () const
 {
     return serverPort_;
 }
@@ -165,16 +191,35 @@ void HostActivity::SetServerPort (unsigned short serverPort)
     serverPort_ = serverPort;
 }
 
-Urho3D::Scene *HostActivity::GetScene ()
+Urho3D::Scene *HostActivity::GetScene () const
 {
     return scene_;
+}
+
+Urho3D::String HostActivity::GetMapFolder () const
+{
+    return mapFolder_;
+}
+
+void HostActivity::SetMapFolder (Urho3D::String mapFolder)
+{
+    mapFolder_ = mapFolder;
+}
+
+Urho3D::String HostActivity::GetMapInfoPath () const
+{
+    return mapInfoPath_;
+}
+
+void HostActivity::SetMapInfoPath (Urho3D::String mapInfoPath)
+{
+    mapInfoPath_ = mapInfoPath;
 }
 
 void HostActivity::Start ()
 {
     context_->GetSubsystem <Urho3D::Network> ()->StartServer (serverPort_);
-    SetupState (GAME_STATE_WAITING_FOR_PLAYERS);
-    SetupState (GAME_STATE_PLAYING);
+    SetupState (GAME_STATE_WAITING_FOR_START);
 }
 
 void HostActivity::Update (float timeStep)
@@ -193,7 +238,7 @@ void HostActivity::Update (float timeStep)
     scene_->SetVar ("ReplicatedNodesCount", replicated);
 
     // Go to next state if needed.
-    if (currentState_ == GAME_STATE_WAITING_FOR_PLAYERS && WillIGoFromWaitingForPlayersToPlayingState ())
+    if (currentState_ == GAME_STATE_WAITING_FOR_START && WillIGoFromWaitingForStartToPlayingState ())
     {
         SetupState (GAME_STATE_PLAYING);
     }
