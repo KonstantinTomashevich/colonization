@@ -130,7 +130,7 @@ class ScreenPressesHandler : ScriptObject
 
     void HandleScreenPress (StringHash eventType, VariantMap &eventData)
     {
-        if (eventData ["Element"].GetPtr () is null)
+        if (eventData ["Element"].GetPtr () is null && node.parent.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
         {
             Camera @camera = scene.GetChild ("camera").GetComponent ("Camera");
             Ray ray = camera.GetScreenRay (eventData ["X"].GetInt () * 1.0f / graphics.width,
