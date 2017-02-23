@@ -7,7 +7,7 @@
 #include <Colonization/Core/District.hpp>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
-#include <Colonization/Utils/RegisterAllObjects.hpp>
+#include <Colonization/Utils/Hubs/RegisterAllObjects.hpp>
 
 URHO3D_DEFINE_APPLICATION_MAIN (Tests::TestMapPathFindingApplication)
 namespace Tests

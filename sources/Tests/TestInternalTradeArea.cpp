@@ -8,7 +8,7 @@
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/InternalTradeArea.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
-#include <Colonization/Utils/RegisterAllObjects.hpp>
+#include <Colonization/Utils/Hubs/RegisterAllObjects.hpp>
 
 URHO3D_DEFINE_APPLICATION_MAIN (Tests::TestInternalTradeAreaApplication)
 namespace Tests

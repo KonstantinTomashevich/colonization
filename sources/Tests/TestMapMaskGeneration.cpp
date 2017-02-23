@@ -14,7 +14,7 @@
 #include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Frontend/FogOfWarCalculator.hpp>
 #include <Colonization/Frontend/MapMaskUpdater.hpp>
-#include <Colonization/Utils/RegisterAllObjects.hpp>
+#include <Colonization/Utils/Hubs/RegisterAllObjects.hpp>
 
 URHO3D_DEFINE_APPLICATION_MAIN (Tests::TestMapMaskGenerationApplication)
 namespace Tests

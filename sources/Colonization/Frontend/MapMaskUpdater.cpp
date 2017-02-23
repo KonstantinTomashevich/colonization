@@ -15,10 +15,10 @@
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Frontend/FogOfWarCalculator.hpp>
 
-#include <Colonization/Utils/Categories.hpp>
+#include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/ImageUtils.hpp>
 #include <Colonization/Utils/VectorUtils.hpp>
-#include <Colonization/Utils/AttributeMacro.hpp>
+#include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
 namespace Colonization
 {

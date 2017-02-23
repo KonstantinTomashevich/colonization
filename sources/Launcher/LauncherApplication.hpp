@@ -1,5 +1,5 @@
 #pragma once
-#include <Colonization/Utils/ActivitiesApplication.hpp>
+#include <Colonization/Utils/Activities/ActivitiesApplication.hpp>
 
 class LauncherApplication : public Colonization::ActivitiesApplication
 {

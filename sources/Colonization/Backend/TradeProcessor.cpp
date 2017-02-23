@@ -6,11 +6,11 @@
 #include <Urho3D/Scene/Scene.h>
 
 #include <Colonization/Core/Map.hpp>
-#include <Colonization/Utils/Categories.hpp>
-#include <Colonization/Backend/NetworkUpdateCounter.hpp>
+#include <Colonization/Utils/Serialization/Categories.hpp>
+#include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
-#include <Colonization/Utils/AttributeMacro.hpp>
+#include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
 namespace Colonization
 {

@@ -13,7 +13,7 @@
 #include <Colonization/Backend/TradeProcessor.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
-#include <Colonization/Utils/RegisterAllObjects.hpp>
+#include <Colonization/Utils/Hubs/RegisterAllObjects.hpp>
 
 URHO3D_DEFINE_APPLICATION_MAIN (Tests::TestInternalTradeProcessingApplication)
 namespace Tests

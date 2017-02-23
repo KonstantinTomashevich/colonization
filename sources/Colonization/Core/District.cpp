@@ -4,9 +4,9 @@
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Graphics/DebugRenderer.h>
 
-#include <Colonization/Utils/Categories.hpp>
+#include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Core/Map.hpp>
-#include <Colonization/Utils/AttributeMacro.hpp>
+#include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
 namespace Colonization
 {

@@ -1,6 +1,6 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "Activity.hpp"
-#include <Colonization/Utils/ActivitiesApplication.hpp>
+#include <Colonization/Utils/Activities/ActivitiesApplication.hpp>
 
 namespace Colonization
 {

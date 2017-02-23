@@ -1,7 +1,7 @@
 #include "Generator.hpp"
 #include "Defines.hpp"
 #include <Urho3D/IO/Log.h>
-#include <Colonization/Utils/BindAll.hpp>
+#include <Colonization/Utils/Hubs/BindAll.hpp>
 
 URHO3D_DEFINE_APPLICATION_MAIN (Generator)
 Generator::Generator (Urho3D::Context *context) :

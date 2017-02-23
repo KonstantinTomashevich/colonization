@@ -6,10 +6,10 @@
 #include <Urho3D/Scene/SceneEvents.h>
 #include <Urho3D/Scene/Scene.h>
 
-#include <Colonization/Utils/Categories.hpp>
+#include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/Unit.hpp>
-#include <Colonization/Utils/AttributeMacro.hpp>
+#include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
 namespace Colonization
 {

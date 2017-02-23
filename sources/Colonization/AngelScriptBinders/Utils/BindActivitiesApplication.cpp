@@ -2,7 +2,7 @@
 #include "BindActivitiesApplication.hpp"
 #include <Urho3D/ThirdParty/AngelScript/angelscript.h>
 #include <Urho3D/AngelScript/APITemplates.h>
-#include <Colonization/Utils/ActivitiesApplication.hpp>
+#include <Colonization/Utils/Activities/ActivitiesApplication.hpp>
 
 
 namespace Colonization

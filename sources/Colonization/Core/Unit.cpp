@@ -7,8 +7,8 @@
 
 #include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Core/Map.hpp>
-#include <Colonization/Utils/Categories.hpp>
-#include <Colonization/Utils/AttributeMacro.hpp>
+#include <Colonization/Utils/Serialization/Categories.hpp>
+#include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
 namespace Colonization
 {

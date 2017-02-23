@@ -1,5 +1,5 @@
 #pragma once
-#include <Colonization/Utils/Activity.hpp>
+#include <Colonization/Utils/Activities/Activity.hpp>
 #include <Urho3D/Scene/Scene.h>
 #include <Urho3D/AngelScript/ScriptInstance.h>
 

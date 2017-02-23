@@ -3,8 +3,8 @@
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/AngelScript/Script.h>
 
-#include <Colonization/Utils/RegisterAllObjects.hpp>
-#include <Colonization/Utils/BindAll.hpp>
+#include <Colonization/Utils/Hubs/RegisterAllObjects.hpp>
+#include <Colonization/Utils/Hubs/BindAll.hpp>
 
 namespace Colonization
 {

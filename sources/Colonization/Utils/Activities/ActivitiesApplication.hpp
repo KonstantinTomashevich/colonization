@@ -2,7 +2,7 @@
 #include <Urho3D/Engine/Application.h>
 #include <Urho3D/Container/Ptr.h>
 #include <Urho3D/Container/Vector.h>
-#include <Colonization/Utils/Activity.hpp>
+#include <Colonization/Utils/Activities/Activity.hpp>
 
 namespace Colonization
 {

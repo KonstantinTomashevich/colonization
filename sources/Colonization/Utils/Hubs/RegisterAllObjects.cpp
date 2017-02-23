@@ -3,7 +3,7 @@
 
 #include <Colonization/Backend/ColoniesManager.hpp>
 #include <Colonization/Backend/MessagesHandler.hpp>
-#include <Colonization/Backend/NetworkUpdateCounter.hpp>
+#include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
 #include <Colonization/Backend/Player.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/PlayersPointsCalculator.hpp>

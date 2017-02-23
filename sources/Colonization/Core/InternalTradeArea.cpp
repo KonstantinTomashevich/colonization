@@ -2,12 +2,12 @@
 #include "InternalTradeArea.hpp"
 #include <Colonization/Core/District.hpp>
 #include <Colonization/Core/Map.hpp>
-#include <Colonization/Utils/Categories.hpp>
+#include <Colonization/Utils/Serialization/Categories.hpp>
 
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/Scene/Scene.h>
-#include <Colonization/Utils/AttributeMacro.hpp>
+#include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
 namespace Colonization
 {

@@ -2,7 +2,7 @@
 #include "BindMainMenuActivity.hpp"
 #include <Urho3D/ThirdParty/AngelScript/angelscript.h>
 #include <Urho3D/AngelScript/APITemplates.h>
-#include <Colonization/Utils/Activity.hpp>
+#include <Colonization/Utils/Activities/Activity.hpp>
 #include <Colonization/Activities/MainMenuActivity.hpp>
 #include <Colonization/AngelScriptBinders/Activities/BindActivity.hpp>
 

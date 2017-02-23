@@ -1,8 +1,8 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "GameConfiguration.hpp"
 #include <Urho3D/Core/Context.h>
-#include <Colonization/Utils/Categories.hpp>
-#include <Colonization/Utils/AttributeMacro.hpp>
+#include <Colonization/Utils/Serialization/Categories.hpp>
+#include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
 namespace Colonization
 {
