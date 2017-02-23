@@ -13,6 +13,7 @@
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/Unit.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
+#include <Colonization/Utils/Network/NetworkUpdateSmoother.hpp>
 
 #include <Colonization/Backend/ColoniesManager.hpp>
 #include <Colonization/Backend/MessagesHandler.hpp>
@@ -77,6 +78,7 @@ void HostActivity::SetupPlayingState ()
     scene_->CreateComponent <TradeProcessor> (Urho3D::LOCAL);
     scene_->CreateComponent <PlayersPointsCalculator> (Urho3D::LOCAL);
     scene_->CreateComponent <VictoryProgressUpdater> (Urho3D::LOCAL);
+    scene_->CreateComponent <NetworkUpdateSmoother> (Urho3D::LOCAL);
 }
 
 void HostActivity::DisposePlayingState ()
