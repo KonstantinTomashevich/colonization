@@ -140,15 +140,23 @@ class ScreenPressesHandler : ScriptObject
                 if (firstReplicated !is scene)
                 {
                     if (firstReplicated.HasComponent ("Unit"))
+                    {
                         UnitSelected (firstReplicated.GetComponent ("Unit"));
+                    }
                     else
+                    {
                         ProcessDistrictSelection (result.position);
+                    }
                 }
                 else
+                {
                     ClearSelection ();
+                }
             }
             else
+            {
                 ClearSelection ();
+            }
         }
     }
 };
