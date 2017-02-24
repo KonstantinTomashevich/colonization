@@ -40,12 +40,6 @@ class MainMenu : ScriptObject
         ui.root.AddChild (uiRoot);
         uiRoot.name = "mainMenu";
 
-        for (int index = 0; index < uiRoot.GetNumChildren (false); index++)
-        {
-            uiRoot.GetChildren () [index].visible = false;
-        }
-        uiRoot.GetChild ("primaryMenu").visible = true;
-
         ScriptInstance @primaryMenuInstance = node.CreateChild ("PrimaryMenu", LOCAL).CreateComponent ("ScriptInstance");
         primaryMenuInstance.CreateObject (cache.GetResource ("ScriptFile",
                                                          "AngelScript/MainMenu/UiHandlers/PrimaryMenu.as"),
@@ -82,6 +76,11 @@ class MainMenu : ScriptObject
         SubscribeToEvent ("StartGameRequest", "HandleStartGameRequest");
         SubscribeToEvent ("JoinGameRequest", "HandleJoinGameRequest");
         SubscribeToEvent ("ExitRequest", "HandleExitRequest");
+        SubscribeToEvent ("ShowWindowRequest", "HandleShowWindowRequest");
+
+        VariantMap eventData;
+        eventData ["windowName"] = Variant ("primaryMenu");
+        SendEvent ("ShowWindowRequest", eventData);
     }
 
     void Update (float timeStep)
@@ -147,5 +146,16 @@ class MainMenu : ScriptObject
             activitiesApplication_.StopActivityNextFrame (activitiesApplication_.GetActivityByIndex (index));
         }
         engine.Exit ();
+    }
+
+    void HandleShowWindowRequest (StringHash eventType, VariantMap &eventData)
+    {
+        UIElement @uiRoot = ui.root.GetChild ("mainMenu");
+        Array <UIElement @> elements = uiRoot.GetChildren ();
+        for (int index = 0; index < elements.length; index++)
+        {
+            elements [index].visible = false;
+        }
+        uiRoot.GetChild (eventData ["windowName"].GetString ()).visible = true;
     }
 };

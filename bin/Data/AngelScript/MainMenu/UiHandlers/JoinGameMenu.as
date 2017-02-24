@@ -73,11 +73,9 @@ class JoinGameMenu : ScriptObject
 
     void HandleGoBackClick ()
     {
-        for (int index = 0; index < ui.root.GetChild ("mainMenu").GetNumChildren (false); index++)
-        {
-            ui.root.GetChild ("mainMenu").GetChildren () [index].visible = false;
-        }
-        ui.root.GetChild ("mainMenu").GetChild ("primaryMenu").visible = true;
+        VariantMap eventData;
+        eventData ["windowName"] = Variant ("primaryMenu");
+        SendEvent ("ShowWindowRequest", eventData);
     }
 
     void HandleSelectMapClick ()
