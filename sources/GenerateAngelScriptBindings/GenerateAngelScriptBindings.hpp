@@ -4,12 +4,12 @@
 #include <Urho3D/AngelScript/ScriptFile.h>
 #include <AngelScript/angelscript.h>
 
-class Generator : public Urho3D::Application
+class GenerateAngelScriptBindings : public Urho3D::Application
 {
-URHO3D_OBJECT (Generator, Application)
+URHO3D_OBJECT (GenerateAngelScriptBindings, Application)
 public:
-    Generator (Urho3D::Context *context);
-    virtual ~Generator ();
+    GenerateAngelScriptBindings (Urho3D::Context *context);
+    virtual ~GenerateAngelScriptBindings ();
 
     virtual void Setup ();
     virtual void Start ();
