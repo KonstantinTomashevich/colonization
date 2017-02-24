@@ -3,12 +3,10 @@
 class Client : ScriptObject
 {
     protected ActivitiesApplication @activitiesApplication_;
-    protected String playerName_;
-    protected bool isSceneLoaded_;
 
     Client ()
     {
-        isSceneLoaded_ = false;
+
     }
 
     ~Client ()
@@ -54,19 +52,12 @@ class Client : ScriptObject
 
         SubscribeToEvent ("ServerDisconnected", "HandleServerDisconnected");
         SubscribeToEvent ("ConnectFailed", "HandleConnectFailed");
+        SubscribeToEvent ("GoToMainMenuRequest", "HandleGoToMainMenuRequest");
     }
 
     void Update (float timeStep)
     {
-        if (node.vars ["goToMenuCalled"].GetBool ())
-        {
-            GoToMainMenuState ();
-        }
 
-        if (!isSceneLoaded_)
-        {
-            isSceneLoaded_ = CheckIsSceneLoaded (scene);
-        }
     }
 
     void Stop ()
@@ -86,13 +77,12 @@ class Client : ScriptObject
 
     String get_playerName ()
     {
-        return playerName_;
+        return node.vars ["playerName"].GetString ();
     }
 
     void set_playerName (String playerName)
     {
-        playerName_ = playerName;
-        node.vars ["playerName"] = playerName_;
+        node.vars ["playerName"] = playerName;
     }
 
     void HandleServerDisconnected ()
@@ -115,6 +105,11 @@ class Client : ScriptObject
     void HandleConnectFailed ()
     {
         ErrorDialog ("Connect failed!", "Connect failed!\nPress OK to return to main menu.");
+        GoToMainMenuState ();
+    }
+
+    void HandleGoToMainMenuRequest ()
+    {
         GoToMainMenuState ();
     }
 };

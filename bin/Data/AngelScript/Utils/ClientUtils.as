@@ -46,6 +46,11 @@ shared PlayerInfo @GetPlayerInfoByName (Scene @scene_, String playerName)
 shared Unit @GetUnitByHash (Scene @scene_, StringHash unitHash)
 {
     Array <Node @> unitsNodes = scene_.GetChild ("units").GetChildrenWithComponent ("Unit");
+    if (unitsNodes.empty)
+    {
+        return null;
+    }
+
     Unit @unit = unitsNodes [0].GetComponent ("Unit");
     int index = 1;
     while (unit.hash != unitHash and index < unitsNodes.length)

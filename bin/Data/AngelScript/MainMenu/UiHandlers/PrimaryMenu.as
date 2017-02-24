@@ -34,20 +34,16 @@ class PrimaryMenu : ScriptObject
 
     void HandleStartGameClick ()
     {
-        for (int index = 0; index < ui.root.GetChild ("mainMenu").GetNumChildren (false); index++)
-        {
-            ui.root.GetChild ("mainMenu").GetChildren () [index].visible = false;
-        }
-        ui.root.GetChild ("mainMenu").GetChild ("startGameMenu").visible = true;
+        VariantMap eventData;
+        eventData ["windowName"] = Variant ("startGameMenu");
+        SendEvent ("ShowWindowRequest", eventData);
     }
 
     void HandleJoinGameClick ()
     {
-        for (int index = 0; index < ui.root.GetChild ("mainMenu").GetNumChildren (false); index++)
-        {
-            ui.root.GetChild ("mainMenu").GetChildren () [index].visible = false;
-        }
-        ui.root.GetChild ("mainMenu").GetChild ("joinGameMenu").visible = true;
+        VariantMap eventData;
+        eventData ["windowName"] = Variant ("joinGameMenu");
+        SendEvent ("ShowWindowRequest", eventData);
     }
 
     void HandleExitClick ()

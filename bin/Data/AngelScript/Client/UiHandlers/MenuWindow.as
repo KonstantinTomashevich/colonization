@@ -28,6 +28,6 @@ class MenuWindow : ScriptObject
 
     void HandleExitClick ()
     {
-        node.parent.parent.vars ["goToMenuCalled"] = true;
+        SendEvent ("GoToMainMenuRequest");
     }
 }

@@ -48,18 +48,15 @@ class ScreenPressesHandler : ScriptObject
     {
         if (unit.unitType != UNIT_COLONIZATORS and unit.unitType != UNIT_TRADERS)
         {
-            Array <Variant> networkTasks = node.parent.GetChild ("networkScriptNode").vars ["tasksList"].GetVariantVector ();
-            VariantMap taskData;
-            taskData ["type"] = CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION;
-
             VectorBuffer buffer = VectorBuffer ();
             buffer.WriteInt (PLAYER_ACTION_SET_UNIT_MOVE_TARGET);
             buffer.WriteStringHash (unit.hash);
             buffer.WriteStringHash (target.hash);
 
-            taskData ["buffer"] = buffer;
-            networkTasks.Push (Variant (taskData));
-            node.parent.GetChild ("networkScriptNode").vars ["tasksList"] = networkTasks;
+            VariantMap eventData;
+            eventData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+            eventData ["messageBuffer"] = Variant (buffer);
+            SendEvent ("NewNetworkTask", eventData);
         }
         node.parent.vars ["currentClickCommand"] = StringHash ("NoCommand");
     }
@@ -143,15 +140,23 @@ class ScreenPressesHandler : ScriptObject
                 if (firstReplicated !is scene)
                 {
                     if (firstReplicated.HasComponent ("Unit"))
+                    {
                         UnitSelected (firstReplicated.GetComponent ("Unit"));
+                    }
                     else
+                    {
                         ProcessDistrictSelection (result.position);
+                    }
                 }
                 else
+                {
                     ClearSelection ();
+                }
             }
             else
+            {
                 ClearSelection ();
+            }
         }
     }
 };
