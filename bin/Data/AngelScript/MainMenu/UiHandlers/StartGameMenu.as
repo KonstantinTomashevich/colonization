@@ -136,8 +136,11 @@ class StartGameMenu : ScriptObject
 
     void HandleGoBackClick ()
     {
+        for (int index = 0; index < ui.root.GetChild ("mainMenu").GetNumChildren (false); index++)
+        {
+            ui.root.GetChild ("mainMenu").GetChildren () [index].visible = false;
+        }
         ui.root.GetChild ("mainMenu").GetChild ("primaryMenu").visible = true;
-        ui.root.GetChild ("mainMenu").GetChild ("startGameMenu").visible = false;
     }
 
     void HandleSelectMapClick ()

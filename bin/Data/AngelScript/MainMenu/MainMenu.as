@@ -56,6 +56,11 @@ class MainMenu : ScriptObject
                                                          "AngelScript/MainMenu/UiHandlers/StartGameMenu.as"),
                                         "StartGameMenu");
 
+        ScriptInstance @joinGameMenuInstance = node.CreateChild ("JoinGameMenu", LOCAL).CreateComponent ("ScriptInstance");
+        joinGameMenuInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/MainMenu/UiHandlers/JoinGameMenu.as"),
+                                        "JoinGameMenu");
+
         ScriptInstance @mapsListInstance = node.CreateChild ("MapsList", LOCAL).CreateComponent ("ScriptInstance");
         mapsListInstance.CreateObject (cache.GetResource ("ScriptFile",
                                                          "AngelScript/MainMenu/UiHandlers/MapsList.as"),
@@ -75,6 +80,7 @@ class MainMenu : ScriptObject
         node.vars ["serverPort"] = Variant (NEW_GAME_SERVER_PORT);
 
         SubscribeToEvent ("StartGameRequest", "HandleStartGameRequest");
+        SubscribeToEvent ("JoinGameRequest", "HandleJoinGameRequest");
         SubscribeToEvent ("ExitRequest", "HandleExitRequest");
     }
 
@@ -114,6 +120,21 @@ class MainMenu : ScriptObject
         IngameClientActivity @ingameClientActivity = IngameClientActivity ();
         ingameClientActivity.serverAdress = "localhost";
         ingameClientActivity.serverPort = NEW_GAME_SERVER_PORT;
+        ingameClientActivity.playerName = eventData ["nickname"].GetString ();
+        ingameClientActivity.playerColor = eventData ["color"].GetColor ();
+        activitiesApplication_.SetupActivityNextFrame (ingameClientActivity);
+    }
+
+    void HandleJoinGameRequest (StringHash eventType, VariantMap &eventData)
+    {
+        for (int index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
+        {
+            activitiesApplication_.StopActivityNextFrame (activitiesApplication_.GetActivityByIndex (index));
+        }
+
+        IngameClientActivity @ingameClientActivity = IngameClientActivity ();
+        ingameClientActivity.serverAdress = eventData ["adress"].GetString ();
+        ingameClientActivity.serverPort = eventData ["port"].GetInt ();
         ingameClientActivity.playerName = eventData ["nickname"].GetString ();
         ingameClientActivity.playerColor = eventData ["color"].GetColor ();
         activitiesApplication_.SetupActivityNextFrame (ingameClientActivity);
