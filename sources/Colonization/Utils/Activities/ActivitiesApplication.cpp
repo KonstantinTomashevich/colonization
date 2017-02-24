@@ -5,6 +5,7 @@
 
 #include <Colonization/Utils/Hubs/RegisterAllObjects.hpp>
 #include <Colonization/Utils/Hubs/BindAll.hpp>
+#include <Colonization/Utils/Hubs/CompileAllScripts.hpp>
 
 namespace Colonization
 {
@@ -45,6 +46,8 @@ void ActivitiesApplication::Start ()
     Urho3D::Script *script = new Urho3D::Script (context_);
     context_->RegisterSubsystem (script);
     BindAll (script);
+    bool compilationResult = CompileAllScripts (context_);
+    assert (compilationResult);
 }
 
 void ActivitiesApplication::UpdateActivities (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
