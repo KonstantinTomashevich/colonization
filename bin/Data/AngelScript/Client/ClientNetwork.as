@@ -1,7 +1,7 @@
 class ClientNetwork : ScriptObject
 {
-    protected int TIME_STAMP_SUBSCTRING_START = 11;
-    protected int TIME_STAMP_SUBSCTRING_LENGTH = 8;
+    protected int TIME_STAMP_SUBSTRING_START = 11;
+    protected int TIME_STAMP_SUBSTRING_LENGTH = 8;
 
     ClientNetwork ()
     {
@@ -17,26 +17,12 @@ class ClientNetwork : ScriptObject
     {
         node.vars ["TasksList"] = Array <Variant> ();
         SubscribeToEvent ("NetworkMessage", "HandleNetworkMessage");
+        SubscribeToEvent ("NewNetworkTask", "HandleNewNetworkTask");
     }
 
     void Update (float timeStep)
     {
-        Array <Variant> tasksList = node.vars ["TasksList"].GetVariantVector ();
-        while (!tasksList.empty)
-        {
-            VariantMap taskData = tasksList [0].GetVariantMap ();
-            int taskType = taskData ["type"].GetInt ();
 
-            if (taskType == CTS_NETWORK_MESSAGE_SEND_CHAT_MESSAGE or
-                taskType == CTS_NETWORK_MESSAGE_SEND_PRIVATE_MESSAGE or
-                taskType == CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION)
-            {
-                VectorBuffer buffer = taskData ["buffer"].GetBuffer ();
-                network.serverConnection.SendMessage (taskType, true, false, buffer);
-            }
-            tasksList.Erase (0);
-        }
-        node.vars ["TasksList"] = tasksList;
     }
 
     void Stop ()
@@ -64,10 +50,32 @@ class ClientNetwork : ScriptObject
         }
     }
 
+    void HandleNewNetworkTask (StringHash eventType, VariantMap &eventData)
+    {
+        int taskType = eventData ["taskType"].GetInt ();
+        if (taskType == CTS_NETWORK_MESSAGE_SEND_CHAT_MESSAGE or
+            taskType == CTS_NETWORK_MESSAGE_SEND_PRIVATE_MESSAGE or
+            taskType == CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION)
+        {
+            VectorBuffer buffer = eventData ["messageBuffer"].GetBuffer ();
+            network.serverConnection.SendMessage (taskType, true, false, buffer);
+        }
+    }
+
     void HandleGameStateMessage (VariantMap &eventData)
     {
         VectorBuffer buffer = eventData ["Data"].GetBuffer ();
-        node.parent.vars ["gameState"] = Variant (buffer.ReadInt ());
+        int newGameState = buffer.ReadInt ();
+        int oldGameState = node.parent.vars ["gameState"].GetInt ();
+        node.parent.vars ["gameState"] = Variant (newGameState);
+
+        if (oldGameState != newGameState)
+        {
+            VariantMap eventData;
+            eventData ["oldGameState"] = Variant (oldGameState);
+            eventData ["newGameState"] = Variant (newGameState);
+            SendEvent ("GameStateChanged", eventData);
+        }
     }
 
     void HandlePlayerStatsMessage (VariantMap &eventData)
@@ -86,7 +94,7 @@ class ClientNetwork : ScriptObject
         String sender = buffer.ReadString ();
         String message = buffer.ReadString ();
         String timeStamp = time.timeStamp;
-        timeStamp = timeStamp.Substring (TIME_STAMP_SUBSCTRING_START, TIME_STAMP_SUBSCTRING_LENGTH);
+        timeStamp = timeStamp.Substring (TIME_STAMP_SUBSTRING_START, TIME_STAMP_SUBSTRING_LENGTH);
 
         Array <String> blockedUsersList = node.parent.GetChild ("uiScriptNode").vars ["chatBlockedPlayersList"].GetStringVector ();
         if (blockedUsersList.Find (sender) < 0)

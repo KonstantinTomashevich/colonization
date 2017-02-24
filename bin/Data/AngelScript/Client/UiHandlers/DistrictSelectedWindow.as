@@ -291,18 +291,15 @@ class DistrictSelectedWindow : ScriptObject
 
     void HandleSendColonizatorsClick ()
     {
-        Array <Variant> networkTasks = node.parent.parent.GetChild ("networkScriptNode").vars ["tasksList"].GetVariantVector ();
-        VariantMap taskData;
-        taskData ["type"] = CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION;
-
         StringHash districtHash = node.parent.parent.vars ["selectedHash"].GetStringHash ();
         VectorBuffer buffer = VectorBuffer ();
         buffer.WriteInt (PLAYER_ACTION_REQUEST_COLONIZATORS_FROM_EUROPE);
         buffer.WriteStringHash (districtHash);
 
-        taskData ["buffer"] = buffer;
-        networkTasks.Push (Variant (taskData));
-        node.parent.parent.GetChild ("networkScriptNode").vars ["tasksList"] = networkTasks;
+        VariantMap eventData;
+        eventData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+        eventData ["messageBuffer"] = Variant (buffer);
+        SendEvent ("NewNetworkTask", eventData);
 
         // Client side prediction.
         float gold = node.parent.parent.vars ["gold"].GetFloat ();
@@ -338,10 +335,6 @@ class DistrictSelectedWindow : ScriptObject
     {
         UIElement @element = eventData ["Element"].GetPtr ();
         StringHash investTypeHash = StringHash (element.vars ["investitionType"].GetString ());
-
-        Array <Variant> networkTasks = node.parent.parent.GetChild ("networkScriptNode").vars ["tasksList"].GetVariantVector ();
-        VariantMap taskData;
-        taskData ["type"] = CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION;
         StringHash districtHash = node.parent.parent.vars ["selectedHash"].GetStringHash ();
 
         VectorBuffer buffer = VectorBuffer ();
@@ -350,9 +343,10 @@ class DistrictSelectedWindow : ScriptObject
         buffer.WriteStringHash (investTypeHash);
         buffer.WriteFloat (DEFAULT_INVESTITION_SIZE);
 
-        taskData ["buffer"] = buffer;
-        networkTasks.Push (Variant (taskData));
-        node.parent.parent.GetChild ("networkScriptNode").vars ["tasksList"] = networkTasks;
+        VariantMap taskData;
+        eventData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+        eventData ["messageBuffer"] = Variant (buffer);
+        SendEvent ("NewNetworkTask", eventData);
 
         // Client side prediction.
         float gold = node.parent.parent.vars ["gold"].GetFloat ();
