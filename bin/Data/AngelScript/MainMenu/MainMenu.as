@@ -98,7 +98,7 @@ class MainMenu : ScriptObject
         activitiesApplication_ = activitiesApplication;
     }
 
-    void HandleStartGameRequest ()
+    void HandleStartGameRequest (StringHash eventType, VariantMap &eventData)
     {
         for (int index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
         {
@@ -107,15 +107,15 @@ class MainMenu : ScriptObject
 
         HostActivity @hostActivity = HostActivity ();
         hostActivity.serverPort = NEW_GAME_SERVER_PORT;
-        hostActivity.mapFolder = node.vars ["selectedMapFolder"].GetString ();
-        hostActivity.mapInfoPath = node.vars ["selectedMapInfo"].GetString ();
+        hostActivity.mapFolder = eventData ["selectedMapFolder"].GetString ();
+        hostActivity.mapInfoPath = eventData ["selectedMapInfo"].GetString ();
         activitiesApplication_.SetupActivityNextFrame (hostActivity);
 
         IngameClientActivity @ingameClientActivity = IngameClientActivity ();
         ingameClientActivity.serverAdress = "localhost";
         ingameClientActivity.serverPort = NEW_GAME_SERVER_PORT;
-        ingameClientActivity.playerName = node.vars ["nickname"].GetString ();
-        ingameClientActivity.playerColor = node.vars ["color"].GetColor ();
+        ingameClientActivity.playerName = eventData ["nickname"].GetString ();
+        ingameClientActivity.playerColor = eventData ["color"].GetColor ();
         activitiesApplication_.SetupActivityNextFrame (ingameClientActivity);
     }
 

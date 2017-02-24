@@ -126,11 +126,12 @@ class StartGameMenu : ScriptObject
         float g = greenSlider.value / greenSlider.range;
         float b = blueSlider.value / blueSlider.range;
 
-        node.parent.vars ["nickname"] = Variant (nickname);
-        node.parent.vars ["color"] = Variant (Color (r, g, b, 1.0f));
-        node.parent.vars ["selectedMapFolder"] = Variant (selectedMapFolder);
-        node.parent.vars ["selectedMapInfo"] = Variant (selectedMapInfo);
-        SendEvent ("StartGameRequest");
+        VariantMap eventData;
+        eventData ["nickname"] = Variant (nickname);
+        eventData ["color"] = Variant (Color (r, g, b, 1.0f));
+        eventData ["selectedMapFolder"] = Variant (selectedMapFolder);
+        eventData ["selectedMapInfo"] = Variant (selectedMapInfo);
+        SendEvent ("StartGameRequest", eventData);
     }
 
     void HandleGoBackClick ()
