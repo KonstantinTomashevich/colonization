@@ -39,7 +39,7 @@ class ScreenShotTaker : ScriptObject
             Image @image = Image ();
             graphics.TakeScreenShot (image);
             // Find available name.
-            uint index = 0;
+            index = 0;
             while (fileSystem.FileExists (screenShotsFolder_ + index + ".png"))
             {
                 index++;
