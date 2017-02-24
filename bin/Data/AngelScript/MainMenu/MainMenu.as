@@ -40,8 +40,11 @@ class MainMenu : ScriptObject
         ui.root.AddChild (uiRoot);
         uiRoot.name = "mainMenu";
 
+        for (int index = 0; index < uiRoot.GetNumChildren (false); index++)
+        {
+            uiRoot.GetChildren () [index].visible = false;
+        }
         uiRoot.GetChild ("primaryMenu").visible = true;
-        uiRoot.GetChild ("startGameMenu").visible = false;
 
         ScriptInstance @primaryMenuInstance = node.CreateChild ("PrimaryMenu", LOCAL).CreateComponent ("ScriptInstance");
         primaryMenuInstance.CreateObject (cache.GetResource ("ScriptFile",
