@@ -99,14 +99,12 @@ class ClientNetwork : ScriptObject
         Array <String> blockedUsersList = node.parent.GetChild ("uiScriptNode").vars ["chatBlockedPlayersList"].GetStringVector ();
         if (blockedUsersList.Find (sender) < 0)
         {
-            Array <Variant> messagesList = node.parent.GetChild ("uiScriptNode").vars ["messagesList"].GetVariantVector ();
-            VariantMap messageData = VariantMap ();
-            messageData ["isPrivate"] = Variant (isPrivate);
-            messageData ["sender"] = Variant (sender);
-            messageData ["message"] = Variant (message);
-            messageData ["timeStamp"] = Variant (timeStamp);
-            messagesList.Push (Variant (messageData));
-            node.parent.GetChild ("uiScriptNode").vars ["messagesList"] = Variant (messagesList);
+            VariantMap eventData = VariantMap ();
+            eventData ["isPrivate"] = Variant (isPrivate);
+            eventData ["sender"] = Variant (sender);
+            eventData ["message"] = Variant (message);
+            eventData ["timeStamp"] = Variant (timeStamp);
+            SendEvent ("NewChatMessage", eventData);
         }
     }
 

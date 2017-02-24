@@ -2,6 +2,7 @@
 
 class ChatWindow : ScriptObject
 {
+    protected Array <VariantMap> messagesList_;
     protected int messagesShowOffset_;
     protected float untilMessagesScrollUpdate_;
     protected float untilNewMessage_;
@@ -31,26 +32,20 @@ class ChatWindow : ScriptObject
 
     protected void UpdateChatMessages ()
     {
-        Array <Variant> messagesList = node.parent.vars ["messagesList"].GetVariantVector ();
-        while (messagesList.length > MAX_MESSAGES_IN_CACHE_COUNT)
-        {
-            messagesList.Erase (0);
-        }
-
         String chatText = "";
         Window @chatWindow = ui.root.GetChild ("ingame").GetChild ("chatWindow");
-        if (messagesList.length > 0)
+        if (messagesList_.length > 0)
         {
             if (messagesShowOffset_ < MAX_MESSAGES_IN_PAGE_COUNT)
             {
                 messagesShowOffset_ = MAX_MESSAGES_IN_PAGE_COUNT;
             }
-            else if (messagesShowOffset_ > messagesList.length and messagesList.length > MAX_MESSAGES_IN_PAGE_COUNT)
+            else if (messagesShowOffset_ > messagesList_.length and messagesList_.length > MAX_MESSAGES_IN_PAGE_COUNT)
             {
-                messagesShowOffset_ = messagesList.length;
+                messagesShowOffset_ = messagesList_.length;
             }
 
-            int startIndex = messagesList.length - messagesShowOffset_;
+            int startIndex = messagesList_.length - messagesShowOffset_;
             if (startIndex < 0)
             {
                 startIndex = 0;
@@ -60,10 +55,10 @@ class ChatWindow : ScriptObject
             messagesInfo.text = "Showing messages from " + (startIndex + 1) + " to " + (startIndex + MAX_MESSAGES_IN_PAGE_COUNT + 1) + ".";
 
             for (int index = startIndex;
-                (index < messagesList.length) and (index < (startIndex + MAX_MESSAGES_IN_PAGE_COUNT));
+                (index < messagesList_.length) and (index < (startIndex + MAX_MESSAGES_IN_PAGE_COUNT));
                 index++)
             {
-                VariantMap messageData = messagesList [index].GetVariantMap ();
+                VariantMap messageData = messagesList_ [index];
                 bool isPrivate = messageData ["isPrivate"].GetBool ();
                 String sender = messageData ["sender"].GetString ();
                 String message = messageData ["message"].GetString ();
@@ -104,6 +99,7 @@ class ChatWindow : ScriptObject
         SubscribeToEvent (sendPrivateMessageButton, "Released", "HandleSendPrivateMessageClick");
         SubscribeToEvent (showBlockedUsersButton, "Released", "HandleShowBlockedUsersClick");
         SubscribeToEvent (showPrivateUsersButton, "Released", "HandleShowPrivateUsersClick");
+        SubscribeToEvent ("NewChatMessage", "HandleNewChatMessage");
 
         LineEdit @messageEdit = chatWindow.GetChild ("messageEdit");
         RegisterLineEdit (node.parent.parent, messageEdit);
@@ -201,5 +197,14 @@ class ChatWindow : ScriptObject
     {
         ui.root.GetChild ("ingame").GetChild ("chatBlockedPlayersWindow").visible = false;
         ui.root.GetChild ("ingame").GetChild ("chatPrivateReceiversWindow").visible = true;
+    }
+
+    void HandleNewChatMessage (StringHash eventType, VariantMap &eventData)
+    {
+        messagesList_.Push (eventData);
+        while (messagesList_.length > MAX_MESSAGES_IN_CACHE_COUNT)
+        {
+            messagesList_.Erase (0);
+        }
     }
 }
