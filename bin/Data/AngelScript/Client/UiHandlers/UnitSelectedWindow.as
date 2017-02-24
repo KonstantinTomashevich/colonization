@@ -77,7 +77,7 @@ class UnitSelectedWindow : ScriptObject
                 additionalInfo += "Going to: " + map.GetDistrictByHash (unitWay [unitWay.length - 1]).name + ".\n";
                 additionalInfo += "Next waypoint: " + map.GetDistrictByHash (unitWay [0]).name + "\n";
                 additionalInfo += "Traveled to next waypoit: " +
-                                    FloorToInt (unit.wayToNextDistrictProgressInPercents) + "%.\n";
+                                    Floor (unit.wayToNextDistrictProgressInPercents) + "%.\n";
             }
 
             Text @anotherText = unitInfoWindow.GetChild ("anotherText");

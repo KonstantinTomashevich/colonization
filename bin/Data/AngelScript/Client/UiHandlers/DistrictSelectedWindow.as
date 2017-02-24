@@ -111,8 +111,8 @@ class DistrictSelectedWindow : ScriptObject
     protected void UpdateDistrictResourcesInfo (District @district, Window @districtInfoWindow)
     {
         String infoText = "";
-        infoText += "Farming square: " + FloorToInt (district.farmingSquare) + ".\n";
-        infoText += "Land average fertility: " + FloorToInt (district.landAverageFertility * 100) + "%.\n";
+        infoText += "Farming square: " + Floor (district.farmingSquare) + ".\n";
+        infoText += "Land average fertility: " + Floor (district.landAverageFertility * 100) + "%.\n";
 
         infoText += "Climate: ";
         if (district.climate == CLIMATE_COLD)
@@ -140,7 +140,7 @@ class DistrictSelectedWindow : ScriptObject
             infoText += "tropical.\n";
         }
 
-        infoText += "Forest square: " + FloorToInt (district.forestsSquare) + ".\n";
+        infoText += "Forest square: " + Floor (district.forestsSquare) + ".\n";
         infoText += "Forest reproductivity: " + Floor (district.forestsReproductivity * 100) / 100 + ".\n";
 
         if (district.hasCoalDeposits)
