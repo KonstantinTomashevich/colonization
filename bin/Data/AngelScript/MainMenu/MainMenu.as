@@ -40,8 +40,11 @@ class MainMenu : ScriptObject
         ui.root.AddChild (uiRoot);
         uiRoot.name = "mainMenu";
 
+        for (int index = 0; index < uiRoot.GetNumChildren (false); index++)
+        {
+            uiRoot.GetChildren () [index].visible = false;
+        }
         uiRoot.GetChild ("primaryMenu").visible = true;
-        uiRoot.GetChild ("startGameMenu").visible = false;
 
         ScriptInstance @primaryMenuInstance = node.CreateChild ("PrimaryMenu", LOCAL).CreateComponent ("ScriptInstance");
         primaryMenuInstance.CreateObject (cache.GetResource ("ScriptFile",
@@ -52,6 +55,11 @@ class MainMenu : ScriptObject
         startGameMenuInstance.CreateObject (cache.GetResource ("ScriptFile",
                                                          "AngelScript/MainMenu/UiHandlers/StartGameMenu.as"),
                                         "StartGameMenu");
+
+        ScriptInstance @joinGameMenuInstance = node.CreateChild ("JoinGameMenu", LOCAL).CreateComponent ("ScriptInstance");
+        joinGameMenuInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/MainMenu/UiHandlers/JoinGameMenu.as"),
+                                        "JoinGameMenu");
 
         ScriptInstance @mapsListInstance = node.CreateChild ("MapsList", LOCAL).CreateComponent ("ScriptInstance");
         mapsListInstance.CreateObject (cache.GetResource ("ScriptFile",
@@ -72,6 +80,7 @@ class MainMenu : ScriptObject
         node.vars ["serverPort"] = Variant (NEW_GAME_SERVER_PORT);
 
         SubscribeToEvent ("StartGameRequest", "HandleStartGameRequest");
+        SubscribeToEvent ("JoinGameRequest", "HandleJoinGameRequest");
         SubscribeToEvent ("ExitRequest", "HandleExitRequest");
     }
 
@@ -95,7 +104,7 @@ class MainMenu : ScriptObject
         activitiesApplication_ = activitiesApplication;
     }
 
-    void HandleStartGameRequest ()
+    void HandleStartGameRequest (StringHash eventType, VariantMap &eventData)
     {
         for (int index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
         {
@@ -104,15 +113,30 @@ class MainMenu : ScriptObject
 
         HostActivity @hostActivity = HostActivity ();
         hostActivity.serverPort = NEW_GAME_SERVER_PORT;
-        hostActivity.mapFolder = node.vars ["selectedMapFolder"].GetString ();
-        hostActivity.mapInfoPath = node.vars ["selectedMapInfo"].GetString ();
+        hostActivity.mapFolder = eventData ["selectedMapFolder"].GetString ();
+        hostActivity.mapInfoPath = eventData ["selectedMapInfo"].GetString ();
         activitiesApplication_.SetupActivityNextFrame (hostActivity);
 
         IngameClientActivity @ingameClientActivity = IngameClientActivity ();
         ingameClientActivity.serverAdress = "localhost";
         ingameClientActivity.serverPort = NEW_GAME_SERVER_PORT;
-        ingameClientActivity.playerName = node.vars ["nickname"].GetString ();
-        ingameClientActivity.playerColor = node.vars ["color"].GetColor ();
+        ingameClientActivity.playerName = eventData ["nickname"].GetString ();
+        ingameClientActivity.playerColor = eventData ["color"].GetColor ();
+        activitiesApplication_.SetupActivityNextFrame (ingameClientActivity);
+    }
+
+    void HandleJoinGameRequest (StringHash eventType, VariantMap &eventData)
+    {
+        for (int index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
+        {
+            activitiesApplication_.StopActivityNextFrame (activitiesApplication_.GetActivityByIndex (index));
+        }
+
+        IngameClientActivity @ingameClientActivity = IngameClientActivity ();
+        ingameClientActivity.serverAdress = eventData ["adress"].GetString ();
+        ingameClientActivity.serverPort = eventData ["port"].GetInt ();
+        ingameClientActivity.playerName = eventData ["nickname"].GetString ();
+        ingameClientActivity.playerColor = eventData ["color"].GetColor ();
         activitiesApplication_.SetupActivityNextFrame (ingameClientActivity);
     }
 

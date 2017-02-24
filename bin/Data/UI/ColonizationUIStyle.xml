@@ -67,7 +67,7 @@
         <element type="Text" internal="true">
             <attribute name="Font" value="Font;Fonts/BlueHighway.ttf" />
             <attribute name="Font Size" value="30" />
-            <attribute name="Color" value="0.8 0.8 0.8 1.0" />
+            <attribute name="Color" value="0.9 0.9 0.9 1.0" />
             <attribute name="Text Effect" value="Stroke" />
             <attribute name="Stroke Thickness" value="1" />
         </element>
