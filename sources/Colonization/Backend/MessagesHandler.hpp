@@ -26,6 +26,12 @@ enum NetworkMessageType
 class MessagesHandler : public Urho3D::Component
 {
 URHO3D_OBJECT (MessagesHandler, Component)
+protected:
+    void ProcessSendChatMessageInput (Player *player, Urho3D::VectorBuffer &messageData);
+    void ProcessSendPrivateMessageInput (Player *player, Urho3D::VectorBuffer &messageData);
+    void ProcessSendPlayerActionInput (Player *player, Urho3D::VectorBuffer &messageData);
+    void ProcessSendIsPlayerReadyForStartInput (Player *player, Urho3D::VectorBuffer &messageData);
+
 public:
     MessagesHandler (Urho3D::Context *context);
     virtual ~MessagesHandler ();
