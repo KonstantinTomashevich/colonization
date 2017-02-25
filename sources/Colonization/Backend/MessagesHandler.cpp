@@ -96,6 +96,12 @@ void MessagesHandler::HandleNetworkMessage (Urho3D::StringHash eventType, Urho3D
                     Urho3D::Pair <PlayerActionType, Urho3D::Variant> (actionType, messageData);
             player->AddAction (action);
         }
+
+        else if (messageType == CTS_NETWORK_MESSAGE_SEND_IS_PLAYER_READY_FOR_START)
+        {
+            bool isReadyForStart = messageData.ReadBool ();
+            player->SetIsReadyForStart (isReadyForStart);
+        }
     }
 }
 

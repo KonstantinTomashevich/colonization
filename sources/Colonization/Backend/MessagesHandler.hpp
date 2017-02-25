@@ -11,6 +11,7 @@ enum NetworkMessageType
     CTS_NETWORK_MESSAGE_SEND_CHAT_MESSAGE = 100, // Data: message (String).
     CTS_NETWORK_MESSAGE_SEND_PRIVATE_MESSAGE = 101, // Data: message (String), ...recieviers... (String's).
     CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION = 102, // Data: actionType (int), actionDataBuffer (VectorBuffer ... [data]).
+    CTS_NETWORK_MESSAGE_SEND_IS_PLAYER_READY_FOR_START = 103, // Data: isPlayerReadyForStart (bool).
 
     // STC -- server to client message.
     STC_NETWORK_MESSAGE_SEND_PLAYER_STATS = 200, // Data: gold (float), points (float).
