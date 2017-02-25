@@ -70,5 +70,8 @@ void BindPlayerInfoInterface (Urho3D::Script *script, Urho3D::String className)
     engine->RegisterObjectMethod (className.CString (), "float GetProgressToVictoryOfType (StringHash victoryType) const", asMETHOD (PlayerInfo, GetProgressToVictoryOfType), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "VariantMap GetProgressToVictoryOfTypeInfo (StringHash victoryType) const", asMETHOD (PlayerInfo, GetProgressToVictoryOfTypeInfo), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void SetProgressToVictoryOfType (StringHash victoryType, VariantMap progressToVictoryInfo)", asMETHOD (PlayerInfo, SetProgressToVictoryOfTypeInfo), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "bool get_isReadyForStart () const", asMETHOD (PlayerInfo, IsReadyForStart), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_isReadyForStart (bool isReadyForStart)", asMETHOD (PlayerInfo, SetIsReadyForStart), asCALL_THISCALL);
 }
 }

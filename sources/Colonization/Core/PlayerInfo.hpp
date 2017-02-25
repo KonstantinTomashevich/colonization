@@ -17,6 +17,7 @@ protected:
     Urho3D::String name_;
     float points_;
     Urho3D::Color color_;
+    bool isReadyForStart_;
     /// Progresses to victories. Key is victory type name, value is VariantMap.
     /// Each value has progress indicator named "progress". It is float from 0.0 to 100.0.
     /// Each value has angel script function name, which parses this value and returns text for tooltip.
@@ -35,6 +36,9 @@ public:
 
     Urho3D::Color GetColor () const;
     void SetColor (const Urho3D::Color &color);
+
+    bool IsReadyForStart () const;
+    void SetIsReadyForStart (bool isReadyForStart);
 
     Urho3D::VariantMap GetProgressToVictory () const;
     void SetProgressToVictory (const Urho3D::VariantMap &progressToVictory);
