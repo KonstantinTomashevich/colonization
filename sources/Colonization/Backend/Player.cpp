@@ -148,11 +148,13 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
 
 Player::Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Color color, Urho3D::Connection *connection, Urho3D::Scene *scene) :
     Urho3D::Object (context),
-    scene_ (scene),
     name_ (name),
     color_ (color),
     gold_ (0.0f),
     points_ (0.0f),
+    isReadyForStart_ (false),
+
+    scene_ (scene),
     timeUntilNewChatMessage_ (0.0f),
     actionsSequence_ (),
     connection_ (connection)
@@ -220,22 +222,22 @@ void Player::AddAction (Urho3D::Pair <PlayerActionType, Urho3D::Variant> &action
     actionsSequence_.Push (action);
 }
 
-int Player::GetActionsCount ()
+int Player::GetActionsCount () const
 {
     return actionsSequence_.Size ();
 }
 
-Urho3D::String Player::GetName ()
+Urho3D::String Player::GetName () const
 {
     return name_;
 }
 
-Urho3D::Color Player::GetColor ()
+Urho3D::Color Player::GetColor () const
 {
     return color_;
 }
 
-float Player::GetGold ()
+float Player::GetGold () const
 {
     return gold_;
 }
@@ -245,17 +247,17 @@ void Player::SetGold (float gold)
     gold_ = gold;
 }
 
-Urho3D::Connection *Player::GetConnection ()
+Urho3D::Connection *Player::GetConnection () const
 {
     return connection_;
 }
 
-Urho3D::Scene *Player::GetScene ()
+Urho3D::Scene *Player::GetScene () const
 {
     return scene_;
 }
 
-float Player::GetPoints ()
+float Player::GetPoints () const
 {
     return points_;
 }
@@ -265,7 +267,7 @@ void Player::SetPoints (float points)
     points_ = points;
 }
 
-float Player::GetTimeUntilNewChatMessage ()
+float Player::GetTimeUntilNewChatMessage () const
 {
     return timeUntilNewChatMessage_;
 }
@@ -273,5 +275,15 @@ float Player::GetTimeUntilNewChatMessage ()
 void Player::OnChatMessageSended ()
 {
     timeUntilNewChatMessage_ = PLAYER_NEW_CHAT_MESSAGE_DELAY;
+}
+
+bool Player::IsReadyForStart () const
+{
+    return isReadyForStart_;
+}
+
+void Player::SetIsReadyForStart (bool isReadyForStart)
+{
+    isReadyForStart_ = isReadyForStart;
 }
 }

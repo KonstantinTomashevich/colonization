@@ -33,11 +33,13 @@ class Player : public Urho3D::Object
 {
 URHO3D_OBJECT (Player, Object)
 protected:
-    Urho3D::Scene *scene_;
     Urho3D::String name_;
     Urho3D::Color color_;
     float points_;
     float gold_;
+    bool isReadyForStart_;
+
+    Urho3D::Scene *scene_;
     float timeUntilNewChatMessage_;
     Urho3D::Vector <Urho3D::Pair <PlayerActionType, Urho3D::Variant> > actionsSequence_;
     Urho3D::Connection *connection_;
@@ -55,21 +57,24 @@ public:
     bool RemoveAction (Urho3D::Pair <PlayerActionType, Urho3D::Variant> &action);
     void RemoveAllActions ();
     void AddAction (Urho3D::Pair <PlayerActionType, Urho3D::Variant> &action);
-    int GetActionsCount ();
+    int GetActionsCount () const;
 
-    Urho3D::String GetName ();
-    Urho3D::Color GetColor ();
+    Urho3D::String GetName () const;
+    Urho3D::Color GetColor () const;
 
-    Urho3D::Connection *GetConnection ();
-    Urho3D::Scene *GetScene ();
+    Urho3D::Connection *GetConnection () const;
+    Urho3D::Scene *GetScene () const;
 
-    float GetGold ();
+    float GetGold () const;
     void SetGold (float gold);   
 
-    float GetPoints ();
+    float GetPoints () const;
     void SetPoints (float points);
 
-    float GetTimeUntilNewChatMessage ();
+    float GetTimeUntilNewChatMessage () const;
     void OnChatMessageSended ();
+
+    bool IsReadyForStart () const;
+    void SetIsReadyForStart (bool isReadyForStart);
 };
 }

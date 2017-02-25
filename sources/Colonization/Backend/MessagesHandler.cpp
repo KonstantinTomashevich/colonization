@@ -11,6 +11,44 @@
 
 namespace Colonization
 {
+void MessagesHandler::ProcessSendChatMessageInput (Player *player, Urho3D::VectorBuffer &messageData)
+{
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
+    Urho3D::Vector <Player *> players = playersManager->GetAllPlayers ();
+    SendChatMessage (player->GetName (), messageData.ReadString (), players, false);
+    player->OnChatMessageSended ();
+}
+
+void MessagesHandler::ProcessSendPrivateMessageInput (Player *player, Urho3D::VectorBuffer &messageData)
+{
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
+    Urho3D::String message = messageData.ReadString ();
+    Urho3D::Vector <Urho3D::StringHash> recievers;
+    recievers.Push (Urho3D::StringHash (player->GetName ()));
+    while (!messageData.IsEof ())
+    {
+        recievers.Push (Urho3D::StringHash (messageData.ReadString ()));
+    }
+
+    Urho3D::Vector <Player *> players = playersManager->GetPlayersByNames (recievers);
+    SendChatMessage (player->GetName (), message, players, true);
+    player->OnChatMessageSended ();
+}
+
+void MessagesHandler::ProcessSendPlayerActionInput (Player *player, Urho3D::VectorBuffer &messageData)
+{
+    PlayerActionType actionType = static_cast <PlayerActionType> (messageData.ReadInt ());
+    Urho3D::Pair <PlayerActionType, Urho3D::Variant> action =
+            Urho3D::Pair <PlayerActionType, Urho3D::Variant> (actionType, messageData);
+    player->AddAction (action);
+}
+
+void MessagesHandler::ProcessSendIsPlayerReadyForStartInput (Player *player, Urho3D::VectorBuffer &messageData)
+{
+    bool isReadyForStart = messageData.ReadBool ();
+    player->SetIsReadyForStart (isReadyForStart);
+}
+
 MessagesHandler::MessagesHandler (Urho3D::Context *context) : Urho3D::Component (context)
 {
     SubscribeToEvent (Urho3D::E_CLIENTIDENTITY, URHO3D_HANDLER (MessagesHandler, HandleClientIdentity));
@@ -69,32 +107,19 @@ void MessagesHandler::HandleNetworkMessage (Urho3D::StringHash eventType, Urho3D
 
         if (messageType == CTS_NETWORK_MESSAGE_SEND_CHAT_MESSAGE && player->GetTimeUntilNewChatMessage () <= 0.0f)
         {
-            Urho3D::Vector <Player *> players = playersManager->GetAllPlayers ();
-            SendChatMessage (player->GetName (), messageData.ReadString (), players, false);
-            player->OnChatMessageSended ();
+            ProcessSendChatMessageInput (player, messageData);
         }
-
         else if (messageType == CTS_NETWORK_MESSAGE_SEND_PRIVATE_MESSAGE && player->GetTimeUntilNewChatMessage () <= 0.0f)
         {
-            Urho3D::String message = messageData.ReadString ();
-            Urho3D::Vector <Urho3D::StringHash> recievers;
-            recievers.Push (Urho3D::StringHash (player->GetName ()));
-            while (!messageData.IsEof ())
-            {
-                recievers.Push (Urho3D::StringHash (messageData.ReadString ()));
-            }
-
-            Urho3D::Vector <Player *> players = playersManager->GetPlayersByNames (recievers);
-            SendChatMessage (player->GetName (), message, players, true);
-            player->OnChatMessageSended ();
+            ProcessSendPrivateMessageInput (player, messageData);
         }
-
         else if (messageType == CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION)
         {
-            PlayerActionType actionType = static_cast <PlayerActionType> (messageData.ReadInt ());
-            Urho3D::Pair <PlayerActionType, Urho3D::Variant> action =
-                    Urho3D::Pair <PlayerActionType, Urho3D::Variant> (actionType, messageData);
-            player->AddAction (action);
+            ProcessSendPlayerActionInput (player, messageData);
+        }
+        else if (messageType == CTS_NETWORK_MESSAGE_SEND_IS_PLAYER_READY_FOR_START)
+        {
+            ProcessSendIsPlayerReadyForStartInput (player, messageData);
         }
     }
 }

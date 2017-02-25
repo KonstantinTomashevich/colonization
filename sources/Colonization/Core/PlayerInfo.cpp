@@ -11,6 +11,7 @@ PlayerInfo::PlayerInfo (Urho3D::Context *context) : Urho3D::Component (context),
     name_ ("NoName"),
     points_ (0.0f),
     color_ (Urho3D::Color::GRAY),
+    isReadyForStart_ (false),
     progressToVictory_ ()
 {
 
@@ -29,6 +30,7 @@ void PlayerInfo::RegisterObject (Urho3D::Context *context)
     URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Name", GetName, SetName, Urho3D::String, Urho3D::String ("NoName"), Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Points", GetPoints, SetPoints, float, 0.0f, Urho3D::AM_DEFAULT);
     URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Color", GetColor, SetColor, Urho3D::Color, Urho3D::Color::GRAY, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Is Ready For Start", IsReadyForStart, SetIsReadyForStart, bool, false, Urho3D::AM_DEFAULT);
     URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Progress To Victory", GetProgressToVictory, SetProgressToVictory,
                                      Urho3D::VariantMap, Urho3D::Variant::emptyVariantVector, Urho3D::AM_DEFAULT);
 }
@@ -61,6 +63,16 @@ Urho3D::Color PlayerInfo::GetColor () const
 void PlayerInfo::SetColor (const Urho3D::Color &color)
 {
     color_ = color;
+}
+
+bool PlayerInfo::IsReadyForStart () const
+{
+    return isReadyForStart_;
+}
+
+void PlayerInfo::SetIsReadyForStart (bool isReadyForStart)
+{
+    isReadyForStart_ = isReadyForStart;
 }
 
 Urho3D::VariantMap PlayerInfo::GetProgressToVictory () const
