@@ -19,6 +19,11 @@ shared bool CheckIsSceneLoaded (Scene @scene_)
 
 shared PlayerInfo @GetPlayerInfoByName (Scene @scene_, String playerName)
 {
+    if (scene_.GetChild ("players") is null)
+    {
+        return null;
+    }
+
     Array <Node @> playersNodes = scene_.GetChild ("players").GetChildrenWithComponent ("PlayerInfo");
     if (playersNodes.empty)
     {
@@ -45,6 +50,11 @@ shared PlayerInfo @GetPlayerInfoByName (Scene @scene_, String playerName)
 
 shared Unit @GetUnitByHash (Scene @scene_, StringHash unitHash)
 {
+    if (scene_.GetChild ("units") is null)
+    {
+        return null;
+    }
+
     Array <Node @> unitsNodes = scene_.GetChild ("units").GetChildrenWithComponent ("Unit");
     if (unitsNodes.empty)
     {
@@ -71,9 +81,13 @@ shared Unit @GetUnitByHash (Scene @scene_, StringHash unitHash)
 
 shared Array <Unit @> GetUnitsInDistrict (Scene @scene_, StringHash districtHash)
 {
-    Array <Node @> unitsNodes = scene_.GetChild ("units").GetChildrenWithComponent ("Unit");
     Array <Unit @> unitsInDistrict;
+    if (scene_.GetChild ("units") is null)
+    {
+        return unitsInDistrict;
+    }
 
+    Array <Node @> unitsNodes = scene_.GetChild ("units").GetChildrenWithComponent ("Unit");
     for (int index = 0; index < unitsNodes.length; index++)
     {
         Unit @unit = unitsNodes [index].GetComponent ("Unit");
