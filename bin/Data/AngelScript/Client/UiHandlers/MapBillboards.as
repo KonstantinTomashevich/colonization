@@ -191,7 +191,7 @@ class MapBillboards : ScriptObject
 
     void Update (float timeStep)
     {
-        if (!isSceneLoaded_)
+        if (!isSceneLoaded_ and node.parent.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
         {
             isSceneLoaded_ = CheckIsSceneLoaded (scene);
         }
