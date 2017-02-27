@@ -80,6 +80,15 @@ class ClientNetwork : ScriptObject
             eventData ["newGameState"] = Variant (newGameState);
             SendEvent ("GameStateChanged", eventData);
         }
+
+        // TODO: This is temporary! Remove it later!
+        if (node.parent.vars ["gameState"].GetInt () == GAME_STATE_WAITING_FOR_START)
+        {
+            VectorBuffer buffer;
+            buffer.WriteBool (true);
+            network.serverConnection.SendMessage (CTS_NETWORK_MESSAGE_SEND_IS_PLAYER_READY_FOR_START, true, false, buffer);
+            SendEvent (EVENT_HOST_REQUEST_GAME_START);
+        }
     }
 
     void HandlePlayerStatsMessage (VariantMap &eventData)
