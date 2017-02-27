@@ -8,6 +8,11 @@
 
 namespace Colonization
 {
+Urho3D::String get_EVENT_HOST_REQUEST_GAME_START ()
+{
+    return EVENT_HOST_REQUEST_GAME_START;
+}
+
 void BindGameStateType(Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
@@ -22,9 +27,12 @@ void BindHostActivity (Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
     BindGameStateType (script);
+    engine->RegisterGlobalFunction ("String get_EVENT_HOST_REQUEST_GAME_START ()", asFUNCTION (get_EVENT_HOST_REQUEST_GAME_START), asCALL_CDECL);
+
     Urho3D::RegisterObject <HostActivity> (engine, "HostActivity");
     Urho3D::RegisterObjectConstructor <HostActivity> (engine, "HostActivity");
     Urho3D::RegisterSubclass <Activity, HostActivity> (engine, "Activity", "HostActivity");
+
     BindActivityInterface (script, "HostActivity");
     BindHostActivityInterface (script, "HostActivity");
 }
@@ -40,5 +48,6 @@ void BindHostActivityInterface (Urho3D::Script *script, Urho3D::String className
 
     engine->RegisterObjectMethod (className.CString (), "String get_mapInfoPath () const", asMETHOD (HostActivity, GetMapInfoPath), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_mapInfoPath (String mapInfoPath)", asMETHOD (HostActivity, SetMapInfoPath), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "bool IsStartRequested () const", asMETHOD (HostActivity, IsStartRequested), asCALL_THISCALL);
 }
 }

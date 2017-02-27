@@ -33,17 +33,17 @@ public:
     void HandlePlayerConnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     void HandlePlayerDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
 
-    int GetPlayersCount ();
-    Player *GetPlayerByIndex (int index);
-    Player *GetPlayerByConnection (Urho3D::Connection *connection);
-    Player *GetPlayerByNameHash (Urho3D::StringHash nameHash);
+    int GetPlayersCount () const;
+    Player *GetPlayerByIndex (int index) const;
+    Player *GetPlayerByConnection (Urho3D::Connection *connection) const;
+    Player *GetPlayerByNameHash (Urho3D::StringHash nameHash) const;
 
-    PlayerInfo *GetPlayerInfoByPointer (Player *player);
-    PlayerInfo *GetPlayerInfoByNameHash (Urho3D::StringHash nameHash);
+    PlayerInfo *GetPlayerInfoByPointer (Player *player) const;
+    PlayerInfo *GetPlayerInfoByNameHash (Urho3D::StringHash nameHash) const;
 
     void DisconnectAllUnidentificatedConnections ();
-    Urho3D::Vector <Player *> GetPlayersByNames (Urho3D::Vector <Urho3D::StringHash> namesHashes);
-    Urho3D::Vector <Player *> GetAllPlayers ();
+    Urho3D::Vector <Player *> GetPlayersByNames (Urho3D::Vector <Urho3D::StringHash> namesHashes) const;
+    Urho3D::Vector <Player *> GetAllPlayers () const;
 
     void PlayerIdentified (Urho3D::Connection *connection, Urho3D::String name, Urho3D::Color color);
     void DisconnectPlayer (Urho3D::StringHash nameHash);

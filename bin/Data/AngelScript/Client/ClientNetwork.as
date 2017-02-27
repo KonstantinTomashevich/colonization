@@ -36,6 +36,10 @@ class ClientNetwork : ScriptObject
         {
             HandleGameStateMessage (eventData);
         }
+        else if (eventData ["MessageID"].GetInt () == STC_NETWORK_MESSAGE_TEXT_INFO_FROM_SERVER)
+        {
+            HandleTextInfoFromServer (eventData);
+        }
         else if (eventData ["MessageID"].GetInt () == STC_NETWORK_MESSAGE_SEND_PLAYER_STATS)
         {
             HandlePlayerStatsMessage (eventData);
@@ -99,13 +103,28 @@ class ClientNetwork : ScriptObject
         Array <String> blockedUsersList = node.parent.GetChild ("uiScriptNode").vars ["chatBlockedPlayersList"].GetStringVector ();
         if (blockedUsersList.Find (sender) < 0)
         {
-            VariantMap eventData = VariantMap ();
-            eventData ["isPrivate"] = Variant (isPrivate);
-            eventData ["sender"] = Variant (sender);
-            eventData ["message"] = Variant (message);
-            eventData ["timeStamp"] = Variant (timeStamp);
-            SendEvent ("NewChatMessage", eventData);
+            VariantMap messageEventData = VariantMap ();
+            messageEventData ["isPrivate"] = Variant (isPrivate);
+            messageEventData ["sender"] = Variant (sender);
+            messageEventData ["message"] = Variant (message);
+            messageEventData ["timeStamp"] = Variant (timeStamp);
+            SendEvent ("NewChatMessage", messageEventData);
         }
+    }
+
+    void HandleTextInfoFromServer (VariantMap &eventData)
+    {
+        VectorBuffer buffer = eventData ["Data"].GetBuffer ();
+        String message = buffer.ReadString ();
+        String timeStamp = time.timeStamp;
+        timeStamp = timeStamp.Substring (TIME_STAMP_SUBSTRING_START, TIME_STAMP_SUBSTRING_LENGTH);
+
+        VariantMap messageEventData = VariantMap ();
+        messageEventData ["isPrivate"] = false;
+        messageEventData ["sender"] = "Host Automatics";
+        messageEventData ["message"] = Variant (message);
+        messageEventData ["timeStamp"] = Variant (timeStamp);
+        SendEvent ("NewChatMessage", messageEventData);
     }
 
     void HandleGameEndedMessage (VariantMap &eventData)

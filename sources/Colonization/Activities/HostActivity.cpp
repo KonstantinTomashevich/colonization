@@ -29,6 +29,7 @@ void HostActivity::SetupWaitingForPlayersState ()
 {
     scene_->CreateComponent <Urho3D::Octree> (Urho3D::REPLICATED);
     scene_->CreateComponent <MessagesHandler> (Urho3D::LOCAL);
+    scene_->CreateComponent <NetworkUpdateSmoother> (Urho3D::LOCAL);
     scene_->CreateChild ("players", Urho3D::REPLICATED)->CreateComponent <PlayersManager> (Urho3D::LOCAL);
 }
 
@@ -78,7 +79,6 @@ void HostActivity::SetupPlayingState ()
     scene_->CreateComponent <TradeProcessor> (Urho3D::LOCAL);
     scene_->CreateComponent <PlayersPointsCalculator> (Urho3D::LOCAL);
     scene_->CreateComponent <VictoryProgressUpdater> (Urho3D::LOCAL);
-    scene_->CreateComponent <NetworkUpdateSmoother> (Urho3D::LOCAL);
 }
 
 void HostActivity::DisposePlayingState ()
@@ -155,15 +155,49 @@ bool HostActivity::LoadAndParseMapInfo (Urho3D::String &configurationPath, Urho3
     return true;
 }
 
-bool HostActivity::WillIGoFromWaitingForStartToPlayingState ()
+bool HostActivity::WillGoFromWaitingForStartToPlayingState ()
 {
     PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
-    // TODO: Reimplement later!
-    return (playersManager->GetAllPlayers ().Size () > 0 &&
-            mapFolder_ != Urho3D::String::EMPTY && mapInfoPath_ != Urho3D::String::EMPTY);
+    if (isStartRequested_ && playersManager->GetPlayersCount () > 0 &&
+            mapFolder_ != Urho3D::String::EMPTY && mapInfoPath_ != Urho3D::String::EMPTY)
+    {
+        Urho3D::Vector <Player *> players = playersManager->GetAllPlayers ();
+        bool isAllReadyForStart = true;
+        int index = 0;
+
+        while (index < players.Size () && isAllReadyForStart)
+        {
+            Player *player = players.At (index);
+            if (player && !player->IsReadyForStart ())
+            {
+                isAllReadyForStart = false;
+            }
+            index++;
+        }
+
+        if (isAllReadyForStart)
+        {
+            isStartRequested_ = false;
+            return true;
+        }
+        else
+        {
+            isStartRequested_ = false;
+            MessagesHandler *messagesHandler = scene_->GetComponent <MessagesHandler> ();
+            if (messagesHandler)
+            {
+                messagesHandler->SendTextInfoFromServer ("Host wants to start game!", players);
+            }
+            return false;
+        }
+    }
+    else
+    {
+        return false;
+    }
 }
 
-bool HostActivity::WillIGoFromPlayingToFinishedState ()
+bool HostActivity::WillGoFromPlayingToFinishedState ()
 {
     VictoryProgressUpdater *victoryProgressUpdater = scene_->GetComponent <VictoryProgressUpdater> ();
     return victoryProgressUpdater->IsAnyoneWon ();
@@ -171,6 +205,7 @@ bool HostActivity::WillIGoFromPlayingToFinishedState ()
 
 HostActivity::HostActivity (Urho3D::Context *context) : Activity (context),
     serverPort_ (13534),
+    isStartRequested_ (false),
     mapFolder_ (Urho3D::String::EMPTY),
     mapInfoPath_ (Urho3D::String::EMPTY),
     scene_ (new Urho3D::Scene (context))
@@ -218,10 +253,22 @@ void HostActivity::SetMapInfoPath (Urho3D::String mapInfoPath)
     mapInfoPath_ = mapInfoPath;
 }
 
+bool HostActivity::IsStartRequested () const
+{
+    return isStartRequested_;
+}
+
+void HostActivity::HandleGamerStartRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    isStartRequested_ = true;
+}
+
 void HostActivity::Start ()
 {
     context_->GetSubsystem <Urho3D::Network> ()->StartServer (serverPort_);
     SetupState (GAME_STATE_WAITING_FOR_START);
+
+    SubscribeToEvent (Urho3D::StringHash (EVENT_HOST_REQUEST_GAME_START), URHO3D_HANDLER (HostActivity, HandleGamerStartRequest));
 }
 
 void HostActivity::Update (float timeStep)
@@ -240,11 +287,11 @@ void HostActivity::Update (float timeStep)
     scene_->SetVar ("ReplicatedNodesCount", replicated);
 
     // Go to next state if needed.
-    if (currentState_ == GAME_STATE_WAITING_FOR_START && WillIGoFromWaitingForStartToPlayingState ())
+    if (currentState_ == GAME_STATE_WAITING_FOR_START && WillGoFromWaitingForStartToPlayingState ())
     {
         SetupState (GAME_STATE_PLAYING);
     }
-    else if (currentState_ == GAME_STATE_PLAYING && WillIGoFromPlayingToFinishedState ())
+    else if (currentState_ == GAME_STATE_PLAYING && WillGoFromPlayingToFinishedState ())
     {
         // Send information about game end to players.
         VictoryProgressUpdater *victoryProgressUpdater = scene_->GetComponent <VictoryProgressUpdater> ();

@@ -79,7 +79,7 @@ void PlayersManager::UpdatePlayersInfos ()
     node_->GetChildrenWithComponent (playersInfosNodes, PlayerInfo::GetTypeStatic ());
 
     int index = 0;
-    while (index < players_.Values ().Size () || index < playersInfosNodes.Size ())
+    while (index < players_.Size () || index < playersInfosNodes.Size ())
     {
         if (index < players_.Values ().Size ())
         {
@@ -174,6 +174,7 @@ void PlayersManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &e
         MessagesHandler *messagesHandler = node_->GetScene ()->GetComponent <MessagesHandler> ();
         assert (messagesHandler);
         float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
+
         UpdatePlayers (messagesHandler, timeStep);
         UpdateConnectionsWithoudId (timeStep);
         UpdatePlayersInfos ();
@@ -209,22 +210,31 @@ void PlayersManager::HandlePlayerDisconnected (Urho3D::StringHash eventType, Urh
     }
 }
 
-int PlayersManager::GetPlayersCount ()
+int PlayersManager::GetPlayersCount () const
 {
     return players_.Values ().Size ();
 }
 
-Player *PlayersManager::GetPlayerByIndex (int index)
+Player *PlayersManager::GetPlayerByIndex (int index) const
 {
     assert (index < players_.Values ().Size ());
     return players_.Values ().At (index);
 }
 
-Player *PlayersManager::GetPlayerByConnection (Urho3D::Connection *connection)
+Player *PlayersManager::GetPlayerByConnection (Urho3D::Connection *connection) const
 {
-    if (connectionHashToNameHashMap_ [connection->GetAddress ()].Value ())
+    Urho3D::StringHash *nameHash = connectionHashToNameHashMap_ [connection->GetAddress ()];
+    if (nameHash)
     {
-        return players_ [connectionHashToNameHashMap_ [connection->GetAddress ()]];
+        Player ** playerPtr = players_ [*nameHash];
+        if (playerPtr)
+        {
+            return *playerPtr;
+        }
+        else
+        {
+            return 0;
+        }
     }
     else
     {
@@ -232,18 +242,26 @@ Player *PlayersManager::GetPlayerByConnection (Urho3D::Connection *connection)
     }
 }
 
-Player *PlayersManager::GetPlayerByNameHash (Urho3D::StringHash nameHash)
+Player *PlayersManager::GetPlayerByNameHash (Urho3D::StringHash nameHash) const
 {
-    return players_ [nameHash];
+    Player ** playerPtr = players_ [nameHash];
+    if (playerPtr)
+    {
+        return *playerPtr;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
-PlayerInfo *PlayersManager::GetPlayerInfoByPointer (Player *player)
+PlayerInfo *PlayersManager::GetPlayerInfoByPointer (Player *player) const
 {
     assert (player);
     return GetPlayerInfoByNameHash (Urho3D::StringHash (player->GetName ()));
 }
 
-PlayerInfo *PlayersManager::GetPlayerInfoByNameHash (Urho3D::StringHash nameHash)
+PlayerInfo *PlayersManager::GetPlayerInfoByNameHash (Urho3D::StringHash nameHash) const
 {
     assert (node_);
     Urho3D::PODVector <Urho3D::Node *> playersInfosNodes;
@@ -271,21 +289,21 @@ void PlayersManager::DisconnectAllUnidentificatedConnections ()
     }
 }
 
-Urho3D::Vector <Player *> PlayersManager::GetPlayersByNames (Urho3D::Vector <Urho3D::StringHash> namesHashes)
+Urho3D::Vector <Player *> PlayersManager::GetPlayersByNames (Urho3D::Vector <Urho3D::StringHash> namesHashes) const
 {
     Urho3D::Vector <Player *> players;
     for (int index = 0; index < namesHashes.Size (); index++)
     {
-        Player *player = players_ [namesHashes.At (index)];
+        Player ** player = players_ [namesHashes.At (index)];
         if (player)
         {
-            players.Push (player);
+            players.Push (*player);
         }
     }
     return players;
 }
 
-Urho3D::Vector <Player *> PlayersManager::GetAllPlayers ()
+Urho3D::Vector <Player *> PlayersManager::GetAllPlayers () const
 {
     return players_.Values ();
 }
