@@ -171,6 +171,7 @@ bool HostActivity::WillIGoFromPlayingToFinishedState ()
 
 HostActivity::HostActivity (Urho3D::Context *context) : Activity (context),
     serverPort_ (13534),
+    isStartRequested_ (false),
     mapFolder_ (Urho3D::String::EMPTY),
     mapInfoPath_ (Urho3D::String::EMPTY),
     scene_ (new Urho3D::Scene (context))
@@ -218,10 +219,22 @@ void HostActivity::SetMapInfoPath (Urho3D::String mapInfoPath)
     mapInfoPath_ = mapInfoPath;
 }
 
+bool HostActivity::IsStartRequested () const
+{
+    return isStartRequested_;
+}
+
+void HostActivity::HandleServerStartRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    isStartRequested_ = true;
+}
+
 void HostActivity::Start ()
 {
     context_->GetSubsystem <Urho3D::Network> ()->StartServer (serverPort_);
     SetupState (GAME_STATE_WAITING_FOR_START);
+
+    SubscribeToEvent (Urho3D::StringHash (EVENT_SERVER_REQUEST_START), URHO3D_HANDLER (HostActivity, HandleServerStartRequest));
 }
 
 void HostActivity::Update (float timeStep)

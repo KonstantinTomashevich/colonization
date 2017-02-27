@@ -4,6 +4,7 @@
 
 namespace Colonization
 {
+const Urho3D::String EVENT_SERVER_REQUEST_START ("RequestServerStart");
 enum GameStateType
 {
     GAME_STATE_UNITIALIZED = -1,
@@ -18,6 +19,7 @@ URHO3D_OBJECT (HostActivity, Activity)
 protected:
     Urho3D::SharedPtr <Urho3D::Scene> scene_;
     unsigned short serverPort_;
+    bool isStartRequested_;
     Urho3D::String mapFolder_;
     Urho3D::String mapInfoPath_;
     GameStateType currentState_;
@@ -51,6 +53,9 @@ public:
 
     Urho3D::String GetMapInfoPath () const;
     void SetMapInfoPath (Urho3D::String mapInfoPath);
+
+    bool IsStartRequested () const;
+    void HandleServerStartRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
 
     virtual void Start ();
     virtual void Update (float timeStep);
