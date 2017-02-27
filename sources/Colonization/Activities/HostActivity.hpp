@@ -36,10 +36,10 @@ protected:
     void SetupState (GameStateType state);
     void DisposeCurrentState ();
 
-    // Parameters are parse output.
+    /// Parameters are parse output.
     bool LoadAndParseMapInfo (Urho3D::String &configurationPath, Urho3D::String &mapPath, Urho3D::String &unitsPath);
-    bool WillIGoFromWaitingForStartToPlayingState ();
-    bool WillIGoFromPlayingToFinishedState ();
+    bool WillGoFromWaitingForStartToPlayingState ();
+    bool WillGoFromPlayingToFinishedState ();
 public:
     HostActivity (Urho3D::Context *context);
     virtual ~HostActivity ();

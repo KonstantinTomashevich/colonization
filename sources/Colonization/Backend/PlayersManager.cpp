@@ -79,7 +79,7 @@ void PlayersManager::UpdatePlayersInfos ()
     node_->GetChildrenWithComponent (playersInfosNodes, PlayerInfo::GetTypeStatic ());
 
     int index = 0;
-    while (index < players_.Values ().Size () || index < playersInfosNodes.Size ())
+    while (index < players_.Size () || index < playersInfosNodes.Size ())
     {
         if (index < players_.Values ().Size ())
         {
@@ -174,6 +174,7 @@ void PlayersManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &e
         MessagesHandler *messagesHandler = node_->GetScene ()->GetComponent <MessagesHandler> ();
         assert (messagesHandler);
         float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
+
         UpdatePlayers (messagesHandler, timeStep);
         UpdateConnectionsWithoudId (timeStep);
         UpdatePlayersInfos ();
