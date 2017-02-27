@@ -8,9 +8,9 @@
 
 namespace Colonization
 {
-Urho3D::String get_EVENT_SERVER_REQUEST_START ()
+Urho3D::String get_EVENT_HOST_REQUEST_GAME_START ()
 {
-    return EVENT_SERVER_REQUEST_START;
+    return EVENT_HOST_REQUEST_GAME_START;
 }
 
 void BindGameStateType(Urho3D::Script *script)
@@ -27,7 +27,7 @@ void BindHostActivity (Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
     BindGameStateType (script);
-    engine->RegisterGlobalFunction ("String get_EVENT_SERVER_REQUEST_START ()", asFUNCTION (get_EVENT_SERVER_REQUEST_START), asCALL_CDECL);
+    engine->RegisterGlobalFunction ("String get_EVENT_HOST_REQUEST_GAME_START ()", asFUNCTION (get_EVENT_HOST_REQUEST_GAME_START), asCALL_CDECL);
 
     Urho3D::RegisterObject <HostActivity> (engine, "HostActivity");
     Urho3D::RegisterObjectConstructor <HostActivity> (engine, "HostActivity");

@@ -258,7 +258,7 @@ bool HostActivity::IsStartRequested () const
     return isStartRequested_;
 }
 
-void HostActivity::HandleServerStartRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+void HostActivity::HandleGamerStartRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     isStartRequested_ = true;
 }
@@ -268,7 +268,7 @@ void HostActivity::Start ()
     context_->GetSubsystem <Urho3D::Network> ()->StartServer (serverPort_);
     SetupState (GAME_STATE_WAITING_FOR_START);
 
-    SubscribeToEvent (Urho3D::StringHash (EVENT_SERVER_REQUEST_START), URHO3D_HANDLER (HostActivity, HandleServerStartRequest));
+    SubscribeToEvent (Urho3D::StringHash (EVENT_HOST_REQUEST_GAME_START), URHO3D_HANDLER (HostActivity, HandleGamerStartRequest));
 }
 
 void HostActivity::Update (float timeStep)
