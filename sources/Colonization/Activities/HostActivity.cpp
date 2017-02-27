@@ -178,6 +178,11 @@ bool HostActivity::WillGoFromWaitingForStartToPlayingState ()
         if (isAllReadyForStart)
         {
             isStartRequested_ = false;
+            MessagesHandler *messagesHandler = scene_->GetComponent <MessagesHandler> ();
+            if (messagesHandler)
+            {
+                messagesHandler->SendTextInfoFromServer ("Starting game...", players);
+            }
             return true;
         }
         else
@@ -186,7 +191,7 @@ bool HostActivity::WillGoFromWaitingForStartToPlayingState ()
             MessagesHandler *messagesHandler = scene_->GetComponent <MessagesHandler> ();
             if (messagesHandler)
             {
-                messagesHandler->SendTextInfoFromServer ("Host wants to start game!", players);
+                messagesHandler->SendTextInfoFromServer ("Host wants to start game...", players);
             }
             return false;
         }
