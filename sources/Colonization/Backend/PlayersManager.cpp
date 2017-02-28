@@ -138,8 +138,8 @@ void PlayersManager::OnSceneSet(Urho3D::Scene *scene)
     UnsubscribeFromAllEvents ();
     Urho3D::Component::OnSceneSet (scene);
     SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (PlayersManager, Update));
-    SubscribeToEvent (Urho3D::E_CLIENTCONNECTED, URHO3D_HANDLER (PlayersManager, HandlePlayerConnected));
-    SubscribeToEvent (Urho3D::E_CLIENTDISCONNECTED, URHO3D_HANDLER (PlayersManager, HandlePlayerDisconnected));
+    SubscribeToEvent (Urho3D::E_CLIENTCONNECTED, URHO3D_HANDLER (PlayersManager, HandleClientConnected));
+    SubscribeToEvent (Urho3D::E_CLIENTDISCONNECTED, URHO3D_HANDLER (PlayersManager, HandleClientDisconnected));
 }
 
 PlayersManager::PlayersManager (Urho3D::Context *context) : Urho3D::Component (context),
@@ -181,7 +181,7 @@ void PlayersManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &e
     }
 }
 
-void PlayersManager::HandlePlayerConnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+void PlayersManager::HandleClientConnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     if (enabled_)
     {
@@ -191,7 +191,7 @@ void PlayersManager::HandlePlayerConnected (Urho3D::StringHash eventType, Urho3D
     }
 }
 
-void PlayersManager::HandlePlayerDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+void PlayersManager::HandleClientDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     if (enabled_)
     {

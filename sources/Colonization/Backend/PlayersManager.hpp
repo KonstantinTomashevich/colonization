@@ -30,8 +30,8 @@ public:
     static void RegisterObject (Urho3D::Context *context);
 
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
-    void HandlePlayerConnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
-    void HandlePlayerDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandleClientConnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandleClientDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
 
     int GetPlayersCount () const;
     Player *GetPlayerByIndex (int index) const;
