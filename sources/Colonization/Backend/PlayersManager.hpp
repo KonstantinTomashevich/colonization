@@ -14,6 +14,7 @@ class PlayersManager : public Urho3D::Component
 {
 URHO3D_OBJECT (PlayersManager, Component)
 protected:
+    bool isAcceptingNewConnections_;
     Urho3D::HashMap <Urho3D::StringHash, Player *> players_;
     Urho3D::HashMap <Urho3D::StringHash, Urho3D::StringHash> connectionHashToNameHashMap_;
     Urho3D::Vector <Urho3D::Pair <float, Urho3D::Connection *> > connectionsWithoutId_;
@@ -32,6 +33,9 @@ public:
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     void HandleClientConnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     void HandleClientDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+
+    bool IsAcceptingNewConnections () const;
+    void SetIsAcceptingNewConnections (bool isAcceptingNewConnections);
 
     int GetPlayersCount () const;
     Player *GetPlayerByIndex (int index) const;

@@ -143,6 +143,7 @@ void PlayersManager::OnSceneSet(Urho3D::Scene *scene)
 }
 
 PlayersManager::PlayersManager (Urho3D::Context *context) : Urho3D::Component (context),
+    isAcceptingNewConnections_ (true),
     players_ (),
     connectionHashToNameHashMap_ (),
     connectionsWithoutId_ ()
@@ -187,7 +188,15 @@ void PlayersManager::HandleClientConnected (Urho3D::StringHash eventType, Urho3D
     {
         Urho3D::Connection *connection = (Urho3D::Connection *)
                 eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
-        connectionsWithoutId_.Push (Urho3D::Pair <float, Urho3D::Connection *> (1.0f, connection));
+
+        if (isAcceptingNewConnections_)
+        {
+            connectionsWithoutId_.Push (Urho3D::Pair <float, Urho3D::Connection *> (1.0f, connection));
+        }
+        else
+        {
+            connection->Disconnect ();
+        }
     }
 }
 
@@ -208,6 +217,16 @@ void PlayersManager::HandleClientDisconnected (Urho3D::StringHash eventType, Urh
             DisconnectPlayer (connection);
         }
     }
+}
+
+bool PlayersManager::IsAcceptingNewConnections () const
+{
+    return isAcceptingNewConnections_;
+}
+
+void PlayersManager::SetIsAcceptingNewConnections (bool isAcceptingNewConnections)
+{
+    isAcceptingNewConnections_ = isAcceptingNewConnections;
 }
 
 int PlayersManager::GetPlayersCount () const
