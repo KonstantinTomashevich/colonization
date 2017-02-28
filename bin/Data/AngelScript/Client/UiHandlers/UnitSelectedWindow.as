@@ -8,12 +8,13 @@ class UnitSelectedWindow : ScriptObject
 
     protected void UpdateUnitSelection ()
     {
+        FogOfWarCalculator @fogOfWarCalculator = scene.GetComponent ("FogOfWarCalculator");
         Window @unitInfoWindow = ui.root.GetChild ("ingame").GetChild ("unitInfoWindow");
         unitInfoWindow.visible = true;
 
         StringHash unitHash = node.parent.parent.vars ["selectedHash"].GetStringHash ();
         Unit @unit = GetUnitByHash (scene, unitHash);
-        if (unit !is null)
+        if (unit !is null and fogOfWarCalculator.IsDistrictVisible (unit.positionHash))
         {
             Text @ownerText = unitInfoWindow.GetChild ("ownerText");
             ownerText.text = unit.ownerPlayerName + "'s";

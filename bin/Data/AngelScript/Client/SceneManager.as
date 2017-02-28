@@ -117,6 +117,7 @@ class SceneManager : ScriptObject
 
     protected void UpdateUnits ()
     {
+        FogOfWarCalculator @fogOfWarCalculator = scene.GetComponent ("FogOfWarCalculator");
         Map @map = scene.GetChild ("map").GetComponent ("Map");
         Array <Node @> unitsNodes = scene.GetChild ("units").GetChildrenWithComponent ("Unit");
         VariantMap isDistrictOccupied;
@@ -129,7 +130,7 @@ class SceneManager : ScriptObject
         {
             selectedUnitHash = node.parent.vars ["selectedHash"].GetStringHash ();
             Unit @unit = GetUnitByHash (scene, selectedUnitHash);
-            if (unit !is null)
+            if (unit !is null and fogOfWarCalculator.IsDistrictVisible (unit.positionHash))
             {
                 isDistrictOccupied [unit.positionHash] = true;
                 PlaceUnit (unit, map);
@@ -139,7 +140,7 @@ class SceneManager : ScriptObject
         for (int index = 0; index < unitsNodes.length; index++)
         {
             Unit @unit = unitsNodes [index].GetComponent ("Unit");
-            if (!isDistrictOccupied [unit.positionHash].GetBool ())
+            if (!isDistrictOccupied [unit.positionHash].GetBool () and fogOfWarCalculator.IsDistrictVisible (unit.positionHash))
             {
                 isDistrictOccupied [unit.positionHash] = true;
                 PlaceUnit (unit, map);
@@ -246,7 +247,8 @@ class SceneManager : ScriptObject
         {
             isSceneLoaded_ = CheckIsSceneLoaded (scene);
         }
-        else if (node.parent.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
+        else if (node.parent.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START and
+                 scene.GetChild ("map") !is null and scene.GetChild ("units") !is null)
         {
             if (renderPathUpdaterWillBeCreated_)
             {

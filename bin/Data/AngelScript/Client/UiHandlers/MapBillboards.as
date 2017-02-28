@@ -98,11 +98,12 @@ class MapBillboards : ScriptObject
 
     protected void UpdateDistrictBillboardUnitsSection (UIElement @billboard, District @district)
     {
+        FogOfWarCalculator @fogOfWarCalculator = scene.GetComponent ("FogOfWarCalculator");
         // TODO: This algorithm can be optimized!
         Array <Unit @> unitsInDistrict = GetUnitsInDistrict (scene, district.hash);
         UIElement @unitsElement = billboard.GetChild ("units");
 
-        if (unitsInDistrict.length > 0)
+        if (unitsInDistrict.length > 0 and fogOfWarCalculator.IsDistrictVisible (district.hash))
         {
             int index = 0;
             for (index = 0; index < unitsInDistrict.length; index++)
@@ -195,7 +196,8 @@ class MapBillboards : ScriptObject
         {
             isSceneLoaded_ = CheckIsSceneLoaded (scene);
         }
-        else if (node.parent.parent.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
+        else if (node.parent.parent.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START and
+                 scene.GetChild ("map") !is null and scene.GetChild ("units") !is null)
         {
             ProcessMapBillboards ();
         }
