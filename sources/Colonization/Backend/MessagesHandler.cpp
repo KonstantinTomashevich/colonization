@@ -71,13 +71,13 @@ void MessagesHandler::HandleClientIdentity (Urho3D::StringHash eventType, Urho3D
     if (enabled_)
     {
         Urho3D::Connection *connection = (Urho3D::Connection *)
-                eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
+                eventData [Urho3D::ClientIdentity::P_CONNECTION].GetPtr ();
         PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
         assert (playersManager);
 
         Urho3D::String name = connection->GetIdentity () ["Name"].GetString ();
         // TODO: Currently we disconnect player if it sends identity with name which is already used by another player.
-        if (playersManager->GetPlayerByNameHash (name))
+        if (playersManager->GetPlayerByNameHash (name) || !playersManager->IsAcceptingNewConnections ())
         {
             connection->Disconnect ();
         }
@@ -99,27 +99,30 @@ void MessagesHandler::HandleNetworkMessage (Urho3D::StringHash eventType, Urho3D
         Urho3D::Connection *connection = (Urho3D::Connection *)
                 eventData [Urho3D::NetworkMessage::P_CONNECTION].GetPtr ();
         Player *player = playersManager->GetPlayerByConnection (connection);
-        assert (player);
 
-        NetworkMessageType messageType = static_cast <NetworkMessageType> (
-                    eventData [Urho3D::NetworkMessage::P_MESSAGEID].GetInt ());
-        Urho3D::VectorBuffer messageData = eventData [Urho3D::NetworkMessage::P_DATA].GetVectorBuffer ();
+        // Process messages only if player identified by players manager.
+        if (player)
+        {
+            NetworkMessageType messageType = static_cast <NetworkMessageType> (
+                        eventData [Urho3D::NetworkMessage::P_MESSAGEID].GetInt ());
+            Urho3D::VectorBuffer messageData = eventData [Urho3D::NetworkMessage::P_DATA].GetVectorBuffer ();
 
-        if (messageType == CTS_NETWORK_MESSAGE_SEND_CHAT_MESSAGE && player->GetTimeUntilNewChatMessage () <= 0.0f)
-        {
-            ProcessSendChatMessageInput (player, messageData);
-        }
-        else if (messageType == CTS_NETWORK_MESSAGE_SEND_PRIVATE_MESSAGE && player->GetTimeUntilNewChatMessage () <= 0.0f)
-        {
-            ProcessSendPrivateMessageInput (player, messageData);
-        }
-        else if (messageType == CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION)
-        {
-            ProcessSendPlayerActionInput (player, messageData);
-        }
-        else if (messageType == CTS_NETWORK_MESSAGE_SEND_IS_PLAYER_READY_FOR_START)
-        {
-            ProcessSendIsPlayerReadyForStartInput (player, messageData);
+            if (messageType == CTS_NETWORK_MESSAGE_SEND_CHAT_MESSAGE && player->GetTimeUntilNewChatMessage () <= 0.0f)
+            {
+                ProcessSendChatMessageInput (player, messageData);
+            }
+            else if (messageType == CTS_NETWORK_MESSAGE_SEND_PRIVATE_MESSAGE && player->GetTimeUntilNewChatMessage () <= 0.0f)
+            {
+                ProcessSendPrivateMessageInput (player, messageData);
+            }
+            else if (messageType == CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION)
+            {
+                ProcessSendPlayerActionInput (player, messageData);
+            }
+            else if (messageType == CTS_NETWORK_MESSAGE_SEND_IS_PLAYER_READY_FOR_START)
+            {
+                ProcessSendIsPlayerReadyForStartInput (player, messageData);
+            }
         }
     }
 }
