@@ -79,6 +79,10 @@ void HostActivity::SetupPlayingState ()
     scene_->CreateComponent <TradeProcessor> (Urho3D::LOCAL);
     scene_->CreateComponent <PlayersPointsCalculator> (Urho3D::LOCAL);
     scene_->CreateComponent <VictoryProgressUpdater> (Urho3D::LOCAL);
+
+    // Ban new connections.
+    PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
+    playersManager->SetIsAcceptingNewConnections (false);
 }
 
 void HostActivity::DisposePlayingState ()
