@@ -242,18 +242,10 @@ Player *PlayersManager::GetPlayerByIndex (int index) const
 
 Player *PlayersManager::GetPlayerByConnection (Urho3D::Connection *connection) const
 {
-    Urho3D::StringHash *nameHash = connectionHashToNameHashMap_ [connection->GetAddress ()];
+    Urho3D::StringHash *nameHash = connectionHashToNameHashMap_ [Urho3D::StringHash (connection->ToString ())];
     if (nameHash)
     {
-        Player ** playerPtr = players_ [*nameHash];
-        if (playerPtr)
-        {
-            return *playerPtr;
-        }
-        else
-        {
-            return 0;
-        }
+        return GetPlayerByNameHash (*nameHash);
     }
     else
     {
@@ -332,7 +324,7 @@ void PlayersManager::PlayerIdentified (Urho3D::Connection *connection, Urho3D::S
     DeleteIdentificatedConnection (connection);
     Player *player = new Player (context_, name, color, connection, node_->GetScene ());
     players_ [name] = player;
-    connectionHashToNameHashMap_ [connection->GetAddress ()] = name;
+    connectionHashToNameHashMap_ [Urho3D::StringHash (connection->ToString ())] = Urho3D::StringHash (name);
     player->SetGold (1000.0f);
 
     MessagesHandler *messagesHandler = node_->GetScene ()->GetComponent <MessagesHandler> ();
@@ -349,16 +341,16 @@ void PlayersManager::DisconnectPlayer (Urho3D::StringHash nameHash)
     players_.Erase (nameHash);
 
     assert (player->GetConnection ());
-    connectionHashToNameHashMap_.Erase (player->GetConnection ()->GetAddress ());
+    connectionHashToNameHashMap_.Erase (Urho3D::StringHash (player->GetConnection ()->ToString ()));
     player->GetConnection ()->Disconnect ();
     delete player;
 }
 
 void PlayersManager::DisconnectPlayer (Urho3D::Connection *connection)
 {
-    if (connectionHashToNameHashMap_ [connection->GetAddress ()].Value ())
+    if (connectionHashToNameHashMap_ [Urho3D::StringHash (connection->ToString ())].Value ())
     {
-        DisconnectPlayer (connectionHashToNameHashMap_ [connection->GetAddress ()]);
+        DisconnectPlayer (connectionHashToNameHashMap_ [Urho3D::StringHash (connection->ToString ())]);
     }
 }
 }
