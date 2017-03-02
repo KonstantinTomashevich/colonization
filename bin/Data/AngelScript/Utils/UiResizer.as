@@ -134,7 +134,7 @@ class UiResizer : ScriptObject
         lastScreenSize_ = IntVector2 (0, 0);
     }
 
-    void Update (float timeStep)
+    void PostUpdate (float timeStep)
     {
         if (lastScreenSize_.x != graphics.width or lastScreenSize_.y != graphics.height or continuousResize_)
         {
