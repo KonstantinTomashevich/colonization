@@ -7,10 +7,10 @@ namespace Colonization
 const Urho3D::String EVENT_HOST_REQUEST_GAME_START ("HostRequestGameStart");
 enum GameStateType
 {
-    GAME_STATE_UNITIALIZED = -1,
-    GAME_STATE_WAITING_FOR_START = 0,
-    GAME_STATE_PLAYING = 1,
-    GAME_STATE_FINISHED = 2
+    GAME_STATE_UNITIALIZED = 0,
+    GAME_STATE_WAITING_FOR_START = 1,
+    GAME_STATE_PLAYING = 2,
+    GAME_STATE_FINISHED = 3
 };
 
 class HostActivity : public Activity
@@ -24,6 +24,9 @@ protected:
     Urho3D::String mapInfoPath_;
     GameStateType currentState_;
 
+    // TODO: Refactor states mechanism.
+    // In my opinion, "SetupState (state)" and states dispose isn't needed,
+    // because game goes only from waiting to playing and then to finished states.
     void SetupWaitingForPlayersState ();
     void DisposeWaitingForPlayersState ();
 
