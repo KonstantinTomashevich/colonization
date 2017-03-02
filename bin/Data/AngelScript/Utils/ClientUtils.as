@@ -1,3 +1,16 @@
+shared Node @GetScriptMain (Node @requester)
+{
+    Array <Node @> nodesWithTag = requester.scene.GetChildrenWithTag ("ScriptMain", true);
+    if (not nodesWithTag.empty)
+    {
+        return nodesWithTag [0];
+    }
+    else
+    {
+        return null;
+    }
+}
+
 shared bool CheckIsSceneLoaded (Scene @scene_)
 {
     if (scene_.vars ["ReplicatedNodesCount"].GetInt () != 0)

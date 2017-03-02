@@ -53,6 +53,7 @@ class Client : ScriptObject
         SubscribeToEvent ("ServerDisconnected", "HandleServerDisconnected");
         SubscribeToEvent ("ConnectFailed", "HandleConnectFailed");
         SubscribeToEvent ("GoToMainMenuRequest", "HandleGoToMainMenuRequest");
+        node.AddTag ("ScriptMain");
     }
 
     void Update (float timeStep)
