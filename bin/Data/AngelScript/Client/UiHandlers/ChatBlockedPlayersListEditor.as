@@ -10,12 +10,14 @@ class ChatBlockedPlayersListEditor : StringListEditorUiHandler
 
     protected Array <String> GetElements () override
     {
-        return node.parent.vars ["chatBlockedPlayersList"].GetStringVector ();
+        Node @scriptMain = GetScriptMain (node);
+        return scriptMain.vars ["chatBlockedPlayersList"].GetStringVector ();
     }
 
     protected void SetElements (Array <String> elements) override
     {
-        node.parent.vars ["chatBlockedPlayersList"] = Variant (elements);
+        Node @scriptMain = GetScriptMain (node);
+        scriptMain.vars ["chatBlockedPlayersList"] = Variant (elements);
     }
 
     protected String ProcessElementText (String text) override
@@ -33,7 +35,8 @@ class ChatBlockedPlayersListEditor : StringListEditorUiHandler
 
     protected bool IsElementToAddCorrect (String element) override
     {
-        String playerName = node.parent.parent.vars ["playerName"].GetString ();
+        Node @scriptMain = GetScriptMain (node);
+        String playerName = scriptMain.vars ["playerName"].GetString ();
         return (playerName != element);
     }
 }

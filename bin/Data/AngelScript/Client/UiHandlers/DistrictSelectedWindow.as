@@ -11,14 +11,15 @@ class DistrictSelectedWindow : ScriptObject
 
     protected void UpdateDistrictSelection ()
     {
+        Node @scriptMain = GetScriptMain (node);
         Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
         districtInfoWindow.visible = true;
 
         Map @map = scene.GetChild ("map").GetComponent ("Map");
-        StringHash districtHash = node.parent.parent.vars ["selectedHash"].GetStringHash ();
+        StringHash districtHash = scriptMain.vars ["selectedHash"].GetStringHash ();
         District @district = map.GetDistrictByHash (districtHash);
 
-        String playerName = node.parent.parent.vars ["playerName"].GetString ();
+        String playerName = scriptMain.vars ["playerName"].GetString ();
         Text@ nameText = districtInfoWindow.GetChild ("nameText");
         nameText.text = district.name;
 
@@ -30,7 +31,7 @@ class DistrictSelectedWindow : ScriptObject
         UIElement @investButtons = districtInfoWindow.GetChild ("investButtons");
         investButtons.visible = (infoType == StringHash ("ColonyEvolution") and
                                  district.hasColony and
-                                 node.parent.parent.vars ["gold"].GetFloat () >= DEFAULT_INVESTITION_SIZE and
+                                 scriptMain.vars ["gold"].GetFloat () >= DEFAULT_INVESTITION_SIZE and
                                  district.colonyOwnerName == playerName);
 
         Button @sendColonizatorsButton = districtInfoWindow.GetChild ("sendColonizatorsButton");
@@ -38,7 +39,7 @@ class DistrictSelectedWindow : ScriptObject
                                          not district.isSea and
                                          not district.isImpassable and
                                          (district.colonyOwnerName == playerName or not district.hasColony) and
-                                         node.parent.parent.vars ["gold"].GetFloat () >= COLONIZATORS_EXPEDITION_COST;
+                                         scriptMain.vars ["gold"].GetFloat () >= COLONIZATORS_EXPEDITION_COST;
 
         if (infoType == StringHash ("Basic"))
         {
@@ -259,17 +260,18 @@ class DistrictSelectedWindow : ScriptObject
 
     void Update (float timeStep)
     {
-        if (!isSceneLoaded_ and node.parent.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
+        Node @scriptMain = GetScriptMain (node);
+        if (!isSceneLoaded_ and scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
         {
             isSceneLoaded_ = CheckIsSceneLoaded (scene);
         }
-        else
+        else if (isSceneLoaded_)
         {
             untilSelectionUpdate_ -= timeStep;
             if (untilSelectionUpdate_ <= 0.0f)
             {
                 Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
-                StringHash selectionType = node.parent.parent.vars ["selectionType"].GetStringHash ();
+                StringHash selectionType = scriptMain.vars ["selectionType"].GetStringHash ();
 
                 if (selectionType == StringHash ("District"))
                 {
@@ -291,7 +293,8 @@ class DistrictSelectedWindow : ScriptObject
 
     void HandleSendColonizatorsClick ()
     {
-        StringHash districtHash = node.parent.parent.vars ["selectedHash"].GetStringHash ();
+        Node @scriptMain = GetScriptMain (node);
+        StringHash districtHash = scriptMain.vars ["selectedHash"].GetStringHash ();
         VectorBuffer buffer = VectorBuffer ();
         buffer.WriteInt (PLAYER_ACTION_REQUEST_COLONIZATORS_FROM_EUROPE);
         buffer.WriteStringHash (districtHash);
@@ -302,9 +305,9 @@ class DistrictSelectedWindow : ScriptObject
         SendEvent ("NewNetworkTask", eventData);
 
         // Client side prediction.
-        float gold = node.parent.parent.vars ["gold"].GetFloat ();
+        float gold = scriptMain.vars ["gold"].GetFloat ();
         gold -= COLONIZATORS_EXPEDITION_COST;
-        node.parent.parent.vars ["gold"] = Variant (gold);
+        scriptMain.vars ["gold"] = Variant (gold);
     }
 
     void HandleBasicInfoClick ()
@@ -333,9 +336,10 @@ class DistrictSelectedWindow : ScriptObject
 
     void HandleInvestClick (StringHash eventType, VariantMap &eventData)
     {
+        Node @scriptMain = GetScriptMain (node);
         UIElement @element = eventData ["Element"].GetPtr ();
         StringHash investTypeHash = StringHash (element.vars ["investitionType"].GetString ());
-        StringHash districtHash = node.parent.parent.vars ["selectedHash"].GetStringHash ();
+        StringHash districtHash = scriptMain.vars ["selectedHash"].GetStringHash ();
 
         VectorBuffer buffer = VectorBuffer ();
         buffer.WriteInt (PLAYER_ACTION_INVEST_TO_COLONY);
@@ -349,8 +353,8 @@ class DistrictSelectedWindow : ScriptObject
         SendEvent ("NewNetworkTask", eventData);
 
         // Client side prediction.
-        float gold = node.parent.parent.vars ["gold"].GetFloat ();
+        float gold = scriptMain.vars ["gold"].GetFloat ();
         gold -= DEFAULT_INVESTITION_SIZE;
-        node.parent.parent.vars ["gold"] = Variant (gold);
+        scriptMain.vars ["gold"] = Variant (gold);
     }
 }

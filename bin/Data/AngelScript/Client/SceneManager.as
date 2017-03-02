@@ -119,16 +119,17 @@ class SceneManager : ScriptObject
     {
         FogOfWarCalculator @fogOfWarCalculator = scene.GetComponent ("FogOfWarCalculator");
         Map @map = scene.GetChild ("map").GetComponent ("Map");
+        Node @scriptMain = GetScriptMain (node);
         Array <Node @> unitsNodes = scene.GetChild ("units").GetChildrenWithComponent ("Unit");
         VariantMap isDistrictOccupied;
 
-        StringHash selectionType = node.parent.GetChild ("screenPressesHandlerScriptNode").
+        StringHash selectionType = scriptMain.GetChild ("screenPressesHandlerScriptNode").
                                     vars ["selectionType"].GetStringHash ();
         StringHash selectedUnitHash;
         // Firstly place selected unit (if any unit selected).
         if (selectionType == StringHash ("Unit") and unitsNodes.length > 0)
         {
-            selectedUnitHash = node.parent.vars ["selectedHash"].GetStringHash ();
+            selectedUnitHash = scriptMain.vars ["selectedHash"].GetStringHash ();
             Unit @unit = GetUnitByHash (scene, selectedUnitHash);
             if (unit !is null and fogOfWarCalculator.IsDistrictVisible (unit.positionHash))
             {
@@ -179,8 +180,9 @@ class SceneManager : ScriptObject
 
     protected void CreateFogOfWarProcessors ()
     {
+        Node @scriptMain = GetScriptMain (node);
         FogOfWarCalculator @fogOfWarCalculator = scene.CreateComponent ("FogOfWarCalculator", LOCAL);
-        fogOfWarCalculator.playerName = node.parent.vars ["playerName"].GetString ();
+        fogOfWarCalculator.playerName = scriptMain.vars ["playerName"].GetString ();
 
         Node @mapNode = scene.GetChild ("map");
         MapMaskUpdater @mapMaskUpdater = scene.CreateComponent ("MapMaskUpdater", LOCAL);
@@ -190,7 +192,8 @@ class SceneManager : ScriptObject
 
     protected void CreateRenderPathUpdater ()
     {
-        Node @renderPathUpdateScriptNode = node.parent.CreateChild ("renderPathUpdaterScriptNode", LOCAL);
+        Node @scriptMain = GetScriptMain (node);
+        Node @renderPathUpdateScriptNode = scriptMain.CreateChild ("renderPathUpdaterScriptNode", LOCAL);
         ScriptInstance @renderPathUpdaterScript = renderPathUpdateScriptNode.CreateComponent ("ScriptInstance", LOCAL);
         renderPathUpdaterScript.CreateObject (cache.GetResource ("ScriptFile",
                                                          "AngelScript/Client/RenderPathUpdater.as"),
@@ -199,7 +202,8 @@ class SceneManager : ScriptObject
 
     protected void UpdateCameraPositionByKeyboardInput (float timeStep)
     {
-        if (not IsAnyLineEditFocused (node.parent))
+        Node @scriptMain = GetScriptMain (node);
+        if (not IsAnyLineEditFocused (scriptMain))
         {
             Vector3 positionDelta;
             if (input.keyDown [KEY_GO_LEFT])
@@ -243,11 +247,12 @@ class SceneManager : ScriptObject
 
     void Update (float timeStep)
     {
-        if (!isSceneLoaded_ and node.parent.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
+        Node @scriptMain = GetScriptMain (node);
+        if (!isSceneLoaded_ and scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
         {
             isSceneLoaded_ = CheckIsSceneLoaded (scene);
         }
-        else if (node.parent.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START and
+        else if (scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START and
                  scene.GetChild ("map") !is null and scene.GetChild ("units") !is null)
         {
             if (renderPathUpdaterWillBeCreated_)

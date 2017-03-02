@@ -5,6 +5,87 @@ class ClientUi : ScriptObject
     protected XMLFile @style_;
     protected bool isSceneLoaded_;
 
+    protected void AddUtilHandlers ()
+    {
+        Node @utilHandlersNode = node.GetChild ("utilHandlers");
+        ScriptInstance @uiResizerInstance = utilHandlersNode.CreateChild ("UiResizer", LOCAL).CreateComponent ("ScriptInstance");
+        uiResizerInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Utils/UiResizer.as"),
+                                        "UiResizer");
+        uiResizerInstance.SetAttribute ("startElementName_", Variant ("UIRoot"));
+        uiResizerInstance.SetAttribute ("continuousResize_", Variant (true));
+
+        ScriptInstance @uiPlayerColorPainterInstance = utilHandlersNode.CreateChild ("UiPlayerColorPainter", LOCAL).CreateComponent ("ScriptInstance");
+        uiPlayerColorPainterInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Utils/UiPlayerColorPainter.as"),
+                                        "UiPlayerColorPainter");
+    }
+
+    protected void AddWaitingForStartStateUiHandlers ()
+    {
+        ui.root.RemoveAllChildren ();
+        node.GetChild ("uiHandlers").RemoveAllChildren ();
+        Node @uiHandlersNode = node.GetChild ("uiHandlers");
+    }
+
+    protected void AddPlayingStateUiHandlers ()
+    {
+        ui.root.RemoveAllChildren ();
+        node.GetChild ("uiHandlers").RemoveAllChildren ();
+        Node @uiHandlersNode = node.GetChild ("uiHandlers");
+        ui.root.CreateChild ("UIElement", "billboardsRoot");
+        UIElement @uiRoot = ui.LoadLayout (cache.GetResource ("XMLFile", "UI/Ingame.xml"));
+        ui.root.AddChild (uiRoot);
+        uiRoot.defaultStyle = style_;
+        uiRoot.name = "ingame";
+
+        ScriptInstance @playerInfoWindowInstance = uiHandlersNode.CreateChild ("PlayerInfoWindow", LOCAL).CreateComponent ("ScriptInstance");
+        playerInfoWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Client/UiHandlers/PlayerInfoWindow.as"),
+                                               "PlayerInfoWindow");
+
+        ScriptInstance @menuWindowInstance = uiHandlersNode.CreateChild ("MenuWindow", LOCAL).CreateComponent ("ScriptInstance");
+        menuWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                      "AngelScript/Client/UiHandlers/MenuWindow.as"),
+                                         "MenuWindow");
+
+        ScriptInstance @mapBillboardsInstance = uiHandlersNode.CreateChild ("MapBillboards", LOCAL).CreateComponent ("ScriptInstance");
+        mapBillboardsInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                     "AngelScript/Client/UiHandlers/MapBillboards.as"),
+                                            "MapBillboards");
+
+        ScriptInstance @chatWindowInstance = uiHandlersNode.CreateChild ("ChatWindow", LOCAL).CreateComponent ("ScriptInstance");
+        chatWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                      "AngelScript/Client/UiHandlers/ChatWindow.as"),
+                                         "ChatWindow");
+
+        ScriptInstance @unitSelectedWindowInstance = uiHandlersNode.CreateChild ("UnitSelectedWindow", LOCAL).CreateComponent ("ScriptInstance");
+        unitSelectedWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                      "AngelScript/Client/UiHandlers/UnitSelectedWindow.as"),
+                                         "UnitSelectedWindow");
+
+        ScriptInstance @districtSelectedWindowInstance = uiHandlersNode.CreateChild ("DistrictSelectedWindow", LOCAL).CreateComponent ("ScriptInstance");
+        districtSelectedWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                      "AngelScript/Client/UiHandlers/DistrictSelectedWindow.as"),
+                                         "DistrictSelectedWindow");
+
+        ScriptInstance @chatBlockedPlayersListEditorInstance = uiHandlersNode.CreateChild ("ChatBlockedPlayersListEditor", LOCAL).CreateComponent ("ScriptInstance");
+        chatBlockedPlayersListEditorInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                      "AngelScript/Client/UiHandlers/ChatBlockedPlayersListEditor.as"),
+                                         "ChatBlockedPlayersListEditor");
+
+
+        ScriptInstance @chatPrivateReceiversListEditorInstance = uiHandlersNode.CreateChild ("ChatPrivateReceiversListEditor", LOCAL).CreateComponent ("ScriptInstance");
+        chatPrivateReceiversListEditorInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                      "AngelScript/Client/UiHandlers/ChatPrivateReceiversListEditor.as"),
+                                         "ChatPrivateReceiversListEditor");
+
+        ScriptInstance @gameEndedWindowInstance = uiHandlersNode.CreateChild ("GameEndedWindow", LOCAL).CreateComponent ("ScriptInstance");
+        gameEndedWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Client/UiHandlers/GameEndedWindow.as"),
+                                               "GameEndedWindow");
+    }
+
     ClientUi ()
     {
         isSceneLoaded_ = false;
@@ -20,84 +101,26 @@ class ClientUi : ScriptObject
         ui.root.RemoveAllChildren ();
         style_ = cache.GetResource ("XMLFile", "UI/ColonizationUIStyle.xml");
         ui.root.defaultStyle = style_;
-
-        ui.root.CreateChild ("UIElement", "billboardsRoot");
-        UIElement @uiRoot = ui.LoadLayout (cache.GetResource ("XMLFile", "UI/Ingame.xml"));
-        ui.root.AddChild (uiRoot);
-        uiRoot.defaultStyle = style_;
-        uiRoot.name = "ingame";
-
-        ScriptInstance @playerInfoWindowInstance = node.CreateChild ("PlayerInfoWindow", LOCAL).CreateComponent ("ScriptInstance");
-        playerInfoWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/Client/UiHandlers/PlayerInfoWindow.as"),
-                                               "PlayerInfoWindow");
-
-        ScriptInstance @menuWindowInstance = node.CreateChild ("MenuWindow", LOCAL).CreateComponent ("ScriptInstance");
-        menuWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                      "AngelScript/Client/UiHandlers/MenuWindow.as"),
-                                         "MenuWindow");
-
-        ScriptInstance @mapBillboardsInstance = node.CreateChild ("MapBillboards", LOCAL).CreateComponent ("ScriptInstance");
-        mapBillboardsInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                     "AngelScript/Client/UiHandlers/MapBillboards.as"),
-                                            "MapBillboards");
-
-        ScriptInstance @chatWindowInstance = node.CreateChild ("ChatWindow", LOCAL).CreateComponent ("ScriptInstance");
-        chatWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                      "AngelScript/Client/UiHandlers/ChatWindow.as"),
-                                         "ChatWindow");
-
-        ScriptInstance @unitSelectedWindowInstance = node.CreateChild ("UnitSelectedWindow", LOCAL).CreateComponent ("ScriptInstance");
-        unitSelectedWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                      "AngelScript/Client/UiHandlers/UnitSelectedWindow.as"),
-                                         "UnitSelectedWindow");
-
-        ScriptInstance @districtSelectedWindowInstance = node.CreateChild ("DistrictSelectedWindow", LOCAL).CreateComponent ("ScriptInstance");
-        districtSelectedWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                      "AngelScript/Client/UiHandlers/DistrictSelectedWindow.as"),
-                                         "DistrictSelectedWindow");
-
-        ScriptInstance @chatBlockedPlayersListEditorInstance = node.CreateChild ("ChatBlockedPlayersListEditor", LOCAL).CreateComponent ("ScriptInstance");
-        chatBlockedPlayersListEditorInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                      "AngelScript/Client/UiHandlers/ChatBlockedPlayersListEditor.as"),
-                                         "ChatBlockedPlayersListEditor");
-
-
-        ScriptInstance @chatPrivateReceiversListEditorInstance = node.CreateChild ("ChatPrivateReceiversListEditor", LOCAL).CreateComponent ("ScriptInstance");
-        chatPrivateReceiversListEditorInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                      "AngelScript/Client/UiHandlers/ChatPrivateReceiversListEditor.as"),
-                                         "ChatPrivateReceiversListEditor");
-
-        ScriptInstance @gameEndedWindowInstance = node.CreateChild ("GameEndedWindow", LOCAL).CreateComponent ("ScriptInstance");
-        gameEndedWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/Client/UiHandlers/GameEndedWindow.as"),
-                                               "GameEndedWindow");
-
-        ScriptInstance @uiResizerInstance = node.CreateChild ("UiResizer", LOCAL).CreateComponent ("ScriptInstance");
-        uiResizerInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/Utils/UiResizer.as"),
-                                        "UiResizer");
-        uiResizerInstance.SetAttribute ("startElementName_", Variant ("UIRoot"));
-        uiResizerInstance.SetAttribute ("continuousResize_", Variant (true));
-
-        ScriptInstance @uiPlayerColorPainterInstance = node.CreateChild ("UiPlayerColorPainter", LOCAL).CreateComponent ("ScriptInstance");
-        uiPlayerColorPainterInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/Utils/UiPlayerColorPainter.as"),
-                                        "UiPlayerColorPainter");
+        node.CreateChild ("uiHandlers", LOCAL);
+        node.CreateChild ("utilHandlers", LOCAL);
+        AddUtilHandlers ();
+        SubscribeToEvent ("GameStateChanged", "HandleGameStateChanged");
     }
 
     void Update (float timeStep)
     {
-        if (!isSceneLoaded_ and node.parent.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
+        Node @scriptMain = GetScriptMain (node);
+        if (!isSceneLoaded_ and scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
         {
             isSceneLoaded_ = CheckIsSceneLoaded (scene);
         }
         else
         {
-            PlayerInfo @playerInfo = GetPlayerInfoByName (scene, node.parent.vars ["playerName"].GetString ());
+            PlayerInfo @playerInfo = GetPlayerInfoByName (scene, scriptMain.vars ["playerName"].GetString ());
             if (playerInfo !is null)
             {
-                ScriptInstance @uiPlayerColorPainterInstance = node.GetChild ("UiPlayerColorPainter").GetComponent ("ScriptInstance");
+                ScriptInstance @uiPlayerColorPainterInstance = node.GetChild ("utilHandlers").
+                            GetChild ("UiPlayerColorPainter").GetComponent ("ScriptInstance");
                 uiPlayerColorPainterInstance.SetAttribute ("playerColor_", Variant (playerInfo.color));
             }
         }
@@ -106,5 +129,22 @@ class ClientUi : ScriptObject
     void Stop ()
     {
 
+    }
+
+    void HandleGameStateChanged (StringHash eventType, VariantMap &eventData)
+    {
+        int newGameState = eventData ["newGameState"].GetInt ();
+        if (newGameState == GAME_STATE_WAITING_FOR_START)
+        {
+            AddWaitingForStartStateUiHandlers ();
+        }
+        else if (newGameState == GAME_STATE_PLAYING)
+        {
+            AddPlayingStateUiHandlers ();
+        }
+        else if (newGameState == GAME_STATE_FINISHED)
+        {
+            // Nothing now.
+        }
     }
 };

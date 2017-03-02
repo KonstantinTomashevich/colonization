@@ -1,3 +1,5 @@
+#include "AngelScript/Utils/ClientUtils.as"
+
 class ClientNetwork : ScriptObject
 {
     protected int TIME_STAMP_SUBSTRING_START = 11;
@@ -69,20 +71,22 @@ class ClientNetwork : ScriptObject
     void HandleGameStateMessage (VariantMap &eventData)
     {
         VectorBuffer buffer = eventData ["Data"].GetBuffer ();
+        Node @scriptMain = GetScriptMain (node);
+
         int newGameState = buffer.ReadInt ();
-        int oldGameState = node.parent.vars ["gameState"].GetInt ();
-        node.parent.vars ["gameState"] = Variant (newGameState);
+        int oldGameState = scriptMain.vars ["gameState"].GetInt ();
+        scriptMain.vars ["gameState"] = Variant (newGameState);
 
         if (oldGameState != newGameState)
         {
-            VariantMap eventData;
-            eventData ["oldGameState"] = Variant (oldGameState);
-            eventData ["newGameState"] = Variant (newGameState);
-            SendEvent ("GameStateChanged", eventData);
+            VariantMap gameStateChangedEventData;
+            gameStateChangedEventData ["oldGameState"] = Variant (oldGameState);
+            gameStateChangedEventData ["newGameState"] = Variant (newGameState);
+            SendEvent ("GameStateChanged", gameStateChangedEventData);
         }
 
         // TODO: This is temporary! Remove it later!
-        if (node.parent.vars ["gameState"].GetInt () == GAME_STATE_WAITING_FOR_START)
+        if (scriptMain.vars ["gameState"].GetInt () == GAME_STATE_WAITING_FOR_START)
         {
             VectorBuffer buffer;
             buffer.WriteBool (true);
@@ -94,22 +98,24 @@ class ClientNetwork : ScriptObject
     void HandlePlayerStatsMessage (VariantMap &eventData)
     {
         VectorBuffer buffer = eventData ["Data"].GetBuffer ();
+        Node @scriptMain = GetScriptMain (node);
         float gold = buffer.ReadFloat ();
         float points = buffer.ReadFloat ();
-        node.parent.vars ["gold"] = gold;
-        node.parent.vars ["points"] = points;
+        scriptMain.vars ["gold"] = gold;
+        scriptMain.vars ["points"] = points;
     }
 
     void HandleChatMessage (VariantMap &eventData)
     {
         VectorBuffer buffer = eventData ["Data"].GetBuffer ();
+        Node @scriptMain = GetScriptMain (node);
         bool isPrivate = buffer.ReadBool ();
         String sender = buffer.ReadString ();
         String message = buffer.ReadString ();
         String timeStamp = time.timeStamp;
         timeStamp = timeStamp.Substring (TIME_STAMP_SUBSTRING_START, TIME_STAMP_SUBSTRING_LENGTH);
 
-        Array <String> blockedUsersList = node.parent.GetChild ("uiScriptNode").vars ["chatBlockedPlayersList"].GetStringVector ();
+        Array <String> blockedUsersList = scriptMain.vars ["chatBlockedPlayersList"].GetStringVector ();
         if (blockedUsersList.Find (sender) < 0)
         {
             VariantMap messageEventData = VariantMap ();
