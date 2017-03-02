@@ -101,8 +101,9 @@ class ChatWindow : ScriptObject
         SubscribeToEvent (showPrivateUsersButton, "Released", "HandleShowPrivateUsersClick");
         SubscribeToEvent ("NewChatMessage", "HandleNewChatMessage");
 
+        Node @scriptMain = GetScriptMain (node);
         LineEdit @messageEdit = chatWindow.GetChild ("messageEdit");
-        RegisterLineEdit (node.parent.parent, messageEdit);
+        RegisterLineEdit (scriptMain, messageEdit);
     }
 
     void Update (float timeStep)
@@ -167,11 +168,12 @@ class ChatWindow : ScriptObject
     void HandleSendPrivateMessageClick ()
     {
         untilNewMessage_ = PLAYER_NEW_CHAT_MESSAGE_DELAY;
+        Node @scriptMain = GetScriptMain (node);
         Window @chatWindow = ui.root.GetChild ("ingame").GetChild ("chatWindow");
         LineEdit @messageEdit = chatWindow.GetChild ("messageEdit");
 
         String message = messageEdit.text;
-        Array <String> receivers = node.parent.vars ["chatPrivateReceiversList"].GetStringVector ();
+        Array <String> receivers = scriptMain.vars ["chatPrivateReceiversList"].GetStringVector ();
         messageEdit.text = "";
 
         VectorBuffer buffer = VectorBuffer ();

@@ -2,6 +2,7 @@
 
 class ScreenPressesHandler : ScriptObject
 {
+    protected bool isScriptMainVarsInitialized_;
     protected float RAYCAST_RAY_LENGTH = 300.0f;
 
     protected Node @GetFirstReplicatedParentOf (Node @localNode)
@@ -14,30 +15,30 @@ class ScreenPressesHandler : ScriptObject
         return scanningNode;
     }
 
-    protected void UnitSelected (Unit @unit)
+    protected void UnitSelected (Unit @unit, Node @scriptMain)
     {
-        node.parent.vars ["selectionType"] = StringHash ("Unit");
-        node.parent.vars ["selectedHash"] = unit.hash;
+        scriptMain.vars ["selectionType"] = StringHash ("Unit");
+        scriptMain.vars ["selectedHash"] = unit.hash;
 
         // Inform map mask updater about selection.
         MapMaskUpdater @mapMaskUpdater = scene.GetComponent ("MapMaskUpdater");
         mapMaskUpdater.selectedDistrictHash = StringHash (0);
     }
 
-    protected void DistrictSelected (District @district)
+    protected void DistrictSelected (District @district, Node @scriptMain)
     {
-        node.parent.vars ["selectionType"] = StringHash ("District");
-        node.parent.vars ["selectedHash"] = district.hash;
+        scriptMain.vars ["selectionType"] = StringHash ("District");
+        scriptMain.vars ["selectedHash"] = district.hash;
 
         // Inform map mask updater about selection.
         MapMaskUpdater @mapMaskUpdater = scene.GetComponent ("MapMaskUpdater");
         mapMaskUpdater.selectedDistrictHash = district.hash;
     }
 
-    protected void ClearSelection ()
+    protected void ClearSelection (Node @scriptMain)
     {
-        node.parent.vars ["selectionType"] = StringHash ("None");
-        node.parent.vars ["selectedHash"] = StringHash ();
+        scriptMain.vars ["selectionType"] = StringHash ("None");
+        scriptMain.vars ["selectedHash"] = StringHash ();
 
         // Inform map mask updater about selection.
         MapMaskUpdater @mapMaskUpdater = scene.GetComponent ("MapMaskUpdater");
@@ -46,6 +47,7 @@ class ScreenPressesHandler : ScriptObject
 
     protected void SetUnitMoveTarget (Unit @unit, District @target)
     {
+        Node @scriptMain = GetScriptMain (node);
         if (unit.unitType != UNIT_COLONIZATORS and unit.unitType != UNIT_TRADERS)
         {
             VectorBuffer buffer = VectorBuffer ();
@@ -58,10 +60,10 @@ class ScreenPressesHandler : ScriptObject
             eventData ["messageBuffer"] = Variant (buffer);
             SendEvent ("NewNetworkTask", eventData);
         }
-        node.parent.vars ["currentClickCommand"] = StringHash ("NoCommand");
+        scriptMain.vars ["currentClickCommand"] = StringHash ("NoCommand");
     }
 
-    protected void ProcessDistrictSelection (Vector3 hitPosition)
+    protected void ProcessDistrictSelection (Vector3 hitPosition, Node @scriptMain)
     {
         MapMaskUpdater @mapMaskUpdater = scene.GetComponent ("MapMaskUpdater");
         StringHash districtHash = mapMaskUpdater.GetDistrictByPoint (hitPosition);
@@ -71,16 +73,16 @@ class ScreenPressesHandler : ScriptObject
 
         if (district !is null)
         {
-            StringHash command = node.parent.vars ["currentClickCommand"].GetStringHash ();
+            StringHash command = scriptMain.vars ["currentClickCommand"].GetStringHash ();
             if (command == StringHash ("NoCommand"))
             {
-                DistrictSelected (district);
+                DistrictSelected (district, scriptMain);
             }
 
             else if (command == StringHash ("MoveUnit"))
             {
                 // Get selected unit.
-                StringHash selectedHash = node.parent.vars ["selectedHash"].GetStringHash ();
+                StringHash selectedHash = scriptMain.vars ["selectedHash"].GetStringHash ();
                 Unit @unit = GetUnitByHash (scene, selectedHash);
                 if (unit !is null)
                 {
@@ -89,19 +91,25 @@ class ScreenPressesHandler : ScriptObject
                 // If unit no longer exists, select district instead.
                 else
                 {
-                    DistrictSelected (district);
+                    DistrictSelected (district, scriptMain);
                 }
             }
         }
         else
         {
-            ClearSelection ();
+            ClearSelection (scriptMain);
         }
+    }
+
+    protected void InitScriptMainVars ()
+    {
+        Node @scriptMain = GetScriptMain (node);
+        scriptMain.vars ["currentClickCommand"] = StringHash ("NoCommand");
     }
 
     ScreenPressesHandler ()
     {
-
+        isScriptMainVarsInitialized_ = false;
     }
 
     ~ScreenPressesHandler ()
@@ -112,12 +120,15 @@ class ScreenPressesHandler : ScriptObject
     void Start ()
     {
         SubscribeToEvent ("UIMouseClick", "HandleScreenPress");
-        node.parent.vars ["currentClickCommand"] = StringHash ("NoCommand");
     }
 
     void Update (float timeStep)
     {
-
+        if (!isScriptMainVarsInitialized_)
+        {
+            InitScriptMainVars ();
+            isScriptMainVarsInitialized_ = true;
+        }
     }
 
     void Stop ()
@@ -127,7 +138,8 @@ class ScreenPressesHandler : ScriptObject
 
     void HandleScreenPress (StringHash eventType, VariantMap &eventData)
     {
-        if (eventData ["Element"].GetPtr () is null && node.parent.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
+        Node @scriptMain = GetScriptMain (node);
+        if (eventData ["Element"].GetPtr () is null && scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
         {
             Camera @camera = scene.GetChild ("camera").GetComponent ("Camera");
             Ray ray = camera.GetScreenRay (eventData ["X"].GetInt () * 1.0f / graphics.width,
@@ -141,21 +153,21 @@ class ScreenPressesHandler : ScriptObject
                 {
                     if (firstReplicated.HasComponent ("Unit"))
                     {
-                        UnitSelected (firstReplicated.GetComponent ("Unit"));
+                        UnitSelected (firstReplicated.GetComponent ("Unit"), scriptMain);
                     }
                     else
                     {
-                        ProcessDistrictSelection (result.position);
+                        ProcessDistrictSelection (result.position, scriptMain);
                     }
                 }
                 else
                 {
-                    ClearSelection ();
+                    ClearSelection (scriptMain);
                 }
             }
             else
             {
-                ClearSelection ();
+                ClearSelection (scriptMain);
             }
         }
     }

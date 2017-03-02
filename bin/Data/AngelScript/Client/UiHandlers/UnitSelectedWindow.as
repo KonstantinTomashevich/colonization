@@ -8,11 +8,12 @@ class UnitSelectedWindow : ScriptObject
 
     protected void UpdateUnitSelection ()
     {
+        Node @scriptMain = GetScriptMain (node);
         FogOfWarCalculator @fogOfWarCalculator = scene.GetComponent ("FogOfWarCalculator");
         Window @unitInfoWindow = ui.root.GetChild ("ingame").GetChild ("unitInfoWindow");
         unitInfoWindow.visible = true;
 
-        StringHash unitHash = node.parent.parent.vars ["selectedHash"].GetStringHash ();
+        StringHash unitHash = scriptMain.vars ["selectedHash"].GetStringHash ();
         Unit @unit = GetUnitByHash (scene, unitHash);
         if (unit !is null and fogOfWarCalculator.IsDistrictVisible (unit.positionHash))
         {
@@ -88,8 +89,8 @@ class UnitSelectedWindow : ScriptObject
         {
             // Clear selection if unit isn't exists.
             unitInfoWindow.visible = false;
-            node.parent.vars ["selectionType"] = StringHash ("None");
-            node.parent.vars ["selectedHash"] = StringHash ();
+            scriptMain.vars ["selectionType"] = StringHash ("None");
+            scriptMain.vars ["selectedHash"] = StringHash ();
         }
     }
 
@@ -113,7 +114,8 @@ class UnitSelectedWindow : ScriptObject
 
     void Update (float timeStep)
     {
-        if (!isSceneLoaded_ and node.parent.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
+        Node @scriptMain = GetScriptMain (node);
+        if (!isSceneLoaded_ and scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
         {
             isSceneLoaded_ = CheckIsSceneLoaded (scene);
         }
@@ -123,7 +125,7 @@ class UnitSelectedWindow : ScriptObject
             if (untilSelectionUpdate_ <= 0.0f)
             {
                 Window @unitInfoWindow = ui.root.GetChild ("ingame").GetChild ("unitInfoWindow");
-                StringHash selectionType = node.parent.parent.vars ["selectionType"].GetStringHash ();
+                StringHash selectionType = scriptMain.vars ["selectionType"].GetStringHash ();
 
                 if (selectionType == StringHash ("Unit"))
                 {
@@ -145,6 +147,7 @@ class UnitSelectedWindow : ScriptObject
 
     void HandleMoveUnitToClick ()
     {
-        node.parent.parent.vars ["currentClickCommand"] = StringHash ("MoveUnit");
+        Node @scriptMain = GetScriptMain (node);
+        scriptMain.vars ["currentClickCommand"] = StringHash ("MoveUnit");
     }
 }

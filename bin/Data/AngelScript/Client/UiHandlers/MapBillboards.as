@@ -192,11 +192,12 @@ class MapBillboards : ScriptObject
 
     void Update (float timeStep)
     {
-        if (!isSceneLoaded_ and node.parent.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
+        Node @scriptMain = GetScriptMain (node);
+        if (!isSceneLoaded_ and scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
         {
             isSceneLoaded_ = CheckIsSceneLoaded (scene);
         }
-        else if (node.parent.parent.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START and
+        else if (scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START and
                  scene.GetChild ("map") !is null and scene.GetChild ("units") !is null)
         {
             ProcessMapBillboards ();
@@ -210,9 +211,10 @@ class MapBillboards : ScriptObject
 
     void HandleSelectUnitClick (StringHash eventType, VariantMap &eventData)
     {
+        Node @scriptMain = GetScriptMain (node);
         UIElement @element = eventData ["Element"].GetPtr ();
         StringHash unitHash = element.vars ["unitHash"].GetStringHash ();
-        node.parent.parent.vars ["selectionType"] = StringHash ("Unit");
-        node.parent.parent.vars ["selectedHash"] = unitHash;
+        scriptMain.vars ["selectionType"] = StringHash ("Unit");
+        scriptMain.vars ["selectedHash"] = unitHash;
     }
 }
