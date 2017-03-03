@@ -21,6 +21,7 @@ class Client : ScriptObject
 
     void Start ()
     {
+        node.AddTag ("ScriptMain");
         Node @uiScriptNode = node.CreateChild ("uiScriptNode", LOCAL);
         ScriptInstance @uiScript = uiScriptNode.CreateComponent ("ScriptInstance", LOCAL);
         uiScript.CreateObject (cache.GetResource ("ScriptFile",
@@ -53,7 +54,6 @@ class Client : ScriptObject
         SubscribeToEvent ("ServerDisconnected", "HandleServerDisconnected");
         SubscribeToEvent ("ConnectFailed", "HandleConnectFailed");
         SubscribeToEvent ("GoToMainMenuRequest", "HandleGoToMainMenuRequest");
-        node.AddTag ("ScriptMain");
     }
 
     void Update (float timeStep)

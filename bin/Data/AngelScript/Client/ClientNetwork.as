@@ -17,7 +17,6 @@ class ClientNetwork : ScriptObject
 
     void Start ()
     {
-        node.vars ["TasksList"] = Array <Variant> ();
         SubscribeToEvent ("NetworkMessage", "HandleNetworkMessage");
         SubscribeToEvent ("NewNetworkTask", "HandleNewNetworkTask");
     }

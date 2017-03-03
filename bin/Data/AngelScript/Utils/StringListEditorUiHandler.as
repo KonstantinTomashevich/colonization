@@ -2,7 +2,6 @@
 
 shared abstract class StringListEditorUiHandler : ScriptObject
 {
-    protected bool isScriptMainVarsInitialized_;
     protected int elementsShowOffset_;
     protected float untilElementsScrollUpdate_;
     protected int ELEMENTS_SCROLL_SPEED = 5;
@@ -98,20 +97,8 @@ shared abstract class StringListEditorUiHandler : ScriptObject
         }
     }
 
-    void InitScriptMainVars ()
-    {
-        Window @window = GetWindow ();
-        Node @scriptMain = GetScriptMain (node);
-        if (scriptMain !is null)
-        {
-            LineEdit @elementToAddEdit = window.GetChild ("elementToAddEdit");
-            RegisterLineEdit (scriptMain, elementToAddEdit);
-        }
-    }
-
     StringListEditorUiHandler ()
     {
-        isScriptMainVarsInitialized_ = false;
         elementsShowOffset_ = 0;
         untilElementsScrollUpdate_ = 1.0f / (ELEMENTS_SCROLL_SPEED * 1.0f);
     }
@@ -137,16 +124,14 @@ shared abstract class StringListEditorUiHandler : ScriptObject
             Button @removeButton = elementsUi [index].GetChild ("removeButton");
             SubscribeToEvent (removeButton, "Released", "HandleRemoveElementClick");
         }
+
+        Node @scriptMain = GetScriptMain (node);
+        LineEdit @elementToAddEdit = window.GetChild ("elementToAddEdit");
+        RegisterLineEdit (scriptMain, elementToAddEdit);
     }
 
     void Update (float timeStep)
     {
-        if (!isScriptMainVarsInitialized_)
-        {
-            InitScriptMainVars ();
-            isScriptMainVarsInitialized_ = true;
-        }
-
         if (GetWindow ().visible)
         {
             untilElementsScrollUpdate_ -= timeStep;

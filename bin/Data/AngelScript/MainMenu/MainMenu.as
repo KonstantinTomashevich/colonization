@@ -32,6 +32,7 @@ class MainMenu : ScriptObject
 
     void Start ()
     {
+        node.AddTag ("ScriptMain");
         ui.root.RemoveAllChildren ();
         XMLFile@ style = cache.GetResource ("XMLFile", "UI/ColonizationUIStyle.xml");
         ui.root.defaultStyle = style;

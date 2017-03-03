@@ -2,7 +2,6 @@
 
 class ScreenPressesHandler : ScriptObject
 {
-    protected bool isScriptMainVarsInitialized_;
     protected float RAYCAST_RAY_LENGTH = 300.0f;
 
     protected Node @GetFirstReplicatedParentOf (Node @localNode)
@@ -101,15 +100,9 @@ class ScreenPressesHandler : ScriptObject
         }
     }
 
-    protected void InitScriptMainVars ()
-    {
-        Node @scriptMain = GetScriptMain (node);
-        scriptMain.vars ["currentClickCommand"] = StringHash ("NoCommand");
-    }
-
     ScreenPressesHandler ()
     {
-        isScriptMainVarsInitialized_ = false;
+
     }
 
     ~ScreenPressesHandler ()
@@ -120,15 +113,13 @@ class ScreenPressesHandler : ScriptObject
     void Start ()
     {
         SubscribeToEvent ("UIMouseClick", "HandleScreenPress");
+        Node @scriptMain = GetScriptMain (node);
+        scriptMain.vars ["currentClickCommand"] = StringHash ("NoCommand");
     }
 
     void Update (float timeStep)
     {
-        if (!isScriptMainVarsInitialized_)
-        {
-            InitScriptMainVars ();
-            isScriptMainVarsInitialized_ = true;
-        }
+        
     }
 
     void Stop ()
