@@ -1,5 +1,5 @@
-# Colonization
-TODO: description
+## Colonization [Work In Progress]
+Multiplayer RTS game in colonization setting. 
 
 **Engine:** Urho3D.
 
