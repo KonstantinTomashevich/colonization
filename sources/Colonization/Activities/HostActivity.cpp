@@ -45,7 +45,9 @@ void HostActivity::SetupPlayingState ()
     Urho3D::String configurationPath;
     Urho3D::String mapPath;
     Urho3D::String unitsPath;
-    assert (LoadAndParseMapInfo (configurationPath, mapPath, unitsPath));
+
+    bool isMapLoaded = LoadAndParseMapInfo (configurationPath, mapPath, unitsPath);
+    assert (isMapLoaded);
 
     // Load game configuration.
     Urho3D::Node *configurationNode = scene_->CreateChild ("configuration", Urho3D::LOCAL);
