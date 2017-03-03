@@ -20,6 +20,40 @@ class MainMenu : ScriptObject
         renderer.viewports [0].renderPath.SetEnabled ("MapMask", false);
     }
 
+    protected void AddScripts ()
+    {
+        ScriptInstance @primaryMenuInstance = node.CreateChild ("PrimaryMenu", LOCAL).CreateComponent ("ScriptInstance");
+        primaryMenuInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/MainMenu/UiHandlers/PrimaryMenu.as"),
+                                          "PrimaryMenu");
+
+        ScriptInstance @startGameMenuInstance = node.CreateChild ("StartGameMenu", LOCAL).CreateComponent ("ScriptInstance");
+        startGameMenuInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/MainMenu/UiHandlers/StartGameMenu.as"),
+                                            "StartGameMenu");
+
+        ScriptInstance @joinGameMenuInstance = node.CreateChild ("JoinGameMenu", LOCAL).CreateComponent ("ScriptInstance");
+        joinGameMenuInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/MainMenu/UiHandlers/JoinGameMenu.as"),
+                                           "JoinGameMenu");
+
+        ScriptInstance @mapsListInstance = node.CreateChild ("MapsList", LOCAL).CreateComponent ("ScriptInstance");
+        mapsListInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/MainMenu/UiHandlers/MapsList.as"),
+                                       "MapsList");
+
+        ScriptInstance @uiResizerInstance = node.CreateChild ("UiResizer", LOCAL).CreateComponent ("ScriptInstance");
+        uiResizerInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Utils/UiResizer.as"),
+                                        "UiResizer");
+        uiResizerInstance.SetAttribute ("startElementName_", Variant ("mainMenu"));
+
+        ScriptInstance @screenShotTakerInstance = node.CreateChild ("ScreenShotTaker", LOCAL).CreateComponent ("ScriptInstance");
+        screenShotTakerInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Utils/ScreenShotTaker.as"),
+                                              "ScreenShotTaker");
+    }
+
     MainMenu ()
     {
 
@@ -33,6 +67,7 @@ class MainMenu : ScriptObject
     void Start ()
     {
         node.AddTag ("ScriptMain");
+        node.vars ["serverPort"] = Variant (NEW_GAME_SERVER_PORT);
         ui.root.RemoveAllChildren ();
         XMLFile@ style = cache.GetResource ("XMLFile", "UI/ColonizationUIStyle.xml");
         ui.root.defaultStyle = style;
@@ -40,39 +75,8 @@ class MainMenu : ScriptObject
         UIElement @uiRoot = ui.LoadLayout (cache.GetResource ("XMLFile", "UI/MainMenu.xml"));
         ui.root.AddChild (uiRoot);
         uiRoot.name = "mainMenu";
-
-        ScriptInstance @primaryMenuInstance = node.CreateChild ("PrimaryMenu", LOCAL).CreateComponent ("ScriptInstance");
-        primaryMenuInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/MainMenu/UiHandlers/PrimaryMenu.as"),
-                                        "PrimaryMenu");
-
-        ScriptInstance @startGameMenuInstance = node.CreateChild ("StartGameMenu", LOCAL).CreateComponent ("ScriptInstance");
-        startGameMenuInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/MainMenu/UiHandlers/StartGameMenu.as"),
-                                        "StartGameMenu");
-
-        ScriptInstance @joinGameMenuInstance = node.CreateChild ("JoinGameMenu", LOCAL).CreateComponent ("ScriptInstance");
-        joinGameMenuInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/MainMenu/UiHandlers/JoinGameMenu.as"),
-                                        "JoinGameMenu");
-
-        ScriptInstance @mapsListInstance = node.CreateChild ("MapsList", LOCAL).CreateComponent ("ScriptInstance");
-        mapsListInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/MainMenu/UiHandlers/MapsList.as"),
-                                        "MapsList");
-
-        ScriptInstance @uiResizerInstance = node.CreateChild ("UiResizer", LOCAL).CreateComponent ("ScriptInstance");
-        uiResizerInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/Utils/UiResizer.as"),
-                                        "UiResizer");
-        uiResizerInstance.SetAttribute ("startElementName_", Variant ("mainMenu"));
-
-        ScriptInstance @screenShotTakerInstance = node.CreateChild ("ScreenShotTaker", LOCAL).CreateComponent ("ScriptInstance");
-        screenShotTakerInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/Utils/ScreenShotTaker.as"),
-                                        "ScreenShotTaker");
+        AddScripts ();
         SetupBackground ();
-        node.vars ["serverPort"] = Variant (NEW_GAME_SERVER_PORT);
 
         SubscribeToEvent ("StartGameRequest", "HandleStartGameRequest");
         SubscribeToEvent ("JoinGameRequest", "HandleJoinGameRequest");
