@@ -46,6 +46,11 @@ if (NOT EXISTS "${CMAKE_SOURCE_DIR}/bin/Urho3DEditorData")
     endif ()
 endif ()
 
+if (NOT EXISTS "${CMAKE_BINARY_DIR}/bin/Urho3DEditorData")
+    message (STATUS "Copying Urho3D's Data asset (for editor) to binary dir...")
+    file (COPY "${CMAKE_SOURCE_DIR}/bin/Urho3DEditorData/" DESTINATION "${CMAKE_BINARY_DIR}/bin/Urho3DEditorData")
+endif ()
+
 include (Urho3D-CMake-common)
 find_package (Urho3D REQUIRED)
 include_directories (${URHO3D_INCLUDE_DIRS})
