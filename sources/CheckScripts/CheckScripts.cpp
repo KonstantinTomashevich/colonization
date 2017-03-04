@@ -1,8 +1,10 @@
-#undef NDEBUG
 #include "Defines.hpp"
 #include "CheckScripts.hpp"
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/IO/FileSystem.h>
+#include <Urho3D/AngelScript/Script.h>
+#include <Urho3D/AngelScript/ScriptFile.h>
+
 #include <Colonization/Utils/Hubs/RegisterAllObjects.hpp>
 #include <Colonization/Utils/Hubs/BindAll.hpp>
 #include <Colonization/Utils/Hubs/CompileAllScripts.hpp>
@@ -39,15 +41,24 @@ void CheckScripts::Start ()
     Colonization::BindAll (script);
 
     Urho3D::FileSystem *fileSystem = context_->GetSubsystem <Urho3D::FileSystem> ();
+    bool isCompiled = false;
     if (fileSystem->DirExists ("Data/"))
     {
-        assert (Colonization::CompileAllScripts (context_));
+        isCompiled = Colonization::CompileAllScripts (context_);
     }
     else
     {
-        assert (Colonization::CompileAllScripts (context_, CHECK_SCRIPTS_RESOURCE_DIR));
+        isCompiled = Colonization::CompileAllScripts (context_, CHECK_SCRIPTS_RESOURCE_DIR);
     }
-    engine_->Exit ();
+
+    if (isCompiled)
+    {
+        engine_->Exit ();
+    }
+    else
+    {
+        ErrorExit ("Compilation failed! See CheckScripts.log for more information.");
+    }
 }
 
 void CheckScripts::Stop ()
