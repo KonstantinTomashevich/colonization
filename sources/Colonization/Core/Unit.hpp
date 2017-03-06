@@ -34,7 +34,8 @@ public:
     static void RegisterObject (Urho3D::Context *context);
     virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);
 
-    void UpdateHash (UnitsManager *owner);
+    bool IsCanGoTo (const District *district, const Map *map, Urho3D::StringHash imaginePosition = Urho3D::StringHash::ZERO) const;
+    void UpdateHash (const UnitsManager *owner);
     Urho3D::StringHash GetHash () const;
     void SetHash (const Urho3D::StringHash &hash);
 

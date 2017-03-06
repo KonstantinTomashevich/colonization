@@ -2,7 +2,7 @@
 #include <Urho3D/AngelScript/Script.h>
 namespace Colonization
 {
-void BindUnit (Urho3D::Script *script);
+void BindUnit (Urho3D::Script *script, bool bindInterface = true);
 void BindUnitType (Urho3D::Script *script);
 void BindUnitInterface (Urho3D::Script *script, Urho3D::String className);
 }

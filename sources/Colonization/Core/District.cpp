@@ -206,7 +206,7 @@ void District::UpdateHash (Map *owner)
     {
         hash_ = Urho3D::StringHash (name_ + Urho3D::String (Urho3D::Random (0, 1000)));
     }
-    while (owner->GetDistrictByHash (hash_) != this);
+    while (owner->GetDistrictByHash (hash_) != this && hash_ != Urho3D::StringHash::ZERO);
 }
 
 Urho3D::StringHash District::GetHash () const

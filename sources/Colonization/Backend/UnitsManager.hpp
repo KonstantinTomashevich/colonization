@@ -14,6 +14,10 @@ protected:
 
     void SettleColonizator (Unit *unit, Map *map);
     void ProcessTrader (GameConfiguration *configuration, Unit *unit);
+    float GetUnitSpeedBetween (District *position, District *target, GameConfiguration *configuration);
+    /// Returns true if unit exists after it, otherwise false.
+    bool OnNextTargetReached (Unit *unit, Urho3D::PODVector <Urho3D::StringHash> &unitWay,
+                              Map *map, GameConfiguration *configuration);
     virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:

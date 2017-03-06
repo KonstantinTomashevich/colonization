@@ -17,12 +17,15 @@ void Unit_SetWay (Unit *unit, Urho3D::CScriptArray *array)
     unit->SetWay (Urho3D::ArrayToPODVector <Urho3D::StringHash> (array));
 }
 
-void BindUnit (Urho3D::Script *script)
+void BindUnit (Urho3D::Script *script, bool bindInterface)
 {
     BindUnitType (script);
     asIScriptEngine *engine = script->GetScriptEngine ();
     Urho3D::RegisterComponent <Unit> (engine, "Unit");
-    BindUnitInterface (script, "Unit");
+    if (bindInterface)
+    {
+        BindUnitInterface (script, "Unit");
+    }
 }
 
 void BindUnitType(Urho3D::Script *script)
@@ -38,6 +41,7 @@ void BindUnitType(Urho3D::Script *script)
 void BindUnitInterface (Urho3D::Script *script, Urho3D::String className)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
+    engine->RegisterObjectMethod (className.CString (), "bool IsCanGoTo (const District @district, const Map @map) const", asMETHOD (Unit, IsCanGoTo), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "StringHash get_hash () const", asMETHOD (Unit, GetHash), asCALL_THISCALL);
 
     engine->RegisterObjectMethod (className.CString (), "UnitType get_unitType () const", asMETHOD (Unit, GetUnitType), asCALL_THISCALL);

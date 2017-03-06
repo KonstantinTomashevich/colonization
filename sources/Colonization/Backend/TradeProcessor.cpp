@@ -224,8 +224,7 @@ void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map
                 }
             }
 
-            unit->SetWay (map->FindPath (unit->GetPositionHash (), nearestEuropeDistrict->GetHash (),
-                                         unit->GetOwnerPlayerName (), true, false));
+            map->FindPath (nearestEuropeDistrict->GetHash (), unit);
             unit->UpdateHash (unitsManager);
         }
     }

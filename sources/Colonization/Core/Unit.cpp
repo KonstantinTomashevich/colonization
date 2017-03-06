@@ -90,14 +90,68 @@ void Unit::DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest)
     }
 }
 
-void Unit::UpdateHash (UnitsManager *owner)
+bool Unit::IsCanGoTo (const District *district, const Map *map, Urho3D::StringHash imaginePosition) const
+{
+    Urho3D::StringHash position;
+    if (imaginePosition == Urho3D::StringHash::ZERO)
+    {
+        position = positionHash_;
+    }
+    else
+    {
+        position = imaginePosition;
+    }
+
+    if (!district->IsNeighborsWith (position))
+    {
+        return false;
+    }
+    else if (unitType_ == UNIT_FLEET)
+    {
+        return district->IsSea () && !district->IsImpassable ();
+    }
+    // TODO: Current rule for army units is temporary!
+    else if (unitType_ == UNIT_TRADERS || unitType_ == UNIT_ARMY)
+    {
+        return (district->IsSea () || (district->HasColony () && district->GetColonyOwnerName () == ownerPlayerName_))
+                && !district->IsImpassable ();
+    }
+    else if (unitType_ == UNIT_COLONIZATORS)
+    {
+        if (district->IsSea () || (district->HasColony () && district->GetColonyOwnerName () == ownerPlayerName_))
+        {
+            return !district->IsImpassable ();
+        }
+        else if (!district->IsImpassable () && !district->HasColony ())
+        {
+            Urho3D::PODVector <Urho3D::StringHash> targetNeighbors = district->GetNeighborsHashes ();
+            for (int index = 0; index < targetNeighbors.Size (); index++)
+            {
+                District *targetNeighbor = map->GetDistrictByHash (targetNeighbors.At (index));
+                if ((targetNeighbor->IsSea () || (targetNeighbor->HasColony () &&
+                                                  targetNeighbor->GetColonyOwnerName () == ownerPlayerName_))
+                        && !targetNeighbor->IsImpassable ())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
+void Unit::UpdateHash (const UnitsManager *owner)
 {
     do
     {
         hash_ = Urho3D::StringHash (ownerPlayerName_ + Urho3D::String (static_cast <int> (unitType_)) +
                                     Urho3D::String (Urho3D::Random (0, 100000)));
     }
-    while (owner->GetUnitByHash (hash_) != this);
+    while (owner->GetUnitByHash (hash_) != this && hash_ != Urho3D::StringHash::ZERO);
 }
 
 Urho3D::StringHash Unit::GetHash () const

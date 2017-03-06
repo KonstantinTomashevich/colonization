@@ -39,8 +39,7 @@ void Player::ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data)
             (unit->GetUnitType () != UNIT_FLEET && target->HasColony () && target->GetColonyOwnerName () == name_) ||
             (unit->GetUnitType () == UNIT_COLONIZATORS && !target->IsSea ()))
     {
-        unit->SetWay (map->FindPath (unit->GetPositionHash (), target->GetHash (), name_,
-                                     unit->GetUnitType () != UNIT_FLEET, unit->GetUnitType () == UNIT_COLONIZATORS));
+        map->FindPath (target->GetHash (), unit);
 
         NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
         if (!counter)
@@ -116,19 +115,16 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
             }
         }
 
-        Urho3D::PODVector <Urho3D::StringHash> way = map->FindPath (
-                    nearestEuropeDistrict->GetHash (), targetDistrict->GetHash (), name_, true, true);
-        if (!way.Empty ())
+        Unit *unit = unitsManager->CreateUnit ();
+        unit->SetOwnerPlayerName (name_);
+        unit->SetPositionHash (nearestEuropeDistrict->GetHash ());
+        unit->SetUnitType (UNIT_COLONIZATORS);
+        unit->UpdateHash (unitsManager);
+
+        if (!map->FindPath (targetDistrict->GetHash (), unit).Empty ())
         {
             gold_ -= 100.0f;
-            Unit *unit = unitsManager->CreateUnit ();
-            unit->SetUnitType (UNIT_COLONIZATORS);
             unit->ColonizatorsUnitSetColonizatorsCount (100);
-            unit->SetOwnerPlayerName (name_);
-
-            unit->SetPositionHash (nearestEuropeDistrict->GetHash ());
-            unit->SetWay (way);
-            unit->UpdateHash (unitsManager);
 
             NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
             if (!counter)
@@ -139,6 +135,7 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
         }
         else
         {
+            unit->GetNode ()->Remove ();
             Urho3D::Log::Write (Urho3D::LOG_ERROR, "Can't send colonizators. Can't find way from " +
                                 nearestEuropeDistrict->GetName () + " to " +
                                 targetDistrict->GetName () + "!");

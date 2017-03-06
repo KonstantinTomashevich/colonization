@@ -8,6 +8,7 @@
 
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
+#include <Colonization/Core/Unit.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
 namespace Colonization
@@ -152,11 +153,10 @@ void Map::RecalculateDistrictsNeighbors ()
     }
 }
 
-Urho3D::PODVector <Urho3D::StringHash> Map::FindPath (
-        Urho3D::StringHash startDistrictHash, Urho3D::StringHash targetDistrictHash,
-        Urho3D::String playerName, bool canGoThroughColonies, bool isColonizator)
+Urho3D::PODVector<Urho3D::StringHash> Map::FindPath(const Urho3D::StringHash &targetDistrictHash, Unit *unit, bool setUnitWay) const
 {
-    District *start = GetDistrictByHash (startDistrictHash);
+    assert (unit);
+    District *start = GetDistrictByHash (unit->GetPositionHash ());
     District *target = GetDistrictByHash (targetDistrictHash);
 
     assert (start);
@@ -167,9 +167,8 @@ Urho3D::PODVector <Urho3D::StringHash> Map::FindPath (
                         "Map::FindPath called with arguments:\n"
                         "from: " + start->GetName ()+ "\n"
                         "to: " + target->GetName () + "\n"
-                        "playerName: " + playerName + "\n"
-                        "canGoTroughColonies: " + Urho3D::String (canGoThroughColonies) + "\n"
-                        "isColonizator: " + Urho3D::String (isColonizator) + "\n");
+                        "playerName: " + unit->GetOwnerPlayerName () + "\n"
+                        "unitType: " + Urho3D::String (static_cast <int> (unit->GetUnitType ())) + "\n");
 
     GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
     assert (configuration);
@@ -226,6 +225,10 @@ Urho3D::PODVector <Urho3D::StringHash> Map::FindPath (
                 way.Push (reversedWay.At (index));
             }
             way.Push (target->GetHash ());
+            if (setUnitWay)
+            {
+                unit->SetWay (way);
+            }
             return way;
         }
 
@@ -242,9 +245,7 @@ Urho3D::PODVector <Urho3D::StringHash> Map::FindPath (
                                 "hasColony: " + Urho3D::String (next->HasColony ()) + "\n"
                                 "colonyOwnerName: " + next->GetColonyOwnerName () + "\n");
 
-            if (!next->IsImpassable () && (
-                        next->IsSea () || (canGoThroughColonies && next->HasColony () && next->GetColonyOwnerName () == playerName) ||
-                        (isColonizator && next == target)))
+            if (unit->IsCanGoTo (next, this, current->GetHash ()))
             {
                 Urho3D::Log::Write (Urho3D::LOG_DEBUG, "Can go through this neighbor.");
 
@@ -293,6 +294,10 @@ Urho3D::PODVector <Urho3D::StringHash> Map::FindPath (
 
     // Failure.
     Urho3D::PODVector <Urho3D::StringHash> empty;
+    if (setUnitWay)
+    {
+        unit->SetWay (empty);
+    }
     return empty;
 }
 
