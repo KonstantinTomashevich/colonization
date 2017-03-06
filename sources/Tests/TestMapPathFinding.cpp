@@ -6,6 +6,7 @@
 
 #include <Colonization/Core/District.hpp>
 #include <Colonization/Core/Map.hpp>
+#include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Utils/Hubs/RegisterAllObjects.hpp>
 
@@ -100,10 +101,15 @@ void TestMapPathFindingApplication::Start ()
     map->GetDistrictByIndex (2 * mapHeight + 1)->SetColonyOwnerName ("PlayerX");
     map->RecalculateDistrictsNeighbors ();
 
+    // Create UnitsManager and Unit.
+    Colonization::UnitsManager *unitsManager = scene->CreateChild ("units")->CreateComponent <Colonization::UnitsManager> ();
+    Colonization::Unit *unit = unitsManager->CreateUnit ();
+    unit->SetUnitType (Colonization::UNIT_TRADERS);
+    unit->SetOwnerPlayerName ("PlayerX");
+    unit->SetPositionHash (map->GetDistrictByIndex (4 * mapHeight + 0)->GetHash ());
+
     // Firstly calculate path if ship owner isn't colony owner.
-    Urho3D::PODVector <Urho3D::StringHash> way = map->FindPath (
-                map->GetDistrictByIndex (4 * mapHeight + 0)->GetHash (),
-                map->GetDistrictByIndex (2 * mapHeight + 2)->GetHash (), "PlayerX", true, false);
+    Urho3D::PODVector <Urho3D::StringHash> way = map->FindPath (map->GetDistrictByIndex (2 * mapHeight + 2)->GetHash (), unit);
 
     Urho3D::String calculatedWay = "";
     for (int index = 0; index < way.Size (); index++)
@@ -126,8 +132,9 @@ void TestMapPathFindingApplication::Start ()
     }
     else
     {
-        way = map->FindPath (map->GetDistrictByIndex (4 * mapHeight + 0)->GetHash (),
-                             map->GetDistrictByIndex (2 * mapHeight + 2)->GetHash (), "PlayerY", true, false);
+        unit->SetOwnerPlayerName ("PlayerY");
+        way = map->FindPath (map->GetDistrictByIndex (2 * mapHeight + 2)->GetHash (), unit);
+
         calculatedWay = "";
         for (int index = 0; index < way.Size (); index++)
         {
