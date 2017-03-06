@@ -70,6 +70,51 @@ void UnitsManager::ProcessTrader (GameConfiguration *configuration, Unit *unit)
     unit->GetNode ()->Remove ();
 }
 
+float UnitsManager::GetUnitSpeedBetween (District *position, District *target, GameConfiguration *configuration)
+{
+    if (position->IsSea () && target->IsSea ())
+    {
+        return configuration->GetSailSpeed ();
+    }
+    else if (!position->IsSea () && !target->IsSea ())
+    {
+        return configuration->GetMarchSpeed ();
+    }
+    else if (!position->IsSea () && target->IsSea ())
+    {
+        return configuration->GetEmbarkationSpeed ();
+    }
+    else if (position->IsSea () && !target->IsSea ())
+    {
+        return configuration->GetDisembarkationSpeed ();
+    }
+    else
+    {
+        return 0.0f;
+    }
+}
+
+bool UnitsManager::OnNextTargetReached (Unit *unit, Urho3D::PODVector <Urho3D::StringHash> &unitWay,
+                                        Map *map, GameConfiguration *configuration)
+{
+    unit->SetPositionHash (unitWay.At (0));
+    unitWay.Remove (unitWay.At (0));
+    unit->SetWay (unitWay);
+    unit->SetWayToNextDistrictProgressInPercents (0.0f);
+
+    if (unitWay.Empty () && unit->GetUnitType () == UNIT_COLONIZATORS)
+    {
+        SettleColonizator (unit, map);
+        return false;
+    }
+    else if (unitWay.Empty () && unit->GetUnitType () == UNIT_TRADERS)
+    {
+        ProcessTrader (configuration, unit);
+        return false;
+    }
+    return true;
+}
+
 void UnitsManager::OnSceneSet (Urho3D::Scene *scene)
 {
     UnsubscribeFromAllEvents ();
@@ -111,12 +156,7 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
         GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
         assert (map);
         assert (configuration);
-
         float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
-        float sailSpeed = configuration->GetSailSpeed ();
-        float marchSpeed = configuration->GetMarchSpeed ();
-        float embarkationSpeed = configuration->GetEmbarkationSpeed ();
-        float disembarkationSpeed = configuration->GetDisembarkationSpeed ();
 
         for (int index = 0; index < units_.Size (); index++)
         {
@@ -138,63 +178,34 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
                 District *nextTarget = map->GetDistrictByHash (unitWay.At (0));
                 assert (nextTarget);
 
-                float distance = (unitPosition->GetUnitPosition () - nextTarget->GetUnitPosition ()).Length ();
-                float speed;
+                bool unitExists = true;
+                if (unit->IsCanGoTo (nextTarget, map))
+                {
+                    float distance = (unitPosition->GetUnitPosition () - nextTarget->GetUnitPosition ()).Length ();
+                    float speed = GetUnitSpeedBetween (unitPosition, nextTarget, configuration);
 
-                if (unitPosition->IsSea () && nextTarget->IsSea ())
-                {
-                    speed = sailSpeed;
-                }
-                else if (!unitPosition->IsSea () && !nextTarget->IsSea ())
-                {
-                    speed = marchSpeed;
-                }
-                else if (!unitPosition->IsSea () && nextTarget->IsSea ())
-                {
-                    speed = embarkationSpeed;
-                }
-                else if (unitPosition->IsSea () && !nextTarget->IsSea ())
-                {
-                    speed = disembarkationSpeed;
-                }
-                else
-                {
-                    speed = 0.0f;
-                }
+                    float addition = (100.0f * speed * timeStep) / distance;
+                    float oldProgress = unit->GetWayToNextDistrictProgressInPercents ();
+                    unit->SetWayToNextDistrictProgressInPercents (oldProgress + addition);
 
-                float addition = (100.0f * speed * timeStep) / distance;
-                float oldProgress = unit->GetWayToNextDistrictProgressInPercents ();
-                unit->SetWayToNextDistrictProgressInPercents (oldProgress + addition);
-
-                bool exists = true;
-                if (unit->GetWayToNextDistrictProgressInPercents () >= 100.0f)
-                {
-                    unit->SetPositionHash (unitWay.At (0));
-                    unitWay.Remove (unitWay.At (0));
-                    unit->SetWay (unitWay);
-                    unit->SetWayToNextDistrictProgressInPercents (0.0f);
-
-                    if (unitWay.Empty () && unit->GetUnitType () == UNIT_COLONIZATORS)
+                    if (unit->GetWayToNextDistrictProgressInPercents () >= 100.0f)
                     {
-                        SettleColonizator (unit, map);
-                        exists = false;
-                    }
-                    else if (unitWay.Empty () && unit->GetUnitType () == UNIT_TRADERS)
-                    {
-                        ProcessTrader (configuration, unit);
-                        exists = false;
+                        unitExists = OnNextTargetReached (unit, unitWay, map, configuration);
+                        updatePoints += 100.0f;
                     }
                     else
                     {
-                        updatePoints += 100.0f;
+                        updatePoints += (addition * 20.0f);
                     }
                 }
                 else
                 {
-                    updatePoints += (addition * 20.0f);
+                    unitWay = Urho3D::PODVector <Urho3D::StringHash> ();
+                    unit->SetWay (unitWay);
+                    updatePoints += 100.0f;
                 }
 
-                if (unit->GetNode () && exists)
+                if (unit->GetNode () && unitExists)
                 {
                     NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
                     if (!counter)
