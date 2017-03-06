@@ -7,11 +7,11 @@
 namespace Colonization
 {
 // TODO: Not all functions are binded. Some server-side functions aren't binded.
-Urho3D::CScriptArray *Map_FindPath (Map *map, Urho3D::StringHash startDistrictHash, Urho3D::StringHash targetDistrictHash,
-                                   Urho3D::String playerName, bool canGoThroughColonies, bool isColonizator)
+Urho3D::CScriptArray *Map_FindPath (Map *map, Urho3D::StringHash targetDistrictHash,
+                                   Unit *unit, bool setUnitWay)
 {
     Urho3D::PODVector <Urho3D::StringHash> result = map->FindPath (
-                startDistrictHash, targetDistrictHash, playerName, canGoThroughColonies, isColonizator);
+                targetDistrictHash, unit, setUnitWay);
     return Urho3D::VectorToArray <Urho3D::StringHash> (result, "Array<StringHash>");
 }
 
@@ -42,7 +42,7 @@ void BindMapInterface (Urho3D::Script *script, Urho3D::String className)
     engine->RegisterObjectMethod (className.CString (), "void ClearAndRemoveDistricts ()", asMETHOD (Map, ClearAndRemoveDistricts), asCALL_THISCALL);
 
     engine->RegisterObjectMethod (className.CString (),
-                "Array<StringHash> @FindPath (StringHash startDistrictHash, StringHash targetDistrictHash, String playerName, bool canGoThroughColonies, bool isColonizator)",
+                "Array<StringHash> @FindPath (StringHash targetDistrictHash, Unit @unit, bool setUnitWay) const",
                 asFUNCTION (Map_FindPath), asCALL_CDECL_OBJFIRST);
     engine->RegisterObjectMethod (className.CString (), "Array<StringHash> @GetColoniesOfPlayer (StringHash playerNameHash)", asFUNCTION (Map_GetColoniesOfPlayer), asCALL_CDECL_OBJFIRST);
 }

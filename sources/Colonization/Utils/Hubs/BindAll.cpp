@@ -32,10 +32,11 @@ void BindAll (Urho3D::Script *script)
 
     BindDistrict (script);
     BindGameConfiguration (script);
+    BindUnit (script, false);
     BindMap (script);
     BindInternalTradeArea (script);
     BindPlayerInfo (script);
-    BindUnit (script);
+    BindUnitInterface (script, "Unit");
 
     BindNetworkMessageType (script);
     BindPlayerActionType (script);

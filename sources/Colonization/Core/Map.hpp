@@ -5,6 +5,7 @@
 
 namespace Colonization
 {
+class Unit;
 float HeuristicDistanceForPathFinding (District *goal, District *next);
 
 class Map : public Urho3D::Component
@@ -34,8 +35,7 @@ public:
 
     void RecalculateDistrictsHashes ();
     void RecalculateDistrictsNeighbors ();
-    Urho3D::PODVector <Urho3D::StringHash> FindPath(
-            Urho3D::StringHash startDistrictHash, Urho3D::StringHash targetDistrictHash,
-            Urho3D::String playerName, bool canGoThroughColonies, bool isColonizator);
+    Urho3D::PODVector <Urho3D::StringHash> FindPath (const Urho3D::StringHash &targetDistrictHash, Unit *unit,
+                                                     bool setUnitWay = true) const;
 };
 }
