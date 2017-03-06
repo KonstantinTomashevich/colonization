@@ -255,7 +255,7 @@ Urho3D::PODVector <Urho3D::Vector3> District::GetPolygonPoints () const
     return polygonPoints_;
 }
 
-void District::SetPolygonPoints (Urho3D::PODVector <Urho3D::Vector3> polygonPoints)
+void District::SetPolygonPoints (const Urho3D::PODVector <Urho3D::Vector3> &polygonPoints)
 {
     polygonPoints_ = polygonPoints;
 }
@@ -314,12 +314,17 @@ void District::SetColonyPosition (const Urho3D::Vector3 &colonyPosition)
     colonyPosition_ = colonyPosition;
 }
 
+bool District::IsNeighborsWith (Urho3D::StringHash otherDistrict) const
+{
+    return neighbors_.Contains (otherDistrict);
+}
+
 Urho3D::PODVector <Urho3D::StringHash> District::GetNeighborsHashes () const
 {
     return neighbors_;
 }
 
-void District::SetNeighborsHashes (Urho3D::PODVector <Urho3D::StringHash> neighbors)
+void District::SetNeighborsHashes (const Urho3D::PODVector <Urho3D::StringHash> &neighbors)
 {
     neighbors_ = neighbors;
 }

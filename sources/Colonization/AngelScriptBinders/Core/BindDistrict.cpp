@@ -77,6 +77,7 @@ void BindDistrictInterface (Urho3D::Script *script, Urho3D::String className)
     engine->RegisterObjectMethod (className.CString (), "Vector3 get_colonyPosition () const", asMETHOD (District, GetColonyPosition), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_colonyPosition (Vector3 colonyPosition)", asMETHOD (District, SetColonyPosition), asCALL_THISCALL);
 
+    engine->RegisterObjectMethod (className.CString (), "bool IsNeighborsWith (StringHash otherDistrict) const", asMETHOD (District, IsNeighborsWith), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "Array <StringHash> @get_neighborsHashes () const", asFUNCTION (District_GetNeighborsHashes), asCALL_CDECL_OBJFIRST);
     engine->RegisterObjectMethod (className.CString (), "void set_neighborsHashes (Array <StringHash> @neighborsHashes)", asFUNCTION (District_SetNeighborsHashes), asCALL_CDECL_OBJFIRST);
 

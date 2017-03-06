@@ -89,7 +89,7 @@ public:
     void SetName (const Urho3D::String &name);
 
     Urho3D::PODVector <Urho3D::Vector3> GetPolygonPoints () const;
-    void SetPolygonPoints (Urho3D::PODVector <Urho3D::Vector3> polygonPoints);
+    void SetPolygonPoints (const Urho3D::PODVector <Urho3D::Vector3> &polygonPoints);
     Urho3D::VariantVector GetPolygonPointsAttribute () const;
     void SetPolygonPointsAttribute (const Urho3D::VariantVector &polygonPoints);
 
@@ -99,8 +99,9 @@ public:
     Urho3D::Vector3 GetColonyPosition () const;
     void SetColonyPosition (const Urho3D::Vector3 &colonyPosition);
 
+    bool IsNeighborsWith (Urho3D::StringHash otherDistrict) const;
     Urho3D::PODVector <Urho3D::StringHash> GetNeighborsHashes () const;
-    void SetNeighborsHashes (Urho3D::PODVector <Urho3D::StringHash> neighbors);
+    void SetNeighborsHashes (const Urho3D::PODVector <Urho3D::StringHash> &neighbors);
     Urho3D::VariantVector GetNeighborsHashesAttribute () const;
     void SetNeighborsHashesAttribute (const Urho3D::VariantVector &neighbors);
 
