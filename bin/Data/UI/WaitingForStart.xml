@@ -5030,7 +5030,6 @@
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
-					<string value="SetPlayerColor" />
 				</attribute>
 				<element type="Text">
 					<attribute name="Name" value="text" />
@@ -5129,7 +5128,6 @@
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
-					<string value="SetPlayerColor" />
 				</attribute>
 				<element type="Text">
 					<attribute name="Name" value="text" />
@@ -5191,7 +5189,6 @@
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
-					<string value="SetPlayerColor" />
 				</attribute>
 				<element type="Text">
 					<attribute name="Name" value="text" />
@@ -5345,7 +5342,6 @@
 						</attribute>
 						<attribute name="Tags">
 							<string value="EnableUiResizer" />
-							<string value="SetPlayerColor" />
 						</attribute>
 						<element type="Text">
 							<attribute name="Name" value="text" />
@@ -5471,7 +5467,6 @@
 						</attribute>
 						<attribute name="Tags">
 							<string value="EnableUiResizer" />
-							<string value="SetPlayerColor" />
 						</attribute>
 						<element type="Text">
 							<attribute name="Name" value="text" />
@@ -5597,7 +5592,6 @@
 						</attribute>
 						<attribute name="Tags">
 							<string value="EnableUiResizer" />
-							<string value="SetPlayerColor" />
 						</attribute>
 						<element type="Text">
 							<attribute name="Name" value="text" />
@@ -5723,7 +5717,6 @@
 						</attribute>
 						<attribute name="Tags">
 							<string value="EnableUiResizer" />
-							<string value="SetPlayerColor" />
 						</attribute>
 						<element type="Text">
 							<attribute name="Name" value="text" />
@@ -5849,7 +5842,6 @@
 						</attribute>
 						<attribute name="Tags">
 							<string value="EnableUiResizer" />
-							<string value="SetPlayerColor" />
 						</attribute>
 						<element type="Text">
 							<attribute name="Name" value="text" />
@@ -5975,7 +5967,6 @@
 						</attribute>
 						<attribute name="Tags">
 							<string value="EnableUiResizer" />
-							<string value="SetPlayerColor" />
 						</attribute>
 						<element type="Text">
 							<attribute name="Name" value="text" />
@@ -6101,7 +6092,6 @@
 						</attribute>
 						<attribute name="Tags">
 							<string value="EnableUiResizer" />
-							<string value="SetPlayerColor" />
 						</attribute>
 						<element type="Text">
 							<attribute name="Name" value="text" />
@@ -6166,7 +6156,6 @@
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
-					<string value="SetPlayerColor" />
 				</attribute>
 				<element type="Text">
 					<attribute name="Name" value="text" />
@@ -6232,7 +6221,6 @@
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
-					<string value="SetPlayerColor" />
 				</attribute>
 				<attribute name="Max Length" value="100" />
 				<element type="Text" internal="true" style="none">
@@ -6621,7 +6609,6 @@
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
-					<string value="SetPlayerColor" />
 				</attribute>
 				<element type="Text">
 					<attribute name="Name" value="text" />
