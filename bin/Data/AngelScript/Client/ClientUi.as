@@ -26,6 +26,11 @@ class ClientUi : ScriptObject
         ui.root.RemoveAllChildren ();
         node.GetChild ("uiHandlers").RemoveAllChildren ();
         Node @uiHandlersNode = node.GetChild ("uiHandlers");
+
+        UIElement @uiRoot = ui.LoadLayout (cache.GetResource ("XMLFile", "UI/WaitingForStart.xml"));
+        ui.root.AddChild (uiRoot);
+        uiRoot.defaultStyle = style_;
+        uiRoot.name = "waitingForStart";
     }
 
     protected void AddPlayingStateUiHandlers ()
