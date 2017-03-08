@@ -31,6 +31,11 @@ class ClientUi : ScriptObject
         ui.root.AddChild (uiRoot);
         uiRoot.defaultStyle = style_;
         uiRoot.name = "waitingForStart";
+
+        ScriptInstance @waitingForStartChatWindowInstance = uiHandlersNode.CreateChild ("WaitingForStartChatWindow", LOCAL).CreateComponent ("ScriptInstance");
+        waitingForStartChatWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                      "AngelScript/Client/UiHandlers/WaitingForStartChatWindow.as"),
+                                         "WaitingForStartChatWindow");
     }
 
     protected void AddPlayingStateUiHandlers ()
