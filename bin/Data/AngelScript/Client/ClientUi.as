@@ -36,6 +36,11 @@ class ClientUi : ScriptObject
         chatWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
                                                       "AngelScript/Client/UiHandlers/WaitingForStart/ChatWindow.as"),
                                          "ChatWindow");
+
+        ScriptInstance @functionalWindowsShowerInstance = uiHandlersNode.CreateChild ("FunctionalWindowsShower", LOCAL).CreateComponent ("ScriptInstance");
+        functionalWindowsShowerInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                      "AngelScript/Client/UiHandlers/WaitingForStart/FunctionalWindowsShower.as"),
+                                         "FunctionalWindowsShower");
     }
 
     protected void AddPlayingStateUiHandlers ()
