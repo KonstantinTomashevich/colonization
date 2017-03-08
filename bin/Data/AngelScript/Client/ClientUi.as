@@ -59,10 +59,10 @@ class ClientUi : ScriptObject
                                                      "AngelScript/Client/UiHandlers/MapBillboards.as"),
                                             "MapBillboards");
 
-        ScriptInstance @chatWindowInstance = uiHandlersNode.CreateChild ("ChatWindow", LOCAL).CreateComponent ("ScriptInstance");
-        chatWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                      "AngelScript/Client/UiHandlers/ChatWindow.as"),
-                                         "ChatWindow");
+        ScriptInstance @ingameChatWindowInstance = uiHandlersNode.CreateChild ("IngameChatWindow", LOCAL).CreateComponent ("ScriptInstance");
+        ingameChatWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                      "AngelScript/Client/UiHandlers/IngameChatWindow.as"),
+                                         "IngameChatWindow");
 
         ScriptInstance @unitSelectedWindowInstance = uiHandlersNode.CreateChild ("UnitSelectedWindow", LOCAL).CreateComponent ("ScriptInstance");
         unitSelectedWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
