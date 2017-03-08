@@ -1,6 +1,7 @@
 #include "AngelScript/Utils/ClientUtils.as"
+#include "AngelScript/Utils/ScriptObjectWithBeforeStop.as"
 
-class ChatWindowInterface : ScriptObject
+shared abstract class ChatWindowInterface : ScriptObjectWithBeforeStop
 {
     protected Array <VariantMap> messagesList_;
     protected int messagesShowOffset_;
@@ -92,8 +93,10 @@ class ChatWindowInterface : ScriptObject
 
     }
 
-    void Start ()
+    void Start () override
     {
+        ScriptObjectWithBeforeStop::Start ();
+
         Window @chatWindow = GetChatWindow ();
         Button @showHideButton = chatWindow.GetChild ("showHideButton");
         Button @sendPublicMessageButton = chatWindow.GetChild ("sendPublicMessage");
@@ -136,6 +139,17 @@ class ChatWindowInterface : ScriptObject
     void Stop ()
     {
         UnsubscribeFromAllEvents ();
+    }
+
+    void BeforeStop (Scene @lastScene, Node @lastNode) override
+    {
+        Node @scriptMain = GetScriptMain (lastScene);
+        Window @chatWindow = GetChatWindow ();
+        if (scriptMain !is null and chatWindow !is null)
+        {
+            LineEdit @messageEdit = chatWindow.GetChild ("messageEdit");
+            UnregisterLineEdit (scriptMain, messageEdit);
+        }
     }
 
     void HandleToggleChatWindowClick ()

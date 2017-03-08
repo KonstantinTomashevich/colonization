@@ -1,6 +1,7 @@
 #include "AngelScript/Utils/ClientUtils.as"
+#include "AngelScript/Utils/ScriptObjectWithBeforeStop.as"
 
-shared abstract class StringListEditorUiHandler : ScriptObject
+shared abstract class StringListEditorUiHandler : ScriptObjectWithBeforeStop
 {
     protected int elementsShowOffset_;
     protected float untilElementsScrollUpdate_;
@@ -108,8 +109,10 @@ shared abstract class StringListEditorUiHandler : ScriptObject
 
     }
 
-    void Start ()
+    void Start () override
     {
+        ScriptObjectWithBeforeStop::Start ();
+
         Window @window = GetWindow ();
         window.visible = false;
         Button @addButton = window.GetChild ("addButton");
@@ -147,6 +150,17 @@ shared abstract class StringListEditorUiHandler : ScriptObject
     void Stop ()
     {
         UnsubscribeFromAllEvents ();
+    }
+
+    void BeforeStop (Scene @lastScene, Node @lastNode) override
+    {
+        Node @scriptMain = GetScriptMain (lastScene);
+        Window @window = GetWindow ();
+        if (scriptMain !is null and window !is null)
+        {
+            LineEdit @elementToAddEdit = window.GetChild ("elementToAddEdit");
+            UnregisterLineEdit (scriptMain, elementToAddEdit);
+        }
     }
 
     void HandleAddElementClick ()

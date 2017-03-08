@@ -123,23 +123,10 @@ shared void RegisterLineEdit (Node @scriptMain, LineEdit @lineEdit)
 shared void UnregisterLineEdit (Node @scriptMain, LineEdit @lineEdit)
 {
     Array <Variant> lineEditVector = scriptMain.vars ["lineEditVector"].GetVariantVector ();
-    int foundIndex = 0;
-    int index = 0;
-    while (foundIndex < 0 and index < lineEditVector.length)
+    int index = lineEditVector.Find (Variant (lineEdit));
+    if (index >= 0)
     {
-        LineEdit @lineEditFromVector = lineEditVector [index].GetPtr ();
-        if (lineEditFromVector is lineEdit)
-        {
-            foundIndex = index;
-        }
-        else
-        {
-            index++;
-        }
-    }
-    if (foundIndex >= 0)
-    {
-        lineEditVector.Erase (foundIndex);
+        lineEditVector.Erase (index);
     }
     scriptMain.vars ["lineEditVector"] = Variant (lineEditVector);
 }
