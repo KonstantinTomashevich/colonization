@@ -2,7 +2,7 @@
 
 class IngameChatWindow : ChatWindowInterface
 {
-    protected UIElement @GetChatWindow ()
+    protected UIElement @GetChatWindow () override
     {
         return ui.root.GetChild ("ingame").GetChild ("chatWindow");
     }
@@ -17,7 +17,7 @@ class IngameChatWindow : ChatWindowInterface
 
     }
 
-    void HandleToggleChatWindowClick ()
+    void HandleToggleChatWindowClick () override
     {
         Window @chatWindow = GetChatWindow ();
         float windowYModifer = chatWindow.vars ["YModifer"].GetFloat ();
@@ -35,14 +35,14 @@ class IngameChatWindow : ChatWindowInterface
         }
     }
 
-    void HandleShowBlockedUsersClick ()
+    void HandleShowBlockedUsersClick () override
     {
         UIElement @uiRoot = GetChatWindow ().parent;
         uiRoot.GetChild ("chatBlockedPlayersWindow").visible = true;
         uiRoot.GetChild ("chatPrivateReceiversWindow").visible = false;
     }
 
-    void HandleShowPrivateUsersClick ()
+    void HandleShowPrivateUsersClick () override
     {
         UIElement @uiRoot = GetChatWindow ().parent;
         uiRoot.GetChild ("chatBlockedPlayersWindow").visible = false;
