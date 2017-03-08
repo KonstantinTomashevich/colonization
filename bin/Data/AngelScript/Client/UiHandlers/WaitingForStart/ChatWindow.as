@@ -1,18 +1,18 @@
 #include "AngelScript/Utils/ChatWindowInterface.as"
 
-class WaitingForStartChatWindow : ChatWindowInterface
+class ChatWindow : ChatWindowInterface
 {
     protected UIElement @GetChatWindow () override
     {
         return ui.root.GetChild ("waitingForStart").GetChild ("chatWindow");
     }
 
-    WaitingForStartChatWindow ()
+    ChatWindow ()
     {
 
     }
 
-    ~WaitingForStartChatWindow ()
+    ~ChatWindow ()
     {
 
     }

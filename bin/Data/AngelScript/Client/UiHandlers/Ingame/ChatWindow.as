@@ -1,18 +1,18 @@
 #include "AngelScript/Utils/ChatWindowInterface.as"
 
-class IngameChatWindow : ChatWindowInterface
+class ChatWindow : ChatWindowInterface
 {
     protected UIElement @GetChatWindow () override
     {
         return ui.root.GetChild ("ingame").GetChild ("chatWindow");
     }
 
-    IngameChatWindow ()
+    ChatWindow ()
     {
 
     }
 
-    ~IngameChatWindow ()
+    ~ChatWindow ()
     {
 
     }
