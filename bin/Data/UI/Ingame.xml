@@ -2079,7 +2079,7 @@
 						<variant hash="4127232677" type="Float" value="1" name="HeightModifer" />
 						<variant hash="235997748" type="Float" value="0.05" name="XModifer" />
 						<variant hash="2971843571" type="Float" value="0.06" name="YModifer" />
-						<variant hash="156785404" type="Float" value="0.5" name="FontSizeModifer" />
+						<variant hash="156785404" type="Float" value="0.35" name="FontSizeModifer" />
 						<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 						<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 						<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
@@ -2089,7 +2089,7 @@
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
 					</attribute>
-					<attribute name="Font Size" value="16" />
+					<attribute name="Font Size" value="11" />
 					<attribute name="Text" value="Player0 [Found]" />
 					<attribute name="Text Effect" value="Stroke" />
 				</element>
@@ -2205,7 +2205,7 @@
 						<variant hash="4127232677" type="Float" value="1" name="HeightModifer" />
 						<variant hash="235997748" type="Float" value="0.05" name="XModifer" />
 						<variant hash="2971843571" type="Float" value="0.06" name="YModifer" />
-						<variant hash="156785404" type="Float" value="0.5" name="FontSizeModifer" />
+						<variant hash="156785404" type="Float" value="0.35" name="FontSizeModifer" />
 						<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 						<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 						<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
@@ -2215,7 +2215,7 @@
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
 					</attribute>
-					<attribute name="Font Size" value="16" />
+					<attribute name="Font Size" value="11" />
 					<attribute name="Text" value="Player1 [Found]" />
 					<attribute name="Text Effect" value="Stroke" />
 				</element>
@@ -2331,7 +2331,7 @@
 						<variant hash="4127232677" type="Float" value="1" name="HeightModifer" />
 						<variant hash="235997748" type="Float" value="0.05" name="XModifer" />
 						<variant hash="2971843571" type="Float" value="0.06" name="YModifer" />
-						<variant hash="156785404" type="Float" value="0.5" name="FontSizeModifer" />
+						<variant hash="156785404" type="Float" value="0.35" name="FontSizeModifer" />
 						<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 						<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 						<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
@@ -2341,7 +2341,7 @@
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
 					</attribute>
-					<attribute name="Font Size" value="16" />
+					<attribute name="Font Size" value="11" />
 					<attribute name="Text" value="Player2 [Found]" />
 					<attribute name="Text Effect" value="Stroke" />
 				</element>
@@ -2457,7 +2457,7 @@
 						<variant hash="4127232677" type="Float" value="1" name="HeightModifer" />
 						<variant hash="235997748" type="Float" value="0.05" name="XModifer" />
 						<variant hash="2971843571" type="Float" value="0.06" name="YModifer" />
-						<variant hash="156785404" type="Float" value="0.5" name="FontSizeModifer" />
+						<variant hash="156785404" type="Float" value="0.35" name="FontSizeModifer" />
 						<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 						<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 						<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
@@ -2467,7 +2467,7 @@
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
 					</attribute>
-					<attribute name="Font Size" value="16" />
+					<attribute name="Font Size" value="11" />
 					<attribute name="Text" value="Player3 [Found]" />
 					<attribute name="Text Effect" value="Stroke" />
 				</element>
@@ -2583,7 +2583,7 @@
 						<variant hash="4127232677" type="Float" value="1" name="HeightModifer" />
 						<variant hash="235997748" type="Float" value="0.05" name="XModifer" />
 						<variant hash="2971843571" type="Float" value="0.06" name="YModifer" />
-						<variant hash="156785404" type="Float" value="0.5" name="FontSizeModifer" />
+						<variant hash="156785404" type="Float" value="0.35" name="FontSizeModifer" />
 						<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 						<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 						<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
@@ -2593,7 +2593,7 @@
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
 					</attribute>
-					<attribute name="Font Size" value="16" />
+					<attribute name="Font Size" value="11" />
 					<attribute name="Text" value="Player4 [Found]" />
 					<attribute name="Text Effect" value="Stroke" />
 				</element>
@@ -2709,7 +2709,7 @@
 						<variant hash="4127232677" type="Float" value="1" name="HeightModifer" />
 						<variant hash="235997748" type="Float" value="0.05" name="XModifer" />
 						<variant hash="2971843571" type="Float" value="0.06" name="YModifer" />
-						<variant hash="156785404" type="Float" value="0.5" name="FontSizeModifer" />
+						<variant hash="156785404" type="Float" value="0.35" name="FontSizeModifer" />
 						<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 						<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 						<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
@@ -2719,7 +2719,7 @@
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
 					</attribute>
-					<attribute name="Font Size" value="16" />
+					<attribute name="Font Size" value="11" />
 					<attribute name="Text" value="Player5 [Found]" />
 					<attribute name="Text Effect" value="Stroke" />
 				</element>
@@ -2835,7 +2835,7 @@
 						<variant hash="4127232677" type="Float" value="1" name="HeightModifer" />
 						<variant hash="235997748" type="Float" value="0.05" name="XModifer" />
 						<variant hash="2971843571" type="Float" value="0.06" name="YModifer" />
-						<variant hash="156785404" type="Float" value="0.5" name="FontSizeModifer" />
+						<variant hash="156785404" type="Float" value="0.35" name="FontSizeModifer" />
 						<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 						<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 						<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
@@ -2845,7 +2845,7 @@
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
 					</attribute>
-					<attribute name="Font Size" value="16" />
+					<attribute name="Font Size" value="11" />
 					<attribute name="Text" value="Player6 [Found]" />
 					<attribute name="Text Effect" value="Stroke" />
 				</element>
@@ -3380,7 +3380,7 @@
 						<variant hash="4127232677" type="Float" value="1" name="HeightModifer" />
 						<variant hash="235997748" type="Float" value="0.05" name="XModifer" />
 						<variant hash="2971843571" type="Float" value="0.06" name="YModifer" />
-						<variant hash="156785404" type="Float" value="0.5" name="FontSizeModifer" />
+						<variant hash="156785404" type="Float" value="0.35" name="FontSizeModifer" />
 						<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 						<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 						<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
@@ -3390,7 +3390,7 @@
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
 					</attribute>
-					<attribute name="Font Size" value="16" />
+					<attribute name="Font Size" value="11" />
 					<attribute name="Text" value="Player0 [Found]" />
 					<attribute name="Text Effect" value="Stroke" />
 				</element>
@@ -3506,7 +3506,7 @@
 						<variant hash="4127232677" type="Float" value="1" name="HeightModifer" />
 						<variant hash="235997748" type="Float" value="0.05" name="XModifer" />
 						<variant hash="2971843571" type="Float" value="0.06" name="YModifer" />
-						<variant hash="156785404" type="Float" value="0.5" name="FontSizeModifer" />
+						<variant hash="156785404" type="Float" value="0.35" name="FontSizeModifer" />
 						<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 						<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 						<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
@@ -3516,7 +3516,7 @@
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
 					</attribute>
-					<attribute name="Font Size" value="16" />
+					<attribute name="Font Size" value="11" />
 					<attribute name="Text" value="Player1 [Found]" />
 					<attribute name="Text Effect" value="Stroke" />
 				</element>
@@ -3632,7 +3632,7 @@
 						<variant hash="4127232677" type="Float" value="1" name="HeightModifer" />
 						<variant hash="235997748" type="Float" value="0.05" name="XModifer" />
 						<variant hash="2971843571" type="Float" value="0.06" name="YModifer" />
-						<variant hash="156785404" type="Float" value="0.5" name="FontSizeModifer" />
+						<variant hash="156785404" type="Float" value="0.35" name="FontSizeModifer" />
 						<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 						<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 						<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
@@ -3642,7 +3642,7 @@
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
 					</attribute>
-					<attribute name="Font Size" value="16" />
+					<attribute name="Font Size" value="11" />
 					<attribute name="Text" value="Player2 [Found]" />
 					<attribute name="Text Effect" value="Stroke" />
 				</element>
@@ -3758,7 +3758,7 @@
 						<variant hash="4127232677" type="Float" value="1" name="HeightModifer" />
 						<variant hash="235997748" type="Float" value="0.05" name="XModifer" />
 						<variant hash="2971843571" type="Float" value="0.06" name="YModifer" />
-						<variant hash="156785404" type="Float" value="0.5" name="FontSizeModifer" />
+						<variant hash="156785404" type="Float" value="0.35" name="FontSizeModifer" />
 						<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 						<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 						<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
@@ -3768,7 +3768,7 @@
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
 					</attribute>
-					<attribute name="Font Size" value="16" />
+					<attribute name="Font Size" value="11" />
 					<attribute name="Text" value="Player3 [Found]" />
 					<attribute name="Text Effect" value="Stroke" />
 				</element>
@@ -3884,7 +3884,7 @@
 						<variant hash="4127232677" type="Float" value="1" name="HeightModifer" />
 						<variant hash="235997748" type="Float" value="0.05" name="XModifer" />
 						<variant hash="2971843571" type="Float" value="0.06" name="YModifer" />
-						<variant hash="156785404" type="Float" value="0.5" name="FontSizeModifer" />
+						<variant hash="156785404" type="Float" value="0.35" name="FontSizeModifer" />
 						<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 						<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 						<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
@@ -3894,7 +3894,7 @@
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
 					</attribute>
-					<attribute name="Font Size" value="16" />
+					<attribute name="Font Size" value="11" />
 					<attribute name="Text" value="Player4 [Found]" />
 					<attribute name="Text Effect" value="Stroke" />
 				</element>
@@ -4010,7 +4010,7 @@
 						<variant hash="4127232677" type="Float" value="1" name="HeightModifer" />
 						<variant hash="235997748" type="Float" value="0.05" name="XModifer" />
 						<variant hash="2971843571" type="Float" value="0.06" name="YModifer" />
-						<variant hash="156785404" type="Float" value="0.5" name="FontSizeModifer" />
+						<variant hash="156785404" type="Float" value="0.35" name="FontSizeModifer" />
 						<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 						<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 						<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
@@ -4020,7 +4020,7 @@
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
 					</attribute>
-					<attribute name="Font Size" value="16" />
+					<attribute name="Font Size" value="11" />
 					<attribute name="Text" value="Player5 [Found]" />
 					<attribute name="Text Effect" value="Stroke" />
 				</element>
@@ -4136,7 +4136,7 @@
 						<variant hash="4127232677" type="Float" value="1" name="HeightModifer" />
 						<variant hash="235997748" type="Float" value="0.05" name="XModifer" />
 						<variant hash="2971843571" type="Float" value="0.06" name="YModifer" />
-						<variant hash="156785404" type="Float" value="0.5" name="FontSizeModifer" />
+						<variant hash="156785404" type="Float" value="0.35" name="FontSizeModifer" />
 						<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 						<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 						<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
@@ -4146,7 +4146,7 @@
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
 					</attribute>
-					<attribute name="Font Size" value="16" />
+					<attribute name="Font Size" value="11" />
 					<attribute name="Text" value="Player6 [Found]" />
 					<attribute name="Text Effect" value="Stroke" />
 				</element>
