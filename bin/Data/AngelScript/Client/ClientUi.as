@@ -46,6 +46,11 @@ class ClientUi : ScriptObject
         playersListInstance.CreateObject (cache.GetResource ("ScriptFile",
                                                       "AngelScript/Client/UiHandlers/WaitingForStart/PlayersList.as"),
                                          "PlayersList");
+
+        ScriptInstance @exitWindowInstance = uiHandlersNode.CreateChild ("ExitWindow", LOCAL).CreateComponent ("ScriptInstance");
+        exitWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                      "AngelScript/Client/UiHandlers/WaitingForStart/ExitWindow.as"),
+                                         "ExitWindow");
     }
 
     protected void AddPlayingStateUiHandlers ()
