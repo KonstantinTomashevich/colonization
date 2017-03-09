@@ -55,6 +55,25 @@ class PlayersList : StringListEditorUiHandler
             BorderImage @colorSample = uiElement.GetChild ("colorSample");
             colorSample.color = playerInfo.color;
         }
+
+        Button @kickButton = uiElement.GetChild ("removeButton");
+        Node @scriptMain = GetScriptMain (node);
+        if (scriptMain !is null)
+        {
+            if (elementsStrings [elementIndex] == scriptMain.vars ["playerName"].GetString () or
+                not scriptMain.vars ["isAdmin"].GetBool ())
+            {
+                kickButton.visible = false;
+            }
+            else
+            {
+                kickButton.visible = true;
+            }
+        }
+        else
+        {
+            kickButton.visible = false;
+        }
     }
 
     PlayersList ()
