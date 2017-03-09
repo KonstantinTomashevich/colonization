@@ -118,6 +118,12 @@ void PlayersManager::UpdatePlayersInfos ()
                 updatePoints += 100.0f;
             }
 
+            if (playerInfo->IsReadyForStart () != player->IsReadyForStart ())
+            {
+                playerInfo->SetIsReadyForStart (player->IsReadyForStart ());
+                updatePoints += 100.0f;
+            }
+
             NetworkUpdateCounter *counter = playerInfo->GetNode ()->GetComponent <NetworkUpdateCounter> ();
             if (!counter)
             {
