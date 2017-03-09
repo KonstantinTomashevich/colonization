@@ -93,11 +93,22 @@ class PlayersList : StringListEditorUiHandler
 
     void HandleRemoveElementClick (StringHash eventType, VariantMap &eventData) override
     {
-        UIElement @element = eventData ["Element"].GetPtr ();
-        int elementOffset = element.vars ["ElementOffset"].GetInt ();
-        int summaryOffset = elementsShowOffset_ + elementOffset;
+        Node @scriptMain = GetScriptMain (node);
+        if (scriptMain !is null)
+        {
+            UIElement @element = eventData ["Element"].GetPtr ();
+            int elementOffset = element.vars ["ElementOffset"].GetInt ();
+            int summaryOffset = elementsShowOffset_ + elementOffset;
 
-        //TODO: This click will kick this player.
+            PlayerInfo @playerInfo = GetPlayerInfoByIndex (scene, summaryOffset);
+            if (playerInfo !is null and playerInfo.name != scriptMain.vars ["playerName"].GetString () and
+                scriptMain.vars ["isAdmin"].GetBool ())
+            {
+                VariantMap kickEventData;
+                kickEventData [HostRequestKickPlayer_PLAYER_NAME] = Variant (playerInfo.name);
+                SendEvent (EVENT_HOST_REQUEST_KICK_PLAYER, kickEventData);
+            }
+        }
     }
 
     void HandleHideClick () override

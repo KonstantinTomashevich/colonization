@@ -13,6 +13,16 @@ Urho3D::String get_EVENT_HOST_REQUEST_GAME_START ()
     return EVENT_HOST_REQUEST_GAME_START;
 }
 
+Urho3D::String get_EVENT_HOST_REQUEST_KICK_PLAYER ()
+{
+    return EVENT_HOST_REQUEST_KICK_PLAYER;
+}
+
+Urho3D::String get_HostRequestKickPlayer_PLAYER_NAME ()
+{
+    return HostRequestKickPlayer::PLAYER_NAME;
+}
+
 void BindGameStateType(Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
@@ -28,6 +38,8 @@ void BindHostActivity (Urho3D::Script *script)
     asIScriptEngine *engine = script->GetScriptEngine ();
     BindGameStateType (script);
     engine->RegisterGlobalFunction ("String get_EVENT_HOST_REQUEST_GAME_START ()", asFUNCTION (get_EVENT_HOST_REQUEST_GAME_START), asCALL_CDECL);
+    engine->RegisterGlobalFunction ("String get_EVENT_HOST_REQUEST_KICK_PLAYER ()", asFUNCTION (get_EVENT_HOST_REQUEST_KICK_PLAYER), asCALL_CDECL);
+    engine->RegisterGlobalFunction ("String get_HostRequestKickPlayer_PLAYER_NAME ()", asFUNCTION (get_HostRequestKickPlayer_PLAYER_NAME), asCALL_CDECL);
 
     Urho3D::RegisterObject <HostActivity> (engine, "HostActivity");
     Urho3D::RegisterObjectConstructor <HostActivity> (engine, "HostActivity");

@@ -269,9 +269,19 @@ bool HostActivity::IsStartRequested () const
     return isStartRequested_;
 }
 
-void HostActivity::HandleGamerStartRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+void HostActivity::HandleGameStartRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     isStartRequested_ = true;
+}
+
+void HostActivity::HandleKickPlayerRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    Urho3D::String playerName = eventData [HostRequestKickPlayer::PLAYER_NAME].GetString ();
+    PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
+    if (playersManager && playersManager->GetPlayerByNameHash (Urho3D::StringHash (playerName)))
+    {
+        playersManager->DisconnectPlayer (Urho3D::StringHash (playerName));
+    }
 }
 
 void HostActivity::Start ()
@@ -279,7 +289,8 @@ void HostActivity::Start ()
     context_->GetSubsystem <Urho3D::Network> ()->StartServer (serverPort_);
     SetupState (GAME_STATE_WAITING_FOR_START);
 
-    SubscribeToEvent (Urho3D::StringHash (EVENT_HOST_REQUEST_GAME_START), URHO3D_HANDLER (HostActivity, HandleGamerStartRequest));
+    SubscribeToEvent (Urho3D::StringHash (EVENT_HOST_REQUEST_GAME_START), URHO3D_HANDLER (HostActivity, HandleGameStartRequest));
+    SubscribeToEvent (Urho3D::StringHash (EVENT_HOST_REQUEST_KICK_PLAYER), URHO3D_HANDLER (HostActivity, HandleKickPlayerRequest));
 }
 
 void HostActivity::Update (float timeStep)

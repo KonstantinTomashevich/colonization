@@ -5,6 +5,12 @@
 namespace Colonization
 {
 const Urho3D::String EVENT_HOST_REQUEST_GAME_START ("HostRequestGameStart");
+const Urho3D::String EVENT_HOST_REQUEST_KICK_PLAYER ("HostRequestKickPlayer");
+namespace HostRequestKickPlayer
+{
+const Urho3D::String PLAYER_NAME ("PlayerName");
+}
+
 enum GameStateType
 {
     GAME_STATE_UNITIALIZED = 0,
@@ -58,7 +64,8 @@ public:
     void SetMapInfoPath (Urho3D::String mapInfoPath);
 
     bool IsStartRequested () const;
-    void HandleGamerStartRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandleGameStartRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandleKickPlayerRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
 
     virtual void Start ();
     virtual void Update (float timeStep);
