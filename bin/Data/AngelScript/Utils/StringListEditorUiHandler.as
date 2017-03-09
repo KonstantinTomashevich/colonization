@@ -121,7 +121,6 @@ shared abstract class StringListEditorUiHandler : ScriptObjectWithBeforeStop
         ScriptObjectWithBeforeStop::Start ();
 
         Window @window = GetWindow ();
-        window.visible = false;
         Button @addButton = window.GetChild ("addButton");
         Button @hideButton = window.GetChild ("hideButton");
 

@@ -61,6 +61,51 @@ shared PlayerInfo @GetPlayerInfoByName (Scene @scene_, String playerName)
     }
 }
 
+shared PlayerInfo @GetPlayerInfoByIndex (Scene @scene_, int index)
+{
+    if (scene_.GetChild ("players") is null)
+    {
+        return null;
+    }
+
+    Array <Node @> playersNodes = scene_.GetChild ("players").GetChildrenWithComponent ("PlayerInfo");
+    if (playersNodes.empty)
+    {
+        return null;
+    }
+
+    if (index < playersNodes.length)
+    {
+        return playersNodes [index].GetComponent ("PlayerInfo");
+    }
+    else
+    {
+        return null;
+    }
+}
+
+shared Array <String> GetPlayersNamesList (Scene @scene_)
+{
+    Array <String> playersNames;
+    if (scene_.GetChild ("players") is null)
+    {
+        return playersNames;
+    }
+
+    Array <Node @> playersNodes = scene_.GetChild ("players").GetChildrenWithComponent ("PlayerInfo");
+    if (playersNodes.empty)
+    {
+        return playersNames;
+    }
+
+    for (int index = 0; index < playersNodes.length; index++)
+    {
+        PlayerInfo @playerInfo = playersNodes [index].GetComponent ("PlayerInfo");
+        playersNames.Push (playerInfo.name);
+    }
+    return playersNames;
+}
+
 shared Unit @GetUnitByHash (Scene @scene_, StringHash unitHash)
 {
     if (scene_.GetChild ("units") is null)

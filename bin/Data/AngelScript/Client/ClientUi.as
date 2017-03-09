@@ -41,6 +41,11 @@ class ClientUi : ScriptObject
         functionalWindowsShowerInstance.CreateObject (cache.GetResource ("ScriptFile",
                                                       "AngelScript/Client/UiHandlers/WaitingForStart/FunctionalWindowsShower.as"),
                                          "FunctionalWindowsShower");
+
+        ScriptInstance @playersListInstance = uiHandlersNode.CreateChild ("PlayersList", LOCAL).CreateComponent ("ScriptInstance");
+        playersListInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                      "AngelScript/Client/UiHandlers/WaitingForStart/PlayersList.as"),
+                                         "PlayersList");
     }
 
     protected void AddPlayingStateUiHandlers ()
@@ -54,6 +59,9 @@ class ClientUi : ScriptObject
         ui.root.AddChild (uiRoot);
         uiRoot.defaultStyle = style_;
         uiRoot.name = "ingame";
+
+        uiRoot.GetChild ("chatPrivateReceiversWindow").visible = false;
+        uiRoot.GetChild ("chatBlockedPlayersWindow").visible = false;
 
         ScriptInstance @playerInfoWindowInstance = uiHandlersNode.CreateChild ("PlayerInfoWindow", LOCAL).CreateComponent ("ScriptInstance");
         playerInfoWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
