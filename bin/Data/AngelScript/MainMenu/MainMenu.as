@@ -124,6 +124,7 @@ class MainMenu : ScriptObject
         IngameClientActivity @ingameClientActivity = IngameClientActivity ();
         ingameClientActivity.serverAdress = "localhost";
         ingameClientActivity.serverPort = NEW_GAME_SERVER_PORT;
+        ingameClientActivity.isAdmin = true;
         ingameClientActivity.playerName = eventData ["nickname"].GetString ();
         ingameClientActivity.playerColor = eventData ["color"].GetColor ();
         activitiesApplication_.SetupActivityNextFrame (ingameClientActivity);
@@ -139,6 +140,7 @@ class MainMenu : ScriptObject
         IngameClientActivity @ingameClientActivity = IngameClientActivity ();
         ingameClientActivity.serverAdress = eventData ["adress"].GetString ();
         ingameClientActivity.serverPort = eventData ["port"].GetInt ();
+        ingameClientActivity.isAdmin = false;
         ingameClientActivity.playerName = eventData ["nickname"].GetString ();
         ingameClientActivity.playerColor = eventData ["color"].GetColor ();
         activitiesApplication_.SetupActivityNextFrame (ingameClientActivity);

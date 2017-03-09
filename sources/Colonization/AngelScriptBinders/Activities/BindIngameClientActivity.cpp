@@ -27,5 +27,8 @@ void BindIngameClientActivity (Urho3D::Script *script)
 
     engine->RegisterObjectMethod ("IngameClientActivity", "Color get_playerColor ()", asMETHOD (IngameClientActivity, GetPlayerColor), asCALL_THISCALL);
     engine->RegisterObjectMethod ("IngameClientActivity", "void set_playerColor (Color playerColor)", asMETHOD (IngameClientActivity, SetPlayerColor), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod ("IngameClientActivity", "bool get_isAdmin () const", asMETHOD (IngameClientActivity, IsAdmin), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("IngameClientActivity", "void set_isAdmin (bool isAdmin)", asMETHOD (IngameClientActivity, SetIsAdmin), asCALL_THISCALL);
 }
 }
