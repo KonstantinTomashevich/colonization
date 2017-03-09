@@ -17,9 +17,9 @@ class MapsList : StringListEditorUiHandler
         node.parent.vars ["mapsList"] = Variant (elements);
     }
 
-    protected String ProcessElementText (String text) override
+    protected String ProcessElementText (String text, int elementIndex) override
     {
-        return text;
+        return ("" + (elementIndex + 1)  + ". " + text);
     }
 
     protected bool IsElementToAddCorrect (String element) override

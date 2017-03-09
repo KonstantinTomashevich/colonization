@@ -24,7 +24,7 @@ shared abstract class StringListEditorUiHandler : ScriptObjectWithBeforeStop
         //! Will be implemented in inheritors!
     }
 
-    protected String ProcessElementText (String text)
+    protected String ProcessElementText (String text, int elementIndex)
     {
         //! Will be implemented in inheritors!
         return text;
@@ -93,7 +93,7 @@ shared abstract class StringListEditorUiHandler : ScriptObjectWithBeforeStop
             if (elementIndex < elementsStrings.length)
             {
                 Text @elementText = elementsUi [index].GetChild ("elementName");
-                elementText.text = ProcessElementText (elementsStrings [elementIndex]);
+                elementText.text = ProcessElementText (elementsStrings [elementIndex], elementIndex);
             }
         }
     }

@@ -24,17 +24,19 @@ class PlayersNamesListEditor : StringListEditorUiHandler
         scriptMain.vars [listVarName_] = Variant (elements);
     }
 
-    protected String ProcessElementText (String text) override
+    protected String ProcessElementText (String text, int elementIndex) override
     {
         PlayerInfo @playerInfo = GetPlayerInfoByName (scene, text);
+        String result = "" + (elementIndex + 1) + ". " + text;
         if (playerInfo !is null)
         {
-            return (text + " [Found]");
+            result += " [Found]";
         }
         else
         {
-            return (text + " [Not found]");
+            result += " [Not Found]";
         }
+        return result;
     }
 
     protected bool IsElementToAddCorrect (String element) override
