@@ -36,6 +36,13 @@ shared abstract class StringListEditorUiHandler : ScriptObjectWithBeforeStop
         return true;
     }
 
+    protected void ProcessElementUi (UIElement @uiElement, int elementIndex, Array <String> &in elementsStrings)
+    {
+        //! Can be overwriten by inheritors.
+        Text @elementText = uiElement.GetChild ("elementName");
+        elementText.text = ProcessElementText (elementsStrings [elementIndex], elementIndex);
+    }
+
     protected void UpdateElementsScroll ()
     {
         Window @window = GetWindow ();
@@ -92,8 +99,8 @@ shared abstract class StringListEditorUiHandler : ScriptObjectWithBeforeStop
             int elementIndex = elementsShowOffset_ + index;
             if (elementIndex < elementsStrings.length)
             {
-                Text @elementText = elementsUi [index].GetChild ("elementName");
-                elementText.text = ProcessElementText (elementsStrings [elementIndex], elementIndex);
+                UIElement @uiElement = elementsUi [index];
+                ProcessElementUi (uiElement, elementIndex, elementsStrings);
             }
         }
     }
