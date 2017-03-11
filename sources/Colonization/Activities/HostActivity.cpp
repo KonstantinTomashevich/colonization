@@ -284,6 +284,12 @@ void HostActivity::HandleKickPlayerRequest (Urho3D::StringHash eventType, Urho3D
     }
 }
 
+void HostActivity::HandleSelectMapRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    SetMapFolder (eventData [HostRequestSelectMap::MAP_FOLDER].GetString ());
+    SetMapInfoPath (eventData [HostRequestSelectMap::MAP_INFO_PATH].GetString ());
+}
+
 void HostActivity::Start ()
 {
     context_->GetSubsystem <Urho3D::Network> ()->StartServer (serverPort_);
@@ -291,6 +297,7 @@ void HostActivity::Start ()
 
     SubscribeToEvent (Urho3D::StringHash (EVENT_HOST_REQUEST_GAME_START), URHO3D_HANDLER (HostActivity, HandleGameStartRequest));
     SubscribeToEvent (Urho3D::StringHash (EVENT_HOST_REQUEST_KICK_PLAYER), URHO3D_HANDLER (HostActivity, HandleKickPlayerRequest));
+    SubscribeToEvent (Urho3D::StringHash (EVENT_HOST_REQUEST_SELECT_MAP), URHO3D_HANDLER (HostActivity, HandleSelectMapRequest));
 }
 
 void HostActivity::Update (float timeStep)

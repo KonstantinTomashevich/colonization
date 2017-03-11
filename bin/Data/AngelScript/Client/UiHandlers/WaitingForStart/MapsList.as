@@ -41,30 +41,36 @@ class MapsList : StringListEditorUiHandler
 
         Node @scriptMain = GetScriptMain (node);
         Window @window = GetWindow ();
-        if (scriptMain !is null)
+        if (scriptMain !is null and window.visible and not scriptMain.vars ["isAdmin"].GetBool ())
         {
-            if (window.visible and not scriptMain.vars ["isAdmin"].GetBool ())
-            {
-                Close ();
-            }
+            Close ();
         }
-        else
+        else if (scriptMain is null and window.visible)
         {
-            if (window.visible)
-            {
-                Close ();
-            }
+            Close ();
         }
     }
 
     // Remove buttons replaced by open buttons.
     void HandleRemoveElementClick (StringHash eventType, VariantMap &eventData) override
     {
-        UIElement @element = eventData ["Element"].GetPtr ();
-        int elementOffset = element.vars ["ElementOffset"].GetInt ();
-        int summaryOffset = elementsShowOffset_ + elementOffset;
+        Node @scriptMain = GetScriptMain (node);
+        Window @window = GetWindow ();
+        if (scriptMain !is null and scriptMain.vars ["isAdmin"].GetBool ())
+        {
+            UIElement @element = eventData ["Element"].GetPtr ();
+            int elementOffset = element.vars ["ElementOffset"].GetInt ();
+            int summaryOffset = elementsShowOffset_ + elementOffset;
 
-        // TODO: Implement request about sending to host.
+            String mapFolder = MAPS_FOLDER + scriptMain.vars ["mapsFoldersList"].GetStringVector () [summaryOffset];
+            String mapInfoPath = mapFolder + MAP_INFO_FILE;
+
+            VariantMap selectMapEventData;
+            selectMapEventData [HostRequestSelectMap_MAP_FOLDER] = Variant (mapFolder);
+            selectMapEventData [HostRequestSelectMap_MAP_INFO_PATH] = Variant (mapInfoPath);
+            SendEvent (EVENT_HOST_REQUEST_SELECT_MAP, selectMapEventData);
+            Close ();
+        }
     }
 
     void HandleHideClick () override

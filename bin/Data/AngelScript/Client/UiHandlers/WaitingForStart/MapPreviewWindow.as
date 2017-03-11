@@ -2,19 +2,20 @@
 
 class MapPreviewWindow : ScriptObject
 {
-    Array <String> maps_;
-
     protected void ScanForMaps ()
     {
-        maps_ = GetMapsFoldersNames ();
+        Array <String> mapsFolders;
+        mapsFolders = GetMapsFoldersNames ();
         Array <String> mapsNamesList;
-        for (int index = 0; index < maps_.length; index++)
+        for (int index = 0; index < mapsFolders.length; index++)
         {
-            XMLFile @infoXML = cache.GetResource ("XMLFile", MAPS_FOLDER + maps_ [index] + MAP_INFO_FILE);
+            XMLFile @infoXML = cache.GetResource ("XMLFile", MAPS_FOLDER + mapsFolders [index] + MAP_INFO_FILE);
             XMLElement userInfo = infoXML.GetRoot ().GetChild ("userInformation");
             String name = userInfo.GetAttribute ("name");
             mapsNamesList.Push (name);
         }
+
+        GetScriptMain (node).vars ["mapsFoldersList"] = mapsFolders;
         GetScriptMain (node).vars ["mapsList"] = mapsNamesList;
     }
 

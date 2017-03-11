@@ -11,6 +11,13 @@ namespace HostRequestKickPlayer
 const Urho3D::String PLAYER_NAME ("PlayerName");
 }
 
+const Urho3D::String EVENT_HOST_REQUEST_SELECT_MAP ("HostRequestSelectMap");
+namespace HostRequestSelectMap
+{
+const Urho3D::String MAP_FOLDER ("MapFolder");
+const Urho3D::String MAP_INFO_PATH ("MapInfoPath");
+}
+
 enum GameStateType
 {
     GAME_STATE_UNITIALIZED = 0,
@@ -68,6 +75,7 @@ public:
     bool IsStartRequested () const;
     void HandleGameStartRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     void HandleKickPlayerRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandleSelectMapRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
 
     virtual void Start ();
     virtual void Update (float timeStep);
