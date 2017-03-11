@@ -295,6 +295,31 @@ PlayerInfo *PlayersManager::GetPlayerInfoByNameHash (Urho3D::StringHash nameHash
     return 0;
 }
 
+bool PlayersManager::IsColorUsed (Urho3D::Color color, Player *excludePlayer) const
+{
+    float smallestDifference = 1.0f;
+    for (int index = 0; index < players_.Size (); index++)
+    {
+        Player *player = players_.Values ().At (index);
+        if (player != excludePlayer)
+        {
+            Urho3D::Color playerColor = player->GetColor ();
+
+            Urho3D::Vector3 difference;
+            difference.x_ = color.r_ - playerColor.r_;
+            difference.y_ = color.g_ - playerColor.g_;
+            difference.z_ = color.b_ - playerColor.b_;
+
+            if (difference.Length () < smallestDifference)
+            {
+                smallestDifference = difference.Length ();
+            }
+        }
+    }
+
+    return (smallestDifference < 0.2f);
+}
+
 void PlayersManager::DisconnectAllUnidentificatedConnections ()
 {
     while (!connectionsWithoutId_.Empty ())

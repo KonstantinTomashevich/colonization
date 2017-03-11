@@ -44,6 +44,7 @@ public:
 
     PlayerInfo *GetPlayerInfoByPointer (Player *player) const;
     PlayerInfo *GetPlayerInfoByNameHash (Urho3D::StringHash nameHash) const;
+    bool IsColorUsed (Urho3D::Color color, Player *excludePlayer = 0) const;
 
     void DisconnectAllUnidentificatedConnections ();
     Urho3D::Vector <Player *> GetPlayersByNames (Urho3D::Vector <Urho3D::StringHash> namesHashes) const;
