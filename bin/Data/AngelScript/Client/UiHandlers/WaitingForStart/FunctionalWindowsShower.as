@@ -24,6 +24,16 @@ class FunctionalWindowsShower : ScriptObject
                                                       "AngelScript/Client/UiHandlers/WaitingForStart/ChatPrivateReceiversListEditor.as"),
                                          "ChatPrivateReceiversListEditor");
 
+        ScriptInstance @mapsListInstance = uiHandlersNode.CreateChild ("MapsList", LOCAL).CreateComponent ("ScriptInstance");
+        mapsListInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                      "AngelScript/Client/UiHandlers/WaitingForStart/MapsList.as"),
+                                         "MapsList");
+
+        ScriptInstance @mapInfoWindowInstance = uiHandlersNode.CreateChild ("MapInfoWindow", LOCAL).CreateComponent ("ScriptInstance");
+        mapInfoWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                      "AngelScript/Client/UiHandlers/WaitingForStart/MapInfoWindow.as"),
+                                         "MapInfoWindow");
+
         UIElement @functionalWindowsRoot = ui.root.GetChild ("waitingForStart").GetChild ("functionalWindows");
         Array <UIElement @> elements = functionalWindowsRoot.GetChildren ();
         for (int index = 0; index < elements.length; index++)

@@ -51,6 +51,11 @@ class ClientUi : ScriptObject
         exitWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
                                                       "AngelScript/Client/UiHandlers/WaitingForStart/ExitWindow.as"),
                                          "ExitWindow");
+
+        ScriptInstance @mapPreviewWindowInstance = uiHandlersNode.CreateChild ("MapPreviewWindow", LOCAL).CreateComponent ("ScriptInstance");
+        mapPreviewWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                      "AngelScript/Client/UiHandlers/WaitingForStart/MapPreviewWindow.as"),
+                                         "MapPreviewWindow");
     }
 
     protected void AddPlayingStateUiHandlers ()
