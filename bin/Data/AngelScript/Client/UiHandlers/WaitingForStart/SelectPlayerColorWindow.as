@@ -1,5 +1,12 @@
 class SelectPlayerColorWindow : ScriptObject
 {
+    protected void Close ()
+    {
+        VariantMap eventData;
+        eventData ["windowName"] = Variant ("actionsWindow");
+        SendEvent ("ShowFunctionalWindowRequest", eventData);
+    }
+
     SelectPlayerColorWindow ()
     {
 
@@ -44,9 +51,7 @@ class SelectPlayerColorWindow : ScriptObject
 
     void HandleHideClick ()
     {
-        VariantMap eventData;
-        eventData ["windowName"] = Variant ("actionsWindow");
-        SendEvent ("ShowFunctionalWindowRequest", eventData);
+        Close ();
     }
 
     void HandleSelectPlayerColorClick ()
@@ -69,5 +74,6 @@ class SelectPlayerColorWindow : ScriptObject
         eventData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_RESELECT_PLAYER_COLOR);
         eventData ["messageBuffer"] = Variant (buffer);
         SendEvent ("NewNetworkTask", eventData);
+        Close ();
     }
 }
