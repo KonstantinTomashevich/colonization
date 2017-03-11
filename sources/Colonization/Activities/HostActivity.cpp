@@ -4,6 +4,7 @@
 #include <Urho3D/Network/Network.h>
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/IO/Log.h>
+#include <Urho3D/Engine/Engine.h>
 
 #include <Urho3D/Graphics/Octree.h>
 #include <Urho3D/Resource/ResourceCache.h>
@@ -292,7 +293,13 @@ void HostActivity::HandleSelectMapRequest (Urho3D::StringHash eventType, Urho3D:
 
 void HostActivity::Start ()
 {
-    context_->GetSubsystem <Urho3D::Network> ()->StartServer (serverPort_);
+    bool isServerStarted = context_->GetSubsystem <Urho3D::Network> ()->StartServer (serverPort_);
+    assert (isServerStarted);
+    if (!isServerStarted)
+    {
+        Urho3D::Log::Write (Urho3D::LOG_ERROR, "Can't start server!");
+        context_->GetSubsystem <Urho3D::Engine> ()->Exit ();
+    }
     SetupState (GAME_STATE_WAITING_FOR_START);
 
     SubscribeToEvent (Urho3D::StringHash (EVENT_HOST_REQUEST_GAME_START), URHO3D_HANDLER (HostActivity, HandleGameStartRequest));
