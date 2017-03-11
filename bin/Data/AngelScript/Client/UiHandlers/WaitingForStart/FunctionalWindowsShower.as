@@ -34,6 +34,11 @@ class FunctionalWindowsShower : ScriptObject
                                                       "AngelScript/Client/UiHandlers/WaitingForStart/MapInfoWindow.as"),
                                          "MapInfoWindow");
 
+        ScriptInstance @actionsWindowInstance = uiHandlersNode.CreateChild ("ActionsWindow", LOCAL).CreateComponent ("ScriptInstance");
+        actionsWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                      "AngelScript/Client/UiHandlers/WaitingForStart/ActionsWindow.as"),
+                                         "ActionsWindow");
+
         UIElement @functionalWindowsRoot = ui.root.GetChild ("waitingForStart").GetChild ("functionalWindows");
         Array <UIElement @> elements = functionalWindowsRoot.GetChildren ();
         for (int index = 0; index < elements.length; index++)
