@@ -1,3 +1,5 @@
+#include "AngelScript/Utils/Constants.as"
+
 shared Node @GetScriptMain (Node @requester)
 {
     Array <Node @> nodesWithTag = requester.scene.GetChildrenWithTag ("ScriptMain", true);
@@ -188,4 +190,26 @@ shared bool IsAnyLineEditFocused (Node @scriptMain)
         }
     }
     return false;
+}
+
+Array <String> GetMapsFoldersNames (String mapsFolder = MAPS_FOLDER,
+     String mapInfoFileName = MAP_INFO_FILE,
+     String filter = EMPTY_FILTER)
+{
+    Array <String> foldersNames;
+    foldersNames = fileSystem.ScanDir (mapsFolder, mapInfoFileName, SCAN_DIRS, false);
+    // Check maps list and delete items if they aren't maps.
+    int index = 0;
+    while (index < foldersNames .length)
+    {
+        if (fileSystem.FileExists (mapsFolder + foldersNames [index] + mapInfoFileName))
+        {
+            index++;
+        }
+        else
+        {
+            foldersNames.Erase (index);
+        }
+    }
+    return foldersNames;
 }
