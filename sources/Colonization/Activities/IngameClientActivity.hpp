@@ -14,6 +14,7 @@ protected:
 
     Urho3D::String serverAdress_;
     unsigned short serverPort_;
+    bool isAdmin_;
     Urho3D::String playerName_;
     Urho3D::Color playerColor_;
 public:
@@ -29,6 +30,9 @@ public:
 
     unsigned short GetServerPort ();
     void SetServerPort (unsigned short serverPort);
+
+    bool IsAdmin () const;
+    void SetIsAdmin (bool isAdmin);
 
     Urho3D::String GetPlayerName ();
     void SetPlayerName (Urho3D::String playerName);

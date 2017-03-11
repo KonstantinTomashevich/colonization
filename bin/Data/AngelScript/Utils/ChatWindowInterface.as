@@ -1,6 +1,7 @@
 #include "AngelScript/Utils/ClientUtils.as"
+#include "AngelScript/Utils/ScriptObjectWithBeforeStop.as"
 
-class ChatWindow : ScriptObject
+shared abstract class ChatWindowInterface : ScriptObjectWithBeforeStop
 {
     protected Array <VariantMap> messagesList_;
     protected int messagesShowOffset_;
@@ -14,9 +15,16 @@ class ChatWindow : ScriptObject
     protected float CHAT_WINDOW_OPENED_YMODIFER = 0.35f;
     protected float CHAT_WINDOW_CLOSED_YMODIFER = 0.10f;
 
+
+    protected UIElement @GetChatWindow ()
+    {
+        //! Will be implemented in inheritors!
+        return null;
+    }
+
     protected void UpdateChatMessagesScroll ()
     {
-        Window @chatWindow = ui.root.GetChild ("ingame").GetChild ("chatWindow");
+        Window @chatWindow = GetChatWindow ();
         Button @earlierMessagesButton = chatWindow.GetChild ("earlierMessagesButton");
         Button @laterMessagesButton = chatWindow.GetChild ("laterMessagesButton");
 
@@ -33,7 +41,7 @@ class ChatWindow : ScriptObject
     protected void UpdateChatMessages ()
     {
         String chatText = "";
-        Window @chatWindow = ui.root.GetChild ("ingame").GetChild ("chatWindow");
+        Window @chatWindow = GetChatWindow ();
         if (messagesList_.length > 0)
         {
             if (messagesShowOffset_ < MAX_MESSAGES_IN_PAGE_COUNT)
@@ -73,21 +81,23 @@ class ChatWindow : ScriptObject
         chatMessagesText.text = chatText;
     }
 
-    ChatWindow ()
+    ChatWindowInterface ()
     {
         untilNewMessage_ = 0.0f;
         untilMessagesScrollUpdate_ = 1.0f / (MESSAGES_SCROLL_SPEED * 1.0f);
         messagesShowOffset_ = MAX_MESSAGES_IN_PAGE_COUNT;
     }
 
-    ~ChatWindow ()
+    ~ChatWindowInterface ()
     {
 
     }
 
-    void Start ()
+    void Start () override
     {
-        Window @chatWindow = ui.root.GetChild ("ingame").GetChild ("chatWindow");
+        ScriptObjectWithBeforeStop::Start ();
+
+        Window @chatWindow = GetChatWindow ();
         Button @showHideButton = chatWindow.GetChild ("showHideButton");
         Button @sendPublicMessageButton = chatWindow.GetChild ("sendPublicMessage");
         Button @sendPrivateMessageButton = chatWindow.GetChild ("sendPrivateMessage");
@@ -121,8 +131,9 @@ class ChatWindow : ScriptObject
         }
 
         UpdateChatMessages ();
-        ui.root.GetChild ("ingame").GetChild ("chatWindow").GetChild ("sendPublicMessage").visible = (untilNewMessage_ <= 0.0f);
-        ui.root.GetChild ("ingame").GetChild ("chatWindow").GetChild ("sendPrivateMessage").visible = (untilNewMessage_ <= 0.0f);
+        Window @chatWindow = GetChatWindow ();
+        chatWindow.GetChild ("sendPublicMessage").visible = (untilNewMessage_ <= 0.0f);
+        chatWindow.GetChild ("sendPrivateMessage").visible = (untilNewMessage_ <= 0.0f);
     }
 
     void Stop ()
@@ -130,28 +141,26 @@ class ChatWindow : ScriptObject
         UnsubscribeFromAllEvents ();
     }
 
+    void BeforeStop (Scene @lastScene, Node @lastNode) override
+    {
+        Node @scriptMain = GetScriptMain (lastScene);
+        Window @chatWindow = GetChatWindow ();
+        if (scriptMain !is null and chatWindow !is null)
+        {
+            LineEdit @messageEdit = chatWindow.GetChild ("messageEdit");
+            UnregisterLineEdit (scriptMain, messageEdit);
+        }
+    }
+
     void HandleToggleChatWindowClick ()
     {
-        Window @chatWindow = ui.root.GetChild ("ingame").GetChild ("chatWindow");
-        float windowYModifer = chatWindow.vars ["YModifer"].GetFloat ();
-        if (windowYModifer == CHAT_WINDOW_CLOSED_YMODIFER)
-        {
-            chatWindow.vars ["YModifer"] = Variant (CHAT_WINDOW_OPENED_YMODIFER);
-            Text @text = chatWindow.GetChild ("showHideButton").GetChild ("text");
-            text.text = "Hide";
-        }
-        else
-        {
-            chatWindow.vars ["YModifer"] = Variant (CHAT_WINDOW_CLOSED_YMODIFER);
-            Text @text = chatWindow.GetChild ("showHideButton").GetChild ("text");
-            text.text = "Show";
-        }
+        //! Will be implemented in inheritors!
     }
 
     void HandleSendPublicMessageClick ()
     {
         untilNewMessage_ = PLAYER_NEW_CHAT_MESSAGE_DELAY;
-        Window @chatWindow = ui.root.GetChild ("ingame").GetChild ("chatWindow");
+        Window @chatWindow = GetChatWindow ();
         LineEdit @messageEdit = chatWindow.GetChild ("messageEdit");
 
         String message = messageEdit.text;
@@ -169,7 +178,7 @@ class ChatWindow : ScriptObject
     {
         untilNewMessage_ = PLAYER_NEW_CHAT_MESSAGE_DELAY;
         Node @scriptMain = GetScriptMain (node);
-        Window @chatWindow = ui.root.GetChild ("ingame").GetChild ("chatWindow");
+        Window @chatWindow = GetChatWindow ();
         LineEdit @messageEdit = chatWindow.GetChild ("messageEdit");
 
         String message = messageEdit.text;
@@ -191,14 +200,12 @@ class ChatWindow : ScriptObject
 
     void HandleShowBlockedUsersClick ()
     {
-        ui.root.GetChild ("ingame").GetChild ("chatBlockedPlayersWindow").visible = true;
-        ui.root.GetChild ("ingame").GetChild ("chatPrivateReceiversWindow").visible = false;
+        //! Will be implemented in inheritors!
     }
 
     void HandleShowPrivateUsersClick ()
     {
-        ui.root.GetChild ("ingame").GetChild ("chatBlockedPlayersWindow").visible = false;
-        ui.root.GetChild ("ingame").GetChild ("chatPrivateReceiversWindow").visible = true;
+        //! Will be implemented in inheritors!
     }
 
     void HandleNewChatMessage (StringHash eventType, VariantMap &eventData)

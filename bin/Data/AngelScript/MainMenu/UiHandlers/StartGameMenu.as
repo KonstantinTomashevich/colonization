@@ -1,32 +1,15 @@
+#include "AngelScript/Utils/ClientUtils.as"
+
 class StartGameMenu : ScriptObject
 {
     protected XMLFile @style_;
     Array <String> maps_;
 
-    String MAPS_FOLDER = "Data/Maps/";
-    String EMPTY_FILTER = "";
-    String MAP_INFO_FILE = "/info.xml";
-
     protected void ScanForMaps ()
     {
-        maps_ = fileSystem.ScanDir (MAPS_FOLDER, EMPTY_FILTER, SCAN_DIRS, false);
-        // Check maps list and delete items if they aren't maps.
-        int index = 0;
-        while (index < maps_.length)
-        {
-            String mapFolder = MAPS_FOLDER + maps_ [index];
-            if (fileSystem.FileExists (mapFolder + MAP_INFO_FILE))
-            {
-                index++;
-            }
-            else
-            {
-                maps_.Erase (index);
-            }
-        }
-
+        maps_ = GetMapsFoldersNames ();
         Array <String> mapsNamesList;
-        for (index = 0; index < maps_.length; index++)
+        for (int index = 0; index < maps_.length; index++)
         {
             XMLFile @infoXML = cache.GetResource ("XMLFile", MAPS_FOLDER + maps_ [index] + MAP_INFO_FILE);
             XMLElement userInfo = infoXML.GetRoot ().GetChild ("userInformation");

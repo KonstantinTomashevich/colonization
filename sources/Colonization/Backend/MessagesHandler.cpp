@@ -49,6 +49,16 @@ void MessagesHandler::ProcessSendIsPlayerReadyForStartInput (Player *player, Urh
     player->SetIsReadyForStart (isReadyForStart);
 }
 
+void MessagesHandler::ProcessReselectPlayerColor (Player *player, Urho3D::VectorBuffer &messageData)
+{
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
+    Urho3D::Color color = messageData.ReadColor ();
+    if (!playersManager->IsColorUsed (color, player))
+    {
+        player->SetColor (color);
+    }
+}
+
 MessagesHandler::MessagesHandler (Urho3D::Context *context) : Urho3D::Component (context)
 {
     SubscribeToEvent (Urho3D::E_CLIENTIDENTITY, URHO3D_HANDLER (MessagesHandler, HandleClientIdentity));
@@ -76,14 +86,15 @@ void MessagesHandler::HandleClientIdentity (Urho3D::StringHash eventType, Urho3D
         assert (playersManager);
 
         Urho3D::String name = connection->GetIdentity () ["Name"].GetString ();
+        Urho3D::Color color = connection->GetIdentity () ["Color"].GetColor ();
         // TODO: Currently we disconnect player if it sends identity with name which is already used by another player.
-        if (playersManager->GetPlayerByNameHash (name) || !playersManager->IsAcceptingNewConnections ())
+        if (playersManager->GetPlayerByNameHash (name) || !playersManager->IsAcceptingNewConnections () ||
+                playersManager->IsColorUsed (color))
         {
             connection->Disconnect ();
         }
         else
         {
-            Urho3D::Color color = connection->GetIdentity () ["Color"].GetColor ();
             playersManager->PlayerIdentified (connection, name, color);
         }
     }
@@ -122,6 +133,10 @@ void MessagesHandler::HandleNetworkMessage (Urho3D::StringHash eventType, Urho3D
             else if (messageType == CTS_NETWORK_MESSAGE_SEND_IS_PLAYER_READY_FOR_START)
             {
                 ProcessSendIsPlayerReadyForStartInput (player, messageData);
+            }
+            else if (messageType == CTS_NETWORK_MESSAGE_RESELECT_PLAYER_COLOR)
+            {
+                ProcessReselectPlayerColor (player, messageData);
             }
         }
     }

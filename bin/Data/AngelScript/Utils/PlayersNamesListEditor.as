@@ -1,36 +1,42 @@
 #include "AngelScript/Utils/ClientUtils.as"
 #include "AngelScript/Utils/StringListEditorUiHandler.as"
 
-class ChatBlockedPlayersListEditor : StringListEditorUiHandler
+class PlayersNamesListEditor : StringListEditorUiHandler
 {
+    //! Will be setted in inheritors!
+    protected String listVarName_;
+
     protected Window @GetWindow () override
     {
-        return ui.root.GetChild ("ingame").GetChild ("chatBlockedPlayersWindow");
+        //! Will be implemented in inheritors!
+        return null;
     }
 
     protected Array <String> GetElements () override
     {
         Node @scriptMain = GetScriptMain (node);
-        return scriptMain.vars ["chatBlockedPlayersList"].GetStringVector ();
+        return scriptMain.vars [listVarName_].GetStringVector ();
     }
 
     protected void SetElements (Array <String> elements) override
     {
         Node @scriptMain = GetScriptMain (node);
-        scriptMain.vars ["chatBlockedPlayersList"] = Variant (elements);
+        scriptMain.vars [listVarName_] = Variant (elements);
     }
 
-    protected String ProcessElementText (String text) override
+    protected String ProcessElementText (String text, int elementIndex) override
     {
         PlayerInfo @playerInfo = GetPlayerInfoByName (scene, text);
+        String result = "" + (elementIndex + 1) + ". " + text;
         if (playerInfo !is null)
         {
-            return (text + " [Found]");
+            result += " [Found]";
         }
         else
         {
-            return (text + " [Not found]");
+            result += " [Not Found]";
         }
+        return result;
     }
 
     protected bool IsElementToAddCorrect (String element) override
@@ -38,5 +44,15 @@ class ChatBlockedPlayersListEditor : StringListEditorUiHandler
         Node @scriptMain = GetScriptMain (node);
         String playerName = scriptMain.vars ["playerName"].GetString ();
         return (playerName != element);
+    }
+
+    PlayersNamesListEditor ()
+    {
+
+    }
+
+    ~PlayersNamesListEditor ()
+    {
+
     }
 }

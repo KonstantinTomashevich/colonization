@@ -58,13 +58,8 @@ class ClientNetwork : ScriptObject
     void HandleNewNetworkTask (StringHash eventType, VariantMap &eventData)
     {
         int taskType = eventData ["taskType"].GetInt ();
-        if (taskType == CTS_NETWORK_MESSAGE_SEND_CHAT_MESSAGE or
-            taskType == CTS_NETWORK_MESSAGE_SEND_PRIVATE_MESSAGE or
-            taskType == CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION)
-        {
-            VectorBuffer buffer = eventData ["messageBuffer"].GetBuffer ();
-            network.serverConnection.SendMessage (taskType, true, false, buffer);
-        }
+        VectorBuffer buffer = eventData ["messageBuffer"].GetBuffer ();
+        network.serverConnection.SendMessage (taskType, true, false, buffer);
     }
 
     void HandleGameStateMessage (VariantMap &eventData)
@@ -82,15 +77,6 @@ class ClientNetwork : ScriptObject
             gameStateChangedEventData ["oldGameState"] = Variant (oldGameState);
             gameStateChangedEventData ["newGameState"] = Variant (newGameState);
             SendEvent ("GameStateChanged", gameStateChangedEventData);
-        }
-
-        // TODO: This is temporary! Remove it later!
-        if (scriptMain.vars ["gameState"].GetInt () == GAME_STATE_WAITING_FOR_START)
-        {
-            VectorBuffer buffer;
-            buffer.WriteBool (true);
-            network.serverConnection.SendMessage (CTS_NETWORK_MESSAGE_SEND_IS_PLAYER_READY_FOR_START, true, false, buffer);
-            SendEvent (EVENT_HOST_REQUEST_GAME_START);
         }
     }
 

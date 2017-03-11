@@ -91,6 +91,16 @@ class Client : ScriptObject
         node.vars ["playerName"] = playerName;
     }
 
+    bool get_isAdmin ()
+    {
+        return node.vars ["isAdmin"].GetBool ();
+    }
+
+    void set_isAdmin (bool isAdmin)
+    {
+        node.vars ["isAdmin"] = Variant (isAdmin);
+    }
+
     void HandleServerDisconnected ()
     {
         ErrorDialog ("Disconnected from server!", "Disconnected from server!\nPress OK to return to main menu.");

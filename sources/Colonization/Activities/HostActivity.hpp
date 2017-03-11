@@ -5,6 +5,19 @@
 namespace Colonization
 {
 const Urho3D::String EVENT_HOST_REQUEST_GAME_START ("HostRequestGameStart");
+const Urho3D::String EVENT_HOST_REQUEST_KICK_PLAYER ("HostRequestKickPlayer");
+namespace HostRequestKickPlayer
+{
+const Urho3D::String PLAYER_NAME ("PlayerName");
+}
+
+const Urho3D::String EVENT_HOST_REQUEST_SELECT_MAP ("HostRequestSelectMap");
+namespace HostRequestSelectMap
+{
+const Urho3D::String MAP_FOLDER ("MapFolder");
+const Urho3D::String MAP_INFO_PATH ("MapInfoPath");
+}
+
 enum GameStateType
 {
     GAME_STATE_UNITIALIZED = 0,
@@ -27,6 +40,8 @@ protected:
     // TODO: Refactor states mechanism.
     // In my opinion, "SetupState (state)" and states dispose isn't needed,
     // because game goes only from waiting to playing and then to finished states.
+    // Also, Update is very huge and can be splitted.
+    // Also there are some string literals which can be replaced by constants.
     void SetupWaitingForPlayersState ();
     void DisposeWaitingForPlayersState ();
 
@@ -58,7 +73,9 @@ public:
     void SetMapInfoPath (Urho3D::String mapInfoPath);
 
     bool IsStartRequested () const;
-    void HandleGamerStartRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandleGameStartRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandleKickPlayerRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandleSelectMapRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
 
     virtual void Start ();
     virtual void Update (float timeStep);

@@ -1,6 +1,7 @@
 #include "AngelScript/Utils/ClientUtils.as"
+#include "AngelScript/Utils/ScriptObjectWithBeforeStop.as"
 
-shared abstract class StringListEditorUiHandler : ScriptObject
+shared abstract class StringListEditorUiHandler : ScriptObjectWithBeforeStop
 {
     protected int elementsShowOffset_;
     protected float untilElementsScrollUpdate_;
@@ -23,7 +24,7 @@ shared abstract class StringListEditorUiHandler : ScriptObject
         //! Will be implemented in inheritors!
     }
 
-    protected String ProcessElementText (String text)
+    protected String ProcessElementText (String text, int elementIndex)
     {
         //! Will be implemented in inheritors!
         return text;
@@ -33,6 +34,13 @@ shared abstract class StringListEditorUiHandler : ScriptObject
     {
         //! Will be implemented in inheritors!
         return true;
+    }
+
+    protected void ProcessElementUi (UIElement @uiElement, int elementIndex, Array <String> &in elementsStrings)
+    {
+        //! Can be overwriten by inheritors.
+        Text @elementText = uiElement.GetChild ("elementName");
+        elementText.text = ProcessElementText (elementsStrings [elementIndex], elementIndex);
     }
 
     protected void UpdateElementsScroll ()
@@ -91,8 +99,8 @@ shared abstract class StringListEditorUiHandler : ScriptObject
             int elementIndex = elementsShowOffset_ + index;
             if (elementIndex < elementsStrings.length)
             {
-                Text @elementText = elementsUi [index].GetChild ("elementName");
-                elementText.text = ProcessElementText (elementsStrings [elementIndex]);
+                UIElement @uiElement = elementsUi [index];
+                ProcessElementUi (uiElement, elementIndex, elementsStrings);
             }
         }
     }
@@ -108,10 +116,11 @@ shared abstract class StringListEditorUiHandler : ScriptObject
 
     }
 
-    void Start ()
+    void Start () override
     {
+        ScriptObjectWithBeforeStop::Start ();
+
         Window @window = GetWindow ();
-        window.visible = false;
         Button @addButton = window.GetChild ("addButton");
         Button @hideButton = window.GetChild ("hideButton");
 
@@ -147,6 +156,17 @@ shared abstract class StringListEditorUiHandler : ScriptObject
     void Stop ()
     {
         UnsubscribeFromAllEvents ();
+    }
+
+    void BeforeStop (Scene @lastScene, Node @lastNode) override
+    {
+        Node @scriptMain = GetScriptMain (lastScene);
+        Window @window = GetWindow ();
+        if (scriptMain !is null and window !is null)
+        {
+            LineEdit @elementToAddEdit = window.GetChild ("elementToAddEdit");
+            UnregisterLineEdit (scriptMain, elementToAddEdit);
+        }
     }
 
     void HandleAddElementClick ()

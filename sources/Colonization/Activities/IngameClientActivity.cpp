@@ -10,6 +10,7 @@ namespace Colonization
 IngameClientActivity::IngameClientActivity (Urho3D::Context *context) : Activity (context),
     scene_ (0),
     angelScript_ (0),
+    isAdmin_ (false),
     serverAdress_ ("localhost"),
     serverPort_ (13534),
     playerName_ ("Human"),
@@ -40,6 +41,10 @@ void IngameClientActivity::Start ()
     executionParameters.Clear ();
     executionParameters.Push (playerName_);
     angelScript_->Execute ("void set_playerName (String playerName)", executionParameters);
+
+    executionParameters.Clear ();
+    executionParameters.Push (isAdmin_);
+    angelScript_->Execute ("void set_isAdmin (bool isAdmin)", executionParameters);
 
     Urho3D::Network *network = context_->GetSubsystem <Urho3D::Network> ();
     Urho3D::VariantMap identity;
@@ -78,6 +83,16 @@ unsigned short IngameClientActivity::GetServerPort ()
 void IngameClientActivity::SetServerPort (unsigned short serverPort)
 {
     serverPort_ = serverPort;
+}
+
+bool IngameClientActivity::IsAdmin () const
+{
+    return isAdmin_;
+}
+
+void IngameClientActivity::SetIsAdmin (bool isAdmin)
+{
+    isAdmin_ = isAdmin;
 }
 
 Urho3D::String IngameClientActivity::GetPlayerName ()

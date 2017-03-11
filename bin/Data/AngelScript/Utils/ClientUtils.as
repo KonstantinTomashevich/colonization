@@ -1,3 +1,5 @@
+#include "AngelScript/Utils/Constants.as"
+
 shared Node @GetScriptMain (Node @requester)
 {
     Array <Node @> nodesWithTag = requester.scene.GetChildrenWithTag ("ScriptMain", true);
@@ -59,6 +61,51 @@ shared PlayerInfo @GetPlayerInfoByName (Scene @scene_, String playerName)
     {
         return null;
     }
+}
+
+shared PlayerInfo @GetPlayerInfoByIndex (Scene @scene_, int index)
+{
+    if (scene_.GetChild ("players") is null)
+    {
+        return null;
+    }
+
+    Array <Node @> playersNodes = scene_.GetChild ("players").GetChildrenWithComponent ("PlayerInfo");
+    if (playersNodes.empty)
+    {
+        return null;
+    }
+
+    if (index < playersNodes.length)
+    {
+        return playersNodes [index].GetComponent ("PlayerInfo");
+    }
+    else
+    {
+        return null;
+    }
+}
+
+shared Array <String> GetPlayersNamesList (Scene @scene_)
+{
+    Array <String> playersNames;
+    if (scene_.GetChild ("players") is null)
+    {
+        return playersNames;
+    }
+
+    Array <Node @> playersNodes = scene_.GetChild ("players").GetChildrenWithComponent ("PlayerInfo");
+    if (playersNodes.empty)
+    {
+        return playersNames;
+    }
+
+    for (int index = 0; index < playersNodes.length; index++)
+    {
+        PlayerInfo @playerInfo = playersNodes [index].GetComponent ("PlayerInfo");
+        playersNames.Push (playerInfo.name);
+    }
+    return playersNames;
 }
 
 shared Unit @GetUnitByHash (Scene @scene_, StringHash unitHash)
@@ -123,23 +170,10 @@ shared void RegisterLineEdit (Node @scriptMain, LineEdit @lineEdit)
 shared void UnregisterLineEdit (Node @scriptMain, LineEdit @lineEdit)
 {
     Array <Variant> lineEditVector = scriptMain.vars ["lineEditVector"].GetVariantVector ();
-    int foundIndex = 0;
-    int index = 0;
-    while (foundIndex < 0 and index < lineEditVector.length)
+    int index = lineEditVector.Find (Variant (lineEdit));
+    if (index >= 0)
     {
-        LineEdit @lineEditFromVector = lineEditVector [index].GetPtr ();
-        if (lineEditFromVector is lineEdit)
-        {
-            foundIndex = index;
-        }
-        else
-        {
-            index++;
-        }
-    }
-    if (foundIndex >= 0)
-    {
-        lineEditVector.Erase (foundIndex);
+        lineEditVector.Erase (index);
     }
     scriptMain.vars ["lineEditVector"] = Variant (lineEditVector);
 }
@@ -156,4 +190,26 @@ shared bool IsAnyLineEditFocused (Node @scriptMain)
         }
     }
     return false;
+}
+
+Array <String> GetMapsFoldersNames (String mapsFolder = MAPS_FOLDER,
+     String mapInfoFileName = MAP_INFO_FILE,
+     String filter = EMPTY_FILTER)
+{
+    Array <String> foldersNames;
+    foldersNames = fileSystem.ScanDir (mapsFolder, mapInfoFileName, SCAN_DIRS, false);
+    // Check maps list and delete items if they aren't maps.
+    int index = 0;
+    while (index < foldersNames .length)
+    {
+        if (fileSystem.FileExists (mapsFolder + foldersNames [index] + mapInfoFileName))
+        {
+            index++;
+        }
+        else
+        {
+            foldersNames.Erase (index);
+        }
+    }
+    return foldersNames;
 }
