@@ -12,6 +12,7 @@ enum NetworkMessageType
     CTS_NETWORK_MESSAGE_SEND_PRIVATE_MESSAGE = 101, // Data: message (String), ...recieviers... (String's).
     CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION = 102, // Data: actionType (int), actionDataBuffer (VectorBuffer ... [data]).
     CTS_NETWORK_MESSAGE_SEND_IS_PLAYER_READY_FOR_START = 103, // Data: isPlayerReadyForStart (bool).
+    CTS_NETWORK_MESSAGE_RESELECT_PLAYER_COLOR = 104, // Data: playerColor (Color).
 
     // STC -- server to client message.
     STC_NETWORK_MESSAGE_SEND_PLAYER_STATS = 200, // Data: gold (float), points (float).
@@ -31,6 +32,7 @@ protected:
     void ProcessSendPrivateMessageInput (Player *player, Urho3D::VectorBuffer &messageData);
     void ProcessSendPlayerActionInput (Player *player, Urho3D::VectorBuffer &messageData);
     void ProcessSendIsPlayerReadyForStartInput (Player *player, Urho3D::VectorBuffer &messageData);
+    void ProcessReselectPlayerColor (Player *player, Urho3D::VectorBuffer &messageData);
 
 public:
     MessagesHandler (Urho3D::Context *context);

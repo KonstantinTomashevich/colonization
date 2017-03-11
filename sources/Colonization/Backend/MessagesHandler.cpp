@@ -49,6 +49,16 @@ void MessagesHandler::ProcessSendIsPlayerReadyForStartInput (Player *player, Urh
     player->SetIsReadyForStart (isReadyForStart);
 }
 
+void MessagesHandler::ProcessReselectPlayerColor (Player *player, Urho3D::VectorBuffer &messageData)
+{
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
+    Urho3D::Color color = messageData.ReadColor ();
+    if (!playersManager->IsColorUsed (color, player))
+    {
+        player->SetColor (color);
+    }
+}
+
 MessagesHandler::MessagesHandler (Urho3D::Context *context) : Urho3D::Component (context)
 {
     SubscribeToEvent (Urho3D::E_CLIENTIDENTITY, URHO3D_HANDLER (MessagesHandler, HandleClientIdentity));
@@ -123,6 +133,10 @@ void MessagesHandler::HandleNetworkMessage (Urho3D::StringHash eventType, Urho3D
             else if (messageType == CTS_NETWORK_MESSAGE_SEND_IS_PLAYER_READY_FOR_START)
             {
                 ProcessSendIsPlayerReadyForStartInput (player, messageData);
+            }
+            else if (messageType == CTS_NETWORK_MESSAGE_RESELECT_PLAYER_COLOR)
+            {
+                ProcessReselectPlayerColor (player, messageData);
             }
         }
     }

@@ -39,6 +39,11 @@ class FunctionalWindowsShower : ScriptObject
                                                       "AngelScript/Client/UiHandlers/WaitingForStart/ActionsWindow.as"),
                                          "ActionsWindow");
 
+        ScriptInstance @selectPlayerColorWindowInstance = uiHandlersNode.CreateChild ("SelectPlayerColorWindow", LOCAL).CreateComponent ("ScriptInstance");
+        selectPlayerColorWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                      "AngelScript/Client/UiHandlers/WaitingForStart/SelectPlayerColorWindow.as"),
+                                         "SelectPlayerColorWindow");
+
         UIElement @functionalWindowsRoot = ui.root.GetChild ("waitingForStart").GetChild ("functionalWindows");
         Array <UIElement @> elements = functionalWindowsRoot.GetChildren ();
         for (int index = 0; index < elements.length; index++)

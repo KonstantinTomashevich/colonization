@@ -61,6 +61,7 @@ public:
 
     Urho3D::String GetName () const;
     Urho3D::Color GetColor () const;
+    void SetColor (Urho3D::Color color);
 
     Urho3D::Connection *GetConnection () const;
     Urho3D::Scene *GetScene () const;

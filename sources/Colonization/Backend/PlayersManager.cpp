@@ -301,7 +301,7 @@ bool PlayersManager::IsColorUsed (Urho3D::Color color, Player *excludePlayer) co
     for (int index = 0; index < players_.Size (); index++)
     {
         Player *player = players_.Values ().At (index);
-        if (player != excludePlayer)
+        if (player && player != excludePlayer)
         {
             Urho3D::Color playerColor = player->GetColor ();
 

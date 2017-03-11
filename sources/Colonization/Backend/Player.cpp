@@ -234,6 +234,11 @@ Urho3D::Color Player::GetColor () const
     return color_;
 }
 
+void Player::SetColor (Urho3D::Color color)
+{
+    color_ = color;
+}
+
 float Player::GetGold () const
 {
     return gold_;
