@@ -33,6 +33,8 @@ protected:
     // TODO: Refactor states mechanism.
     // In my opinion, "SetupState (state)" and states dispose isn't needed,
     // because game goes only from waiting to playing and then to finished states.
+    // Also, Update is very huge and can be splitted.
+    // Also there are some string literals which can be replaced by constants.
     void SetupWaitingForPlayersState ();
     void DisposeWaitingForPlayersState ();
 

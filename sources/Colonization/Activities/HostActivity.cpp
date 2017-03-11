@@ -308,6 +308,13 @@ void HostActivity::Update (float timeStep)
     }
     scene_->SetVar ("ReplicatedNodesCount", replicated);
 
+    // Add selected map folder and map info path to vars (for using in client in waiting for start state).
+    if (currentState_ == GAME_STATE_WAITING_FOR_START)
+    {
+        scene_->SetVar ("MapFolder", mapFolder_);
+        scene_->SetVar ("MapInfoPath", mapInfoPath_);
+    }
+
     // Go to next state if needed.
     if (currentState_ == GAME_STATE_WAITING_FOR_START && WillGoFromWaitingForStartToPlayingState ())
     {
