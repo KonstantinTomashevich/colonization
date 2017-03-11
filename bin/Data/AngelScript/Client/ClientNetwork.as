@@ -58,13 +58,8 @@ class ClientNetwork : ScriptObject
     void HandleNewNetworkTask (StringHash eventType, VariantMap &eventData)
     {
         int taskType = eventData ["taskType"].GetInt ();
-        if (taskType == CTS_NETWORK_MESSAGE_SEND_CHAT_MESSAGE or
-            taskType == CTS_NETWORK_MESSAGE_SEND_PRIVATE_MESSAGE or
-            taskType == CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION)
-        {
-            VectorBuffer buffer = eventData ["messageBuffer"].GetBuffer ();
-            network.serverConnection.SendMessage (taskType, true, false, buffer);
-        }
+        VectorBuffer buffer = eventData ["messageBuffer"].GetBuffer ();
+        network.serverConnection.SendMessage (taskType, true, false, buffer);
     }
 
     void HandleGameStateMessage (VariantMap &eventData)
