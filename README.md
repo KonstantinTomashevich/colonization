@@ -1,5 +1,5 @@
 ## Colonization [Work In Progress]
-Multiplayer RTS game in colonization setting. 
+Multiplayer RTS game in colonization setting.
 
 **Engine:** Urho3D.
 
@@ -13,7 +13,7 @@ Multiplayer RTS game in colonization setting.
 - [ ] Diplomacy system.
 - [ ] Colony level of life system.
 - [ ] Natives and relations with them.
-- [x] Multiplayer support (basic multiplayer works at commit 0744814, now working on normal game start ui).
+- [x] Multiplayer support (scene replication is one-directional, the server always has authority, the client responds with network messages).
 
 ## How to build
 Step 1. Download Urho3D SDK binary release from [SourceForge](https://sourceforge.net/projects/urho3d/files/Urho3D/). Recommended version -- **1.6**. Also you can build Urho3D from source, for more information visit [Urho3D Site](https://urho3d.github.io).
