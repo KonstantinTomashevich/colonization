@@ -46,7 +46,7 @@ class FunctionalWindowsShower : ScriptObject
 
         UIElement @functionalWindowsRoot = ui.root.GetChild ("waitingForStart").GetChild ("functionalWindows");
         Array <UIElement @> elements = functionalWindowsRoot.GetChildren ();
-        for (int index = 0; index < elements.length; index++)
+        for (uint index = 0; index < elements.length; index++)
         {
             elements [index].visible = false;
         }
@@ -71,7 +71,7 @@ class FunctionalWindowsShower : ScriptObject
     {
         UIElement @functionalWindowsRoot = ui.root.GetChild ("waitingForStart").GetChild ("functionalWindows");
         Array <UIElement @> elements = functionalWindowsRoot.GetChildren ();
-        for (int index = 0; index < elements.length; index++)
+        for (uint index = 0; index < elements.length; index++)
         {
             elements [index].visible = false;
         }

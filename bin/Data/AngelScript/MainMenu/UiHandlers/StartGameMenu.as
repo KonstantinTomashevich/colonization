@@ -9,7 +9,7 @@ class StartGameMenu : ScriptObject
     {
         maps_ = GetMapsFoldersNames ();
         Array <String> mapsNamesList;
-        for (int index = 0; index < maps_.length; index++)
+        for (uint index = 0; index < maps_.length; index++)
         {
             XMLFile @infoXML = cache.GetResource ("XMLFile", MAPS_FOLDER + maps_ [index] + MAP_INFO_FILE);
             XMLElement userInfo = infoXML.GetRoot ().GetChild ("userInformation");

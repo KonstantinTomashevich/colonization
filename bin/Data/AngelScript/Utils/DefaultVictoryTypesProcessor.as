@@ -15,7 +15,7 @@ VariantMap ProcessVictoryByColonizedSquare (const VictoryTypesProcessorScriptDat
 
     float playersLand = 0.0f;
     float totalLand = 0.0f;
-    for (int index = 0; index < dataAccessor.districtsCount; index++)
+    for (uint index = 0; index < dataAccessor.districtsCount; index++)
     {
         const District @district = dataAccessor.GetDistrictByIndex (index);
         if (not district.isSea and not district.isImpassable)

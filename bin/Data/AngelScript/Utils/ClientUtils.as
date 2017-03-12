@@ -19,7 +19,7 @@ shared bool CheckIsSceneLoaded (Scene @scene_)
     {
         Array <Node @> children = scene_.GetChildren (true);
         int replicated = 0;
-        for (int index = 0; index < children.length; index++)
+        for (uint index = 0; index < children.length; index++)
         {
             if (children [index].id < FIRST_LOCAL_ID)
             {
@@ -46,7 +46,7 @@ shared PlayerInfo @GetPlayerInfoByName (Scene @scene_, String playerName)
     }
 
     PlayerInfo @playerInfo = playersNodes [0].GetComponent ("PlayerInfo");
-    int index = 1;
+    uint index = 1;
     while (playerInfo.name != playerName and index < playersNodes.length)
     {
         playerInfo = playersNodes [index].GetComponent ("PlayerInfo");
@@ -63,7 +63,7 @@ shared PlayerInfo @GetPlayerInfoByName (Scene @scene_, String playerName)
     }
 }
 
-shared PlayerInfo @GetPlayerInfoByIndex (Scene @scene_, int index)
+shared PlayerInfo @GetPlayerInfoByIndex (Scene @scene_, uint index)
 {
     if (scene_.GetChild ("players") is null)
     {
@@ -100,7 +100,7 @@ shared Array <String> GetPlayersNamesList (Scene @scene_)
         return playersNames;
     }
 
-    for (int index = 0; index < playersNodes.length; index++)
+    for (uint index = 0; index < playersNodes.length; index++)
     {
         PlayerInfo @playerInfo = playersNodes [index].GetComponent ("PlayerInfo");
         playersNames.Push (playerInfo.name);
@@ -122,7 +122,7 @@ shared Unit @GetUnitByHash (Scene @scene_, StringHash unitHash)
     }
 
     Unit @unit = unitsNodes [0].GetComponent ("Unit");
-    int index = 1;
+    uint index = 1;
     while (unit.hash != unitHash and index < unitsNodes.length)
     {
         unit = unitsNodes [index].GetComponent ("Unit");
@@ -148,7 +148,7 @@ shared Array <Unit @> GetUnitsInDistrict (Scene @scene_, StringHash districtHash
     }
 
     Array <Node @> unitsNodes = scene_.GetChild ("units").GetChildrenWithComponent ("Unit");
-    for (int index = 0; index < unitsNodes.length; index++)
+    for (uint index = 0; index < unitsNodes.length; index++)
     {
         Unit @unit = unitsNodes [index].GetComponent ("Unit");
         if (unit.positionHash == districtHash)
@@ -170,7 +170,7 @@ shared void RegisterLineEdit (Node @scriptMain, LineEdit @lineEdit)
 shared void UnregisterLineEdit (Node @scriptMain, LineEdit @lineEdit)
 {
     Array <Variant> lineEditVector = scriptMain.vars ["lineEditVector"].GetVariantVector ();
-    int index = lineEditVector.Find (Variant (lineEdit));
+    uint index = lineEditVector.Find (Variant (lineEdit));
     if (index >= 0)
     {
         lineEditVector.Erase (index);
@@ -181,7 +181,7 @@ shared void UnregisterLineEdit (Node @scriptMain, LineEdit @lineEdit)
 shared bool IsAnyLineEditFocused (Node @scriptMain)
 {
     Array <Variant> lineEditVector = scriptMain.vars ["lineEditVector"].GetVariantVector ();
-    for (int index = 0; index < lineEditVector.length; index++)
+    for (uint index = 0; index < lineEditVector.length; index++)
     {
         LineEdit @lineEdit = lineEditVector [index].GetPtr ();
         if (lineEdit.focus)
@@ -199,7 +199,7 @@ Array <String> GetMapsFoldersNames (String mapsFolder = MAPS_FOLDER,
     Array <String> foldersNames;
     foldersNames = fileSystem.ScanDir (mapsFolder, mapInfoFileName, SCAN_DIRS, false);
     // Check maps list and delete items if they aren't maps.
-    int index = 0;
+    uint index = 0;
     while (index < foldersNames .length)
     {
         if (fileSystem.FileExists (mapsFolder + foldersNames [index] + mapInfoFileName))

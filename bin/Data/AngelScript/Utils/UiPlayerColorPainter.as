@@ -20,7 +20,7 @@ class UiPlayerColorPainter : ScriptObject
     void Update (float timeStep)
     {
         Array <UIElement @> elements = ui.root.GetChildrenWithTag ("SetPlayerColor", true);
-        for (int index = 0; index < elements.length; index++)
+        for (uint index = 0; index < elements.length; index++)
         {
             elements [index].color = playerColor_;
         }

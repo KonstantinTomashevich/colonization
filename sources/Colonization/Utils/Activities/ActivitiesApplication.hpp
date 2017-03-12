@@ -24,7 +24,7 @@ public:
 
     void SetupActivityNextFrame (Colonization::Activity *activity);
     void StopActivityNextFrame (Colonization::Activity *activity);
-    int GetActivitiesCount ();
+    unsigned GetActivitiesCount ();
     Colonization::Activity *GetActivityByIndex (int index);
 };
 }

@@ -110,7 +110,7 @@ void ActivitiesApplication::StopActivityNextFrame (Activity *activity)
     activitiesToStop_.Push (Urho3D::SharedPtr <Activity> (activity));
 }
 
-int ActivitiesApplication::GetActivitiesCount ()
+unsigned ActivitiesApplication::GetActivitiesCount ()
 {
     return currentActivities_.Size ();
 }

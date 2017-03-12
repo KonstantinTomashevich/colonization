@@ -17,12 +17,12 @@ class MapBillboards : ScriptObject
     {
         Map @map = scene.GetChild ("map").GetComponent ("Map");
         Node @cameraNode = scene.GetChild ("camera");
-        int nextBillboardIndex = 0;
+        uint nextBillboardIndex = 0;
 
         if (cameraNode !is null)
         {
             Camera @camera = cameraNode.GetComponent ("Camera");
-            for (int index = 0; index < map.GetDistrictsCount (); index++)
+            for (uint index = 0; index < map.GetDistrictsCount (); index++)
             {
                 District @district = map.GetDistrictByIndex (index);
                 Vector2 screenPoint = camera.WorldToScreenPoint (district.unitPosition + BILLBOARD_WORLD_POSITION_OFFSET);
@@ -35,8 +35,8 @@ class MapBillboards : ScriptObject
                     }
 
                     UIElement @billboard = billboardsRoot_.GetChildren () [nextBillboardIndex];
-                    billboard.SetPosition (screenPoint.x * graphics.width - billboard.width / 2,
-                        screenPoint.y * graphics.height - billboard.height / 2);
+                    billboard.SetPosition (int (screenPoint.x * graphics.width - billboard.width / 2),
+                        int (screenPoint.y * graphics.height - billboard.height / 2));
 
                     UpdateDistrictBillboardTitle (billboard, district);
                     UpdateDistrictBillboardBackground (billboard, district);
@@ -105,7 +105,7 @@ class MapBillboards : ScriptObject
 
         if (unitsInDistrict.length > 0 and fogOfWarCalculator.IsDistrictVisible (district.hash))
         {
-            int index = 0;
+            uint index = 0;
             for (index = 0; index < unitsInDistrict.length; index++)
             {
                 Unit @unit = unitsInDistrict [index];

@@ -3,9 +3,9 @@
 
 shared abstract class StringListEditorUiHandler : ScriptObjectWithBeforeStop
 {
-    protected int elementsShowOffset_;
+    protected uint elementsShowOffset_;
     protected float untilElementsScrollUpdate_;
-    protected int ELEMENTS_SCROLL_SPEED = 5;
+    protected uint ELEMENTS_SCROLL_SPEED = 5;
 
     protected Window @GetWindow ()
     {
@@ -59,21 +59,17 @@ shared abstract class StringListEditorUiHandler : ScriptObjectWithBeforeStop
         }
     }
 
-    protected void CheckElementsShowOffset (Array <UIElement @> &elementsUi, int elementsStringsLength)
+    protected void CheckElementsShowOffset (Array <UIElement @> &elementsUi, uint elementsStringsLength)
     {
-        if (elementsShowOffset_ > elementsStringsLength - 1.0f * elementsUi.length)
+        if (int (elementsShowOffset_) > int (int (elementsStringsLength) - elementsUi.length))
         {
-            if (elementsStringsLength - 1.0f * elementsUi.length < 0)
+            if (int (elementsStringsLength) - elementsUi.length < 0)
             {
                 elementsShowOffset_ = 0;
-                for (int index = 0; index < elementsUi.length; index++)
-                {
-                    elementsUi [index].visible = (elementsStringsLength - index > 0);
-                }
             }
             else
             {
-                elementsShowOffset_ = elementsStringsLength - 1.0f * elementsUi.length;
+                elementsShowOffset_ = uint (int (elementsStringsLength) - elementsUi.length);
             }
         }
     }
@@ -82,7 +78,7 @@ shared abstract class StringListEditorUiHandler : ScriptObjectWithBeforeStop
     {
         Window @window = GetWindow ();
         Text @elementsInfo = window.GetChild ("elementsInfo");
-        elementsInfo.text = "Showing elements from " + (elementsShowOffset_ + 1) + " to " + (elementsShowOffset_ + elementsUiLength + 1)
+        elementsInfo.text = "Showing elements from " + (elementsShowOffset_ + 1) + " to " + (elementsShowOffset_ + elementsUiLength)
                             + ", summary count -- " + elementsStringsLength + ".";
     }
 
@@ -94,13 +90,19 @@ shared abstract class StringListEditorUiHandler : ScriptObjectWithBeforeStop
         CheckElementsShowOffset (elementsUi, elementsStrings.length);
         UpdateElementsInfo (elementsUi.length, elementsStrings.length);
 
-        for (int index = 0; index < elementsUi.length; index++)
+        for (uint index = 0; index < elementsUi.length; index++)
         {
-            int elementIndex = elementsShowOffset_ + index;
+            uint elementIndex = elementsShowOffset_ + index;
             if (elementIndex < elementsStrings.length)
             {
                 UIElement @uiElement = elementsUi [index];
+                uiElement.visible = true;
                 ProcessElementUi (uiElement, elementIndex, elementsStrings);
+            }
+            else
+            {
+                UIElement @uiElement = elementsUi [index];
+                uiElement.visible = false;
             }
         }
     }
@@ -128,7 +130,7 @@ shared abstract class StringListEditorUiHandler : ScriptObjectWithBeforeStop
         SubscribeToEvent (hideButton, "Released", "HandleHideClick");
 
         Array <UIElement @> elementsUi = window.GetChild ("elements").GetChildren ();
-        for (int index = 0; index < elementsUi.length; index++)
+        for (uint index = 0; index < elementsUi.length; index++)
         {
             Button @removeButton = elementsUi [index].GetChild ("removeButton");
             SubscribeToEvent (removeButton, "Released", "HandleRemoveElementClick");

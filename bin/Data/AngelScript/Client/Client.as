@@ -109,7 +109,7 @@ class Client : ScriptObject
 
     void GoToMainMenuState ()
     {
-        for (int index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
+        for (uint index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
         {
             activitiesApplication_.StopActivityNextFrame (activitiesApplication_.GetActivityByIndex (index));
         }

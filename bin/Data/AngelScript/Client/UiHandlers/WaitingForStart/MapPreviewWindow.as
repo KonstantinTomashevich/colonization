@@ -7,7 +7,7 @@ class MapPreviewWindow : ScriptObject
         Array <String> mapsFolders;
         mapsFolders = GetMapsFoldersNames ();
         Array <String> mapsNamesList;
-        for (int index = 0; index < mapsFolders.length; index++)
+        for (uint index = 0; index < mapsFolders.length; index++)
         {
             XMLFile @infoXML = cache.GetResource ("XMLFile", MAPS_FOLDER + mapsFolders [index] + MAP_INFO_FILE);
             XMLElement userInfo = infoXML.GetRoot ().GetChild ("userInformation");

@@ -14,7 +14,7 @@ void BindActivitiesApplication (Urho3D::Script *script)
 
     engine->RegisterObjectMethod ("ActivitiesApplication", "void SetupActivityNextFrame (Activity @+ activity)", asMETHOD (ActivitiesApplication, SetupActivityNextFrame), asCALL_THISCALL);
     engine->RegisterObjectMethod ("ActivitiesApplication", "void StopActivityNextFrame (Activity @+ activity)", asMETHOD (ActivitiesApplication, StopActivityNextFrame), asCALL_THISCALL);
-    engine->RegisterObjectMethod ("ActivitiesApplication", "int GetActivitiesCount ()", asMETHOD (ActivitiesApplication, GetActivitiesCount), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("ActivitiesApplication", "uint GetActivitiesCount ()", asMETHOD (ActivitiesApplication, GetActivitiesCount), asCALL_THISCALL);
     engine->RegisterObjectMethod ("ActivitiesApplication", "Activity @+ GetActivityByIndex (int index)", asMETHOD (ActivitiesApplication, GetActivityByIndex), asCALL_THISCALL);
 }
 }

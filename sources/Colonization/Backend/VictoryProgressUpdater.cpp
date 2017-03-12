@@ -297,7 +297,7 @@ const PlayerInfo *VictoryTypesProcessorScriptDataAccessor::GetPlayerInfo () cons
     return playerInfo_;
 }
 
-int VictoryTypesProcessorScriptDataAccessor::GetDistrictsCount () const
+unsigned VictoryTypesProcessorScriptDataAccessor::GetDistrictsCount () const
 {
     assert (map_);
     return map_->GetDistrictsCount ();
@@ -309,7 +309,7 @@ const District *VictoryTypesProcessorScriptDataAccessor::GetDistrictByIndex (int
     return map_->GetDistrictByIndex (index);
 }
 
-int VictoryTypesProcessorScriptDataAccessor::GetUnitsCount () const
+unsigned VictoryTypesProcessorScriptDataAccessor::GetUnitsCount () const
 {
     assert (unitsManager_);
     return unitsManager_->GetUnitsCount ();
@@ -321,7 +321,7 @@ const Unit *VictoryTypesProcessorScriptDataAccessor::GetUnitByIndex (int index) 
     return unitsManager_->GetUnitByIndex (index);
 }
 
-int VictoryTypesProcessorScriptDataAccessor::GetInternalTradeAreasCount ()
+unsigned VictoryTypesProcessorScriptDataAccessor::GetInternalTradeAreasCount ()
 {
     assert (tradeProcessor_);
     return tradeProcessor_->GetTradeAreasCount ();

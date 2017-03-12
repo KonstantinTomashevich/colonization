@@ -4,13 +4,13 @@
 shared abstract class ChatWindowInterface : ScriptObjectWithBeforeStop
 {
     protected Array <VariantMap> messagesList_;
-    protected int messagesShowOffset_;
+    protected uint messagesShowOffset_;
     protected float untilMessagesScrollUpdate_;
     protected float untilNewMessage_;
 
-    protected int MESSAGES_SCROLL_SPEED = 5;
-    protected int MAX_MESSAGES_IN_CACHE_COUNT = 40;
-    protected int MAX_MESSAGES_IN_PAGE_COUNT = 7;
+    protected uint MESSAGES_SCROLL_SPEED = 5;
+    protected uint MAX_MESSAGES_IN_CACHE_COUNT = 40;
+    protected uint MAX_MESSAGES_IN_PAGE_COUNT = 7;
 
     protected float CHAT_WINDOW_OPENED_YMODIFER = 0.35f;
     protected float CHAT_WINDOW_CLOSED_YMODIFER = 0.10f;
@@ -60,10 +60,10 @@ shared abstract class ChatWindowInterface : ScriptObjectWithBeforeStop
             }
 
             Text @messagesInfo = chatWindow.GetChild ("messagesInfo");
-            messagesInfo.text = "Showing messages from " + (startIndex + 1) + " to " + (startIndex + MAX_MESSAGES_IN_PAGE_COUNT + 1) + ".";
+            messagesInfo.text = "Showing messages from " + (startIndex + 1) + " to " + (startIndex + MAX_MESSAGES_IN_PAGE_COUNT) + ".";
 
-            for (int index = startIndex;
-                (index < messagesList_.length) and (index < (startIndex + MAX_MESSAGES_IN_PAGE_COUNT));
+            for (uint index = uint (startIndex);
+                (index < messagesList_.length) and (index < (uint (startIndex) + MAX_MESSAGES_IN_PAGE_COUNT));
                 index++)
             {
                 VariantMap messageData = messagesList_ [index];
@@ -187,7 +187,7 @@ shared abstract class ChatWindowInterface : ScriptObjectWithBeforeStop
 
         VectorBuffer buffer = VectorBuffer ();
         buffer.WriteString (message);
-        for (int index = 0; index < receivers.length; index++)
+        for (uint index = 0; index < receivers.length; index++)
         {
             buffer.WriteString (receivers [index]);
         }

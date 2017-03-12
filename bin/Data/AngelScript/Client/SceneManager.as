@@ -54,7 +54,7 @@ class SceneManager : ScriptObject
         Map @map = scene.GetChild ("map").GetComponent ("Map");
         Array <Node @> districtsNodes = scene.GetChild ("map").GetChildrenWithComponent ("District");
 
-        for (int index = 0; index < districtsNodes.length; index++)
+        for (uint index = 0; index < districtsNodes.length; index++)
         {
             Node @districtNode = districtsNodes [index];
             District @district = districtNode.GetComponent ("District");
@@ -138,7 +138,7 @@ class SceneManager : ScriptObject
             }
         }
 
-        for (int index = 0; index < unitsNodes.length; index++)
+        for (uint index = 0; index < unitsNodes.length; index++)
         {
             Unit @unit = unitsNodes [index].GetComponent ("Unit");
             if (!isDistrictOccupied [unit.positionHash].GetBool () and fogOfWarCalculator.IsDistrictVisible (unit.positionHash))

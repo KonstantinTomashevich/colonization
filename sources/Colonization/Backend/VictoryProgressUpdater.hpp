@@ -60,13 +60,13 @@ public:
     void SetPlayerInfo (PlayerInfo *playerInfo);
     const PlayerInfo *GetPlayerInfo () const;
 
-    int GetDistrictsCount () const;
+    unsigned GetDistrictsCount () const;
     const District *GetDistrictByIndex (int index) const;
 
-    int GetUnitsCount () const;
+    unsigned GetUnitsCount() const;
     const Unit *GetUnitByIndex (int index) const;
 
-    int GetInternalTradeAreasCount ();
+    unsigned GetInternalTradeAreasCount ();
     const InternalTradeArea *GetInternalTradeAreaByIndex (int index) const;
 };
 }

@@ -26,7 +26,7 @@ class ScreenShotTaker : ScriptObject
     {
         // Check is all keys pressed.
         bool isKeysPressed = true;
-        int index = 0;
+        uint index = 0;
         while (index < keys_.length and isKeysPressed)
         {
             isKeysPressed = input.keyPress [keys_ [index]];

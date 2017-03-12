@@ -25,7 +25,7 @@ class UiResizer : ScriptObject
     protected void ProcessChildren (UIElement @element)
     {
         Array <UIElement @> children = element.GetChildrenWithTag ("EnableUiResizer");
-        for (int index = 0; index < children.length; index++)
+        for (uint index = 0; index < children.length; index++)
         {
             UIElement @childElement = children [index];
             if (not childElement.internal)
@@ -56,38 +56,38 @@ class UiResizer : ScriptObject
         float xModifer = element.vars ["XModifer"].GetFloat ();
         float yModifer = element.vars ["YModifer"].GetFloat ();
 
-        float xPos = dependenciesMap [xDependency].GetFloat () * xModifer;
-        float yPos = dependenciesMap [yDependency].GetFloat () * yModifer;
+        int xPos = int (dependenciesMap [xDependency].GetFloat () * xModifer);
+        int yPos = int (dependenciesMap [yDependency].GetFloat () * yModifer);
 
-        float width = dependenciesMap [widthDependency].GetFloat () * widthModifer;
-        float height = dependenciesMap [heightDependency].GetFloat () * heightModifer;
+        int width = int (dependenciesMap [widthDependency].GetFloat () * widthModifer);
+        int height = int (dependenciesMap [heightDependency].GetFloat () * heightModifer);
 
         if (element.vars ["InvertXPosition"].GetBool ())
         {
             StringHash invDependency = StringHash (element.vars ["InvertXDependency"].GetString ());
             float invertedPositionModifer = element.vars ["InvertXModifer"].GetFloat ();
-            xPos = (dependenciesMap [invDependency].GetFloat () * invertedPositionModifer - xPos);
+            xPos = int (dependenciesMap [invDependency].GetFloat () * invertedPositionModifer - xPos);
         }
 
         if (element.vars ["InvertYPosition"].GetBool ())
         {
             StringHash invDependency = StringHash (element.vars ["InvertYDependency"].GetString ());
             float invertedPositionModifer = element.vars ["InvertYModifer"].GetFloat ();
-            yPos = (dependenciesMap [invDependency].GetFloat () * invertedPositionModifer - yPos);
+            yPos = int (dependenciesMap [invDependency].GetFloat () * invertedPositionModifer - yPos);
         }
 
         if (element.vars ["InvertWidth"].GetBool ())
         {
             StringHash invDependency = StringHash (element.vars ["InvertWidthDependency"].GetString ());
             float invertedPositionModifer = element.vars ["InvertWidthModifer"].GetFloat ();
-            width = (dependenciesMap [invDependency].GetFloat () * invertedPositionModifer - width);
+            width = int (dependenciesMap [invDependency].GetFloat () * invertedPositionModifer - width);
         }
 
         if (element.vars ["InvertHeight"].GetBool ())
         {
             StringHash invDependency = StringHash (element.vars ["InvertHeightDependency"].GetString ());
             float invertedPositionModifer = element.vars ["InvertHeightModifer"].GetFloat ();
-            height = (dependenciesMap [invDependency].GetFloat () * invertedPositionModifer - height);
+            height = int (dependenciesMap [invDependency].GetFloat () * invertedPositionModifer - height);
         }
 
         if (xDependency != StringHash ("disable") and yDependency != StringHash ("disable"))
@@ -108,12 +108,12 @@ class UiResizer : ScriptObject
             if (element.typeName == "Text")
             {
                 Text @text = element;
-                text.fontSize = dependenciesMap [fontSizeDependency].GetFloat () * fontSizeModifer;
+                text.fontSize = int (dependenciesMap [fontSizeDependency].GetFloat () * fontSizeModifer);
             }
             else if (element.typeName == "LineEdit")
             {
                 LineEdit @lineEdit = element;
-                lineEdit.textElement.fontSize = dependenciesMap [fontSizeDependency].GetFloat () * fontSizeModifer;
+                lineEdit.textElement.fontSize = int (dependenciesMap [fontSizeDependency].GetFloat () * fontSizeModifer);
             }
         }
     }

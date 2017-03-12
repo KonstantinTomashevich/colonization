@@ -4,7 +4,7 @@ class RenderPathUpdater : ScriptObject
     {
         RenderPath @renderPath = renderer.viewports [0].renderPath;
         RenderPathCommand mapMaskCommand;
-        int index = 0;
+        uint index = 0;
         bool found = false;
         while (index < renderPath.numCommands and !found)
         {

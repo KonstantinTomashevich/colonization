@@ -1,7 +1,7 @@
 class MainMenu : ScriptObject
 {
     protected ActivitiesApplication @activitiesApplication_;
-    protected int NEW_GAME_SERVER_PORT = 13768;
+    protected uint NEW_GAME_SERVER_PORT = 13768;
 
     protected void SetupBackground ()
     {
@@ -110,7 +110,7 @@ class MainMenu : ScriptObject
 
     void HandleStartGameRequest (StringHash eventType, VariantMap &eventData)
     {
-        for (int index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
+        for (uint index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
         {
             activitiesApplication_.StopActivityNextFrame (activitiesApplication_.GetActivityByIndex (index));
         }
@@ -132,7 +132,7 @@ class MainMenu : ScriptObject
 
     void HandleJoinGameRequest (StringHash eventType, VariantMap &eventData)
     {
-        for (int index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
+        for (uint index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
         {
             activitiesApplication_.StopActivityNextFrame (activitiesApplication_.GetActivityByIndex (index));
         }
@@ -148,7 +148,7 @@ class MainMenu : ScriptObject
 
     void HandleExitRequest ()
     {
-        for (int index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
+        for (uint index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
         {
             activitiesApplication_.StopActivityNextFrame (activitiesApplication_.GetActivityByIndex (index));
         }
@@ -159,7 +159,7 @@ class MainMenu : ScriptObject
     {
         UIElement @uiRoot = ui.root.GetChild ("mainMenu");
         Array <UIElement @> elements = uiRoot.GetChildren ();
-        for (int index = 0; index < elements.length; index++)
+        for (uint index = 0; index < elements.length; index++)
         {
             elements [index].visible = false;
         }

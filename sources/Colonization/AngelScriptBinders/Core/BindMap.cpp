@@ -31,10 +31,10 @@ void BindMap (Urho3D::Script *script)
 void BindMapInterface (Urho3D::Script *script, Urho3D::String className)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
-    engine->RegisterObjectMethod (className.CString (), "District @+ GetDistrictByIndex (int index) const", asMETHOD (Map, GetDistrictByIndex), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "District @+ GetDistrictByIndex (uint index) const", asMETHOD (Map, GetDistrictByIndex), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "District @+ GetDistrictByNameHash (StringHash nameHash) const", asMETHOD (Map, GetDistrictByNameHash), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "District @+ GetDistrictByHash (StringHash hash) const", asMETHOD (Map, GetDistrictByHash), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className.CString (), "int GetDistrictsCount ()", asMETHOD (Map, GetDistrictsCount), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "uint GetDistrictsCount ()", asMETHOD (Map, GetDistrictsCount), asCALL_THISCALL);
 
     engine->RegisterObjectMethod (className.CString (), "District @+ CreateDistrict (String districtName)", asMETHOD (Map, CreateDistrict), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void RecalculateDistrictsNeighbors ()", asMETHOD (Map, RecalculateDistrictsNeighbors), asCALL_THISCALL);

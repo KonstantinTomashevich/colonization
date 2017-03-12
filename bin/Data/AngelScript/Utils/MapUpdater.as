@@ -11,7 +11,7 @@ class MapUpdater : ScriptObject
     {
         Array <Vector3> polygonPoints = district.polygonPoints;
         Vector3 sum;
-        for (int index = 0; index < polygonPoints.length; index++)
+        for (uint index = 0; index < polygonPoints.length; index++)
         {
             sum.x += polygonPoints [index].x;
             sum.y += polygonPoints [index].y;
@@ -72,8 +72,10 @@ class MapUpdater : ScriptObject
         if (calculateUnitsPositionsAsCentersNextFrame_)
         {
             Map @map = scene.GetNode (mapNodeId_).GetComponent ("Map");
-            for (int index = 0; index < map.GetDistrictsCount (); index++)
+            for (uint index = 0; index < map.GetDistrictsCount (); index++)
+            {
                 CalculateUnitPositionAsCenter (map.GetDistrictByIndex (index));
+            }
             calculateUnitsPositionsAsCentersNextFrame_ = false;
         }
 
@@ -81,8 +83,10 @@ class MapUpdater : ScriptObject
         {
             Map @map = scene.GetNode (mapNodeId_).GetComponent ("Map");
             Terrain @terrain = scene.GetNode (mapNodeId_).GetChild ("local").GetComponent ("Terrain");
-            for (int index = 0; index < map.GetDistrictsCount (); index++)
+            for (uint index = 0; index < map.GetDistrictsCount (); index++)
+            {
                 CorrectYForUnitAndColonyPosition (map.GetDistrictByIndex (index), terrain);
+            }
             setCorrectYForUnitsAndColoniesPositionNextFrame_ = false;
         }
 
