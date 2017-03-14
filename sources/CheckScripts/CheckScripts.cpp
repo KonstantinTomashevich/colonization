@@ -35,8 +35,6 @@ void CheckScripts::Start ()
 {
     Urho3D::Script *script = new Urho3D::Script (context_);
     context_->RegisterSubsystem (script);
-    Urho3D::Log *log = context_->GetSubsystem <Urho3D::Log> ();
-    log->SetLevel (Urho3D::LOG_DEBUG);
     Colonization::RegisterAllObjects (context_);
     Colonization::BindAll (script);
 
