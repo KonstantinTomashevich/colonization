@@ -38,6 +38,21 @@ Urho3D::String get_HostRequestSelectMap_MAP_INFO_PATH ()
     return HostRequestSelectMap::MAP_INFO_PATH;
 }
 
+Urho3D::StringHash get_VAR_REPLICATED_NODES_COUNT ()
+{
+    return VAR_REPLICATED_NODES_COUNT;
+}
+
+Urho3D::StringHash get_VAR_MAP_FOLDER ()
+{
+    return VAR_MAP_FOLDER;
+}
+
+Urho3D::StringHash get_VAR_MAP_INFO_PATH ()
+{
+    return VAR_MAP_INFO_PATH;
+}
+
 void BindGameStateType(Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
@@ -46,6 +61,14 @@ void BindGameStateType(Urho3D::Script *script)
     engine->RegisterEnumValue ("GameStateType", "GAME_STATE_WAITING_FOR_START", GAME_STATE_WAITING_FOR_START);
     engine->RegisterEnumValue ("GameStateType", "GAME_STATE_PLAYING", GAME_STATE_PLAYING);
     engine->RegisterEnumValue ("GameStateType", "GAME_STATE_FINISHED", GAME_STATE_FINISHED);
+}
+
+void BindReplicatedSceneVarsNames (Urho3D::Script *script)
+{
+    asIScriptEngine *engine = script->GetScriptEngine ();
+    engine->RegisterGlobalFunction ("StringHash get_VAR_REPLICATED_NODES_COUNT ()", asFUNCTION (get_VAR_REPLICATED_NODES_COUNT), asCALL_CDECL);
+    engine->RegisterGlobalFunction ("StringHash get_VAR_MAP_FOLDER ()", asFUNCTION (get_VAR_MAP_FOLDER), asCALL_CDECL);
+    engine->RegisterGlobalFunction ("StringHash get_VAR_MAP_INFO_PATH ()", asFUNCTION (get_VAR_MAP_INFO_PATH), asCALL_CDECL);
 }
 
 void BindHostActivityEvents (Urho3D::Script *script)
@@ -64,6 +87,7 @@ void BindHostActivity (Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
     BindGameStateType (script);
+    BindReplicatedSceneVarsNames (script);
     BindHostActivityEvents (script);
 
     Urho3D::RegisterObject <HostActivity> (engine, "HostActivity");

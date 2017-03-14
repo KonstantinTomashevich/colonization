@@ -15,7 +15,7 @@ shared Node @GetScriptMain (Node @requester)
 
 shared bool CheckIsSceneLoaded (Scene @scene_)
 {
-    if (scene_.vars ["ReplicatedNodesCount"].GetInt () != 0)
+    if (scene_.vars [VAR_REPLICATED_NODES_COUNT].GetInt () != 0)
     {
         Array <Node @> children = scene_.GetChildren (true);
         int replicated = 0;
@@ -26,7 +26,7 @@ shared bool CheckIsSceneLoaded (Scene @scene_)
                 replicated++;
             }
         }
-        return (replicated == scene_.vars ["ReplicatedNodesCount"].GetInt ());
+        return (replicated == scene_.vars [VAR_REPLICATED_NODES_COUNT].GetInt ());
     }
     else
         return false;

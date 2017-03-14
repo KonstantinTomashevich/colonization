@@ -26,21 +26,82 @@
 
 namespace Colonization
 {
+void HostActivity::WriteSceneReplicatedChildrenCount ()
+{
+    Urho3D::PODVector <Urho3D::Node *> children;
+    scene_->GetChildren (children, true);
+    int replicated = 0;
+    for (int index = 0; index < children.Size (); index++)
+    {
+        if (children.At (index)->GetID () < Urho3D::FIRST_LOCAL_ID)
+        {
+            replicated++;
+        }
+    }
+    scene_->SetVar (VAR_REPLICATED_NODES_COUNT, replicated);
+}
+
+void HostActivity::UpdateMapFolderAndMapInfoPathSceneVars ()
+{
+    if (currentState_ == GAME_STATE_WAITING_FOR_START)
+    {
+        scene_->SetVar (VAR_MAP_FOLDER, mapFolder_);
+        scene_->SetVar (VAR_MAP_INFO_PATH, mapInfoPath_);
+    }
+}
+
+void HostActivity::GoToNextStateIfNeeded ()
+{
+    if (currentState_ == GAME_STATE_WAITING_FOR_START && WillGoFromWaitingForStartToPlayingState ())
+    {
+        SetupPlayingState ();
+    }
+    else if (currentState_ == GAME_STATE_PLAYING && WillGoFromPlayingToFinishedState ())
+    {
+        SendInformationAboutGameEnd ();
+        SetupFinishedState ();
+    }
+}
+
+void HostActivity::SendCurrentStateToClients ()
+{
+    PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
+    MessagesHandler *messagesHandler = scene_->GetComponent <MessagesHandler> ();
+    if (playersManager && messagesHandler)
+    {
+        Urho3D::Vector <Player *> players = playersManager->GetAllPlayers ();
+        messagesHandler->SendGameState (currentState_, players);
+    }
+}
+
+void HostActivity::SendInformationAboutGameEnd ()
+{
+    VictoryProgressUpdater *victoryProgressUpdater = scene_->GetComponent <VictoryProgressUpdater> ();
+    PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
+    MessagesHandler *messagesHandler = scene_->GetComponent <MessagesHandler> ();
+
+    if (victoryProgressUpdater && playersManager && messagesHandler)
+    {
+        Urho3D::Vector <Player *> players = playersManager->GetAllPlayers ();
+        messagesHandler->SendGameEnded (victoryProgressUpdater->GetWinnerName (),
+                                        victoryProgressUpdater->GetVictoryType (),
+                                        victoryProgressUpdater->GetVictoryInfo (),
+                                        players);
+    }
+}
+
 void HostActivity::SetupWaitingForPlayersState ()
 {
+    currentState_ = GAME_STATE_WAITING_FOR_START;
     scene_->CreateComponent <Urho3D::Octree> (Urho3D::REPLICATED);
     scene_->CreateComponent <MessagesHandler> (Urho3D::LOCAL);
     scene_->CreateComponent <NetworkUpdateSmoother> (Urho3D::LOCAL);
     scene_->CreateChild ("players", Urho3D::REPLICATED)->CreateComponent <PlayersManager> (Urho3D::LOCAL);
 }
 
-void HostActivity::DisposeWaitingForPlayersState ()
-{
-
-}
-
 void HostActivity::SetupPlayingState ()
 {
+    currentState_ = GAME_STATE_PLAYING;
     Urho3D::ResourceCache *resourceCache = context_->GetSubsystem <Urho3D::ResourceCache> ();
     // Load map info and parse it.
     Urho3D::String configurationPath;
@@ -88,61 +149,17 @@ void HostActivity::SetupPlayingState ()
     playersManager->SetIsAcceptingNewConnections (false);
 }
 
-void HostActivity::DisposePlayingState ()
+void HostActivity::SetupFinishedState ()
 {
+    currentState_ = GAME_STATE_FINISHED;
+
+    // Dispose gameplay managers because game stops.
     scene_->GetChild ("units")->GetComponent <UnitsManager> ()->Remove ();
     scene_->GetComponent <ColoniesManager> ()->Remove ();
     scene_->GetComponent <TradeProcessor> ()->Remove ();
     scene_->GetComponent <PlayersPointsCalculator> ()->Remove ();
     scene_->GetComponent <VictoryProgressUpdater> ()->Remove ();
     scene_->SetUpdateEnabled (false);
-}
-
-void HostActivity::SetupFinishedState ()
-{
-
-}
-
-void HostActivity::DisposeFinishedState ()
-{
-    scene_->GetComponent <MessagesHandler> ()->Remove ();
-    scene_->GetChild ("players")->GetComponent <PlayersManager> ()->Remove ();
-    scene_->GetChild ("map")->GetComponent <Map> ()->Remove ();
-}
-
-void HostActivity::SetupState (GameStateType state)
-{
-    DisposeCurrentState ();
-    if (state == GAME_STATE_WAITING_FOR_START)
-    {
-        SetupWaitingForPlayersState ();
-    }
-    else if (state == GAME_STATE_PLAYING)
-    {
-        SetupPlayingState ();
-    }
-    else if (state == GAME_STATE_FINISHED)
-    {
-        SetupFinishedState ();
-    }
-    currentState_ = state;
-}
-
-void HostActivity::DisposeCurrentState ()
-{
-    if (currentState_ == GAME_STATE_WAITING_FOR_START)
-    {
-        DisposeWaitingForPlayersState ();
-    }
-    else if (currentState_ == GAME_STATE_PLAYING)
-    {
-        DisposePlayingState ();
-    }
-    else if (currentState_ == GAME_STATE_FINISHED)
-    {
-        DisposeFinishedState ();
-    }
-    currentState_ = GAME_STATE_UNITIALIZED;
 }
 
 bool HostActivity::LoadAndParseMapInfo (Urho3D::String &configurationPath, Urho3D::String &mapPath, Urho3D::String &unitsPath)
@@ -227,7 +244,7 @@ HostActivity::HostActivity (Urho3D::Context *context) : Activity (context),
 
 HostActivity::~HostActivity ()
 {
-    DisposeCurrentState ();
+
 }
 
 unsigned short HostActivity::GetServerPort () const
@@ -300,7 +317,7 @@ void HostActivity::Start ()
         Urho3D::Log::Write (Urho3D::LOG_ERROR, "Can't start server!");
         context_->GetSubsystem <Urho3D::Engine> ()->Exit ();
     }
-    SetupState (GAME_STATE_WAITING_FOR_START);
+    SetupWaitingForPlayersState ();
 
     SubscribeToEvent (Urho3D::StringHash (EVENT_HOST_REQUEST_GAME_START), URHO3D_HANDLER (HostActivity, HandleGameStartRequest));
     SubscribeToEvent (Urho3D::StringHash (EVENT_HOST_REQUEST_KICK_PLAYER), URHO3D_HANDLER (HostActivity, HandleKickPlayerRequest));
@@ -309,63 +326,17 @@ void HostActivity::Start ()
 
 void HostActivity::Update (float timeStep)
 {
-    // Write replicated children count.
-    Urho3D::PODVector <Urho3D::Node *> children;
-    scene_->GetChildren (children, true);
-    int replicated = 0;
-    for (int index = 0; index < children.Size (); index++)
-    {
-        if (children.At (index)->GetID () < Urho3D::FIRST_LOCAL_ID)
-        {
-            replicated++;
-        }
-    }
-    scene_->SetVar ("ReplicatedNodesCount", replicated);
-
-    // Add selected map folder and map info path to vars (for using in client in waiting for start state).
-    if (currentState_ == GAME_STATE_WAITING_FOR_START)
-    {
-        scene_->SetVar ("MapFolder", mapFolder_);
-        scene_->SetVar ("MapInfoPath", mapInfoPath_);
-    }
-
-    // Go to next state if needed.
-    if (currentState_ == GAME_STATE_WAITING_FOR_START && WillGoFromWaitingForStartToPlayingState ())
-    {
-        SetupState (GAME_STATE_PLAYING);
-    }
-    else if (currentState_ == GAME_STATE_PLAYING && WillGoFromPlayingToFinishedState ())
-    {
-        // Send information about game end to players.
-        VictoryProgressUpdater *victoryProgressUpdater = scene_->GetComponent <VictoryProgressUpdater> ();
-        PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
-        MessagesHandler *messagesHandler = scene_->GetComponent <MessagesHandler> ();
-
-        if (victoryProgressUpdater && playersManager && messagesHandler)
-        {
-            Urho3D::Vector <Player *> players = playersManager->GetAllPlayers ();
-            messagesHandler->SendGameEnded (victoryProgressUpdater->GetWinnerName (),
-                                            victoryProgressUpdater->GetVictoryType (),
-                                            victoryProgressUpdater->GetVictoryInfo (),
-                                            players);
-        }
-        SetupState (GAME_STATE_FINISHED);
-    }
-
-    // Send current state to clients.
-    PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
-    MessagesHandler *messagesHandler = scene_->GetComponent <MessagesHandler> ();
-    if (playersManager && messagesHandler)
-    {
-        Urho3D::Vector <Player *> players = playersManager->GetAllPlayers ();
-        messagesHandler->SendGameState (currentState_, players);
-    }
+    WriteSceneReplicatedChildrenCount ();
+    UpdateMapFolderAndMapInfoPathSceneVars ();
+    GoToNextStateIfNeeded ();
+    SendCurrentStateToClients ();
 }
 
 void HostActivity::Stop ()
 {
-    DisposeCurrentState ();
-    scene_->Clear (true, true);
+    bool clearReplicated = true;
+    bool clearLocal = true;
+    scene_->Clear (clearReplicated, clearLocal);
     context_->GetSubsystem <Urho3D::Network> ()->StopServer ();
 }
 }

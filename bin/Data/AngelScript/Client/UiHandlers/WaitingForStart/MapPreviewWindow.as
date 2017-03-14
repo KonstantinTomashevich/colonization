@@ -46,8 +46,8 @@ class MapPreviewWindow : ScriptObject
         BorderImage @preview = mapPreviewWindow.GetChild ("mapPreview");
         Text @mapLabel = mapPreviewWindow.GetChild ("mapLabel");
 
-        String selectedMapFolder = scene.vars ["MapFolder"].GetString ();
-        XMLFile @infoXML = cache.GetResource ("XMLFile", scene.vars ["MapInfoPath"].GetString ());
+        String selectedMapFolder = scene.vars [VAR_MAP_FOLDER].GetString ();
+        XMLFile @infoXML = cache.GetResource ("XMLFile", scene.vars [VAR_MAP_INFO_PATH].GetString ());
         if (infoXML !is null)
         {
             XMLElement filesInfo = infoXML.GetRoot ().GetChild ("mapFiles");

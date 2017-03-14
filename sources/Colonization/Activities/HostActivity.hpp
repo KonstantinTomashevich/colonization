@@ -4,6 +4,7 @@
 
 namespace Colonization
 {
+// Declare host activity request events.
 const Urho3D::String EVENT_HOST_REQUEST_GAME_START ("HostRequestGameStart");
 const Urho3D::String EVENT_HOST_REQUEST_KICK_PLAYER ("HostRequestKickPlayer");
 namespace HostRequestKickPlayer
@@ -17,6 +18,10 @@ namespace HostRequestSelectMap
 const Urho3D::String MAP_FOLDER ("MapFolder");
 const Urho3D::String MAP_INFO_PATH ("MapInfoPath");
 }
+
+const Urho3D::StringHash VAR_REPLICATED_NODES_COUNT ("ReplicatedNodesCount");
+const Urho3D::StringHash VAR_MAP_FOLDER ("MapFolder");
+const Urho3D::StringHash VAR_MAP_INFO_PATH ("MapInfoPath");
 
 enum GameStateType
 {
@@ -37,22 +42,16 @@ protected:
     Urho3D::String mapInfoPath_;
     GameStateType currentState_;
 
-    // TODO: Refactor states mechanism.
-    // In my opinion, "SetupState (state)" and states dispose isn't needed,
-    // because game goes only from waiting to playing and then to finished states.
-    // Also, Update is very huge and can be splitted.
-    // Also there are some string literals which can be replaced by constants.
+    void WriteSceneReplicatedChildrenCount ();
+    void UpdateMapFolderAndMapInfoPathSceneVars ();
+    void GoToNextStateIfNeeded ();
+    void SendCurrentStateToClients ();
+    void SendInformationAboutGameEnd ();
+
+    // TODO: Also there are some string literals which can be replaced by constants.
     void SetupWaitingForPlayersState ();
-    void DisposeWaitingForPlayersState ();
-
     void SetupPlayingState ();
-    void DisposePlayingState ();
-
     void SetupFinishedState ();
-    void DisposeFinishedState ();
-
-    void SetupState (GameStateType state);
-    void DisposeCurrentState ();
 
     /// Parameters are parse output.
     bool LoadAndParseMapInfo (Urho3D::String &configurationPath, Urho3D::String &mapPath, Urho3D::String &unitsPath);
