@@ -39,6 +39,11 @@ public:
 };
 
 // TODO: Maybe reimplement later to add some features?
+// Maybe don't calculate whole production?
+// Firstly calculate production of all districts separately.
+// Then sort them by sellability: for example goodsQuality * (1 / relativePrice).
+// Them firstly sell better production.
+
 class InternalTradeArea : public Urho3D::Component
 {
 URHO3D_OBJECT (InternalTradeArea, Component)

@@ -6,7 +6,6 @@
 
 namespace Colonization
 {
-// TODO: Not all functions are binded. Some server-side functions aren't binded.
 Urho3D::CScriptArray *Map_FindPath (Map *map, Urho3D::StringHash targetDistrictHash,
                                    Unit *unit, bool setUnitWay)
 {

@@ -217,8 +217,6 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
             }
         }
     }
-
-    // TODO: To be continued...
 }
 
 void UnitsManager::UpdateUnitsList ()

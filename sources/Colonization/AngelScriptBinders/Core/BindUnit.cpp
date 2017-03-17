@@ -6,7 +6,6 @@
 
 namespace Colonization
 {
-// TODO: Not all functions are binded. Some server-side functions aren't binded.
 Urho3D::CScriptArray *Unit_GetWay (Unit *unit)
 {
     return Urho3D::VectorToArray <Urho3D::StringHash> (unit->GetWay (), "Array<StringHash>");

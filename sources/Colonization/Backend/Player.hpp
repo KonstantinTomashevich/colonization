@@ -25,8 +25,6 @@ enum PlayerActionType
     PLAYER_ACTION_SEND_PEACE_TREATY = 11,
     PLAYER_ACTION_ACCEPT_PEACE_TREATY = 12,
     PLAYER_ACTION_SEND_GIFT_TO_THE_KING = 13
-
-    // TODO: To be continued.
 };
 
 class Player : public Urho3D::Object

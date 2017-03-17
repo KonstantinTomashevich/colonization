@@ -20,8 +20,6 @@ enum NetworkMessageType
     STC_NETWORK_MESSAGE_TEXT_INFO_FROM_SERVER = 202, // Data: message (String).
     STC_NETWORK_MESSAGE_SEND_GAME_STATE = 203, // Data: int (GameState [enum]).
     STC_NETWORK_MESSAGE_GAME_ENDED = 204 // Data: winnerName (String), victoryType (String), victoryInfo (String).
-
-    // TODO: To be continued.
 };
 
 class MessagesHandler : public Urho3D::Component
