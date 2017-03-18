@@ -22,18 +22,6 @@
 
 namespace Colonization
 {
-Urho3D::IntVector2 MapMaskUpdater::WorldPointToMapPoint (Urho3D::Vector3 worldPoint) const
-{
-    Urho3D::Vector3 delta = worldPoint - mapMinPoint_;
-    float mapWidth = mapMaxPoint_.x_ - mapMinPoint_.x_;
-    float mapHeight = mapMaxPoint_.z_ - mapMinPoint_.z_;
-
-    Urho3D::IntVector2 positionOnMap;
-    positionOnMap.x_ = static_cast <int> (std::floor (MAP_MASK_WIDTH * delta.x_ / mapWidth));
-    positionOnMap.y_ = MAP_MASK_HEIGHT - static_cast <int> (std::floor (MAP_MASK_HEIGHT * delta.z_ / mapHeight));
-    return positionOnMap;
-}
-
 void MapMaskUpdater::DrawDistrictBorders (District *district)
 {
     Urho3D::PODVector <Urho3D::Vector3> polygonPoints = district->GetPolygonPoints ();
@@ -166,14 +154,15 @@ void MapMaskUpdater::RecalculateMaskImage ()
     // Create mask image with district borders and flood districts areas with their special color.
     for (int index = 0; index < map->GetDistrictsCount (); index++)
     {
+        //maskImage_->SavePNG (Urho3D::String (index) + ".png");
         District *district = map->GetDistrictByIndex (index);
         DrawDistrictBorders (district);
         Urho3D::Color districtColor;
         do
         {
-            districtColor = Urho3D::Color (1.0f / (1.0f * Urho3D::Random (1, 256)),
-                                           1.0f / (1.0f * Urho3D::Random (1, 256)),
-                                           1.0f / (1.0f * Urho3D::Random (1, 256)),
+            districtColor = Urho3D::Color (1.0f / (1.0f * Urho3D::Random (1, 128)),
+                                           1.0f / (1.0f * Urho3D::Random (1, 128)),
+                                           1.0f / (1.0f * Urho3D::Random (1, 128)),
                                            1.0f);
         }
         while (districtColorToDistrictHash_.Keys ().Contains (Urho3D::StringHash (districtColor.ToUInt ())) ||
@@ -185,6 +174,7 @@ void MapMaskUpdater::RecalculateMaskImage ()
         Urho3D::IntVector2 unitPositionOnMap = WorldPointToMapPoint (district->GetUnitPosition ());
         ImageUtils::FloodFill (maskImage_, districtColor, unitPositionOnMap.x_, unitPositionOnMap.y_);
     }
+    //maskImage_->SavePNG (Urho3D::String (map->GetDistrictsCount ()) + ".png");
 
     // Apply changes to mask texture.
     maskTexture_->SetData (maskImage_, false);
@@ -208,6 +198,18 @@ Urho3D::StringHash MapMaskUpdater::GetDistrictByPoint (Urho3D::Vector3 point) co
 Urho3D::StringHash MapMaskUpdater::GetDistrictByColor (Urho3D::Color color) const
 {
     return GetDistrictByColorInt (color.ToUInt ());
+}
+
+Urho3D::IntVector2 MapMaskUpdater::WorldPointToMapPoint (Urho3D::Vector3 worldPoint) const
+{
+    Urho3D::Vector3 delta = worldPoint - mapMinPoint_;
+    float mapWidth = mapMaxPoint_.x_ - mapMinPoint_.x_;
+    float mapHeight = mapMaxPoint_.z_ - mapMinPoint_.z_;
+
+    Urho3D::IntVector2 positionOnMap;
+    positionOnMap.x_ = static_cast <int> (std::floor (MAP_MASK_WIDTH * delta.x_ / mapWidth));
+    positionOnMap.y_ = MAP_MASK_HEIGHT - static_cast <int> (std::floor (MAP_MASK_HEIGHT * delta.z_ / mapHeight));
+    return positionOnMap;
 }
 
 Urho3D::StringHash MapMaskUpdater::GetDistrictByColorInt (unsigned color) const

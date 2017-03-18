@@ -132,23 +132,27 @@ void TestMapMaskGenerationApplication::Start ()
     mapMaskUpdater->SetMapMinPoint (Urho3D::Vector3 (0.0f, 0.0f, 0.0f));
     mapMaskUpdater->SetMapMaxPoint (Urho3D::Vector3 (mapWidth, 0.0f, mapHeight));
     mapMaskUpdater->RecalculateMaskImage ();
-
-    assert (map->GetDistrictByIndex (1 * mapHeight + 3)->GetHash () ==
-            mapMaskUpdater->GetDistrictByColorInt (mapMaskUpdater->GetDistrictColorInt (
-                                                    map->GetDistrictByIndex (1 * mapHeight + 3)->GetHash ())));
+    mapMaskUpdater->GetMaskImage ()->SavePNG ("MapMaskUpdaterResult_MaskImage.png");
 
     for (int index = 0; index < map->GetDistrictsCount (); index++)
     {
         Colonization::District *district = map->GetDistrictByIndex (index);
         if (mapMaskUpdater->GetDistrictByPoint (district->GetColonyPosition ()) != district->GetHash ())
         {
-            ErrorExit ("MapMaskUpdater::GetDistrictByPoint error with district " + district->GetName () + "!");
+            unsigned districtColor = mapMaskUpdater->GetDistrictColorInt (district->GetHash ());
+            Urho3D::IntVector2 colonyPositionOnMap = mapMaskUpdater->WorldPointToMapPoint (district->GetColonyPosition ());
+            unsigned foundColor = mapMaskUpdater->GetMaskImage ()->GetPixelInt (
+                        colonyPositionOnMap.x_, colonyPositionOnMap.y_);
+
+            ErrorExit ("MapMaskUpdater::GetDistrictByPoint error with district " + district->GetName () + "!\n" +
+                       "District color: " + Urho3D::String (districtColor) +
+                       ".\nFound color: " + Urho3D::String (foundColor) + ".");
             assert (false);
         }
     }
 
     mapMaskUpdater->Update (Urho3D::E_SCENEUPDATE, eventData);
-    mapMaskUpdater->GetFogOfWarMaskImage ()->SavePNG ("temp.png");
+    mapMaskUpdater->GetFogOfWarMaskImage ()->SavePNG ("MapMaskUpdaterResult_FogOfWarMaskImage.png");
     for (int districtIndex = 0; districtIndex < map->GetDistrictsCount (); districtIndex++)
     {
         Colonization::District *district = map->GetDistrictByIndex (districtIndex);

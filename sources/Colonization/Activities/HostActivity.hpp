@@ -48,7 +48,6 @@ protected:
     void SendCurrentStateToClients ();
     void SendInformationAboutGameEnd ();
 
-    // TODO: Also there are some string literals which can be replaced by constants.
     void SetupWaitingForPlayersState ();
     void SetupPlayingState ();
     void SetupFinishedState ();

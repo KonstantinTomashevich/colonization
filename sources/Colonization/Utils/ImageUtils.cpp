@@ -45,9 +45,9 @@ void DrawLine (Urho3D::Image *image, Urho3D::Color color, int x1, int y1, int x2
             else
             {
                 int halfWidth = static_cast <int> (std::floor (width * 0.5f));
-                for (int xOffset = -halfWidth; xOffset <= halfWidth; xOffset++)
+                for (int xOffset = -halfWidth; xOffset < halfWidth; xOffset++)
                 {
-                    for (int yOffset = -halfWidth; yOffset <= halfWidth; yOffset++)
+                    for (int yOffset = -halfWidth; yOffset < halfWidth; yOffset++)
                     {
                         image->SetPixel (x + xOffset, y + yOffset, color);
                     }
@@ -82,9 +82,9 @@ void DrawLine (Urho3D::Image *image, Urho3D::Color color, int x1, int y1, int x2
             else
             {
                 int halfWidth = static_cast <int> (std::floor (width * 0.5f));
-                for (int xOffset = -halfWidth; xOffset <= halfWidth; xOffset++)
+                for (int xOffset = -halfWidth; xOffset < halfWidth; xOffset++)
                 {
-                    for (int yOffset = -halfWidth; yOffset <= halfWidth; yOffset++)
+                    for (int yOffset = -halfWidth; yOffset < halfWidth; yOffset++)
                     {
                         image->SetPixel (x + xOffset, y + yOffset, color);
                     }
@@ -137,45 +137,57 @@ void DrawCircle (Urho3D::Image *image, Urho3D::Color color, int x, int y, int ra
 
 void FloodFill (Urho3D::Image *image, Urho3D::Color color, int x, int y)
 {
-    unsigned sourceColor = image->GetPixelInt (x, y);
-    unsigned fillColor = color.ToUInt ();
+    LineFloodFill (image, color.ToUInt (), image->GetPixelInt (x, y), x, y);
+}
 
-    // FIXME: Current implementation is VERY slow! Fix it. Maybe use lines algorithm or something else.
-    if (sourceColor != fillColor)
+void LineFloodFill (Urho3D::Image *image, unsigned fillColor, unsigned seedColor, int x, int y)
+{
+    if (fillColor == seedColor || image->GetPixelInt (x, y) != seedColor)
     {
-        Urho3D::PODVector <Urho3D::IntVector2> toSet;
-        toSet.Push (Urho3D::IntVector2 (x, y));
+        return;
+    }
 
-        while (toSet.Size ())
+    const int DIR_LEFT = -1;
+    const int DIR_RIGHT = 1;
+
+    const int DIR_UP = 1;
+    const int DIR_DOWN = -1;
+
+    LineFloodFillDrawLine (image, fillColor, seedColor, x, y, DIR_RIGHT);
+    LineFloodFillDrawLine (image, fillColor, seedColor, x - 1, y, DIR_LEFT);
+
+    if (y > 0)
+    {
+        LineFloodFillScanForLinesStep (image, fillColor, seedColor, x, y, DIR_RIGHT, DIR_DOWN);
+        LineFloodFillScanForLinesStep (image, fillColor, seedColor, x - 1, y, DIR_LEFT, DIR_DOWN);
+    }
+
+    if (y < image->GetHeight () - 1)
+    {
+        LineFloodFillScanForLinesStep (image, fillColor, seedColor, x, y, DIR_RIGHT, DIR_UP);
+        LineFloodFillScanForLinesStep (image, fillColor, seedColor, x - 1, y, DIR_LEFT, DIR_UP);
+    }
+}
+
+void LineFloodFillDrawLine (Urho3D::Image *image, unsigned fillColor, unsigned seedColor, int x, int y, int direction)
+{
+    while (x >= 0 && x < image->GetWidth () && image->GetPixelInt (x, y) == seedColor)
+    {
+        image->SetPixelInt (x, y, fillColor);
+        x += direction;
+    }
+}
+
+void LineFloodFillScanForLinesStep (Urho3D::Image *image, unsigned fillColor, unsigned seedColor,
+                                    int x, int y, int xDirection, int yDirection)
+{
+    while (x < image->GetWidth () && image->GetPixelInt (x, y) == fillColor)
+    {
+        if (image->GetPixelInt (x, y + yDirection) == seedColor)
         {
-            Urho3D::IntVector2 point = toSet.Back ();
-            toSet.Remove (point);
-
-            if (image->GetPixelInt (point.x_, point.y_) == sourceColor)
-            {
-                image->SetPixelInt (point.x_, point.y_, fillColor);
-
-                if (image->GetPixelInt (point.x_ - 1, point.y_) == sourceColor)
-                {
-                    toSet.Push (Urho3D::IntVector2 (point.x_ - 1, point.y_));
-                }
-
-                if (image->GetPixelInt (point.x_ + 1, point.y_) == sourceColor)
-                {
-                    toSet.Push (Urho3D::IntVector2 (point.x_ + 1, point.y_));
-                }
-
-                if (image->GetPixelInt (point.x_, point.y_ - 1) == sourceColor)
-                {
-                    toSet.Push (Urho3D::IntVector2 (point.x_, point.y_ - 1));
-                }
-
-                if (image->GetPixelInt (point.x_, point.y_ + 1) == sourceColor)
-                {
-                    toSet.Push (Urho3D::IntVector2 (point.x_, point.y_ + 1));
-                }
-            }
+            LineFloodFill (image, fillColor, seedColor, x, y + yDirection);
         }
+        x += xDirection;
     }
 }
 }
