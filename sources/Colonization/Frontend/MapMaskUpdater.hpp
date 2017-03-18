@@ -6,10 +6,10 @@
 namespace Colonization
 {
 class District;
-const int MAP_MASK_WIDTH = 512;
-const int MAP_MASK_HEIGHT = 512;
+const int MAP_MASK_WIDTH = 1024;
+const int MAP_MASK_HEIGHT = 1024;
 const int MAP_MASK_COMPONENTS = 4;
-const int MAP_MASK_DISTRICT_BORDER_LINE_WIDTH = 1;
+const int MAP_MASK_DISTRICT_BORDER_LINE_WIDTH = 2;
 const float MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER = 1.0f / 0.75f;
 
 const Urho3D::Color MAP_MASK_DISTRICT_BORDER_LINE_COLOR (0.10f, 0.10f, 0.10f, 1.00f);
@@ -33,7 +33,7 @@ protected:
     Urho3D::HashMap <Urho3D::StringHash, Urho3D::StringHash> districtColorToDistrictHash_;
     Urho3D::StringHash selectedDistrictHash_;
 
-    void DrawDistrictBorders (District *district);
+    void DrawDistrictBorders (District *district, Urho3D::Image *image);
     virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:

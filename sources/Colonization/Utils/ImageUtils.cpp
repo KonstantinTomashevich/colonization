@@ -142,6 +142,7 @@ void FloodFill (Urho3D::Image *image, Urho3D::Color color, int x, int y)
 
 void LineFloodFill (Urho3D::Image *image, unsigned fillColor, unsigned seedColor, int x, int y)
 {
+    // TODO: Corrent implementation is recursive and may not work on maps more than 1024x1024!
     if (fillColor == seedColor || image->GetPixelInt (x, y) != seedColor)
     {
         return;
