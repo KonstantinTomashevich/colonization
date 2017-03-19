@@ -9,10 +9,10 @@ namespace Colonization
 class District;
 class Map;
 
-const int MAP_MASK_WIDTH = 512;
-const int MAP_MASK_HEIGHT = 512;
+const int MAP_MASK_WIDTH = 1024;
+const int MAP_MASK_HEIGHT = 1024;
 const int MAP_MASK_COMPONENTS = 4;
-const int MAP_MASK_DISTRICT_BORDER_LINE_WIDTH = 1;
+const int MAP_MASK_DISTRICT_BORDER_LINE_WIDTH = 2;
 const float MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER = 1.0f / 0.75f;
 
 const Urho3D::Color MAP_MASK_DISTRICT_BORDER_LINE_COLOR (0.10f, 0.10f, 0.10f, 1.00f);

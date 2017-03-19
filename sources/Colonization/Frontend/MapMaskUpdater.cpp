@@ -186,7 +186,7 @@ void MapMaskUpdater::RecalculateMaskImage ()
 
     // Apply changes to mask texture.
     maskTexture_->SetData (maskImage_, false);
-    fogOfWarMaskTexture_->SetData (fogOfWarMaskImage_, false);
+    UpdateFogOfWarMask (map, fogOfWarCalculator);
 }
 
 Urho3D::StringHash MapMaskUpdater::GetDistrictByPoint (Urho3D::Vector3 point) const
