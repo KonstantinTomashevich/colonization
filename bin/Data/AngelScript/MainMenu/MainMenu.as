@@ -14,10 +14,19 @@ class MainMenu : ScriptObject
         Camera @camera = cameraNode.GetComponent ("Camera");
         Viewport @viewport = Viewport (scene, camera);
         renderer.viewports [0] = viewport;
+    }
 
-        XMLFile @renderPathAddition = cache.GetResource ("XMLFile", "RenderPath/Ingame_DeferredHWDepth.xml");
-        renderer.viewports [0].renderPath.Load (renderPathAddition);
-        renderer.viewports [0].renderPath.SetEnabled ("MapMask", false);
+    protected void DisableFogOfWar ()
+    {
+        Array <Resource @> materials = GetAllCachedResources (StringHash ("Material"));
+        for (uint index = 0; index < materials.length; index++)
+        {
+            Material @material = materials [index];
+            if (material.shaderParameters ["UnderMapMask"].GetInt () == 1)
+            {
+                material.shaderParameters ["FogOfWarEnabled"] = Variant (0);
+            }
+        }
     }
 
     protected void AddScripts ()
@@ -77,6 +86,7 @@ class MainMenu : ScriptObject
         uiRoot.name = "mainMenu";
         AddScripts ();
         SetupBackground ();
+        DisableFogOfWar ();
 
         SubscribeToEvent ("StartGameRequest", "HandleStartGameRequest");
         SubscribeToEvent ("JoinGameRequest", "HandleJoinGameRequest");

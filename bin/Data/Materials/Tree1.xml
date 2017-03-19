@@ -1,6 +1,7 @@
 <material>
-	<technique name="Techniques/Diff.xml"/>
+	<technique name="Techniques/DiffUnderMapMask.xml"/>
 	<texture name="Textures/Tree1.png" unit="diffuse"/>
 	<parameter name="MatDiffColor" value="0.8 0.8 0.8 1"/>
 	<parameter name="MatSpecColor" value="0.0576923 0.0576923 0.0576923 50"/>
+    <parameter name="UnderMapMask" value="1"/>
 </material>

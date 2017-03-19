@@ -60,7 +60,7 @@ class Client : ScriptObject
         SubscribeToEvent ("ConnectFailed", "HandleConnectFailed");
         SubscribeToEvent ("GoToMainMenuRequest", "HandleGoToMainMenuRequest");
     }
-
+        
     void Update (float timeStep)
     {
 

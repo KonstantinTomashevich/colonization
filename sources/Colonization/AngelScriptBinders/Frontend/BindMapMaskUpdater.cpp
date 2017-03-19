@@ -2,15 +2,25 @@
 #include "BindMapMaskUpdater.hpp"
 #include <Urho3D/ThirdParty/AngelScript/angelscript.h>
 #include <Urho3D/AngelScript/APITemplates.h>
+#include <Urho3D/Resource/ResourceCache.h>
 #include <Colonization/Frontend/MapMaskUpdater.hpp>
 
 namespace Colonization
 {
+Urho3D::CScriptArray *script_GetAllCachedResources (Urho3D::StringHash resourceType)
+{
+    Urho3D::ResourceCache *cache = Urho3D::GetScriptContext ()->GetSubsystem <Urho3D::ResourceCache> ();
+    Urho3D::PODVector <Urho3D::Resource *> resources;
+    cache->GetResources (resources, resourceType);
+    return Urho3D::VectorToHandleArray <Urho3D::Resource> (resources, "Array <Resource@>");
+}
+
 void BindMapMaskUpdater (Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
     Urho3D::RegisterComponent <MapMaskUpdater> (engine, "MapMaskUpdater");
     BindMapMaskUpdaterInterface (script, "MapMaskUpdater");
+    engine->RegisterGlobalFunction ("Array <Resource@> @GetAllCachedResources (StringHash resourceType)", asFUNCTION (script_GetAllCachedResources), asCALL_CDECL);
 }
 
 void BindMapMaskUpdaterInterface (Urho3D::Script *script, Urho3D::String className)

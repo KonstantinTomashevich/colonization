@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <material>
-	<technique name="Techniques/Diff.xml" quality="0" loddistance="0" />
+	<technique name="Techniques/DiffUnderMapMask.xml" quality="0" loddistance="0" />
 	<texture unit="diffuse" name="Maps/BasicLevel/terrain_texture.png" />
 	<parameter name="UOffset" value="1 0 0 0" />
 	<parameter name="VOffset" value="0 1 0 0" />
@@ -10,6 +10,7 @@
 	<parameter name="MatSpecColor" value="0.1 0.1 0.1 16" />
 	<parameter name="Roughness" value="0.5" />
 	<parameter name="Metallic" value="0" />
+    <parameter name="UnderMapMask" value="1"/>
 	<cull value="ccw" />
 	<shadowcull value="ccw" />
 	<fill value="solid" />
