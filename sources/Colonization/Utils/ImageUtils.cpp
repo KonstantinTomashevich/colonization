@@ -137,12 +137,14 @@ void DrawCircle (Urho3D::Image *image, Urho3D::Color color, int x, int y, int ra
 
 void FloodFill (Urho3D::Image *image, Urho3D::Color color, int x, int y)
 {
-    LineFloodFill (image, color.ToUInt (), image->GetPixelInt (x, y), x, y);
+    if (color.ToUInt () != image->GetPixelInt (x, y))
+    {
+        LineFloodFill (image, color.ToUInt (), image->GetPixelInt (x, y), x, y);
+    }
 }
 
 void LineFloodFill (Urho3D::Image *image, unsigned fillColor, unsigned seedColor, int x, int y)
 {
-    // TODO: Corrent implementation is recursive and may not work on maps more than 1024x1024!
     if (fillColor == seedColor || image->GetPixelInt (x, y) != seedColor)
     {
         return;

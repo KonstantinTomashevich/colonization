@@ -109,8 +109,8 @@ void MapMaskUpdater::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &e
         for (int index = 0; index < map->GetDistrictsCount (); index++)
         {
             District *district = map->GetDistrictByIndex (index);
-            Urho3D::Color color;
             DrawDistrictBorders (district, fogOfWarMaskImage_);
+            Urho3D::Color color;
             if (fogOfWarCalculator->IsDistrictVisible (district->GetHash ()))
             {
                 color = MAP_MASK_VISIBLE_DISTRICT_COLOR;
