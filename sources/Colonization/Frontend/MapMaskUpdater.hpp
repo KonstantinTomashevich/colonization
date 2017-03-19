@@ -2,10 +2,13 @@
 #include <Urho3D/Scene/Component.h>
 #include <Urho3D/Resource/Image.h>
 #include <Urho3D/Graphics/Texture2D.h>
+#include <Colonization/Frontend/FogOfWarCalculator.hpp>
 
 namespace Colonization
 {
 class District;
+class Map;
+
 const int MAP_MASK_WIDTH = 512;
 const int MAP_MASK_HEIGHT = 512;
 const int MAP_MASK_COMPONENTS = 4;
@@ -33,7 +36,11 @@ protected:
     Urho3D::HashMap <Urho3D::StringHash, Urho3D::StringHash> districtColorToDistrictHash_;
     Urho3D::StringHash selectedDistrictHash_;
 
+    Urho3D::StringHash lastMaskUpdateSelectedHash_;
+    Urho3D::HashMap <Urho3D::StringHash, bool> lastMaskUpdateFogOfWarMap_;
+
     void DrawDistrictBorders (District *district, Urho3D::Image *image);
+    void UpdateFogOfWarMask (Map *map, FogOfWarCalculator *fogOfWarCalculator);
     virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:
