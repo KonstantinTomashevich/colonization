@@ -46,6 +46,7 @@ void TestInternalTradeAreaApplication::Start ()
     Colonization::RegisterAllObjects (context_);
     Urho3D::SharedPtr <Urho3D::Scene> scene (new Urho3D::Scene (context_));
     scene->CreateComponent <Colonization::GameConfiguration> ();
+    scene->CreateChild ("units");
     Colonization::Map *map = scene->CreateChild ("map")->CreateComponent <Colonization::Map> ();
     const int mapWidth = 2;
     const int mapHeight = 2;
