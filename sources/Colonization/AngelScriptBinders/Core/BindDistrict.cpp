@@ -131,9 +131,6 @@ void BindDistrictInterface (Urho3D::Script *script, Urho3D::String className)
     engine->RegisterObjectMethod (className.CString (), "float get_womenCount () const", asMETHOD (District, GetWomenCount), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_womenCount (float womenCount)", asMETHOD (District, SetWomenCount), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod (className.CString (), "float get_localArmySize () const", asMETHOD (District, GetLocalArmySize), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className.CString (), "void set_localArmySize (float localArmySize)", asMETHOD (District, SetLocalArmySize), asCALL_THISCALL);
-
     engine->RegisterObjectMethod (className.CString (), "float get_farmsEvolutionPoints () const", asMETHOD (District, GetFarmsEvolutionPoints), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_farmsEvolutionPoints (float farmsEvolutionPoints)", asMETHOD (District, SetFarmsEvolutionPoints), asCALL_THISCALL);
 
