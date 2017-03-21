@@ -42,8 +42,7 @@ float InternalTradeArea::CalculateTotalEvolutionOf (Urho3D::StringHash evolution
         assert (district);
         if (evolutionBranch == Urho3D::StringHash ("farms"))
         {
-            // FIXME: It will be multipled by land average fertility.
-            totalEvolution += district->GetFarmsEvolutionPoints ();
+            totalEvolution += district->GetFarmsEvolutionPoints () * district->GetLandAverageFertility ();
         }
         else if (evolutionBranch == Urho3D::StringHash ("mines"))
         {
