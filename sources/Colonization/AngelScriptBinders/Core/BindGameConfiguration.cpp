@@ -45,6 +45,9 @@ void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String clas
     engine->RegisterObjectMethod (className.CString (), "float get_oneColonistFarmsProductionConsumption () const", asMETHOD (GameConfiguration, GetOneColonistFarmsProductionConsumption), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_oneColonistFarmsProductionConsumption (float oneColonistFarmsProductionConsumption)", asMETHOD (GameConfiguration, SetOneColonistFarmsProductionConsumption), asCALL_THISCALL);
 
+    engine->RegisterObjectMethod (className.CString (), "float get_oneSoldierFarmsProductionConsumption () const", asMETHOD (GameConfiguration, GetOneSoldierFarmsProductionConsumption), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_oneSoldierFarmsProductionConsumption (float oneSoldierFarmsProductionConsumption)", asMETHOD (GameConfiguration, SetOneSoldierFarmsProductionConsumption), asCALL_THISCALL);
+
     engine->RegisterObjectMethod (className.CString (), "float get_farmsProductionMinesConsumption () const", asMETHOD (GameConfiguration, GetFarmsProductionMinesConsumption), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_farmsProductionMinesConsumption (float farmsProductionMinesConsumption)", asMETHOD (GameConfiguration, SetFarmsProductionMinesConsumption), asCALL_THISCALL);
 
@@ -54,6 +57,9 @@ void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String clas
     engine->RegisterObjectMethod (className.CString (), "float get_oneColonistMinesProductionConsumption () const", asMETHOD (GameConfiguration, GetOneColonistMinesProductionConsumption), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_oneColonistMinesProductionConsumption (float oneColonistMinesProductionConsumption)", asMETHOD (GameConfiguration, SetOneColonistMinesProductionConsumption), asCALL_THISCALL);
 
+    engine->RegisterObjectMethod (className.CString (), "float get_oneSoldierMinesProductionConsumption () const", asMETHOD (GameConfiguration, GetOneSoldierMinesProductionConsumption), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_oneSoldierMinesProductionConsumption (float oneSoldierMinesProductionConsumption)", asMETHOD (GameConfiguration, SetOneSoldierMinesProductionConsumption), asCALL_THISCALL);
+
     engine->RegisterObjectMethod (className.CString (), "float get_minesProductionFarmsConsumption () const", asMETHOD (GameConfiguration, GetMinesProductionFarmsConsumption), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_minesProductionFarmsConsumption (float minesProductionFarmsConsumption)", asMETHOD (GameConfiguration, SetMinesProductionFarmsConsumption), asCALL_THISCALL);
 
@@ -62,6 +68,9 @@ void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String clas
 
     engine->RegisterObjectMethod (className.CString (), "float get_oneColonistIndustryProductionConsumption () const", asMETHOD (GameConfiguration, GetOneColonistIndustryProductionConsumption), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_oneColonistIndustryProductionConsumption (float oneColonistIndustryProductionConsumption)", asMETHOD (GameConfiguration, SetOneColonistIndustryProductionConsumption), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_oneSoldierIndustryProductionConsumption () const", asMETHOD (GameConfiguration, GetOneSoldierIndustryProductionConsumption), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_oneSoldierIndustryProductionConsumption (float oneSoldierIndustryProductionConsumption)", asMETHOD (GameConfiguration, SetOneSoldierIndustryProductionConsumption), asCALL_THISCALL);
 
     engine->RegisterObjectMethod (className.CString (), "float get_industryProductionMinesConsumption () const", asMETHOD (GameConfiguration, GetIndustryProductionMinesConsumption), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_industryProductionMinesConsumption (float industryProductionMinesConsumption)", asMETHOD (GameConfiguration, SetIndustryProductionMinesConsumption), asCALL_THISCALL);

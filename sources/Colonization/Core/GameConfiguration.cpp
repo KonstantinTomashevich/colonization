@@ -21,14 +21,17 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
     disembarkationSpeed_ (0.11f),
 
     oneColonistFarmsProductionConsumption_ (0.01f),
+    oneSoldierFarmsProductionConsumption_ (0.0125f),
     farmsProductionMinesConsumption_ (0.005f),
     farmsProductionIndustryConsumption_ (0.3f),
 
     oneColonistMinesProductionConsumption_ (0.002f),
+    oneSoldierMinesProductionConsumption_ (0.001f),
     minesProductionFarmsConsumption_ (0.2f),
     minesProductionIndustryConsumption_ (0.8f),
 
     oneColonistIndustryProductionConsumption_ (0.003f),
+    oneSoldierIndustryProductionConsumption_ (0.0025f),
     industryProductionFarmsConsumption_ (0.15f),
     industryProductionMinesConsumption_ (0.25f),
 
@@ -83,6 +86,8 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
 
     URHO3D_ACCESSOR_ATTRIBUTE ("One Colonist Farms Production Consumption", GetOneColonistFarmsProductionConsumption,
                                SetOneColonistFarmsProductionConsumption, float, 0.01f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("One Soldier Farms Production Consumption", GetOneSoldierFarmsProductionConsumption,
+                               SetOneSoldierFarmsProductionConsumption, float, 0.0125f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Mines Consumption", GetFarmsProductionMinesConsumption,
                                SetFarmsProductionMinesConsumption, float, 0.005f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Industry Consumption", GetFarmsProductionIndustryConsumption,
@@ -90,6 +95,8 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
 
     URHO3D_ACCESSOR_ATTRIBUTE ("One Colonist Mines Production Consumption", GetOneColonistMinesProductionConsumption,
                                SetOneColonistMinesProductionConsumption, float, 0.002f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("One Soldier Mines Production Consumption", GetOneSoldierMinesProductionConsumption,
+                               SetOneSoldierMinesProductionConsumption, float, 0.002f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production Farms Consumption", GetMinesProductionFarmsConsumption,
                                SetMinesProductionFarmsConsumption, float, 0.2f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production Industry Consumption", GetMinesProductionIndustryConsumption,
@@ -97,6 +104,8 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
 
     URHO3D_ACCESSOR_ATTRIBUTE ("One Colonist Industry Production Consumption", GetOneColonistIndustryProductionConsumption,
                                SetOneColonistIndustryProductionConsumption, float, 0.003f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("One Soldier Industry Production Consumption", GetOneSoldierIndustryProductionConsumption,
+                               SetOneSoldierIndustryProductionConsumption, float, 0.0025f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Farms Consumption", GetIndustryProductionFarmsConsumption,
                                SetIndustryProductionFarmsConsumption, float, 0.15f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Industry Consumption", GetIndustryProductionMinesConsumption,
@@ -243,6 +252,16 @@ void GameConfiguration::SetOneColonistFarmsProductionConsumption (float oneColon
     oneColonistFarmsProductionConsumption_ = oneColonistFarmsProductionConsumption;
 }
 
+float GameConfiguration::GetOneSoldierFarmsProductionConsumption () const
+{
+    return oneSoldierFarmsProductionConsumption_;
+}
+
+void GameConfiguration::SetOneSoldierFarmsProductionConsumption (float oneSoldierFarmsProductionConsumption)
+{
+    oneSoldierFarmsProductionConsumption_ = oneSoldierFarmsProductionConsumption;
+}
+
 float GameConfiguration::GetFarmsProductionMinesConsumption () const
 {
     return farmsProductionMinesConsumption_;
@@ -273,6 +292,16 @@ void GameConfiguration::SetOneColonistMinesProductionConsumption (float oneColon
     oneColonistMinesProductionConsumption_ = oneColonistMinesProductionConsumption;
 }
 
+float GameConfiguration::GetOneSoldierMinesProductionConsumption () const
+{
+    return oneSoldierMinesProductionConsumption_;
+}
+
+void GameConfiguration::SetOneSoldierMinesProductionConsumption (float oneSoldierMinesProductionConsumption)
+{
+    oneSoldierMinesProductionConsumption_ = oneSoldierMinesProductionConsumption;
+}
+
 float GameConfiguration::GetMinesProductionFarmsConsumption () const
 {
     return minesProductionFarmsConsumption_;
@@ -301,6 +330,16 @@ float GameConfiguration::GetOneColonistIndustryProductionConsumption () const
 void GameConfiguration::SetOneColonistIndustryProductionConsumption (float oneColonistIndustryProductionConsumption)
 {
     oneColonistIndustryProductionConsumption_ = oneColonistIndustryProductionConsumption;
+}
+
+float GameConfiguration::GetOneSoldierIndustryProductionConsumption () const
+{
+    return oneSoldierIndustryProductionConsumption_;
+}
+
+void GameConfiguration::SetOneSoldierIndustryProductionConsumption (float oneSoldierIndustryProductionConsumption)
+{
+    oneSoldierIndustryProductionConsumption_ = oneSoldierIndustryProductionConsumption;
 }
 
 float GameConfiguration::GetIndustryProductionFarmsConsumption () const

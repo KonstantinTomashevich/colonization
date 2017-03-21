@@ -139,27 +139,6 @@ shared Unit @GetUnitByHash (Scene @scene_, StringHash unitHash)
     }
 }
 
-shared Array <Unit @> GetUnitsInDistrict (Scene @scene_, StringHash districtHash)
-{
-    Array <Unit @> unitsInDistrict;
-    if (scene_.GetChild ("units") is null)
-    {
-        return unitsInDistrict;
-    }
-
-    Array <Node @> unitsNodes = scene_.GetChild ("units").GetChildrenWithComponent ("Unit");
-    for (uint index = 0; index < unitsNodes.length; index++)
-    {
-        Unit @unit = unitsNodes [index].GetComponent ("Unit");
-        if (unit.positionHash == districtHash)
-        {
-            unitsInDistrict.Push (unit);
-        }
-    }
-
-    return unitsInDistrict;
-}
-
 shared void RegisterLineEdit (Node @scriptMain, LineEdit @lineEdit)
 {
     Array <Variant> lineEditVector = scriptMain.vars ["lineEditVector"].GetVariantVector ();
