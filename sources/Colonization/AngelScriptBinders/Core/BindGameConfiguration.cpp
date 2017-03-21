@@ -102,9 +102,6 @@ void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String clas
     engine->RegisterObjectMethod (className.CString (), "float get_canBePlantedByOneColonist () const", asMETHOD (GameConfiguration, GetCanBePlantedByOneColonist), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_canBePlantedByOneColonist (float canBePlantedByOneColonist)", asMETHOD (GameConfiguration, SetCanBePlantedByOneColonist), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod (className.CString (), "float get_forestCanBeCutDownByOneColonist () const", asMETHOD (GameConfiguration, GetForestCanBeCutDownByOneColonist), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className.CString (), "void set_forestCanBeCutDownByOneColonist (float forestCanBeCuttedByOneColonist)", asMETHOD (GameConfiguration, SetForestCanBeCutDownByOneColonist), asCALL_THISCALL);
-
     engine->RegisterObjectMethod (className.CString (), "float get_investitionsConsumption () const", asMETHOD (GameConfiguration, GetInvestitionsConsumption), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_investitionsConsumption (float investitionsConsumption)", asMETHOD (GameConfiguration, SetInvestitionsConsumption), asCALL_THISCALL);
 

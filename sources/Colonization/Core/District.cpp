@@ -60,7 +60,6 @@ District::District (Urho3D::Context *context) : Urho3D::Component (context),
     landAverageFertility_ (1.0f),
     climate_ (CLIMATE_TEMPERATE),
 
-    forestsReproductivity_ (1.0f),
     hasCoalDeposits_ (false),
     hasIronDeposits_ (false),
     hasSilverDeposits_ (false),
@@ -138,7 +137,6 @@ void District::RegisterObject (Urho3D::Context *context)
     URHO3D_ACCESSOR_ATTRIBUTE ("Land Average Fertility", GetLandAverageFertility, SetLandAverageFertility, float, 1.0f, Urho3D::AM_DEFAULT);
     URHO3D_ENUM_ACCESSOR_ATTRIBUTE ("Climate", GetClimate, SetClimate, ClimateType, climateTypesNames, CLIMATE_TEMPERATE, Urho3D::AM_DEFAULT);
 
-    URHO3D_ACCESSOR_ATTRIBUTE ("Forests Reproductivity", GetForestsReproductivity, SetForestsReproductivity, float, 1.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Has Coal Deposits", HasCoalDeposits, SetCoalDeposits, bool, false, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Has Iron Deposits", HasIronDeposits, SetIronDeposits, bool, false, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Has Silver Deposits", HasSilverDeposits, SetSilverDeposits, bool, false, Urho3D::AM_DEFAULT);
@@ -402,17 +400,6 @@ ClimateType District::GetClimate () const
 void District::SetClimate (ClimateType climate)
 {
     climate_ = climate;
-}
-
-float District::GetForestsReproductivity () const
-{
-    return forestsReproductivity_;
-}
-
-void District::SetForestsReproductivity (float forestsReproductivity)
-{
-    assert (forestsReproductivity > 0.0f);
-    forestsReproductivity_ = forestsReproductivity;
 }
 
 bool District::HasCoalDeposits () const

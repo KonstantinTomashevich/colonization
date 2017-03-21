@@ -92,9 +92,6 @@ void BindDistrictInterface (Urho3D::Script *script, Urho3D::String className)
     engine->RegisterObjectMethod (className.CString (), "ClimateType get_climate () const", asMETHOD (District, GetClimate), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_climate (ClimateType climate)", asMETHOD (District, SetClimate), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod (className.CString (), "float get_forestsReproductivity () const", asMETHOD (District, GetForestsReproductivity), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className.CString (), "void set_forestsReproductivity (float forestsReproductivity)", asMETHOD (District, SetForestsReproductivity), asCALL_THISCALL);
-
     engine->RegisterObjectMethod (className.CString (), "bool get_hasCoalDeposits () const", asMETHOD (District, HasCoalDeposits), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_hasCoalDeposits (bool hasCoalDeposits)", asMETHOD (District, SetCoalDeposits), asCALL_THISCALL);
 

@@ -14,7 +14,6 @@ protected:
     float GetTotalColonyEvolution (District *colony);
     void ProcessColony (GameConfiguration *configuration, District *colony, float timeStep);
     float ProcessColonyPopulation (GameConfiguration *configuration, District *colony, float timeStep);
-    float ProcessColonyForests (GameConfiguration *configuration, District *colony, float timeStep);
     float ProcessColonyFarmsEvolution (GameConfiguration *configuration, District *colony, float timeStep);
     float ProcessColonyMinesEvolution (GameConfiguration *configuration, District *colony, float timeStep);
     float ProcessColonyIndustryEvolution (GameConfiguration *configuration, District *colony, float timeStep);

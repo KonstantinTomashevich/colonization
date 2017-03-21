@@ -39,7 +39,6 @@ protected:
     float coloniesBasicPopulationIncrease_;
     float coloniesBasicEvolution_;
     float canBePlantedByOneColonist_;
-    float forestCanBeCutDownByOneColonist_;
     float investitionsConsumption_;
     float investitionsEfficiency_;
 
@@ -132,9 +131,6 @@ public:
 
     float GetCanBePlantedByOneColonist () const;
     void SetCanBePlantedByOneColonist (float canBePlantedByOneColonist);
-
-    float GetForestCanBeCutDownByOneColonist () const;
-    void SetForestCanBeCutDownByOneColonist (float forestCanBeCuttedByOneColonist);
 
     float GetInvestitionsConsumption () const;
     void SetInvestitionsConsumption (float investitionsConsumption);

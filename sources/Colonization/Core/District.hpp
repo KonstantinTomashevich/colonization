@@ -45,7 +45,6 @@ protected:
     float landAverageFertility_;
     ClimateType climate_;
 
-    float forestsReproductivity_;
     bool hasCoalDeposits_;
     bool hasIronDeposits_;
     bool hasSilverDeposits_;
@@ -115,9 +114,6 @@ public:
 
     ClimateType GetClimate () const;
     void SetClimate (ClimateType climate);
-
-    float GetForestsReproductivity () const;
-    void SetForestsReproductivity (float forestsReproductivity);
 
     bool HasCoalDeposits () const;
     void SetCoalDeposits (bool hasCoalDeposits);
