@@ -94,7 +94,7 @@ float InternalTradeArea::CalculateDistrictProductionConsumptionOfFarms (GameConf
     float minesConsumption = configuration->GetFarmsProductionMinesConsumption ();
     float industryConsumption = configuration->GetFarmsProductionIndustryConsumption ();
 
-    // FIXME: Add local army consumption!
+    // TODO: Add army units consumption.
     float totalConsumption = oneColonistConsumption * (district->GetMenCount () + district->GetWomenCount ());
     totalConsumption += minesConsumption * district->GetMinesEvolutionPoints ();
     totalConsumption += industryConsumption * district->GetIndustryEvolutionPoints ();
