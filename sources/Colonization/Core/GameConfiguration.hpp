@@ -14,14 +14,17 @@ protected:
     float disembarkationSpeed_;
 
     float oneColonistFarmsProductionConsumption_;
+    float oneSoldierFarmsProductionConsumption_;
     float farmsProductionMinesConsumption_;
     float farmsProductionIndustryConsumption_;
 
     float oneColonistMinesProductionConsumption_;
+    float oneSoldierMinesProductionConsumption_;
     float minesProductionFarmsConsumption_;
     float minesProductionIndustryConsumption_;
 
     float oneColonistIndustryProductionConsumption_;
+    float oneSoldierIndustryProductionConsumption_;
     float industryProductionFarmsConsumption_;
     float industryProductionMinesConsumption_;
 
@@ -75,6 +78,9 @@ public:
     float GetOneColonistFarmsProductionConsumption () const;
     void SetOneColonistFarmsProductionConsumption (float oneColonistFarmsProductionConsumption);
 
+    float GetOneSoldierFarmsProductionConsumption () const;
+    void SetOneSoldierFarmsProductionConsumption (float oneSoldierFarmsProductionConsumption);
+
     float GetFarmsProductionMinesConsumption () const;
     void SetFarmsProductionMinesConsumption (float farmsProductionMinesConsumption);
 
@@ -84,6 +90,9 @@ public:
     float GetOneColonistMinesProductionConsumption () const;
     void SetOneColonistMinesProductionConsumption (float oneColonistMinesProductionConsumption);
 
+    float GetOneSoldierMinesProductionConsumption () const;
+    void SetOneSoldierMinesProductionConsumption (float oneSoldierMinesProductionConsumption);
+
     float GetMinesProductionFarmsConsumption () const;
     void SetMinesProductionFarmsConsumption (float minesProductionFarmsConsumption);
 
@@ -92,6 +101,9 @@ public:
 
     float GetOneColonistIndustryProductionConsumption () const;
     void SetOneColonistIndustryProductionConsumption (float oneColonistIndustryProductionConsumption);
+
+    float GetOneSoldierIndustryProductionConsumption () const;
+    void SetOneSoldierIndustryProductionConsumption (float oneSoldierIndustryProductionConsumption);
 
     float GetIndustryProductionFarmsConsumption () const;
     void SetIndustryProductionFarmsConsumption (float industryProductionFarmsConsumption);
