@@ -16,6 +16,7 @@
 #include <Colonization/AngelScriptBinders/Backend/BindNetworkMessageType.hpp>
 #include <Colonization/AngelScriptBinders/Backend/BindPlayerActionType.hpp>
 #include <Colonization/AngelScriptBinders/Backend/BindVictoryTypesProcessorScriptDataAccessor.hpp>
+#include <Colonization/AngelScriptBinders/Backend/BindGetUnitsInDistrict.hpp>
 
 #include <Colonization/AngelScriptBinders/Frontend/BindFogOfWarCalculator.hpp>
 #include <Colonization/AngelScriptBinders/Frontend/BindMapMaskUpdater.hpp>
@@ -41,6 +42,7 @@ void BindAll (Urho3D::Script *script)
     BindNetworkMessageType (script);
     BindPlayerActionType (script);
     BindVictoryTypesProcessorScriptDataAccessor (script);
+    BindGetUnitsInDistrict (script);
 
     BindFogOfWarCalculator (script);
     BindMapMaskUpdater (script);

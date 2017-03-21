@@ -6,6 +6,7 @@
 
 namespace Colonization
 {
+Urho3D::PODVector <Unit *> GetUnitsInDistrict (Urho3D::Scene *scene, Urho3D::StringHash districtHash);
 class UnitsManager : public Urho3D::Component
 {
 URHO3D_OBJECT (UnitsManager, Component)

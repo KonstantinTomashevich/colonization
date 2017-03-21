@@ -282,5 +282,26 @@ Unit *UnitsManager::CreateUnit ()
     units_.Push (unit);
     return unit;
 }
+
+Urho3D::PODVector <Unit *> GetUnitsInDistrict (Urho3D::Scene *scene, Urho3D::StringHash districtHash)
+{
+    Urho3D::PODVector <Unit *> unitsInDistrict;
+    Urho3D::PODVector <Urho3D::Node *> unitsNodes;
+    scene->GetChild ("units")->GetChildrenWithComponent (unitsNodes, Unit::GetTypeStatic ());
+
+    for (int index = 0; index < unitsNodes.Size (); index++)
+    {
+        Urho3D::Node *unitNode = unitsNodes.At (index);
+        if (unitNode->GetID () < Urho3D::FIRST_LOCAL_ID)
+        {
+            Unit *unit = unitNode->GetComponent <Unit> ();
+            if (unit->GetPositionHash () == districtHash)
+            {
+                unitsInDistrict.Push (unit);
+            }
+        }
+    }
+    return unitsInDistrict;
+}
 }
 
