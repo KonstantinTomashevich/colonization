@@ -22,10 +22,8 @@ float ColoniesManager::GetTotalColonyEvolution(District *colony)
 void ColoniesManager::ProcessColony (GameConfiguration *configuration, District *colony, float timeStep)
 {
     // TODO: Think about balance.
-    // TODO: Maybe delete ability to cut forests? And delete forests reproductivity too.
     float updatePoints = 0.0f;
     updatePoints += ProcessColonyPopulation (configuration, colony, timeStep);
-    updatePoints += ProcessColonyForests (configuration, colony, timeStep);
     updatePoints += ProcessColonyFarmsEvolution (configuration, colony, timeStep);
     updatePoints += ProcessColonyMinesEvolution (configuration, colony, timeStep);
     updatePoints += ProcessColonyIndustryEvolution (configuration, colony, timeStep);
@@ -73,22 +71,6 @@ float ColoniesManager::ProcessColonyPopulation(GameConfiguration *configuration,
     }
 }
 
-float ColoniesManager::ProcessColonyForests (GameConfiguration *configuration, District *colony, float timeStep)
-{
-    if (colony->GetForestsSquare () < colony->GetFarmingSquare ())
-    {
-        float oldForestsSquare = colony->GetForestsSquare ();
-        float forestsSquareChange = colony->GetForestsReproductivity () * timeStep;
-        colony->SetForestsSquare (oldForestsSquare + forestsSquareChange);
-        colony->SetFarmingSquare (oldForestsSquare - forestsSquareChange);
-        return (forestsSquareChange * 10.0f / (oldForestsSquare + forestsSquareChange));
-    }
-    else
-    {
-        return 0.0f;
-    }
-}
-
 float ColoniesManager::ProcessColonyFarmsEvolution (GameConfiguration *configuration, District *colony, float timeStep)
 {
     float totalColonyEvolution = GetTotalColonyEvolution (colony);
@@ -97,12 +79,6 @@ float ColoniesManager::ProcessColonyFarmsEvolution (GameConfiguration *configura
 
     float canBePlanted = (colony->GetMenCount () + colony->GetWomenCount ()) * farmsEvolutionInColonyEvolution *
             configuration->GetCanBePlantedByOneColonist () * sqrt (colonyFarmsEvolution);
-
-    if (colony->GetForestsSquare () > (colony->GetForestsSquare () + colony->GetFarmingSquare ()) * 0.15f)
-    {
-        colony->SetForestsSquare (colony->GetForestsSquare () - 0.25f * configuration->GetForestCanBeCutDownByOneColonist () * timeStep);
-        colony->SetFarmingSquare (colony->GetFarmingSquare () + 0.25f * configuration->GetForestCanBeCutDownByOneColonist () * timeStep);
-    }
 
     float climateModifer = 1.0f;
     if (colony->GetClimate () == CLIMATE_TEMPERATE)
@@ -196,12 +172,6 @@ float ColoniesManager::ProcessColonyMinesEvolution (GameConfiguration *configura
     if (colony->HasGoldDeposits ())
     {
         perspective += 1.5f;
-    }
-
-    if (colony->GetForestsSquare () > (colony->GetForestsSquare () + colony->GetFarmingSquare ()) * 0.15f)
-    {
-        colony->SetForestsSquare (colony->GetForestsSquare () - configuration->GetForestCanBeCutDownByOneColonist () * timeStep);
-        colony->SetFarmingSquare (colony->GetFarmingSquare () + configuration->GetForestCanBeCutDownByOneColonist () * timeStep);
     }
 
     float investitions = investitions_ [colony->GetHash ()] ["mines"];
