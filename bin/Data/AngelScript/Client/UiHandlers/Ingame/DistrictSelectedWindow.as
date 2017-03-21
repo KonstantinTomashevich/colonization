@@ -142,8 +142,6 @@ class DistrictSelectedWindow : ScriptObject
         }
 
         infoText += "Forest square: " + Floor (district.forestsSquare) + ".\n";
-        infoText += "Forest reproductivity: " + Floor (district.forestsReproductivity * 100) / 100 + ".\n";
-
         if (district.hasCoalDeposits)
         {
             infoText += "Has coal deposits.\n";
