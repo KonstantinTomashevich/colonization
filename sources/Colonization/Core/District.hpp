@@ -60,7 +60,6 @@ protected:
     Urho3D::String colonyOwnerName_;
     float menCount_;
     float womenCount_;
-    float localArmySize_;
     float farmsEvolutionPoints_;
     float minesEvolutionPoints_;
     float industryEvolutionPoints_;
@@ -155,9 +154,6 @@ public:
 
     float GetWomenCount () const;
     void SetWomenCount (float womenCount);
-
-    float GetLocalArmySize () const;
-    void SetLocalArmySize (float localArmySize);
 
     float GetFarmsEvolutionPoints () const;
     void SetFarmsEvolutionPoints (float farmsEvolutionPoints);

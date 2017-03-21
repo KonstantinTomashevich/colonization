@@ -75,7 +75,6 @@ District::District (Urho3D::Context *context) : Urho3D::Component (context),
     colonyOwnerName_ (),
     menCount_ (0.0f),
     womenCount_ (0.0f),
-    localArmySize_ (0.0f),
     farmsEvolutionPoints_ (0.0f),
     minesEvolutionPoints_ (0.0f),
     industryEvolutionPoints_ (0.0f),
@@ -154,7 +153,6 @@ void District::RegisterObject (Urho3D::Context *context)
     URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Colony Owner Name", GetColonyOwnerName, SetColonyOwnerName, Urho3D::String, Urho3D::String::EMPTY, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Men Count", GetMenCount, SetMenCount, float, 0.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Women Count", GetWomenCount, SetWomenCount, float, 0.0f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Local Army Size", GetLocalArmySize, SetLocalArmySize, float, 0.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Farms Evolution Points", GetFarmsEvolutionPoints, SetFarmsEvolutionPoints, float, 0.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Mines Evolution Points", GetMinesEvolutionPoints, SetMinesEvolutionPoints, float, 0.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Industry Evolution Points", GetIndustryEvolutionPoints, SetIndustryEvolutionPoints, float, 0.0f, Urho3D::AM_DEFAULT);
@@ -540,17 +538,6 @@ void District::SetWomenCount (float womenCount)
 {
     assert (womenCount >= 0.0f);
     womenCount_ = womenCount;
-}
-
-float District::GetLocalArmySize () const
-{
-    return localArmySize_;
-}
-
-void District::SetLocalArmySize (float localArmySize)
-{
-    assert (localArmySize >= 0.0f);
-    localArmySize_ = localArmySize;
 }
 
 float District::GetFarmsEvolutionPoints () const
