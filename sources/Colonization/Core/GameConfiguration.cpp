@@ -46,7 +46,6 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
     coloniesBasicPopulationIncrease_ (0.0005f),
     coloniesBasicEvolution_ (0.005f),
     canBePlantedByOneColonist_ (0.5f),
-    forestCanBeCutDownByOneColonist_ (0.025f),
     investitionsConsumption_ (3.5f),
     investitionsEfficiency_ (9.0f),
 
@@ -124,11 +123,8 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
                                SetColoniesBasicPopulationIncrease, float, 0.0005f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Colonies Basic Evolution", GetColoniesBasicEvolution,
                                SetColoniesBasicEvolution, float, 0.005f, Urho3D::AM_DEFAULT);
-
     URHO3D_ACCESSOR_ATTRIBUTE ("Can Be Planted By One Colonist", GetCanBePlantedByOneColonist,
                                SetCanBePlantedByOneColonist, float, 0.5f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Forest Can Be Cut Down By One Colonist", GetForestCanBeCutDownByOneColonist,
-                               SetForestCanBeCutDownByOneColonist, float, 0.025f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Investitions Consumption", GetInvestitionsConsumption,
                                SetInvestitionsConsumption, float, 3.5f, Urho3D::AM_DEFAULT);
@@ -435,16 +431,6 @@ float GameConfiguration::GetCanBePlantedByOneColonist () const
 void GameConfiguration::SetCanBePlantedByOneColonist (float canBePlantedByOneColonist)
 {
     canBePlantedByOneColonist_ = canBePlantedByOneColonist;
-}
-
-float GameConfiguration::GetForestCanBeCutDownByOneColonist () const
-{
-    return forestCanBeCutDownByOneColonist_;
-}
-
-void GameConfiguration::SetForestCanBeCutDownByOneColonist (float forestCanBeCuttedByOneColonist)
-{
-    forestCanBeCutDownByOneColonist_ = forestCanBeCuttedByOneColonist;
 }
 
 float GameConfiguration::GetInvestitionsConsumption () const
