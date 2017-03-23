@@ -33,7 +33,7 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
     oneColonistIndustryProductionConsumption_ (0.003f),
     oneSoldierIndustryProductionConsumption_ (0.007f),
     industryProductionFarmsConsumption_ (0.15f),
-    industryProductionMinesConsumption_ (0.25f),
+    industryProductionMinesConsumption_ (0.2f),
 
     farmsProductionPerColonist_ (0.03f),
     minesProductionPerColonist_ (0.015f),
@@ -119,8 +119,8 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
                                SetOneSoldierIndustryProductionConsumption, float, 0.007f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Farms Consumption", GetIndustryProductionFarmsConsumption,
                                SetIndustryProductionFarmsConsumption, float, 0.15f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Industry Consumption", GetIndustryProductionMinesConsumption,
-                               SetIndustryProductionMinesConsumption, float, 0.25f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Mines Consumption", GetIndustryProductionMinesConsumption,
+                               SetIndustryProductionMinesConsumption, float, 0.2f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Per Colonist", GetFarmsProductionPerColonist,
                                SetFarmsProductionPerColonist, float, 0.03f, Urho3D::AM_DEFAULT);
