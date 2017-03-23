@@ -28,6 +28,10 @@ protected:
     float industryProductionFarmsConsumption_;
     float industryProductionMinesConsumption_;
 
+    float farmsProductionPerColonist_;
+    float minesProductionPerColonist_;
+    float industryProductionPerColonist_;
+
     float farmsProductionInternalCost_;
     float minesProductionInternalCost_;
     float industryProductionInternalCost_;
@@ -44,6 +48,13 @@ protected:
     float canBePlantedByOneColonist_;
     float investitionsConsumption_;
     float investitionsEfficiency_;
+
+    float farmsProductionTropicalClimateModifer_;
+    float farmsProductionHotClimateModifer_;
+    float farmsProductionTemperateClimateModifer_;
+    float farmsProductionTemperateContinentalClimateModifer_;
+    float farmsProductionDesertClimateModifer_;
+    float farmsProductionColdClimateModifer_;
 
     float maximumGameDuration_;
     float colonyPointsModifer_;
@@ -111,6 +122,15 @@ public:
     float GetIndustryProductionMinesConsumption () const;
     void SetIndustryProductionMinesConsumption (float industryProductionMinesConsumption);
 
+    float GetFarmsProductionPerColonist () const;
+    void SetFarmsProductionPerColonist (float farmsProductionPerColonist);
+
+    float GetMinesProductionPerColonist () const;
+    void SetMinesProductionPerColonist (float minesProductionPerColonist);
+
+    float GetIndustryProductionPerColonist () const;
+    void SetIndustryProductionPerColonist (float industryProductionPerColonist);
+
     float GetFarmsProductionInternalCost () const;
     void SetFarmsProductionInternalCost (float farmsProductionInternalCost);
 
@@ -149,6 +169,24 @@ public:
 
     float GetInvestitionsEfficiency () const;
     void SetInvestitionsEfficiency (float investitionsEfficiency);
+
+    float GetFarmsProductionTropicalClimateModifer () const;
+    void SetFarmsProductionTropicalClimateModifer (float farmsProductionTropicalClimateModifer);
+
+    float GetFarmsProductionHotClimateModifer () const;
+    void SetFarmsProductionHotClimateModifer (float farmsProductionHotClimateModifer);
+
+    float GetFarmsProductionTemperateClimateModifer () const;
+    void SetFarmsProductionTemperateClimateModifer (float farmsProductionTemperateClimateModifer);
+
+    float GetFarmsProductionTemperateContinentalClimateModifer () const;
+    void SetFarmsProductionTemperateContinentalClimateModifer (float farmsProductionTemperateContinentalClimateModifer);
+
+    float GetFarmsProductionDesertClimateModifer () const;
+    void SetFarmsProductionDesertClimateModifer (float farmsProductionDesertClimateModifer);
+
+    float GetFarmsProductionColdClimateModifer () const;
+    void SetFarmsProductionColdClimateModifer (float farmsProductionColdClimateModifer);
 
     float GetMaximumGameDuration () const;
     void SetMaximumGameDuration (float maximumGameDuration);

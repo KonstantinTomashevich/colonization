@@ -5,6 +5,7 @@
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
 
+#include <cmath>
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/Scene/Scene.h>
@@ -12,13 +13,6 @@
 
 namespace Colonization
 {
-// TODO: Maybe use another production system? See next lines.
-// districtProduction (type) = colonistsCount * evolution (type) * basicProduction (type)
-// It will be much more readable and easier to set correct configuration constants.
-// And with it, all configuration constants will be updated.
-
-// TODO: Will climate affect cost of farms production? I think yes.
-
 const char *districtsHashesStructureElementsNames [] =
 {
     "Districts In Area Count",
@@ -65,6 +59,98 @@ float InternalTradeArea::CalculateTotalEvolutionOf (Urho3D::StringHash evolution
     return totalEvolution;
 }
 
+int InternalTradeArea::CalculateTotalSoldiersCount ()
+{
+    int totalSoldiersCount = 0;
+    for (int districtIndex = 0; districtIndex < districtsHashes_.Size (); districtIndex++)
+    {
+        Urho3D::PODVector <Unit *> unitsInDistrict = GetUnitsInDistrict (node_->GetScene (), districtsHashes_.At (districtIndex));
+        if (!unitsInDistrict.Empty ())
+        {
+            for (int unitIndex = 0; unitIndex < unitsInDistrict.Size (); unitIndex++)
+            {
+                Unit *unit = unitsInDistrict.At (unitIndex);
+                if (unit->GetUnitType () == UNIT_ARMY)
+                {
+                    totalSoldiersCount += unit->ArmyUnitGetSoldiersCount ();
+                }
+            }
+        }
+    }
+    return totalSoldiersCount;
+}
+
+float InternalTradeArea::CalculateTotalProductionOfFarms (Urho3D::PODVector <District *> &realDistricts, GameConfiguration *configuration)
+{
+    float totalProduction = 0.0f;
+    for (int index = 0; index < realDistricts.Size (); index++)
+    {
+        District *district = realDistricts.At (index);
+        assert (district);
+
+        float climateModifer = 1.0f;
+        if (district->GetClimate () == CLIMATE_TROPICAL)
+        {
+            climateModifer = configuration->GetFarmsProductionTropicalClimateModifer ();
+        }
+        else if (district->GetClimate () == CLIMATE_HOT)
+        {
+            climateModifer = configuration->GetFarmsProductionHotClimateModifer ();
+        }
+        else if (district->GetClimate () == CLIMATE_TEMPERATE)
+        {
+            climateModifer = configuration->GetFarmsProductionTemperateClimateModifer ();
+        }
+        else if (district->GetClimate () == CLIMATE_TEMPERATE_CONTINENTAL)
+        {
+            climateModifer = configuration->GetFarmsProductionTemperateContinentalClimateModifer ();
+        }
+        else if (district->GetClimate () == CLIMATE_DESERT)
+        {
+            climateModifer = configuration->GetFarmsProductionDesertClimateModifer ();
+        }
+        else if (district->GetClimate () == CLIMATE_COLD)
+        {
+            climateModifer = configuration->GetFarmsProductionColdClimateModifer ();
+        }
+
+        float districtPopulation = district->GetMenCount () + district->GetWomenCount ();
+        totalProduction += districtPopulation * configuration->GetFarmsProductionPerColonist () *
+                sqrt (district->GetFarmsEvolutionPoints ()) * district->GetLandAverageFertility () * climateModifer;
+    }
+    return totalProduction;
+}
+
+float InternalTradeArea::CalculateTotalProductionOfMines (Urho3D::PODVector <District *> &realDistricts, GameConfiguration *configuration)
+{
+    float totalProduction = 0.0f;
+    for (int index = 0; index < realDistricts.Size (); index++)
+    {
+        District *district = realDistricts.At (index);
+        assert (district);
+
+        float districtPopulation = district->GetMenCount () + district->GetWomenCount ();
+        totalProduction += districtPopulation * configuration->GetMinesProductionPerColonist () *
+                sqrt (district->GetMinesEvolutionPoints ());
+    }
+    return totalProduction;
+}
+
+float InternalTradeArea::CalculateTotalProductionOfIndustry (Urho3D::PODVector <District *> &realDistricts, GameConfiguration *configuration)
+{
+    float totalProduction = 0.0f;
+    for (int index = 0; index < realDistricts.Size (); index++)
+    {
+        District *district = realDistricts.At (index);
+        assert (district);
+
+        float districtPopulation = district->GetMenCount () + district->GetWomenCount ();
+        totalProduction += districtPopulation * configuration->GetIndustryProductionPerColonist () *
+                sqrt (district->GetIndustryEvolutionPoints ());
+    }
+    return totalProduction;
+}
+
 float InternalTradeArea::CalculateTotalProductionConsumptionOf (GameConfiguration *configuration, Urho3D::StringHash evolutionBranch, Urho3D::PODVector <District *> &realDistricts, int soldiersCount)
 {
     float totalConsumption = 0.0f;
@@ -99,7 +185,7 @@ float InternalTradeArea::CalculateDistrictProductionConsumptionOfFarms (GameConf
     totalConsumption += oneSoldierConsumption * soldiersCount;
     totalConsumption += minesConsumption * district->GetMinesEvolutionPoints ();
     totalConsumption += industryConsumption * district->GetIndustryEvolutionPoints ();
-    return totalConsumption * Urho3D::Random (0.9f, 1.1f);
+    return totalConsumption;
 }
 
 float InternalTradeArea::CalculateDistrictProductionConsumptionOfMines (GameConfiguration *configuration, District *district, int soldiersCount)
@@ -113,7 +199,7 @@ float InternalTradeArea::CalculateDistrictProductionConsumptionOfMines (GameConf
     totalConsumption += oneSoldierConsumption * soldiersCount;
     totalConsumption += farmsConsumption * district->GetFarmsEvolutionPoints ();
     totalConsumption += industryConsumption * district->GetIndustryEvolutionPoints ();
-    return totalConsumption * Urho3D::Random (0.9f, 1.1f);
+    return totalConsumption;
 }
 
 float InternalTradeArea::CalculateDistrictProductionConsumptionOfIndustry (GameConfiguration *configuration, District *district, int soldiersCount)
@@ -127,7 +213,7 @@ float InternalTradeArea::CalculateDistrictProductionConsumptionOfIndustry (GameC
     totalConsumption += oneSoldierConsumption * soldiersCount;
     totalConsumption += farmsConsumption * district->GetFarmsEvolutionPoints ();
     totalConsumption += minesConsumption * district->GetMinesEvolutionPoints ();
-    return totalConsumption * Urho3D::Random (0.9f, 1.1f);
+    return totalConsumption;
 }
 
 InternalTradeArea::InternalTradeArea (Urho3D::Context *context) : Urho3D::Component (context),
@@ -174,29 +260,11 @@ Urho3D::SharedPtr <TradeDistrictProcessingInfo> InternalTradeArea::ProcessTrade 
     assert (configuration);
     Urho3D::PODVector <District *> realDistricts;
     ConstructVectorOfRealDistricts (map, realDistricts);
+    int totalSoldiersCount = CalculateTotalSoldiersCount ();
 
-    int totalSoldiersCount = 0;
-    for (int districtIndex = 0; districtIndex < districtsHashes_.Size (); districtIndex++)
-    {
-        Urho3D::PODVector <Unit *> unitsInDistrict = GetUnitsInDistrict (node_->GetScene (), districtsHashes_.At (districtIndex));
-        if (!unitsInDistrict.Empty ())
-        {
-            for (int unitIndex = 0; unitIndex < unitsInDistrict.Size (); unitIndex++)
-            {
-                Unit *unit = unitsInDistrict.At (unitIndex);
-                if (unit->GetUnitType () == UNIT_ARMY)
-                {
-                    totalSoldiersCount += unit->ArmyUnitGetSoldiersCount ();
-                }
-            }
-        }
-    }
-
-    float totalFarmsEvolution = CalculateTotalEvolutionOf ("farms", realDistricts);
-    float totalMinesEvolution = CalculateTotalEvolutionOf ("mines", realDistricts);
-    float totalIndustryEvolution = CalculateTotalEvolutionOf ("industry", realDistricts);
-    float totalLogisticsEvolution = CalculateTotalEvolutionOf ("logistics", realDistricts);
-    float totalDefenseEvolution = CalculateTotalEvolutionOf ("defense", realDistricts);
+    float totalFarmsEvolution = CalculateTotalProductionOfFarms (realDistricts, configuration);
+    float totalMinesEvolution = CalculateTotalProductionOfMines (realDistricts, configuration);
+    float totalIndustryEvolution = CalculateTotalProductionOfIndustry (realDistricts, configuration);
 
     float totalFarmsConsumption = CalculateTotalProductionConsumptionOf (configuration, "farms", realDistricts, totalSoldiersCount);
     float totalMinesConsumption = CalculateTotalProductionConsumptionOf (configuration, "mines", realDistricts, totalSoldiersCount);
@@ -227,6 +295,8 @@ Urho3D::SharedPtr <TradeDistrictProcessingInfo> InternalTradeArea::ProcessTrade 
                                       (totalMinesEvolution - soldMinesProduction) * minesExternalProductionCost +
                                       (totalIndustryEvolution - soldIndustryProduction) * industryExternalProductionCost);
 
+    float totalLogisticsEvolution = CalculateTotalEvolutionOf ("logistics", realDistricts);
+    float totalDefenseEvolution = CalculateTotalEvolutionOf ("defense", realDistricts);
     result->SetLogisticsBonus (totalLogisticsEvolution / (districtsHashes_.Size () * 6.5f));
     result->SetDefenseBonus (totalDefenseEvolution / (districtsHashes_.Size () * 5.0f));
     return result;

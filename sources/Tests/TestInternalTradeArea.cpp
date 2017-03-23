@@ -73,6 +73,8 @@ void TestInternalTradeAreaApplication::Start ()
             district->SetUnitPosition (Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.65f));
             district->SetColonyPosition (Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.2f));
             district->SetColonyOwnerName ("PlayerX");
+            district->SetMenCount (50.0f);
+            district->SetWomenCount (50.0f);
             district->UpdateHash (map);
         }
     }
@@ -80,20 +82,20 @@ void TestInternalTradeAreaApplication::Start ()
 
     map->GetDistrictByIndex (0)->SetFarmsEvolutionPoints (9.0f);
     map->GetDistrictByIndex (0)->SetMinesEvolutionPoints (1.0f);
-    map->GetDistrictByIndex (0)->SetIndustryEvolutionPoints (1.0f);
+    map->GetDistrictByIndex (0)->SetIndustryEvolutionPoints (5.0f);
     map->GetDistrictByIndex (0)->SetLogisticsEvolutionPoints (4.0f);
     map->GetDistrictByIndex (0)->SetDefenseEvolutionPoints (1.0f);
 
     map->GetDistrictByIndex (1)->SetFarmsEvolutionPoints (2.0f);
-    map->GetDistrictByIndex (1)->SetMinesEvolutionPoints (2.0f);
-    map->GetDistrictByIndex (1)->SetIndustryEvolutionPoints (1.5f);
+    map->GetDistrictByIndex (1)->SetMinesEvolutionPoints (7.0f);
+    map->GetDistrictByIndex (1)->SetIndustryEvolutionPoints (7.0f);
     map->GetDistrictByIndex (1)->SetLogisticsEvolutionPoints (4.0f);
     map->GetDistrictByIndex (1)->SetDefenseEvolutionPoints (1.0f);
 
     map->GetDistrictByIndex (2)->SetFarmsEvolutionPoints (2.0f);
     map->GetDistrictByIndex (2)->SetMinesEvolutionPoints (8.0f);
-    map->GetDistrictByIndex (2)->SetIndustryEvolutionPoints (2.0f);
-    map->GetDistrictByIndex (2)->SetLogisticsEvolutionPoints (4.0f);
+    map->GetDistrictByIndex (2)->SetIndustryEvolutionPoints (7.0f);
+    map->GetDistrictByIndex (2)->SetLogisticsEvolutionPoints (5.0f);
     map->GetDistrictByIndex (2)->SetDefenseEvolutionPoints (1.0f);
 
     map->GetDistrictByIndex (3)->SetFarmsEvolutionPoints (2.0f);

@@ -25,11 +25,11 @@ void UnitsManager::SettleColonizator (Unit *unit, Map *map)
         colony->SetColony (true);
         colony->SetColonyOwnerName (unit->GetOwnerPlayerName ());
 
-        colony->SetFarmsEvolutionPoints (2.0f);
-        colony->SetMinesEvolutionPoints (0.5f);
-        colony->SetIndustryEvolutionPoints (0.1f);
-        colony->SetLogisticsEvolutionPoints (0.5f);
-        colony->SetDefenseEvolutionPoints (0.25f);
+        colony->SetFarmsEvolutionPoints (1.0f);
+        colony->SetMinesEvolutionPoints (1.0f);
+        colony->SetIndustryEvolutionPoints (1.0f);
+        colony->SetLogisticsEvolutionPoints (1.0f);
+        colony->SetDefenseEvolutionPoints (1.0f);
     }
 
     if (colony->HasColony () && colony->GetColonyOwnerName () != unit->GetOwnerPlayerName ())
@@ -40,7 +40,7 @@ void UnitsManager::SettleColonizator (Unit *unit, Map *map)
     }
     else
     {
-        float menPercent = Urho3D::Random (0.4f, 0.6f);
+        float menPercent = Urho3D::Random (0.45f, 0.55f);
         colony->SetMenCount (colony->GetMenCount () + unit->ColonizatorsUnitGetColonizatorsCount () * 1.0f * menPercent);
         colony->SetWomenCount (colony->GetWomenCount () + unit->ColonizatorsUnitGetColonizatorsCount () * 1.0f * (1.0f - menPercent));
         unit->GetNode ()->Remove ();
