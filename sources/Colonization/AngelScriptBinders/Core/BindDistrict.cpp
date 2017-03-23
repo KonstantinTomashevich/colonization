@@ -143,6 +143,21 @@ void BindDistrictInterface (Urho3D::Script *script, Urho3D::String className)
     engine->RegisterObjectMethod (className.CString (), "float get_defenseEvolutionPoints () const", asMETHOD (District, GetDefenseEvolutionPoints), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_defenseEvolutionPoints (float defenseEvolutionPoints)", asMETHOD (District, SetDefenseEvolutionPoints), asCALL_THISCALL);
 
+    engine->RegisterObjectMethod (className.CString (), "float get_farmsBalance () const", asMETHOD (District, GetFarmsBalance), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_farmsBalance (float farmsBalance)", asMETHOD (District, SetFarmsBalance), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_minesBalance () const", asMETHOD (District, GetMinesBalance), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_minesBalance (float minesBalance)", asMETHOD (District, SetMinesBalance), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_industryBalance () const", asMETHOD (District, GetIndustryBalance), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_industryBalance (float industryBalance)", asMETHOD (District, SetIndustryBalance), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_logisticsBalance () const", asMETHOD (District, GetLogisticsBalance), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_logisticsBalance (float logisticsBalance)", asMETHOD (District, SetLogisticsBalance), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_defenseBalance () const", asMETHOD (District, GetDefenseBalance), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_defenseBalance (float defenseBalance)", asMETHOD (District, SetDefenseBalance), asCALL_THISCALL);
+
     engine->RegisterObjectMethod (className.CString (), "float get_averageLevelOfLifePoints () const", asMETHOD (District, GetAverageLevelOfLifePoints), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_averageLevelOfLifePoints (float averageLevelOfLifePoints)", asMETHOD (District, SetAverageLevelOfLifePoints), asCALL_THISCALL);
 }

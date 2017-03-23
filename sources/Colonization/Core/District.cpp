@@ -79,6 +79,12 @@ District::District (Urho3D::Context *context) : Urho3D::Component (context),
     industryEvolutionPoints_ (0.0f),
     logisticsEvolutionPoints_ (0.0f),
     defenseEvolutionPoints_ (0.0f),
+
+    farmsBalance_ (0.0f),
+    minesBalance_ (0.0f),
+    industryBalance_ (0.0f),
+    logisticsBalance_ (0.0f),
+    defenseBalance_ (0.0f),
     averageLevelOfLifePoints_ (0.0f)
 {
 
@@ -156,6 +162,12 @@ void District::RegisterObject (Urho3D::Context *context)
     URHO3D_ACCESSOR_ATTRIBUTE ("Industry Evolution Points", GetIndustryEvolutionPoints, SetIndustryEvolutionPoints, float, 0.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Logistics Evolution Points", GetLogisticsEvolutionPoints, SetLogisticsEvolutionPoints, float, 0.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Defense Evolution Points", GetDefenseEvolutionPoints, SetDefenseEvolutionPoints, float, 0.0f, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Balance", GetFarmsBalance, SetFarmsBalance, float, 0.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Mines Balance", GetMinesBalance, SetMinesBalance, float, 0.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Balance", GetIndustryBalance, SetIndustryBalance, float, 0.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Logistics Balance", GetLogisticsBalance, SetLogisticsBalance, float, 0.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Defense Balance", GetDefenseBalance, SetDefenseBalance, float, 0.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Average Level Of Life Points", GetAverageLevelOfLifePoints, SetAverageLevelOfLifePoints, float, 0.0f, Urho3D::AM_DEFAULT);
 }
 
@@ -193,6 +205,30 @@ void District::CalculateNeighbors (Urho3D::Vector<Urho3D::SharedPtr<District> > 
                 neighbors_.Push (another->GetHash ());
             }
         }
+    }
+}
+
+void District::Invest (Urho3D::StringHash investitionType, float money)
+{
+    if (investitionType == Urho3D::StringHash ("farms"))
+    {
+        farmsBalance_ += money;
+    }
+    else if (investitionType == Urho3D::StringHash ("mines"))
+    {
+        minesBalance_ += money;
+    }
+    else if (investitionType == Urho3D::StringHash ("industry"))
+    {
+        industryBalance_ += money;
+    }
+    else if (investitionType == Urho3D::StringHash ("logistics"))
+    {
+        logisticsBalance_ += money;
+    }
+    else if (investitionType == Urho3D::StringHash ("defense"))
+    {
+        defenseBalance_ += money;
     }
 }
 
@@ -580,6 +616,56 @@ void District::SetDefenseEvolutionPoints (float defenseEvolutionPoints)
 {
     assert (defenseEvolutionPoints >= 0.0f);
     defenseEvolutionPoints_ = defenseEvolutionPoints;
+}
+
+float District::GetFarmsBalance () const
+{
+    return farmsBalance_;
+}
+
+void District::SetFarmsBalance (float farmsBalance)
+{
+    farmsBalance_ = farmsBalance;
+}
+
+float District::GetMinesBalance () const
+{
+    return minesBalance_;
+}
+
+void District::SetMinesBalance (float minesBalance)
+{
+    minesBalance_ = minesBalance;
+}
+
+float District::GetIndustryBalance () const
+{
+    return industryBalance_;
+}
+
+void District::SetIndustryBalance (float industryBalance)
+{
+    industryBalance_ = industryBalance;
+}
+
+float District::GetLogisticsBalance () const
+{
+    return logisticsBalance_;
+}
+
+void District::SetLogisticsBalance (float logisticsBalance)
+{
+    logisticsBalance_ = logisticsBalance;
+}
+
+float District::GetDefenseBalance () const
+{
+    return defenseBalance_;
+}
+
+void District::SetDefenseBalance (float defenseBalance)
+{
+    defenseBalance_ = defenseBalance;
 }
 
 float District::GetAverageLevelOfLifePoints () const
