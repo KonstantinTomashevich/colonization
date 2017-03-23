@@ -185,7 +185,7 @@ float InternalTradeArea::CalculateDistrictProductionConsumptionOfFarms (GameConf
     totalConsumption += oneSoldierConsumption * soldiersCount;
     totalConsumption += minesConsumption * district->GetMinesEvolutionPoints ();
     totalConsumption += industryConsumption * district->GetIndustryEvolutionPoints ();
-    return totalConsumption * Urho3D::Random (0.9f, 1.1f);
+    return totalConsumption;
 }
 
 float InternalTradeArea::CalculateDistrictProductionConsumptionOfMines (GameConfiguration *configuration, District *district, int soldiersCount)
@@ -199,7 +199,7 @@ float InternalTradeArea::CalculateDistrictProductionConsumptionOfMines (GameConf
     totalConsumption += oneSoldierConsumption * soldiersCount;
     totalConsumption += farmsConsumption * district->GetFarmsEvolutionPoints ();
     totalConsumption += industryConsumption * district->GetIndustryEvolutionPoints ();
-    return totalConsumption * Urho3D::Random (0.9f, 1.1f);
+    return totalConsumption;
 }
 
 float InternalTradeArea::CalculateDistrictProductionConsumptionOfIndustry (GameConfiguration *configuration, District *district, int soldiersCount)
@@ -213,7 +213,7 @@ float InternalTradeArea::CalculateDistrictProductionConsumptionOfIndustry (GameC
     totalConsumption += oneSoldierConsumption * soldiersCount;
     totalConsumption += farmsConsumption * district->GetFarmsEvolutionPoints ();
     totalConsumption += minesConsumption * district->GetMinesEvolutionPoints ();
-    return totalConsumption * Urho3D::Random (0.9f, 1.1f);
+    return totalConsumption;
 }
 
 InternalTradeArea::InternalTradeArea (Urho3D::Context *context) : Urho3D::Component (context),
