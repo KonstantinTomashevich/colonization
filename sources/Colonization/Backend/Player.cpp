@@ -69,7 +69,7 @@ void Player::ProcessInvestToColonyAction (Urho3D::VectorBuffer data)
 
     if (gold_ >= money)
     {
-        coloniesManager->Invest (targetDistrict, investitionType, money);
+        targetDistrict->Invest (investitionType, money);
         gold_ -= money;
     }
 }
