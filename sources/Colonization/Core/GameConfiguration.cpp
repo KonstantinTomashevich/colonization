@@ -37,7 +37,7 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
 
     farmsProductionPerColonist_ (0.03f),
     minesProductionPerColonist_ (0.015f),
-    industryProductionPerColonist_ (0.075f),
+    industryProductionPerColonist_ (0.0075f),
 
     farmsProductionInternalCost_ (5.0f),
     minesProductionInternalCost_ (10.0f),
