@@ -28,12 +28,16 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
     oneColonistMinesProductionConsumption_ (0.002f),
     oneSoldierMinesProductionConsumption_ (0.001f),
     minesProductionFarmsConsumption_ (0.2f),
-    minesProductionIndustryConsumption_ (0.8f),
+    minesProductionIndustryConsumption_ (1.5f),
 
     oneColonistIndustryProductionConsumption_ (0.003f),
-    oneSoldierIndustryProductionConsumption_ (0.0025f),
+    oneSoldierIndustryProductionConsumption_ (0.007f),
     industryProductionFarmsConsumption_ (0.15f),
     industryProductionMinesConsumption_ (0.25f),
+
+    farmsProductionPerColonist_ (0.03f),
+    minesProductionPerColonist_ (0.015f),
+    industryProductionPerColonist_ (0.075f),
 
     farmsProductionInternalCost_ (5.0f),
     minesProductionInternalCost_ (10.0f),
@@ -51,6 +55,13 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
     canBePlantedByOneColonist_ (0.5f),
     investitionsConsumption_ (3.5f),
     investitionsEfficiency_ (9.0f),
+
+    farmsProductionTropicalClimateModifer_ (1.15f),
+    farmsProductionHotClimateModifer_ (1.1f),
+    farmsProductionTemperateClimateModifer_ (1.0f),
+    farmsProductionTemperateContinentalClimateModifer_ (0.95f),
+    farmsProductionDesertClimateModifer_ (0.65f),
+    farmsProductionColdClimateModifer_ (0.75f),
 
     maximumGameDuration_ (1200.0f),
     colonyPointsModifer_ (0.15f),
@@ -100,16 +111,23 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
     URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production Farms Consumption", GetMinesProductionFarmsConsumption,
                                SetMinesProductionFarmsConsumption, float, 0.2f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production Industry Consumption", GetMinesProductionIndustryConsumption,
-                               SetMinesProductionIndustryConsumption, float, 0.8f, Urho3D::AM_DEFAULT);
+                               SetMinesProductionIndustryConsumption, float, 1.5f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("One Colonist Industry Production Consumption", GetOneColonistIndustryProductionConsumption,
                                SetOneColonistIndustryProductionConsumption, float, 0.003f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("One Soldier Industry Production Consumption", GetOneSoldierIndustryProductionConsumption,
-                               SetOneSoldierIndustryProductionConsumption, float, 0.0025f, Urho3D::AM_DEFAULT);
+                               SetOneSoldierIndustryProductionConsumption, float, 0.007f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Farms Consumption", GetIndustryProductionFarmsConsumption,
                                SetIndustryProductionFarmsConsumption, float, 0.15f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Industry Consumption", GetIndustryProductionMinesConsumption,
                                SetIndustryProductionMinesConsumption, float, 0.25f, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Per Colonist", GetFarmsProductionPerColonist,
+                               SetFarmsProductionPerColonist, float, 0.03f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production Per Colonist", GetMinesProductionPerColonist,
+                               SetMinesProductionPerColonist, float, 0.015f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Per Colonist", GetIndustryProductionPerColonist,
+                               SetIndustryProductionPerColonist, float, 0.0075f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Internal Cost", GetFarmsProductionInternalCost,
                                SetFarmsProductionInternalCost, float, 5.0f, Urho3D::AM_DEFAULT);
@@ -139,6 +157,19 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
                                SetInvestitionsConsumption, float, 3.5f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Investitions Efficiency", GetInvestitionsEfficiency,
                                SetInvestitionsEfficiency, float, 9.0f, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Tropical Climate Modifer", GetFarmsProductionTropicalClimateModifer,
+                               SetFarmsProductionTropicalClimateModifer, float, 1.15f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Hot Climate Modifer", GetFarmsProductionHotClimateModifer,
+                               SetFarmsProductionHotClimateModifer, float, 1.1f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Temperate Climate Modifer", GetFarmsProductionTemperateClimateModifer,
+                               SetFarmsProductionTemperateClimateModifer, float, 1.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Temperate Continental Climate Modifer", GetFarmsProductionTemperateContinentalClimateModifer,
+                               SetFarmsProductionTemperateContinentalClimateModifer, float, 0.95f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Desert Climate Modifer", GetFarmsProductionDesertClimateModifer,
+                               SetFarmsProductionDesertClimateModifer, float, 0.65f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Cold Climate Modifer", GetFarmsProductionColdClimateModifer,
+                               SetFarmsProductionColdClimateModifer, float, 0.75f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Maximum Game Duration", GetMaximumGameDuration,
                                SetMaximumGameDuration, float, 600.0f, Urho3D::AM_DEFAULT);
@@ -362,6 +393,36 @@ void GameConfiguration::SetIndustryProductionMinesConsumption (float industryPro
     industryProductionMinesConsumption_ = industryProductionMinesConsumption;
 }
 
+float GameConfiguration::GetFarmsProductionPerColonist () const
+{
+    return farmsProductionPerColonist_;
+}
+
+void GameConfiguration::SetFarmsProductionPerColonist (float farmsProductionPerColonist)
+{
+    farmsProductionPerColonist_ = farmsProductionPerColonist;
+}
+
+float GameConfiguration::GetMinesProductionPerColonist () const
+{
+    return minesProductionPerColonist_;
+}
+
+void GameConfiguration::SetMinesProductionPerColonist (float minesProductionPerColonist)
+{
+    minesProductionPerColonist_ = minesProductionPerColonist;
+}
+
+float GameConfiguration::GetIndustryProductionPerColonist () const
+{
+    return industryProductionPerColonist_;
+}
+
+void GameConfiguration::SetIndustryProductionPerColonist (float industryProductionPerColonist)
+{
+    industryProductionPerColonist_ = industryProductionPerColonist;
+}
+
 float GameConfiguration::GetFarmsProductionInternalCost () const
 {
     return farmsProductionInternalCost_;
@@ -490,6 +551,66 @@ float GameConfiguration::GetInvestitionsEfficiency () const
 void GameConfiguration::SetInvestitionsEfficiency (float investitionsEfficiency)
 {
     investitionsEfficiency_ = investitionsEfficiency;
+}
+
+float GameConfiguration::GetFarmsProductionTropicalClimateModifer () const
+{
+    return farmsProductionTropicalClimateModifer_;
+}
+
+void GameConfiguration::SetFarmsProductionTropicalClimateModifer (float farmsProductionTropicalClimateModifer)
+{
+    farmsProductionTropicalClimateModifer_ = farmsProductionTropicalClimateModifer;
+}
+
+float GameConfiguration::GetFarmsProductionHotClimateModifer () const
+{
+    return farmsProductionHotClimateModifer_;
+}
+
+void GameConfiguration::SetFarmsProductionHotClimateModifer (float farmsProductionHotClimateModifer)
+{
+    farmsProductionHotClimateModifer_ = farmsProductionHotClimateModifer;
+}
+
+float GameConfiguration::GetFarmsProductionTemperateClimateModifer () const
+{
+    return farmsProductionTemperateClimateModifer_;
+}
+
+void GameConfiguration::SetFarmsProductionTemperateClimateModifer (float farmsProductionTemperateClimateModifer)
+{
+    farmsProductionTemperateClimateModifer_ = farmsProductionTemperateClimateModifer;
+}
+
+float GameConfiguration::GetFarmsProductionTemperateContinentalClimateModifer () const
+{
+    return farmsProductionTemperateContinentalClimateModifer_;
+}
+
+void GameConfiguration::SetFarmsProductionTemperateContinentalClimateModifer (float farmsProductionTemperateContinentalClimateModifer)
+{
+    farmsProductionTemperateContinentalClimateModifer_ = farmsProductionTemperateContinentalClimateModifer;
+}
+
+float GameConfiguration::GetFarmsProductionDesertClimateModifer () const
+{
+    return farmsProductionDesertClimateModifer_;
+}
+
+void GameConfiguration::SetFarmsProductionDesertClimateModifer (float farmsProductionDesertClimateModifer)
+{
+    farmsProductionDesertClimateModifer_ = farmsProductionDesertClimateModifer;
+}
+
+float GameConfiguration::GetFarmsProductionColdClimateModifer () const
+{
+    return farmsProductionColdClimateModifer_;
+}
+
+void GameConfiguration::SetFarmsProductionColdClimateModifer (float farmsProductionColdClimateModifer)
+{
+    farmsProductionColdClimateModifer_ = farmsProductionColdClimateModifer;
 }
 
 float GameConfiguration::GetMaximumGameDuration () const
