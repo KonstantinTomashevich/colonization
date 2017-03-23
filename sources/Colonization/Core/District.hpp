@@ -78,6 +78,7 @@ public:
     virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);
     static void RegisterObject (Urho3D::Context *context);
     void CalculateNeighbors (Urho3D::Vector <Urho3D::SharedPtr <District> > &allDistricts);
+    void Invest (Urho3D::StringHash investitionType, float money);
 
     void UpdateHash (Map *owner);
     Urho3D::StringHash GetHash () const;

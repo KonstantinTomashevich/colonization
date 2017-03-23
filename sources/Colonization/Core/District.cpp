@@ -208,6 +208,30 @@ void District::CalculateNeighbors (Urho3D::Vector<Urho3D::SharedPtr<District> > 
     }
 }
 
+void District::Invest (Urho3D::StringHash investitionType, float money)
+{
+    if (investitionType == Urho3D::StringHash ("farms"))
+    {
+        farmsBalance_ += money;
+    }
+    else if (investitionType == Urho3D::StringHash ("mines"))
+    {
+        minesBalance_ += money;
+    }
+    else if (investitionType == Urho3D::StringHash ("industry"))
+    {
+        industryBalance_ += money;
+    }
+    else if (investitionType == Urho3D::StringHash ("logistics"))
+    {
+        logisticsBalance_ += money;
+    }
+    else if (investitionType == Urho3D::StringHash ("defense"))
+    {
+        defenseBalance_ += money;
+    }
+}
+
 void District::UpdateHash (Map *owner)
 {
     do
