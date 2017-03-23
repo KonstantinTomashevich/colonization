@@ -9,8 +9,6 @@ class ColoniesManager : public Urho3D::Component
 {
 URHO3D_OBJECT (ColoniesManager, Component)
 protected:
-    Urho3D::HashMap <Urho3D::StringHash, Urho3D::HashMap <Urho3D::StringHash, float> > investitions_;
-
     float GetTotalColonyEvolution (District *colony);
     void ProcessColony (GameConfiguration *configuration, District *colony, float timeStep);
     float ProcessColonyPopulation (GameConfiguration *configuration, District *colony, float timeStep);
@@ -24,9 +22,8 @@ protected:
 public:
     ColoniesManager (Urho3D::Context *context);
     virtual ~ColoniesManager ();
-    static void RegisterObject (Urho3D::Context *context);
 
+    static void RegisterObject (Urho3D::Context *context);
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
-    void Invest (District *district, Urho3D::StringHash investitionType, float money);
 };
 }

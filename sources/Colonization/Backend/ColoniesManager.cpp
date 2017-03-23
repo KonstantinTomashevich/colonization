@@ -106,12 +106,12 @@ float ColoniesManager::ProcessColonyFarmsEvolution (GameConfiguration *configura
         climateModifer = 0.25f;
     }
 
-    float investitions = investitions_ [colony->GetHash ()] ["farms"];
+    float investitions = colony->GetFarmsBalance ();
     float investitionsModifer = 1.0f;
     if (investitions > 0.0f)
     {
         investitionsModifer = sqrt (configuration->GetInvestitionsEfficiency ());
-        investitions_ [colony->GetHash ()] ["farms"] = investitions - configuration->GetInvestitionsConsumption () * timeStep;
+        colony->SetFarmsBalance (investitions - configuration->GetInvestitionsConsumption () * timeStep);
     }
 
     float evolutionModifer = (colony->GetFarmingSquare () - canBePlanted) / colony->GetFarmingSquare ();
@@ -174,11 +174,11 @@ float ColoniesManager::ProcessColonyMinesEvolution (GameConfiguration *configura
         perspective += 1.5f;
     }
 
-    float investitions = investitions_ [colony->GetHash ()] ["mines"];
+    float investitions = colony->GetMinesBalance ();
     if (investitions > 0.0f)
     {
         perspective *= configuration->GetInvestitionsEfficiency ();
-        investitions_ [colony->GetHash ()] ["mines"] = investitions - configuration->GetInvestitionsConsumption () * timeStep;
+        colony->SetMinesBalance (investitions - configuration->GetInvestitionsConsumption () * timeStep);
     }
 
     perspective += sqrt (colony->GetIndustryEvolutionPoints ());
@@ -230,11 +230,11 @@ float ColoniesManager::ProcessColonyIndustryEvolution (GameConfiguration *config
         perspective += 1.0f;
     }
 
-    float investitions = investitions_ [colony->GetHash ()] ["industry"];
+    float investitions = colony->GetIndustryBalance ();
     if (investitions > 0.0f)
     {
         perspective *= configuration->GetInvestitionsEfficiency ();
-        investitions_ [colony->GetHash ()] ["industry"] = investitions - configuration->GetInvestitionsConsumption () * timeStep;
+        colony->SetIndustryBalance (investitions - configuration->GetInvestitionsConsumption () * timeStep);
     }
 
     float modifer = sqrt (perspective);
@@ -274,11 +274,11 @@ float ColoniesManager::ProcessColonyLogisticsEvolution (GameConfiguration *confi
     perspective += sqrt (colony->GetIndustryEvolutionPoints ()) * 0.75f;
     perspective += sqrt (colony->GetDefenseEvolutionPoints ());
 
-    float investitions = investitions_ [colony->GetHash ()] ["logistics"];
+    float investitions = colony->GetLogisticsBalance ();
     if (investitions > 0.0f)
     {
         perspective *= configuration->GetInvestitionsEfficiency ();
-        investitions_ [colony->GetHash ()] ["logistics"] = investitions - configuration->GetInvestitionsConsumption () * timeStep;
+        colony->SetLogisticsBalance (investitions - configuration->GetInvestitionsConsumption () * timeStep);
     }
 
     float modifer = sqrt (perspective);
@@ -338,11 +338,11 @@ float ColoniesManager::ProcessColonyDefenseEvolution (GameConfiguration *configu
         modifer *= 0.5f;
     }
 
-    float investitions = investitions_ [colony->GetHash ()] ["defense"];
+    float investitions = colony->GetDefenseBalance ();
     if (investitions > 0.0f)
     {
         modifer *= sqrt (configuration->GetInvestitionsEfficiency ());
-        investitions_ [colony->GetHash ()] ["defense"] = investitions - configuration->GetInvestitionsConsumption () * timeStep;
+        colony->SetDefenseBalance (investitions - configuration->GetInvestitionsConsumption () * timeStep);
     }
 
     float oldDefenseEvolution = colony->GetDefenseEvolutionPoints ();
@@ -358,8 +358,7 @@ void ColoniesManager::OnSceneSet (Urho3D::Scene *scene)
     SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (ColoniesManager, Update));
 }
 
-ColoniesManager::ColoniesManager (Urho3D::Context *context) : Urho3D::Component (context),
-    investitions_ ()
+ColoniesManager::ColoniesManager (Urho3D::Context *context) : Urho3D::Component (context)
 {
 
 }
@@ -396,10 +395,5 @@ void ColoniesManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &
             }
         }
     }
-}
-
-void ColoniesManager::Invest (District *district, Urho3D::StringHash investitionType, float money)
-{
-    investitions_ [district->GetHash ()] [investitionType] = investitions_ [district->GetHash ()] [investitionType] + money;
 }
 }
