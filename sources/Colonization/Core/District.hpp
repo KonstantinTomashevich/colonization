@@ -64,6 +64,12 @@ protected:
     float industryEvolutionPoints_;
     float logisticsEvolutionPoints_;
     float defenseEvolutionPoints_;
+
+    float farmsBalance_;
+    float minesBalance_;
+    float industryBalance_;
+    float logisticsBalance_;
+    float defenseBalance_;
     float averageLevelOfLifePoints_;
 public:
     District (Urho3D::Context *context);
@@ -165,6 +171,21 @@ public:
 
     float GetDefenseEvolutionPoints () const;
     void SetDefenseEvolutionPoints (float defenseEvolutionPoints);
+
+    float GetFarmsBalance () const;
+    void SetFarmsBalance (float farmsBalance);
+
+    float GetMinesBalance () const;
+    void SetMinesBalance (float minesBalance);
+
+    float GetIndustryBalance () const;
+    void SetIndustryBalance (float industryBalance);
+
+    float GetLogisticsBalance () const;
+    void SetLogisticsBalance (float logisticsBalance);
+
+    float GetDefenseBalance () const;
+    void SetDefenseBalance (float defenseBalance);
 
     float GetAverageLevelOfLifePoints () const;
     void SetAverageLevelOfLifePoints (float averageLevelOfLifePoints);
