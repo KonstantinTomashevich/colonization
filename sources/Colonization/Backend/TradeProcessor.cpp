@@ -18,29 +18,18 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
 {
     tradeAreas_.Clear ();
     Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
-    Urho3D::HashMap <Urho3D::StringHash, District *> toScanHashMap;
+    Urho3D::PODVector <District *> toScan;
 
     for (int index = 0; index < map->GetDistrictsCount (); index++)
     {
         District *district = map->GetDistrictByIndex (index);
         if (district->HasColony ())
         {
-            float logisticsEvolutionPoints = district->GetLogisticsEvolutionPoints ();
-            while (toScanHashMap [Urho3D::StringHash (static_cast <int> (logisticsEvolutionPoints * 1000))])
-            {
-                logisticsEvolutionPoints += 0.001f;
-            }
-            toScanHashMap [Urho3D::StringHash (static_cast <int> (logisticsEvolutionPoints * 1000))] = district;
+            toScan.Push (district);
         }
     }
 
-    toScanHashMap.Sort ();
-    Urho3D::PODVector <District *> toScan;
-    for (int index = toScanHashMap.Values ().Size () - 1; index >= 0; index--)
-    {
-        toScan.Push (toScanHashMap.Values ().At (index));
-    }
-
+    Urho3D::Sort <District *, DistrictComparator> (toScan.Begin (), toScan.End (), DistrictComparators::HigherLogistics);
     assert (node_);
     Urho3D::PODVector <Urho3D::Node *> tradeAreasNodes;
     node_->GetChildrenWithComponent (tradeAreasNodes, InternalTradeArea::GetTypeStatic ());
