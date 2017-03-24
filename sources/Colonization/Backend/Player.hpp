@@ -4,6 +4,13 @@
 
 namespace Colonization
 {
+class Player;
+typedef bool (*PlayerComparator) (const Player *first, const Player *second);
+namespace PlayerComparators
+{
+bool HigherPoints (const Player *first, const Player *second);
+}
+
 const float PLAYER_NEW_CHAT_MESSAGE_DELAY = 1.0f;
 enum PlayerActionType
 {

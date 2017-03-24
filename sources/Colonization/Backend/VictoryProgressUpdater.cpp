@@ -27,33 +27,18 @@ namespace Colonization
 void VictoryProgressUpdater::UpdateVictoryByPointsProgresses ()
 {
     PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
-    Urho3D::HashMap <Urho3D::StringHash, Player*> playersByPoints;
+    Urho3D::Vector <Player *> players = playersManager->GetAllPlayers ();
+    Urho3D::Sort <Player *, PlayerComparator> (players.Begin (), players.End (), PlayerComparators::HigherPoints);
 
-    for (int index = 0; index < playersManager->GetPlayersCount (); index++)
+    for (int index = 0; index < players.Size (); index++)
     {
-        Player *player = playersManager->GetPlayerByIndex (index);
-        if (player)
-        {
-            unsigned pointsInt = std::floor (player->GetPoints () * 1000.0f);
-            while (playersByPoints [Urho3D::StringHash (pointsInt)])
-            {
-                pointsInt++;
-            }
-            playersByPoints [Urho3D::StringHash (pointsInt)] = player;
-        }
-    }
-
-    playersByPoints.Sort ();
-    // Because bigger points is at end of map, start from end of map.
-    for (int index = playersByPoints.Size () - 1; index >= 0; index--)
-    {
-        Player *player = playersByPoints.Values ().At (index);
+        Player *player = players.At (index);
         PlayerInfo *playerInfo = playersManager->GetPlayerInfoByPointer (player);
         assert (playerInfo);
         Urho3D::VariantMap victoryInfo = playerInfo->GetProgressToVictoryOfTypeInfo (VICTORY_TYPE_BY_POINTS);
         victoryInfo [PLAYER_INFO_VICTORY_TYPE_NAME_KEY] = VICTORY_TYPE_BY_POINTS_NAME;
         victoryInfo [PLAYER_INFO_VICTORY_TYPE_INFO_KEY] = VICTORY_TYPE_BY_POINTS_INFO;
-        victoryInfo [PLAYER_INFO_VICTORY_TYPE_PROGRESS_KEY] = 99.0f * (index * 1.0f / playersByPoints.Size ());
+        victoryInfo [PLAYER_INFO_VICTORY_TYPE_PROGRESS_KEY] = 99.0f * ((players.Size () - index) / players.Size ());
         playerInfo->SetProgressToVictoryOfTypeInfo (VICTORY_TYPE_BY_POINTS, victoryInfo);
     }
 }
