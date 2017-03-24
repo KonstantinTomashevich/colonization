@@ -6,6 +6,31 @@
 
 namespace Colonization
 {
+Urho3D::StringHash get_DISTRICT_PRODUCTION_AMOUNT_KEY ()
+{
+    return DISTRICT_PRODUCTION_AMOUNT_KEY;
+}
+
+Urho3D::StringHash get_DISTRICT_PRODUCTION_RELATIVE_PRICE_KEY ()
+{
+    return DISTRICT_PRODUCTION_RELATIVE_PRICE_KEY;
+}
+
+Urho3D::StringHash get_DISTRICT_PRODUCTION_QUALITY_KEY ()
+{
+    return DISTRICT_PRODUCTION_QUALITY_KEY;
+}
+
+Urho3D::StringHash get_DISTRICT_PRODUCTION_SELLABILITY_KEY ()
+{
+    return DISTRICT_PRODUCTION_SELLABILITY_KEY;
+}
+
+Urho3D::StringHash get_DISTRICT_PRODUCTION_SELLED_KEY ()
+{
+    return DISTRICT_PRODUCTION_SELLED_KEY;
+}
+
 TradeDistrictProcessingInfo *InternalTradeArea_ProcessTrade (InternalTradeArea *object, Map *map)
 {
     Urho3D::SharedPtr <TradeDistrictProcessingInfo> result = object->ProcessTrade (map);
@@ -17,10 +42,22 @@ TradeDistrictProcessingInfo *InternalTradeArea_ProcessTrade (InternalTradeArea *
 
 void BindInternalTradeArea (Urho3D::Script *script)
 {
+    BindDistrictProductionKeys (script);
     BindTradeDistrictsProcessingInfo (script);
+
     asIScriptEngine *engine = script->GetScriptEngine ();
     Urho3D::RegisterComponent <InternalTradeArea> (engine, "InternalTradeArea");
     BindInternalTradeAreaInterface (script, "InternalTradeArea");
+}
+
+void BindDistrictProductionKeys(Urho3D::Script *script)
+{
+    asIScriptEngine *engine = script->GetScriptEngine ();
+    engine->RegisterGlobalFunction ("StringHash get_DISTRICT_PRODUCTION_AMOUNT_KEY ()", asFUNCTION (get_DISTRICT_PRODUCTION_AMOUNT_KEY), asCALL_CDECL);
+    engine->RegisterGlobalFunction ("StringHash get_DISTRICT_PRODUCTION_RELATIVE_PRICE_KEY ()", asFUNCTION (get_DISTRICT_PRODUCTION_RELATIVE_PRICE_KEY), asCALL_CDECL);
+    engine->RegisterGlobalFunction ("StringHash get_DISTRICT_PRODUCTION_QUALITY_KEY ()", asFUNCTION (get_DISTRICT_PRODUCTION_QUALITY_KEY), asCALL_CDECL);
+    engine->RegisterGlobalFunction ("StringHash get_DISTRICT_PRODUCTION_SELLABILITY_KEY ()", asFUNCTION (get_DISTRICT_PRODUCTION_SELLABILITY_KEY), asCALL_CDECL);
+    engine->RegisterGlobalFunction ("StringHash get_DISTRICT_PRODUCTION_SELLED_KEY ()", asFUNCTION (get_DISTRICT_PRODUCTION_SELLED_KEY), asCALL_CDECL);
 }
 
 void BindTradeDistrictsProcessingInfo (Urho3D::Script *script)

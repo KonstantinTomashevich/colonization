@@ -9,6 +9,30 @@ namespace Colonization
 class Map;
 class District;
 
+const Urho3D::StringHash DISTRICT_PRODUCTION_AMOUNT_KEY ("DistrictProductionAmount");
+const Urho3D::StringHash DISTRICT_PRODUCTION_RELATIVE_PRICE_KEY ("DistrictProductionRelativePrice");
+const Urho3D::StringHash DISTRICT_PRODUCTION_QUALITY_KEY ("DistrictProductionQuality");
+const Urho3D::StringHash DISTRICT_PRODUCTION_SELLABILITY_KEY ("DistrictProductionSellability");
+const Urho3D::StringHash DISTRICT_PRODUCTION_SELLED_KEY ("DistrictProductionSelled");
+
+struct DistrictProductionInfo
+{
+    float amount_;
+    float relativePrice_;
+    float quality_;
+    float sellability_;
+    float selled_;
+
+    void CalculateSellability ();
+    Urho3D::VariantMap ToVariantMap ();
+};
+
+typedef bool (*DistrictProductionInfoComparator) (DistrictProductionInfo &first, DistrictProductionInfo &second);
+namespace DistrictProductionInfoComparators
+{
+bool HigherSellability (DistrictProductionInfo &first, DistrictProductionInfo &second);
+}
+
 class TradeDistrictProcessingInfo : public Urho3D::Object
 {
 URHO3D_OBJECT (TradeDistrictProcessingInfo, Object)
@@ -41,7 +65,7 @@ public:
 // TODO: Maybe reimplement later to add some features?
 // Maybe don't calculate whole production?
 // Firstly calculate production of all districts separately.
-// Then sort them by sellability: for example goodsQuality * (1 / relativePrice).
+// Then sort them by sellability: for example (goodsQuality / relativePrice) ^ 2.
 // Them firstly sell better production.
 
 class InternalTradeArea : public Urho3D::Component
