@@ -678,4 +678,12 @@ void District::SetAverageLevelOfLifePoints (float averageLevelOfLifePoints)
     assert (averageLevelOfLifePoints >= 0.0f);
     averageLevelOfLifePoints_ = averageLevelOfLifePoints;
 }
+
+namespace DistrictComparators
+{
+bool HigherLogistics (const District *first, const District *second)
+{
+    return (first->GetLogisticsEvolutionPoints () > second->GetLogisticsEvolutionPoints ());
+}
+}
 }

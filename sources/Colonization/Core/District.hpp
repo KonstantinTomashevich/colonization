@@ -8,6 +8,13 @@
 namespace Colonization
 {
 class Map;
+class District;
+typedef bool (*DistrictComparator) (const District *first, const District *second);
+namespace DistrictComparators
+{
+bool HigherLogistics (const District *first, const District *second);
+}
+
 enum ClimateType
 {
     CLIMATE_TROPICAL = 0,
