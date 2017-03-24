@@ -196,12 +196,12 @@ Urho3D::PODVector<Urho3D::StringHash> Map::FindPath(const Urho3D::StringHash &ta
     {
         Urho3D::Log::Write (Urho3D::LOG_DEBUG,
                             "\n"
-                            "frontierArraySize: " + Urho3D::String (frontier.Values ().Size ()) + "\n");
+                            "frontierArraySize: " + Urho3D::String (frontier.Size ()) + "\n");
 
         frontier.Sort ();
-        District *current = frontier.Values ().At (0);
-        int currentPriority = frontier.Keys ().At (0).Value ();
-        frontier.Erase (frontier.Keys ().At (0));
+        District *current = frontier.Front ().second_;
+        int currentPriority = frontier.Front ().first_.Value ();
+        frontier.Erase (frontier.Front ().first_);
 
         Urho3D::Log::Write (Urho3D::LOG_DEBUG,
                             "\n"
