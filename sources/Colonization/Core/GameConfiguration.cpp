@@ -47,6 +47,24 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
     minesProductionExternalCost_ (7.0f),
     industryProductionExternalCost_ (18.0f),
 
+    tradeAreaLogisticsBonusModifer_ (1.0f / 6.5f),
+    tradeAreaDefenseBonusModifer_ (1.0f / 5.0f),
+    tradeAreaInternalProfitToBalance_ (1.0f),
+    tradeAreaExternalProfitToBalance_ (0.5f),
+
+    tradeAreaFarmsLogisticsExpenses_ (0.1f),
+    tradeAreaMinesLogisticsExpenses_ (0.15f),
+    tradeAreaIndustryLogisticsExpenses_ (0.05f),
+
+    tradeAreaFarmsDefenseExpenses_ (0.1f),
+    tradeAreaMinesDefenseExpenses_ (0.15f),
+    tradeAreaIndustryDefenseExpenses_ (0.15f),
+
+    evolutionCostPerLevel_ (1000.0f),
+    degradationCostPerLevel_ (1000.0f),
+    basicEvolutionSpeed_ (0.01f),
+    basicDegradationSpeed_ (0.01f),
+
     internalTaxes_ (0.25f),
     externalTaxes_ (0.25f),
 
@@ -143,6 +161,38 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
     URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production External Cost", GetIndustryProductionExternalCost,
                                SetIndustryProductionExternalCost, float, 18.0f, Urho3D::AM_DEFAULT);
 
+    URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Logistics Bonus Modifer", GetTradeAreaLogisticsBonusModifer,
+                               SetTradeAreaLogisticsBonusModifer, float, 1.0f / 6.5f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Defense Bonus Modifer", GetTradeAreaDefenseBonusModifer,
+                               SetTradeAreaDefenseBonusModifer, float, 1.0f / 5.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Internal Profit To Balance", GetTradeAreaInternalProfitToBalance,
+                               SetTradeAreaInternalProfitToBalance, float, 1.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area External Profit To Balance", GetTradeAreaExternalProfitToBalance,
+                               SetTradeAreaExternalProfitToBalance, float, 1.0f, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Farms Logistics Expenses", GetTradeAreaFarmsLogisticsExpenses,
+                               SetTradeAreaFarmsLogisticsExpenses, float, 0.1f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Mines Logistics Expenses", GetTradeAreaMinesLogisticsExpenses,
+                               SetTradeAreaMinesLogisticsExpenses, float, 0.15f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Industry Logistics Expenses", GetTradeAreaIndustryLogisticsExpenses,
+                               SetTradeAreaIndustryLogisticsExpenses, float, 0.05f, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Farms Defense Expenses", GetTradeAreaFarmsDefenseExpenses,
+                               SetTradeAreaFarmsDefenseExpenses, float, 0.1f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Mines Defense Expenses", GetTradeAreaMinesDefenseExpenses,
+                               SetTradeAreaMinesDefenseExpenses, float, 0.15f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Industry Defense Expenses", GetTradeAreaIndustryDefenseExpenses,
+                               SetTradeAreaIndustryDefenseExpenses, float, 0.15f, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Evolution Cost Per Level", GetEvolutionCostPerLevel,
+                               SetEvolutionCostPerLevel, float, 1000.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Degradation Cost Per Level", GetDegradationCostPerLevel,
+                               SetDegradationCostPerLevel, float, 1000.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Basic Evolution Speed", GetBasicEvolutionSpeed,
+                               SetEvolutionCostPerLevel, float, 0.01f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Basic Degradation Speed", GetBasicDegradationSpeed,
+                               SetDegradationCostPerLevel, float, 0.01f, Urho3D::AM_DEFAULT);
+
     URHO3D_ACCESSOR_ATTRIBUTE ("Internal Taxes", GetInternalTaxes, SetInternalTaxes, float, 0.25f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("External Taxes", GetExternalTaxes, SetExternalTaxes, float, 0.25f, Urho3D::AM_DEFAULT);
 
@@ -152,11 +202,6 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
                                SetColoniesBasicEvolution, float, 0.005f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Can Be Planted By One Colonist", GetCanBePlantedByOneColonist,
                                SetCanBePlantedByOneColonist, float, 0.5f, Urho3D::AM_DEFAULT);
-
-    URHO3D_ACCESSOR_ATTRIBUTE ("Investitions Consumption", GetInvestitionsConsumption,
-                               SetInvestitionsConsumption, float, 3.5f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Investitions Efficiency", GetInvestitionsEfficiency,
-                               SetInvestitionsEfficiency, float, 9.0f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Tropical Climate Modifer", GetFarmsProductionTropicalClimateModifer,
                                SetFarmsProductionTropicalClimateModifer, float, 1.15f, Urho3D::AM_DEFAULT);
@@ -483,6 +528,146 @@ void GameConfiguration::SetIndustryProductionExternalCost (float industryProduct
     industryProductionExternalCost_ = industryProductionExternalCost;
 }
 
+float GameConfiguration::GetTradeAreaLogisticsBonusModifer () const
+{
+    return tradeAreaLogisticsBonusModifer_;
+}
+
+void GameConfiguration::SetTradeAreaLogisticsBonusModifer (float tradeAreaLogisticsBonusModifer)
+{
+    tradeAreaLogisticsBonusModifer_ = tradeAreaLogisticsBonusModifer;
+}
+
+float GameConfiguration::GetTradeAreaDefenseBonusModifer () const
+{
+    return tradeAreaDefenseBonusModifer_;
+}
+
+void GameConfiguration::SetTradeAreaDefenseBonusModifer (float tradeAreaDefenseBonusModifer)
+{
+    tradeAreaDefenseBonusModifer_ = tradeAreaDefenseBonusModifer;
+}
+
+float GameConfiguration::GetTradeAreaInternalProfitToBalance () const
+{
+    return tradeAreaInternalProfitToBalance_;
+}
+
+void GameConfiguration::SetTradeAreaInternalProfitToBalance (float tradeAreaInternalProfitToBalance)
+{
+    tradeAreaInternalProfitToBalance_ = tradeAreaInternalProfitToBalance;
+}
+
+float GameConfiguration::GetTradeAreaExternalProfitToBalance () const
+{
+    return tradeAreaExternalProfitToBalance_;
+}
+
+void GameConfiguration::SetTradeAreaExternalProfitToBalance (float tradeAreaExternalProfitToBalance)
+{
+    tradeAreaExternalProfitToBalance_ = tradeAreaExternalProfitToBalance;
+}
+
+float GameConfiguration::GetTradeAreaFarmsLogisticsExpenses () const
+{
+    return tradeAreaFarmsLogisticsExpenses_;
+}
+
+void GameConfiguration::SetTradeAreaFarmsLogisticsExpenses (float tradeAreaFarmsLogisticsExpenses)
+{
+    tradeAreaFarmsLogisticsExpenses_ = tradeAreaFarmsLogisticsExpenses;
+}
+
+float GameConfiguration::GetTradeAreaMinesLogisticsExpenses () const
+{
+    return tradeAreaMinesLogisticsExpenses_;
+}
+
+void GameConfiguration::SetTradeAreaMinesLogisticsExpenses (float tradeAreaMinesLogisticsExpenses)
+{
+    tradeAreaMinesLogisticsExpenses_ = tradeAreaMinesLogisticsExpenses;
+}
+
+float GameConfiguration::GetTradeAreaIndustryLogisticsExpenses () const
+{
+    return tradeAreaIndustryLogisticsExpenses_;
+}
+
+void GameConfiguration::SetTradeAreaIndustryLogisticsExpenses (float tradeAreaIndustryLogisticsExpenses)
+{
+    tradeAreaIndustryLogisticsExpenses_ = tradeAreaIndustryLogisticsExpenses;
+}
+
+float GameConfiguration::GetTradeAreaFarmsDefenseExpenses () const
+{
+    return tradeAreaFarmsDefenseExpenses_;
+}
+
+void GameConfiguration::SetTradeAreaFarmsDefenseExpenses (float tradeAreaFarmsDefenseExpenses)
+{
+    tradeAreaFarmsDefenseExpenses_ = tradeAreaFarmsDefenseExpenses;
+}
+
+float GameConfiguration::GetTradeAreaMinesDefenseExpenses () const
+{
+    return tradeAreaMinesDefenseExpenses_;
+}
+
+void GameConfiguration::SetTradeAreaMinesDefenseExpenses (float tradeAreaMinesDefenseExpenses)
+{
+    tradeAreaMinesDefenseExpenses_ = tradeAreaMinesDefenseExpenses;
+}
+
+float GameConfiguration::GetTradeAreaIndustryDefenseExpenses () const
+{
+    return tradeAreaIndustryDefenseExpenses_;
+}
+
+void GameConfiguration::SetTradeAreaIndustryDefenseExpenses (float tradeAreaIndustryDefenseExpenses)
+{
+    tradeAreaIndustryDefenseExpenses_ = tradeAreaIndustryDefenseExpenses;
+}
+
+float GameConfiguration::GetEvolutionCostPerLevel () const
+{
+    return evolutionCostPerLevel_;
+}
+
+void GameConfiguration::SetEvolutionCostPerLevel (float evolutionCostPerLevel)
+{
+    evolutionCostPerLevel_ = evolutionCostPerLevel;
+}
+
+float GameConfiguration::GetDegradationCostPerLevel () const
+{
+    return degradationCostPerLevel_;
+}
+
+void GameConfiguration::SetDegradationCostPerLevel (float degradationCostPerLevel)
+{
+    degradationCostPerLevel_ = degradationCostPerLevel;
+}
+
+float GameConfiguration::GetBasicEvolutionSpeed () const
+{
+    return basicEvolutionSpeed_;
+}
+
+void GameConfiguration::SetBasicEvolutionSpeed (float basicEvolutionSpeed)
+{
+    basicEvolutionSpeed_ = basicEvolutionSpeed;
+}
+
+float GameConfiguration::GetBasicDegradationSpeed () const
+{
+    return basicDegradationSpeed_;
+}
+
+void GameConfiguration::SetBasicDegradationSpeed (float basicDegradationSpeed)
+{
+    basicDegradationSpeed_ = basicDegradationSpeed;
+}
+
 float GameConfiguration::GetInternalTaxes () const
 {
     return internalTaxes_;
@@ -531,26 +716,6 @@ float GameConfiguration::GetCanBePlantedByOneColonist () const
 void GameConfiguration::SetCanBePlantedByOneColonist (float canBePlantedByOneColonist)
 {
     canBePlantedByOneColonist_ = canBePlantedByOneColonist;
-}
-
-float GameConfiguration::GetInvestitionsConsumption () const
-{
-    return investitionsConsumption_;
-}
-
-void GameConfiguration::SetInvestitionsConsumption (float investitionsConsumption)
-{
-    investitionsConsumption_ = investitionsConsumption;
-}
-
-float GameConfiguration::GetInvestitionsEfficiency () const
-{
-    return investitionsEfficiency_;
-}
-
-void GameConfiguration::SetInvestitionsEfficiency (float investitionsEfficiency)
-{
-    investitionsEfficiency_ = investitionsEfficiency;
 }
 
 float GameConfiguration::GetFarmsProductionTropicalClimateModifer () const

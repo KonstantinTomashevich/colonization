@@ -40,14 +40,31 @@ protected:
     float minesProductionExternalCost_;
     float industryProductionExternalCost_;
 
+    float tradeAreaLogisticsBonusModifer_;
+    float tradeAreaDefenseBonusModifer_;
+    float tradeAreaInternalProfitToBalance_;
+    float tradeAreaExternalProfitToBalance_;
+
+    float tradeAreaFarmsLogisticsExpenses_;
+    float tradeAreaMinesLogisticsExpenses_;
+    float tradeAreaIndustryLogisticsExpenses_;
+
+    float tradeAreaFarmsDefenseExpenses_;
+    float tradeAreaMinesDefenseExpenses_;
+    float tradeAreaIndustryDefenseExpenses_;
+
+    float evolutionCostPerLevel_;
+    float degradationCostPerLevel_;
+    float basicEvolutionSpeed_;
+    float basicDegradationSpeed_;
+
+    // TODO: Move taxes to player. In next game versions player should have ability to set them.
     float internalTaxes_;
     float externalTaxes_;
 
     float coloniesBasicPopulationIncrease_;
     float coloniesBasicEvolution_;
     float canBePlantedByOneColonist_;
-    float investitionsConsumption_;
-    float investitionsEfficiency_;
 
     float farmsProductionTropicalClimateModifer_;
     float farmsProductionHotClimateModifer_;
@@ -149,6 +166,48 @@ public:
     float GetIndustryProductionExternalCost () const;
     void SetIndustryProductionExternalCost (float industryProductionExternalCost);
 
+    float GetTradeAreaLogisticsBonusModifer () const;
+    void SetTradeAreaLogisticsBonusModifer (float tradeAreaLogisticsBonusModifer);
+
+    float GetTradeAreaDefenseBonusModifer () const;
+    void SetTradeAreaDefenseBonusModifer (float tradeAreaDefenseBonusModifer);
+
+    float GetTradeAreaInternalProfitToBalance () const;
+    void SetTradeAreaInternalProfitToBalance (float tradeAreaInternalProfitToBalance);
+
+    float GetTradeAreaExternalProfitToBalance () const;
+    void SetTradeAreaExternalProfitToBalance (float tradeAreaExternalProfitToBalance);
+
+    float GetTradeAreaFarmsLogisticsExpenses () const;
+    void SetTradeAreaFarmsLogisticsExpenses (float tradeAreaFarmsLogisticsExpenses);
+
+    float GetTradeAreaMinesLogisticsExpenses () const;
+    void SetTradeAreaMinesLogisticsExpenses (float tradeAreaMinesLogisticsExpenses);
+
+    float GetTradeAreaIndustryLogisticsExpenses () const;
+    void SetTradeAreaIndustryLogisticsExpenses (float tradeAreaIndustryLogisticsExpenses);
+
+    float GetTradeAreaFarmsDefenseExpenses () const;
+    void SetTradeAreaFarmsDefenseExpenses (float tradeAreaFarmsDefenseExpenses);
+
+    float GetTradeAreaMinesDefenseExpenses () const;
+    void SetTradeAreaMinesDefenseExpenses (float tradeAreaMinesDefenseExpenses);
+
+    float GetTradeAreaIndustryDefenseExpenses () const;
+    void SetTradeAreaIndustryDefenseExpenses (float tradeAreaIndustryDefenseExpenses);
+
+    float GetEvolutionCostPerLevel () const;
+    void SetEvolutionCostPerLevel (float evolutionCostPerLevel);
+
+    float GetDegradationCostPerLevel () const;
+    void SetDegradationCostPerLevel (float degradationCostPerLevel);
+
+    float GetBasicEvolutionSpeed () const;
+    void SetBasicEvolutionSpeed (float basicEvolutionSpeed);
+
+    float GetBasicDegradationSpeed () const;
+    void SetBasicDegradationSpeed (float basicDegradationSpeed);
+
     float GetInternalTaxes () const;
     void SetInternalTaxes (float internalTaxes);
 
@@ -163,12 +222,6 @@ public:
 
     float GetCanBePlantedByOneColonist () const;
     void SetCanBePlantedByOneColonist (float canBePlantedByOneColonist);
-
-    float GetInvestitionsConsumption () const;
-    void SetInvestitionsConsumption (float investitionsConsumption);
-
-    float GetInvestitionsEfficiency () const;
-    void SetInvestitionsEfficiency (float investitionsEfficiency);
 
     float GetFarmsProductionTropicalClimateModifer () const;
     void SetFarmsProductionTropicalClimateModifer (float farmsProductionTropicalClimateModifer);
