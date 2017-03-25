@@ -111,23 +111,23 @@ void TestInternalTradeAreaApplication::Start ()
     internalTradeArea->AddDistrictHash (map->GetDistrictByIndex (3)->GetHash ());
     Urho3D::SharedPtr <Colonization::TradeDistrictProcessingInfo> result = internalTradeArea->ProcessTrade (map);
 
-    Urho3D::Log::Write (Urho3D::LOG_INFO, "Unused farms production: " + Urho3D::String (result->GetUnusedEvolutionPointsOf ("farms")));
-    Urho3D::Log::Write (Urho3D::LOG_INFO, "Unused mines production: " + Urho3D::String (result->GetUnusedEvolutionPointsOf ("mines")));
-    Urho3D::Log::Write (Urho3D::LOG_INFO, "Unused industry production: " + Urho3D::String (result->GetUnusedEvolutionPointsOf ("industry")));
+    Urho3D::Log::Write (Urho3D::LOG_INFO, "Unused farms production: " + Urho3D::String (result->GetUnusedProductionOf ("farms")));
+    Urho3D::Log::Write (Urho3D::LOG_INFO, "Unused mines production: " + Urho3D::String (result->GetUnusedProductionOf ("mines")));
+    Urho3D::Log::Write (Urho3D::LOG_INFO, "Unused industry production: " + Urho3D::String (result->GetUnusedProductionOf ("industry")));
     Urho3D::Log::Write (Urho3D::LOG_INFO, "Sold trade goods cost: " + Urho3D::String (result->GetSoldTradeGoodsCost ()));
     Urho3D::Log::Write (Urho3D::LOG_INFO, "Unsold trade goods cost: " + Urho3D::String (result->GetUnsoldTradeGoodsCost ()));
     Urho3D::Log::Write (Urho3D::LOG_INFO, "Logistics bonus: " + Urho3D::String (result->GetLogisticsBonus ()));
     Urho3D::Log::Write (Urho3D::LOG_INFO, "Defense bonus: " + Urho3D::String (result->GetDefenseBonus ()));
 
-    if (result->GetUnusedEvolutionPointsOf ("farms") <= 0.0f)
+    if (result->GetUnusedProductionOf ("farms") <= 0.0f)
     {
         ErrorExit ("Expected unused farms production > 0.0.");
     }
-    else if (result->GetUnusedEvolutionPointsOf ("mines") >= 0.0f)
+    else if (result->GetUnusedProductionOf ("mines") >= 0.0f)
     {
         ErrorExit ("Expected unused mines production < 0.0.");
     }
-    else if (result->GetUnusedEvolutionPointsOf ("industry") <= 0.0f)
+    else if (result->GetUnusedProductionOf ("industry") <= 0.0f)
     {
         ErrorExit ("Expected unused industry production > 0.0.");
     }

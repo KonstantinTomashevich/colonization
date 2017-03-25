@@ -65,11 +65,11 @@ void BindTradeDistrictsProcessingInfo (Urho3D::Script *script)
     asIScriptEngine *engine = script->GetScriptEngine ();
     Urho3D::RegisterObject <TradeDistrictProcessingInfo> (engine, "TradeDistrictProcessingInfo");
 
-    engine->RegisterObjectMethod ("TradeDistrictProcessingInfo", "float GetUnusedEvolutionPointsOf (StringHash type)",
-                                  asMETHOD (TradeDistrictProcessingInfo, GetUnusedEvolutionPointsOf), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("TradeDistrictProcessingInfo", "float GetUnusedProductionOf (StringHash type)",
+                                  asMETHOD (TradeDistrictProcessingInfo, GetUnusedProductionOf), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod ("TradeDistrictProcessingInfo", "float SetUnusedEvolutionPointsOf (StringHash type, float points)",
-                                  asMETHOD (TradeDistrictProcessingInfo, SetUnusedEvolutionPointsOf), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("TradeDistrictProcessingInfo", "float SetUnusedProductionOf (StringHash type, float points)",
+                                  asMETHOD (TradeDistrictProcessingInfo, SetUnusedProductionOf), asCALL_THISCALL);
 
     engine->RegisterObjectMethod ("TradeDistrictProcessingInfo", "float get_unsoldTradeGoodsCost ()", asMETHOD (TradeDistrictProcessingInfo, GetUnsoldTradeGoodsCost), asCALL_THISCALL);
     engine->RegisterObjectMethod ("TradeDistrictProcessingInfo", "float set_unsoldTradeGoodsCost (float cost)", asMETHOD (TradeDistrictProcessingInfo, SetUnsoldTradeGoodsCost), asCALL_THISCALL);
