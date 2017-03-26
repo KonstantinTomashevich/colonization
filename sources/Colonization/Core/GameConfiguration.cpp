@@ -20,37 +20,36 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
     embarkationSpeed_ (0.11f),
     disembarkationSpeed_ (0.11f),
 
-    oneColonistFarmsProductionConsumption_ (0.01f),
+    // TODO: Later think about this constants, they are so inbalanced.
+    oneColonistFarmsProductionConsumption_ (0.02f),
     oneSoldierFarmsProductionConsumption_ (0.0125f),
     farmsProductionMinesConsumption_ (0.005f),
     farmsProductionIndustryConsumption_ (0.3f),
 
-    oneColonistMinesProductionConsumption_ (0.002f),
+    oneColonistMinesProductionConsumption_ (0.0015f),
     oneSoldierMinesProductionConsumption_ (0.001f),
     minesProductionFarmsConsumption_ (0.2f),
-    minesProductionIndustryConsumption_ (1.5f),
+    minesProductionIndustryConsumption_ (1.2f),
 
-    oneColonistIndustryProductionConsumption_ (0.003f),
-    oneSoldierIndustryProductionConsumption_ (0.007f),
-    industryProductionFarmsConsumption_ (0.15f),
-    industryProductionMinesConsumption_ (0.2f),
+    oneColonistIndustryProductionConsumption_ (0.0025f),
+    oneSoldierIndustryProductionConsumption_ (0.0055f),
+    industryProductionFarmsConsumption_ (0.025f),
+    industryProductionMinesConsumption_ (0.05f),
 
-    farmsProductionPerColonist_ (0.03f),
+    farmsProductionPerColonist_ (0.04f),
     minesProductionPerColonist_ (0.015f),
     industryProductionPerColonist_ (0.0075f),
 
-    farmsProductionInternalCost_ (5.0f),
-    minesProductionInternalCost_ (10.0f),
-    industryProductionInternalCost_ (25.0f),
+    farmsProductionInternalCost_ (1.0f),
+    minesProductionInternalCost_ (3.0f),
+    industryProductionInternalCost_ (6.0f),
 
-    farmsProductionExternalCost_ (3.0f),
-    minesProductionExternalCost_ (7.0f),
-    industryProductionExternalCost_ (18.0f),
+    farmsProductionExternalCost_ (0.75f),
+    minesProductionExternalCost_ (2.5f),
+    industryProductionExternalCost_ (3.5f),
 
-    tradeAreaLogisticsBonusModifer_ (1.0f / 6.5f),
-    tradeAreaDefenseBonusModifer_ (1.0f / 5.0f),
-    tradeAreaInternalProfitToBalance_ (1.0f),
-    tradeAreaExternalProfitToBalance_ (0.5f),
+    tradeAreaInternalProfitToBalance_ (0.85f),
+    tradeAreaExternalProfitToBalance_ (0.35f),
 
     tradeAreaFarmsLogisticsExpenses_ (0.1f),
     tradeAreaMinesLogisticsExpenses_ (0.15f),
@@ -69,10 +68,7 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
     externalTaxes_ (0.25f),
 
     coloniesBasicPopulationIncrease_ (0.0005f),
-    coloniesBasicEvolution_ (0.005f),
     canBePlantedByOneColonist_ (0.5f),
-    investitionsConsumption_ (3.5f),
-    investitionsEfficiency_ (9.0f),
 
     farmsProductionTropicalClimateModifer_ (1.15f),
     farmsProductionHotClimateModifer_ (1.1f),
@@ -114,7 +110,7 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
                                SetDisembarkationSpeed, float, 0.11f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("One Colonist Farms Production Consumption", GetOneColonistFarmsProductionConsumption,
-                               SetOneColonistFarmsProductionConsumption, float, 0.01f, Urho3D::AM_DEFAULT);
+                               SetOneColonistFarmsProductionConsumption, float, 0.02f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("One Soldier Farms Production Consumption", GetOneSoldierFarmsProductionConsumption,
                                SetOneSoldierFarmsProductionConsumption, float, 0.0125f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Mines Consumption", GetFarmsProductionMinesConsumption,
@@ -123,22 +119,22 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
                                SetFarmsProductionIndustryConsumption, float, 0.3f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("One Colonist Mines Production Consumption", GetOneColonistMinesProductionConsumption,
-                               SetOneColonistMinesProductionConsumption, float, 0.002f, Urho3D::AM_DEFAULT);
+                               SetOneColonistMinesProductionConsumption, float, 0.0015f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("One Soldier Mines Production Consumption", GetOneSoldierMinesProductionConsumption,
-                               SetOneSoldierMinesProductionConsumption, float, 0.002f, Urho3D::AM_DEFAULT);
+                               SetOneSoldierMinesProductionConsumption, float, 0.001f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production Farms Consumption", GetMinesProductionFarmsConsumption,
                                SetMinesProductionFarmsConsumption, float, 0.2f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production Industry Consumption", GetMinesProductionIndustryConsumption,
-                               SetMinesProductionIndustryConsumption, float, 1.5f, Urho3D::AM_DEFAULT);
+                               SetMinesProductionIndustryConsumption, float, 1.2f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("One Colonist Industry Production Consumption", GetOneColonistIndustryProductionConsumption,
-                               SetOneColonistIndustryProductionConsumption, float, 0.003f, Urho3D::AM_DEFAULT);
+                               SetOneColonistIndustryProductionConsumption, float, 0.0025f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("One Soldier Industry Production Consumption", GetOneSoldierIndustryProductionConsumption,
-                               SetOneSoldierIndustryProductionConsumption, float, 0.007f, Urho3D::AM_DEFAULT);
+                               SetOneSoldierIndustryProductionConsumption, float, 0.0055f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Farms Consumption", GetIndustryProductionFarmsConsumption,
-                               SetIndustryProductionFarmsConsumption, float, 0.15f, Urho3D::AM_DEFAULT);
+                               SetIndustryProductionFarmsConsumption, float, 0.025f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Mines Consumption", GetIndustryProductionMinesConsumption,
-                               SetIndustryProductionMinesConsumption, float, 0.2f, Urho3D::AM_DEFAULT);
+                               SetIndustryProductionMinesConsumption, float, 0.05f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Per Colonist", GetFarmsProductionPerColonist,
                                SetFarmsProductionPerColonist, float, 0.03f, Urho3D::AM_DEFAULT);
@@ -148,27 +144,23 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
                                SetIndustryProductionPerColonist, float, 0.0075f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Internal Cost", GetFarmsProductionInternalCost,
-                               SetFarmsProductionInternalCost, float, 5.0f, Urho3D::AM_DEFAULT);
+                               SetFarmsProductionInternalCost, float, 1.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production Internal Cost", GetMinesProductionInternalCost,
-                               SetMinesProductionInternalCost, float, 10.0f, Urho3D::AM_DEFAULT);
+                               SetMinesProductionInternalCost, float, 3.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Internal Cost", GetIndustryProductionInternalCost,
-                               SetIndustryProductionInternalCost, float, 25.0f, Urho3D::AM_DEFAULT);
+                               SetIndustryProductionInternalCost, float, 6.0f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production External Cost", GetFarmsProductionExternalCost,
-                               SetFarmsProductionExternalCost, float, 3.0f, Urho3D::AM_DEFAULT);
+                               SetFarmsProductionExternalCost, float, 0.75f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production External Cost", GetMinesProductionExternalCost,
-                               SetMinesProductionExternalCost, float, 7.0f, Urho3D::AM_DEFAULT);
+                               SetMinesProductionExternalCost, float, 2.5f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production External Cost", GetIndustryProductionExternalCost,
-                               SetIndustryProductionExternalCost, float, 18.0f, Urho3D::AM_DEFAULT);
+                               SetIndustryProductionExternalCost, float, 3.5f, Urho3D::AM_DEFAULT);
 
-    URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Logistics Bonus Modifer", GetTradeAreaLogisticsBonusModifer,
-                               SetTradeAreaLogisticsBonusModifer, float, 1.0f / 6.5f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Defense Bonus Modifer", GetTradeAreaDefenseBonusModifer,
-                               SetTradeAreaDefenseBonusModifer, float, 1.0f / 5.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Internal Profit To Balance", GetTradeAreaInternalProfitToBalance,
-                               SetTradeAreaInternalProfitToBalance, float, 1.0f, Urho3D::AM_DEFAULT);
+                               SetTradeAreaInternalProfitToBalance, float, 0.8f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area External Profit To Balance", GetTradeAreaExternalProfitToBalance,
-                               SetTradeAreaExternalProfitToBalance, float, 1.0f, Urho3D::AM_DEFAULT);
+                               SetTradeAreaExternalProfitToBalance, float, 0.3f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Farms Logistics Expenses", GetTradeAreaFarmsLogisticsExpenses,
                                SetTradeAreaFarmsLogisticsExpenses, float, 0.1f, Urho3D::AM_DEFAULT);
@@ -189,17 +181,15 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
     URHO3D_ACCESSOR_ATTRIBUTE ("Degradation Cost Per Level", GetDegradationCostPerLevel,
                                SetDegradationCostPerLevel, float, 1000.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Basic Evolution Speed", GetBasicEvolutionSpeed,
-                               SetEvolutionCostPerLevel, float, 0.01f, Urho3D::AM_DEFAULT);
+                               SetBasicEvolutionSpeed, float, 0.01f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Basic Degradation Speed", GetBasicDegradationSpeed,
-                               SetDegradationCostPerLevel, float, 0.01f, Urho3D::AM_DEFAULT);
+                               SetBasicDegradationSpeed, float, 0.01f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Internal Taxes", GetInternalTaxes, SetInternalTaxes, float, 0.25f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("External Taxes", GetExternalTaxes, SetExternalTaxes, float, 0.25f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Colonies Basic Population Increase", GetColoniesBasicPopulationIncrease,
                                SetColoniesBasicPopulationIncrease, float, 0.0005f, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Colonies Basic Evolution", GetColoniesBasicEvolution,
-                               SetColoniesBasicEvolution, float, 0.005f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Can Be Planted By One Colonist", GetCanBePlantedByOneColonist,
                                SetCanBePlantedByOneColonist, float, 0.5f, Urho3D::AM_DEFAULT);
 
@@ -528,26 +518,6 @@ void GameConfiguration::SetIndustryProductionExternalCost (float industryProduct
     industryProductionExternalCost_ = industryProductionExternalCost;
 }
 
-float GameConfiguration::GetTradeAreaLogisticsBonusModifer () const
-{
-    return tradeAreaLogisticsBonusModifer_;
-}
-
-void GameConfiguration::SetTradeAreaLogisticsBonusModifer (float tradeAreaLogisticsBonusModifer)
-{
-    tradeAreaLogisticsBonusModifer_ = tradeAreaLogisticsBonusModifer;
-}
-
-float GameConfiguration::GetTradeAreaDefenseBonusModifer () const
-{
-    return tradeAreaDefenseBonusModifer_;
-}
-
-void GameConfiguration::SetTradeAreaDefenseBonusModifer (float tradeAreaDefenseBonusModifer)
-{
-    tradeAreaDefenseBonusModifer_ = tradeAreaDefenseBonusModifer;
-}
-
 float GameConfiguration::GetTradeAreaInternalProfitToBalance () const
 {
     return tradeAreaInternalProfitToBalance_;
@@ -696,16 +666,6 @@ float GameConfiguration::GetColoniesBasicPopulationIncrease () const
 void GameConfiguration::SetColoniesBasicPopulationIncrease (float coloniesBasicPopulationIncrease)
 {
     coloniesBasicPopulationIncrease_ = coloniesBasicPopulationIncrease;
-}
-
-float GameConfiguration::GetColoniesBasicEvolution () const
-{
-    return coloniesBasicEvolution_;
-}
-
-void GameConfiguration::SetColoniesBasicEvolution (float coloniesBasicEvolution)
-{
-    coloniesBasicEvolution_ = coloniesBasicEvolution;
 }
 
 float GameConfiguration::GetCanBePlantedByOneColonist () const

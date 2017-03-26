@@ -40,8 +40,6 @@ protected:
     float minesProductionExternalCost_;
     float industryProductionExternalCost_;
 
-    float tradeAreaLogisticsBonusModifer_;
-    float tradeAreaDefenseBonusModifer_;
     float tradeAreaInternalProfitToBalance_;
     float tradeAreaExternalProfitToBalance_;
 
@@ -63,7 +61,6 @@ protected:
     float externalTaxes_;
 
     float coloniesBasicPopulationIncrease_;
-    float coloniesBasicEvolution_;
     float canBePlantedByOneColonist_;
 
     float farmsProductionTropicalClimateModifer_;
@@ -166,12 +163,6 @@ public:
     float GetIndustryProductionExternalCost () const;
     void SetIndustryProductionExternalCost (float industryProductionExternalCost);
 
-    float GetTradeAreaLogisticsBonusModifer () const;
-    void SetTradeAreaLogisticsBonusModifer (float tradeAreaLogisticsBonusModifer);
-
-    float GetTradeAreaDefenseBonusModifer () const;
-    void SetTradeAreaDefenseBonusModifer (float tradeAreaDefenseBonusModifer);
-
     float GetTradeAreaInternalProfitToBalance () const;
     void SetTradeAreaInternalProfitToBalance (float tradeAreaInternalProfitToBalance);
 
@@ -216,9 +207,6 @@ public:
 
     float GetColoniesBasicPopulationIncrease () const;
     void SetColoniesBasicPopulationIncrease (float coloniesBasicPopulationIncrease);
-
-    float GetColoniesBasicEvolution () const;
-    void SetColoniesBasicEvolution (float coloniesBasicEvolution);
 
     float GetCanBePlantedByOneColonist () const;
     void SetCanBePlantedByOneColonist (float canBePlantedByOneColonist);

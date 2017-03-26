@@ -105,12 +105,6 @@ void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String clas
     engine->RegisterObjectMethod (className.CString (), "float get_industryProductionExternalCost () const", asMETHOD (GameConfiguration, GetIndustryProductionExternalCost), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_industryProductionExternalCost (float industryProductionExternalCost)", asMETHOD (GameConfiguration, SetIndustryProductionExternalCost), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod (className.CString (), "float get_tradeAreaLogisticsBonusModifer () const", asMETHOD (GameConfiguration, GetTradeAreaLogisticsBonusModifer), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className.CString (), "void set_tradeAreaLogisticsBonusModifer (float tradeAreaLogisticsBonusModifer)", asMETHOD (GameConfiguration, SetTradeAreaLogisticsBonusModifer), asCALL_THISCALL);
-
-    engine->RegisterObjectMethod (className.CString (), "float get_tradeAreaDefenseBonusModifer () const", asMETHOD (GameConfiguration, GetTradeAreaDefenseBonusModifer), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className.CString (), "void set_tradeAreaDefenseBonusModifer (float tradeAreaDefenseBonusModifer)", asMETHOD (GameConfiguration, SetTradeAreaDefenseBonusModifer), asCALL_THISCALL);
-
     engine->RegisterObjectMethod (className.CString (), "float get_tradeAreaInternalProfitToBalance () const", asMETHOD (GameConfiguration, GetTradeAreaInternalProfitToBalance), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_tradeAreaInternalProfitToBalance (float tradeAreaInternalProfitToBalance)", asMETHOD (GameConfiguration, SetTradeAreaInternalProfitToBalance), asCALL_THISCALL);
 
@@ -155,9 +149,6 @@ void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String clas
 
     engine->RegisterObjectMethod (className.CString (), "float get_coloniesBasicPopulationIncrease () const", asMETHOD (GameConfiguration, GetColoniesBasicPopulationIncrease), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_coloniesBasicPopulationIncrease (float coloniesBasicPopulationIncrease)", asMETHOD (GameConfiguration, SetColoniesBasicPopulationIncrease), asCALL_THISCALL);
-
-    engine->RegisterObjectMethod (className.CString (), "float get_coloniesBasicEvolution () const", asMETHOD (GameConfiguration, GetColoniesBasicEvolution), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className.CString (), "void set_coloniesBasicEvolution (float coloniesBasicEvolution)", asMETHOD (GameConfiguration, SetColoniesBasicEvolution), asCALL_THISCALL);
 
     engine->RegisterObjectMethod (className.CString (), "float get_canBePlantedByOneColonist () const", asMETHOD (GameConfiguration, GetCanBePlantedByOneColonist), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_canBePlantedByOneColonist (float canBePlantedByOneColonist)", asMETHOD (GameConfiguration, SetCanBePlantedByOneColonist), asCALL_THISCALL);
