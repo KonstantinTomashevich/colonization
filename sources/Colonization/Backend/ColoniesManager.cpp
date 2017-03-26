@@ -40,7 +40,7 @@ void ColoniesManager::ProcessColony (GameConfiguration *configuration, District 
     counter->AddUpdatePoints (updatePoints);
 }
 
-float ColoniesManager::ProcessColonyPopulation(GameConfiguration *configuration, District *colony, float timeStep)
+float ColoniesManager::ProcessColonyPopulation (GameConfiguration *configuration, District *colony, float timeStep)
 {
     // TODO: If colony population is very big, stop grow. Maybe automatically send colonists from it.
     float sexRatio = colony->GetMenCount () / colony->GetWomenCount ();
@@ -106,40 +106,45 @@ float ColoniesManager::ProcessColonyFarmsEvolution (GameConfiguration *configura
         climateModifer = 0.25f;
     }
 
-    float investitions = colony->GetFarmsBalance ();
-    float investitionsModifer = 1.0f;
-    if (investitions > 0.0f)
-    {
-        investitionsModifer = sqrt (configuration->GetInvestitionsEfficiency ());
-        colony->SetFarmsBalance (investitions - configuration->GetInvestitionsConsumption () * timeStep);
-    }
 
-    float evolutionModifer = (colony->GetFarmingSquare () - canBePlanted) / colony->GetFarmingSquare ();
-    if (evolutionModifer > 0.0f)
+    float evolutionModifer = 2.0f * (colony->GetFarmingSquare () - canBePlanted) / colony->GetFarmingSquare ();
+    evolutionModifer *= colony->GetLandAverageFertility ();
+    evolutionModifer *= climateModifer;
+
+    float balance = colony->GetFarmsBalance ();
+    if (balance > 0.0f)
     {
-        evolutionModifer *= colony->GetLandAverageFertility ();
-        evolutionModifer *= climateModifer;
-        evolutionModifer *= investitionsModifer;
+        evolutionModifer *= configuration->GetBasicEvolutionSpeed ();
     }
     else
     {
-        evolutionModifer = 0.0f;
+        evolutionModifer = -configuration->GetBasicDegradationSpeed () / evolutionModifer;
     }
 
     float oldFarmsEvolution = colony->GetFarmsEvolutionPoints ();
-    float evolutionAddition = configuration->GetColoniesBasicEvolution () * evolutionModifer * timeStep;
-    colony->SetFarmsEvolutionPoints (oldFarmsEvolution + evolutionAddition);
+    float evolutionAddition = evolutionModifer * timeStep;
+
+    if (evolutionAddition > 0.0f)
+    {
+        colony->SetFarmsEvolutionPoints (oldFarmsEvolution + evolutionAddition);
+        float evolutionCost = configuration->GetEvolutionCostPerLevel () * evolutionAddition;
+        colony->SetFarmsBalance (balance - evolutionCost);
+    }
+    else
+    {
+        float balanceAddition = -configuration->GetDegradationCostPerLevel () * evolutionAddition;
+        colony->SetFarmsBalance (balance + balanceAddition);
+        if (oldFarmsEvolution > 1.0f)
+        {
+            colony->SetFarmsEvolutionPoints (oldFarmsEvolution + evolutionAddition);
+        }
+    }
     return (evolutionAddition * 1500.0f);
 }
 
 float ColoniesManager::ProcessColonyMinesEvolution (GameConfiguration *configuration, District *colony, float timeStep)
 {
-    float totalColonyEvolution = GetTotalColonyEvolution (colony);
-    float colonyMinesEvolution = colony->GetMinesEvolutionPoints ();
-    float minesEvolutionInColonyEvolution = colonyMinesEvolution / totalColonyEvolution;
-
     float perspective = 1.0f;
-
     if (colony->GetForestsSquare () < (colony->GetForestsSquare () + colony->GetFarmingSquare ()) * 0.15f)
     {
         perspective -= 1.0;
@@ -174,45 +179,39 @@ float ColoniesManager::ProcessColonyMinesEvolution (GameConfiguration *configura
         perspective += 1.5f;
     }
 
-    float investitions = colony->GetMinesBalance ();
-    if (investitions > 0.0f)
+    perspective = sqrt (perspective);
+    float balance = colony->GetMinesBalance ();
+    if (balance > 0.0f)
     {
-        perspective *= configuration->GetInvestitionsEfficiency ();
-        colony->SetMinesBalance (investitions - configuration->GetInvestitionsConsumption () * timeStep);
-    }
-
-    perspective += sqrt (colony->GetIndustryEvolutionPoints ());
-    float modifer = sqrt (perspective);
-
-    if (minesEvolutionInColonyEvolution > 0.25f)
-    {
-        modifer *= 0.25f;
-    }
-    else if (minesEvolutionInColonyEvolution > 0.5f)
-    {
-        modifer *= 0.15f;
-    }
-    else if (colonyMinesEvolution > 1.5f * colony->GetFarmsEvolutionPoints ())
-    {
-        modifer *= 0.1f;
+        perspective *= configuration->GetBasicEvolutionSpeed ();
     }
     else
     {
-        modifer *= 0.5f;
+        perspective = -configuration->GetBasicDegradationSpeed () / perspective;
     }
-
     float oldMinesEvolution = colony->GetMinesEvolutionPoints ();
-    float evolutionAddition = configuration->GetColoniesBasicEvolution () * modifer * timeStep;
-    colony->SetMinesEvolutionPoints (oldMinesEvolution + evolutionAddition);
+    float evolutionAddition = perspective * timeStep;
+
+    if (evolutionAddition > 0.0f)
+    {
+        colony->SetMinesEvolutionPoints (oldMinesEvolution + evolutionAddition);
+        float evolutionCost = configuration->GetEvolutionCostPerLevel () * evolutionAddition;
+        colony->SetMinesBalance (balance - evolutionCost);
+    }
+    else
+    {
+        float balanceAddition = -configuration->GetDegradationCostPerLevel () * evolutionAddition;
+        colony->SetMinesBalance (balance + balanceAddition);
+        if (oldMinesEvolution > 1.0f)
+        {
+            colony->SetMinesEvolutionPoints (oldMinesEvolution + evolutionAddition);
+        }
+    }
     return (evolutionAddition * 1500.0f);
 }
 
 float ColoniesManager::ProcessColonyIndustryEvolution (GameConfiguration *configuration, District *colony, float timeStep)
 {
-    float totalColonyEvolution = GetTotalColonyEvolution (colony);
-    float colonyIndustryEvolution = colony->GetIndustryEvolutionPoints ();
-    float industryEvolutionInColonyEvolution = colonyIndustryEvolution / totalColonyEvolution;
-
     float perspective = 0.0f;
     perspective += sqrt (colony->GetMinesEvolutionPoints ()) * 0.75f;
     perspective += sqrt (colony->GetLogisticsEvolutionPoints ()) * 0.75f;
@@ -230,35 +229,35 @@ float ColoniesManager::ProcessColonyIndustryEvolution (GameConfiguration *config
         perspective += 1.0f;
     }
 
-    float investitions = colony->GetIndustryBalance ();
-    if (investitions > 0.0f)
+    perspective = sqrt (perspective);
+    float balance = colony->GetIndustryBalance ();
+    if (balance > 0.0f)
     {
-        perspective *= configuration->GetInvestitionsEfficiency ();
-        colony->SetIndustryBalance (investitions - configuration->GetInvestitionsConsumption () * timeStep);
-    }
-
-    float modifer = sqrt (perspective);
-
-    if (industryEvolutionInColonyEvolution > 0.5f)
-    {
-        modifer *= 0.3f;
-    }
-    else if (industryEvolutionInColonyEvolution > 0.75f)
-    {
-        modifer *= 0.15f;
-    }
-    else if (colonyIndustryEvolution > 5.0f * colony->GetFarmsEvolutionPoints ())
-    {
-        modifer *= 0.1f;
+        perspective *= configuration->GetBasicEvolutionSpeed ();
     }
     else
     {
-        modifer *= 0.5f;
+        perspective = -configuration->GetBasicDegradationSpeed () / perspective;
     }
 
     float oldIndustryEvolution = colony->GetIndustryEvolutionPoints ();
-    float evolutionAddition = configuration->GetColoniesBasicEvolution () * modifer * timeStep;
-    colony->SetIndustryEvolutionPoints (oldIndustryEvolution + evolutionAddition);
+    float evolutionAddition = perspective * timeStep;
+
+    if (evolutionAddition > 0.0f)
+    {
+        colony->SetIndustryEvolutionPoints (oldIndustryEvolution + evolutionAddition);
+        float evolutionCost = configuration->GetEvolutionCostPerLevel () * evolutionAddition;
+        colony->SetIndustryBalance (balance - evolutionCost);
+    }
+    else
+    {
+        float balanceAddition = -configuration->GetDegradationCostPerLevel () * evolutionAddition;
+        colony->SetIndustryBalance (balance + balanceAddition);
+        if (oldIndustryEvolution > 1.0f)
+        {
+            colony->SetIndustryEvolutionPoints (oldIndustryEvolution + evolutionAddition);
+        }
+    }
     return (evolutionAddition * 1500.0f);
 }
 
@@ -274,80 +273,69 @@ float ColoniesManager::ProcessColonyLogisticsEvolution (GameConfiguration *confi
     perspective += sqrt (colony->GetIndustryEvolutionPoints ()) * 0.75f;
     perspective += sqrt (colony->GetDefenseEvolutionPoints ());
 
-    float investitions = colony->GetLogisticsBalance ();
-    if (investitions > 0.0f)
+    perspective = sqrt (perspective);
+    float balance = colony->GetLogisticsBalance ();
+    if (balance > 0.0f)
     {
-        perspective *= configuration->GetInvestitionsEfficiency ();
-        colony->SetLogisticsBalance (investitions - configuration->GetInvestitionsConsumption () * timeStep);
-    }
-
-    float modifer = sqrt (perspective);
-
-    if (logisticsEvolutionInColonyEvolution > 0.1f)
-    {
-        modifer *= 0.35f;
-    }
-    else if (logisticsEvolutionInColonyEvolution > 0.15f)
-    {
-        modifer *= 0.2f;
-    }
-    else if (logisticsEvolutionInColonyEvolution > 0.2f)
-    {
-        modifer *= 0.1f;
-    }
-    else if (logisticsEvolutionInColonyEvolution > 0.25f)
-    {
-        modifer *= 0.05f;
-    }
-    else if (logisticsEvolutionInColonyEvolution > 0.30f)
-    {
-        modifer *= 0.0f;
+        perspective *= configuration->GetBasicEvolutionSpeed ();
     }
     else
     {
-        modifer *= 0.5f;
+        perspective = -configuration->GetBasicDegradationSpeed () / perspective;
     }
 
     float oldLogisticsEvolution = colony->GetLogisticsEvolutionPoints ();
-    float evolutionAddition = configuration->GetColoniesBasicEvolution () * modifer * timeStep;
-    colony->SetLogisticsEvolutionPoints (oldLogisticsEvolution + evolutionAddition);
+    float evolutionAddition = perspective * timeStep;
+
+    if (evolutionAddition > 0.0f)
+    {
+        colony->SetLogisticsEvolutionPoints (oldLogisticsEvolution + evolutionAddition);
+        float evolutionCost = configuration->GetEvolutionCostPerLevel () * evolutionAddition;
+        colony->SetLogisticsBalance (balance - evolutionCost);
+    }
+    else
+    {
+        float balanceAddition = -configuration->GetDegradationCostPerLevel () * evolutionAddition;
+        colony->SetLogisticsBalance (balance + balanceAddition);
+        if (oldLogisticsEvolution > 1.0f)
+        {
+            colony->SetLogisticsEvolutionPoints (oldLogisticsEvolution + evolutionAddition);
+        }
+    }
     return (evolutionAddition * 1500.0f);
 }
 
 float ColoniesManager::ProcessColonyDefenseEvolution (GameConfiguration *configuration, District *colony, float timeStep)
 {
-    float totalColonyEvolution = GetTotalColonyEvolution (colony);
-    float colonyDefenseEvolution = colony->GetDefenseEvolutionPoints ();
-    float defenseEvolutionInColonyEvolution = colonyDefenseEvolution / totalColonyEvolution;
-    float modifer = 1.0f;
-
-    if (defenseEvolutionInColonyEvolution > 0.1f)
+    float perspective = 1.0f;
+    float balance = colony->GetDefenseBalance ();
+    if (balance > 0.0f)
     {
-        modifer *= 0.4f;
-    }
-    else if (defenseEvolutionInColonyEvolution > 0.2f)
-    {
-        modifer *= 0.1f;
-    }
-    else if (defenseEvolutionInColonyEvolution > 0.5f)
-    {
-        modifer *= 0.0f;
+        perspective *= configuration->GetBasicEvolutionSpeed ();
     }
     else
     {
-        modifer *= 0.5f;
-    }
-
-    float investitions = colony->GetDefenseBalance ();
-    if (investitions > 0.0f)
-    {
-        modifer *= sqrt (configuration->GetInvestitionsEfficiency ());
-        colony->SetDefenseBalance (investitions - configuration->GetInvestitionsConsumption () * timeStep);
+        perspective = -configuration->GetBasicDegradationSpeed () / perspective;
     }
 
     float oldDefenseEvolution = colony->GetDefenseEvolutionPoints ();
-    float evolutionAddition = configuration->GetColoniesBasicEvolution () * modifer * timeStep;
-    colony->SetDefenseEvolutionPoints (oldDefenseEvolution + evolutionAddition);
+    float evolutionAddition = perspective * timeStep;
+
+    if (evolutionAddition > 0.0f)
+    {
+        colony->SetDefenseEvolutionPoints (oldDefenseEvolution + evolutionAddition);
+        float evolutionCost = configuration->GetEvolutionCostPerLevel () * evolutionAddition;
+        colony->SetDefenseBalance (balance - evolutionCost);
+    }
+    else
+    {
+        float balanceAddition = -configuration->GetDegradationCostPerLevel () * evolutionAddition;
+        colony->SetDefenseBalance (balance + balanceAddition);
+        if (oldDefenseEvolution > 1.0f)
+        {
+            colony->SetDefenseEvolutionPoints (oldDefenseEvolution + evolutionAddition);
+        }
+    }
     return (evolutionAddition * 1500.0f);
 }
 
