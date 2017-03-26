@@ -31,9 +31,9 @@ Urho3D::StringHash get_DISTRICT_PRODUCTION_SELLED_KEY ()
     return DISTRICT_PRODUCTION_SELLED_KEY;
 }
 
-TradeDistrictProcessingInfo *InternalTradeArea_ProcessTrade (InternalTradeArea *object, Map *map)
+TradeDistrictProcessingInfo *InternalTradeArea_ProcessTrade (InternalTradeArea *object, Map *map, float updateDelay, bool writeDistrictsBalance)
 {
-    Urho3D::SharedPtr <TradeDistrictProcessingInfo> result = object->ProcessTrade (map);
+    Urho3D::SharedPtr <TradeDistrictProcessingInfo> result = object->ProcessTrade (map, updateDelay, writeDistrictsBalance);
     TradeDistrictProcessingInfo *infoPtr = result.Get ();
     result.Detach ();
     infoPtr->AddRef ();
@@ -76,18 +76,12 @@ void BindTradeDistrictsProcessingInfo (Urho3D::Script *script)
 
     engine->RegisterObjectMethod ("TradeDistrictProcessingInfo", "float get_soldTradeGoodsCost ()", asMETHOD (TradeDistrictProcessingInfo, GetSoldTradeGoodsCost), asCALL_THISCALL);
     engine->RegisterObjectMethod ("TradeDistrictProcessingInfo", "float set_soldTradeGoodsCost (float cost)", asMETHOD (TradeDistrictProcessingInfo, SetSoldTradeGoodsCost), asCALL_THISCALL);
-
-    engine->RegisterObjectMethod ("TradeDistrictProcessingInfo", "float get_logisticsBonus ()", asMETHOD (TradeDistrictProcessingInfo, GetLogisticsBonus), asCALL_THISCALL);
-    engine->RegisterObjectMethod ("TradeDistrictProcessingInfo", "float set_logisticsBonus (float logisticsBonus)", asMETHOD (TradeDistrictProcessingInfo, SetLogisticsBonus), asCALL_THISCALL);
-
-    engine->RegisterObjectMethod ("TradeDistrictProcessingInfo", "float get_defenseBonus ()", asMETHOD (TradeDistrictProcessingInfo, GetDefenseBonus), asCALL_THISCALL);
-    engine->RegisterObjectMethod ("TradeDistrictProcessingInfo", "float set_defenseBonus (float defenseBonus)", asMETHOD (TradeDistrictProcessingInfo, SetDefenseBonus), asCALL_THISCALL);
 }
 
 void BindInternalTradeAreaInterface (Urho3D::Script *script, Urho3D::String className)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
-    engine->RegisterObjectMethod (className.CString (), "TradeDistrictProcessingInfo @ProcessTrade (Map @+ map)", asFUNCTION (InternalTradeArea_ProcessTrade), asCALL_CDECL_OBJFIRST);
+    engine->RegisterObjectMethod (className.CString (), "TradeDistrictProcessingInfo @ProcessTrade (Map @+ map, float updateDelay, bool writeDistrictsBalance)", asFUNCTION (InternalTradeArea_ProcessTrade), asCALL_CDECL_OBJFIRST);
     engine->RegisterObjectMethod (className.CString (), "int get_districtsHashesCount ()", asMETHOD (InternalTradeArea, GetDistrictsHashesCount), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "StringHash GetDistrictHashByIndex (int index)", asMETHOD (InternalTradeArea, GetDistrictHashByIndex), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void AddDistrictHash (StringHash districtHash)", asMETHOD (InternalTradeArea, AddDistrictHash), asCALL_THISCALL);

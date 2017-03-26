@@ -109,15 +109,13 @@ void TestInternalTradeAreaApplication::Start ()
     internalTradeArea->AddDistrictHash (map->GetDistrictByIndex (1)->GetHash ());
     internalTradeArea->AddDistrictHash (map->GetDistrictByIndex (2)->GetHash ());
     internalTradeArea->AddDistrictHash (map->GetDistrictByIndex (3)->GetHash ());
-    Urho3D::SharedPtr <Colonization::TradeDistrictProcessingInfo> result = internalTradeArea->ProcessTrade (map);
+    Urho3D::SharedPtr <Colonization::TradeDistrictProcessingInfo> result = internalTradeArea->ProcessTrade (map, 10.0f, true);
 
     Urho3D::Log::Write (Urho3D::LOG_INFO, "Unused farms production: " + Urho3D::String (result->GetUnusedProductionOf ("farms")));
     Urho3D::Log::Write (Urho3D::LOG_INFO, "Unused mines production: " + Urho3D::String (result->GetUnusedProductionOf ("mines")));
     Urho3D::Log::Write (Urho3D::LOG_INFO, "Unused industry production: " + Urho3D::String (result->GetUnusedProductionOf ("industry")));
     Urho3D::Log::Write (Urho3D::LOG_INFO, "Sold trade goods cost: " + Urho3D::String (result->GetSoldTradeGoodsCost ()));
     Urho3D::Log::Write (Urho3D::LOG_INFO, "Unsold trade goods cost: " + Urho3D::String (result->GetUnsoldTradeGoodsCost ()));
-    Urho3D::Log::Write (Urho3D::LOG_INFO, "Logistics bonus: " + Urho3D::String (result->GetLogisticsBonus ()));
-    Urho3D::Log::Write (Urho3D::LOG_INFO, "Defense bonus: " + Urho3D::String (result->GetDefenseBonus ()));
 
     if (result->GetUnusedProductionOf ("farms") <= 0.0f)
     {
@@ -135,14 +133,6 @@ void TestInternalTradeAreaApplication::Start ()
              result->GetUnsoldTradeGoodsCost () / (result->GetUnsoldTradeGoodsCost () + result->GetSoldTradeGoodsCost ()) > 0.5f)
     {
         ErrorExit ("Expected unsold / (unsold + sold) production in (0.1; 0.5).");
-    }
-    else if (result->GetLogisticsBonus () >= 1.0f)
-    {
-        ErrorExit ("Expected logistics bonus < 1.0.");
-    }
-    else if (result->GetDefenseBonus () >= 1.0f)
-    {
-        ErrorExit ("Expected logistics bonus < 1.0.");
     }
     else
     {

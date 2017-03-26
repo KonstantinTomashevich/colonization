@@ -41,8 +41,6 @@ protected:
     Urho3D::HashMap <Urho3D::StringHash, float> unusedProduction_;
     float unsoldTradeGoodsCost_;
     float soldTradeGoodsCost_;
-    float logisticsBonus_;
-    float defenseBonus_;
 public:
     TradeDistrictProcessingInfo (Urho3D::Context *context);
     virtual ~TradeDistrictProcessingInfo ();
@@ -55,12 +53,6 @@ public:
 
     float GetSoldTradeGoodsCost ();
     void SetSoldTradeGoodsCost (float soldTradeGoodsCost);
-
-    float GetLogisticsBonus ();
-    void SetLogisticsBonus (float logisticsBonus);
-
-    float GetDefenseBonus ();
-    void SetDefenseBonus (float defenseBonus);
 };
 
 // TODO: Maybe reimplement later to add some features?
@@ -76,8 +68,11 @@ protected:
     Urho3D::PODVector <Urho3D::StringHash> districtsHashes_;
 
     void ConstructVectorOfRealDistricts (Map *map, Urho3D::PODVector <District *> &output);
-    float CalculateTotalEvolutionOf (Urho3D::StringHash evolutionBranch, Urho3D::PODVector <District *> &realDistricts);
     int CalculateTotalSoldiersCount ();
+
+    float CalculateDistrictFarmsProductionAmount (District *district, GameConfiguration *configuration);
+    float CalculateDistrictMinesProductionAmount (District *district, GameConfiguration *configuration);
+    float CalculateDistrictIndustryProductionAmount (District *district, GameConfiguration *configuration);
 
     DistrictProductionInfo CalculateDistrictProductionOfFarms (District *district, GameConfiguration *configuration);
     DistrictProductionInfo CalculateDistrictProductionOfMines (District *district, GameConfiguration *configuration);
@@ -99,13 +94,17 @@ protected:
     float ConsumeProduction (float consumption, Urho3D::Vector <DistrictProductionInfo> &production);
     float CalculateTotalProduction (Urho3D::Vector <DistrictProductionInfo> &production);
 
+    void ProcessFarmsBalance (Map *map, GameConfiguration *configuration, Urho3D::Vector <DistrictProductionInfo> &farmsProduction, float updateDelay);
+    void ProcessMinesBalance (Map *map, GameConfiguration *configuration, Urho3D::Vector <DistrictProductionInfo> &minesProduction, float updateDelay);
+    void ProcessIndustryBalance (Map *map, GameConfiguration *configuration, Urho3D::Vector <DistrictProductionInfo> &industryProduction, float updateDelay);
+
 public:
     InternalTradeArea (Urho3D::Context *context);
     virtual ~InternalTradeArea ();
 
     virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);
     static void RegisterObject (Urho3D::Context *context);
-    Urho3D::SharedPtr <TradeDistrictProcessingInfo> ProcessTrade (Map *map);
+    Urho3D::SharedPtr <TradeDistrictProcessingInfo> ProcessTrade (Map *map, float updateDelay, bool writeDistrictsBalance);
 
     int GetDistrictsHashesCount ();
     Urho3D::StringHash GetDistrictHashByIndex (int index);
