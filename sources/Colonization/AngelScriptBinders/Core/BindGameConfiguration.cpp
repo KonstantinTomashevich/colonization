@@ -105,6 +105,42 @@ void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String clas
     engine->RegisterObjectMethod (className.CString (), "float get_industryProductionExternalCost () const", asMETHOD (GameConfiguration, GetIndustryProductionExternalCost), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_industryProductionExternalCost (float industryProductionExternalCost)", asMETHOD (GameConfiguration, SetIndustryProductionExternalCost), asCALL_THISCALL);
 
+    engine->RegisterObjectMethod (className.CString (), "float get_tradeAreaInternalProfitToBalance () const", asMETHOD (GameConfiguration, GetTradeAreaInternalProfitToBalance), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_tradeAreaInternalProfitToBalance (float tradeAreaInternalProfitToBalance)", asMETHOD (GameConfiguration, SetTradeAreaInternalProfitToBalance), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_tradeAreaExternalProfitToBalance () const", asMETHOD (GameConfiguration, GetTradeAreaExternalProfitToBalance), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_tradeAreaExternalProfitToBalance (float tradeAreaExternalProfitToBalance)", asMETHOD (GameConfiguration, SetTradeAreaExternalProfitToBalance), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_tradeAreaFarmsLogisticsExpenses () const", asMETHOD (GameConfiguration, GetTradeAreaFarmsLogisticsExpenses), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_tradeAreaFarmsLogisticsExpenses (float tradeAreaFarmsLogisticsExpenses)", asMETHOD (GameConfiguration, SetTradeAreaFarmsLogisticsExpenses), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_tradeAreaMinesLogisticsExpenses () const", asMETHOD (GameConfiguration, GetTradeAreaMinesLogisticsExpenses), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_tradeAreaMinesLogisticsExpenses (float tradeAreaMinesLogisticsExpenses)", asMETHOD (GameConfiguration, SetTradeAreaMinesLogisticsExpenses), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_tradeAreaIndustryLogisticsExpenses () const", asMETHOD (GameConfiguration, GetTradeAreaIndustryLogisticsExpenses), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_tradeAreaIndustryLogisticsExpenses (float tradeAreaIndustryLogisticsExpenses)", asMETHOD (GameConfiguration, SetTradeAreaIndustryLogisticsExpenses), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_tradeAreaFarmsDefenseExpenses () const", asMETHOD (GameConfiguration, GetTradeAreaFarmsDefenseExpenses), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_tradeAreaFarmsDefenseExpenses (float tradeAreaFarmsDefenseExpenses)", asMETHOD (GameConfiguration, SetTradeAreaFarmsDefenseExpenses), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_tradeAreaMinesDefenseExpenses () const", asMETHOD (GameConfiguration, GetTradeAreaMinesDefenseExpenses), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_tradeAreaMinesDefenseExpenses (float tradeAreaMinesDefenseExpenses)", asMETHOD (GameConfiguration, SetTradeAreaMinesDefenseExpenses), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_tradeAreaIndustryDefenseExpenses () const", asMETHOD (GameConfiguration, GetTradeAreaIndustryDefenseExpenses), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_tradeAreaIndustryDefenseExpenses (float tradeAreaIndustryDefenseExpenses)", asMETHOD (GameConfiguration, SetTradeAreaIndustryDefenseExpenses), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_evolutionCostPerLevel () const", asMETHOD (GameConfiguration, GetEvolutionCostPerLevel), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_evolutionCostPerLevel (float evolutionCostPerLevel)", asMETHOD (GameConfiguration, SetEvolutionCostPerLevel), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_degradationCostPerLevel () const", asMETHOD (GameConfiguration, GetDegradationCostPerLevel), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_degradationCostPerLevel (float degradationCostPerLevel)", asMETHOD (GameConfiguration, SetDegradationCostPerLevel), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_basicEvolutionSpeed () const", asMETHOD (GameConfiguration, GetBasicEvolutionSpeed), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_basicEvolutionSpeed (float basicEvolutionSpeed)", asMETHOD (GameConfiguration, SetBasicEvolutionSpeed), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_basicDegradationSpeed () const", asMETHOD (GameConfiguration, GetBasicDegradationSpeed), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_basicDegradationSpeed (float basicDegradationSpeed)", asMETHOD (GameConfiguration, SetBasicDegradationSpeed), asCALL_THISCALL);
+
     engine->RegisterObjectMethod (className.CString (), "float get_internalTaxes () const", asMETHOD (GameConfiguration, GetInternalTaxes), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_internalTaxes (float internalTaxes)", asMETHOD (GameConfiguration, SetInternalTaxes), asCALL_THISCALL);
 
@@ -114,17 +150,8 @@ void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String clas
     engine->RegisterObjectMethod (className.CString (), "float get_coloniesBasicPopulationIncrease () const", asMETHOD (GameConfiguration, GetColoniesBasicPopulationIncrease), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_coloniesBasicPopulationIncrease (float coloniesBasicPopulationIncrease)", asMETHOD (GameConfiguration, SetColoniesBasicPopulationIncrease), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod (className.CString (), "float get_coloniesBasicEvolution () const", asMETHOD (GameConfiguration, GetColoniesBasicEvolution), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className.CString (), "void set_coloniesBasicEvolution (float coloniesBasicEvolution)", asMETHOD (GameConfiguration, SetColoniesBasicEvolution), asCALL_THISCALL);
-
     engine->RegisterObjectMethod (className.CString (), "float get_canBePlantedByOneColonist () const", asMETHOD (GameConfiguration, GetCanBePlantedByOneColonist), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_canBePlantedByOneColonist (float canBePlantedByOneColonist)", asMETHOD (GameConfiguration, SetCanBePlantedByOneColonist), asCALL_THISCALL);
-
-    engine->RegisterObjectMethod (className.CString (), "float get_investitionsConsumption () const", asMETHOD (GameConfiguration, GetInvestitionsConsumption), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className.CString (), "void set_investitionsConsumption (float investitionsConsumption)", asMETHOD (GameConfiguration, SetInvestitionsConsumption), asCALL_THISCALL);
-
-    engine->RegisterObjectMethod (className.CString (), "float get_investitionsEfficiency () const", asMETHOD (GameConfiguration, GetInvestitionsEfficiency), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className.CString (), "void set_investitionsEfficiency (float investitionsEfficiency)", asMETHOD (GameConfiguration, SetInvestitionsEfficiency), asCALL_THISCALL);
 
     engine->RegisterObjectMethod (className.CString (), "float get_farmsProductionTropicalClimateModifer () const", asMETHOD (GameConfiguration, GetFarmsProductionTropicalClimateModifer), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_farmsProductionTropicalClimateModifer (float farmsProductionTropicalClimateModifer)", asMETHOD (GameConfiguration, SetFarmsProductionTropicalClimateModifer), asCALL_THISCALL);

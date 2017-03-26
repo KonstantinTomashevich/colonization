@@ -75,7 +75,6 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
     {
         ProcessTradeAreaIncome (playersManager, map, tradeAreas_.At (index), updateDelay);
     }
-
 }
 
 float TradeProcessor::UpdateTradeArea (InternalTradeArea *tradeArea, Map *map, District *start, Urho3D::PODVector<District *> &unscannedList)
@@ -173,14 +172,14 @@ void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map
         assert (configuration);
         float internalTaxes = configuration->GetInternalTaxes ();
 
-        Urho3D::SharedPtr <TradeDistrictProcessingInfo> result = tradeArea->ProcessTrade (map);
-        float playersIncome = result->GetSoldTradeGoodsCost () * result->GetLogisticsBonus () *
-                result->GetDefenseBonus () * updateDelay * internalTaxes;
+        Urho3D::SharedPtr <TradeDistrictProcessingInfo> result = tradeArea->ProcessTrade (map, updateDelay, true);
+        float playersIncome = result->GetSoldTradeGoodsCost () * internalTaxes;
         player->SetGold (player->GetGold () + playersIncome);
 
         UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
         assert (unitsManager);
-        float unsoldGoldPerDistrict = result->GetUnsoldTradeGoodsCost () * updateDelay  / tradeArea->GetDistrictsHashesCount ();
+        // TODO: Calculate unsold gold for every district and then send traders with gold of its district.
+        float unsoldGoldPerDistrict = result->GetUnsoldTradeGoodsCost () / tradeArea->GetDistrictsHashesCount ();
         for (int index = 0; index < tradeArea->GetDistrictsHashesCount (); index++)
         {
             District *district = map->GetDistrictByHash (tradeArea->GetDistrictHashByIndex (index));
