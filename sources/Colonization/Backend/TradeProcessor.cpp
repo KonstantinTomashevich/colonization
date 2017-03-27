@@ -178,44 +178,52 @@ void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map
 
         UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
         assert (unitsManager);
-        // TODO: Calculate unsold gold for every district and then send traders with gold of its district.
-        float unsoldGoldPerDistrict = result->GetUnsoldTradeGoodsCost () / tradeArea->GetDistrictsHashesCount ();
         for (int index = 0; index < tradeArea->GetDistrictsHashesCount (); index++)
         {
             District *district = map->GetDistrictByHash (tradeArea->GetDistrictHashByIndex (index));
             assert (district);
 
-            Unit *unit = unitsManager->CreateUnit ();
-            unit->SetUnitType (UNIT_TRADERS);
-            unit->TradersUnitSetTradeGoodsCost (unsoldGoldPerDistrict);
-            unit->SetOwnerPlayerName (district->GetColonyOwnerName ());
-            unit->SetPositionHash (district->GetHash ());
-
-            GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
-            District *nearestEuropeDistrict = 0;
-            Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts = configuration->GetWayToEuropeDistricts ();
-            nearestEuropeDistrict = map->GetDistrictByHash (wayToEuropeDistricts.At (0));
-            assert (nearestEuropeDistrict);
-            float minDistance = (nearestEuropeDistrict->GetUnitPosition () - district->GetUnitPosition ()).Length ();
-
-            if (wayToEuropeDistricts.Size () > 1)
-            {
-                for (int index = 1; index < wayToEuropeDistricts.Size (); index++)
-                {
-                    District *europeDistrict = map->GetDistrictByHash (wayToEuropeDistricts.At (index));
-                    assert (district);
-                    if ((europeDistrict->GetUnitPosition () - district->GetUnitPosition ()).Length () < minDistance)
-                    {
-                        nearestEuropeDistrict = europeDistrict;
-                        minDistance = (europeDistrict->GetUnitPosition () - district->GetUnitPosition ()).Length ();
-                    }
-                }
-            }
-
-            map->FindPath (nearestEuropeDistrict->GetHash (), unit);
-            unit->UpdateHash (unitsManager);
+            Urho3D::Log::Write (Urho3D::LOG_INFO, Urho3D::String (result->GetUnsoldTradeGoodsCost ()));
+            float unsoldGoodsCost = CalculateUnsoldGoodsCost (configuration, district);
+            Urho3D::Log::Write (Urho3D::LOG_INFO, Urho3D::String (unsoldGoodsCost));
+            SendTrader (map, unitsManager, configuration, district, unsoldGoodsCost);
         }
     }
+}
+
+float TradeProcessor::CalculateUnsoldGoodsCost (GameConfiguration *configuration, District *district)
+{
+    float unsoldGoodsCost = 0.0f;
+    Urho3D::VariantMap farmsProduction = district->GetLastTradeFarmsProduction ();
+    unsoldGoodsCost += (farmsProduction [DISTRICT_PRODUCTION_AMOUNT_KEY].GetFloat () -
+                        farmsProduction [DISTRICT_PRODUCTION_SELLED_KEY].GetFloat ()) *
+            configuration->GetFarmsProductionExternalCost ();
+
+    Urho3D::VariantMap minesProduction = district->GetLastTradeMinesProduction ();
+    unsoldGoodsCost += (minesProduction [DISTRICT_PRODUCTION_AMOUNT_KEY].GetFloat () -
+                        minesProduction [DISTRICT_PRODUCTION_SELLED_KEY].GetFloat ()) *
+            configuration->GetMinesProductionExternalCost ();
+
+    Urho3D::VariantMap industryProduction = district->GetLastTradeIndustryProduction ();
+    unsoldGoodsCost += (industryProduction [DISTRICT_PRODUCTION_AMOUNT_KEY].GetFloat () -
+                        industryProduction [DISTRICT_PRODUCTION_SELLED_KEY].GetFloat ()) *
+            configuration->GetIndustryProductionExternalCost ();
+    return unsoldGoodsCost;
+}
+
+void TradeProcessor::SendTrader (Map *map, UnitsManager *unitsManager, GameConfiguration *configuration,
+                                 District *district, float goodsCost)
+{
+    Unit *unit = unitsManager->CreateUnit ();
+    unit->SetUnitType (UNIT_TRADERS);
+    unit->TradersUnitSetTradeGoodsCost (goodsCost);
+    unit->SetOwnerPlayerName (district->GetColonyOwnerName ());
+    unit->SetPositionHash (district->GetHash ());
+
+    District *nearestEuropeDistrict = map->GetDistrictByHash (
+                configuration->GetHeuristicNearestWayToEuropeDistrict (map, district));
+    map->FindPath (nearestEuropeDistrict->GetHash (), unit);
+    unit->UpdateHash (unitsManager);
 }
 
 void TradeProcessor::ClearTradeAreas ()

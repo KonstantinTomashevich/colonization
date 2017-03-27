@@ -4,7 +4,9 @@
 
 namespace Colonization
 {
+class UnitsManager;
 class PlayersManager;
+
 class TradeProcessor : public Urho3D::Component
 {
 URHO3D_OBJECT (TradeProcessor, Component)
@@ -15,7 +17,10 @@ protected:
     void UpdateTradeAreas (float updateDelay);
     float UpdateTradeArea (InternalTradeArea *tradeArea, Map *map, District *start, Urho3D::PODVector <District *> &unscannedList);
     void ProcessTradeAreaDistrict (Map *map, District *district, Urho3D::PODVector <District *> &areaDistricts, Urho3D::PODVector <District *> &unscannedList);
+
     void ProcessTradeAreaIncome (PlayersManager *playersManager, Map *map, InternalTradeArea *tradeArea, float updateDelay);
+    float CalculateUnsoldGoodsCost (GameConfiguration *configuration, District *district);
+    void SendTrader (Map *map, UnitsManager *unitsManager, GameConfiguration *configuration, District *district, float goodsCost);
     void ClearTradeAreas ();
     virtual void OnSceneSet (Urho3D::Scene* scene);
 
