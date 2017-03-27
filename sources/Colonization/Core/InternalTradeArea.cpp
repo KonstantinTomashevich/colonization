@@ -424,11 +424,13 @@ void InternalTradeArea::ProcessIndustryBalance (Map *map, GameConfiguration *con
 }
 
 void InternalTradeArea::ProcessDistrictsProductionInfo (Urho3D::Vector <DistrictProductionInfo> &production, Urho3D::StringHash productionType,
-                                                        Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsProductionInfo)
+                                                        Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsProductionInfo, float updateDelay)
 {
     for (int index = 0; index < production.Size (); index++)
     {
         DistrictProductionInfo &productionInfo = production.At (index);
+        productionInfo.amount_ *= updateDelay;
+        productionInfo.selled_ *= updateDelay;
         Urho3D::VariantMap &districtProduction = districtsProductionInfo [productionInfo.districtHash_];
         districtProduction [productionType] = productionInfo.ToVariantMap ();
         districtsProductionInfo [productionInfo.districtHash_] = districtProduction;
@@ -594,10 +596,12 @@ Urho3D::SharedPtr <TradeDistrictProcessingInfo> InternalTradeArea::ProcessTrade 
     WriteDistrictsBalanceAdditions (map, result, districtsBalanceAdditions, changeDistrictsVars);
 
     Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> districtsProduction;
-    ProcessDistrictsProductionInfo (farmsTotalProduction, Urho3D::StringHash ("farms"), districtsProduction);
-    ProcessDistrictsProductionInfo (minesTotalProduction, Urho3D::StringHash ("mines"), districtsProduction);
-    ProcessDistrictsProductionInfo (industryTotalProduction, Urho3D::StringHash ("industry"), districtsProduction);
+    ProcessDistrictsProductionInfo (farmsTotalProduction, Urho3D::StringHash ("farms"), districtsProduction, updateDelay);
+    ProcessDistrictsProductionInfo (minesTotalProduction, Urho3D::StringHash ("mines"), districtsProduction, updateDelay);
+    ProcessDistrictsProductionInfo (industryTotalProduction, Urho3D::StringHash ("industry"), districtsProduction, updateDelay);
     WriteDistrictsProduction (map, result, districtsProduction, changeDistrictsVars);
+
+
 
     if (changeDistrictsVars)
     {

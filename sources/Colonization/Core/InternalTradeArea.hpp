@@ -109,14 +109,14 @@ protected:
     void ProcessIndustryBalance (Map *map, GameConfiguration *configuration, Urho3D::Vector <DistrictProductionInfo> &industryProduction, float updateDelay,
                                  bool writeDistrictsBalance, Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsBalanceAdditions);
     void ProcessDistrictsProductionInfo (Urho3D::Vector <DistrictProductionInfo> &production, Urho3D::StringHash productionType,
-                                         Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsProductionInfo);
+                                         Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsProductionInfo,
+                                         float updateDelay);
 
     void WriteDistrictsBalanceAdditions (Map *map, Urho3D::SharedPtr <TradeDistrictProcessingInfo> result,
                                          Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsBalanceAdditions,
                                          bool changeDistrictsVars);
     void WriteDistrictsProduction (Map *map, Urho3D::SharedPtr <TradeDistrictProcessingInfo> result,
-                                   Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsProduction,
-                                   bool changeDistrictsVars);
+                                   Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsProduction, bool changeDistrictsVars);
     void CallDistrictsUpdate (Urho3D::PODVector<District *> &districts);
 
 public:
