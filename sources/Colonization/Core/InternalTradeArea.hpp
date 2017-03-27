@@ -39,19 +39,27 @@ class TradeDistrictProcessingInfo : public Urho3D::Object
 URHO3D_OBJECT (TradeDistrictProcessingInfo, Object)
 protected:
     Urho3D::HashMap <Urho3D::StringHash, float> unusedProduction_;
+    Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> districtsProduction_;
+    Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> districtsBalanceAdditions_;
     float unsoldTradeGoodsCost_;
     float soldTradeGoodsCost_;
 public:
     TradeDistrictProcessingInfo (Urho3D::Context *context);
     virtual ~TradeDistrictProcessingInfo ();
 
-    float GetUnusedProductionOf (Urho3D::StringHash type);
+    float GetUnusedProductionOf (Urho3D::StringHash type) const;
     void SetUnusedProductionOf (Urho3D::StringHash type, float points);
 
-    float GetUnsoldTradeGoodsCost ();
+    Urho3D::VariantMap GetDistrictProduction (Urho3D::StringHash districtHash) const;
+    void SetDistrictProduction (Urho3D::StringHash districtHash, Urho3D::VariantMap &districtProduction);
+
+    Urho3D::VariantMap GetDistrictBalanceAdditions(Urho3D::StringHash districtHash) const;
+    void SetDistrictBalanceAdditions (Urho3D::StringHash districtHash, Urho3D::VariantMap &districtBalanceAdditions);
+
+    float GetUnsoldTradeGoodsCost () const;
     void SetUnsoldTradeGoodsCost (float unsoldTradeGoodsCost);
 
-    float GetSoldTradeGoodsCost ();
+    float GetSoldTradeGoodsCost () const;
     void SetSoldTradeGoodsCost (float soldTradeGoodsCost);
 };
 
@@ -94,9 +102,22 @@ protected:
     float ConsumeProduction (float consumption, Urho3D::Vector <DistrictProductionInfo> &production);
     float CalculateTotalProduction (Urho3D::Vector <DistrictProductionInfo> &production);
 
-    void ProcessFarmsBalance (Map *map, GameConfiguration *configuration, Urho3D::Vector <DistrictProductionInfo> &farmsProduction, float updateDelay);
-    void ProcessMinesBalance (Map *map, GameConfiguration *configuration, Urho3D::Vector <DistrictProductionInfo> &minesProduction, float updateDelay);
-    void ProcessIndustryBalance (Map *map, GameConfiguration *configuration, Urho3D::Vector <DistrictProductionInfo> &industryProduction, float updateDelay);
+    void ProcessFarmsBalance (Map *map, GameConfiguration *configuration, Urho3D::Vector <DistrictProductionInfo> &farmsProduction, float updateDelay,
+                              bool writeDistrictsBalance, Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsBalanceAdditions);
+    void ProcessMinesBalance (Map *map, GameConfiguration *configuration, Urho3D::Vector <DistrictProductionInfo> &minesProduction, float updateDelay,
+                              bool writeDistrictsBalance, Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsBalanceAdditions);
+    void ProcessIndustryBalance (Map *map, GameConfiguration *configuration, Urho3D::Vector <DistrictProductionInfo> &industryProduction, float updateDelay,
+                                 bool writeDistrictsBalance, Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsBalanceAdditions);
+    void ProcessDistrictsProductionInfo (Urho3D::Vector <DistrictProductionInfo> &production, Urho3D::StringHash productionType,
+                                         Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsProductionInfo,
+                                         float updateDelay);
+
+    void WriteDistrictsBalanceAdditions (Map *map, Urho3D::SharedPtr <TradeDistrictProcessingInfo> result,
+                                         Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsBalanceAdditions,
+                                         bool changeDistrictsVars);
+    void WriteDistrictsProduction (Map *map, Urho3D::SharedPtr <TradeDistrictProcessingInfo> result,
+                                   Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsProduction, bool changeDistrictsVars);
+    void CallDistrictsUpdate (Urho3D::PODVector<District *> &districts);
 
 public:
     InternalTradeArea (Urho3D::Context *context);
@@ -104,7 +125,7 @@ public:
 
     virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);
     static void RegisterObject (Urho3D::Context *context);
-    Urho3D::SharedPtr <TradeDistrictProcessingInfo> ProcessTrade (Map *map, float updateDelay, bool writeDistrictsBalance);
+    Urho3D::SharedPtr <TradeDistrictProcessingInfo> ProcessTrade (Map *map, float updateDelay, bool changeDistrictsVars);
 
     int GetDistrictsHashesCount ();
     Urho3D::StringHash GetDistrictHashByIndex (int index);

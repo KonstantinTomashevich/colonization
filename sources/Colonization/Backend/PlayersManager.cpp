@@ -36,19 +36,19 @@ bool PlayersManager::DeleteIdentificatedConnection (Urho3D::Connection *connecti
 
 void PlayersManager::UpdatePlayers (MessagesHandler *messagesHandler, float timeStep)
 {
-    int index = 0;
-    while (index < players_.Values ().Size ())
+    Urho3D::HashMap <Urho3D::StringHash, Player *>::Iterator iterator = players_.Begin ();
+    while (iterator != players_.End ())
     {
-        Player *player = players_.Values ().At (index);
+        Player *player = iterator->second_;
         if (!player)
         {
-            players_.Erase (players_.Keys ().At (index));
+            iterator = players_.Erase (iterator);
         }
         else
         {
             player->Update (timeStep);
             messagesHandler->SendPlayersStats (player);
-            index++;
+            iterator++;
         }
     }
 }
@@ -162,9 +162,9 @@ PlayersManager::~PlayersManager ()
     UnsubscribeFromAllEvents ();
     DisconnectAllUnidentificatedConnections ();
 
-    while (!players_.Keys ().Empty ())
+    while (!players_.Empty ())
     {
-        DisconnectPlayer (players_.Keys ().Front ());
+        DisconnectPlayer (players_.Front ().first_);
     }
 }
 

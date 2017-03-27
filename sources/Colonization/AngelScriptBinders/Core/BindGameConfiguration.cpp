@@ -29,6 +29,7 @@ void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String clas
     asIScriptEngine *engine = script->GetScriptEngine ();
     engine->RegisterObjectMethod (className.CString (), "Array <StringHash> @get_wayToEuropeDistricts ()", asFUNCTION (GameConfiguration_GetWayToEuropeDistricts), asCALL_CDECL_OBJFIRST);
     engine->RegisterObjectMethod (className.CString (), "void set_wayToEuropeDistricts (Array <StringHash> @wayToEuropeDistricts)", asFUNCTION (GameConfiguration_SetWayToEuropeDistricts), asCALL_CDECL_OBJFIRST);
+    engine->RegisterObjectMethod (className.CString (), "StringHash GetHeuristicNearestWayToEuropeDistrict (Map @map, District @wayStartDistrict) const", asMETHOD (GameConfiguration, GetHeuristicNearestWayToEuropeDistrict), asCALL_THISCALL);
 
     engine->RegisterObjectMethod (className.CString (), "float get_sailSpeed () const", asMETHOD (GameConfiguration, GetSailSpeed), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_sailSpeed (float sailSpeed)", asMETHOD (GameConfiguration, SetSailSpeed), asCALL_THISCALL);
@@ -152,6 +153,12 @@ void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String clas
 
     engine->RegisterObjectMethod (className.CString (), "float get_canBePlantedByOneColonist () const", asMETHOD (GameConfiguration, GetCanBePlantedByOneColonist), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_canBePlantedByOneColonist (float canBePlantedByOneColonist)", asMETHOD (GameConfiguration, SetCanBePlantedByOneColonist), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_minimumLogisticsToUniteDistrictsToTradeArea () const", asMETHOD (GameConfiguration, GetMinimumLogisticsToUniteDistrictsToTradeArea), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_minimumLogisticsToUniteDistrictsToTradeArea (float minimumLogisticsToUniteDistrictsToTradeArea)", asMETHOD (GameConfiguration, SetMinimumLogisticsToUniteDistrictsToTradeArea), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_minimumLogisticsToUniteDistrictsToTradeAreaBySea () const", asMETHOD (GameConfiguration, GetMinimumLogisticsToUniteDistrictsToTradeAreaBySea), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_minimumLogisticsToUniteDistrictsToTradeAreaBySea (float minimumLogisticsToUniteDistrictsToTradeAreaBySea)", asMETHOD (GameConfiguration, SetMinimumLogisticsToUniteDistrictsToTradeAreaBySea), asCALL_THISCALL);
 
     engine->RegisterObjectMethod (className.CString (), "float get_farmsProductionTropicalClimateModifer () const", asMETHOD (GameConfiguration, GetFarmsProductionTropicalClimateModifer), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_farmsProductionTropicalClimateModifer (float farmsProductionTropicalClimateModifer)", asMETHOD (GameConfiguration, SetFarmsProductionTropicalClimateModifer), asCALL_THISCALL);

@@ -85,7 +85,17 @@ District::District (Urho3D::Context *context) : Urho3D::Component (context),
     industryBalance_ (0.0f),
     logisticsBalance_ (0.0f),
     defenseBalance_ (0.0f),
-    averageLevelOfLifePoints_ (0.0f)
+    averageLevelOfLifePoints_ (0.0f),
+
+    lastTradeFarmsProduction_ (),
+    lastTradeMinesProduction_ (),
+    lastTradeIndustryProduction_ (),
+
+    lastTradeFarmsBalanceAddition_ (0.0f),
+    lastTradeMinesBalanceAddition_ (0.0f),
+    lastTradeIndustryBalanceAddition_ (0.0f),
+    lastTradeLogisticsBalanceAddition_ (0.0f),
+    lastTradeDefenseBalanceAddition_ (0.0f)
 {
 
 }
@@ -169,6 +179,24 @@ void District::RegisterObject (Urho3D::Context *context)
     URHO3D_ACCESSOR_ATTRIBUTE ("Logistics Balance", GetLogisticsBalance, SetLogisticsBalance, float, 0.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Defense Balance", GetDefenseBalance, SetDefenseBalance, float, 0.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Average Level Of Life Points", GetAverageLevelOfLifePoints, SetAverageLevelOfLifePoints, float, 0.0f, Urho3D::AM_DEFAULT);
+
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Last Trade Farms Production", GetLastTradeFarmsProduction, SetLastTradeFarmsProduction,
+                                     Urho3D::VariantMap, Urho3D::Variant::emptyVariantMap, Urho3D::AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Last Trade Mines Production", GetLastTradeMinesProduction, SetLastTradeMinesProduction,
+                                     Urho3D::VariantMap, Urho3D::Variant::emptyVariantMap, Urho3D::AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Last Trade Industry Production", GetLastTradeIndustryProduction, SetLastTradeIndustryProduction,
+                                     Urho3D::VariantMap, Urho3D::Variant::emptyVariantMap, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Last Trade Farms Balance Addition", GetLastTradeFarmsBalanceAddition,
+                               SetLastTradeFarmsBalanceAddition, float, 0.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Last Trade Mines Balance Addition", GetLastTradeMinesBalanceAddition,
+                               SetLastTradeMinesBalanceAddition, float, 0.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Last Trade Industry Balance Addition", GetLastTradeIndustryBalanceAddition,
+                               SetLastTradeIndustryBalanceAddition, float, 0.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Last Trade Logistics Balance Addition", GetLastTradeLogisticsBalanceAddition,
+                               SetLastTradeLogisticsBalanceAddition, float, 0.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Last Trade Defense Balance Addition", GetLastTradeDefenseBalanceAddition,
+                               SetLastTradeDefenseBalanceAddition, float, 0.0f, Urho3D::AM_DEFAULT);
 }
 
 void District::CalculateNeighbors (Urho3D::Vector<Urho3D::SharedPtr<District> > &allDistricts)
@@ -677,6 +705,86 @@ void District::SetAverageLevelOfLifePoints (float averageLevelOfLifePoints)
 {
     assert (averageLevelOfLifePoints >= 0.0f);
     averageLevelOfLifePoints_ = averageLevelOfLifePoints;
+}
+
+Urho3D::VariantMap District::GetLastTradeFarmsProduction () const
+{
+    return lastTradeFarmsProduction_;
+}
+
+void District::SetLastTradeFarmsProduction (const Urho3D::VariantMap &lastTradeFarmsProduction)
+{
+    lastTradeFarmsProduction_ = lastTradeFarmsProduction;
+}
+
+Urho3D::VariantMap District::GetLastTradeMinesProduction () const
+{
+    return lastTradeMinesProduction_;
+}
+
+void District::SetLastTradeMinesProduction (const Urho3D::VariantMap &lastTradeMinesProduction)
+{
+    lastTradeMinesProduction_ = lastTradeMinesProduction;
+}
+
+Urho3D::VariantMap District::GetLastTradeIndustryProduction () const
+{
+    return lastTradeIndustryProduction_;
+}
+
+void District::SetLastTradeIndustryProduction (const Urho3D::VariantMap &lastTradeIndustryProduction)
+{
+    lastTradeIndustryProduction_ = lastTradeIndustryProduction;
+}
+
+float District::GetLastTradeFarmsBalanceAddition () const
+{
+    return lastTradeFarmsBalanceAddition_;
+}
+
+void District::SetLastTradeFarmsBalanceAddition (float lastTradeFarmsBalanceAddition)
+{
+    lastTradeFarmsBalanceAddition_ = lastTradeFarmsBalanceAddition;
+}
+
+float District::GetLastTradeMinesBalanceAddition () const
+{
+    return lastTradeMinesBalanceAddition_;
+}
+
+void District::SetLastTradeMinesBalanceAddition (float lastTradeMinesBalanceAddition)
+{
+    lastTradeMinesBalanceAddition_ = lastTradeMinesBalanceAddition;
+}
+
+float District::GetLastTradeIndustryBalanceAddition () const
+{
+    return lastTradeIndustryBalanceAddition_;
+}
+
+void District::SetLastTradeIndustryBalanceAddition (float lastTradeIndustryBalanceAddition)
+{
+    lastTradeIndustryBalanceAddition_ = lastTradeIndustryBalanceAddition;
+}
+
+float District::GetLastTradeLogisticsBalanceAddition () const
+{
+    return lastTradeLogisticsBalanceAddition_;
+}
+
+void District::SetLastTradeLogisticsBalanceAddition (float lastTradeLogisticsBalanceAddition)
+{
+    lastTradeLogisticsBalanceAddition_ = lastTradeLogisticsBalanceAddition;
+}
+
+float District::GetLastTradeDefenseBalanceAddition () const
+{
+    return lastTradeDefenseBalanceAddition_;
+}
+
+void District::SetLastTradeDefenseBalanceAddition (float lastTradeDefenseBalanceAddition)
+{
+    lastTradeDefenseBalanceAddition_ = lastTradeDefenseBalanceAddition;
 }
 
 namespace DistrictComparators

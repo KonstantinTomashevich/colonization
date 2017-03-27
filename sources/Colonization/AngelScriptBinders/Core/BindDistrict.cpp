@@ -160,5 +160,29 @@ void BindDistrictInterface (Urho3D::Script *script, Urho3D::String className)
 
     engine->RegisterObjectMethod (className.CString (), "float get_averageLevelOfLifePoints () const", asMETHOD (District, GetAverageLevelOfLifePoints), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_averageLevelOfLifePoints (float averageLevelOfLifePoints)", asMETHOD (District, SetAverageLevelOfLifePoints), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "VariantMap get_lastTradeFarmsProduction () const", asMETHOD (District, GetLastTradeFarmsProduction), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_lastTradeFarmsProduction (VariantMap lastTradeFarmsProduction)", asMETHOD (District, SetLastTradeFarmsProduction), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "VariantMap get_lastTradeMinesProduction () const", asMETHOD (District, GetLastTradeMinesProduction), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_lastTradeMinesProduction (VariantMap lastTradeMinesProduction)", asMETHOD (District, SetLastTradeMinesProduction), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "VariantMap get_lastTradeIndustryProduction () const", asMETHOD (District, GetLastTradeIndustryProduction), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_lastTradeIndustryProduction (VariantMap lastTradeIndustryProduction)", asMETHOD (District, SetLastTradeIndustryProduction), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_lastTradeFarmsBalanceAddition () const", asMETHOD (District, GetLastTradeFarmsBalanceAddition), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_lastTradeFarmsBalanceAddition (float lastTradeFarmsBalanceAddition)", asMETHOD (District, SetLastTradeFarmsBalanceAddition), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_lastTradeMinesBalanceAddition () const", asMETHOD (District, GetLastTradeMinesBalanceAddition), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_lastTradeMinesBalanceAddition (float lastTradeMinesBalanceAddition)", asMETHOD (District, SetLastTradeMinesBalanceAddition), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_lastTradeIndustryBalanceAddition () const", asMETHOD (District, GetLastTradeIndustryBalanceAddition), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_lastTradeIndustryBalanceAddition (float lastTradeIndustryBalanceAddition)", asMETHOD (District, SetLastTradeIndustryBalanceAddition), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_lastTradeLogisticsBalanceAddition () const", asMETHOD (District, GetLastTradeLogisticsBalanceAddition), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_lastTradeLogisticsBalanceAddition (float lastTradeLogisticsBalanceAddition)", asMETHOD (District, SetLastTradeLogisticsBalanceAddition), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_lastTradeDefenseBalanceAddition () const", asMETHOD (District, GetLastTradeDefenseBalanceAddition), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_lastTradeDefenseBalanceAddition (float lastTradeDefenseBalanceAddition)", asMETHOD (District, SetLastTradeDefenseBalanceAddition), asCALL_THISCALL);
 }
 }

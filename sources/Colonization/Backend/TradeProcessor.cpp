@@ -18,6 +18,9 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
 {
     tradeAreas_.Clear ();
     Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
+    GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
+    assert (configuration);
+    assert (map);
     Urho3D::PODVector <District *> toScan;
 
     for (int index = 0; index < map->GetDistrictsCount (); index++)
@@ -51,7 +54,7 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
             }
 
             Urho3D::SharedPtr <InternalTradeArea> tradeAreaSharedPtr (node->GetComponent <InternalTradeArea> ());
-            float updatePoints = UpdateTradeArea (tradeAreaSharedPtr, map, toScan.At (0), toScan);
+            float updatePoints = UpdateTradeArea (tradeAreaSharedPtr, map, toScan.At (0), toScan, configuration);
             tradeAreas_.Push (tradeAreaSharedPtr);
 
             NetworkUpdateCounter *counter = tradeAreaSharedPtr->GetNode ()->GetComponent <NetworkUpdateCounter> ();
@@ -73,14 +76,15 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
     PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
     for (int index = 0; index < tradeAreas_.Size (); index++)
     {
-        ProcessTradeAreaIncome (playersManager, map, tradeAreas_.At (index), updateDelay);
+        ProcessTradeAreaIncome (playersManager, map, tradeAreas_.At (index), configuration, updateDelay);
     }
 }
 
-float TradeProcessor::UpdateTradeArea (InternalTradeArea *tradeArea, Map *map, District *start, Urho3D::PODVector<District *> &unscannedList)
+float TradeProcessor::UpdateTradeArea (InternalTradeArea *tradeArea, Map *map, District *start,
+                                       Urho3D::PODVector <District *> &unscannedList, GameConfiguration *configuration)
 {
     Urho3D::PODVector <District *> areaDistricts;
-    ProcessTradeAreaDistrict (map, start, areaDistricts, unscannedList);
+    ProcessTradeAreaDistrict (map, start, areaDistricts, unscannedList, configuration);
 
     Urho3D::PODVector <Urho3D::StringHash> areaDistrictsHashes;
     for (int index = 0; index < areaDistricts.Size (); index++)
@@ -108,13 +112,14 @@ float TradeProcessor::UpdateTradeArea (InternalTradeArea *tradeArea, Map *map, D
     }
 }
 
-void TradeProcessor::ProcessTradeAreaDistrict (Map *map, District *district, Urho3D::PODVector <District *> &areaDistricts, Urho3D::PODVector <District *> &unscannedList)
+void TradeProcessor::ProcessTradeAreaDistrict (Map *map, District *district, Urho3D::PODVector <District *> &areaDistricts,
+                                               Urho3D::PODVector <District *> &unscannedList, GameConfiguration *configuration)
 {
     areaDistricts.Push (district);
     unscannedList.Remove (district);
 
     Urho3D::PODVector <District *> neighbors;
-    if (district->GetLogisticsEvolutionPoints () >= 4.0f)
+    if (district->GetLogisticsEvolutionPoints () >= configuration->GetMinimumLogisticsToUniteDistrictsToTradeArea ())
     {
         Urho3D::PODVector <Urho3D::StringHash> districtNeighborsHashes = district->GetNeighborsHashes ();
         for (int index = 0; index < districtNeighborsHashes.Size (); index++)
@@ -127,7 +132,8 @@ void TradeProcessor::ProcessTradeAreaDistrict (Map *map, District *district, Urh
                 neighbors.Push (neighbor);
             }
 
-            else if (district->GetLogisticsEvolutionPoints () >= 6.0f && neighbor->IsSea () && !neighbor->IsImpassable ())
+            else if (district->GetLogisticsEvolutionPoints () >= configuration->GetMinimumLogisticsToUniteDistrictsToTradeAreaBySea ()
+                     && neighbor->IsSea () && !neighbor->IsImpassable ())
             {
                 Urho3D::PODVector <Urho3D::StringHash> neighborsOfNeighborsHashes = neighbor->GetNeighborsHashes ();
                 for (int neighborOfNeighboarIndex = 0; neighborOfNeighboarIndex < neighborsOfNeighborsHashes.Size (); neighborOfNeighboarIndex++)
@@ -149,13 +155,14 @@ void TradeProcessor::ProcessTradeAreaDistrict (Map *map, District *district, Urh
             District *neighbor = neighbors.At (index);
             if (unscannedList.Contains (neighbor))
             {
-                ProcessTradeAreaDistrict (map, neighbor, areaDistricts, unscannedList);
+                ProcessTradeAreaDistrict (map, neighbor, areaDistricts, unscannedList, configuration);
             }
         }
     }
 }
 
-void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map *map, InternalTradeArea *tradeArea, float updateDelay)
+void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map *map, InternalTradeArea *tradeArea,
+                                             GameConfiguration *configuration, float updateDelay)
 {
     Player *player = playersManager->GetPlayerByNameHash (Urho3D::StringHash (
                                                     map->GetDistrictByHash (tradeArea->GetDistrictHashByIndex (0))->
@@ -168,54 +175,59 @@ void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map
     }
     else
     {
-        GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
-        assert (configuration);
         float internalTaxes = configuration->GetInternalTaxes ();
-
         Urho3D::SharedPtr <TradeDistrictProcessingInfo> result = tradeArea->ProcessTrade (map, updateDelay, true);
         float playersIncome = result->GetSoldTradeGoodsCost () * internalTaxes;
         player->SetGold (player->GetGold () + playersIncome);
 
         UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
         assert (unitsManager);
-        // TODO: Calculate unsold gold for every district and then send traders with gold of its district.
-        float unsoldGoldPerDistrict = result->GetUnsoldTradeGoodsCost () / tradeArea->GetDistrictsHashesCount ();
         for (int index = 0; index < tradeArea->GetDistrictsHashesCount (); index++)
         {
             District *district = map->GetDistrictByHash (tradeArea->GetDistrictHashByIndex (index));
             assert (district);
 
-            Unit *unit = unitsManager->CreateUnit ();
-            unit->SetUnitType (UNIT_TRADERS);
-            unit->TradersUnitSetTradeGoodsCost (unsoldGoldPerDistrict);
-            unit->SetOwnerPlayerName (district->GetColonyOwnerName ());
-            unit->SetPositionHash (district->GetHash ());
-
-            GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
-            District *nearestEuropeDistrict = 0;
-            Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts = configuration->GetWayToEuropeDistricts ();
-            nearestEuropeDistrict = map->GetDistrictByHash (wayToEuropeDistricts.At (0));
-            assert (nearestEuropeDistrict);
-            float minDistance = (nearestEuropeDistrict->GetUnitPosition () - district->GetUnitPosition ()).Length ();
-
-            if (wayToEuropeDistricts.Size () > 1)
-            {
-                for (int index = 1; index < wayToEuropeDistricts.Size (); index++)
-                {
-                    District *europeDistrict = map->GetDistrictByHash (wayToEuropeDistricts.At (index));
-                    assert (district);
-                    if ((europeDistrict->GetUnitPosition () - district->GetUnitPosition ()).Length () < minDistance)
-                    {
-                        nearestEuropeDistrict = europeDistrict;
-                        minDistance = (europeDistrict->GetUnitPosition () - district->GetUnitPosition ()).Length ();
-                    }
-                }
-            }
-
-            map->FindPath (nearestEuropeDistrict->GetHash (), unit);
-            unit->UpdateHash (unitsManager);
+            Urho3D::Log::Write (Urho3D::LOG_INFO, Urho3D::String (result->GetUnsoldTradeGoodsCost ()));
+            float unsoldGoodsCost = CalculateUnsoldGoodsCost (configuration, district);
+            Urho3D::Log::Write (Urho3D::LOG_INFO, Urho3D::String (unsoldGoodsCost));
+            SendTrader (map, unitsManager, configuration, district, unsoldGoodsCost);
         }
     }
+}
+
+float TradeProcessor::CalculateUnsoldGoodsCost (GameConfiguration *configuration, District *district)
+{
+    float unsoldGoodsCost = 0.0f;
+    Urho3D::VariantMap farmsProduction = district->GetLastTradeFarmsProduction ();
+    unsoldGoodsCost += (farmsProduction [DISTRICT_PRODUCTION_AMOUNT_KEY].GetFloat () -
+                        farmsProduction [DISTRICT_PRODUCTION_SELLED_KEY].GetFloat ()) *
+            configuration->GetFarmsProductionExternalCost ();
+
+    Urho3D::VariantMap minesProduction = district->GetLastTradeMinesProduction ();
+    unsoldGoodsCost += (minesProduction [DISTRICT_PRODUCTION_AMOUNT_KEY].GetFloat () -
+                        minesProduction [DISTRICT_PRODUCTION_SELLED_KEY].GetFloat ()) *
+            configuration->GetMinesProductionExternalCost ();
+
+    Urho3D::VariantMap industryProduction = district->GetLastTradeIndustryProduction ();
+    unsoldGoodsCost += (industryProduction [DISTRICT_PRODUCTION_AMOUNT_KEY].GetFloat () -
+                        industryProduction [DISTRICT_PRODUCTION_SELLED_KEY].GetFloat ()) *
+            configuration->GetIndustryProductionExternalCost ();
+    return unsoldGoodsCost;
+}
+
+void TradeProcessor::SendTrader (Map *map, UnitsManager *unitsManager, GameConfiguration *configuration,
+                                 District *district, float goodsCost)
+{
+    Unit *unit = unitsManager->CreateUnit ();
+    unit->SetUnitType (UNIT_TRADERS);
+    unit->TradersUnitSetTradeGoodsCost (goodsCost);
+    unit->SetOwnerPlayerName (district->GetColonyOwnerName ());
+    unit->SetPositionHash (district->GetHash ());
+
+    District *nearestEuropeDistrict = map->GetDistrictByHash (
+                configuration->GetHeuristicNearestWayToEuropeDistrict (map, district));
+    map->FindPath (nearestEuropeDistrict->GetHash (), unit);
+    unit->UpdateHash (unitsManager);
 }
 
 void TradeProcessor::ClearTradeAreas ()

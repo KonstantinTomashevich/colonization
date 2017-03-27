@@ -3,6 +3,9 @@
 
 namespace Colonization
 {
+class Map;
+class District;
+
 class GameConfiguration : public Urho3D::Component
 {
 URHO3D_OBJECT (GameConfiguration, Component)
@@ -62,6 +65,8 @@ protected:
 
     float coloniesBasicPopulationIncrease_;
     float canBePlantedByOneColonist_;
+    float minimumLogisticsToUniteDistrictsToTradeArea_;
+    float minimumLogisticsToUniteDistrictsToTradeAreaBySea_;
 
     float farmsProductionTropicalClimateModifer_;
     float farmsProductionHotClimateModifer_;
@@ -87,6 +92,7 @@ public:
     void SetWayToEuropeDistricts (Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts);
     Urho3D::VariantVector GetWayToEuropeDistrictsAttribute () const;
     void SetWayToEuropeDistrictsAttribute (const Urho3D::VariantVector &wayToEuropeDistricts);
+    Urho3D::StringHash GetHeuristicNearestWayToEuropeDistrict (Map *map, District *wayStartDistrict) const;
 
     float GetSailSpeed () const;
     void SetSailSpeed (float sailSpeed);
@@ -210,6 +216,12 @@ public:
 
     float GetCanBePlantedByOneColonist () const;
     void SetCanBePlantedByOneColonist (float canBePlantedByOneColonist);
+
+    float GetMinimumLogisticsToUniteDistrictsToTradeArea () const;
+    void SetMinimumLogisticsToUniteDistrictsToTradeArea (float minimumLogisticsToUniteDistrictsToTradeArea);
+
+    float GetMinimumLogisticsToUniteDistrictsToTradeAreaBySea () const;
+    void SetMinimumLogisticsToUniteDistrictsToTradeAreaBySea (float minimumLogisticsToUniteDistrictsToTradeAreaBySea);
 
     float GetFarmsProductionTropicalClimateModifer () const;
     void SetFarmsProductionTropicalClimateModifer (float farmsProductionTropicalClimateModifer);

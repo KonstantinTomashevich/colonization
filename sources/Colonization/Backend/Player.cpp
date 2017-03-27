@@ -95,25 +95,8 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
         assert (!targetDistrict->HasColony () || (targetDistrict->HasColony () && targetDistrict->GetColonyOwnerName () == name_));
 
         GameConfiguration *configuration = scene_->GetComponent <GameConfiguration> ();
-        District *nearestEuropeDistrict = 0;
-        Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts = configuration->GetWayToEuropeDistricts ();
-        nearestEuropeDistrict = map->GetDistrictByHash (wayToEuropeDistricts.At (0));
-        assert (nearestEuropeDistrict);
-        float minDistance = (nearestEuropeDistrict->GetUnitPosition () - targetDistrict->GetUnitPosition ()).Length ();
-
-        if (wayToEuropeDistricts.Size () > 1)
-        {
-            for (int index = 1; index < wayToEuropeDistricts.Size (); index++)
-            {
-                District *district = map->GetDistrictByHash (wayToEuropeDistricts.At (index));
-                assert (district);
-                if ((district->GetUnitPosition () - targetDistrict->GetUnitPosition ()).Length () < minDistance)
-                {
-                    nearestEuropeDistrict = district;
-                    minDistance = (district->GetUnitPosition () - targetDistrict->GetUnitPosition ()).Length ();
-                }
-            }
-        }
+        District *nearestEuropeDistrict = map->GetDistrictByHash (
+                    configuration->GetHeuristicNearestWayToEuropeDistrict (map, targetDistrict));
 
         Unit *unit = unitsManager->CreateUnit ();
         unit->SetOwnerPlayerName (name_);

@@ -127,11 +127,12 @@ void TestFogOfWarCalculatorApplication::Start ()
 
     Urho3D::HashMap <Urho3D::StringHash, bool> resultMap = fogOfWarCalculator->GetFogOfWarMap ();
     Urho3D::Log::Write (Urho3D::LOG_INFO, "Result fog of war map:");
-    for (int index = 0; index < resultMap.Size (); index++)
+    for (Urho3D::HashMap <Urho3D::StringHash, bool>::ConstIterator iterator = resultMap.Begin ();
+         iterator != resultMap.End (); iterator++)
     {
         Urho3D::Log::Write (Urho3D::LOG_INFO, "    " +
-                            map->GetDistrictByHash (resultMap.Keys ().At (index))->GetName () + ": " +
-                            Urho3D::String (resultMap.Values ().At (index)));
+                            map->GetDistrictByHash (iterator->first_)->GetName () + ": " +
+                            Urho3D::String (iterator->second_));
     }
 
     Urho3D::HashMap <Urho3D::StringHash, bool> expectedMap;
@@ -156,11 +157,12 @@ void TestFogOfWarCalculatorApplication::Start ()
     expectedMap [map->GetDistrictByIndex (4 * mapHeight + 0)->GetHash ()] = true;
 
     Urho3D::Log::Write (Urho3D::LOG_INFO, "Expected fog of war map:");
-    for (int index = 0; index < expectedMap.Size (); index++)
+    for (Urho3D::HashMap <Urho3D::StringHash, bool>::ConstIterator iterator = expectedMap.Begin ();
+         iterator != expectedMap.End (); iterator++)
     {
         Urho3D::Log::Write (Urho3D::LOG_INFO, "    " +
-                            map->GetDistrictByHash (resultMap.Keys ().At (index))->GetName () + ": " +
-                            Urho3D::String (expectedMap.Values ().At (index)));
+                            map->GetDistrictByHash (iterator->first_)->GetName () + ": " +
+                            Urho3D::String (iterator->second_));
     }
     if (resultMap != expectedMap)
     {
