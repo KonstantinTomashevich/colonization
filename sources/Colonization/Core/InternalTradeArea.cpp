@@ -300,7 +300,8 @@ void InternalTradeArea::ProcessFarmsBalance (Map *map, GameConfiguration *config
         District *district = map->GetDistrictByHash (productionInfo.districtHash_);
 
         float farmsBalanceAdditionInternal = productionInfo.selled_ *
-                configuration->GetFarmsProductionInternalCost () * updateDelay;
+                configuration->GetFarmsProductionInternalCost () * updateDelay *
+                (1.0f - configuration->GetInternalTaxes ());
 
         float fromFarmsToLogistics = farmsBalanceAdditionInternal * configuration->GetTradeAreaFarmsLogisticsExpenses ();
         if (changeDistrictsVars)
@@ -317,7 +318,8 @@ void InternalTradeArea::ProcessFarmsBalance (Map *map, GameConfiguration *config
         farmsBalanceAdditionInternal -= fromFarmsToLogistics;
         farmsBalanceAdditionInternal -= fromFarmsToDefense;
         float farmsBalanceAdditionExternal = (productionInfo.amount_ - productionInfo.selled_) *
-                configuration->GetFarmsProductionExternalCost () * updateDelay;
+                configuration->GetFarmsProductionExternalCost () * updateDelay *
+                (1.0f - configuration->GetExternalTaxes ());
 
         float farmsBalanceAddition =
                 farmsBalanceAdditionInternal * configuration->GetTradeAreaInternalProfitToBalance () +
@@ -344,7 +346,8 @@ void InternalTradeArea::ProcessMinesBalance (Map *map, GameConfiguration *config
         District *district = map->GetDistrictByHash (productionInfo.districtHash_);
 
         float minesBalanceAdditionInternal = productionInfo.selled_ *
-                configuration->GetMinesProductionInternalCost () * updateDelay;
+                configuration->GetMinesProductionInternalCost () * updateDelay *
+                (1.0f - configuration->GetInternalTaxes ());
 
         float fromMinesToLogistics = minesBalanceAdditionInternal * configuration->GetTradeAreaMinesLogisticsExpenses ();
         if (changeDistrictsVars)
@@ -361,7 +364,8 @@ void InternalTradeArea::ProcessMinesBalance (Map *map, GameConfiguration *config
         minesBalanceAdditionInternal -= fromMinesToLogistics;
         minesBalanceAdditionInternal -= fromMinesToDefense;
         float minesBalanceAdditionExternal = (productionInfo.amount_ - productionInfo.selled_) *
-                configuration->GetMinesProductionExternalCost () * updateDelay;
+                configuration->GetMinesProductionExternalCost () * updateDelay *
+                (1.0f - configuration->GetExternalTaxes ());
 
         float minesBalanceAddition =
                 minesBalanceAdditionInternal * configuration->GetTradeAreaInternalProfitToBalance () +
@@ -388,7 +392,8 @@ void InternalTradeArea::ProcessIndustryBalance (Map *map, GameConfiguration *con
         District *district = map->GetDistrictByHash (productionInfo.districtHash_);
 
         float industryBalanceAdditionInternal = productionInfo.selled_ *
-                configuration->GetIndustryProductionInternalCost () * updateDelay;
+                configuration->GetIndustryProductionInternalCost () * updateDelay *
+                (1.0f - configuration->GetInternalTaxes ());
 
         float fromIndustryToLogistics = industryBalanceAdditionInternal * configuration->GetTradeAreaIndustryLogisticsExpenses ();
         if (changeDistrictsVars)
@@ -405,7 +410,8 @@ void InternalTradeArea::ProcessIndustryBalance (Map *map, GameConfiguration *con
         industryBalanceAdditionInternal -= fromIndustryToLogistics;
         industryBalanceAdditionInternal -= fromIndustryToDefense;
         float industryBalanceAdditionExternal = (productionInfo.amount_ - productionInfo.selled_) *
-                configuration->GetIndustryProductionExternalCost () * updateDelay;
+                configuration->GetIndustryProductionExternalCost () * updateDelay *
+                (1.0f - configuration->GetExternalTaxes ());
 
         float industryBalanceAddition =
                 industryBalanceAdditionInternal * configuration->GetTradeAreaInternalProfitToBalance () +
