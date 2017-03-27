@@ -78,6 +78,16 @@ protected:
     float logisticsBalance_;
     float defenseBalance_;
     float averageLevelOfLifePoints_;
+
+    Urho3D::VariantMap lastTradeFarmsProduction_;
+    Urho3D::VariantMap lastTradeMinesProduction_;
+    Urho3D::VariantMap lastTradeIndustryProduction_;
+
+    float lastTradeFarmsBalanceAddition_;
+    float lastTradeMinesBalanceAddition_;
+    float lastTradeIndustryBalanceAddition_;
+    float lastTradeLogisticsBalanceAddition_;
+    float lastTradeDefenseBalanceAddition_;
 public:
     District (Urho3D::Context *context);
     virtual ~District ();
@@ -197,5 +207,29 @@ public:
 
     float GetAverageLevelOfLifePoints () const;
     void SetAverageLevelOfLifePoints (float averageLevelOfLifePoints);
+
+    Urho3D::VariantMap GetLastTradeFarmsProduction () const;
+    void SetLastTradeFarmsProduction (const Urho3D::VariantMap &lastTradeFarmsProduction);
+
+    Urho3D::VariantMap GetLastTradeMinesProduction () const;
+    void SetLastTradeMinesProduction (const Urho3D::VariantMap &lastTradeMinesProduction);
+
+    Urho3D::VariantMap GetLastTradeIndustryProduction () const;
+    void SetLastTradeIndustryProduction (const Urho3D::VariantMap &lastTradeIndustryProduction);
+
+    float GetLastTradeFarmsBalanceAddition () const;
+    void SetLastTradeFarmsBalanceAddition (float lastTradeFarmsBalanceAddition);
+
+    float GetLastTradeMinesBalanceAddition () const;
+    void SetLastTradeMinesBalanceAddition (float lastTradeMinesBalanceAddition);
+
+    float GetLastTradeIndustryBalanceAddition () const;
+    void SetLastTradeIndustryBalanceAddition (float lastTradeIndustryBalanceAddition);
+
+    float GetLastTradeLogisticsBalanceAddition () const;
+    void SetLastTradeLogisticsBalanceAddition (float lastTradeLogisticsBalanceAddition);
+
+    float GetLastTradeDefenseBalanceAddition () const;
+    void SetLastTradeDefenseBalanceAddition (float lastTradeDefenseBalanceAddition);
 };
 }
