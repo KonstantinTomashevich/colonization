@@ -420,6 +420,18 @@ void InternalTradeArea::ProcessIndustryBalance (Map *map, GameConfiguration *con
     }
 }
 
+void InternalTradeArea::ProcessDistrictsProductionInfo (Urho3D::Vector <DistrictProductionInfo> &production, Urho3D::StringHash productionType,
+                                                        Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsProductionInfo)
+{
+    for (int index = 0; index < production.Size (); index++)
+    {
+        DistrictProductionInfo &productionInfo = production.At (index);
+        Urho3D::VariantMap &districtProduction = districtsProductionInfo [productionInfo.districtHash_];
+        districtProduction [productionType] = productionInfo.ToVariantMap ();
+        districtsProductionInfo [productionInfo.districtHash_] = districtProduction;
+    }
+}
+
 InternalTradeArea::InternalTradeArea (Urho3D::Context *context) : Urho3D::Component (context),
     districtsHashes_ ()
 {
@@ -522,6 +534,19 @@ Urho3D::SharedPtr <TradeDistrictProcessingInfo> InternalTradeArea::ProcessTrade 
         Urho3D::StringHash districtHash = iterator->first_;
         Urho3D::VariantMap data = iterator->second_;
         result->SetDistrictBalanceAdditions (districtHash, data);
+    }
+
+    Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> districtsProduction;
+    ProcessDistrictsProductionInfo (farmsTotalProduction, Urho3D::StringHash ("farms"), districtsProduction);
+    ProcessDistrictsProductionInfo (minesTotalProduction, Urho3D::StringHash ("mines"), districtsProduction);
+    ProcessDistrictsProductionInfo (industryTotalProduction, Urho3D::StringHash ("industry"), districtsProduction);
+
+    for (Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap>::Iterator iterator = districtsProduction.Begin ();
+         iterator != districtsProduction.End (); iterator++)
+    {
+        Urho3D::StringHash districtHash = iterator->first_;
+        Urho3D::VariantMap data = iterator->second_;
+        result->SetDistrictProduction (districtHash, data);
     }
     return result;
 }
