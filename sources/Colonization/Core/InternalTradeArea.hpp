@@ -111,13 +111,21 @@ protected:
     void ProcessDistrictsProductionInfo (Urho3D::Vector <DistrictProductionInfo> &production, Urho3D::StringHash productionType,
                                          Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsProductionInfo);
 
+    void WriteDistrictsBalanceAdditions (Map *map, Urho3D::SharedPtr <TradeDistrictProcessingInfo> result,
+                                         Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsBalanceAdditions,
+                                         bool changeDistrictsVars);
+    void WriteDistrictsProduction (Map *map, Urho3D::SharedPtr <TradeDistrictProcessingInfo> result,
+                                   Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsProduction,
+                                   bool changeDistrictsVars);
+    void CallDistrictsUpdate (Urho3D::PODVector<District *> &districts);
+
 public:
     InternalTradeArea (Urho3D::Context *context);
     virtual ~InternalTradeArea ();
 
     virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);
     static void RegisterObject (Urho3D::Context *context);
-    Urho3D::SharedPtr <TradeDistrictProcessingInfo> ProcessTrade (Map *map, float updateDelay, bool writeDistrictsBalance);
+    Urho3D::SharedPtr <TradeDistrictProcessingInfo> ProcessTrade (Map *map, float updateDelay, bool changeDistrictsVars);
 
     int GetDistrictsHashesCount ();
     Urho3D::StringHash GetDistrictHashByIndex (int index);

@@ -2,7 +2,10 @@
 #include "InternalTradeArea.hpp"
 #include <Colonization/Core/District.hpp>
 #include <Colonization/Core/Map.hpp>
+
 #include <Colonization/Utils/Serialization/Categories.hpp>
+#include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
+#include <Colonization/Utils/Network/NetworkUpdateSmoother.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
 
 #include <cmath>
@@ -289,7 +292,7 @@ float InternalTradeArea::CalculateTotalProduction (Urho3D::Vector <DistrictProdu
 }
 
 void InternalTradeArea::ProcessFarmsBalance (Map *map, GameConfiguration *configuration, Urho3D::Vector <DistrictProductionInfo> &farmsProduction, float updateDelay,
-                                             bool writeDistrictsBalance, Urho3D::HashMap<Urho3D::StringHash, Urho3D::VariantMap> &districtsBalanceAdditions)
+                                             bool changeDistrictsVars, Urho3D::HashMap<Urho3D::StringHash, Urho3D::VariantMap> &districtsBalanceAdditions)
 {
     for (int index = 0; index < farmsProduction.Size (); index++)
     {
@@ -300,13 +303,13 @@ void InternalTradeArea::ProcessFarmsBalance (Map *map, GameConfiguration *config
                 configuration->GetFarmsProductionInternalCost () * updateDelay;
 
         float fromFarmsToLogistics = farmsBalanceAdditionInternal * configuration->GetTradeAreaFarmsLogisticsExpenses ();
-        if (writeDistrictsBalance)
+        if (changeDistrictsVars)
         {
             district->SetLogisticsBalance (district->GetLogisticsBalance () + fromFarmsToLogistics);
         }
 
         float fromFarmsToDefense = farmsBalanceAdditionInternal * configuration->GetTradeAreaFarmsDefenseExpenses ();
-        if (writeDistrictsBalance)
+        if (changeDistrictsVars)
         {
             district->SetDefenseBalance (district->GetDefenseBalance () + fromFarmsToDefense);
         }
@@ -319,7 +322,7 @@ void InternalTradeArea::ProcessFarmsBalance (Map *map, GameConfiguration *config
         float farmsBalanceAddition =
                 farmsBalanceAdditionInternal * configuration->GetTradeAreaInternalProfitToBalance () +
                 farmsBalanceAdditionExternal * configuration->GetTradeAreaExternalProfitToBalance ();
-        if (writeDistrictsBalance)
+        if (changeDistrictsVars)
         {
             district->SetFarmsBalance (district->GetFarmsBalance () + farmsBalanceAddition);
         }
@@ -333,7 +336,7 @@ void InternalTradeArea::ProcessFarmsBalance (Map *map, GameConfiguration *config
 }
 
 void InternalTradeArea::ProcessMinesBalance (Map *map, GameConfiguration *configuration, Urho3D::Vector <DistrictProductionInfo> &minesProduction, float updateDelay,
-                                             bool writeDistrictsBalance, Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsBalanceAdditions)
+                                             bool changeDistrictsVars, Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsBalanceAdditions)
 {
     for (int index = 0; index < minesProduction.Size (); index++)
     {
@@ -344,13 +347,13 @@ void InternalTradeArea::ProcessMinesBalance (Map *map, GameConfiguration *config
                 configuration->GetMinesProductionInternalCost () * updateDelay;
 
         float fromMinesToLogistics = minesBalanceAdditionInternal * configuration->GetTradeAreaMinesLogisticsExpenses ();
-        if (writeDistrictsBalance)
+        if (changeDistrictsVars)
         {
             district->SetLogisticsBalance (district->GetLogisticsBalance () + fromMinesToLogistics);
         }
 
         float fromMinesToDefense = minesBalanceAdditionInternal * configuration->GetTradeAreaMinesDefenseExpenses ();
-        if (writeDistrictsBalance)
+        if (changeDistrictsVars)
         {
             district->SetDefenseBalance (district->GetDefenseBalance () + fromMinesToDefense);
         }
@@ -363,7 +366,7 @@ void InternalTradeArea::ProcessMinesBalance (Map *map, GameConfiguration *config
         float minesBalanceAddition =
                 minesBalanceAdditionInternal * configuration->GetTradeAreaInternalProfitToBalance () +
                 minesBalanceAdditionExternal * configuration->GetTradeAreaExternalProfitToBalance ();
-        if (writeDistrictsBalance)
+        if (changeDistrictsVars)
         {
             district->SetMinesBalance (district->GetMinesBalance () + minesBalanceAddition);
         }
@@ -377,7 +380,7 @@ void InternalTradeArea::ProcessMinesBalance (Map *map, GameConfiguration *config
 }
 
 void InternalTradeArea::ProcessIndustryBalance (Map *map, GameConfiguration *configuration, Urho3D::Vector <DistrictProductionInfo> &industryProduction, float updateDelay,
-                                                bool writeDistrictsBalance, Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsBalanceAdditions)
+                                                bool changeDistrictsVars, Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsBalanceAdditions)
 {
     for (int index = 0; index < industryProduction.Size (); index++)
     {
@@ -388,13 +391,13 @@ void InternalTradeArea::ProcessIndustryBalance (Map *map, GameConfiguration *con
                 configuration->GetIndustryProductionInternalCost () * updateDelay;
 
         float fromIndustryToLogistics = industryBalanceAdditionInternal * configuration->GetTradeAreaIndustryLogisticsExpenses ();
-        if (writeDistrictsBalance)
+        if (changeDistrictsVars)
         {
             district->SetLogisticsBalance (district->GetLogisticsBalance () + fromIndustryToLogistics);
         }
 
         float fromIndustryToDefense = industryBalanceAdditionInternal * configuration->GetTradeAreaIndustryDefenseExpenses ();
-        if (writeDistrictsBalance)
+        if (changeDistrictsVars)
         {
             district->SetDefenseBalance (district->GetDefenseBalance () + fromIndustryToDefense);
         }
@@ -407,7 +410,7 @@ void InternalTradeArea::ProcessIndustryBalance (Map *map, GameConfiguration *con
         float industryBalanceAddition =
                 industryBalanceAdditionInternal * configuration->GetTradeAreaInternalProfitToBalance () +
                 industryBalanceAdditionExternal * configuration->GetTradeAreaExternalProfitToBalance ();
-        if (writeDistrictsBalance)
+        if (changeDistrictsVars)
         {
             district->SetIndustryBalance (district->GetIndustryBalance () + industryBalanceAddition);
         }
@@ -429,6 +432,67 @@ void InternalTradeArea::ProcessDistrictsProductionInfo (Urho3D::Vector <District
         Urho3D::VariantMap &districtProduction = districtsProductionInfo [productionInfo.districtHash_];
         districtProduction [productionType] = productionInfo.ToVariantMap ();
         districtsProductionInfo [productionInfo.districtHash_] = districtProduction;
+    }
+}
+
+void InternalTradeArea::WriteDistrictsBalanceAdditions (Map *map, Urho3D::SharedPtr<TradeDistrictProcessingInfo> result,
+                                                        Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsBalanceAdditions,
+                                                        bool changeDistrictsVars)
+{
+    for (Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap>::Iterator iterator = districtsBalanceAdditions.Begin ();
+         iterator != districtsBalanceAdditions.End (); iterator++)
+    {
+        Urho3D::StringHash districtHash = iterator->first_;
+        Urho3D::VariantMap data = iterator->second_;
+        result->SetDistrictBalanceAdditions (districtHash, data);
+
+        if (changeDistrictsVars)
+        {
+            District *district = map->GetDistrictByHash (districtHash);
+            district->SetLastTradeFarmsBalanceAddition (data ["farms"].GetFloat ());
+            district->SetLastTradeMinesBalanceAddition (data ["mines"].GetFloat ());
+            district->SetLastTradeIndustryBalanceAddition (data ["industry"].GetFloat ());
+            district->SetLastTradeLogisticsBalanceAddition (data ["logistics"].GetFloat ());
+            district->SetLastTradeDefenseBalanceAddition (data ["defense"].GetFloat ());
+        }
+    }
+}
+
+void InternalTradeArea::WriteDistrictsProduction (Map *map, Urho3D::SharedPtr<TradeDistrictProcessingInfo> result,
+                                                  Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsProduction,
+                                                  bool changeDistrictsVars)
+{
+    for (Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap>::Iterator iterator = districtsProduction.Begin ();
+         iterator != districtsProduction.End (); iterator++)
+    {
+        Urho3D::StringHash districtHash = iterator->first_;
+        Urho3D::VariantMap data = iterator->second_;
+        result->SetDistrictProduction (districtHash, data);
+
+        if (changeDistrictsVars)
+        {
+            District *district = map->GetDistrictByHash (districtHash);
+            district->SetLastTradeFarmsProduction (data ["farms"].GetVariantMap ());
+            district->SetLastTradeMinesProduction (data ["mines"].GetVariantMap ());
+            district->SetLastTradeIndustryProduction (data ["industry"].GetVariantMap ());
+        }
+    }
+}
+
+void InternalTradeArea::CallDistrictsUpdate (Urho3D::PODVector<District *> &districts)
+{
+    for (int index = 0; index < districts.Size (); index++)
+    {
+        District *district = districts.At (index);
+        if (node_->GetScene ()->GetComponent <NetworkUpdateSmoother> ())
+        {
+            NetworkUpdateCounter *counter = district->GetNode ()->GetComponent <NetworkUpdateCounter> ();
+            if (!counter)
+            {
+                counter = CreateNetworkUpdateCounterForComponent (district);
+            }
+            counter->AddUpdatePoints (100.0f);
+        }
     }
 }
 
@@ -470,7 +534,7 @@ void InternalTradeArea::RegisterObject (Urho3D::Context *context)
                                                               districtsHashesStructureElementsNames, Urho3D::AM_DEFAULT);
 }
 
-Urho3D::SharedPtr <TradeDistrictProcessingInfo> InternalTradeArea::ProcessTrade (Map *map, float updateDelay, bool writeDistrictsBalance)
+Urho3D::SharedPtr <TradeDistrictProcessingInfo> InternalTradeArea::ProcessTrade (Map *map, float updateDelay, bool changeDistrictsVars)
 {
     GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
     assert (configuration);
@@ -524,29 +588,20 @@ Urho3D::SharedPtr <TradeDistrictProcessingInfo> InternalTradeArea::ProcessTrade 
                                                       (totalIndustryProduction - soldIndustryProduction) * industryExternalProductionCost));
 
     Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> districtsBalanceAdditions;
-    ProcessFarmsBalance (map, configuration, farmsTotalProduction, updateDelay, writeDistrictsBalance, districtsBalanceAdditions);
-    ProcessMinesBalance (map, configuration, minesTotalProduction, updateDelay, writeDistrictsBalance, districtsBalanceAdditions);
-    ProcessIndustryBalance (map, configuration, industryTotalProduction, updateDelay, writeDistrictsBalance, districtsBalanceAdditions);
-
-    for (Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap>::Iterator iterator = districtsBalanceAdditions.Begin ();
-         iterator != districtsBalanceAdditions.End (); iterator++)
-    {
-        Urho3D::StringHash districtHash = iterator->first_;
-        Urho3D::VariantMap data = iterator->second_;
-        result->SetDistrictBalanceAdditions (districtHash, data);
-    }
+    ProcessFarmsBalance (map, configuration, farmsTotalProduction, updateDelay, changeDistrictsVars, districtsBalanceAdditions);
+    ProcessMinesBalance (map, configuration, minesTotalProduction, updateDelay, changeDistrictsVars, districtsBalanceAdditions);
+    ProcessIndustryBalance (map, configuration, industryTotalProduction, updateDelay, changeDistrictsVars, districtsBalanceAdditions);
+    WriteDistrictsBalanceAdditions (map, result, districtsBalanceAdditions, changeDistrictsVars);
 
     Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> districtsProduction;
     ProcessDistrictsProductionInfo (farmsTotalProduction, Urho3D::StringHash ("farms"), districtsProduction);
     ProcessDistrictsProductionInfo (minesTotalProduction, Urho3D::StringHash ("mines"), districtsProduction);
     ProcessDistrictsProductionInfo (industryTotalProduction, Urho3D::StringHash ("industry"), districtsProduction);
+    WriteDistrictsProduction (map, result, districtsProduction, changeDistrictsVars);
 
-    for (Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap>::Iterator iterator = districtsProduction.Begin ();
-         iterator != districtsProduction.End (); iterator++)
+    if (changeDistrictsVars)
     {
-        Urho3D::StringHash districtHash = iterator->first_;
-        Urho3D::VariantMap data = iterator->second_;
-        result->SetDistrictProduction (districtHash, data);
+        CallDistrictsUpdate (realDistricts);
     }
     return result;
 }
