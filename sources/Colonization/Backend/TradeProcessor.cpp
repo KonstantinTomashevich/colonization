@@ -186,10 +186,7 @@ void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map
         {
             District *district = map->GetDistrictByHash (tradeArea->GetDistrictHashByIndex (index));
             assert (district);
-
-            Urho3D::Log::Write (Urho3D::LOG_INFO, Urho3D::String (result->GetUnsoldTradeGoodsCost ()));
             float unsoldGoodsCost = CalculateUnsoldGoodsCost (configuration, district);
-            Urho3D::Log::Write (Urho3D::LOG_INFO, Urho3D::String (unsoldGoodsCost));
             SendTrader (map, unitsManager, configuration, district, unsoldGoodsCost);
         }
     }
