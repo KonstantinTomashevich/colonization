@@ -154,6 +154,12 @@ void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String clas
     engine->RegisterObjectMethod (className.CString (), "float get_canBePlantedByOneColonist () const", asMETHOD (GameConfiguration, GetCanBePlantedByOneColonist), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_canBePlantedByOneColonist (float canBePlantedByOneColonist)", asMETHOD (GameConfiguration, SetCanBePlantedByOneColonist), asCALL_THISCALL);
 
+    engine->RegisterObjectMethod (className.CString (), "float get_minimumLogisticsToUniteDistrictsToTradeArea () const", asMETHOD (GameConfiguration, GetMinimumLogisticsToUniteDistrictsToTradeArea), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_minimumLogisticsToUniteDistrictsToTradeArea (float minimumLogisticsToUniteDistrictsToTradeArea)", asMETHOD (GameConfiguration, SetMinimumLogisticsToUniteDistrictsToTradeArea), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_minimumLogisticsToUniteDistrictsToTradeAreaBySea () const", asMETHOD (GameConfiguration, GetMinimumLogisticsToUniteDistrictsToTradeAreaBySea), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_minimumLogisticsToUniteDistrictsToTradeAreaBySea (float minimumLogisticsToUniteDistrictsToTradeAreaBySea)", asMETHOD (GameConfiguration, SetMinimumLogisticsToUniteDistrictsToTradeAreaBySea), asCALL_THISCALL);
+
     engine->RegisterObjectMethod (className.CString (), "float get_farmsProductionTropicalClimateModifer () const", asMETHOD (GameConfiguration, GetFarmsProductionTropicalClimateModifer), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_farmsProductionTropicalClimateModifer (float farmsProductionTropicalClimateModifer)", asMETHOD (GameConfiguration, SetFarmsProductionTropicalClimateModifer), asCALL_THISCALL);
 

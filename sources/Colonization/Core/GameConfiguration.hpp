@@ -65,6 +65,8 @@ protected:
 
     float coloniesBasicPopulationIncrease_;
     float canBePlantedByOneColonist_;
+    float minimumLogisticsToUniteDistrictsToTradeArea_;
+    float minimumLogisticsToUniteDistrictsToTradeAreaBySea_;
 
     float farmsProductionTropicalClimateModifer_;
     float farmsProductionHotClimateModifer_;
@@ -214,6 +216,12 @@ public:
 
     float GetCanBePlantedByOneColonist () const;
     void SetCanBePlantedByOneColonist (float canBePlantedByOneColonist);
+
+    float GetMinimumLogisticsToUniteDistrictsToTradeArea () const;
+    void SetMinimumLogisticsToUniteDistrictsToTradeArea (float minimumLogisticsToUniteDistrictsToTradeArea);
+
+    float GetMinimumLogisticsToUniteDistrictsToTradeAreaBySea () const;
+    void SetMinimumLogisticsToUniteDistrictsToTradeAreaBySea (float minimumLogisticsToUniteDistrictsToTradeAreaBySea);
 
     float GetFarmsProductionTropicalClimateModifer () const;
     void SetFarmsProductionTropicalClimateModifer (float farmsProductionTropicalClimateModifer);

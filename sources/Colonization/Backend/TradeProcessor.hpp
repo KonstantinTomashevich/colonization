@@ -15,10 +15,13 @@ protected:
     float untilTradeAreasUpdate_;
 
     void UpdateTradeAreas (float updateDelay);
-    float UpdateTradeArea (InternalTradeArea *tradeArea, Map *map, District *start, Urho3D::PODVector <District *> &unscannedList);
-    void ProcessTradeAreaDistrict (Map *map, District *district, Urho3D::PODVector <District *> &areaDistricts, Urho3D::PODVector <District *> &unscannedList);
+    float UpdateTradeArea (InternalTradeArea *tradeArea, Map *map, District *start,
+                           Urho3D::PODVector <District *> &unscannedList, GameConfiguration *configuration);
+    void ProcessTradeAreaDistrict (Map *map, District *district, Urho3D::PODVector <District *> &areaDistricts,
+                                   Urho3D::PODVector <District *> &unscannedList, GameConfiguration *configuration);
 
-    void ProcessTradeAreaIncome (PlayersManager *playersManager, Map *map, InternalTradeArea *tradeArea, float updateDelay);
+    void ProcessTradeAreaIncome (PlayersManager *playersManager, Map *map, InternalTradeArea *tradeArea,
+                                 GameConfiguration *configuration, float updateDelay);
     float CalculateUnsoldGoodsCost (GameConfiguration *configuration, District *district);
     void SendTrader (Map *map, UnitsManager *unitsManager, GameConfiguration *configuration, District *district, float goodsCost);
     void ClearTradeAreas ();

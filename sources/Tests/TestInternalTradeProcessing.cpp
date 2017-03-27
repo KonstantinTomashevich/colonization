@@ -93,7 +93,7 @@ void TestInternalTradeProcessingApplication::Start ()
     // array (X * HEIGHT + Y) = (X, Y)
 
     Urho3D::PODVector <Urho3D::Vector3> coloniesCoordinatesWithLogistics;
-    coloniesCoordinatesWithLogistics.Push (Urho3D::Vector3 (0, 2, 7));
+    coloniesCoordinatesWithLogistics.Push (Urho3D::Vector3 (0, 2, 8));
     coloniesCoordinatesWithLogistics.Push (Urho3D::Vector3 (2, 3, 5));
     coloniesCoordinatesWithLogistics.Push (Urho3D::Vector3 (2, 2, 5));
     coloniesCoordinatesWithLogistics.Push (Urho3D::Vector3 (2, 1, 1));

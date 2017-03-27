@@ -72,6 +72,8 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
 
     coloniesBasicPopulationIncrease_ (0.0005f),
     canBePlantedByOneColonist_ (0.5f),
+    minimumLogisticsToUniteDistrictsToTradeArea_ (4.0f),
+    minimumLogisticsToUniteDistrictsToTradeAreaBySea_ (7.0f),
 
     farmsProductionTropicalClimateModifer_ (1.15f),
     farmsProductionHotClimateModifer_ (1.1f),
@@ -195,6 +197,10 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
                                SetColoniesBasicPopulationIncrease, float, 0.0005f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Can Be Planted By One Colonist", GetCanBePlantedByOneColonist,
                                SetCanBePlantedByOneColonist, float, 0.5f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Minimum Logistics To Unite Districts To Trade Area", GetMinimumLogisticsToUniteDistrictsToTradeArea,
+                               SetMinimumLogisticsToUniteDistrictsToTradeArea, float, 4.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Minimum Logistics To Unite Districts To Trade Area By Sea", GetMinimumLogisticsToUniteDistrictsToTradeAreaBySea,
+                               SetMinimumLogisticsToUniteDistrictsToTradeAreaBySea, float, 7.0f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Tropical Climate Modifer", GetFarmsProductionTropicalClimateModifer,
                                SetFarmsProductionTropicalClimateModifer, float, 1.15f, Urho3D::AM_DEFAULT);
@@ -713,6 +719,26 @@ float GameConfiguration::GetCanBePlantedByOneColonist () const
 void GameConfiguration::SetCanBePlantedByOneColonist (float canBePlantedByOneColonist)
 {
     canBePlantedByOneColonist_ = canBePlantedByOneColonist;
+}
+
+float GameConfiguration::GetMinimumLogisticsToUniteDistrictsToTradeArea () const
+{
+    return minimumLogisticsToUniteDistrictsToTradeArea_;
+}
+
+void GameConfiguration::SetMinimumLogisticsToUniteDistrictsToTradeArea (float minimumLogisticsToUniteDistrictsToTradeArea)
+{
+    minimumLogisticsToUniteDistrictsToTradeArea_ = minimumLogisticsToUniteDistrictsToTradeArea;
+}
+
+float GameConfiguration::GetMinimumLogisticsToUniteDistrictsToTradeAreaBySea () const
+{
+    return minimumLogisticsToUniteDistrictsToTradeAreaBySea_;
+}
+
+void GameConfiguration::SetMinimumLogisticsToUniteDistrictsToTradeAreaBySea (float minimumLogisticsToUniteDistrictsToTradeAreaBySea)
+{
+    minimumLogisticsToUniteDistrictsToTradeAreaBySea_ = minimumLogisticsToUniteDistrictsToTradeAreaBySea;
 }
 
 float GameConfiguration::GetFarmsProductionTropicalClimateModifer () const
