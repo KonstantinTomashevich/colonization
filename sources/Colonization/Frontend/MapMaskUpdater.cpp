@@ -174,7 +174,7 @@ void MapMaskUpdater::RecalculateMaskImage ()
                                            1.0f / (1.0f * Urho3D::Random (1, 128)),
                                            1.0f);
         }
-        while (districtColorToDistrictHash_.Keys ().Contains (Urho3D::StringHash (districtColor.ToUInt ())) ||
+        while (districtColorToDistrictHash_.Contains (Urho3D::StringHash (districtColor.ToUInt ())) ||
                districtColor == MAP_MASK_DISTRICT_BORDER_LINE_COLOR ||
                districtColor == MAP_MASK_VISIBLE_DISTRICT_COLOR ||
                districtColor == MAP_MASK_DISTRICT_UNDER_FOG_COLOR);

@@ -10,9 +10,10 @@ Urho3D::VariantMap FogOfWarCalculator_GetFogOfWarMap (FogOfWarCalculator *object
 {
     Urho3D::HashMap <Urho3D::StringHash, bool> fogOfWarMap = object->GetFogOfWarMap ();
     Urho3D::VariantMap variantMap;
-    for (int index = 0; index < fogOfWarMap.Size (); index++)
+    for (Urho3D::HashMap <Urho3D::StringHash, bool>::ConstIterator iterator = fogOfWarMap.Begin ();
+         iterator != fogOfWarMap.End (); iterator++)
     {
-        variantMap [fogOfWarMap.Keys ().At (index)] = Urho3D::Variant (fogOfWarMap.Values ().At (index));
+        variantMap [iterator->first_] = Urho3D::Variant (iterator->second_);
     }
     return variantMap;
 }

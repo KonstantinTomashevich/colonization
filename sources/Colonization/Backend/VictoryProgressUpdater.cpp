@@ -144,12 +144,13 @@ void VictoryProgressUpdater::ProcessScriptedVictoryTypes (float timeStep)
                         executionParameters);
 
             Urho3D::VariantMap output = executionParameters.At (2).GetVariantMap ();
-            for (int victoryTypeIndex = 0; victoryTypeIndex < output.Size (); victoryTypeIndex++)
+            for (Urho3D::VariantMap::Iterator iterator = output.Begin ();
+                 iterator != output.End (); iterator++)
             {
-                Urho3D::Variant value = output.Values ().At (victoryTypeIndex);
+                Urho3D::Variant value = iterator->second_;
                 if (value.GetType () == Urho3D::VAR_VARIANTMAP)
                 {
-                    playerInfo->SetProgressToVictoryOfTypeInfo (output.Keys ().At (victoryTypeIndex),
+                    playerInfo->SetProgressToVictoryOfTypeInfo (iterator->first_,
                                                                 value.GetVariantMap ());
                 }
             }
