@@ -3,6 +3,9 @@
 
 namespace Colonization
 {
+class Map;
+class District;
+
 class GameConfiguration : public Urho3D::Component
 {
 URHO3D_OBJECT (GameConfiguration, Component)
@@ -87,6 +90,7 @@ public:
     void SetWayToEuropeDistricts (Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts);
     Urho3D::VariantVector GetWayToEuropeDistrictsAttribute () const;
     void SetWayToEuropeDistrictsAttribute (const Urho3D::VariantVector &wayToEuropeDistricts);
+    Urho3D::StringHash GetHeuristicNearestWayToEuropeDistrict (Map *map, District *wayStartDistrict) const;
 
     float GetSailSpeed () const;
     void SetSailSpeed (float sailSpeed);

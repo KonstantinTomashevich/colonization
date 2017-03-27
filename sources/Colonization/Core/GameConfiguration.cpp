@@ -1,6 +1,9 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "GameConfiguration.hpp"
 #include <Urho3D/Core/Context.h>
+
+#include <Colonization/Core/Map.hpp>
+#include <Colonization/Core/District.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
@@ -266,6 +269,40 @@ void GameConfiguration::SetWayToEuropeDistrictsAttribute (const Urho3D::VariantV
             }
         }
     }
+}
+
+Urho3D::StringHash GameConfiguration::GetHeuristicNearestWayToEuropeDistrict (Map *map, District *wayStartDistrict) const
+{
+    if (wayToEuropeDistricts_.Empty ())
+    {
+        return Urho3D::StringHash::ZERO;
+    }
+
+    if (wayToEuropeDistricts_.Size () == 1)
+    {
+        return wayToEuropeDistricts_.At (0);
+    }
+
+    Urho3D::StringHash heuristicNearest;
+    int index = 0;
+    float minHeuristicDistance = -1.0f;
+
+    do
+    {
+        Urho3D::StringHash wayToEuropeDistrictHash = wayToEuropeDistricts_.At (index);
+        District *wayToEuropeDistrict = map->GetDistrictByHash (wayToEuropeDistrictHash);
+        assert (wayToEuropeDistrict);
+        float heuristicDistance = HeuristicDistanceForPathFinding (wayToEuropeDistrict, wayStartDistrict);
+
+        if (heuristicDistance < minHeuristicDistance || minHeuristicDistance <= 0.0f)
+        {
+            minHeuristicDistance = heuristicDistance;
+            heuristicNearest = wayToEuropeDistrictHash;
+        }
+        index++;
+    }
+    while (index < wayToEuropeDistricts_.Size ());
+    return heuristicNearest;
 }
 
 float GameConfiguration::GetSailSpeed () const

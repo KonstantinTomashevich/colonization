@@ -29,6 +29,7 @@ void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String clas
     asIScriptEngine *engine = script->GetScriptEngine ();
     engine->RegisterObjectMethod (className.CString (), "Array <StringHash> @get_wayToEuropeDistricts ()", asFUNCTION (GameConfiguration_GetWayToEuropeDistricts), asCALL_CDECL_OBJFIRST);
     engine->RegisterObjectMethod (className.CString (), "void set_wayToEuropeDistricts (Array <StringHash> @wayToEuropeDistricts)", asFUNCTION (GameConfiguration_SetWayToEuropeDistricts), asCALL_CDECL_OBJFIRST);
+    engine->RegisterObjectMethod (className.CString (), "StringHash GetHeuristicNearestWayToEuropeDistrict (Map @map, District @wayStartDistrict) const", asMETHOD (GameConfiguration, GetHeuristicNearestWayToEuropeDistrict), asCALL_THISCALL);
 
     engine->RegisterObjectMethod (className.CString (), "float get_sailSpeed () const", asMETHOD (GameConfiguration, GetSailSpeed), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_sailSpeed (float sailSpeed)", asMETHOD (GameConfiguration, SetSailSpeed), asCALL_THISCALL);
