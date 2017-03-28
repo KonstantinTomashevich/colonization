@@ -178,6 +178,42 @@ void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String clas
     engine->RegisterObjectMethod (className.CString (), "float get_farmsProductionColdClimateModifer () const", asMETHOD (GameConfiguration, GetFarmsProductionColdClimateModifer), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_farmsProductionColdClimateModifer (float farmsProductionColdClimateModifer)", asMETHOD (GameConfiguration, SetFarmsProductionColdClimateModifer), asCALL_THISCALL);
 
+    engine->RegisterObjectMethod (className.CString (), "float get_farmsProductionRelativePriceTropicalClimateModifer () const", asMETHOD (GameConfiguration, GetFarmsProductionRelativePriceTropicalClimateModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_farmsProductionRelativePriceTropicalClimateModifer (float farmsProductionRelativePriceTropicalClimateModifer)", asMETHOD (GameConfiguration, SetFarmsProductionRelativePriceTropicalClimateModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_farmsProductionRelativePriceHotClimateModifer () const", asMETHOD (GameConfiguration, GetFarmsProductionRelativePriceHotClimateModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_farmsProductionRelativePriceHotClimateModifer (float farmsProductionRelativePriceHotClimateModifer)", asMETHOD (GameConfiguration, SetFarmsProductionRelativePriceHotClimateModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_farmsProductionRelativePriceTemperateClimateModifer () const", asMETHOD (GameConfiguration, GetFarmsProductionRelativePriceTemperateClimateModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_farmsProductionRelativePriceTemperateClimateModifer (float farmsProductionRelativePriceTemperateClimateModifer)", asMETHOD (GameConfiguration, SetFarmsProductionRelativePriceTemperateClimateModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_farmsProductionRelativePriceTemperateContinentalClimateModifer () const", asMETHOD (GameConfiguration, GetFarmsProductionRelativePriceTemperateContinentalClimateModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_farmsProductionRelativePriceTemperateContinentalClimateModifer (float farmsProductionRelativePriceTemperateContinentalClimateModifer)", asMETHOD (GameConfiguration, SetFarmsProductionRelativePriceTemperateContinentalClimateModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_farmsProductionRelativePriceDesertClimateModifer () const", asMETHOD (GameConfiguration, GetFarmsProductionRelativePriceDesertClimateModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_farmsProductionRelativePriceDesertClimateModifer (float farmsProductionRelativePriceDesertClimateModifer)", asMETHOD (GameConfiguration, SetFarmsProductionRelativePriceDesertClimateModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_farmsProductionRelativePriceColdClimateModifer () const", asMETHOD (GameConfiguration, GetFarmsProductionRelativePriceColdClimateModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_farmsProductionRelativePriceColdClimateModifer (float farmsProductionRelativePriceColdClimateModifer)", asMETHOD (GameConfiguration, SetFarmsProductionRelativePriceColdClimateModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_farmsProductionQualityTropicalClimateModifer () const", asMETHOD (GameConfiguration, GetFarmsProductionQualityTropicalClimateModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_farmsProductionQualityTropicalClimateModifer (float farmsProductionQualityTropicalClimateModifer)", asMETHOD (GameConfiguration, SetFarmsProductionQualityTropicalClimateModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_farmsProductionQualityHotClimateModifer () const", asMETHOD (GameConfiguration, GetFarmsProductionQualityHotClimateModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_farmsProductionQualityHotClimateModifer (float farmsProductionQualityHotClimateModifer)", asMETHOD (GameConfiguration, SetFarmsProductionQualityHotClimateModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_farmsProductionQualityTemperateClimateModifer () const", asMETHOD (GameConfiguration, GetFarmsProductionQualityTemperateClimateModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_farmsProductionQualityTemperateClimateModifer (float farmsProductionQualityTemperateClimateModifer)", asMETHOD (GameConfiguration, SetFarmsProductionQualityTemperateClimateModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_farmsProductionQualityTemperateContinentalClimateModifer () const", asMETHOD (GameConfiguration, GetFarmsProductionQualityTemperateContinentalClimateModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_farmsProductionQualityTemperateContinentalClimateModifer (float farmsProductionQualityTemperateContinentalClimateModifer)", asMETHOD (GameConfiguration, SetFarmsProductionQualityTemperateContinentalClimateModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_farmsProductionQualityDesertClimateModifer () const", asMETHOD (GameConfiguration, GetFarmsProductionQualityDesertClimateModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_farmsProductionQualityDesertClimateModifer (float farmsProductionQualityDesertClimateModifer)", asMETHOD (GameConfiguration, SetFarmsProductionQualityDesertClimateModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_farmsProductionQualityColdClimateModifer () const", asMETHOD (GameConfiguration, GetFarmsProductionQualityColdClimateModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_farmsProductionQualityColdClimateModifer (float farmsProductionQualityColdClimateModifer)", asMETHOD (GameConfiguration, SetFarmsProductionQualityColdClimateModifer), asCALL_THISCALL);
+
     engine->RegisterObjectMethod (className.CString (), "float get_maximumGameDuration () const", asMETHOD (GameConfiguration, GetMaximumGameDuration), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_maximumGameDuration (float maximumGameDuration)", asMETHOD (GameConfiguration, SetMaximumGameDuration), asCALL_THISCALL);
 

@@ -81,6 +81,20 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
     farmsProductionDesertClimateModifer_ (0.65f),
     farmsProductionColdClimateModifer_ (0.75f),
 
+    farmsProductionRelativePriceTropicalClimateModifer_ (1.5f),
+    farmsProductionRelativePriceHotClimateModifer_ (1.3f),
+    farmsProductionRelativePriceTemperateClimateModifer_ (1.0f),
+    farmsProductionRelativePriceTemperateContinentalClimateModifer_ (1.0f),
+    farmsProductionRelativePriceDesertClimateModifer_ (0.9f),
+    farmsProductionRelativePriceColdClimateModifer_ (0.9f),
+
+    farmsProductionQualityTropicalClimateModifer_ (1.2f),
+    farmsProductionQualityHotClimateModifer_ (1.3f),
+    farmsProductionQualityTemperateClimateModifer_ (1.1f),
+    farmsProductionQualityTemperateContinentalClimateModifer_ (1.0f),
+    farmsProductionQualityDesertClimateModifer_ (0.9f),
+    farmsProductionQualityColdClimateModifer_ (0.9f),
+
     maximumGameDuration_ (1200.0f),
     colonyPointsModifer_ (0.15f),
     unitFleetPointsModifer_ (0.5f),
@@ -213,6 +227,32 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
                                SetFarmsProductionDesertClimateModifer, float, 0.65f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Cold Climate Modifer", GetFarmsProductionColdClimateModifer,
                                SetFarmsProductionColdClimateModifer, float, 0.75f, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Relative Price Tropical Climate Modifer", GetFarmsProductionRelativePriceTropicalClimateModifer,
+                               SetFarmsProductionRelativePriceTropicalClimateModifer, float, 1.5f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Relative Price Hot Climate Modifer", GetFarmsProductionRelativePriceHotClimateModifer,
+                               SetFarmsProductionRelativePriceHotClimateModifer, float, 1.3f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Relative Price Temperate Climate Modifer", GetFarmsProductionRelativePriceTemperateClimateModifer,
+                               SetFarmsProductionRelativePriceTemperateClimateModifer, float, 1.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production RelativePrice Temperate Continental Climate Modifer", GetFarmsProductionRelativePriceTemperateContinentalClimateModifer,
+                               SetFarmsProductionRelativePriceTemperateContinentalClimateModifer, float, 1.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production RelativePrice Desert Climate Modifer", GetFarmsProductionRelativePriceDesertClimateModifer,
+                               SetFarmsProductionRelativePriceDesertClimateModifer, float, 0.9f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Relative Price Cold Climate Modifer", GetFarmsProductionRelativePriceColdClimateModifer,
+                               SetFarmsProductionRelativePriceColdClimateModifer, float, 0.9f, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Quality Tropical Climate Modifer", GetFarmsProductionQualityTropicalClimateModifer,
+                               SetFarmsProductionQualityTropicalClimateModifer, float, 1.2f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Quality Hot Climate Modifer", GetFarmsProductionQualityHotClimateModifer,
+                               SetFarmsProductionQualityHotClimateModifer, float, 1.3f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Quality Temperate Climate Modifer", GetFarmsProductionQualityTemperateClimateModifer,
+                               SetFarmsProductionQualityTemperateClimateModifer, float, 1.1f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Quality Temperate Continental Climate Modifer", GetFarmsProductionQualityTemperateContinentalClimateModifer,
+                               SetFarmsProductionQualityTemperateContinentalClimateModifer, float, 1.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Quality Desert Climate Modifer", GetFarmsProductionQualityDesertClimateModifer,
+                               SetFarmsProductionQualityDesertClimateModifer, float, 0.9f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Quality Cold Climate Modifer", GetFarmsProductionQualityColdClimateModifer,
+                               SetFarmsProductionQualityColdClimateModifer, float, 0.9f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Maximum Game Duration", GetMaximumGameDuration,
                                SetMaximumGameDuration, float, 600.0f, Urho3D::AM_DEFAULT);
@@ -798,6 +838,126 @@ float GameConfiguration::GetFarmsProductionColdClimateModifer () const
 void GameConfiguration::SetFarmsProductionColdClimateModifer (float farmsProductionColdClimateModifer)
 {
     farmsProductionColdClimateModifer_ = farmsProductionColdClimateModifer;
+}
+
+float GameConfiguration::GetFarmsProductionRelativePriceTropicalClimateModifer () const
+{
+    return farmsProductionRelativePriceTropicalClimateModifer_;
+}
+
+void GameConfiguration::SetFarmsProductionRelativePriceTropicalClimateModifer (float farmsProductionRelativePriceTropicalClimateModifer)
+{
+    farmsProductionRelativePriceTropicalClimateModifer_ = farmsProductionRelativePriceTropicalClimateModifer;
+}
+
+float GameConfiguration::GetFarmsProductionRelativePriceHotClimateModifer () const
+{
+    return farmsProductionRelativePriceHotClimateModifer_;
+}
+
+void GameConfiguration::SetFarmsProductionRelativePriceHotClimateModifer (float farmsProductionRelativePriceHotClimateModifer)
+{
+    farmsProductionRelativePriceHotClimateModifer_ = farmsProductionRelativePriceHotClimateModifer;
+}
+
+float GameConfiguration::GetFarmsProductionRelativePriceTemperateClimateModifer () const
+{
+    return farmsProductionRelativePriceTemperateClimateModifer_;
+}
+
+void GameConfiguration::SetFarmsProductionRelativePriceTemperateClimateModifer (float farmsProductionRelativePriceTemperateClimateModifer)
+{
+    farmsProductionRelativePriceTemperateClimateModifer_ = farmsProductionRelativePriceTemperateClimateModifer;
+}
+
+float GameConfiguration::GetFarmsProductionRelativePriceTemperateContinentalClimateModifer () const
+{
+    return farmsProductionRelativePriceTemperateContinentalClimateModifer_;
+}
+
+void GameConfiguration::SetFarmsProductionRelativePriceTemperateContinentalClimateModifer (float farmsProductionRelativePriceTemperateContinentalClimateModifer)
+{
+    farmsProductionRelativePriceTemperateContinentalClimateModifer_ = farmsProductionRelativePriceTemperateContinentalClimateModifer;
+}
+
+float GameConfiguration::GetFarmsProductionRelativePriceDesertClimateModifer () const
+{
+    return farmsProductionRelativePriceDesertClimateModifer_;
+}
+
+void GameConfiguration::SetFarmsProductionRelativePriceDesertClimateModifer (float farmsProductionRelativePriceDesertClimateModifer)
+{
+    farmsProductionRelativePriceDesertClimateModifer_ = farmsProductionRelativePriceDesertClimateModifer;
+}
+
+float GameConfiguration::GetFarmsProductionRelativePriceColdClimateModifer () const
+{
+    return farmsProductionRelativePriceColdClimateModifer_;
+}
+
+void GameConfiguration::SetFarmsProductionRelativePriceColdClimateModifer (float farmsProductionRelativePriceColdClimateModifer)
+{
+    farmsProductionRelativePriceColdClimateModifer_ = farmsProductionRelativePriceColdClimateModifer;
+}
+
+float GameConfiguration::GetFarmsProductionQualityTropicalClimateModifer () const
+{
+    return farmsProductionQualityTropicalClimateModifer_;
+}
+
+void GameConfiguration::SetFarmsProductionQualityTropicalClimateModifer (float farmsProductionQualityTropicalClimateModifer)
+{
+    farmsProductionQualityTropicalClimateModifer_ = farmsProductionQualityTropicalClimateModifer;
+}
+
+float GameConfiguration::GetFarmsProductionQualityHotClimateModifer () const
+{
+    return farmsProductionQualityHotClimateModifer_;
+}
+
+void GameConfiguration::SetFarmsProductionQualityHotClimateModifer (float farmsProductionQualityHotClimateModifer)
+{
+    farmsProductionQualityHotClimateModifer_ = farmsProductionQualityHotClimateModifer;
+}
+
+float GameConfiguration::GetFarmsProductionQualityTemperateClimateModifer () const
+{
+    return farmsProductionQualityTemperateClimateModifer_;
+}
+
+void GameConfiguration::SetFarmsProductionQualityTemperateClimateModifer (float farmsProductionQualityTemperateClimateModifer)
+{
+    farmsProductionQualityTemperateClimateModifer_ = farmsProductionQualityTemperateClimateModifer;
+}
+
+float GameConfiguration::GetFarmsProductionQualityTemperateContinentalClimateModifer () const
+{
+    return farmsProductionQualityTemperateContinentalClimateModifer_;
+}
+
+void GameConfiguration::SetFarmsProductionQualityTemperateContinentalClimateModifer (float farmsProductionQualityTemperateContinentalClimateModifer)
+{
+    farmsProductionQualityTemperateContinentalClimateModifer_ = farmsProductionQualityTemperateContinentalClimateModifer;
+}
+
+float GameConfiguration::GetFarmsProductionQualityDesertClimateModifer () const
+{
+    return farmsProductionQualityDesertClimateModifer_;
+}
+
+void GameConfiguration::SetFarmsProductionQualityDesertClimateModifer (float farmsProductionQualityDesertClimateModifer)
+{
+    farmsProductionQualityDesertClimateModifer_ = farmsProductionQualityDesertClimateModifer;
+}
+
+float GameConfiguration::GetFarmsProductionQualityColdClimateModifer () const
+{
+    return farmsProductionQualityColdClimateModifer_;
+}
+
+void GameConfiguration::SetFarmsProductionQualityColdClimateModifer (float farmsProductionQualityColdClimateModifer)
+{
+    farmsProductionQualityColdClimateModifer_ = farmsProductionQualityColdClimateModifer;
 }
 
 float GameConfiguration::GetMaximumGameDuration () const
