@@ -81,19 +81,19 @@ void TestInternalTradeAreaApplication::Start ()
     map->RecalculateDistrictsNeighbors ();
 
     map->GetDistrictByIndex (0)->SetFarmsEvolutionPoints (9.0f);
-    map->GetDistrictByIndex (0)->SetMinesEvolutionPoints (1.0f);
+    map->GetDistrictByIndex (0)->SetMinesEvolutionPoints (2.0f);
     map->GetDistrictByIndex (0)->SetIndustryEvolutionPoints (5.0f);
     map->GetDistrictByIndex (0)->SetLogisticsEvolutionPoints (4.0f);
     map->GetDistrictByIndex (0)->SetDefenseEvolutionPoints (1.0f);
 
     map->GetDistrictByIndex (1)->SetFarmsEvolutionPoints (2.0f);
-    map->GetDistrictByIndex (1)->SetMinesEvolutionPoints (7.0f);
+    map->GetDistrictByIndex (1)->SetMinesEvolutionPoints (6.0f);
     map->GetDistrictByIndex (1)->SetIndustryEvolutionPoints (7.0f);
     map->GetDistrictByIndex (1)->SetLogisticsEvolutionPoints (4.0f);
     map->GetDistrictByIndex (1)->SetDefenseEvolutionPoints (1.0f);
 
     map->GetDistrictByIndex (2)->SetFarmsEvolutionPoints (2.0f);
-    map->GetDistrictByIndex (2)->SetMinesEvolutionPoints (8.0f);
+    map->GetDistrictByIndex (2)->SetMinesEvolutionPoints (7.0f);
     map->GetDistrictByIndex (2)->SetIndustryEvolutionPoints (7.0f);
     map->GetDistrictByIndex (2)->SetLogisticsEvolutionPoints (5.0f);
     map->GetDistrictByIndex (2)->SetDefenseEvolutionPoints (1.0f);
@@ -121,18 +121,18 @@ void TestInternalTradeAreaApplication::Start ()
     {
         ErrorExit ("Expected unused farms production > 0.0.");
     }
-    else if (result->GetUnusedProductionOf ("mines") >= 0.0f)
+    else if (result->GetUnusedProductionOf ("mines") <= 0.0f)
     {
-        ErrorExit ("Expected unused mines production < 0.0.");
+        ErrorExit ("Expected unused mines production > 0.0.");
     }
     else if (result->GetUnusedProductionOf ("industry") <= 0.0f)
     {
         ErrorExit ("Expected unused industry production > 0.0.");
     }
-    else if (result->GetUnsoldTradeGoodsCost () / (result->GetUnsoldTradeGoodsCost () + result->GetSoldTradeGoodsCost ()) < 0.1f ||
-             result->GetUnsoldTradeGoodsCost () / (result->GetUnsoldTradeGoodsCost () + result->GetSoldTradeGoodsCost ()) > 0.5f)
+    else if (result->GetUnsoldTradeGoodsCost () / (result->GetUnsoldTradeGoodsCost () + result->GetSoldTradeGoodsCost ()) < 0.35f ||
+             result->GetUnsoldTradeGoodsCost () / (result->GetUnsoldTradeGoodsCost () + result->GetSoldTradeGoodsCost ()) > 0.75f)
     {
-        ErrorExit ("Expected unsold / (unsold + sold) production in (0.1; 0.5).");
+        ErrorExit ("Expected unsold / (unsold + sold) production in (0.35; 0.75).");
     }
     else
     {
