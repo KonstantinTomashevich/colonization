@@ -198,17 +198,22 @@ float TradeProcessor::CalculateUnsoldGoodsCost (GameConfiguration *configuration
     Urho3D::VariantMap farmsProduction = district->GetLastTradeFarmsProduction ();
     unsoldGoodsCost += (farmsProduction [DISTRICT_PRODUCTION_AMOUNT_KEY].GetFloat () -
                         farmsProduction [DISTRICT_PRODUCTION_SELLED_KEY].GetFloat ()) *
-            configuration->GetFarmsProductionExternalCost ();
+            configuration->GetFarmsProductionExternalCost () *
+            farmsProduction [DISTRICT_PRODUCTION_RELATIVE_PRICE_KEY].GetFloat ();
 
     Urho3D::VariantMap minesProduction = district->GetLastTradeMinesProduction ();
     unsoldGoodsCost += (minesProduction [DISTRICT_PRODUCTION_AMOUNT_KEY].GetFloat () -
                         minesProduction [DISTRICT_PRODUCTION_SELLED_KEY].GetFloat ()) *
-            configuration->GetMinesProductionExternalCost ();
+            configuration->GetMinesProductionExternalCost ()*
+            minesProduction [DISTRICT_PRODUCTION_RELATIVE_PRICE_KEY].GetFloat ();
+
 
     Urho3D::VariantMap industryProduction = district->GetLastTradeIndustryProduction ();
     unsoldGoodsCost += (industryProduction [DISTRICT_PRODUCTION_AMOUNT_KEY].GetFloat () -
                         industryProduction [DISTRICT_PRODUCTION_SELLED_KEY].GetFloat ()) *
-            configuration->GetIndustryProductionExternalCost ();
+            configuration->GetIndustryProductionExternalCost ()*
+            industryProduction [DISTRICT_PRODUCTION_RELATIVE_PRICE_KEY].GetFloat ();
+
     return unsoldGoodsCost;
 }
 

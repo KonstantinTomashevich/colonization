@@ -121,6 +121,14 @@ protected:
                                    Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsProduction, bool changeDistrictsVars);
     void CallDistrictsUpdate (Urho3D::PODVector<District *> &districts);
 
+    float CalculateSoldFarmsProductionCost (Urho3D::Vector <DistrictProductionInfo> &production, GameConfiguration *configuration);
+    float CalculateSoldMinesProductionCost (Urho3D::Vector <DistrictProductionInfo> &production, GameConfiguration *configuration);
+    float CalculateSoldIndustryProductionCost (Urho3D::Vector <DistrictProductionInfo> &production, GameConfiguration *configuration);
+
+    float CalculateUnsoldFarmsProductionCost (Urho3D::Vector <DistrictProductionInfo> &production, GameConfiguration *configuration);
+    float CalculateUnsoldMinesProductionCost (Urho3D::Vector <DistrictProductionInfo> &production, GameConfiguration *configuration);
+    float CalculateUnsoldIndustryProductionCost (Urho3D::Vector <DistrictProductionInfo> &production, GameConfiguration *configuration);
+
 public:
     InternalTradeArea (Urho3D::Context *context);
     virtual ~InternalTradeArea ();
