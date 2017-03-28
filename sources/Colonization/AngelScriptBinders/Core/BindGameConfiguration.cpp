@@ -238,6 +238,30 @@ void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String clas
     engine->RegisterObjectMethod (className.CString (), "float get_minesProductionQualityHasGoldModifer () const", asMETHOD (GameConfiguration, GetMinesProductionQualityHasGoldModifer), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_minesProductionQualityHasGoldModifer (float minesProductionQualityHasGoldModifer)", asMETHOD (GameConfiguration, SetMinesProductionQualityHasGoldModifer), asCALL_THISCALL);
 
+    engine->RegisterObjectMethod (className.CString (), "float get_industryProductionRelativePriceHasCoalModifer () const", asMETHOD (GameConfiguration, GetIndustryProductionRelativePriceHasCoalModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_industryProductionRelativePriceHasCoalModifer (float industryProductionRelativePriceHasCoalModifer)", asMETHOD (GameConfiguration, SetIndustryProductionRelativePriceHasCoalModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_industryProductionRelativePriceHasIronModifer () const", asMETHOD (GameConfiguration, GetIndustryProductionRelativePriceHasIronModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_industryProductionRelativePriceHasIronModifer (float industryProductionRelativePriceHasIronModifer)", asMETHOD (GameConfiguration, SetIndustryProductionRelativePriceHasIronModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_industryProductionRelativePriceHasSilverModifer () const", asMETHOD (GameConfiguration, GetIndustryProductionRelativePriceHasSilverModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_industryProductionRelativePriceHasSilverModifer (float industryProductionRelativePriceHasSilverModifer)", asMETHOD (GameConfiguration, SetIndustryProductionRelativePriceHasSilverModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_industryProductionRelativePriceHasGoldModifer () const", asMETHOD (GameConfiguration, GetIndustryProductionRelativePriceHasGoldModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_industryProductionRelativePriceHasGoldModifer (float industryProductionRelativePriceHasGoldModifer)", asMETHOD (GameConfiguration, SetIndustryProductionRelativePriceHasGoldModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_industryProductionQualityHasCoalModifer () const", asMETHOD (GameConfiguration, GetIndustryProductionQualityHasCoalModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_industryProductionQualityHasCoalModifer (float industryProductionQualityHasCoalModifer)", asMETHOD (GameConfiguration, SetIndustryProductionQualityHasCoalModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_industryProductionQualityHasIronModifer () const", asMETHOD (GameConfiguration, GetIndustryProductionQualityHasIronModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_industryProductionQualityHasIronModifer (float industryProductionQualityHasIronModifer)", asMETHOD (GameConfiguration, SetIndustryProductionQualityHasIronModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_industryProductionQualityHasSilverModifer () const", asMETHOD (GameConfiguration, GetIndustryProductionQualityHasSilverModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_industryProductionQualityHasSilverModifer (float industryProductionQualityHasSilverModifer)", asMETHOD (GameConfiguration, SetIndustryProductionQualityHasSilverModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_industryProductionQualityHasGoldModifer () const", asMETHOD (GameConfiguration, GetIndustryProductionQualityHasGoldModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_industryProductionQualityHasGoldModifer (float industryProductionQualityHasGoldModifer)", asMETHOD (GameConfiguration, SetIndustryProductionQualityHasGoldModifer), asCALL_THISCALL);
+
     engine->RegisterObjectMethod (className.CString (), "float get_maximumGameDuration () const", asMETHOD (GameConfiguration, GetMaximumGameDuration), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_maximumGameDuration (float maximumGameDuration)", asMETHOD (GameConfiguration, SetMaximumGameDuration), asCALL_THISCALL);
 

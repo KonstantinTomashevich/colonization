@@ -105,6 +105,16 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
     minesProductionQualityHasSilverModifer_ (1.1f),
     minesProductionQualityHasGoldModifer_ (1.1f),
 
+    industryProductionRelativePriceHasCoalModifer_ (1.2f),
+    industryProductionRelativePriceHasIronModifer_ (1.4f),
+    industryProductionRelativePriceHasSilverModifer_ (1.1f),
+    industryProductionRelativePriceHasGoldModifer_ (1.2f),
+
+    industryProductionQualityHasCoalModifer_ (1.2f),
+    industryProductionQualityHasIronModifer_ (1.3f),
+    industryProductionQualityHasSilverModifer_ (1.1f),
+    industryProductionQualityHasGoldModifer_ (1.1f),
+
     maximumGameDuration_ (1200.0f),
     colonyPointsModifer_ (0.15f),
     unitFleetPointsModifer_ (0.5f),
@@ -281,6 +291,24 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
                                SetMinesProductionQualityHasSilverModifer, float, 1.1f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production Quality Has Gold Modifer", GetMinesProductionQualityHasGoldModifer,
                                SetMinesProductionQualityHasGoldModifer, float, 1.1f, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Relative Price Has Coal Modifer", GetIndustryProductionRelativePriceHasCoalModifer,
+                               SetIndustryProductionRelativePriceHasCoalModifer, float, 1.2f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Relative Price Has Iron Modifer", GetIndustryProductionRelativePriceHasIronModifer,
+                               SetIndustryProductionRelativePriceHasIronModifer, float, 1.4f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Relative Price Has Silver Modifer", GetIndustryProductionRelativePriceHasSilverModifer,
+                               SetIndustryProductionRelativePriceHasSilverModifer, float, 1.1f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Relative Price Has Gold Modifer", GetIndustryProductionRelativePriceHasGoldModifer,
+                               SetIndustryProductionRelativePriceHasGoldModifer, float, 1.2f, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Quality Has Coal Modifer", GetIndustryProductionQualityHasCoalModifer,
+                               SetIndustryProductionQualityHasCoalModifer, float, 1.2f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Quality Has Iron Modifer", GetIndustryProductionQualityHasIronModifer,
+                               SetIndustryProductionQualityHasIronModifer, float, 1.3f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Quality Has Silver Modifer", GetIndustryProductionQualityHasSilverModifer,
+                               SetIndustryProductionQualityHasSilverModifer, float, 1.1f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Industry Production Quality Has Gold Modifer", GetIndustryProductionQualityHasGoldModifer,
+                               SetIndustryProductionQualityHasGoldModifer, float, 1.1f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Maximum Game Duration", GetMaximumGameDuration,
                                SetMaximumGameDuration, float, 600.0f, Urho3D::AM_DEFAULT);
@@ -1066,6 +1094,86 @@ float GameConfiguration::GetMinesProductionQualityHasGoldModifer () const
 void GameConfiguration::SetMinesProductionQualityHasGoldModifer (float minesProductionQualityHasGoldModifer)
 {
     minesProductionQualityHasGoldModifer_ = minesProductionQualityHasGoldModifer;
+}
+
+float GameConfiguration::GetIndustryProductionRelativePriceHasCoalModifer () const
+{
+    return industryProductionRelativePriceHasCoalModifer_;
+}
+
+void GameConfiguration::SetIndustryProductionRelativePriceHasCoalModifer (float industryProductionRelativePriceHasCoalModifer)
+{
+    industryProductionRelativePriceHasCoalModifer_ = industryProductionRelativePriceHasCoalModifer;
+}
+
+float GameConfiguration::GetIndustryProductionRelativePriceHasIronModifer () const
+{
+    return industryProductionRelativePriceHasIronModifer_;
+}
+
+void GameConfiguration::SetIndustryProductionRelativePriceHasIronModifer (float industryProductionRelativePriceHasIronModifer)
+{
+    industryProductionRelativePriceHasIronModifer_ = industryProductionRelativePriceHasIronModifer;
+}
+
+float GameConfiguration::GetIndustryProductionRelativePriceHasSilverModifer () const
+{
+    return industryProductionRelativePriceHasSilverModifer_;
+}
+
+void GameConfiguration::SetIndustryProductionRelativePriceHasSilverModifer (float industryProductionRelativePriceHasSilverModifer)
+{
+    industryProductionRelativePriceHasSilverModifer_ = industryProductionRelativePriceHasSilverModifer;
+}
+
+float GameConfiguration::GetIndustryProductionRelativePriceHasGoldModifer () const
+{
+    return industryProductionRelativePriceHasGoldModifer_;
+}
+
+void GameConfiguration::SetIndustryProductionRelativePriceHasGoldModifer (float industryProductionRelativePriceHasGoldModifer)
+{
+    industryProductionRelativePriceHasGoldModifer_ = industryProductionRelativePriceHasGoldModifer;
+}
+
+float GameConfiguration::GetIndustryProductionQualityHasCoalModifer () const
+{
+    return industryProductionQualityHasCoalModifer_;
+}
+
+void GameConfiguration::SetIndustryProductionQualityHasCoalModifer (float industryProductionQualityHasCoalModifer)
+{
+    industryProductionQualityHasCoalModifer_ = industryProductionQualityHasCoalModifer;
+}
+
+float GameConfiguration::GetIndustryProductionQualityHasIronModifer () const
+{
+    return industryProductionQualityHasIronModifer_;
+}
+
+void GameConfiguration::SetIndustryProductionQualityHasIronModifer (float industryProductionQualityHasIronModifer)
+{
+    industryProductionQualityHasIronModifer_ = industryProductionQualityHasIronModifer;
+}
+
+float GameConfiguration::GetIndustryProductionQualityHasSilverModifer () const
+{
+    return industryProductionQualityHasSilverModifer_;
+}
+
+void GameConfiguration::SetIndustryProductionQualityHasSilverModifer (float industryProductionQualityHasSilverModifer)
+{
+    industryProductionQualityHasSilverModifer_ = industryProductionQualityHasSilverModifer;
+}
+
+float GameConfiguration::GetIndustryProductionQualityHasGoldModifer () const
+{
+    return industryProductionQualityHasGoldModifer_;
+}
+
+void GameConfiguration::SetIndustryProductionQualityHasGoldModifer (float industryProductionQualityHasGoldModifer)
+{
+    industryProductionQualityHasGoldModifer_ = industryProductionQualityHasGoldModifer;
 }
 
 float GameConfiguration::GetMaximumGameDuration () const

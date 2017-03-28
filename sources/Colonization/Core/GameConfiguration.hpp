@@ -99,6 +99,16 @@ protected:
     float minesProductionQualityHasSilverModifer_;
     float minesProductionQualityHasGoldModifer_;
 
+    float industryProductionRelativePriceHasCoalModifer_;
+    float industryProductionRelativePriceHasIronModifer_;
+    float industryProductionRelativePriceHasSilverModifer_;
+    float industryProductionRelativePriceHasGoldModifer_;
+
+    float industryProductionQualityHasCoalModifer_;
+    float industryProductionQualityHasIronModifer_;
+    float industryProductionQualityHasSilverModifer_;
+    float industryProductionQualityHasGoldModifer_;
+
     float maximumGameDuration_;
     float colonyPointsModifer_;
     float unitFleetPointsModifer_;
@@ -324,6 +334,30 @@ public:
 
     float GetMinesProductionQualityHasGoldModifer () const;
     void SetMinesProductionQualityHasGoldModifer (float minesProductionQualityHasGoldModifer);
+
+    float GetIndustryProductionRelativePriceHasCoalModifer () const;
+    void SetIndustryProductionRelativePriceHasCoalModifer (float industryProductionRelativePriceHasCoalModifer);
+
+    float GetIndustryProductionRelativePriceHasIronModifer () const;
+    void SetIndustryProductionRelativePriceHasIronModifer (float industryProductionRelativePriceHasIronModifer);
+
+    float GetIndustryProductionRelativePriceHasSilverModifer () const;
+    void SetIndustryProductionRelativePriceHasSilverModifer (float industryProductionRelativePriceHasSilverModifer);
+
+    float GetIndustryProductionRelativePriceHasGoldModifer () const;
+    void SetIndustryProductionRelativePriceHasGoldModifer (float industryProductionRelativePriceHasGoldModifer);
+
+    float GetIndustryProductionQualityHasCoalModifer () const;
+    void SetIndustryProductionQualityHasCoalModifer (float industryProductionQualityHasCoalModifer);
+
+    float GetIndustryProductionQualityHasIronModifer () const;
+    void SetIndustryProductionQualityHasIronModifer (float industryProductionQualityHasIronModifer);
+
+    float GetIndustryProductionQualityHasSilverModifer () const;
+    void SetIndustryProductionQualityHasSilverModifer (float industryProductionQualityHasSilverModifer);
+
+    float GetIndustryProductionQualityHasGoldModifer () const;
+    void SetIndustryProductionQualityHasGoldModifer (float industryProductionQualityHasGoldModifer);
 
     float GetMaximumGameDuration () const;
     void SetMaximumGameDuration (float maximumGameDuration);
