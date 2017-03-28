@@ -75,6 +75,40 @@ protected:
     float farmsProductionDesertClimateModifer_;
     float farmsProductionColdClimateModifer_;
 
+    float farmsProductionRelativePriceTropicalClimateModifer_;
+    float farmsProductionRelativePriceHotClimateModifer_;
+    float farmsProductionRelativePriceTemperateClimateModifer_;
+    float farmsProductionRelativePriceTemperateContinentalClimateModifer_;
+    float farmsProductionRelativePriceDesertClimateModifer_;
+    float farmsProductionRelativePriceColdClimateModifer_;
+
+    float farmsProductionQualityTropicalClimateModifer_;
+    float farmsProductionQualityHotClimateModifer_;
+    float farmsProductionQualityTemperateClimateModifer_;
+    float farmsProductionQualityTemperateContinentalClimateModifer_;
+    float farmsProductionQualityDesertClimateModifer_;
+    float farmsProductionQualityColdClimateModifer_;
+
+    float minesProductionRelativePriceHasCoalModifer_;
+    float minesProductionRelativePriceHasIronModifer_;
+    float minesProductionRelativePriceHasSilverModifer_;
+    float minesProductionRelativePriceHasGoldModifer_;
+
+    float minesProductionQualityHasCoalModifer_;
+    float minesProductionQualityHasIronModifer_;
+    float minesProductionQualityHasSilverModifer_;
+    float minesProductionQualityHasGoldModifer_;
+
+    float industryProductionRelativePriceHasCoalModifer_;
+    float industryProductionRelativePriceHasIronModifer_;
+    float industryProductionRelativePriceHasSilverModifer_;
+    float industryProductionRelativePriceHasGoldModifer_;
+
+    float industryProductionQualityHasCoalModifer_;
+    float industryProductionQualityHasIronModifer_;
+    float industryProductionQualityHasSilverModifer_;
+    float industryProductionQualityHasGoldModifer_;
+
     float maximumGameDuration_;
     float colonyPointsModifer_;
     float unitFleetPointsModifer_;
@@ -240,6 +274,90 @@ public:
 
     float GetFarmsProductionColdClimateModifer () const;
     void SetFarmsProductionColdClimateModifer (float farmsProductionColdClimateModifer);
+
+    float GetFarmsProductionRelativePriceTropicalClimateModifer () const;
+    void SetFarmsProductionRelativePriceTropicalClimateModifer (float farmsProductionRelativePriceTropicalClimateModifer);
+
+    float GetFarmsProductionRelativePriceHotClimateModifer () const;
+    void SetFarmsProductionRelativePriceHotClimateModifer (float farmsProductionRelativePriceHotClimateModifer);
+
+    float GetFarmsProductionRelativePriceTemperateClimateModifer () const;
+    void SetFarmsProductionRelativePriceTemperateClimateModifer (float farmsProductionRelativePriceTemperateClimateModifer);
+
+    float GetFarmsProductionRelativePriceTemperateContinentalClimateModifer () const;
+    void SetFarmsProductionRelativePriceTemperateContinentalClimateModifer (float farmsProductionRelativePriceTemperateContinentalClimateModifer);
+
+    float GetFarmsProductionRelativePriceDesertClimateModifer () const;
+    void SetFarmsProductionRelativePriceDesertClimateModifer (float farmsProductionRelativePriceDesertClimateModifer);
+
+    float GetFarmsProductionRelativePriceColdClimateModifer () const;
+    void SetFarmsProductionRelativePriceColdClimateModifer (float farmsProductionRelativePriceColdClimateModifer);
+
+    float GetFarmsProductionQualityTropicalClimateModifer () const;
+    void SetFarmsProductionQualityTropicalClimateModifer (float farmsProductionQualityTropicalClimateModifer);
+
+    float GetFarmsProductionQualityHotClimateModifer () const;
+    void SetFarmsProductionQualityHotClimateModifer (float farmsProductionQualityHotClimateModifer);
+
+    float GetFarmsProductionQualityTemperateClimateModifer () const;
+    void SetFarmsProductionQualityTemperateClimateModifer (float farmsProductionQualityTemperateClimateModifer);
+
+    float GetFarmsProductionQualityTemperateContinentalClimateModifer () const;
+    void SetFarmsProductionQualityTemperateContinentalClimateModifer (float farmsProductionQualityTemperateContinentalClimateModifer);
+
+    float GetFarmsProductionQualityDesertClimateModifer () const;
+    void SetFarmsProductionQualityDesertClimateModifer (float farmsProductionQualityDesertClimateModifer);
+
+    float GetFarmsProductionQualityColdClimateModifer () const;
+    void SetFarmsProductionQualityColdClimateModifer (float farmsProductionQualityColdClimateModifer);
+
+    float GetMinesProductionRelativePriceHasCoalModifer () const;
+    void SetMinesProductionRelativePriceHasCoalModifer (float minesProductionRelativePriceHasCoalModifer);
+
+    float GetMinesProductionRelativePriceHasIronModifer () const;
+    void SetMinesProductionRelativePriceHasIronModifer (float minesProductionRelativePriceHasIronModifer);
+
+    float GetMinesProductionRelativePriceHasSilverModifer () const;
+    void SetMinesProductionRelativePriceHasSilverModifer (float minesProductionRelativePriceHasSilverModifer);
+
+    float GetMinesProductionRelativePriceHasGoldModifer () const;
+    void SetMinesProductionRelativePriceHasGoldModifer (float minesProductionRelativePriceHasGoldModifer);
+
+    float GetMinesProductionQualityHasCoalModifer () const;
+    void SetMinesProductionQualityHasCoalModifer (float minesProductionQualityHasCoalModifer);
+
+    float GetMinesProductionQualityHasIronModifer () const;
+    void SetMinesProductionQualityHasIronModifer (float minesProductionQualityHasIronModifer);
+
+    float GetMinesProductionQualityHasSilverModifer () const;
+    void SetMinesProductionQualityHasSilverModifer (float minesProductionQualityHasSilverModifer);
+
+    float GetMinesProductionQualityHasGoldModifer () const;
+    void SetMinesProductionQualityHasGoldModifer (float minesProductionQualityHasGoldModifer);
+
+    float GetIndustryProductionRelativePriceHasCoalModifer () const;
+    void SetIndustryProductionRelativePriceHasCoalModifer (float industryProductionRelativePriceHasCoalModifer);
+
+    float GetIndustryProductionRelativePriceHasIronModifer () const;
+    void SetIndustryProductionRelativePriceHasIronModifer (float industryProductionRelativePriceHasIronModifer);
+
+    float GetIndustryProductionRelativePriceHasSilverModifer () const;
+    void SetIndustryProductionRelativePriceHasSilverModifer (float industryProductionRelativePriceHasSilverModifer);
+
+    float GetIndustryProductionRelativePriceHasGoldModifer () const;
+    void SetIndustryProductionRelativePriceHasGoldModifer (float industryProductionRelativePriceHasGoldModifer);
+
+    float GetIndustryProductionQualityHasCoalModifer () const;
+    void SetIndustryProductionQualityHasCoalModifer (float industryProductionQualityHasCoalModifer);
+
+    float GetIndustryProductionQualityHasIronModifer () const;
+    void SetIndustryProductionQualityHasIronModifer (float industryProductionQualityHasIronModifer);
+
+    float GetIndustryProductionQualityHasSilverModifer () const;
+    void SetIndustryProductionQualityHasSilverModifer (float industryProductionQualityHasSilverModifer);
+
+    float GetIndustryProductionQualityHasGoldModifer () const;
+    void SetIndustryProductionQualityHasGoldModifer (float industryProductionQualityHasGoldModifer);
 
     float GetMaximumGameDuration () const;
     void SetMaximumGameDuration (float maximumGameDuration);

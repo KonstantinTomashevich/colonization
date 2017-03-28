@@ -104,9 +104,8 @@ DistrictProductionInfo InternalTradeArea::CalculateDistrictProductionOfFarms (Di
     production.districtHash_ = district->GetHash ();
     production.amount_ = CalculateDistrictFarmsProductionAmount (district, configuration);
 
-    // TODO: Implement farms production quality and relative price calculation.
-    production.relativePrice_ = 1.0f;
-    production.quality_ = 1.0f;
+    production.relativePrice_ = CalculateDistrictFarmsProductionRelativePrice (district, configuration);
+    production.quality_ =  CalculateDistrictFarmsProductionQuality (district, configuration);
     production.selled_ = 0.0f;
     production.CalculateSellability ();
     return production;
@@ -118,9 +117,8 @@ DistrictProductionInfo InternalTradeArea::CalculateDistrictProductionOfMines (Di
     production.districtHash_ = district->GetHash ();
     production.amount_ = CalculateDistrictMinesProductionAmount (district, configuration);
 
-    // TODO: Implement mines production quality and relative price calculation.
-    production.relativePrice_ = 1.0f;
-    production.quality_ = 1.0f;
+    production.relativePrice_ = CalculateDistrictMinesProductionRelativePrice (district, configuration);
+    production.quality_ =  CalculateDistrictMinesProductionQuality (district, configuration);
     production.selled_ = 0.0f;
     production.CalculateSellability ();
     return production;
@@ -132,12 +130,173 @@ DistrictProductionInfo InternalTradeArea::CalculateDistrictProductionOfIndustry 
     production.districtHash_ = district->GetHash ();
     production.amount_ = CalculateDistrictIndustryProductionAmount (district, configuration);
 
-    // TODO: Implement industry production quality and relative price calculation.
-    production.relativePrice_ = 1.0f;
-    production.quality_ = 1.0f;
+    production.relativePrice_ = CalculateDistrictIndustryProductionRelativePrice (district, configuration);
+    production.quality_ =  CalculateDistrictIndustryProductionQuality (district, configuration);
     production.selled_ = 0.0f;
     production.CalculateSellability ();
     return production;
+}
+
+float InternalTradeArea::CalculateDistrictFarmsProductionRelativePrice (District *district, GameConfiguration *configuration)
+{
+    float farmsProductionRelativePrice = 1.0f;
+    if (district->GetClimate () == CLIMATE_TROPICAL)
+    {
+        farmsProductionRelativePrice *= configuration->GetFarmsProductionRelativePriceTropicalClimateModifer ();
+    }
+    else if (district->GetClimate () == CLIMATE_HOT)
+    {
+        farmsProductionRelativePrice *= configuration->GetFarmsProductionRelativePriceHotClimateModifer ();
+    }
+    else if (district->GetClimate () == CLIMATE_TEMPERATE)
+    {
+        farmsProductionRelativePrice *= configuration->GetFarmsProductionRelativePriceTemperateClimateModifer ();
+    }
+    else if (district->GetClimate () == CLIMATE_TEMPERATE_CONTINENTAL)
+    {
+        farmsProductionRelativePrice *= configuration->GetFarmsProductionRelativePriceTemperateContinentalClimateModifer ();
+    }
+    else if (district->GetClimate () == CLIMATE_DESERT)
+    {
+        farmsProductionRelativePrice *= configuration->GetFarmsProductionRelativePriceDesertClimateModifer ();
+    }
+    else if (district->GetClimate () == CLIMATE_COLD)
+    {
+        farmsProductionRelativePrice *= configuration->GetFarmsProductionRelativePriceColdClimateModifer ();
+    }
+
+    farmsProductionRelativePrice /= sqrt (district->GetLandAverageFertility ());
+    farmsProductionRelativePrice *= sqrt (sqrt (district->GetFarmsEvolutionPoints ()));
+    return farmsProductionRelativePrice;
+}
+
+float InternalTradeArea::CalculateDistrictMinesProductionRelativePrice (District *district, GameConfiguration *configuration)
+{
+    float minesProductionRelativePrice = 1.0f;
+    if (district->HasCoalDeposits ())
+    {
+        minesProductionRelativePrice *= configuration->GetMinesProductionRelativePriceHasCoalModifer ();
+    }
+    if (district->HasIronDeposits ())
+    {
+        minesProductionRelativePrice *= configuration->GetMinesProductionRelativePriceHasIronModifer ();
+    }
+    if (district->HasSilverDeposits ())
+    {
+        minesProductionRelativePrice *= configuration->GetMinesProductionRelativePriceHasSilverModifer ();
+    }
+    if (district->HasGoldDeposits ())
+    {
+        minesProductionRelativePrice *= configuration->GetMinesProductionRelativePriceHasGoldModifer ();
+    }
+
+    minesProductionRelativePrice *= sqrt (sqrt (district->GetMinesEvolutionPoints ()));
+    return minesProductionRelativePrice;
+}
+
+float InternalTradeArea::CalculateDistrictIndustryProductionRelativePrice (District *district, GameConfiguration *configuration)
+{
+    float industryProductionRelativePrice = 1.0f;
+    if (district->HasCoalDeposits ())
+    {
+        industryProductionRelativePrice *= configuration->GetIndustryProductionRelativePriceHasCoalModifer ();
+    }
+    if (district->HasIronDeposits ())
+    {
+        industryProductionRelativePrice *= configuration->GetIndustryProductionRelativePriceHasIronModifer ();
+    }
+    if (district->HasSilverDeposits ())
+    {
+        industryProductionRelativePrice *= configuration->GetIndustryProductionRelativePriceHasSilverModifer ();
+    }
+    if (district->HasGoldDeposits ())
+    {
+        industryProductionRelativePrice *= configuration->GetIndustryProductionRelativePriceHasGoldModifer ();
+    }
+
+    industryProductionRelativePrice *= sqrt (sqrt (district->GetIndustryEvolutionPoints ()));
+    return industryProductionRelativePrice;
+}
+
+float InternalTradeArea::CalculateDistrictFarmsProductionQuality (District *district, GameConfiguration *configuration)
+{
+    float farmsProductionQuality = 1.0f;
+    if (district->GetClimate () == CLIMATE_TROPICAL)
+    {
+        farmsProductionQuality *= configuration->GetFarmsProductionQualityTropicalClimateModifer ();
+    }
+    else if (district->GetClimate () == CLIMATE_HOT)
+    {
+        farmsProductionQuality *= configuration->GetFarmsProductionQualityHotClimateModifer ();
+    }
+    else if (district->GetClimate () == CLIMATE_TEMPERATE)
+    {
+        farmsProductionQuality *= configuration->GetFarmsProductionQualityTemperateClimateModifer ();
+    }
+    else if (district->GetClimate () == CLIMATE_TEMPERATE_CONTINENTAL)
+    {
+        farmsProductionQuality *= configuration->GetFarmsProductionQualityTemperateContinentalClimateModifer ();
+    }
+    else if (district->GetClimate () == CLIMATE_DESERT)
+    {
+        farmsProductionQuality *= configuration->GetFarmsProductionQualityDesertClimateModifer ();
+    }
+    else if (district->GetClimate () == CLIMATE_COLD)
+    {
+        farmsProductionQuality *= configuration->GetFarmsProductionQualityColdClimateModifer ();
+    }
+
+    farmsProductionQuality *= district->GetLandAverageFertility ();
+    farmsProductionQuality *= sqrt (sqrt (district->GetFarmsEvolutionPoints ()));
+    return farmsProductionQuality;
+}
+
+float InternalTradeArea::CalculateDistrictMinesProductionQuality (District *district, GameConfiguration *configuration)
+{
+    float minesProductionQuality = 1.0f;
+    if (district->HasCoalDeposits ())
+    {
+        minesProductionQuality *= configuration->GetMinesProductionQualityHasCoalModifer ();
+    }
+    if (district->HasIronDeposits ())
+    {
+        minesProductionQuality *= configuration->GetMinesProductionQualityHasIronModifer ();
+    }
+    if (district->HasSilverDeposits ())
+    {
+        minesProductionQuality *= configuration->GetMinesProductionQualityHasSilverModifer ();
+    }
+    if (district->HasGoldDeposits ())
+    {
+        minesProductionQuality *= configuration->GetMinesProductionQualityHasGoldModifer ();
+    }
+
+    minesProductionQuality *= sqrt (sqrt (district->GetMinesEvolutionPoints ()));
+    return minesProductionQuality;
+}
+
+float InternalTradeArea::CalculateDistrictIndustryProductionQuality (District *district, GameConfiguration *configuration)
+{
+    float industryProductionQuality = 1.0f;
+    if (district->HasCoalDeposits ())
+    {
+        industryProductionQuality *= configuration->GetIndustryProductionQualityHasCoalModifer ();
+    }
+    if (district->HasIronDeposits ())
+    {
+        industryProductionQuality *= configuration->GetIndustryProductionQualityHasIronModifer ();
+    }
+    if (district->HasSilverDeposits ())
+    {
+        industryProductionQuality *= configuration->GetIndustryProductionQualityHasSilverModifer ();
+    }
+    if (district->HasGoldDeposits ())
+    {
+        industryProductionQuality *= configuration->GetIndustryProductionQualityHasGoldModifer ();
+    }
+
+    industryProductionQuality *= sqrt (sqrt (district->GetIndustryEvolutionPoints ()));
+    return industryProductionQuality;
 }
 
 void InternalTradeArea::CalculateTotalProductionOfFarms (Urho3D::PODVector <District *> &realDistricts, GameConfiguration *configuration, Urho3D::Vector <DistrictProductionInfo> &output)
@@ -300,8 +459,8 @@ void InternalTradeArea::ProcessFarmsBalance (Map *map, GameConfiguration *config
         District *district = map->GetDistrictByHash (productionInfo.districtHash_);
 
         float farmsBalanceAdditionInternal = productionInfo.selled_ *
-                configuration->GetFarmsProductionInternalCost () * updateDelay *
-                (1.0f - configuration->GetInternalTaxes ());
+                configuration->GetFarmsProductionInternalCost () * productionInfo.relativePrice_ *
+                updateDelay * (1.0f - configuration->GetInternalTaxes ());
 
         float fromFarmsToLogistics = farmsBalanceAdditionInternal * configuration->GetTradeAreaFarmsLogisticsExpenses ();
         if (changeDistrictsVars)
@@ -318,8 +477,8 @@ void InternalTradeArea::ProcessFarmsBalance (Map *map, GameConfiguration *config
         farmsBalanceAdditionInternal -= fromFarmsToLogistics;
         farmsBalanceAdditionInternal -= fromFarmsToDefense;
         float farmsBalanceAdditionExternal = (productionInfo.amount_ - productionInfo.selled_) *
-                configuration->GetFarmsProductionExternalCost () * updateDelay *
-                (1.0f - configuration->GetExternalTaxes ());
+                configuration->GetFarmsProductionExternalCost () * productionInfo.relativePrice_ *
+                updateDelay * (1.0f - configuration->GetExternalTaxes ());
 
         float farmsBalanceAddition =
                 farmsBalanceAdditionInternal * configuration->GetTradeAreaInternalProfitToBalance () +
@@ -346,8 +505,8 @@ void InternalTradeArea::ProcessMinesBalance (Map *map, GameConfiguration *config
         District *district = map->GetDistrictByHash (productionInfo.districtHash_);
 
         float minesBalanceAdditionInternal = productionInfo.selled_ *
-                configuration->GetMinesProductionInternalCost () * updateDelay *
-                (1.0f - configuration->GetInternalTaxes ());
+                configuration->GetMinesProductionInternalCost () * productionInfo.relativePrice_ *
+                updateDelay * (1.0f - configuration->GetInternalTaxes ());
 
         float fromMinesToLogistics = minesBalanceAdditionInternal * configuration->GetTradeAreaMinesLogisticsExpenses ();
         if (changeDistrictsVars)
@@ -364,8 +523,8 @@ void InternalTradeArea::ProcessMinesBalance (Map *map, GameConfiguration *config
         minesBalanceAdditionInternal -= fromMinesToLogistics;
         minesBalanceAdditionInternal -= fromMinesToDefense;
         float minesBalanceAdditionExternal = (productionInfo.amount_ - productionInfo.selled_) *
-                configuration->GetMinesProductionExternalCost () * updateDelay *
-                (1.0f - configuration->GetExternalTaxes ());
+                configuration->GetMinesProductionExternalCost () * productionInfo.relativePrice_ *
+                updateDelay * (1.0f - configuration->GetExternalTaxes ());
 
         float minesBalanceAddition =
                 minesBalanceAdditionInternal * configuration->GetTradeAreaInternalProfitToBalance () +
@@ -392,8 +551,8 @@ void InternalTradeArea::ProcessIndustryBalance (Map *map, GameConfiguration *con
         District *district = map->GetDistrictByHash (productionInfo.districtHash_);
 
         float industryBalanceAdditionInternal = productionInfo.selled_ *
-                configuration->GetIndustryProductionInternalCost () * updateDelay *
-                (1.0f - configuration->GetInternalTaxes ());
+                configuration->GetIndustryProductionInternalCost () * productionInfo.relativePrice_ *
+                updateDelay * (1.0f - configuration->GetInternalTaxes ());
 
         float fromIndustryToLogistics = industryBalanceAdditionInternal * configuration->GetTradeAreaIndustryLogisticsExpenses ();
         if (changeDistrictsVars)
@@ -410,8 +569,8 @@ void InternalTradeArea::ProcessIndustryBalance (Map *map, GameConfiguration *con
         industryBalanceAdditionInternal -= fromIndustryToLogistics;
         industryBalanceAdditionInternal -= fromIndustryToDefense;
         float industryBalanceAdditionExternal = (productionInfo.amount_ - productionInfo.selled_) *
-                configuration->GetIndustryProductionExternalCost () * updateDelay *
-                (1.0f - configuration->GetExternalTaxes ());
+                configuration->GetIndustryProductionExternalCost () * productionInfo.relativePrice_ *
+                updateDelay * (1.0f - configuration->GetExternalTaxes ());
 
         float industryBalanceAddition =
                 industryBalanceAdditionInternal * configuration->GetTradeAreaInternalProfitToBalance () +
@@ -504,6 +663,78 @@ void InternalTradeArea::CallDistrictsUpdate (Urho3D::PODVector<District *> &dist
     }
 }
 
+float InternalTradeArea::CalculateSoldFarmsProductionCost (Urho3D::Vector <DistrictProductionInfo> &production, GameConfiguration *configuration)
+{
+    float soldFarmsProductionCost = 0.0f;
+    for (int index = 0; index < production.Size (); index++)
+    {
+        DistrictProductionInfo productionInfo = production.At (index);
+        soldFarmsProductionCost += productionInfo.selled_ * productionInfo.relativePrice_ *
+                configuration->GetFarmsProductionInternalCost ();
+    }
+    return soldFarmsProductionCost;
+}
+
+float InternalTradeArea::CalculateSoldMinesProductionCost (Urho3D::Vector <DistrictProductionInfo> &production, GameConfiguration *configuration)
+{
+    float soldMinesProductionCost = 0.0f;
+    for (int index = 0; index < production.Size (); index++)
+    {
+        DistrictProductionInfo productionInfo = production.At (index);
+        soldMinesProductionCost += productionInfo.selled_ * productionInfo.relativePrice_ *
+                configuration->GetMinesProductionInternalCost ();
+    }
+    return soldMinesProductionCost;
+}
+
+float InternalTradeArea::CalculateSoldIndustryProductionCost (Urho3D::Vector <DistrictProductionInfo> &production, GameConfiguration *configuration)
+{
+    float soldIndustryProductionCost = 0.0f;
+    for (int index = 0; index < production.Size (); index++)
+    {
+        DistrictProductionInfo productionInfo = production.At (index);
+        soldIndustryProductionCost += productionInfo.selled_ * productionInfo.relativePrice_ *
+                configuration->GetIndustryProductionInternalCost ();
+    }
+    return soldIndustryProductionCost;
+}
+
+float InternalTradeArea::CalculateUnsoldFarmsProductionCost (Urho3D::Vector <DistrictProductionInfo> &production, GameConfiguration *configuration)
+{
+    float unsoldFarmsProductionCost = 0.0f;
+    for (int index = 0; index < production.Size (); index++)
+    {
+        DistrictProductionInfo productionInfo = production.At (index);
+        unsoldFarmsProductionCost += (productionInfo.amount_ - productionInfo.selled_) *
+                productionInfo.relativePrice_ * configuration->GetFarmsProductionExternalCost ();
+    }
+    return unsoldFarmsProductionCost;
+}
+
+float InternalTradeArea::CalculateUnsoldMinesProductionCost (Urho3D::Vector <DistrictProductionInfo> &production, GameConfiguration *configuration)
+{
+    float unsoldMinesProductionCost = 0.0f;
+    for (int index = 0; index < production.Size (); index++)
+    {
+        DistrictProductionInfo productionInfo = production.At (index);
+        unsoldMinesProductionCost += (productionInfo.amount_ - productionInfo.selled_) *
+                productionInfo.relativePrice_ * configuration->GetMinesProductionExternalCost ();
+    }
+    return unsoldMinesProductionCost;
+}
+
+float InternalTradeArea::CalculateUnsoldIndustryProductionCost (Urho3D::Vector <DistrictProductionInfo> &production, GameConfiguration *configuration)
+{
+    float unsoldIndustryProductionCost = 0.0f;
+    for (int index = 0; index < production.Size (); index++)
+    {
+        DistrictProductionInfo productionInfo = production.At (index);
+        unsoldIndustryProductionCost += (productionInfo.amount_ - productionInfo.selled_) *
+                productionInfo.relativePrice_ * configuration->GetIndustryProductionExternalCost ();
+    }
+    return unsoldIndustryProductionCost;
+}
+
 InternalTradeArea::InternalTradeArea (Urho3D::Context *context) : Urho3D::Component (context),
     districtsHashes_ ()
 {
@@ -583,17 +814,17 @@ Urho3D::SharedPtr <TradeDistrictProcessingInfo> InternalTradeArea::ProcessTrade 
     float soldIndustryProduction = (industryUnsatisfiedConsumption <= 0.0f) ? totalIndustryConsumption : totalIndustryProduction;
 
     Urho3D::SharedPtr <TradeDistrictProcessingInfo> result (new TradeDistrictProcessingInfo (context_));
-    result->SetUnusedProductionOf ("farms", totalFarmsProduction - totalFarmsConsumption);
-    result->SetUnusedProductionOf ("mines", totalMinesProduction - totalMinesConsumption);
-    result->SetUnusedProductionOf ("industry", totalIndustryProduction - totalIndustryConsumption);
+    result->SetUnusedProductionOf ("farms", (totalFarmsProduction - totalFarmsConsumption) * updateDelay);
+    result->SetUnusedProductionOf ("mines", (totalMinesProduction - totalMinesConsumption) * updateDelay);
+    result->SetUnusedProductionOf ("industry", (totalIndustryProduction - totalIndustryConsumption) * updateDelay);
 
-    result->SetSoldTradeGoodsCost ( updateDelay * (soldFarmsProduction * farmsInternalProductionCost +
-                                                   soldMinesProduction * minesInternalProductionCost +
-                                                   soldIndustryProduction * industryInternalProductionCost));
+    result->SetSoldTradeGoodsCost (updateDelay * (CalculateSoldFarmsProductionCost (farmsTotalProduction, configuration) +
+                                                  CalculateSoldMinesProductionCost (minesTotalProduction, configuration) +
+                                                  CalculateSoldIndustryProductionCost (industryTotalProduction, configuration)));
 
-    result->SetUnsoldTradeGoodsCost ( updateDelay * ( (totalFarmsProduction - soldFarmsProduction) * farmsExternalProductionCost +
-                                                      (totalMinesProduction - soldMinesProduction) * minesExternalProductionCost +
-                                                      (totalIndustryProduction - soldIndustryProduction) * industryExternalProductionCost));
+    result->SetUnsoldTradeGoodsCost (updateDelay * (CalculateUnsoldFarmsProductionCost (farmsTotalProduction, configuration) +
+                                                    CalculateUnsoldMinesProductionCost (minesTotalProduction, configuration) +
+                                                    CalculateUnsoldIndustryProductionCost (industryTotalProduction, configuration)));
 
     Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> districtsBalanceAdditions;
     ProcessFarmsBalance (map, configuration, farmsTotalProduction, updateDelay, changeDistrictsVars, districtsBalanceAdditions);
@@ -776,7 +1007,7 @@ bool DistrictProductionInfoComparators::HigherSellability (DistrictProductionInf
 
 void DistrictProductionInfo::CalculateSellability ()
 {
-    sellability_ = (quality_ / relativePrice_) * (quality_ / relativePrice_);
+    sellability_ = quality_ / relativePrice_;
 }
 
 Urho3D::VariantMap DistrictProductionInfo::ToVariantMap ()
