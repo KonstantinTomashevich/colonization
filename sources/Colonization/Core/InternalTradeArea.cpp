@@ -104,9 +104,8 @@ DistrictProductionInfo InternalTradeArea::CalculateDistrictProductionOfFarms (Di
     production.districtHash_ = district->GetHash ();
     production.amount_ = CalculateDistrictFarmsProductionAmount (district, configuration);
 
-    // TODO: Implement farms production quality and relative price calculation.
-    production.relativePrice_ = 1.0f;
-    production.quality_ = 1.0f;
+    production.relativePrice_ = CalculateDistrictFarmsProductionRelativePrice (district, configuration);
+    production.quality_ =  CalculateDistrictFarmsProductionQuality (district, configuration);
     production.selled_ = 0.0f;
     production.CalculateSellability ();
     return production;
@@ -118,9 +117,8 @@ DistrictProductionInfo InternalTradeArea::CalculateDistrictProductionOfMines (Di
     production.districtHash_ = district->GetHash ();
     production.amount_ = CalculateDistrictMinesProductionAmount (district, configuration);
 
-    // TODO: Implement mines production quality and relative price calculation.
-    production.relativePrice_ = 1.0f;
-    production.quality_ = 1.0f;
+    production.relativePrice_ = CalculateDistrictMinesProductionRelativePrice (district, configuration);
+    production.quality_ =  CalculateDistrictMinesProductionQuality (district, configuration);
     production.selled_ = 0.0f;
     production.CalculateSellability ();
     return production;
@@ -132,12 +130,173 @@ DistrictProductionInfo InternalTradeArea::CalculateDistrictProductionOfIndustry 
     production.districtHash_ = district->GetHash ();
     production.amount_ = CalculateDistrictIndustryProductionAmount (district, configuration);
 
-    // TODO: Implement industry production quality and relative price calculation.
-    production.relativePrice_ = 1.0f;
-    production.quality_ = 1.0f;
+    production.relativePrice_ = CalculateDistrictIndustryProductionRelativePrice (district, configuration);
+    production.quality_ =  CalculateDistrictIndustryProductionQuality (district, configuration);
     production.selled_ = 0.0f;
     production.CalculateSellability ();
     return production;
+}
+
+float InternalTradeArea::CalculateDistrictFarmsProductionRelativePrice (District *district, GameConfiguration *configuration)
+{
+    float farmsProductionRelativePrice = 1.0f;
+    if (district->GetClimate () == CLIMATE_TROPICAL)
+    {
+        farmsProductionRelativePrice *= configuration->GetFarmsProductionRelativePriceTropicalClimateModifer ();
+    }
+    else if (district->GetClimate () == CLIMATE_HOT)
+    {
+        farmsProductionRelativePrice *= configuration->GetFarmsProductionRelativePriceHotClimateModifer ();
+    }
+    else if (district->GetClimate () == CLIMATE_TEMPERATE)
+    {
+        farmsProductionRelativePrice *= configuration->GetFarmsProductionRelativePriceTemperateClimateModifer ();
+    }
+    else if (district->GetClimate () == CLIMATE_TEMPERATE_CONTINENTAL)
+    {
+        farmsProductionRelativePrice *= configuration->GetFarmsProductionRelativePriceTemperateContinentalClimateModifer ();
+    }
+    else if (district->GetClimate () == CLIMATE_DESERT)
+    {
+        farmsProductionRelativePrice *= configuration->GetFarmsProductionRelativePriceDesertClimateModifer ();
+    }
+    else if (district->GetClimate () == CLIMATE_COLD)
+    {
+        farmsProductionRelativePrice *= configuration->GetFarmsProductionRelativePriceColdClimateModifer ();
+    }
+
+    farmsProductionRelativePrice /= sqrt (district->GetLandAverageFertility ());
+    farmsProductionRelativePrice *= sqrt (sqrt (district->GetFarmsEvolutionPoints ()));
+    return farmsProductionRelativePrice;
+}
+
+float InternalTradeArea::CalculateDistrictMinesProductionRelativePrice (District *district, GameConfiguration *configuration)
+{
+    float minesProductionRelativePrice = 1.0f;
+    if (district->HasCoalDeposits ())
+    {
+        minesProductionRelativePrice *= configuration->GetMinesProductionRelativePriceHasCoalModifer ();
+    }
+    if (district->HasIronDeposits ())
+    {
+        minesProductionRelativePrice *= configuration->GetMinesProductionRelativePriceHasIronModifer ();
+    }
+    if (district->HasSilverDeposits ())
+    {
+        minesProductionRelativePrice *= configuration->GetMinesProductionRelativePriceHasSilverModifer ();
+    }
+    if (district->HasGoldDeposits ())
+    {
+        minesProductionRelativePrice *= configuration->GetMinesProductionRelativePriceHasGoldModifer ();
+    }
+
+    minesProductionRelativePrice *= sqrt (sqrt (district->GetMinesEvolutionPoints ()));
+    return minesProductionRelativePrice;
+}
+
+float InternalTradeArea::CalculateDistrictIndustryProductionRelativePrice (District *district, GameConfiguration *configuration)
+{
+    float industryProductionRelativePrice = 1.0f;
+    if (district->HasCoalDeposits ())
+    {
+        industryProductionRelativePrice *= configuration->GetIndustryProductionRelativePriceHasCoalModifer ();
+    }
+    if (district->HasIronDeposits ())
+    {
+        industryProductionRelativePrice *= configuration->GetIndustryProductionRelativePriceHasIronModifer ();
+    }
+    if (district->HasSilverDeposits ())
+    {
+        industryProductionRelativePrice *= configuration->GetIndustryProductionRelativePriceHasSilverModifer ();
+    }
+    if (district->HasGoldDeposits ())
+    {
+        industryProductionRelativePrice *= configuration->GetIndustryProductionRelativePriceHasGoldModifer ();
+    }
+
+    industryProductionRelativePrice *= sqrt (sqrt (district->GetIndustryEvolutionPoints ()));
+    return industryProductionRelativePrice;
+}
+
+float InternalTradeArea::CalculateDistrictFarmsProductionQuality (District *district, GameConfiguration *configuration)
+{
+    float farmsProductionQuality = 1.0f;
+    if (district->GetClimate () == CLIMATE_TROPICAL)
+    {
+        farmsProductionQuality *= configuration->GetFarmsProductionQualityTropicalClimateModifer ();
+    }
+    else if (district->GetClimate () == CLIMATE_HOT)
+    {
+        farmsProductionQuality *= configuration->GetFarmsProductionQualityHotClimateModifer ();
+    }
+    else if (district->GetClimate () == CLIMATE_TEMPERATE)
+    {
+        farmsProductionQuality *= configuration->GetFarmsProductionQualityTemperateClimateModifer ();
+    }
+    else if (district->GetClimate () == CLIMATE_TEMPERATE_CONTINENTAL)
+    {
+        farmsProductionQuality *= configuration->GetFarmsProductionQualityTemperateContinentalClimateModifer ();
+    }
+    else if (district->GetClimate () == CLIMATE_DESERT)
+    {
+        farmsProductionQuality *= configuration->GetFarmsProductionQualityDesertClimateModifer ();
+    }
+    else if (district->GetClimate () == CLIMATE_COLD)
+    {
+        farmsProductionQuality *= configuration->GetFarmsProductionQualityColdClimateModifer ();
+    }
+
+    farmsProductionQuality *= district->GetLandAverageFertility ();
+    farmsProductionQuality *= sqrt (sqrt (district->GetFarmsEvolutionPoints ()));
+    return farmsProductionQuality;
+}
+
+float InternalTradeArea::CalculateDistrictMinesProductionQuality (District *district, GameConfiguration *configuration)
+{
+    float minesProductionQuality = 1.0f;
+    if (district->HasCoalDeposits ())
+    {
+        minesProductionQuality *= configuration->GetMinesProductionQualityHasCoalModifer ();
+    }
+    if (district->HasIronDeposits ())
+    {
+        minesProductionQuality *= configuration->GetMinesProductionQualityHasIronModifer ();
+    }
+    if (district->HasSilverDeposits ())
+    {
+        minesProductionQuality *= configuration->GetMinesProductionQualityHasSilverModifer ();
+    }
+    if (district->HasGoldDeposits ())
+    {
+        minesProductionQuality *= configuration->GetMinesProductionQualityHasGoldModifer ();
+    }
+
+    minesProductionQuality *= sqrt (sqrt (district->GetMinesEvolutionPoints ()));
+    return minesProductionQuality;
+}
+
+float InternalTradeArea::CalculateDistrictIndustryProductionQuality (District *district, GameConfiguration *configuration)
+{
+    float industryProductionQuality = 1.0f;
+    if (district->HasCoalDeposits ())
+    {
+        industryProductionQuality *= configuration->GetIndustryProductionQualityHasCoalModifer ();
+    }
+    if (district->HasIronDeposits ())
+    {
+        industryProductionQuality *= configuration->GetIndustryProductionQualityHasIronModifer ();
+    }
+    if (district->HasSilverDeposits ())
+    {
+        industryProductionQuality *= configuration->GetIndustryProductionQualityHasSilverModifer ();
+    }
+    if (district->HasGoldDeposits ())
+    {
+        industryProductionQuality *= configuration->GetIndustryProductionQualityHasGoldModifer ();
+    }
+
+    industryProductionQuality *= sqrt (sqrt (district->GetIndustryEvolutionPoints ()));
+    return industryProductionQuality;
 }
 
 void InternalTradeArea::CalculateTotalProductionOfFarms (Urho3D::PODVector <District *> &realDistricts, GameConfiguration *configuration, Urho3D::Vector <DistrictProductionInfo> &output)
@@ -776,7 +935,7 @@ bool DistrictProductionInfoComparators::HigherSellability (DistrictProductionInf
 
 void DistrictProductionInfo::CalculateSellability ()
 {
-    sellability_ = (quality_ / relativePrice_) * (quality_ / relativePrice_);
+    sellability_ = quality_ / relativePrice_;
 }
 
 Urho3D::VariantMap DistrictProductionInfo::ToVariantMap ()

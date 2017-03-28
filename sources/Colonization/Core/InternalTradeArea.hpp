@@ -63,12 +63,6 @@ public:
     void SetSoldTradeGoodsCost (float soldTradeGoodsCost);
 };
 
-// TODO: Maybe reimplement later to add some features?
-// Maybe don't calculate whole production?
-// Firstly calculate production of all districts separately.
-// Then sort them by sellability: for example (goodsQuality / relativePrice) ^ 2.
-// Them firstly sell better production.
-
 class InternalTradeArea : public Urho3D::Component
 {
 URHO3D_OBJECT (InternalTradeArea, Component)
@@ -85,6 +79,14 @@ protected:
     DistrictProductionInfo CalculateDistrictProductionOfFarms (District *district, GameConfiguration *configuration);
     DistrictProductionInfo CalculateDistrictProductionOfMines (District *district, GameConfiguration *configuration);
     DistrictProductionInfo CalculateDistrictProductionOfIndustry (District *district, GameConfiguration *configuration);
+
+    float CalculateDistrictFarmsProductionRelativePrice (District *district, GameConfiguration *configuration);
+    float CalculateDistrictMinesProductionRelativePrice (District *district, GameConfiguration *configuration);
+    float CalculateDistrictIndustryProductionRelativePrice (District *district, GameConfiguration *configuration);
+
+    float CalculateDistrictFarmsProductionQuality (District *district, GameConfiguration *configuration);
+    float CalculateDistrictMinesProductionQuality (District *district, GameConfiguration *configuration);
+    float CalculateDistrictIndustryProductionQuality (District *district, GameConfiguration *configuration);
 
     void CalculateTotalProductionOfFarms (Urho3D::PODVector <District *> &realDistricts, GameConfiguration *configuration, Urho3D::Vector <DistrictProductionInfo> &output);
     void CalculateTotalProductionOfMines (Urho3D::PODVector <District *> &realDistricts, GameConfiguration *configuration, Urho3D::Vector <DistrictProductionInfo> &output);
