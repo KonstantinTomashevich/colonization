@@ -89,6 +89,16 @@ protected:
     float farmsProductionQualityDesertClimateModifer_;
     float farmsProductionQualityColdClimateModifer_;
 
+    float minesProductionRelativePriceHasCoalModifer_;
+    float minesProductionRelativePriceHasIronModifer_;
+    float minesProductionRelativePriceHasSilverModifer_;
+    float minesProductionRelativePriceHasGoldModifer_;
+
+    float minesProductionQualityHasCoalModifer_;
+    float minesProductionQualityHasIronModifer_;
+    float minesProductionQualityHasSilverModifer_;
+    float minesProductionQualityHasGoldModifer_;
+
     float maximumGameDuration_;
     float colonyPointsModifer_;
     float unitFleetPointsModifer_;
@@ -290,6 +300,30 @@ public:
 
     float GetFarmsProductionQualityColdClimateModifer () const;
     void SetFarmsProductionQualityColdClimateModifer (float farmsProductionQualityColdClimateModifer);
+
+    float GetMinesProductionRelativePriceHasCoalModifer () const;
+    void SetMinesProductionRelativePriceHasCoalModifer (float minesProductionRelativePriceHasCoalModifer);
+
+    float GetMinesProductionRelativePriceHasIronModifer () const;
+    void SetMinesProductionRelativePriceHasIronModifer (float minesProductionRelativePriceHasIronModifer);
+
+    float GetMinesProductionRelativePriceHasSilverModifer () const;
+    void SetMinesProductionRelativePriceHasSilverModifer (float minesProductionRelativePriceHasSilverModifer);
+
+    float GetMinesProductionRelativePriceHasGoldModifer () const;
+    void SetMinesProductionRelativePriceHasGoldModifer (float minesProductionRelativePriceHasGoldModifer);
+
+    float GetMinesProductionQualityHasCoalModifer () const;
+    void SetMinesProductionQualityHasCoalModifer (float minesProductionQualityHasCoalModifer);
+
+    float GetMinesProductionQualityHasIronModifer () const;
+    void SetMinesProductionQualityHasIronModifer (float minesProductionQualityHasIronModifer);
+
+    float GetMinesProductionQualityHasSilverModifer () const;
+    void SetMinesProductionQualityHasSilverModifer (float minesProductionQualityHasSilverModifer);
+
+    float GetMinesProductionQualityHasGoldModifer () const;
+    void SetMinesProductionQualityHasGoldModifer (float minesProductionQualityHasGoldModifer);
 
     float GetMaximumGameDuration () const;
     void SetMaximumGameDuration (float maximumGameDuration);

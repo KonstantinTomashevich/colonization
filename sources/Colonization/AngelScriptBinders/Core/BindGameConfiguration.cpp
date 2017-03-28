@@ -214,6 +214,30 @@ void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String clas
     engine->RegisterObjectMethod (className.CString (), "float get_farmsProductionQualityColdClimateModifer () const", asMETHOD (GameConfiguration, GetFarmsProductionQualityColdClimateModifer), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_farmsProductionQualityColdClimateModifer (float farmsProductionQualityColdClimateModifer)", asMETHOD (GameConfiguration, SetFarmsProductionQualityColdClimateModifer), asCALL_THISCALL);
 
+    engine->RegisterObjectMethod (className.CString (), "float get_minesProductionRelativePriceHasCoalModifer () const", asMETHOD (GameConfiguration, GetMinesProductionRelativePriceHasCoalModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_minesProductionRelativePriceHasCoalModifer (float minesProductionRelativePriceHasCoalModifer)", asMETHOD (GameConfiguration, SetMinesProductionRelativePriceHasCoalModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_minesProductionRelativePriceHasIronModifer () const", asMETHOD (GameConfiguration, GetMinesProductionRelativePriceHasIronModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_minesProductionRelativePriceHasIronModifer (float minesProductionRelativePriceHasIronModifer)", asMETHOD (GameConfiguration, SetMinesProductionRelativePriceHasIronModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_minesProductionRelativePriceHasSilverModifer () const", asMETHOD (GameConfiguration, GetMinesProductionRelativePriceHasSilverModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_minesProductionRelativePriceHasSilverModifer (float minesProductionRelativePriceHasSilverModifer)", asMETHOD (GameConfiguration, SetMinesProductionRelativePriceHasSilverModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_minesProductionRelativePriceHasGoldModifer () const", asMETHOD (GameConfiguration, GetMinesProductionRelativePriceHasGoldModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_minesProductionRelativePriceHasGoldModifer (float minesProductionRelativePriceHasGoldModifer)", asMETHOD (GameConfiguration, SetMinesProductionRelativePriceHasGoldModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_minesProductionQualityHasCoalModifer () const", asMETHOD (GameConfiguration, GetMinesProductionQualityHasCoalModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_minesProductionQualityHasCoalModifer (float minesProductionQualityHasCoalModifer)", asMETHOD (GameConfiguration, SetMinesProductionQualityHasCoalModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_minesProductionQualityHasIronModifer () const", asMETHOD (GameConfiguration, GetMinesProductionQualityHasIronModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_minesProductionQualityHasIronModifer (float minesProductionQualityHasIronModifer)", asMETHOD (GameConfiguration, SetMinesProductionQualityHasIronModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_minesProductionQualityHasSilverModifer () const", asMETHOD (GameConfiguration, GetMinesProductionQualityHasSilverModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_minesProductionQualityHasSilverModifer (float minesProductionQualityHasSilverModifer)", asMETHOD (GameConfiguration, SetMinesProductionQualityHasSilverModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_minesProductionQualityHasGoldModifer () const", asMETHOD (GameConfiguration, GetMinesProductionQualityHasGoldModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_minesProductionQualityHasGoldModifer (float minesProductionQualityHasGoldModifer)", asMETHOD (GameConfiguration, SetMinesProductionQualityHasGoldModifer), asCALL_THISCALL);
+
     engine->RegisterObjectMethod (className.CString (), "float get_maximumGameDuration () const", asMETHOD (GameConfiguration, GetMaximumGameDuration), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_maximumGameDuration (float maximumGameDuration)", asMETHOD (GameConfiguration, SetMaximumGameDuration), asCALL_THISCALL);
 

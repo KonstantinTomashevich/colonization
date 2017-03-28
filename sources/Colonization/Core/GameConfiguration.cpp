@@ -95,6 +95,16 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
     farmsProductionQualityDesertClimateModifer_ (0.9f),
     farmsProductionQualityColdClimateModifer_ (0.9f),
 
+    minesProductionRelativePriceHasCoalModifer_ (1.15f),
+    minesProductionRelativePriceHasIronModifer_ (1.25f),
+    minesProductionRelativePriceHasSilverModifer_ (1.4f),
+    minesProductionRelativePriceHasGoldModifer_ (1.5f),
+
+    minesProductionQualityHasCoalModifer_ (1.2f),
+    minesProductionQualityHasIronModifer_ (1.2f),
+    minesProductionQualityHasSilverModifer_ (1.1f),
+    minesProductionQualityHasGoldModifer_ (1.1f),
+
     maximumGameDuration_ (1200.0f),
     colonyPointsModifer_ (0.15f),
     unitFleetPointsModifer_ (0.5f),
@@ -253,6 +263,24 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
                                SetFarmsProductionQualityDesertClimateModifer, float, 0.9f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Farms Production Quality Cold Climate Modifer", GetFarmsProductionQualityColdClimateModifer,
                                SetFarmsProductionQualityColdClimateModifer, float, 0.9f, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production Relative Price Has Coal Modifer", GetMinesProductionRelativePriceHasCoalModifer,
+                               SetMinesProductionRelativePriceHasCoalModifer, float, 1.15f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production Relative Price Has Iron Modifer", GetMinesProductionRelativePriceHasIronModifer,
+                               SetMinesProductionRelativePriceHasIronModifer, float, 1.25f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production Relative Price Has Silver Modifer", GetMinesProductionRelativePriceHasSilverModifer,
+                               SetMinesProductionRelativePriceHasSilverModifer, float, 1.4f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production Relative Price Has Gold Modifer", GetMinesProductionRelativePriceHasGoldModifer,
+                               SetMinesProductionRelativePriceHasGoldModifer, float, 1.5f, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production Quality Has Coal Modifer", GetMinesProductionQualityHasCoalModifer,
+                               SetMinesProductionQualityHasCoalModifer, float, 1.2f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production Quality Has Iron Modifer", GetMinesProductionQualityHasIronModifer,
+                               SetMinesProductionQualityHasIronModifer, float, 1.2f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production Quality Has Silver Modifer", GetMinesProductionQualityHasSilverModifer,
+                               SetMinesProductionQualityHasSilverModifer, float, 1.1f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Mines Production Quality Has Gold Modifer", GetMinesProductionQualityHasGoldModifer,
+                               SetMinesProductionQualityHasGoldModifer, float, 1.1f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Maximum Game Duration", GetMaximumGameDuration,
                                SetMaximumGameDuration, float, 600.0f, Urho3D::AM_DEFAULT);
@@ -958,6 +986,86 @@ float GameConfiguration::GetFarmsProductionQualityColdClimateModifer () const
 void GameConfiguration::SetFarmsProductionQualityColdClimateModifer (float farmsProductionQualityColdClimateModifer)
 {
     farmsProductionQualityColdClimateModifer_ = farmsProductionQualityColdClimateModifer;
+}
+
+float GameConfiguration::GetMinesProductionRelativePriceHasCoalModifer () const
+{
+    return minesProductionRelativePriceHasCoalModifer_;
+}
+
+void GameConfiguration::SetMinesProductionRelativePriceHasCoalModifer (float minesProductionRelativePriceHasCoalModifer)
+{
+    minesProductionRelativePriceHasCoalModifer_ = minesProductionRelativePriceHasCoalModifer;
+}
+
+float GameConfiguration::GetMinesProductionRelativePriceHasIronModifer () const
+{
+    return minesProductionRelativePriceHasIronModifer_;
+}
+
+void GameConfiguration::SetMinesProductionRelativePriceHasIronModifer (float minesProductionRelativePriceHasIronModifer)
+{
+    minesProductionRelativePriceHasIronModifer_ = minesProductionRelativePriceHasIronModifer;
+}
+
+float GameConfiguration::GetMinesProductionRelativePriceHasSilverModifer () const
+{
+    return minesProductionRelativePriceHasSilverModifer_;
+}
+
+void GameConfiguration::SetMinesProductionRelativePriceHasSilverModifer (float minesProductionRelativePriceHasSilverModifer)
+{
+    minesProductionRelativePriceHasSilverModifer_ = minesProductionRelativePriceHasSilverModifer;
+}
+
+float GameConfiguration::GetMinesProductionRelativePriceHasGoldModifer () const
+{
+    return minesProductionRelativePriceHasGoldModifer_;
+}
+
+void GameConfiguration::SetMinesProductionRelativePriceHasGoldModifer (float minesProductionRelativePriceHasGoldModifer)
+{
+    minesProductionRelativePriceHasGoldModifer_ = minesProductionRelativePriceHasGoldModifer;
+}
+
+float GameConfiguration::GetMinesProductionQualityHasCoalModifer () const
+{
+    return minesProductionQualityHasCoalModifer_;
+}
+
+void GameConfiguration::SetMinesProductionQualityHasCoalModifer (float minesProductionQualityHasCoalModifer)
+{
+    minesProductionQualityHasCoalModifer_ = minesProductionQualityHasCoalModifer;
+}
+
+float GameConfiguration::GetMinesProductionQualityHasIronModifer () const
+{
+    return minesProductionQualityHasIronModifer_;
+}
+
+void GameConfiguration::SetMinesProductionQualityHasIronModifer (float minesProductionQualityHasIronModifer)
+{
+    minesProductionQualityHasIronModifer_ = minesProductionQualityHasIronModifer;
+}
+
+float GameConfiguration::GetMinesProductionQualityHasSilverModifer () const
+{
+    return minesProductionQualityHasSilverModifer_;
+}
+
+void GameConfiguration::SetMinesProductionQualityHasSilverModifer (float minesProductionQualityHasSilverModifer)
+{
+    minesProductionQualityHasSilverModifer_ = minesProductionQualityHasSilverModifer;
+}
+
+float GameConfiguration::GetMinesProductionQualityHasGoldModifer () const
+{
+    return minesProductionQualityHasGoldModifer_;
+}
+
+void GameConfiguration::SetMinesProductionQualityHasGoldModifer (float minesProductionQualityHasGoldModifer)
+{
+    minesProductionQualityHasGoldModifer_ = minesProductionQualityHasGoldModifer;
 }
 
 float GameConfiguration::GetMaximumGameDuration () const
