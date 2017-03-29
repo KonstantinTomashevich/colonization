@@ -64,8 +64,10 @@ protected:
 
     bool hasColony_;
     Urho3D::String colonyOwnerName_;
+    Urho3D::Vector <Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> > colonyActions_;
     float menCount_;
     float womenCount_;
+
     float farmsEvolutionPoints_;
     float minesEvolutionPoints_;
     float industryEvolutionPoints_;
@@ -96,6 +98,11 @@ public:
     static void RegisterObject (Urho3D::Context *context);
     void CalculateNeighbors (Urho3D::Vector <Urho3D::SharedPtr <District> > &allDistricts);
     void Invest (Urho3D::StringHash investitionType, float money);
+
+    void AddColonyAction (Urho3D::StringHash actionType, Urho3D::VariantMap &actionData);
+    int GetColonyActionsCount () const;
+    Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> GetColonyActionByIndex (int index) const;
+    void RemoveColonyActionByIndex (int index);
 
     void UpdateHash (Map *owner);
     Urho3D::StringHash GetHash () const;
@@ -168,6 +175,9 @@ public:
 
     Urho3D::String GetColonyOwnerName () const;
     void SetColonyOwnerName (const Urho3D::String &colonyOwnerName);
+
+    Urho3D::VariantVector GetColonyActionsAttribute () const;
+    void SetColonyActionsAttribute (const Urho3D::VariantVector &colonyActions);
 
     float GetMenCount () const;
     void SetMenCount (float menCount);

@@ -26,6 +26,16 @@ void District_SetNeighborsHashes (District *district, Urho3D::CScriptArray *arra
     district->SetNeighborsHashes (Urho3D::ArrayToPODVector <Urho3D::StringHash> (array));
 }
 
+Urho3D::StringHash District_GetColonyActionTypeByIndex (District *district, int index)
+{
+    return district->GetColonyActionByIndex (index).first_;
+}
+
+Urho3D::VariantMap District_GetColonyActionDataByIndex (District *district, int index)
+{
+    return district->GetColonyActionByIndex (index).second_;
+}
+
 void BindDistrict (Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
@@ -57,6 +67,11 @@ void BindDistrictInterface (Urho3D::Script *script, Urho3D::String className)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
     engine->RegisterObjectMethod (className.CString (), "StringHash get_hash () const", asMETHOD (District, GetHash), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void AddColonyAction (StringHash actionType, VariantMap actionData)", asMETHOD (District, AddColonyAction), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "int get_colonyActionsCount () const", asMETHOD (District, GetColonyActionsCount), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "StringHash GetColonyActionTypeByIndex (int index) const", asFUNCTION (District_GetColonyActionTypeByIndex), asCALL_CDECL_OBJFIRST);
+    engine->RegisterObjectMethod (className.CString (), "VariantMap GetColonyActionDataByIndex (int index) const", asFUNCTION (District_GetColonyActionDataByIndex), asCALL_CDECL_OBJFIRST);
+    engine->RegisterObjectMethod (className.CString (), "void RemoveColonyActionByIndex (int index)", asMETHOD (District, RemoveColonyActionByIndex), asCALL_THISCALL);
 
     engine->RegisterObjectMethod (className.CString (), "bool get_isSea () const", asMETHOD (District, IsSea), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_isSea (bool isSea)", asMETHOD (District, SetIsSea), asCALL_THISCALL);
