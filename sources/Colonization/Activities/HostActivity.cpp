@@ -5,9 +5,7 @@
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/Engine/Engine.h>
-
 #include <Urho3D/Graphics/Octree.h>
-#include <Urho3D/Resource/ResourceCache.h>
 #include <Urho3D/Resource/XMLFile.h>
 
 #include <Colonization/Core/District.hpp>
@@ -104,58 +102,23 @@ void HostActivity::SetupPlayingState ()
 {
     currentState_ = GAME_STATE_PLAYING;
     Urho3D::ResourceCache *resourceCache = context_->GetSubsystem <Urho3D::ResourceCache> ();
-    // Load map info and parse it.
     Urho3D::String configurationPath;
     Urho3D::String mapPath;
     Urho3D::String unitsPath;
-
     bool isMapLoaded = LoadAndParseMapInfo (configurationPath, mapPath, unitsPath);
     assert (isMapLoaded);
 
-    // Load game configuration.
-    Urho3D::Node *configurationNode = scene_->CreateChild ("configuration", Urho3D::LOCAL);
-    configurationNode->LoadXML (resourceCache->GetResource <Urho3D::XMLFile> (configurationPath)->GetRoot ());
-    GameConfiguration *configuration = configurationNode->GetComponent <GameConfiguration> ();
-    scene_->CloneComponent (configuration, Urho3D::REPLICATED);
-    configuration->Remove ();
-
-    // Load game map.
-    Urho3D::Node *mapNode = scene_->CreateChild ("map", Urho3D::REPLICATED);
-    mapNode->LoadXML (resourceCache->GetResource <Urho3D::XMLFile> (mapPath)->GetRoot ());
-    Map *map = mapNode->GetComponent <Map> ();
-    map->UpdateDistrictsList ();
-
-    // Load units and create units manager.
-    Urho3D::Node *unitsNode = scene_->CreateChild ("units", Urho3D::REPLICATED);
-    unitsNode->LoadXML (resourceCache->GetResource <Urho3D::XMLFile> (unitsPath)->GetRoot ());
-    UnitsManager *unitsManager = unitsNode->CreateComponent <UnitsManager> (Urho3D::LOCAL);
-    unitsManager->UpdateUnitsList ();
-
-    // Recalculate units hashes.
-    Urho3D::PODVector <Urho3D::Node *> units;
-    unitsNode->GetChildrenWithComponent <Unit> (units);
-    for (int index = 0; index < units.Size (); index++)
-    {
-        units.At (index)->GetComponent <Unit> ()->UpdateHash (unitsManager);
-    }
-
-    // Create server side components.
-    scene_->CreateComponent <ColoniesActionsProcessor> (Urho3D::LOCAL);
-    scene_->CreateComponent <ColoniesEvolutionManager> (Urho3D::LOCAL);
-    scene_->CreateComponent <TradeProcessor> (Urho3D::LOCAL);
-    scene_->CreateComponent <PlayersPointsCalculator> (Urho3D::LOCAL);
-    scene_->CreateComponent <VictoryProgressUpdater> (Urho3D::LOCAL);
-
-    // Ban new connections.
-    PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
-    playersManager->SetIsAcceptingNewConnections (false);
+    LoadGameConfiguration (resourceCache, configurationPath);
+    LoadMap (resourceCache, mapPath);
+    LoadUnits (resourceCache, unitsPath);
+    RecalculateUnitsHashes (scene_->GetChild ("units")->GetComponent <UnitsManager> ());
+    CreateServerProcessorsAndManagers ();
+    BanNewConnections ();
 }
 
 void HostActivity::SetupFinishedState ()
 {
     currentState_ = GAME_STATE_FINISHED;
-
-    // Dispose gameplay managers because game stops.
     scene_->GetChild ("units")->GetComponent <UnitsManager> ()->Remove ();
     scene_->GetComponent <ColoniesActionsProcessor> ()->Remove ();
     scene_->GetComponent <ColoniesEvolutionManager> ()->Remove ();
@@ -163,6 +126,54 @@ void HostActivity::SetupFinishedState ()
     scene_->GetComponent <PlayersPointsCalculator> ()->Remove ();
     scene_->GetComponent <VictoryProgressUpdater> ()->Remove ();
     scene_->SetUpdateEnabled (false);
+}
+
+void HostActivity::LoadGameConfiguration (Urho3D::ResourceCache *resourceCache, Urho3D::String configurationPath)
+{
+    Urho3D::Node *configurationNode = scene_->CreateChild ("configuration", Urho3D::LOCAL);
+    configurationNode->LoadXML (resourceCache->GetResource <Urho3D::XMLFile> (configurationPath)->GetRoot ());
+    GameConfiguration *configuration = configurationNode->GetComponent <GameConfiguration> ();
+    scene_->CloneComponent (configuration, Urho3D::REPLICATED);
+    configuration->Remove ();
+}
+
+void HostActivity::LoadMap (Urho3D::ResourceCache *resourceCache, Urho3D::String mapPath)
+{
+    Urho3D::Node *mapNode = scene_->CreateChild ("map", Urho3D::REPLICATED);
+    mapNode->LoadXML (resourceCache->GetResource <Urho3D::XMLFile> (mapPath)->GetRoot ());
+    Map *map = mapNode->GetComponent <Map> ();
+    map->UpdateDistrictsList ();
+}
+
+void HostActivity::LoadUnits (Urho3D::ResourceCache *resourceCache, Urho3D::String unitsPath)
+{
+    Urho3D::Node *unitsNode = scene_->CreateChild ("units", Urho3D::REPLICATED);
+    unitsNode->LoadXML (resourceCache->GetResource <Urho3D::XMLFile> (unitsPath)->GetRoot ());
+    UnitsManager *unitsManager = unitsNode->CreateComponent <UnitsManager> (Urho3D::LOCAL);
+    unitsManager->UpdateUnitsList ();
+}
+
+void HostActivity::RecalculateUnitsHashes (UnitsManager *unitsManager)
+{
+    for (int index = 0; index < unitsManager->GetUnitsCount (); index++)
+    {
+        unitsManager->GetUnitByIndex (index)->UpdateHash (unitsManager);
+    }
+}
+
+void HostActivity::CreateServerProcessorsAndManagers ()
+{
+    scene_->CreateComponent <ColoniesActionsProcessor> (Urho3D::LOCAL);
+    scene_->CreateComponent <ColoniesEvolutionManager> (Urho3D::LOCAL);
+    scene_->CreateComponent <TradeProcessor> (Urho3D::LOCAL);
+    scene_->CreateComponent <PlayersPointsCalculator> (Urho3D::LOCAL);
+    scene_->CreateComponent <VictoryProgressUpdater> (Urho3D::LOCAL);
+}
+
+void HostActivity::BanNewConnections ()
+{
+    PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
+    playersManager->SetIsAcceptingNewConnections (false);
 }
 
 bool HostActivity::LoadAndParseMapInfo (Urho3D::String &configurationPath, Urho3D::String &mapPath, Urho3D::String &unitsPath)
