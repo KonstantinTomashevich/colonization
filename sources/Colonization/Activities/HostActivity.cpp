@@ -16,7 +16,7 @@
 #include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Utils/Network/NetworkUpdateSmoother.hpp>
 
-#include <Colonization/Backend/ColoniesManager.hpp>
+#include <Colonization/Backend/ColoniesEvolutionManager.hpp>
 #include <Colonization/Backend/MessagesHandler.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/PlayersPointsCalculator.hpp>
@@ -139,7 +139,7 @@ void HostActivity::SetupPlayingState ()
     }
 
     // Create server side components.
-    scene_->CreateComponent <ColoniesManager> (Urho3D::LOCAL);
+    scene_->CreateComponent <ColoniesEvolutionManager> (Urho3D::LOCAL);
     scene_->CreateComponent <TradeProcessor> (Urho3D::LOCAL);
     scene_->CreateComponent <PlayersPointsCalculator> (Urho3D::LOCAL);
     scene_->CreateComponent <VictoryProgressUpdater> (Urho3D::LOCAL);
@@ -155,7 +155,7 @@ void HostActivity::SetupFinishedState ()
 
     // Dispose gameplay managers because game stops.
     scene_->GetChild ("units")->GetComponent <UnitsManager> ()->Remove ();
-    scene_->GetComponent <ColoniesManager> ()->Remove ();
+    scene_->GetComponent <ColoniesEvolutionManager> ()->Remove ();
     scene_->GetComponent <TradeProcessor> ()->Remove ();
     scene_->GetComponent <PlayersPointsCalculator> ()->Remove ();
     scene_->GetComponent <VictoryProgressUpdater> ()->Remove ();

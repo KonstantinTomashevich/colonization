@@ -1,5 +1,5 @@
 #include <Colonization/BuildConfiguration.hpp>
-#include "ColoniesManager.hpp"
+#include "ColoniesEvolutionManager.hpp"
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/Scene/SceneEvents.h>
 #include <Urho3D/IO/Log.h>
@@ -12,14 +12,14 @@
 
 namespace Colonization
 {
-float ColoniesManager::GetTotalColonyEvolution(District *colony)
+float ColoniesEvolutionManager::GetTotalColonyEvolution(District *colony)
 {
     return colony->GetFarmsEvolutionPoints () + colony->GetMinesEvolutionPoints () +
             colony->GetIndustryEvolutionPoints () + colony->GetLogisticsEvolutionPoints () +
             colony->GetDefenseEvolutionPoints ();
 }
 
-void ColoniesManager::ProcessColony (GameConfiguration *configuration, District *colony, float timeStep)
+void ColoniesEvolutionManager::ProcessColony (GameConfiguration *configuration, District *colony, float timeStep)
 {
     // TODO: Think about balance.
     float updatePoints = 0.0f;
@@ -40,7 +40,7 @@ void ColoniesManager::ProcessColony (GameConfiguration *configuration, District 
     counter->AddUpdatePoints (updatePoints);
 }
 
-float ColoniesManager::ProcessColonyPopulation (GameConfiguration *configuration, District *colony, float timeStep)
+float ColoniesEvolutionManager::ProcessColonyPopulation (GameConfiguration *configuration, District *colony, float timeStep)
 {
     // TODO: If colony population is very big, stop grow. Maybe automatically send colonists from it.
     float sexRatio = colony->GetMenCount () / colony->GetWomenCount ();
@@ -71,7 +71,7 @@ float ColoniesManager::ProcessColonyPopulation (GameConfiguration *configuration
     }
 }
 
-float ColoniesManager::ProcessColonyFarmsEvolution (GameConfiguration *configuration, District *colony, float timeStep)
+float ColoniesEvolutionManager::ProcessColonyFarmsEvolution (GameConfiguration *configuration, District *colony, float timeStep)
 {
     float totalColonyEvolution = GetTotalColonyEvolution (colony);
     float colonyFarmsEvolution = colony->GetFarmsEvolutionPoints ();
@@ -142,7 +142,7 @@ float ColoniesManager::ProcessColonyFarmsEvolution (GameConfiguration *configura
     return (evolutionAddition * 1500.0f);
 }
 
-float ColoniesManager::ProcessColonyMinesEvolution (GameConfiguration *configuration, District *colony, float timeStep)
+float ColoniesEvolutionManager::ProcessColonyMinesEvolution (GameConfiguration *configuration, District *colony, float timeStep)
 {
     float perspective = 1.0f;
     if (colony->GetForestsSquare () < (colony->GetForestsSquare () + colony->GetFarmingSquare ()) * 0.15f)
@@ -210,7 +210,7 @@ float ColoniesManager::ProcessColonyMinesEvolution (GameConfiguration *configura
     return (evolutionAddition * 1500.0f);
 }
 
-float ColoniesManager::ProcessColonyIndustryEvolution (GameConfiguration *configuration, District *colony, float timeStep)
+float ColoniesEvolutionManager::ProcessColonyIndustryEvolution (GameConfiguration *configuration, District *colony, float timeStep)
 {
     float perspective = 0.0f;
     perspective += sqrt (colony->GetMinesEvolutionPoints ()) * 0.75f;
@@ -261,7 +261,7 @@ float ColoniesManager::ProcessColonyIndustryEvolution (GameConfiguration *config
     return (evolutionAddition * 1500.0f);
 }
 
-float ColoniesManager::ProcessColonyLogisticsEvolution (GameConfiguration *configuration, District *colony, float timeStep)
+float ColoniesEvolutionManager::ProcessColonyLogisticsEvolution (GameConfiguration *configuration, District *colony, float timeStep)
 {
     float totalColonyEvolution = GetTotalColonyEvolution (colony);
     float colonyLogisticsEvolution = colony->GetLogisticsEvolutionPoints ();
@@ -305,7 +305,7 @@ float ColoniesManager::ProcessColonyLogisticsEvolution (GameConfiguration *confi
     return (evolutionAddition * 1500.0f);
 }
 
-float ColoniesManager::ProcessColonyDefenseEvolution (GameConfiguration *configuration, District *colony, float timeStep)
+float ColoniesEvolutionManager::ProcessColonyDefenseEvolution (GameConfiguration *configuration, District *colony, float timeStep)
 {
     float perspective = 1.0f;
     float balance = colony->GetDefenseBalance ();
@@ -339,31 +339,31 @@ float ColoniesManager::ProcessColonyDefenseEvolution (GameConfiguration *configu
     return (evolutionAddition * 1500.0f);
 }
 
-void ColoniesManager::OnSceneSet (Urho3D::Scene *scene)
+void ColoniesEvolutionManager::OnSceneSet (Urho3D::Scene *scene)
 {
     UnsubscribeFromAllEvents ();
     Urho3D::Component::OnSceneSet (scene);
-    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (ColoniesManager, Update));
+    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (ColoniesEvolutionManager, Update));
 }
 
-ColoniesManager::ColoniesManager (Urho3D::Context *context) : Urho3D::Component (context)
+ColoniesEvolutionManager::ColoniesEvolutionManager (Urho3D::Context *context) : Urho3D::Component (context)
 {
 
 }
 
-ColoniesManager::~ColoniesManager ()
+ColoniesEvolutionManager::~ColoniesEvolutionManager ()
 {
 
 }
 
-void ColoniesManager::RegisterObject (Urho3D::Context *context)
+void ColoniesEvolutionManager::RegisterObject (Urho3D::Context *context)
 {
-    context->RegisterFactory <ColoniesManager> (COLONIZATION_SERVER_ONLY_CATEGORY);
+    context->RegisterFactory <ColoniesEvolutionManager> (COLONIZATION_SERVER_ONLY_CATEGORY);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
 }
 
-void ColoniesManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+void ColoniesEvolutionManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     if (enabled_)
     {

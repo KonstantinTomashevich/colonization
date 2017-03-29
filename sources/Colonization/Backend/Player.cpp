@@ -7,7 +7,7 @@
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
-#include <Colonization/Backend/ColoniesManager.hpp>
+#include <Colonization/Backend/ColoniesEvolutionManager.hpp>
 
 namespace Colonization
 {
@@ -53,7 +53,7 @@ void Player::ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data)
 void Player::ProcessInvestToColonyAction (Urho3D::VectorBuffer data)
 {
     Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
-    ColoniesManager *coloniesManager = scene_->GetComponent <ColoniesManager> ();
+    ColoniesEvolutionManager *coloniesManager = scene_->GetComponent <ColoniesEvolutionManager> ();
     // Skip action type.
     data.ReadInt ();
 
