@@ -25,6 +25,7 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
 
     oneWarShipBuildingCost_ (30.0f),
     oneWarShipCrew_ (20.0f),
+    oneWarShipBasicBuildTime_ (20.0f),
 
     oneColonistFarmsProductionConsumption_ (0.02f),
     oneSoldierFarmsProductionConsumption_ (0.0225f),
@@ -154,6 +155,8 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
                                SetOneWarShipBuildingCost, float, 30.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("One War Ship Crew", GetOneWarShipCrew,
                                SetOneWarShipCrew, float, 20.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("One War Ship Basic Build Time", GetOneWarShipBasicBuildTime,
+                               SetOneWarShipBasicBuildTime, float, 20.0f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("One Colonist Farms Production Consumption", GetOneColonistFarmsProductionConsumption,
                                SetOneColonistFarmsProductionConsumption, float, 0.02f, Urho3D::AM_DEFAULT);
@@ -472,6 +475,16 @@ float GameConfiguration::GetOneWarShipCrew () const
 void GameConfiguration::SetOneWarShipCrew (float oneWarShipCrew)
 {
     oneWarShipCrew_ = oneWarShipCrew;
+}
+
+float GameConfiguration::GetOneWarShipBasicBuildTime () const
+{
+    return oneWarShipBasicBuildTime_;
+}
+
+void GameConfiguration::SetOneWarShipBasicBuildTime (float oneWarShipBasicBuildTime)
+{
+    oneWarShipBasicBuildTime_ = oneWarShipBasicBuildTime;
 }
 
 float GameConfiguration::GetOneColonistFarmsProductionConsumption () const

@@ -18,6 +18,7 @@ protected:
 
     float oneWarShipBuildingCost_;
     float oneWarShipCrew_;
+    float oneWarShipBasicBuildTime_;
 
     float oneColonistFarmsProductionConsumption_;
     float oneSoldierFarmsProductionConsumption_;
@@ -148,6 +149,9 @@ public:
 
     float GetOneWarShipCrew () const;
     void SetOneWarShipCrew (float oneWarShipCrew);
+
+    float GetOneWarShipBasicBuildTime () const;
+    void SetOneWarShipBasicBuildTime (float oneWarShipBasicBuildTime);
 
     float GetOneColonistFarmsProductionConsumption () const;
     void SetOneColonistFarmsProductionConsumption (float oneColonistFarmsProductionConsumption);
