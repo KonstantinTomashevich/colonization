@@ -266,7 +266,17 @@ void District::Invest (Urho3D::StringHash investitionType, float money)
 }
 
 void District::AddColonyAction (Urho3D::StringHash actionType, Urho3D::VariantMap &actionData)
-{
+{    
+    Urho3D::StringHash id;
+    bool found = false;
+    do
+    {
+        id = Urho3D::StringHash (Urho3D::Random (0, 100000));
+        GetColonyActionById (id, found);
+    }
+    while (found);
+    actionData [COLONY_ACTION_ID] = Urho3D::Variant (id);
+
     Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> action;
     action.first_ = actionType;
     action.second_ = actionData;
@@ -284,17 +294,48 @@ Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> District::GetColonyActionB
     return colonyActions_.At (index);
 }
 
+Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> District::GetColonyActionById (Urho3D::StringHash id, bool &found) const
+{
+    for (int index = 0; index < colonyActions_.Size (); index++)
+    {
+        Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> action = colonyActions_.At (index);
+        if (action.second_ [COLONY_ACTION_ID].GetStringHash () == id)
+        {
+            found = true;
+            return action;
+        }
+    }
+
+    found = false;
+    Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> empty;
+    return empty;
+}
+
 void District::RemoveColonyActionByIndex (int index)
 {
     assert (index < colonyActions_.Size ());
     colonyActions_.Erase (index);
 }
 
+bool District::RemoveColonyActionById (Urho3D::StringHash id)
+{
+    for (Urho3D::Vector <Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> >::Iterator iterator = colonyActions_.Begin ();
+         iterator != colonyActions_.End (); iterator++)
+    {
+        if (iterator->second_ [COLONY_ACTION_ID].GetStringHash () == id)
+        {
+            iterator = colonyActions_.Erase (iterator);
+            return true;
+        }
+    }
+    return false;
+}
+
 void District::UpdateHash (Map *owner)
 {
     do
     {
-        hash_ = Urho3D::StringHash (name_ + Urho3D::String (Urho3D::Random (0, 1000)));
+        hash_ = Urho3D::StringHash (name_ + Urho3D::String (Urho3D::Random (0, 100000)));
     }
     while (owner->GetDistrictByHash (hash_) != this && hash_ != Urho3D::StringHash::ZERO);
 }

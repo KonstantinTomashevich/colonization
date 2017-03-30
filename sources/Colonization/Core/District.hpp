@@ -35,6 +35,7 @@ enum NativesCharacterType
     NATIVES_CHARATER_AGGRESSIVE = 4
 };
 
+const Urho3D::StringHash COLONY_ACTION_ID ("ColonyActionId");
 namespace ColonyActions
 {
 const Urho3D::StringHash BUILD_FLEET ("BuildFleet");
@@ -117,7 +118,9 @@ public:
     void AddColonyAction (Urho3D::StringHash actionType, Urho3D::VariantMap &actionData);
     int GetColonyActionsCount () const;
     Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> GetColonyActionByIndex (int index) const;
+    Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> GetColonyActionById (Urho3D::StringHash id, bool &found) const;
     void RemoveColonyActionByIndex (int index);
+    bool RemoveColonyActionById(Urho3D::StringHash id);
 
     void UpdateHash (Map *owner);
     Urho3D::StringHash GetHash () const;
