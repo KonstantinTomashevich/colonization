@@ -38,15 +38,13 @@ enum NativesCharacterType
 const Urho3D::StringHash COLONY_ACTION_ID ("ColonyActionId");
 namespace ColonyActions
 {
-const Urho3D::StringHash BUILD_FLEET ("BuildFleet");
-namespace BuildFleet
+const Urho3D::StringHash BUILD_WAR_SHIP ("BuildWarShip");
+namespace BuildWarShip
 {
-/// Int.
-const Urho3D::StringHash WAR_SHIPS_TO_BUILD ("WarShipsToBuild");
 /// District hash (sea district, neighbor of colony).
 const Urho3D::StringHash TARGET_DISTRICT ("TargetDistrict");
 /// Float.
-const Urho3D::StringHash CURRENT_SHIP_PROGRESS ("CurrentShipProgress");
+const Urho3D::StringHash PROGRESS ("Progress");
 }
 }
 

@@ -15,8 +15,8 @@ protected:
 
     /// Return true if action completed.
     bool ProcessAction (District *colony, Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> &action, float timeStep);
-    bool ProcessBuildFleetAction (GameConfiguration *configuration, Map *map, UnitsManager *unitsManager,
-                                  District *colony, Urho3D::VariantMap &actionData, float timeStep);
+    bool ProcessBuildWarShipAction (GameConfiguration *configuration, Map *map, UnitsManager *unitsManager,
+                                    District *colony, Urho3D::VariantMap &actionData, float timeStep);
 
 public:
     ColoniesActionsProcessor (Urho3D::Context *context);

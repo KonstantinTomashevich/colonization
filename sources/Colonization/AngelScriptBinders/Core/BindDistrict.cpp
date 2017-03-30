@@ -6,24 +6,19 @@
 
 namespace Colonization
 {
-Urho3D::StringHash get_ColonyActions_BUILD_FLEET ()
+Urho3D::StringHash get_ColonyActions_BUILD_WAR_SHIP ()
 {
-    return ColonyActions::BUILD_FLEET;
+    return ColonyActions::BUILD_WAR_SHIP;
 }
 
-Urho3D::StringHash get_ColonyActions_BuildFleet_WAR_SHIPS_TO_BUILD ()
+Urho3D::StringHash get_ColonyActions_BuildWarShip_TARGET_DISTRICT ()
 {
-    return ColonyActions::BuildFleet::WAR_SHIPS_TO_BUILD;
+    return ColonyActions::BuildWarShip::TARGET_DISTRICT;
 }
 
-Urho3D::StringHash get_ColonyActions_BuildFleet_TARGET_DISTRICT ()
+Urho3D::StringHash get_ColonyActions_BuildWarShip_PROGRESS ()
 {
-    return ColonyActions::BuildFleet::TARGET_DISTRICT;
-}
-
-Urho3D::StringHash get_ColonyActions_BuildFleet_CURRENT_SHIP_PROGRESS ()
-{
-    return ColonyActions::BuildFleet::CURRENT_SHIP_PROGRESS;
+    return ColonyActions::BuildWarShip::PROGRESS;
 }
 
 Urho3D::CScriptArray *District_GetPolygonPoints (District *district)
@@ -80,10 +75,9 @@ void BindDistrict (Urho3D::Script *script)
 void BindColonyActions(Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
-    engine->RegisterGlobalFunction ("StringHash get_ColonyActions_BUILD_FLEET ()", asFUNCTION (get_ColonyActions_BUILD_FLEET), asCALL_CDECL);
-    engine->RegisterGlobalFunction ("StringHash get_ColonyActions_BuildFleet_WAR_SHIPS_TO_BUILD ()", asFUNCTION (get_ColonyActions_BuildFleet_WAR_SHIPS_TO_BUILD), asCALL_CDECL);
-    engine->RegisterGlobalFunction ("StringHash get_ColonyActions_BuildFleet_TARGET_DISTRICT ()", asFUNCTION (get_ColonyActions_BuildFleet_TARGET_DISTRICT), asCALL_CDECL);
-    engine->RegisterGlobalFunction ("StringHash get_ColonyActions_BuildFleet_CURRENT_SHIP_PROGRESS ()", asFUNCTION (get_ColonyActions_BuildFleet_CURRENT_SHIP_PROGRESS), asCALL_CDECL);
+    engine->RegisterGlobalFunction ("StringHash get_ColonyActions_BUILD_WAR_SHIP ()", asFUNCTION (get_ColonyActions_BUILD_WAR_SHIP), asCALL_CDECL);
+    engine->RegisterGlobalFunction ("StringHash get_ColonyActions_BuildWarShip_TARGET_DISTRICT ()", asFUNCTION (get_ColonyActions_BuildWarShip_TARGET_DISTRICT), asCALL_CDECL);
+    engine->RegisterGlobalFunction ("StringHash get_ColonyActions_BuildWarShip_PROGRESS ()", asFUNCTION (get_ColonyActions_BuildWarShip_PROGRESS), asCALL_CDECL);
 }
 
 void BindDistrictEnums (Urho3D::Script *script)

@@ -40,22 +40,22 @@ bool ColoniesActionsProcessor::ProcessAction (District *colony, Urho3D::Pair <Ur
 
     bool result = false;
     Urho3D::VariantMap actionData = action.second_;
-    if (action.first_ == ColonyActions::BUILD_FLEET)
+    if (action.first_ == ColonyActions::BUILD_WAR_SHIP)
     {
-        result = ProcessBuildFleetAction (configuration, map, unitsManager, colony, actionData, timeStep);
+        result = ProcessBuildWarShipAction (configuration, map, unitsManager, colony, actionData, timeStep);
     }
     action.second_ = actionData;
     return result;
 }
 
-bool ColoniesActionsProcessor::ProcessBuildFleetAction (GameConfiguration *configuration, Map *map, UnitsManager *unitsManager,
-                                                        District *colony, Urho3D::VariantMap &actionData, float timeStep)
+bool ColoniesActionsProcessor::ProcessBuildWarShipAction (GameConfiguration *configuration, Map *map, UnitsManager *unitsManager,
+                                                          District *colony, Urho3D::VariantMap &actionData, float timeStep)
 {
     PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
     Player *player = playersManager->GetPlayerByNameHash (Urho3D::StringHash (colony->GetColonyOwnerName ()));
     assert (player);
 
-    Urho3D::StringHash targetDistrictHash = actionData [ColonyActions::BuildFleet::TARGET_DISTRICT].GetStringHash ();
+    Urho3D::StringHash targetDistrictHash = actionData [ColonyActions::BuildWarShip::TARGET_DISTRICT].GetStringHash ();
     District *targetDistrict = map->GetDistrictByHash (targetDistrictHash);
     if (!targetDistrict || !colony->IsNeighborsWith (targetDistrictHash) || !targetDistrict->IsSea ())
     {
@@ -67,7 +67,7 @@ bool ColoniesActionsProcessor::ProcessBuildFleetAction (GameConfiguration *confi
     float buildingSpeed = 1.0f / configuration->GetOneWarShipBasicBuildTime ();
     buildingSpeed *= sqrt (colony->GetIndustryEvolutionPoints ());
 
-    float currentShipProgress = actionData [ColonyActions::BuildFleet::CURRENT_SHIP_PROGRESS].GetFloat ();
+    float currentShipProgress = actionData [ColonyActions::BuildWarShip::PROGRESS].GetFloat ();
     float timeStepProgress = buildingSpeed * timeStep;
     if (currentShipProgress + timeStepProgress > 1.0f)
     {
@@ -83,25 +83,17 @@ bool ColoniesActionsProcessor::ProcessBuildFleetAction (GameConfiguration *confi
         if (currentShipProgress >= 1.0f && colony->GetMenCount () > configuration->GetOneWarShipCrew ())
         {
             colony->SetMenCount (colony->GetMenCount () - configuration->GetOneWarShipCrew ());
-            int warShipsToBuild = actionData [ColonyActions::BuildFleet::WAR_SHIPS_TO_BUILD].GetInt ();
-            warShipsToBuild--;
-            actionData [ColonyActions::BuildFleet::WAR_SHIPS_TO_BUILD] = warShipsToBuild;
-
             Unit *newWarShip = unitsManager->CreateUnit ();
             newWarShip->SetUnitType (UNIT_FLEET);
             newWarShip->SetPositionHash (targetDistrictHash);
             newWarShip->SetOwnerPlayerName (colony->GetColonyOwnerName ());
             newWarShip->FleetUnitSetWarShipsCount (1);
             newWarShip->UpdateHash (unitsManager);
-
-            if (warShipsToBuild <= 0)
-            {
-                return true;
-            }
+            return true;
         }
         else
         {
-            actionData [ColonyActions::BuildFleet::CURRENT_SHIP_PROGRESS] = currentShipProgress;
+            actionData [ColonyActions::BuildWarShip::PROGRESS] = currentShipProgress;
         }
     }
     else
