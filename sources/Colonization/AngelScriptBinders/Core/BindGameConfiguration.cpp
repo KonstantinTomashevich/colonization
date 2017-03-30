@@ -43,6 +43,12 @@ void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String clas
     engine->RegisterObjectMethod (className.CString (), "float get_disembarkationSpeed () const", asMETHOD (GameConfiguration, GetDisembarkationSpeed), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_disembarkationSpeed (float disembarkationSpeed)", asMETHOD (GameConfiguration, SetDisembarkationSpeed), asCALL_THISCALL);
 
+    engine->RegisterObjectMethod (className.CString (), "float get_oneWarShipBuildingCost () const", asMETHOD (GameConfiguration, GetOneWarShipBuildingCost), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_oneWarShipBuildingCost (float oneWarShipBuildingCost)", asMETHOD (GameConfiguration, SetOneWarShipBuildingCost), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_oneWarShipCrew () const", asMETHOD (GameConfiguration, GetOneWarShipCrew), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_oneWarShipCrew (float oneWarShipCrew)", asMETHOD (GameConfiguration, SetOneWarShipCrew), asCALL_THISCALL);
+
     engine->RegisterObjectMethod (className.CString (), "float get_oneColonistFarmsProductionConsumption () const", asMETHOD (GameConfiguration, GetOneColonistFarmsProductionConsumption), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_oneColonistFarmsProductionConsumption (float oneColonistFarmsProductionConsumption)", asMETHOD (GameConfiguration, SetOneColonistFarmsProductionConsumption), asCALL_THISCALL);
 

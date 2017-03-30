@@ -16,6 +16,9 @@ protected:
     float embarkationSpeed_;
     float disembarkationSpeed_;
 
+    float oneWarShipBuildingCost_;
+    float oneWarShipCrew_;
+
     float oneColonistFarmsProductionConsumption_;
     float oneSoldierFarmsProductionConsumption_;
     float farmsProductionMinesConsumption_;
@@ -139,6 +142,12 @@ public:
 
     float GetDisembarkationSpeed () const;
     void SetDisembarkationSpeed (float disembarkationSpeed);
+
+    float GetOneWarShipBuildingCost () const;
+    void SetOneWarShipBuildingCost (float oneWarShipBuildingCost);
+
+    float GetOneWarShipCrew () const;
+    void SetOneWarShipCrew (float oneWarShipCrew);
 
     float GetOneColonistFarmsProductionConsumption () const;
     void SetOneColonistFarmsProductionConsumption (float oneColonistFarmsProductionConsumption);
