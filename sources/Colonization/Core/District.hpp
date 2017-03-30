@@ -7,7 +7,7 @@
 
 namespace Colonization
 {
-// TODO: Maybe split to District.hpp, DistrictComparator.hpp, ColonyActions.hpp, DistrictEnums.hpp.
+// TODO: Maybe split to District, DistrictComparator, ColonyActions, DistrictEnums.
 class Map;
 class District;
 typedef bool (*DistrictComparator) (const District *first, const District *second);

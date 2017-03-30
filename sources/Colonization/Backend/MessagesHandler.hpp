@@ -5,6 +5,7 @@
 
 namespace Colonization
 {
+// TODO: Maybe split to MessagesHandler, NetworkMessageType.
 enum NetworkMessageType
 {
     // CTS -- client to server message.

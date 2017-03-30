@@ -6,6 +6,7 @@
 
 namespace Colonization
 {
+// TODO: Maybe split to InternalTradeArea, DistrictProductionInfo, DistrictProductionInfoComparator, TradeDistrictProcessingInfo.
 class Map;
 class District;
 

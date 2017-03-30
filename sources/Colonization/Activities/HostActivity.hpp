@@ -6,6 +6,7 @@
 
 namespace Colonization
 {
+// TODO: Maybe split to HostActivity, GameStateType, HostActivityEvents, HostActivityConstants.
 // Declare host activity request events.
 const Urho3D::String EVENT_HOST_REQUEST_GAME_START ("HostRequestGameStart");
 const Urho3D::String EVENT_HOST_REQUEST_KICK_PLAYER ("HostRequestKickPlayer");

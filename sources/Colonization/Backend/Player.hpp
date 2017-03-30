@@ -4,6 +4,7 @@
 
 namespace Colonization
 {
+// TODO: Maybe split to Player, PlayerComparator, PlayerActionType.
 class Player;
 typedef bool (*PlayerComparator) (const Player *first, const Player *second);
 namespace PlayerComparators
