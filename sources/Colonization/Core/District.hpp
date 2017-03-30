@@ -7,6 +7,7 @@
 
 namespace Colonization
 {
+// TODO: Maybe split to District.hpp, DistrictComparator.hpp, ColonyActions.hpp, DistrictEnums.hpp.
 class Map;
 class District;
 typedef bool (*DistrictComparator) (const District *first, const District *second);
@@ -33,6 +34,20 @@ enum NativesCharacterType
     NATIVES_CHARACTER_ISOLATIONIST = 3,
     NATIVES_CHARATER_AGGRESSIVE = 4
 };
+
+namespace ColonyActions
+{
+const Urho3D::StringHash BUILD_FLEET ("BuildFleet");
+namespace BuildFleet
+{
+/// Int.
+const Urho3D::StringHash WAR_SHIPS_TO_BUILD ("WarShipsToBuild");
+/// District hash (sea district, neighbor of colony).
+const Urho3D::StringHash TARGET_DISTRICT ("TargetDistrict");
+/// Float.
+const Urho3D::StringHash CURRENT_SHIP_PROGRESS ("CurrentShipProgress");
+}
+}
 
 class District : public Urho3D::Component
 {
