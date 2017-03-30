@@ -73,6 +73,7 @@ protected:
     void ConstructVectorOfRealDistricts (Map *map, Urho3D::PODVector <District *> &output);
     int CalculateTotalSoldiersCount ();
 
+    // TODO: Maybe create DistrictUtils and move these functions to it?
     float CalculateDistrictFarmsProductionAmount (District *district, GameConfiguration *configuration);
     float CalculateDistrictMinesProductionAmount (District *district, GameConfiguration *configuration);
     float CalculateDistrictIndustryProductionAmount (District *district, GameConfiguration *configuration);

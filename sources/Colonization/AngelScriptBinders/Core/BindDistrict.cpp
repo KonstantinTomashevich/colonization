@@ -116,6 +116,8 @@ void BindDistrictInterface (Urho3D::Script *script, Urho3D::String className)
 
     engine->RegisterObjectMethod (className.CString (), "StringHash GetColonyActionTypeById (StringHash id) const", asFUNCTION (District_GetColonyActionTypeById), asCALL_CDECL_OBJFIRST);
     engine->RegisterObjectMethod (className.CString (), "VariantMap GetColonyActionDataById (StringHash id) const", asFUNCTION (District_GetColonyActionDataById), asCALL_CDECL_OBJFIRST);
+    engine->RegisterObjectMethod (className.CString (), "bool SetColonyActionAtIndexData (int index, VariantMap actionData)", asMETHOD (District, SetColonyActionAtIndexData), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "bool SetColonyActionWithIdData (VariantMap actionData)", asMETHOD (District, SetColonyActionWithIdData), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void RemoveColonyActionByIndex (int index)", asMETHOD (District, RemoveColonyActionByIndex), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "bool RemoveColonyActionById (StringHash id)", asMETHOD (District, RemoveColonyActionById), asCALL_THISCALL);
 

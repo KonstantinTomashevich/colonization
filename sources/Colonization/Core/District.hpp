@@ -119,6 +119,9 @@ public:
     int GetColonyActionsCount () const;
     Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> GetColonyActionByIndex (int index) const;
     Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> GetColonyActionById (Urho3D::StringHash id, bool &found) const;
+
+    bool SetColonyActionAtIndexData (int index, Urho3D::VariantMap &actionData);
+    bool SetColonyActionWithIdData (Urho3D::VariantMap &actionData);
     void RemoveColonyActionByIndex (int index);
     bool RemoveColonyActionById(Urho3D::StringHash id);
 

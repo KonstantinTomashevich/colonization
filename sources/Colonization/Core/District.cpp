@@ -311,6 +311,36 @@ Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> District::GetColonyActionB
     return empty;
 }
 
+bool District::SetColonyActionAtIndexData (int index, Urho3D::VariantMap &actionData)
+{
+    assert (index < colonyActions_.Size ());
+    // Prevent actions from overriding.
+    if (colonyActions_.At (index).second_ [COLONY_ACTION_ID].GetStringHash () ==
+            actionData [COLONY_ACTION_ID].GetStringHash ())
+    {
+        colonyActions_.At (index).second_ = actionData;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool District::SetColonyActionWithIdData (Urho3D::VariantMap &actionData)
+{
+    for (Urho3D::Vector <Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> >::Iterator iterator = colonyActions_.Begin ();
+         iterator != colonyActions_.End (); iterator++)
+    {
+        if (iterator->second_ [COLONY_ACTION_ID].GetStringHash () == actionData [COLONY_ACTION_ID].GetStringHash ())
+        {
+            iterator->second_ = actionData;
+            return true;
+        }
+    }
+    return false;
+}
+
 void District::RemoveColonyActionByIndex (int index)
 {
     assert (index < colonyActions_.Size ());
