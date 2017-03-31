@@ -1,3 +1,4 @@
+#include "AngelScript/Utils/Constants.as"
 #include "AngelScript/Utils/ClientUtils.as"
 
 class DistrictSelectedWindow : ScriptObject
@@ -5,7 +6,6 @@ class DistrictSelectedWindow : ScriptObject
     protected bool isSceneLoaded_;
     protected float untilSelectionUpdate_;
 
-    protected int COLONIZATORS_EXPEDITION_SIZE = 100;
     protected float DEFAULT_INVESTITION_SIZE = 100.0f;
     protected float SELECTION_UPDATE_DELAY = 0.02f;
 
@@ -36,22 +36,26 @@ class DistrictSelectedWindow : ScriptObject
                                  district.colonyOwnerName == playerName);
 
         Button @sendColonizatorsButton = districtInfoWindow.GetChild ("sendColonizatorsButton");
-        float colonizatorsExpeditionCost = COLONIZATORS_EXPEDITION_SIZE * configuration.oneColonistSendingCost;
+        float colonizatorsExpeditionCost = COLONIZATORS_EXPEDITION_SIZE * configuration.oneColonizatorSendingCost;
         sendColonizatorsButton.visible = (infoType == StringHash ("Basic")) and
                                          not district.isSea and
                                          not district.isImpassable and
                                          (district.colonyOwnerName == playerName or not district.hasColony) and
-                                         scriptMain.vars ["gold"].GetFloat () >= colonizatorsExpeditionCost;
+                                         scriptMain.vars ["gold"].GetFloat () > colonizatorsExpeditionCost;
         Text @sendColonizatorsButtonText = sendColonizatorsButton.GetChild ("text");
         sendColonizatorsButtonText.text = "Send 100 colonizators (cost: " + int (colonizatorsExpeditionCost) +
                                       " gold).";
 
 
-        /*Button @buildWarShipButton = districtInfoWindow.GetChild ("buildWarShipButton");
+        Button @buildWarShipButton = districtInfoWindow.GetChild ("buildWarShipButton");
         buildWarShipButton.visible = (infoType == StringHash ("Basic")) and
                                          district.hasColony and
                                          district.colonyOwnerName == playerName and
-                                         scriptMain.vars ["gold"].GetFloat () >= 30.0f;*/
+                                         district.menCount > configuration.oneWarShipCrew and
+                                         scriptMain.vars ["gold"].GetFloat () > configuration.oneWarShipBuildingCost;
+        Text @buildWarShipButtonText = buildWarShipButton.GetChild ("text");
+        buildWarShipButtonText.text = "Build war ship (cost: " + int (configuration.oneWarShipBuildingCost) +
+                                      " + " + int (configuration.oneWarShipCrew) + " men as crew).";
 
         if (infoType == StringHash ("Basic"))
         {
@@ -247,6 +251,7 @@ class DistrictSelectedWindow : ScriptObject
         Button @populationInfoButton = districtInfoWindow.GetChild ("populationInfoButton");
         Button @colonyEvolutionInfoButton = districtInfoWindow.GetChild ("colonyEvolutionInfoButton");
         Button @sendColonizatorsButton = districtInfoWindow.GetChild ("sendColonizatorsButton");
+        Button @buildWarShipButton = districtInfoWindow.GetChild ("buildWarShipButton");
 
         UIElement @investButtons = districtInfoWindow.GetChild ("investButtons");
         Button @investToFarmsButton = investButtons.GetChild ("investToFarms");
@@ -260,6 +265,7 @@ class DistrictSelectedWindow : ScriptObject
         SubscribeToEvent (populationInfoButton, "Released", "HandlePopulationInfoClick");
         SubscribeToEvent (colonyEvolutionInfoButton, "Released", "HandleColonyEvolutionInfoClick");
         SubscribeToEvent (sendColonizatorsButton, "Released", "HandleSendColonizatorsClick");
+        SubscribeToEvent (buildWarShipButton, "Released", "HandleBuildWarShipClick");
 
         SubscribeToEvent (investToFarmsButton, "Released", "HandleInvestClick");
         SubscribeToEvent (investToMinesButton, "Released", "HandleInvestClick");
@@ -357,5 +363,11 @@ class DistrictSelectedWindow : ScriptObject
         eventData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
         eventData ["messageBuffer"] = Variant (buffer);
         SendEvent ("NewNetworkTask", eventData);
+    }
+
+    void HandleBuildWarShipClick ()
+    {
+        Node @scriptMain = GetScriptMain (node);
+        scriptMain.vars ["currentClickCommand"] = StringHash ("BuildWarShip");
     }
 }

@@ -44,6 +44,7 @@ bool ColoniesActionsProcessor::ProcessAction (District *colony, Urho3D::Pair <Ur
     {
         result = ProcessBuildWarShipAction (configuration, map, unitsManager, colony, actionData, timeStep);
     }
+
     action.second_ = actionData;
     return result;
 }
@@ -94,6 +95,7 @@ bool ColoniesActionsProcessor::ProcessBuildWarShipAction (GameConfiguration *con
         else
         {
             actionData [ColonyActions::BuildWarShip::PROGRESS] = currentShipProgress;
+            return false;
         }
     }
     else
