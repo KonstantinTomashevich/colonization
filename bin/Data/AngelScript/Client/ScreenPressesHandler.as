@@ -1,3 +1,4 @@
+#include "AngelScript/Utils/Constants.as"
 #include "AngelScript/Utils/ClientUtils.as"
 
 class ScreenPressesHandler : ScriptObject
@@ -62,6 +63,35 @@ class ScreenPressesHandler : ScriptObject
         scriptMain.vars ["currentClickCommand"] = StringHash ("NoCommand");
     }
 
+    protected void SendBuildWarShipAction (District @requester, District @buildTarget)
+    {
+        Node @scriptMain = GetScriptMain (node);
+        GameConfiguration @configuration = scene.GetComponent ("GameConfiguration");
+
+        String playerName = scriptMain.vars ["playerName"].GetString ();
+        float playerGold = scriptMain.vars ["gold"].GetFloat ();
+
+        if (requester.hasColony and requester.colonyOwnerName == playerName and
+            requester.menCount > configuration.oneWarShipCrew and
+            requester.IsNeighborsWith (buildTarget.hash) and playerGold > configuration.oneWarShipBuildingCost)
+        {
+            VariantMap actionData;
+            actionData [ColonyActions_BuildWarShip_TARGET_DISTRICT] = Variant (buildTarget.hash);
+
+            VectorBuffer buffer = VectorBuffer ();
+            buffer.WriteInt (PLAYER_ACTION_ADD_COLONY_ACTION);
+            buffer.WriteStringHash (requester.hash);
+            buffer.WriteStringHash (ColonyActions_BUILD_WAR_SHIP);
+            buffer.WriteVariantMap (actionData);
+
+            VariantMap eventData;
+            eventData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+            eventData ["messageBuffer"] = Variant (buffer);
+            SendEvent ("NewNetworkTask", eventData);
+        }
+        scriptMain.vars ["currentClickCommand"] = StringHash ("NoCommand");
+    }
+
     protected void ProcessDistrictSelection (Vector3 hitPosition, Node @scriptMain)
     {
         MapMaskUpdater @mapMaskUpdater = scene.GetComponent ("MapMaskUpdater");
@@ -93,6 +123,14 @@ class ScreenPressesHandler : ScriptObject
                     DistrictSelected (district, scriptMain);
                 }
             }
+
+            else if (command == StringHash ("BuildWarShip"))
+            {
+                // Get selected unit.
+                StringHash selectedHash = scriptMain.vars ["selectedHash"].GetStringHash ();
+                District @requesterDistrict = map.GetDistrictByHash (selectedHash);
+                SendBuildWarShipAction (requesterDistrict, district);
+            }
         }
         else
         {
@@ -119,7 +157,7 @@ class ScreenPressesHandler : ScriptObject
 
     void Update (float timeStep)
     {
-        
+
     }
 
     void Stop ()

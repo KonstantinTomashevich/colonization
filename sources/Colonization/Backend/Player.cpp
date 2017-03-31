@@ -7,7 +7,7 @@
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
-#include <Colonization/Backend/ColoniesManager.hpp>
+#include <Colonization/Backend/ColoniesEvolutionManager.hpp>
 
 namespace Colonization
 {
@@ -53,7 +53,7 @@ void Player::ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data)
 void Player::ProcessInvestToColonyAction (Urho3D::VectorBuffer data)
 {
     Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
-    ColoniesManager *coloniesManager = scene_->GetComponent <ColoniesManager> ();
+    ColoniesEvolutionManager *coloniesManager = scene_->GetComponent <ColoniesEvolutionManager> ();
     // Skip action type.
     data.ReadInt ();
 
@@ -71,30 +71,38 @@ void Player::ProcessInvestToColonyAction (Urho3D::VectorBuffer data)
     {
         targetDistrict->Invest (investitionType, money);
         gold_ -= money;
+
+        NetworkUpdateCounter *counter = targetDistrict->GetNode ()->GetComponent <NetworkUpdateCounter> ();
+        if (!counter)
+        {
+            counter = CreateNetworkUpdateCounterForComponent (targetDistrict);
+        }
+        counter->AddUpdatePoints (100.0f);
     }
 }
 
 void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer data)
 {
-    // TODO: It's not a final version. May be rewrited later.
-    if (gold_ >= 100.0f)
+    Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
+    UnitsManager *unitsManager = scene_->GetChild ("units")->GetComponent <UnitsManager> ();
+    // Skip action type.
+    data.ReadInt ();
+    assert (map);
+    assert (unitsManager);
+
+    Urho3D::StringHash targetDistrictHash = data.ReadStringHash ();
+    District *targetDistrict = map->GetDistrictByHash (targetDistrictHash);
+    assert (targetDistrict);
+    assert (!targetDistrict->IsSea ());
+    assert (!targetDistrict->IsImpassable ());
+    assert (!targetDistrict->HasColony () || (targetDistrict->HasColony () && targetDistrict->GetColonyOwnerName () == name_));
+
+    GameConfiguration *configuration = scene_->GetComponent <GameConfiguration> ();
+    int colonizatorsCount = data.ReadInt ();
+    float cost = colonizatorsCount * configuration->GetOneColonizatorSendingCost ();
+
+    if (gold_ > cost)
     {
-        Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
-        UnitsManager *unitsManager = scene_->GetChild ("units")->GetComponent <UnitsManager> ();
-        // Skip action type.
-        data.ReadInt ();
-
-        assert (map);
-        assert (unitsManager);
-
-        Urho3D::StringHash targetDistrictHash = data.ReadStringHash ();
-        District *targetDistrict = map->GetDistrictByHash (targetDistrictHash);
-        assert (targetDistrict);
-        assert (!targetDistrict->IsSea ());
-        assert (!targetDistrict->IsImpassable ());
-        assert (!targetDistrict->HasColony () || (targetDistrict->HasColony () && targetDistrict->GetColonyOwnerName () == name_));
-
-        GameConfiguration *configuration = scene_->GetComponent <GameConfiguration> ();
         District *nearestEuropeDistrict = map->GetDistrictByHash (
                     configuration->GetHeuristicNearestWayToEuropeDistrict (map, targetDistrict));
 
@@ -106,8 +114,8 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
 
         if (!map->FindPath (targetDistrict->GetHash (), unit).Empty ())
         {
-            gold_ -= 100.0f;
-            unit->ColonizatorsUnitSetColonizatorsCount (100);
+            gold_ -= cost;
+            unit->ColonizatorsUnitSetColonizatorsCount (colonizatorsCount);
 
             NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
             if (!counter)
@@ -123,6 +131,41 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
                                 nearestEuropeDistrict->GetName () + " to " +
                                 targetDistrict->GetName () + "!");
         }
+    }
+}
+
+void Player::ProcessAddColonyActionAction (Urho3D::VectorBuffer data)
+{
+    Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
+    // Skip action type.
+    data.ReadInt ();
+
+    Urho3D::StringHash colonyHash = data.ReadStringHash ();
+    District *colony = map->GetDistrictByHash (colonyHash);
+    assert (colony);
+
+    if (colony->HasColony () && colony->GetColonyOwnerName () == name_)
+    {
+        Urho3D::StringHash actionType = data.ReadStringHash ();
+        Urho3D::VariantMap actionData = data.ReadVariantMap ();
+        colony->AddColonyAction (actionType, actionData);
+    }
+}
+
+void Player::ProcessRemoveColonyActionAction (Urho3D::VectorBuffer data)
+{
+    Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
+    // Skip action type.
+    data.ReadInt ();
+
+    Urho3D::StringHash colonyHash = data.ReadStringHash ();
+    District *colony = map->GetDistrictByHash (colonyHash);
+    assert (colony);
+
+    if (colony->HasColony () && colony->GetColonyOwnerName () == name_)
+    {
+        Urho3D::StringHash actionId = data.ReadStringHash ();
+        colony->RemoveColonyActionById (actionId);
     }
 }
 
@@ -170,6 +213,14 @@ void Player::Update (float timeStep)
         else if (action.first_ == PLAYER_ACTION_REQUEST_COLONIZATORS_FROM_EUROPE)
         {
             ProcessRequestColonizatorsFromEuropeAction (action.second_.GetVectorBuffer ());
+        }
+        else if (action.first_ == PLAYER_ACTION_ADD_COLONY_ACTION)
+        {
+            ProcessAddColonyActionAction (action.second_.GetVectorBuffer ());
+        }
+        else if (action.first_ == PLAYER_ACTION_REMOVE_COLONY_ACTION)
+        {
+            ProcessRemoveColonyActionAction (action.second_.GetVectorBuffer ());
         }
         actionsSequence_.Remove (actionsSequence_.At (0));
     }

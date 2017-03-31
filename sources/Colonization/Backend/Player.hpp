@@ -4,6 +4,7 @@
 
 namespace Colonization
 {
+// TODO: Maybe split to Player, PlayerComparator, PlayerActionType.
 class Player;
 typedef bool (*PlayerComparator) (const Player *first, const Player *second);
 namespace PlayerComparators
@@ -25,13 +26,12 @@ enum PlayerActionType
     PLAYER_ACTION_REQUEST_ARMY_FROM_EUROPE = 6,
     PLAYER_ACTION_REQUEST_FLEET_FROM_EUROPE = 7,
 
-    PLAYER_ACTION_MOBILIZE_ARMY = 8,
-    PLAYER_ACTION_IMMOBILIZE_ARMY = 9,
+    PLAYER_ACTION_ADD_COLONY_ACTION = 8,
+    PLAYER_ACTION_REMOVE_COLONY_ACTION = 9,
 
     PLAYER_ACTION_START_WAR = 10,
     PLAYER_ACTION_SEND_PEACE_TREATY = 11,
     PLAYER_ACTION_ACCEPT_PEACE_TREATY = 12,
-    PLAYER_ACTION_SEND_GIFT_TO_THE_KING = 13
 };
 
 class Player : public Urho3D::Object
@@ -52,6 +52,8 @@ protected:
     void ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data);
     void ProcessInvestToColonyAction (Urho3D::VectorBuffer data);
     void ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer data);
+    void ProcessAddColonyActionAction (Urho3D::VectorBuffer data);
+    void ProcessRemoveColonyActionAction (Urho3D::VectorBuffer data);
 public:
     Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Color color, Urho3D::Connection *connection, Urho3D::Scene *scene);
     virtual ~Player ();

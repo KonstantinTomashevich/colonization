@@ -26,13 +26,12 @@ void BindPlayerActionType(Urho3D::Script *script)
     engine->RegisterEnumValue ("PlayerActionType", "PLAYER_ACTION_REQUEST_ARMY_FROM_EUROPE", PLAYER_ACTION_REQUEST_ARMY_FROM_EUROPE);
     engine->RegisterEnumValue ("PlayerActionType", "PLAYER_ACTION_REQUEST_FLEET_FROM_EUROPE", PLAYER_ACTION_REQUEST_FLEET_FROM_EUROPE);
 
-    engine->RegisterEnumValue ("PlayerActionType", "PLAYER_ACTION_MOBILIZE_ARMY", PLAYER_ACTION_MOBILIZE_ARMY);
-    engine->RegisterEnumValue ("PlayerActionType", "PLAYER_ACTION_IMMOBILIZE_ARMY", PLAYER_ACTION_IMMOBILIZE_ARMY);
+    engine->RegisterEnumValue ("PlayerActionType", "PLAYER_ACTION_ADD_COLONY_ACTION", PLAYER_ACTION_ADD_COLONY_ACTION);
+    engine->RegisterEnumValue ("PlayerActionType", "PLAYER_ACTION_REMOVE_COLONY_ACTION", PLAYER_ACTION_REMOVE_COLONY_ACTION);
 
     engine->RegisterEnumValue ("PlayerActionType", "PLAYER_ACTION_START_WAR", PLAYER_ACTION_START_WAR);
     engine->RegisterEnumValue ("PlayerActionType", "PLAYER_ACTION_SEND_PEACE_TREATY", PLAYER_ACTION_SEND_PEACE_TREATY);
     engine->RegisterEnumValue ("PlayerActionType", "PLAYER_ACTION_ACCEPT_PEACE_TREATY", PLAYER_ACTION_ACCEPT_PEACE_TREATY);
-    engine->RegisterEnumValue ("PlayerActionType", "PLAYER_ACTION_SEND_GIFT_TO_THE_KING", PLAYER_ACTION_SEND_GIFT_TO_THE_KING);
     engine->RegisterGlobalFunction ("float get_PLAYER_NEW_CHAT_MESSAGE_DELAY ()", asFUNCTION (get_PLAYER_NEW_CHAT_MESSAGE_DELAY), asCALL_CDECL);
 }
 }

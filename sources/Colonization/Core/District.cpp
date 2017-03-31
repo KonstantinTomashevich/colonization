@@ -72,8 +72,10 @@ District::District (Urho3D::Context *context) : Urho3D::Component (context),
 
     hasColony_ (false),
     colonyOwnerName_ (),
+    colonyActions_ (),
     menCount_ (0.0f),
     womenCount_ (0.0f),
+
     farmsEvolutionPoints_ (0.0f),
     minesEvolutionPoints_ (0.0f),
     industryEvolutionPoints_ (0.0f),
@@ -165,8 +167,11 @@ void District::RegisterObject (Urho3D::Context *context)
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Has Colony", HasColony, SetColony, bool, false, Urho3D::AM_DEFAULT);
     URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Colony Owner Name", GetColonyOwnerName, SetColonyOwnerName, Urho3D::String, Urho3D::String::EMPTY, Urho3D::AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Colony Actions", GetColonyActionsAttribute, SetColonyActionsAttribute,
+                                     Urho3D::VariantVector, Urho3D::Variant::emptyVariantVector, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Men Count", GetMenCount, SetMenCount, float, 0.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Women Count", GetWomenCount, SetWomenCount, float, 0.0f, Urho3D::AM_DEFAULT);
+
     URHO3D_ACCESSOR_ATTRIBUTE ("Farms Evolution Points", GetFarmsEvolutionPoints, SetFarmsEvolutionPoints, float, 0.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Mines Evolution Points", GetMinesEvolutionPoints, SetMinesEvolutionPoints, float, 0.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Industry Evolution Points", GetIndustryEvolutionPoints, SetIndustryEvolutionPoints, float, 0.0f, Urho3D::AM_DEFAULT);
@@ -260,11 +265,108 @@ void District::Invest (Urho3D::StringHash investitionType, float money)
     }
 }
 
+void District::AddColonyAction (Urho3D::StringHash actionType, Urho3D::VariantMap &actionData)
+{    
+    Urho3D::StringHash id;
+    bool found = false;
+    do
+    {
+        id = Urho3D::StringHash (Urho3D::Random (0, 100000));
+        GetColonyActionById (id, found);
+    }
+    while (found);
+    actionData [COLONY_ACTION_ID] = Urho3D::Variant (id);
+    actionData [COLONY_ACTION_PROGRESS] = Urho3D::Variant (0.0f);
+
+    Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> action;
+    action.first_ = actionType;
+    action.second_ = actionData;
+    colonyActions_.Push (action);
+}
+
+int District::GetColonyActionsCount () const
+{
+    return colonyActions_.Size ();
+}
+
+Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> District::GetColonyActionByIndex (int index) const
+{
+    assert (index < colonyActions_.Size ());
+    return colonyActions_.At (index);
+}
+
+Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> District::GetColonyActionById (Urho3D::StringHash id, bool &found) const
+{
+    for (int index = 0; index < colonyActions_.Size (); index++)
+    {
+        Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> action = colonyActions_.At (index);
+        if (action.second_ [COLONY_ACTION_ID].GetStringHash () == id)
+        {
+            found = true;
+            return action;
+        }
+    }
+
+    found = false;
+    Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> empty;
+    return empty;
+}
+
+bool District::SetColonyActionAtIndexData (int index, Urho3D::VariantMap &actionData)
+{
+    assert (index < colonyActions_.Size ());
+    // Prevent actions from overriding.
+    if (colonyActions_.At (index).second_ [COLONY_ACTION_ID].GetStringHash () ==
+            actionData [COLONY_ACTION_ID].GetStringHash ())
+    {
+        colonyActions_.At (index).second_ = actionData;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool District::SetColonyActionWithIdData (Urho3D::VariantMap &actionData)
+{
+    for (Urho3D::Vector <Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> >::Iterator iterator = colonyActions_.Begin ();
+         iterator != colonyActions_.End (); iterator++)
+    {
+        if (iterator->second_ [COLONY_ACTION_ID].GetStringHash () == actionData [COLONY_ACTION_ID].GetStringHash ())
+        {
+            iterator->second_ = actionData;
+            return true;
+        }
+    }
+    return false;
+}
+
+void District::RemoveColonyActionByIndex (int index)
+{
+    assert (index < colonyActions_.Size ());
+    colonyActions_.Erase (index);
+}
+
+bool District::RemoveColonyActionById (Urho3D::StringHash id)
+{
+    for (Urho3D::Vector <Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> >::Iterator iterator = colonyActions_.Begin ();
+         iterator != colonyActions_.End (); iterator++)
+    {
+        if (iterator->second_ [COLONY_ACTION_ID].GetStringHash () == id)
+        {
+            iterator = colonyActions_.Erase (iterator);
+            return true;
+        }
+    }
+    return false;
+}
+
 void District::UpdateHash (Map *owner)
 {
     do
     {
-        hash_ = Urho3D::StringHash (name_ + Urho3D::String (Urho3D::Random (0, 1000)));
+        hash_ = Urho3D::StringHash (name_ + Urho3D::String (Urho3D::Random (0, 100000)));
     }
     while (owner->GetDistrictByHash (hash_) != this && hash_ != Urho3D::StringHash::ZERO);
 }
@@ -567,6 +669,29 @@ Urho3D::String District::GetColonyOwnerName () const
 void District::SetColonyOwnerName (const Urho3D::String &colonyOwnerName)
 {
     colonyOwnerName_ = colonyOwnerName;
+}
+
+Urho3D::VariantVector District::GetColonyActionsAttribute () const
+{
+    Urho3D::VariantVector variantVector;
+    for (int index = 0; index < colonyActions_.Size (); index++)
+    {
+        variantVector.Push (colonyActions_.At (index).first_);
+        variantVector.Push (colonyActions_.At (index).second_);
+    }
+    return variantVector;
+}
+
+void District::SetColonyActionsAttribute (const Urho3D::VariantVector &colonyActions)
+{
+    colonyActions_.Clear ();
+    for (int index = 0; index + 1 < colonyActions.Size (); index++)
+    {
+        Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> action;
+        action.first_ = colonyActions.At (index).GetStringHash ();
+        action.second_ = colonyActions.At (index + 1).GetVariantMap ();
+        colonyActions_.Push (action);
+    }
 }
 
 float District::GetMenCount () const

@@ -1,3 +1,4 @@
+#include "AngelScript/Utils/Constants.as"
 #include "AngelScript/Utils/ClientUtils.as"
 
 class DistrictSelectedWindow : ScriptObject
@@ -5,7 +6,6 @@ class DistrictSelectedWindow : ScriptObject
     protected bool isSceneLoaded_;
     protected float untilSelectionUpdate_;
 
-    protected float COLONIZATORS_EXPEDITION_COST = 100.0f;
     protected float DEFAULT_INVESTITION_SIZE = 100.0f;
     protected float SELECTION_UPDATE_DELAY = 0.02f;
 
@@ -16,6 +16,7 @@ class DistrictSelectedWindow : ScriptObject
         districtInfoWindow.visible = true;
 
         Map @map = scene.GetChild ("map").GetComponent ("Map");
+        GameConfiguration @configuration = scene.GetComponent ("GameConfiguration");
         StringHash districtHash = scriptMain.vars ["selectedHash"].GetStringHash ();
         District @district = map.GetDistrictByHash (districtHash);
 
@@ -35,11 +36,26 @@ class DistrictSelectedWindow : ScriptObject
                                  district.colonyOwnerName == playerName);
 
         Button @sendColonizatorsButton = districtInfoWindow.GetChild ("sendColonizatorsButton");
+        float colonizatorsExpeditionCost = COLONIZATORS_EXPEDITION_SIZE * configuration.oneColonizatorSendingCost;
         sendColonizatorsButton.visible = (infoType == StringHash ("Basic")) and
                                          not district.isSea and
                                          not district.isImpassable and
                                          (district.colonyOwnerName == playerName or not district.hasColony) and
-                                         scriptMain.vars ["gold"].GetFloat () >= COLONIZATORS_EXPEDITION_COST;
+                                         scriptMain.vars ["gold"].GetFloat () > colonizatorsExpeditionCost;
+        Text @sendColonizatorsButtonText = sendColonizatorsButton.GetChild ("text");
+        sendColonizatorsButtonText.text = "Send 100 colonizators (cost: " + int (colonizatorsExpeditionCost) +
+                                      " gold).";
+
+
+        Button @buildWarShipButton = districtInfoWindow.GetChild ("buildWarShipButton");
+        buildWarShipButton.visible = (infoType == StringHash ("Basic")) and
+                                         district.hasColony and
+                                         district.colonyOwnerName == playerName and
+                                         district.menCount > configuration.oneWarShipCrew and
+                                         scriptMain.vars ["gold"].GetFloat () > configuration.oneWarShipBuildingCost;
+        Text @buildWarShipButtonText = buildWarShipButton.GetChild ("text");
+        buildWarShipButtonText.text = "Build war ship (cost: " + int (configuration.oneWarShipBuildingCost) +
+                                      " + " + int (configuration.oneWarShipCrew) + " men as crew).";
 
         if (infoType == StringHash ("Basic"))
         {
@@ -235,6 +251,7 @@ class DistrictSelectedWindow : ScriptObject
         Button @populationInfoButton = districtInfoWindow.GetChild ("populationInfoButton");
         Button @colonyEvolutionInfoButton = districtInfoWindow.GetChild ("colonyEvolutionInfoButton");
         Button @sendColonizatorsButton = districtInfoWindow.GetChild ("sendColonizatorsButton");
+        Button @buildWarShipButton = districtInfoWindow.GetChild ("buildWarShipButton");
 
         UIElement @investButtons = districtInfoWindow.GetChild ("investButtons");
         Button @investToFarmsButton = investButtons.GetChild ("investToFarms");
@@ -248,6 +265,7 @@ class DistrictSelectedWindow : ScriptObject
         SubscribeToEvent (populationInfoButton, "Released", "HandlePopulationInfoClick");
         SubscribeToEvent (colonyEvolutionInfoButton, "Released", "HandleColonyEvolutionInfoClick");
         SubscribeToEvent (sendColonizatorsButton, "Released", "HandleSendColonizatorsClick");
+        SubscribeToEvent (buildWarShipButton, "Released", "HandleBuildWarShipClick");
 
         SubscribeToEvent (investToFarmsButton, "Released", "HandleInvestClick");
         SubscribeToEvent (investToMinesButton, "Released", "HandleInvestClick");
@@ -296,16 +314,12 @@ class DistrictSelectedWindow : ScriptObject
         VectorBuffer buffer = VectorBuffer ();
         buffer.WriteInt (PLAYER_ACTION_REQUEST_COLONIZATORS_FROM_EUROPE);
         buffer.WriteStringHash (districtHash);
+        buffer.WriteInt (COLONIZATORS_EXPEDITION_SIZE);
 
         VariantMap eventData;
         eventData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
         eventData ["messageBuffer"] = Variant (buffer);
         SendEvent ("NewNetworkTask", eventData);
-
-        // Client side prediction.
-        float gold = scriptMain.vars ["gold"].GetFloat ();
-        gold -= COLONIZATORS_EXPEDITION_COST;
-        scriptMain.vars ["gold"] = Variant (gold);
     }
 
     void HandleBasicInfoClick ()
@@ -349,10 +363,11 @@ class DistrictSelectedWindow : ScriptObject
         eventData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
         eventData ["messageBuffer"] = Variant (buffer);
         SendEvent ("NewNetworkTask", eventData);
+    }
 
-        // Client side prediction.
-        float gold = scriptMain.vars ["gold"].GetFloat ();
-        gold -= DEFAULT_INVESTITION_SIZE;
-        scriptMain.vars ["gold"] = Variant (gold);
+    void HandleBuildWarShipClick ()
+    {
+        Node @scriptMain = GetScriptMain (node);
+        scriptMain.vars ["currentClickCommand"] = StringHash ("BuildWarShip");
     }
 }

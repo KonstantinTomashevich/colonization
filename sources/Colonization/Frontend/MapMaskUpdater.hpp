@@ -6,6 +6,7 @@
 
 namespace Colonization
 {
+// TODO: Maybe split to MapMaskUpdater, MapMaskUpdaterConstants.
 class District;
 class Map;
 

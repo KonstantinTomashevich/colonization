@@ -1,9 +1,12 @@
 #pragma once
 #include <Urho3D/Scene/Scene.h>
+#include <Urho3D/Resource/ResourceCache.h>
 #include <Colonization/Utils/Activities/Activity.hpp>
+#include <Colonization/Backend/UnitsManager.hpp>
 
 namespace Colonization
 {
+// TODO: Maybe split to HostActivity, GameStateType, HostActivityEvents, HostActivityConstants.
 // Declare host activity request events.
 const Urho3D::String EVENT_HOST_REQUEST_GAME_START ("HostRequestGameStart");
 const Urho3D::String EVENT_HOST_REQUEST_KICK_PLAYER ("HostRequestKickPlayer");
@@ -51,6 +54,13 @@ protected:
     void SetupWaitingForPlayersState ();
     void SetupPlayingState ();
     void SetupFinishedState ();
+
+    void LoadGameConfiguration (Urho3D::ResourceCache *resourceCache, Urho3D::String configurationPath);
+    void LoadMap (Urho3D::ResourceCache *resourceCache, Urho3D::String mapPath);
+    void LoadUnits (Urho3D::ResourceCache *resourceCache, Urho3D::String unitsPath);
+    void RecalculateUnitsHashes (Colonization::UnitsManager *unitsManager);
+    void CreateServerProcessorsAndManagers ();
+    void BanNewConnections ();
 
     /// Parameters are parse output.
     bool LoadAndParseMapInfo (Urho3D::String &configurationPath, Urho3D::String &mapPath, Urho3D::String &unitsPath);

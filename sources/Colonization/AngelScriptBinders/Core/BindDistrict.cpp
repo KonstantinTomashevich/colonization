@@ -6,6 +6,26 @@
 
 namespace Colonization
 {
+Urho3D::StringHash get_COLONY_ACTION_ID ()
+{
+    return COLONY_ACTION_ID;
+}
+
+Urho3D::StringHash get_COLONY_ACTION_PROGRESS ()
+{
+    return COLONY_ACTION_PROGRESS;
+}
+
+Urho3D::StringHash get_ColonyActions_BUILD_WAR_SHIP ()
+{
+    return ColonyActions::BUILD_WAR_SHIP;
+}
+
+Urho3D::StringHash get_ColonyActions_BuildWarShip_TARGET_DISTRICT ()
+{
+    return ColonyActions::BuildWarShip::TARGET_DISTRICT;
+}
+
 Urho3D::CScriptArray *District_GetPolygonPoints (District *district)
 {
     return Urho3D::VectorToArray <Urho3D::Vector3> (district->GetPolygonPoints (), "Array<Vector3>");
@@ -26,12 +46,44 @@ void District_SetNeighborsHashes (District *district, Urho3D::CScriptArray *arra
     district->SetNeighborsHashes (Urho3D::ArrayToPODVector <Urho3D::StringHash> (array));
 }
 
+Urho3D::StringHash District_GetColonyActionTypeByIndex (District *district, int index)
+{
+    return district->GetColonyActionByIndex (index).first_;
+}
+
+Urho3D::VariantMap District_GetColonyActionDataByIndex (District *district, int index)
+{
+    return district->GetColonyActionByIndex (index).second_;
+}
+
+Urho3D::StringHash District_GetColonyActionTypeById (District *district, Urho3D::StringHash id)
+{
+    bool found;
+    return district->GetColonyActionById (id, found).first_;
+}
+
+Urho3D::VariantMap District_GetColonyActionDataById (District *district, Urho3D::StringHash id)
+{
+    bool found;
+    return district->GetColonyActionById (id, found).second_;
+}
+
 void BindDistrict (Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
     Urho3D::RegisterComponent <District> (engine, "District");
+    BindColonyActions (script);
     BindDistrictEnums (script);
     BindDistrictInterface (script, "District");
+}
+
+void BindColonyActions(Urho3D::Script *script)
+{
+    asIScriptEngine *engine = script->GetScriptEngine ();
+    engine->RegisterGlobalFunction ("StringHash get_COLONY_ACTION_ID ()", asFUNCTION (get_COLONY_ACTION_ID), asCALL_CDECL);
+    engine->RegisterGlobalFunction ("StringHash get_COLONY_ACTION_PROGRESS ()", asFUNCTION (get_COLONY_ACTION_PROGRESS), asCALL_CDECL);
+    engine->RegisterGlobalFunction ("StringHash get_ColonyActions_BUILD_WAR_SHIP ()", asFUNCTION (get_ColonyActions_BUILD_WAR_SHIP), asCALL_CDECL);
+    engine->RegisterGlobalFunction ("StringHash get_ColonyActions_BuildWarShip_TARGET_DISTRICT ()", asFUNCTION (get_ColonyActions_BuildWarShip_TARGET_DISTRICT), asCALL_CDECL);
 }
 
 void BindDistrictEnums (Urho3D::Script *script)
@@ -57,6 +109,17 @@ void BindDistrictInterface (Urho3D::Script *script, Urho3D::String className)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
     engine->RegisterObjectMethod (className.CString (), "StringHash get_hash () const", asMETHOD (District, GetHash), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void AddColonyAction (StringHash actionType, VariantMap actionData)", asMETHOD (District, AddColonyAction), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "int get_colonyActionsCount () const", asMETHOD (District, GetColonyActionsCount), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "StringHash GetColonyActionTypeByIndex (int index) const", asFUNCTION (District_GetColonyActionTypeByIndex), asCALL_CDECL_OBJFIRST);
+    engine->RegisterObjectMethod (className.CString (), "VariantMap GetColonyActionDataByIndex (int index) const", asFUNCTION (District_GetColonyActionDataByIndex), asCALL_CDECL_OBJFIRST);
+
+    engine->RegisterObjectMethod (className.CString (), "StringHash GetColonyActionTypeById (StringHash id) const", asFUNCTION (District_GetColonyActionTypeById), asCALL_CDECL_OBJFIRST);
+    engine->RegisterObjectMethod (className.CString (), "VariantMap GetColonyActionDataById (StringHash id) const", asFUNCTION (District_GetColonyActionDataById), asCALL_CDECL_OBJFIRST);
+    engine->RegisterObjectMethod (className.CString (), "bool SetColonyActionAtIndexData (int index, VariantMap actionData)", asMETHOD (District, SetColonyActionAtIndexData), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "bool SetColonyActionWithIdData (VariantMap actionData)", asMETHOD (District, SetColonyActionWithIdData), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void RemoveColonyActionByIndex (int index)", asMETHOD (District, RemoveColonyActionByIndex), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "bool RemoveColonyActionById (StringHash id)", asMETHOD (District, RemoveColonyActionById), asCALL_THISCALL);
 
     engine->RegisterObjectMethod (className.CString (), "bool get_isSea () const", asMETHOD (District, IsSea), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_isSea (bool isSea)", asMETHOD (District, SetIsSea), asCALL_THISCALL);
