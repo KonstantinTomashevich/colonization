@@ -83,25 +83,26 @@ void Player::ProcessInvestToColonyAction (Urho3D::VectorBuffer data)
 
 void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer data)
 {
-    // TODO: It's not a final version. May be rewrited later.
-    if (gold_ >= 100.0f)
+    Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
+    UnitsManager *unitsManager = scene_->GetChild ("units")->GetComponent <UnitsManager> ();
+    // Skip action type.
+    data.ReadInt ();
+    assert (map);
+    assert (unitsManager);
+
+    Urho3D::StringHash targetDistrictHash = data.ReadStringHash ();
+    District *targetDistrict = map->GetDistrictByHash (targetDistrictHash);
+    assert (targetDistrict);
+    assert (!targetDistrict->IsSea ());
+    assert (!targetDistrict->IsImpassable ());
+    assert (!targetDistrict->HasColony () || (targetDistrict->HasColony () && targetDistrict->GetColonyOwnerName () == name_));
+
+    GameConfiguration *configuration = scene_->GetComponent <GameConfiguration> ();
+    int colonizatorsCount = data.ReadInt ();
+    float cost = colonizatorsCount * configuration->GetOneColonizatorSendingCost ();
+
+    if (gold_ > cost)
     {
-        Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
-        UnitsManager *unitsManager = scene_->GetChild ("units")->GetComponent <UnitsManager> ();
-        // Skip action type.
-        data.ReadInt ();
-
-        assert (map);
-        assert (unitsManager);
-
-        Urho3D::StringHash targetDistrictHash = data.ReadStringHash ();
-        District *targetDistrict = map->GetDistrictByHash (targetDistrictHash);
-        assert (targetDistrict);
-        assert (!targetDistrict->IsSea ());
-        assert (!targetDistrict->IsImpassable ());
-        assert (!targetDistrict->HasColony () || (targetDistrict->HasColony () && targetDistrict->GetColonyOwnerName () == name_));
-
-        GameConfiguration *configuration = scene_->GetComponent <GameConfiguration> ();
         District *nearestEuropeDistrict = map->GetDistrictByHash (
                     configuration->GetHeuristicNearestWayToEuropeDistrict (map, targetDistrict));
 
@@ -111,17 +112,10 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
         unit->SetUnitType (UNIT_COLONIZATORS);
         unit->UpdateHash (unitsManager);
 
-        NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
-        if (!counter)
-        {
-            counter = CreateNetworkUpdateCounterForComponent (unit);
-        }
-        counter->AddUpdatePoints (100.0f);
-
         if (!map->FindPath (targetDistrict->GetHash (), unit).Empty ())
         {
-            gold_ -= 100.0f;
-            unit->ColonizatorsUnitSetColonizatorsCount (100);
+            gold_ -= cost;
+            unit->ColonizatorsUnitSetColonizatorsCount (colonizatorsCount);
 
             NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
             if (!counter)

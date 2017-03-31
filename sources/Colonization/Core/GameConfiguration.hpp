@@ -16,6 +16,7 @@ protected:
     float embarkationSpeed_;
     float disembarkationSpeed_;
 
+    float oneColonizatorSendingCost_;
     float oneWarShipBuildingCost_;
     float oneWarShipCrew_;
     float oneWarShipBasicBuildTime_;
@@ -143,6 +144,9 @@ public:
 
     float GetDisembarkationSpeed () const;
     void SetDisembarkationSpeed (float disembarkationSpeed);
+
+    float GetOneColonizatorSendingCost () const;
+    void SetOneColonizatorSendingCost (float oneColonizatorSendingCost);
 
     float GetOneWarShipBuildingCost () const;
     void SetOneWarShipBuildingCost (float oneWarShipBuildingCost);

@@ -43,6 +43,9 @@ void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String clas
     engine->RegisterObjectMethod (className.CString (), "float get_disembarkationSpeed () const", asMETHOD (GameConfiguration, GetDisembarkationSpeed), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_disembarkationSpeed (float disembarkationSpeed)", asMETHOD (GameConfiguration, SetDisembarkationSpeed), asCALL_THISCALL);
 
+    engine->RegisterObjectMethod (className.CString (), "float get_oneColonizatorSendingCost () const", asMETHOD (GameConfiguration, GetOneColonizatorSendingCost), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_oneColonizatorSendingCost (float oneColonizatorSendingCost)", asMETHOD (GameConfiguration, SetOneColonizatorSendingCost), asCALL_THISCALL);
+
     engine->RegisterObjectMethod (className.CString (), "float get_oneWarShipBuildingCost () const", asMETHOD (GameConfiguration, GetOneWarShipBuildingCost), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_oneWarShipBuildingCost (float oneWarShipBuildingCost)", asMETHOD (GameConfiguration, SetOneWarShipBuildingCost), asCALL_THISCALL);
 

@@ -23,6 +23,7 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
     embarkationSpeed_ (0.11f),
     disembarkationSpeed_ (0.11f),
 
+    oneColonizatorSendingCost_ (1.0f),
     oneWarShipBuildingCost_ (30.0f),
     oneWarShipCrew_ (20.0f),
     oneWarShipBasicBuildTime_ (20.0f),
@@ -151,6 +152,8 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
     URHO3D_ACCESSOR_ATTRIBUTE ("Disembarkation Speed", GetDisembarkationSpeed,
                                SetDisembarkationSpeed, float, 0.11f, Urho3D::AM_DEFAULT);
 
+    URHO3D_ACCESSOR_ATTRIBUTE ("One Colonizator Sending Cost", GetOneColonizatorSendingCost,
+                               SetOneColonizatorSendingCost, float, 1.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("One War Ship Building Cost", GetOneWarShipBuildingCost,
                                SetOneWarShipBuildingCost, float, 30.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("One War Ship Crew", GetOneWarShipCrew,
@@ -455,6 +458,16 @@ float GameConfiguration::GetDisembarkationSpeed () const
 void GameConfiguration::SetDisembarkationSpeed (float disembarkationSpeed)
 {
     disembarkationSpeed_ = disembarkationSpeed;
+}
+
+float GameConfiguration::GetOneColonizatorSendingCost () const
+{
+    return oneColonizatorSendingCost_;
+}
+
+void GameConfiguration::SetOneColonizatorSendingCost (float oneColonizatorSendingCost)
+{
+    oneColonizatorSendingCost_ = oneColonizatorSendingCost;
 }
 
 float GameConfiguration::GetOneWarShipBuildingCost () const
