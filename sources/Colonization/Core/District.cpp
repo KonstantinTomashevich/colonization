@@ -276,6 +276,7 @@ void District::AddColonyAction (Urho3D::StringHash actionType, Urho3D::VariantMa
     }
     while (found);
     actionData [COLONY_ACTION_ID] = Urho3D::Variant (id);
+    actionData [COLONY_ACTION_PROGRESS] = Urho3D::Variant (0.0f);
 
     Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> action;
     action.first_ = actionType;

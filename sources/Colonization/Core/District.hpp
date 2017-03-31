@@ -36,6 +36,7 @@ enum NativesCharacterType
 };
 
 const Urho3D::StringHash COLONY_ACTION_ID ("ColonyActionId");
+const Urho3D::StringHash COLONY_ACTION_PROGRESS ("ColonyActionProgress");
 namespace ColonyActions
 {
 const Urho3D::StringHash BUILD_WAR_SHIP ("BuildWarShip");
@@ -43,8 +44,6 @@ namespace BuildWarShip
 {
 /// District hash (sea district, neighbor of colony).
 const Urho3D::StringHash TARGET_DISTRICT ("TargetDistrict");
-/// Float.
-const Urho3D::StringHash PROGRESS ("Progress");
 }
 }
 
