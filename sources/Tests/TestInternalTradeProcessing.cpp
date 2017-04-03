@@ -187,7 +187,7 @@ void TestInternalTradeProcessingApplication::Update (Urho3D::StringHash eventTyp
         }
         else if (unitsManager->GetUnitsCount () != 7)
         {
-            ErrorExit ("Expected that PlayerX sended 7 traders!");
+            ErrorExit ("Expected that PlayerX send 7 traders!");
         }
         else
         {

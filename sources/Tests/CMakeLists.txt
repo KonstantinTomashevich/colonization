@@ -22,6 +22,12 @@ setup_executable ()
 target_link_libraries (TestInternalTradeProcessing Colonization)
 add_test (NAME test_internal_trade_processing COMMAND TestInternalTradeProcessing)
 
+set (TARGET_NAME TestColonyActionBuildWarShip)
+set (SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/TestColonyActionBuildWarShip.hpp ${CMAKE_CURRENT_SOURCE_DIR}/TestColonyActionBuildWarShip.cpp)
+setup_executable ()
+target_link_libraries (TestColonyActionBuildWarShip Colonization)
+add_test (NAME test_colony_action_build_war_ship COMMAND TestColonyActionBuildWarShip)
+
 set (TARGET_NAME TestFogOfWarCalculator)
 set (SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/TestFogOfWarCalculator.hpp ${CMAKE_CURRENT_SOURCE_DIR}/TestFogOfWarCalculator.cpp)
 setup_executable ()
