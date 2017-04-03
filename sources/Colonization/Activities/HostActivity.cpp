@@ -113,7 +113,7 @@ void HostActivity::SetupPlayingState ()
     LoadUnits (resourceCache, unitsPath);
     RecalculateUnitsHashes (scene_->GetChild ("units")->GetComponent <UnitsManager> ());
     CreateServerProcessorsAndManagers ();
-    BanNewConnections ();
+    BanNewConnectionsAndSetStartGold ();
 }
 
 void HostActivity::SetupFinishedState ()
@@ -170,10 +170,11 @@ void HostActivity::CreateServerProcessorsAndManagers ()
     scene_->CreateComponent <VictoryProgressUpdater> (Urho3D::LOCAL);
 }
 
-void HostActivity::BanNewConnections ()
+void HostActivity::BanNewConnectionsAndSetStartGold ()
 {
     PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
     playersManager->SetIsAcceptingNewConnections (false);
+    playersManager->SetStartGoldForAllPlayers ();
 }
 
 bool HostActivity::LoadAndParseMapInfo (Urho3D::String &configurationPath, Urho3D::String &mapPath, Urho3D::String &unitsPath)

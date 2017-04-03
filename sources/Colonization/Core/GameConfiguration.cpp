@@ -18,6 +18,7 @@ const char *wayToEuropeStructureElementsNames [] =
 
 GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Component (context),
     wayToEuropeDistricts_ (),
+    playerStartGold_ (500.0f),
     sailSpeed_ (0.40f),
     marchSpeed_ (0.15f),
     embarkationSpeed_ (0.11f),
@@ -145,6 +146,7 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
                                                               wayToEuropeStructureElementsNames, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Player Start Gold", GetPlayerStartGold, SetPlayerStartGold, float, 500.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Sail Speed", GetSailSpeed, SetSailSpeed, float, 0.40f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("March Speed", GetMarchSpeed, SetMarchSpeed, float, 0.15f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Embarkation Speed", GetEmbarkationSpeed,
@@ -418,6 +420,16 @@ Urho3D::StringHash GameConfiguration::GetHeuristicNearestWayToEuropeDistrict (Ma
     }
     while (index < wayToEuropeDistricts_.Size ());
     return heuristicNearest;
+}
+
+float GameConfiguration::GetPlayerStartGold () const
+{
+    return playerStartGold_;
+}
+
+void GameConfiguration::SetPlayerStartGold (float playerStartGold)
+{
+    playerStartGold_ = playerStartGold;
 }
 
 float GameConfiguration::GetSailSpeed () const

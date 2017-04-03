@@ -11,6 +11,7 @@ class GameConfiguration : public Urho3D::Component
 URHO3D_OBJECT (GameConfiguration, Component)
 protected:
     Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts_;
+    float playerStartGold_;
     float sailSpeed_;
     float marchSpeed_;
     float embarkationSpeed_;
@@ -131,7 +132,10 @@ public:
     void SetWayToEuropeDistricts (Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts);
     Urho3D::VariantVector GetWayToEuropeDistrictsAttribute () const;
     void SetWayToEuropeDistrictsAttribute (const Urho3D::VariantVector &wayToEuropeDistricts);
-    Urho3D::StringHash GetHeuristicNearestWayToEuropeDistrict (Map *map, District *wayStartDistrict) const;
+    Urho3D::StringHash GetHeuristicNearestWayToEuropeDistrict (Map *map, District *wayStartDistrict) const;\
+
+    float GetPlayerStartGold () const;
+    void SetPlayerStartGold (float playerStartGold);
 
     float GetSailSpeed () const;
     void SetSailSpeed (float sailSpeed);

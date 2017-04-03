@@ -60,7 +60,7 @@ protected:
     void LoadUnits (Urho3D::ResourceCache *resourceCache, Urho3D::String unitsPath);
     void RecalculateUnitsHashes (Colonization::UnitsManager *unitsManager);
     void CreateServerProcessorsAndManagers ();
-    void BanNewConnections ();
+    void BanNewConnectionsAndSetStartGold ();
 
     /// Parameters are parse output.
     bool LoadAndParseMapInfo (Urho3D::String &configurationPath, Urho3D::String &mapPath, Urho3D::String &unitsPath);

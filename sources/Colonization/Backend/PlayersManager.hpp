@@ -36,6 +36,7 @@ public:
 
     bool IsAcceptingNewConnections () const;
     void SetIsAcceptingNewConnections (bool isAcceptingNewConnections);
+    void SetStartGoldForAllPlayers ();
 
     int GetPlayersCount () const;
     Player *GetPlayerByIndex (int index) const;
