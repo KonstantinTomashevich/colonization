@@ -59,13 +59,13 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
     tradeAreaInternalProfitToBalance_ (0.85f),
     tradeAreaExternalProfitToBalance_ (0.35f),
 
-    tradeAreaFarmsLogisticsExpenses_ (0.05f),
-    tradeAreaMinesLogisticsExpenses_ (0.1f),
-    tradeAreaIndustryLogisticsExpenses_ (0.15f),
+    tradeAreaFarmsLogisticsExpenses_ (0.3f),
+    tradeAreaMinesLogisticsExpenses_ (0.16f),
+    tradeAreaIndustryLogisticsExpenses_ (0.35f),
 
-    tradeAreaFarmsDefenseExpenses_ (0.1f),
-    tradeAreaMinesDefenseExpenses_ (0.1f),
-    tradeAreaIndustryDefenseExpenses_ (0.15f),
+    tradeAreaFarmsDefenseExpenses_ (0.16f),
+    tradeAreaMinesDefenseExpenses_ (0.31f),
+    tradeAreaIndustryDefenseExpenses_ (0.3f),
 
     evolutionCostPerLevel_ (1000.0f),
     degradationCostPerLevel_ (1000.0f),
@@ -217,18 +217,18 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
                                SetTradeAreaExternalProfitToBalance, float, 0.35f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Farms Logistics Expenses", GetTradeAreaFarmsLogisticsExpenses,
-                               SetTradeAreaFarmsLogisticsExpenses, float, 0.05f, Urho3D::AM_DEFAULT);
+                               SetTradeAreaFarmsLogisticsExpenses, float, 0.3f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Mines Logistics Expenses", GetTradeAreaMinesLogisticsExpenses,
-                               SetTradeAreaMinesLogisticsExpenses, float, 0.1f, Urho3D::AM_DEFAULT);
+                               SetTradeAreaMinesLogisticsExpenses, float, 0.16f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Industry Logistics Expenses", GetTradeAreaIndustryLogisticsExpenses,
-                               SetTradeAreaIndustryLogisticsExpenses, float, 0.15f, Urho3D::AM_DEFAULT);
+                               SetTradeAreaIndustryLogisticsExpenses, float, 0.35f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Farms Defense Expenses", GetTradeAreaFarmsDefenseExpenses,
-                               SetTradeAreaFarmsDefenseExpenses, float, 0.1f, Urho3D::AM_DEFAULT);
+                               SetTradeAreaFarmsDefenseExpenses, float, 0.16f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Mines Defense Expenses", GetTradeAreaMinesDefenseExpenses,
-                               SetTradeAreaMinesDefenseExpenses, float, 0.1f, Urho3D::AM_DEFAULT);
+                               SetTradeAreaMinesDefenseExpenses, float, 0.31f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Industry Defense Expenses", GetTradeAreaIndustryDefenseExpenses,
-                               SetTradeAreaIndustryDefenseExpenses, float, 0.15f, Urho3D::AM_DEFAULT);
+                               SetTradeAreaIndustryDefenseExpenses, float, 0.3f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Evolution Cost Per Level", GetEvolutionCostPerLevel,
                                SetEvolutionCostPerLevel, float, 1000.0f, Urho3D::AM_DEFAULT);
