@@ -60,7 +60,7 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
     tradeAreaExternalProfitToBalance_ (0.35f),
 
     tradeAreaFarmsLogisticsExpenses_ (0.05f),
-    tradeAreaMinesLogisticsExpenses_ (0.5f),
+    tradeAreaMinesLogisticsExpenses_ (0.1f),
     tradeAreaIndustryLogisticsExpenses_ (0.15f),
 
     tradeAreaFarmsDefenseExpenses_ (0.1f),
