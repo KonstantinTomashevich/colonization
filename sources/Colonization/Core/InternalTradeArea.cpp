@@ -797,21 +797,9 @@ Urho3D::SharedPtr <TradeDistrictProcessingInfo> InternalTradeArea::ProcessTrade 
     float totalMinesConsumption = CalculateTotalProductionConsumptionOfMines (configuration, realDistricts, totalSoldiersCount);
     float totalIndustryConsumption = CalculateTotalProductionConsumptionOfIndustry (configuration, realDistricts, totalSoldiersCount);
 
-    float farmsUnsatisfiedConsumption = ConsumeProduction (totalFarmsConsumption, farmsTotalProduction);
-    float minesUnsatisfiedConsumption = ConsumeProduction (totalMinesConsumption, minesTotalProduction);
-    float industryUnsatisfiedConsumption = ConsumeProduction (totalIndustryConsumption, industryTotalProduction);
-
-    float farmsInternalProductionCost = configuration->GetFarmsProductionInternalCost ();
-    float minesInternalProductionCost = configuration->GetMinesProductionInternalCost ();
-    float industryInternalProductionCost = configuration->GetIndustryProductionInternalCost ();
-
-    float farmsExternalProductionCost = configuration->GetFarmsProductionExternalCost ();
-    float minesExternalProductionCost = configuration->GetMinesProductionExternalCost ();
-    float industryExternalProductionCost = configuration->GetIndustryProductionExternalCost ();
-
-    float soldFarmsProduction = (farmsUnsatisfiedConsumption <= 0.0f) ? totalFarmsConsumption : totalFarmsProduction;
-    float soldMinesProduction = (minesUnsatisfiedConsumption <= 0.0f) ? totalMinesConsumption : totalMinesProduction;
-    float soldIndustryProduction = (industryUnsatisfiedConsumption <= 0.0f) ? totalIndustryConsumption : totalIndustryProduction;
+    ConsumeProduction (totalFarmsConsumption, farmsTotalProduction);
+    ConsumeProduction (totalMinesConsumption, minesTotalProduction);
+    ConsumeProduction (totalIndustryConsumption, industryTotalProduction);
 
     Urho3D::SharedPtr <TradeDistrictProcessingInfo> result (new TradeDistrictProcessingInfo (context_));
     result->SetUnusedProductionOf ("farms", (totalFarmsProduction - totalFarmsConsumption) * updateDelay);
