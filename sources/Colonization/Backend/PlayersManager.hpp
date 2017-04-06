@@ -5,7 +5,7 @@
 #include <Urho3D/Network/Connection.h>
 
 #include <Colonization/Backend/Player/Player.hpp>
-#include <Colonization/Backend/MessagesHandler.hpp>
+#include <Colonization/Backend/MessagesHandler/MessagesHandler.hpp>
 #include <Colonization/Core/PlayerInfo.hpp>
 
 namespace Colonization

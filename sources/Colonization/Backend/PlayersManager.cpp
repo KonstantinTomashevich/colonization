@@ -8,7 +8,7 @@
 #include <Urho3D/IO/Log.h>
 
 #include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
-#include <Colonization/Backend/MessagesHandler.hpp>
+#include <Colonization/Backend/MessagesHandler/MessagesHandler.hpp>
 #include <Colonization/Core/PlayerInfo.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>

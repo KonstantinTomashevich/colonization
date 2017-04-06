@@ -15,7 +15,7 @@
 
 #include <Colonization/Backend/ColoniesActionsProcessor.hpp>
 #include <Colonization/Backend/ColoniesEvolutionManager.hpp>
-#include <Colonization/Backend/MessagesHandler.hpp>
+#include <Colonization/Backend/MessagesHandler/MessagesHandler.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/PlayersPointsCalculator.hpp>
 #include <Colonization/Backend/TradeProcessor.hpp>

@@ -5,6 +5,7 @@
 #include <Urho3D/Network/Connection.h>
 #include <Urho3D/IO/Log.h>
 
+#include <Colonization/Backend/MessagesHandler/NetworkMessageType.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>

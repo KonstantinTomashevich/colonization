@@ -2,7 +2,7 @@
 #include "BindNetworkMessageType.hpp"
 #include <Urho3D/ThirdParty/AngelScript/angelscript.h>
 #include <Urho3D/AngelScript/APITemplates.h>
-#include <Colonization/Backend/MessagesHandler.hpp>
+#include <Colonization/Backend/MessagesHandler/NetworkMessageType.hpp>
 
 
 namespace Colonization
