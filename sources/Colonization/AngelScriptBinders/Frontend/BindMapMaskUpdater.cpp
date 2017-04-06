@@ -33,6 +33,27 @@ void BindMapMaskUpdaterInterface (Urho3D::Script *script, Urho3D::String classNa
     engine->RegisterObjectMethod (className.CString (), "StringHash GetDistrictByColorInt (uint color)", asMETHOD (MapMaskUpdater, GetDistrictByColorInt), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "uint GetDistrictColorInt (StringHash districtHash)", asMETHOD (MapMaskUpdater, GetDistrictColorInt), asCALL_THISCALL);
 
+    engine->RegisterObjectMethod (className.CString (), "IntVector2 get_mapMaskSize () const", asMETHOD (MapMaskUpdater, GetMapMaskSize), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_mapMaskSize (IntVector2 mapMaskSize)", asMETHOD (MapMaskUpdater, SetMapMaskSize), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "int get_mapMaskComponents () const", asMETHOD (MapMaskUpdater, GetMapMaskComponents), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_mapMaskComponents (int mapMaskComponents)", asMETHOD (MapMaskUpdater, SetMapMaskComponents), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "int get_districtBorderLineWidth () const", asMETHOD (MapMaskUpdater, GetDistrictBorderLineWidth), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_districtBorderLineWidth (int districtBorderLineWidth)", asMETHOD (MapMaskUpdater, SetDistrictBorderLineWidth), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_selectedDistrictColorModifer () const", asMETHOD (MapMaskUpdater, GetSelectedDistrictColorModifer), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_selectedDistrictColorModifer (float selectedDistrictColorModifer)", asMETHOD (MapMaskUpdater, SetSelectedDistrictColorModifer), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "Color get_districtBorderLineColor () const", asMETHOD (MapMaskUpdater, GetDistrictBorderLineColor), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_districtBorderLineColor (Color districtBorderLineColor)", asMETHOD (MapMaskUpdater, SetDistrictBorderLineColor), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "Color get_visibleDistrictColor () const", asMETHOD (MapMaskUpdater, GetVisibleDistrictColor), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_visibleDistrictColor (Color visibleDistrictColor)", asMETHOD (MapMaskUpdater, SetVisibleDistrictColor), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "Color get_districtUnderFogColor () const", asMETHOD (MapMaskUpdater, GetDistrictUnderFogColor), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_districtUnderFogColor (Color districtUnderFogColor)", asMETHOD (MapMaskUpdater, SetDistrictUnderFogColor), asCALL_THISCALL);
+
     engine->RegisterObjectMethod (className.CString (), "Image @+ get_fogOfWarMaskImage () const", asMETHOD (MapMaskUpdater, GetFogOfWarMaskImage), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "Texture2D @+ get_fogOfWarMaskTexture () const", asMETHOD (MapMaskUpdater, GetFogOfWarMaskTexture), asCALL_THISCALL);
 

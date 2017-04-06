@@ -6,24 +6,21 @@
 
 namespace Colonization
 {
-// TODO: Maybe split to MapMaskUpdater, MapMaskUpdaterConstants.
 class District;
 class Map;
-
-const int MAP_MASK_WIDTH = 1024;
-const int MAP_MASK_HEIGHT = 1024;
-const int MAP_MASK_COMPONENTS = 4;
-const int MAP_MASK_DISTRICT_BORDER_LINE_WIDTH = 2;
-const float MAP_MASK_SELECTED_DISTRICT_COLOR_MODIFER = 1.0f / 0.75f;
-
-const Urho3D::Color MAP_MASK_DISTRICT_BORDER_LINE_COLOR (0.10f, 0.10f, 0.10f, 1.00f);
-const Urho3D::Color MAP_MASK_VISIBLE_DISTRICT_COLOR (0.75f, 0.75f, 0.75f, 1.00f);
-const Urho3D::Color MAP_MASK_DISTRICT_UNDER_FOG_COLOR (0.30f, 0.30f, 0.30f, 1.00f);
 
 class MapMaskUpdater : public Urho3D::Component
 {
 URHO3D_OBJECT (MapMaskUpdater, Component)
 protected:
+    Urho3D::IntVector2 mapMaskSize_;
+    int mapMaskComponents_;
+    int districtBorderLineWidth_;
+    float selectedDistrictColorModifer_;
+    Urho3D::Color districtBorderLineColor_;
+    Urho3D::Color visibleDistrictColor_;
+    Urho3D::Color districtUnderFogColor_;
+
     /// Rendered fog of war mask.
     Urho3D::SharedPtr <Urho3D::Image> fogOfWarMaskImage_;
     Urho3D::SharedPtr <Urho3D::Texture2D> fogOfWarMaskTexture_;
@@ -58,6 +55,27 @@ public:
 
     Urho3D::IntVector2 WorldPointToMapPoint (Urho3D::Vector3 worldPoint) const;
     unsigned GetDistrictColorInt (Urho3D::StringHash districtHash);
+
+    Urho3D::IntVector2 GetMapMaskSize () const;
+    void SetMapMaskSize (const Urho3D::IntVector2 &mapMaskSize);
+
+    int GetMapMaskComponents () const;
+    void SetMapMaskComponents (int mapMaskComponents);
+
+    int GetDistrictBorderLineWidth () const;
+    void SetDistrictBorderLineWidth (int districtBorderLineWidth);
+
+    float GetSelectedDistrictColorModifer () const;
+    void SetSelectedDistrictColorModifer (float selectedDistrictColorModifer);
+
+    Urho3D::Color GetDistrictBorderLineColor () const;
+    void SetDistrictBorderLineColor (const Urho3D::Color &districtBorderLineColor);
+
+    Urho3D::Color GetVisibleDistrictColor () const;
+    void SetVisibleDistrictColor (const Urho3D::Color &visibleDistrictColor);
+
+    Urho3D::Color GetDistrictUnderFogColor () const;
+    void SetDistrictUnderFogColor (const Urho3D::Color &districtUnderFogColor);
 
     Urho3D::Image *GetFogOfWarMaskImage () const;
     Urho3D::Texture2D *GetFogOfWarMaskTexture () const;

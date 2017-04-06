@@ -159,8 +159,8 @@ void TestMapMaskGenerationApplication::Start ()
         Urho3D::Color color = mapMaskUpdater->GetFogOfWarMaskImage ()->GetPixel (position.x_, position.y_);
         bool willBeVisible = fogOfWarCalculator->IsDistrictVisible (district->GetHash ());
 
-        if ((willBeVisible && color.ToUInt () != Colonization::MAP_MASK_VISIBLE_DISTRICT_COLOR.ToUInt ()) ||
-                (!willBeVisible && color.ToUInt () != Colonization::MAP_MASK_DISTRICT_UNDER_FOG_COLOR.ToUInt ()))
+        if ((willBeVisible && color.ToUInt () != mapMaskUpdater->GetVisibleDistrictColor ().ToUInt ()) ||
+                (!willBeVisible && color.ToUInt () != mapMaskUpdater->GetDistrictUnderFogColor ().ToUInt ()))
         {
             ErrorExit ("Error in FogOfWar map with distirct " + district->GetName () + "! It will " +
                        (willBeVisible ? Urho3D::String (" ") : Urho3D::String ("not ")) +
