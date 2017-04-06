@@ -3,37 +3,10 @@
 #include <Urho3D/Resource/ResourceCache.h>
 #include <Colonization/Utils/Activities/Activity.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
+#include <Colonization/Activities/HostActivity/GameStateType.hpp>
 
 namespace Colonization
 {
-// TODO: Maybe split to HostActivity, GameStateType, HostActivityEvents, HostActivityConstants.
-// Declare host activity request events.
-const Urho3D::String EVENT_HOST_REQUEST_GAME_START ("HostRequestGameStart");
-const Urho3D::String EVENT_HOST_REQUEST_KICK_PLAYER ("HostRequestKickPlayer");
-namespace HostRequestKickPlayer
-{
-const Urho3D::String PLAYER_NAME ("PlayerName");
-}
-
-const Urho3D::String EVENT_HOST_REQUEST_SELECT_MAP ("HostRequestSelectMap");
-namespace HostRequestSelectMap
-{
-const Urho3D::String MAP_FOLDER ("MapFolder");
-const Urho3D::String MAP_INFO_PATH ("MapInfoPath");
-}
-
-const Urho3D::StringHash VAR_REPLICATED_NODES_COUNT ("ReplicatedNodesCount");
-const Urho3D::StringHash VAR_MAP_FOLDER ("MapFolder");
-const Urho3D::StringHash VAR_MAP_INFO_PATH ("MapInfoPath");
-
-enum GameStateType
-{
-    GAME_STATE_UNITIALIZED = 0,
-    GAME_STATE_WAITING_FOR_START = 1,
-    GAME_STATE_PLAYING = 2,
-    GAME_STATE_FINISHED = 3
-};
-
 class HostActivity : public Activity
 {
 URHO3D_OBJECT (HostActivity, Activity)

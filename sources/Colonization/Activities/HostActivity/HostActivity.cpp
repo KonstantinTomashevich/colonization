@@ -12,6 +12,8 @@
 #include <Colonization/Core/Unit.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Utils/Network/NetworkUpdateSmoother.hpp>
+#include <Colonization/Activities/HostActivity/HostActivityEvents.hpp>
+#include <Colonization/Activities/HostActivity/HostActivityConstants.hpp>
 
 #include <Colonization/Backend/ColoniesActionsProcessor.hpp>
 #include <Colonization/Backend/ColoniesEvolutionManager.hpp>

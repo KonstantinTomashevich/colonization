@@ -1,6 +1,8 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "MessagesHandler.hpp"
 #include <Urho3D/Core/Context.h>
+#include <Urho3D/Scene/Node.h>
+#include <Urho3D/Scene/Scene.h>
 #include <Urho3D/Network/NetworkEvents.h>
 #include <Urho3D/Network/Connection.h>
 #include <Urho3D/IO/Log.h>

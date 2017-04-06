@@ -2,7 +2,10 @@
 #include "BindAll.hpp"
 
 #include <Colonization/AngelScriptBinders/Activities/BindActivity.hpp>
-#include <Colonization/AngelScriptBinders/Activities/BindHostActivity.hpp>
+#include <Colonization/AngelScriptBinders/Activities/HostActivity/BindHostActivity.hpp>
+#include <Colonization/AngelScriptBinders/Activities/HostActivity/BindHostActivityEvents.hpp>
+#include <Colonization/AngelScriptBinders/Activities/HostActivity/BindHostActivityConstants.hpp>
+#include <Colonization/AngelScriptBinders/Activities/HostActivity/BindGameStateType.hpp>
 #include <Colonization/AngelScriptBinders/Activities/BindIngameClientActivity.hpp>
 #include <Colonization/AngelScriptBinders/Activities/BindMainMenuActivity.hpp>
 
@@ -30,6 +33,9 @@ void BindAll (Urho3D::Script *script)
 {
     BindActivity (script);
     BindHostActivity (script);
+    BindHostActivityEvents (script);
+    BindHostActivityConstants (script);
+    BindGameStateType (script);
     BindIngameClientActivity (script);
     BindMainMenuActivity (script);
 
