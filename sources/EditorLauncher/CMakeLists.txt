@@ -1,5 +1,5 @@
 set (TARGET_NAME EditorLauncher)
 set (RESOURCE_DIRS "${CMAKE_SOURCE_DIR}/bin/CoreData;${CMAKE_SOURCE_DIR}/bin/CoreData;${CMAKE_SOURCE_DIR}/bin/Urho3DEditorData")
-define_source_files (RECURSE)
+define_source_files (RECURSE GLOB_H_PATTERNS *.hpp)
 setup_main_executable ()
 target_link_libraries (EditorLauncher Colonization)
