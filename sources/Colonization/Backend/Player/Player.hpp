@@ -1,39 +1,11 @@
 #pragma once
 #include <Urho3D/Core/Object.h>
 #include <Urho3D/Network/Connection.h>
+#include <Colonization/Backend/Player/PlayerActionType.hpp>
 
 namespace Colonization
 {
-// TODO: Maybe split to Player, PlayerComparator, PlayerActionType.
-class Player;
-typedef bool (*PlayerComparator) (const Player *first, const Player *second);
-namespace PlayerComparators
-{
-bool HigherPoints (const Player *first, const Player *second);
-}
-
 const float PLAYER_NEW_CHAT_MESSAGE_DELAY = 1.0f;
-enum PlayerActionType
-{
-    PLAYER_ACTION_NONE = 0,
-    PLAYER_ACTION_SET_UNIT_MOVE_TARGET = 1,
-
-    PLAYER_ACTION_INVEST_TO_COLONY = 2,
-    PLAYER_ACTION_CHANGE_INTERNAL_TRADE_TAXES = 3,
-    PLAYER_ACTION_CHANGE_EUROPE_TRADE_TAXES = 4,
-
-    PLAYER_ACTION_REQUEST_COLONIZATORS_FROM_EUROPE = 5,
-    PLAYER_ACTION_REQUEST_ARMY_FROM_EUROPE = 6,
-    PLAYER_ACTION_REQUEST_FLEET_FROM_EUROPE = 7,
-
-    PLAYER_ACTION_ADD_COLONY_ACTION = 8,
-    PLAYER_ACTION_REMOVE_COLONY_ACTION = 9,
-
-    PLAYER_ACTION_START_WAR = 10,
-    PLAYER_ACTION_SEND_PEACE_TREATY = 11,
-    PLAYER_ACTION_ACCEPT_PEACE_TREATY = 12,
-};
-
 class Player : public Urho3D::Object
 {
 URHO3D_OBJECT (Player, Object)

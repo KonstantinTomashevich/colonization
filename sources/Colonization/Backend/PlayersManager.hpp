@@ -4,7 +4,7 @@
 #include <Urho3D/Container/HashMap.h>
 #include <Urho3D/Network/Connection.h>
 
-#include <Colonization/Backend/Player.hpp>
+#include <Colonization/Backend/Player/Player.hpp>
 #include <Colonization/Backend/MessagesHandler.hpp>
 #include <Colonization/Core/PlayerInfo.hpp>
 

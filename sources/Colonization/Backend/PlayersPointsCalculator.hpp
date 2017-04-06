@@ -3,7 +3,7 @@
 #include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
-#include <Colonization/Backend/Player.hpp>
+#include <Colonization/Backend/Player/Player.hpp>
 
 namespace Colonization
 {

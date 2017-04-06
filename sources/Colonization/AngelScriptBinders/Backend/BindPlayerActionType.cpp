@@ -2,7 +2,8 @@
 #include "BindPlayerActionType.hpp"
 #include <Urho3D/ThirdParty/AngelScript/angelscript.h>
 #include <Urho3D/AngelScript/APITemplates.h>
-#include <Colonization/Backend/Player.hpp>
+#include <Colonization/Backend/Player/PlayerActionType.hpp>
+#include <Colonization/Backend/Player/Player.hpp>
 
 namespace Colonization
 {

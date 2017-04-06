@@ -1,6 +1,6 @@
 #pragma once
 #include <Urho3D/Scene/Component.h>
-#include <Colonization/Backend/Player.hpp>
+#include <Colonization/Backend/Player/Player.hpp>
 #include <Colonization/Activities/HostActivity.hpp>
 
 namespace Colonization

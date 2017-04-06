@@ -322,12 +322,4 @@ void Player::SetIsReadyForStart (bool isReadyForStart)
 {
     isReadyForStart_ = isReadyForStart;
 }
-
-namespace PlayerComparators
-{
-bool HigherPoints (const Player *first, const Player *second)
-{
-    return (first->GetPoints () > second->GetPoints ());
-}
-}
 }
