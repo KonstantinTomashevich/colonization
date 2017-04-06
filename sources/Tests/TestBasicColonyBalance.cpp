@@ -4,7 +4,7 @@
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/Scene/Scene.h>
 
-#include <Colonization/Core/District.hpp>
+#include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/InternalTradeArea.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>

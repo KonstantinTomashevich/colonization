@@ -2,30 +2,10 @@
 #include "BindDistrict.hpp"
 #include <Urho3D/AngelScript/APITemplates.h>
 #include <Urho3D/ThirdParty/AngelScript/angelscript.h>
-#include <Colonization/Core/District.hpp>
+#include <Colonization/Core/District/District.hpp>
 
 namespace Colonization
 {
-Urho3D::StringHash get_COLONY_ACTION_ID ()
-{
-    return COLONY_ACTION_ID;
-}
-
-Urho3D::StringHash get_COLONY_ACTION_PROGRESS ()
-{
-    return COLONY_ACTION_PROGRESS;
-}
-
-Urho3D::StringHash get_ColonyActions_BUILD_WAR_SHIP ()
-{
-    return ColonyActions::BUILD_WAR_SHIP;
-}
-
-Urho3D::StringHash get_ColonyActions_BuildWarShip_TARGET_DISTRICT ()
-{
-    return ColonyActions::BuildWarShip::TARGET_DISTRICT;
-}
-
 Urho3D::CScriptArray *District_GetPolygonPoints (District *district)
 {
     return Urho3D::VectorToArray <Urho3D::Vector3> (district->GetPolygonPoints (), "Array<Vector3>");
@@ -72,37 +52,7 @@ void BindDistrict (Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
     Urho3D::RegisterComponent <District> (engine, "District");
-    BindColonyActions (script);
-    BindDistrictEnums (script);
     BindDistrictInterface (script, "District");
-}
-
-void BindColonyActions(Urho3D::Script *script)
-{
-    asIScriptEngine *engine = script->GetScriptEngine ();
-    engine->RegisterGlobalFunction ("StringHash get_COLONY_ACTION_ID ()", asFUNCTION (get_COLONY_ACTION_ID), asCALL_CDECL);
-    engine->RegisterGlobalFunction ("StringHash get_COLONY_ACTION_PROGRESS ()", asFUNCTION (get_COLONY_ACTION_PROGRESS), asCALL_CDECL);
-    engine->RegisterGlobalFunction ("StringHash get_ColonyActions_BUILD_WAR_SHIP ()", asFUNCTION (get_ColonyActions_BUILD_WAR_SHIP), asCALL_CDECL);
-    engine->RegisterGlobalFunction ("StringHash get_ColonyActions_BuildWarShip_TARGET_DISTRICT ()", asFUNCTION (get_ColonyActions_BuildWarShip_TARGET_DISTRICT), asCALL_CDECL);
-}
-
-void BindDistrictEnums (Urho3D::Script *script)
-{
-    asIScriptEngine *engine = script->GetScriptEngine ();
-    engine->RegisterEnum ("ClimateType");
-    engine->RegisterEnumValue ("ClimateType", "CLIMATE_TROPICAL", CLIMATE_TROPICAL);
-    engine->RegisterEnumValue ("ClimateType", "CLIMATE_HOT", CLIMATE_HOT );
-    engine->RegisterEnumValue ("ClimateType", "CLIMATE_TEMPERATE", CLIMATE_TEMPERATE);
-    engine->RegisterEnumValue ("ClimateType", "CLIMATE_TEMPERATE_CONTINENTAL", CLIMATE_TEMPERATE_CONTINENTAL);
-    engine->RegisterEnumValue ("ClimateType", "CLIMATE_DESERT", CLIMATE_DESERT);
-    engine->RegisterEnumValue ("ClimateType", "CLIMATE_COLD", CLIMATE_COLD);
-
-    engine->RegisterEnum ("NativesCharacterType");
-    engine->RegisterEnumValue ("NativesCharacterType", "NATIVES_CHARACTER_FRIENDLY", NATIVES_CHARACTER_FRIENDLY);
-    engine->RegisterEnumValue ("NativesCharacterType", "NATIVES_CHARACTER_MEDIUM", NATIVES_CHARACTER_MEDIUM);
-    engine->RegisterEnumValue ("NativesCharacterType", "NATIVES_CHARACTER_COLD", NATIVES_CHARACTER_COLD);
-    engine->RegisterEnumValue ("NativesCharacterType", "NATIVES_CHARACTER_ISOLATIONIST", NATIVES_CHARACTER_ISOLATIONIST);
-    engine->RegisterEnumValue ("NativesCharacterType", "NATIVES_CHARATER_AGGRESSIVE", NATIVES_CHARATER_AGGRESSIVE);
 }
 
 void BindDistrictInterface (Urho3D::Script *script, Urho3D::String className)

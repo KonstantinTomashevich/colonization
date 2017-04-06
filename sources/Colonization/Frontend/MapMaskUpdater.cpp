@@ -11,7 +11,7 @@
 #include <Urho3D/Scene/Scene.h>
 #include <Urho3D/Graphics/Graphics.h>
 
-#include <Colonization/Core/District.hpp>
+#include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Frontend/FogOfWarCalculator.hpp>
 

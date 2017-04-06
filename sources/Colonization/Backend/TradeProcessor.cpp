@@ -6,6 +6,7 @@
 #include <Urho3D/Scene/Scene.h>
 
 #include <Colonization/Core/Map.hpp>
+#include <Colonization/Core/District/DistrictComparator.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>

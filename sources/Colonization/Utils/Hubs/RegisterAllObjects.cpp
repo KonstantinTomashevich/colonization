@@ -11,7 +11,7 @@
 #include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Backend/VictoryProgressUpdater.hpp>
 
-#include <Colonization/Core/District.hpp>
+#include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Core/InternalTradeArea.hpp>
 #include <Colonization/Core/Map.hpp>

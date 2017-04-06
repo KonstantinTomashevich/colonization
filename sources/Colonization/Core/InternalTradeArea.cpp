@@ -1,6 +1,6 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "InternalTradeArea.hpp"
-#include <Colonization/Core/District.hpp>
+#include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/Map.hpp>
 
 #include <Colonization/Utils/Serialization/Categories.hpp>

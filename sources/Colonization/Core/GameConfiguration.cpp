@@ -3,7 +3,7 @@
 #include <Urho3D/Core/Context.h>
 
 #include <Colonization/Core/Map.hpp>
-#include <Colonization/Core/District.hpp>
+#include <Colonization/Core/District/District.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 

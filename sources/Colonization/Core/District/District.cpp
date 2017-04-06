@@ -6,6 +6,7 @@
 
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Core/Map.hpp>
+#include <Colonization/Core/District/ColonyActions.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
 namespace Colonization
@@ -910,13 +911,5 @@ float District::GetLastTradeDefenseBalanceAddition () const
 void District::SetLastTradeDefenseBalanceAddition (float lastTradeDefenseBalanceAddition)
 {
     lastTradeDefenseBalanceAddition_ = lastTradeDefenseBalanceAddition;
-}
-
-namespace DistrictComparators
-{
-bool HigherLogistics (const District *first, const District *second)
-{
-    return (first->GetLogisticsEvolutionPoints () > second->GetLogisticsEvolutionPoints ());
-}
 }
 }

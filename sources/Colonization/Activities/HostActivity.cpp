@@ -8,7 +8,6 @@
 #include <Urho3D/Graphics/Octree.h>
 #include <Urho3D/Resource/XMLFile.h>
 
-#include <Colonization/Core/District.hpp>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/Unit.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
