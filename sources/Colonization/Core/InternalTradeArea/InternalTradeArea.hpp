@@ -2,68 +2,14 @@
 #include <Urho3D/Core/Object.h>
 #include <Urho3D/Container/Vector.h>
 #include <Urho3D/Scene/Component.h>
+
 #include <Colonization/Core/GameConfiguration.hpp>
+#include <Colonization/Core/InternalTradeArea/DistrictProductionInfo.hpp>
+#include <Colonization/Core/InternalTradeArea/DistrictProductionInfoComparator.hpp>
+#include <Colonization/Core/InternalTradeArea/TradeDistrictProcessingInfo.hpp>
 
 namespace Colonization
 {
-// TODO: Maybe split to InternalTradeArea, DistrictProductionInfo, DistrictProductionInfoComparator, TradeDistrictProcessingInfo.
-class Map;
-class District;
-
-const Urho3D::StringHash DISTRICT_PRODUCTION_AMOUNT_KEY ("DistrictProductionAmount");
-const Urho3D::StringHash DISTRICT_PRODUCTION_RELATIVE_PRICE_KEY ("DistrictProductionRelativePrice");
-const Urho3D::StringHash DISTRICT_PRODUCTION_QUALITY_KEY ("DistrictProductionQuality");
-const Urho3D::StringHash DISTRICT_PRODUCTION_SELLABILITY_KEY ("DistrictProductionSellability");
-const Urho3D::StringHash DISTRICT_PRODUCTION_SELLED_KEY ("DistrictProductionSelled");
-
-struct DistrictProductionInfo
-{
-    Urho3D::StringHash districtHash_;
-    float amount_;
-    float relativePrice_;
-    float quality_;
-    float sellability_;
-    float selled_;
-
-    void CalculateSellability ();
-    Urho3D::VariantMap ToVariantMap ();
-};
-
-typedef bool (*DistrictProductionInfoComparator) (DistrictProductionInfo &first, DistrictProductionInfo &second);
-namespace DistrictProductionInfoComparators
-{
-bool HigherSellability (DistrictProductionInfo &first, DistrictProductionInfo &second);
-}
-
-class TradeDistrictProcessingInfo : public Urho3D::Object
-{
-URHO3D_OBJECT (TradeDistrictProcessingInfo, Object)
-protected:
-    Urho3D::HashMap <Urho3D::StringHash, float> unusedProduction_;
-    Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> districtsProduction_;
-    Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> districtsBalanceAdditions_;
-    float unsoldTradeGoodsCost_;
-    float soldTradeGoodsCost_;
-public:
-    TradeDistrictProcessingInfo (Urho3D::Context *context);
-    virtual ~TradeDistrictProcessingInfo ();
-
-    float GetUnusedProductionOf (Urho3D::StringHash type) const;
-    void SetUnusedProductionOf (Urho3D::StringHash type, float points);
-
-    Urho3D::VariantMap GetDistrictProduction (Urho3D::StringHash districtHash) const;
-    void SetDistrictProduction (Urho3D::StringHash districtHash, Urho3D::VariantMap &districtProduction);
-
-    Urho3D::VariantMap GetDistrictBalanceAdditions(Urho3D::StringHash districtHash) const;
-    void SetDistrictBalanceAdditions (Urho3D::StringHash districtHash, Urho3D::VariantMap &districtBalanceAdditions);
-
-    float GetUnsoldTradeGoodsCost () const;
-    void SetUnsoldTradeGoodsCost (float unsoldTradeGoodsCost);
-
-    float GetSoldTradeGoodsCost () const;
-    void SetSoldTradeGoodsCost (float soldTradeGoodsCost);
-};
-
 class InternalTradeArea : public Urho3D::Component
 {
 URHO3D_OBJECT (InternalTradeArea, Component)

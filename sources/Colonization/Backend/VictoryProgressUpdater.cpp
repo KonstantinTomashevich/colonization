@@ -11,7 +11,7 @@
 #include <Urho3D/AngelScript/APITemplates.h>
 
 #include <Colonization/Core/Map.hpp>
-#include <Colonization/Core/InternalTradeArea.hpp>
+#include <Colonization/Core/InternalTradeArea/InternalTradeArea.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
 
 #include <Colonization/Backend/PlayersManager.hpp>

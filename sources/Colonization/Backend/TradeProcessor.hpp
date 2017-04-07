@@ -1,6 +1,6 @@
 #pragma once
 #include <Urho3D/Core/Object.h>
-#include <Colonization/Core/InternalTradeArea.hpp>
+#include <Colonization/Core/InternalTradeArea/InternalTradeArea.hpp>
 
 namespace Colonization
 {

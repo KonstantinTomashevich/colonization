@@ -13,7 +13,7 @@
 
 #include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
-#include <Colonization/Core/InternalTradeArea.hpp>
+#include <Colonization/Core/InternalTradeArea/InternalTradeArea.hpp>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/PlayerInfo.hpp>
 #include <Colonization/Core/Unit.hpp>
