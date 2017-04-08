@@ -1,6 +1,6 @@
 #pragma once
 #include <Urho3D/Scene/Component.h>
-#include <Colonization/Core/District.hpp>
+#include <Colonization/Core/District/District.hpp>
 
 namespace Colonization
 {

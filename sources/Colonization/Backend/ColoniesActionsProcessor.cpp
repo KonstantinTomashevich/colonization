@@ -6,6 +6,7 @@
 #include <Urho3D/Scene/Scene.h>
 
 #include <cmath>
+#include <Colonization/Core/District/ColonyActions.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
@@ -78,6 +79,7 @@ bool ColoniesActionsProcessor::ProcessBuildWarShipAction (GameConfiguration *con
 
     float buildingSpeed = 1.0f / configuration->GetOneWarShipBasicBuildTime ();
     buildingSpeed *= sqrt (colony->GetIndustryEvolutionPoints ());
+    // TODO: Should population influence building speed?
 
     float currentShipProgress = actionData [COLONY_ACTION_PROGRESS].GetFloat ();
     float timeStepProgress = buildingSpeed * timeStep;

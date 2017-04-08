@@ -17,11 +17,14 @@ void GameConfiguration_SetWayToEuropeDistricts (GameConfiguration *object, Urho3
     object->SetWayToEuropeDistricts (Urho3D::ArrayToPODVector <Urho3D::StringHash> (array));
 }
 
-void BindGameConfiguration (Urho3D::Script *script)
+void BindGameConfiguration (Urho3D::Script *script, bool bindInterface)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
     Urho3D::RegisterComponent <GameConfiguration> (engine, "GameConfiguration");
-    BindGameConfigurationInterface (script, "GameConfiguration");
+    if (bindInterface)
+    {
+        BindGameConfigurationInterface (script, "GameConfiguration");
+    }
 }
 
 void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String className)
@@ -33,6 +36,9 @@ void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String clas
 
     engine->RegisterObjectMethod (className.CString (), "float get_sailSpeed () const", asMETHOD (GameConfiguration, GetSailSpeed), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_sailSpeed (float sailSpeed)", asMETHOD (GameConfiguration, SetSailSpeed), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod (className.CString (), "float get_playerStartGold () const", asMETHOD (GameConfiguration, GetPlayerStartGold), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "void set_playerStartGold (float playerStartGold)", asMETHOD (GameConfiguration, SetPlayerStartGold), asCALL_THISCALL);
 
     engine->RegisterObjectMethod (className.CString (), "float get_marchSpeed () const", asMETHOD (GameConfiguration, GetMarchSpeed), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_marchSpeed (float marchSpeed)", asMETHOD (GameConfiguration, SetMarchSpeed), asCALL_THISCALL);

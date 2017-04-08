@@ -8,8 +8,9 @@
 #include <Urho3D/IO/Log.h>
 
 #include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
-#include <Colonization/Backend/MessagesHandler.hpp>
+#include <Colonization/Backend/MessagesHandler/MessagesHandler.hpp>
 #include <Colonization/Core/PlayerInfo.hpp>
+#include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
@@ -81,7 +82,7 @@ void PlayersManager::UpdatePlayersInfos ()
     int index = 0;
     while (index < players_.Size () || index < playersInfosNodes.Size ())
     {
-        if (index < players_.Values ().Size ())
+        if (index < players_.Size ())
         {
             Player *player = players_.Values ().At (index);
             Urho3D::Node *infoNode;
@@ -235,14 +236,26 @@ void PlayersManager::SetIsAcceptingNewConnections (bool isAcceptingNewConnection
     isAcceptingNewConnections_ = isAcceptingNewConnections;
 }
 
+void PlayersManager::SetStartGoldForAllPlayers ()
+{
+    GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
+    assert (configuration);
+
+    for (Urho3D::HashMap <Urho3D::StringHash, Player *>::Iterator iterator = players_.Begin ();
+         iterator != players_.End (); iterator++)
+    {
+        iterator->second_->SetGold (configuration->GetPlayerStartGold ());
+    }
+}
+
 int PlayersManager::GetPlayersCount () const
 {
-    return players_.Values ().Size ();
+    return players_.Size ();
 }
 
 Player *PlayersManager::GetPlayerByIndex (int index) const
 {
-    assert (index < players_.Values ().Size ());
+    assert (index < players_.Size ());
     return players_.Values ().At (index);
 }
 

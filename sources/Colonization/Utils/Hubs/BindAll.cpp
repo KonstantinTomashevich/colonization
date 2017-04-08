@@ -2,13 +2,21 @@
 #include "BindAll.hpp"
 
 #include <Colonization/AngelScriptBinders/Activities/BindActivity.hpp>
-#include <Colonization/AngelScriptBinders/Activities/BindHostActivity.hpp>
+#include <Colonization/AngelScriptBinders/Activities/HostActivity/BindHostActivity.hpp>
+#include <Colonization/AngelScriptBinders/Activities/HostActivity/BindHostActivityEvents.hpp>
+#include <Colonization/AngelScriptBinders/Activities/HostActivity/BindHostActivityConstants.hpp>
+#include <Colonization/AngelScriptBinders/Activities/HostActivity/BindGameStateType.hpp>
 #include <Colonization/AngelScriptBinders/Activities/BindIngameClientActivity.hpp>
 #include <Colonization/AngelScriptBinders/Activities/BindMainMenuActivity.hpp>
 
-#include <Colonization/AngelScriptBinders/Core/BindDistrict.hpp>
+#include <Colonization/AngelScriptBinders/Core/District/BindDistrictEnums.hpp>
+#include <Colonization/AngelScriptBinders/Core/District/BindDistrict.hpp>
+#include <Colonization/AngelScriptBinders/Core/District/BindColonyActions.hpp>
+#include <Colonization/AngelScriptBinders/Core/District/BindDistrictUtils.hpp>
 #include <Colonization/AngelScriptBinders/Core/BindGameConfiguration.hpp>
-#include <Colonization/AngelScriptBinders/Core/BindInternalTradeArea.hpp>
+#include <Colonization/AngelScriptBinders/Core/InternalTradeArea/BindDistrictProductionInfoKeys.hpp>
+#include <Colonization/AngelScriptBinders/Core/InternalTradeArea/BindTradeDistrictProcessingInfo.hpp>
+#include <Colonization/AngelScriptBinders/Core/InternalTradeArea/BindInternalTradeArea.hpp>
 #include <Colonization/AngelScriptBinders/Core/BindMap.hpp>
 #include <Colonization/AngelScriptBinders/Core/BindPlayerInfo.hpp>
 #include <Colonization/AngelScriptBinders/Core/BindUnit.hpp>
@@ -28,13 +36,22 @@ void BindAll (Urho3D::Script *script)
 {
     BindActivity (script);
     BindHostActivity (script);
+    BindHostActivityEvents (script);
+    BindHostActivityConstants (script);
+    BindGameStateType (script);
     BindIngameClientActivity (script);
     BindMainMenuActivity (script);
 
+    BindGameConfiguration (script, false);
+    BindDistrictEnums (script);
     BindDistrict (script);
+    BindColonyActions (script);
+    BindDistrictUtils (script);
     BindUnit (script, false);
     BindMap (script);
-    BindGameConfiguration (script);
+    BindGameConfigurationInterface (script, "GameConfiguration");
+    BindDistrictProductionInfoKeys (script);
+    BindTradeDistrictProcessingInfo (script);
     BindInternalTradeArea (script);
     BindPlayerInfo (script);
     BindUnitInterface (script, "Unit");

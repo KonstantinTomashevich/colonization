@@ -1,7 +1,7 @@
 #pragma once
 #include <Urho3D/Core/Object.h>
 #include <Urho3D/Core/Attribute.h>
-#include <Colonization/Core/District.hpp>
+#include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/Map.hpp>
 
 namespace Colonization

@@ -3,7 +3,7 @@
 #include <Urho3D/Core/Context.h>
 
 #include <Colonization/Core/Map.hpp>
-#include <Colonization/Core/District.hpp>
+#include <Colonization/Core/District/District.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
@@ -18,6 +18,7 @@ const char *wayToEuropeStructureElementsNames [] =
 
 GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Component (context),
     wayToEuropeDistricts_ (),
+    playerStartGold_ (500.0f),
     sailSpeed_ (0.40f),
     marchSpeed_ (0.15f),
     embarkationSpeed_ (0.11f),
@@ -58,13 +59,13 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
     tradeAreaInternalProfitToBalance_ (0.85f),
     tradeAreaExternalProfitToBalance_ (0.35f),
 
-    tradeAreaFarmsLogisticsExpenses_ (0.05f),
-    tradeAreaMinesLogisticsExpenses_ (0.5f),
-    tradeAreaIndustryLogisticsExpenses_ (0.15f),
+    tradeAreaFarmsLogisticsExpenses_ (0.3f),
+    tradeAreaMinesLogisticsExpenses_ (0.16f),
+    tradeAreaIndustryLogisticsExpenses_ (0.35f),
 
-    tradeAreaFarmsDefenseExpenses_ (0.1f),
-    tradeAreaMinesDefenseExpenses_ (0.1f),
-    tradeAreaIndustryDefenseExpenses_ (0.15f),
+    tradeAreaFarmsDefenseExpenses_ (0.16f),
+    tradeAreaMinesDefenseExpenses_ (0.31f),
+    tradeAreaIndustryDefenseExpenses_ (0.3f),
 
     evolutionCostPerLevel_ (1000.0f),
     degradationCostPerLevel_ (1000.0f),
@@ -145,6 +146,7 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
                                                               wayToEuropeStructureElementsNames, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Player Start Gold", GetPlayerStartGold, SetPlayerStartGold, float, 500.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Sail Speed", GetSailSpeed, SetSailSpeed, float, 0.40f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("March Speed", GetMarchSpeed, SetMarchSpeed, float, 0.15f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Embarkation Speed", GetEmbarkationSpeed,
@@ -215,18 +217,18 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
                                SetTradeAreaExternalProfitToBalance, float, 0.35f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Farms Logistics Expenses", GetTradeAreaFarmsLogisticsExpenses,
-                               SetTradeAreaFarmsLogisticsExpenses, float, 0.05f, Urho3D::AM_DEFAULT);
+                               SetTradeAreaFarmsLogisticsExpenses, float, 0.3f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Mines Logistics Expenses", GetTradeAreaMinesLogisticsExpenses,
-                               SetTradeAreaMinesLogisticsExpenses, float, 0.1f, Urho3D::AM_DEFAULT);
+                               SetTradeAreaMinesLogisticsExpenses, float, 0.16f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Industry Logistics Expenses", GetTradeAreaIndustryLogisticsExpenses,
-                               SetTradeAreaIndustryLogisticsExpenses, float, 0.15f, Urho3D::AM_DEFAULT);
+                               SetTradeAreaIndustryLogisticsExpenses, float, 0.35f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Farms Defense Expenses", GetTradeAreaFarmsDefenseExpenses,
-                               SetTradeAreaFarmsDefenseExpenses, float, 0.1f, Urho3D::AM_DEFAULT);
+                               SetTradeAreaFarmsDefenseExpenses, float, 0.16f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Mines Defense Expenses", GetTradeAreaMinesDefenseExpenses,
-                               SetTradeAreaMinesDefenseExpenses, float, 0.1f, Urho3D::AM_DEFAULT);
+                               SetTradeAreaMinesDefenseExpenses, float, 0.31f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Trade Area Industry Defense Expenses", GetTradeAreaIndustryDefenseExpenses,
-                               SetTradeAreaIndustryDefenseExpenses, float, 0.15f, Urho3D::AM_DEFAULT);
+                               SetTradeAreaIndustryDefenseExpenses, float, 0.3f, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Evolution Cost Per Level", GetEvolutionCostPerLevel,
                                SetEvolutionCostPerLevel, float, 1000.0f, Urho3D::AM_DEFAULT);
@@ -418,6 +420,16 @@ Urho3D::StringHash GameConfiguration::GetHeuristicNearestWayToEuropeDistrict (Ma
     }
     while (index < wayToEuropeDistricts_.Size ());
     return heuristicNearest;
+}
+
+float GameConfiguration::GetPlayerStartGold () const
+{
+    return playerStartGold_;
+}
+
+void GameConfiguration::SetPlayerStartGold (float playerStartGold)
+{
+    playerStartGold_ = playerStartGold;
 }
 
 float GameConfiguration::GetSailSpeed () const

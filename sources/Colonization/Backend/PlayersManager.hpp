@@ -4,8 +4,8 @@
 #include <Urho3D/Container/HashMap.h>
 #include <Urho3D/Network/Connection.h>
 
-#include <Colonization/Backend/Player.hpp>
-#include <Colonization/Backend/MessagesHandler.hpp>
+#include <Colonization/Backend/Player/Player.hpp>
+#include <Colonization/Backend/MessagesHandler/MessagesHandler.hpp>
 #include <Colonization/Core/PlayerInfo.hpp>
 
 namespace Colonization
@@ -36,6 +36,7 @@ public:
 
     bool IsAcceptingNewConnections () const;
     void SetIsAcceptingNewConnections (bool isAcceptingNewConnections);
+    void SetStartGoldForAllPlayers ();
 
     int GetPlayersCount () const;
     Player *GetPlayerByIndex (int index) const;

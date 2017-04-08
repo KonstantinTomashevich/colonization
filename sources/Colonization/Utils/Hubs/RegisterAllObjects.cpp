@@ -3,17 +3,17 @@
 
 #include <Colonization/Backend/ColoniesActionsProcessor.hpp>
 #include <Colonization/Backend/ColoniesEvolutionManager.hpp>
-#include <Colonization/Backend/MessagesHandler.hpp>
-#include <Colonization/Backend/Player.hpp>
+#include <Colonization/Backend/MessagesHandler/MessagesHandler.hpp>
+#include <Colonization/Backend/Player/Player.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/PlayersPointsCalculator.hpp>
 #include <Colonization/Backend/TradeProcessor.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Backend/VictoryProgressUpdater.hpp>
 
-#include <Colonization/Core/District.hpp>
+#include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
-#include <Colonization/Core/InternalTradeArea.hpp>
+#include <Colonization/Core/InternalTradeArea/InternalTradeArea.hpp>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/PlayerInfo.hpp>
 #include <Colonization/Core/Unit.hpp>

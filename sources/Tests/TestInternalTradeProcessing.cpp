@@ -5,9 +5,9 @@
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/Network/Network.h>
 
-#include <Colonization/Core/District.hpp>
+#include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/Map.hpp>
-#include <Colonization/Core/InternalTradeArea.hpp>
+#include <Colonization/Core/InternalTradeArea/InternalTradeArea.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
 
 #include <Colonization/Backend/TradeProcessor.hpp>
@@ -187,7 +187,7 @@ void TestInternalTradeProcessingApplication::Update (Urho3D::StringHash eventTyp
         }
         else if (unitsManager->GetUnitsCount () != 7)
         {
-            ErrorExit ("Expected that PlayerX sended 7 traders!");
+            ErrorExit ("Expected that PlayerX send 7 traders!");
         }
         else
         {

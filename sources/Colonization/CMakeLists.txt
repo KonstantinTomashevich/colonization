@@ -1,5 +1,5 @@
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/BuildConfiguration.hpp.cmake ${CMAKE_CURRENT_SOURCE_DIR}/BuildConfiguration.hpp)
 set (TARGET_NAME Colonization)
-define_source_files (RECURSE)
+define_source_files (RECURSE GLOB_H_PATTERNS *.hpp)
 define_dependency_libs (Urho3D)
 setup_library (STATIC)

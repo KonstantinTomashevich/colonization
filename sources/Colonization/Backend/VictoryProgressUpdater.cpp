@@ -11,14 +11,15 @@
 #include <Urho3D/AngelScript/APITemplates.h>
 
 #include <Colonization/Core/Map.hpp>
-#include <Colonization/Core/InternalTradeArea.hpp>
+#include <Colonization/Core/InternalTradeArea/InternalTradeArea.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
 
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Backend/TradeProcessor.hpp>
-#include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
+#include <Colonization/Backend/Player/PlayerComparator.hpp>
 
+#include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
