@@ -19,23 +19,6 @@ protected:
     void ConstructVectorOfRealDistricts (Map *map, Urho3D::PODVector <District *> &output);
     int CalculateTotalSoldiersCount ();
 
-    // TODO: Maybe create DistrictUtils and move these functions to it?
-    float CalculateDistrictFarmsProductionAmount (District *district, GameConfiguration *configuration);
-    float CalculateDistrictMinesProductionAmount (District *district, GameConfiguration *configuration);
-    float CalculateDistrictIndustryProductionAmount (District *district, GameConfiguration *configuration);
-
-    DistrictProductionInfo CalculateDistrictProductionOfFarms (District *district, GameConfiguration *configuration);
-    DistrictProductionInfo CalculateDistrictProductionOfMines (District *district, GameConfiguration *configuration);
-    DistrictProductionInfo CalculateDistrictProductionOfIndustry (District *district, GameConfiguration *configuration);
-
-    float CalculateDistrictFarmsProductionRelativePrice (District *district, GameConfiguration *configuration);
-    float CalculateDistrictMinesProductionRelativePrice (District *district, GameConfiguration *configuration);
-    float CalculateDistrictIndustryProductionRelativePrice (District *district, GameConfiguration *configuration);
-
-    float CalculateDistrictFarmsProductionQuality (District *district, GameConfiguration *configuration);
-    float CalculateDistrictMinesProductionQuality (District *district, GameConfiguration *configuration);
-    float CalculateDistrictIndustryProductionQuality (District *district, GameConfiguration *configuration);
-
     void CalculateTotalProductionOfFarms (Urho3D::PODVector <District *> &realDistricts, GameConfiguration *configuration, Urho3D::Vector <DistrictProductionInfo> &output);
     void CalculateTotalProductionOfMines (Urho3D::PODVector <District *> &realDistricts, GameConfiguration *configuration, Urho3D::Vector <DistrictProductionInfo> &output);
     void CalculateTotalProductionOfIndustry (Urho3D::PODVector <District *> &realDistricts, GameConfiguration *configuration, Urho3D::Vector <DistrictProductionInfo> &output);
@@ -43,10 +26,6 @@ protected:
     float CalculateTotalProductionConsumptionOfFarms (GameConfiguration *configuration, Urho3D::PODVector <District *> &realDistricts, int soldiersCount);
     float CalculateTotalProductionConsumptionOfMines (GameConfiguration *configuration, Urho3D::PODVector <District *> &realDistricts, int soldiersCount);
     float CalculateTotalProductionConsumptionOfIndustry (GameConfiguration *configuration, Urho3D::PODVector <District *> &realDistricts, int soldiersCount);
-
-    float CalculateDistrictProductionConsumptionOfFarms (GameConfiguration *configuration, District *district);
-    float CalculateDistrictProductionConsumptionOfMines (GameConfiguration *configuration, District *district);
-    float CalculateDistrictProductionConsumptionOfIndustry (GameConfiguration *configuration, District *district);
 
     /// This function return unsatisfied consumption or 0.0f.
     float ConsumeProduction (float consumption, Urho3D::Vector <DistrictProductionInfo> &production);

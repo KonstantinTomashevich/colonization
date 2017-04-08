@@ -7,6 +7,7 @@
 #include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
 #include <Colonization/Utils/Network/NetworkUpdateSmoother.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
+#include <Colonization/Core/District/DistrictUtils.hpp>
 
 #include <cmath>
 #include <Urho3D/Core/Context.h>
@@ -52,260 +53,13 @@ int InternalTradeArea::CalculateTotalSoldiersCount ()
     return totalSoldiersCount;
 }
 
-float InternalTradeArea::CalculateDistrictFarmsProductionAmount (District *district, GameConfiguration *configuration)
-{
-    float climateModifer = 1.0f;
-    if (district->GetClimate () == CLIMATE_TROPICAL)
-    {
-        climateModifer = configuration->GetFarmsProductionTropicalClimateModifer ();
-    }
-    else if (district->GetClimate () == CLIMATE_HOT)
-    {
-        climateModifer = configuration->GetFarmsProductionHotClimateModifer ();
-    }
-    else if (district->GetClimate () == CLIMATE_TEMPERATE)
-    {
-        climateModifer = configuration->GetFarmsProductionTemperateClimateModifer ();
-    }
-    else if (district->GetClimate () == CLIMATE_TEMPERATE_CONTINENTAL)
-    {
-        climateModifer = configuration->GetFarmsProductionTemperateContinentalClimateModifer ();
-    }
-    else if (district->GetClimate () == CLIMATE_DESERT)
-    {
-        climateModifer = configuration->GetFarmsProductionDesertClimateModifer ();
-    }
-    else if (district->GetClimate () == CLIMATE_COLD)
-    {
-        climateModifer = configuration->GetFarmsProductionColdClimateModifer ();
-    }
-    float districtPopulation = district->GetMenCount () + district->GetWomenCount ();
-    return districtPopulation * configuration->GetFarmsProductionPerColonist () *
-            sqrt (district->GetFarmsEvolutionPoints ()) * district->GetLandAverageFertility () * climateModifer;
-}
-
-float InternalTradeArea::CalculateDistrictMinesProductionAmount (District *district, GameConfiguration *configuration)
-{
-    float districtPopulation = district->GetMenCount () + district->GetWomenCount ();
-    return districtPopulation * configuration->GetMinesProductionPerColonist () *
-            sqrt (district->GetMinesEvolutionPoints ());
-}
-
-float InternalTradeArea::CalculateDistrictIndustryProductionAmount (District *district, GameConfiguration *configuration)
-{
-    float districtPopulation = district->GetMenCount () + district->GetWomenCount ();
-    return districtPopulation * configuration->GetIndustryProductionPerColonist () *
-            sqrt (district->GetIndustryEvolutionPoints ());
-}
-
-DistrictProductionInfo InternalTradeArea::CalculateDistrictProductionOfFarms (District *district, GameConfiguration *configuration)
-{
-    DistrictProductionInfo production;
-    production.districtHash_ = district->GetHash ();
-    production.amount_ = CalculateDistrictFarmsProductionAmount (district, configuration);
-
-    production.relativePrice_ = CalculateDistrictFarmsProductionRelativePrice (district, configuration);
-    production.quality_ =  CalculateDistrictFarmsProductionQuality (district, configuration);
-    production.selled_ = 0.0f;
-    production.CalculateSellability ();
-    return production;
-}
-
-DistrictProductionInfo InternalTradeArea::CalculateDistrictProductionOfMines (District *district, GameConfiguration *configuration)
-{
-    DistrictProductionInfo production;
-    production.districtHash_ = district->GetHash ();
-    production.amount_ = CalculateDistrictMinesProductionAmount (district, configuration);
-
-    production.relativePrice_ = CalculateDistrictMinesProductionRelativePrice (district, configuration);
-    production.quality_ =  CalculateDistrictMinesProductionQuality (district, configuration);
-    production.selled_ = 0.0f;
-    production.CalculateSellability ();
-    return production;
-}
-
-DistrictProductionInfo InternalTradeArea::CalculateDistrictProductionOfIndustry (District *district, GameConfiguration *configuration)
-{
-    DistrictProductionInfo production;
-    production.districtHash_ = district->GetHash ();
-    production.amount_ = CalculateDistrictIndustryProductionAmount (district, configuration);
-
-    production.relativePrice_ = CalculateDistrictIndustryProductionRelativePrice (district, configuration);
-    production.quality_ =  CalculateDistrictIndustryProductionQuality (district, configuration);
-    production.selled_ = 0.0f;
-    production.CalculateSellability ();
-    return production;
-}
-
-float InternalTradeArea::CalculateDistrictFarmsProductionRelativePrice (District *district, GameConfiguration *configuration)
-{
-    float farmsProductionRelativePrice = 1.0f;
-    if (district->GetClimate () == CLIMATE_TROPICAL)
-    {
-        farmsProductionRelativePrice *= configuration->GetFarmsProductionRelativePriceTropicalClimateModifer ();
-    }
-    else if (district->GetClimate () == CLIMATE_HOT)
-    {
-        farmsProductionRelativePrice *= configuration->GetFarmsProductionRelativePriceHotClimateModifer ();
-    }
-    else if (district->GetClimate () == CLIMATE_TEMPERATE)
-    {
-        farmsProductionRelativePrice *= configuration->GetFarmsProductionRelativePriceTemperateClimateModifer ();
-    }
-    else if (district->GetClimate () == CLIMATE_TEMPERATE_CONTINENTAL)
-    {
-        farmsProductionRelativePrice *= configuration->GetFarmsProductionRelativePriceTemperateContinentalClimateModifer ();
-    }
-    else if (district->GetClimate () == CLIMATE_DESERT)
-    {
-        farmsProductionRelativePrice *= configuration->GetFarmsProductionRelativePriceDesertClimateModifer ();
-    }
-    else if (district->GetClimate () == CLIMATE_COLD)
-    {
-        farmsProductionRelativePrice *= configuration->GetFarmsProductionRelativePriceColdClimateModifer ();
-    }
-
-    farmsProductionRelativePrice /= sqrt (district->GetLandAverageFertility ());
-    farmsProductionRelativePrice *= sqrt (sqrt (district->GetFarmsEvolutionPoints ()));
-    return farmsProductionRelativePrice;
-}
-
-float InternalTradeArea::CalculateDistrictMinesProductionRelativePrice (District *district, GameConfiguration *configuration)
-{
-    float minesProductionRelativePrice = 1.0f;
-    if (district->HasCoalDeposits ())
-    {
-        minesProductionRelativePrice *= configuration->GetMinesProductionRelativePriceHasCoalModifer ();
-    }
-    if (district->HasIronDeposits ())
-    {
-        minesProductionRelativePrice *= configuration->GetMinesProductionRelativePriceHasIronModifer ();
-    }
-    if (district->HasSilverDeposits ())
-    {
-        minesProductionRelativePrice *= configuration->GetMinesProductionRelativePriceHasSilverModifer ();
-    }
-    if (district->HasGoldDeposits ())
-    {
-        minesProductionRelativePrice *= configuration->GetMinesProductionRelativePriceHasGoldModifer ();
-    }
-
-    minesProductionRelativePrice *= sqrt (sqrt (district->GetMinesEvolutionPoints ()));
-    return minesProductionRelativePrice;
-}
-
-float InternalTradeArea::CalculateDistrictIndustryProductionRelativePrice (District *district, GameConfiguration *configuration)
-{
-    float industryProductionRelativePrice = 1.0f;
-    if (district->HasCoalDeposits ())
-    {
-        industryProductionRelativePrice *= configuration->GetIndustryProductionRelativePriceHasCoalModifer ();
-    }
-    if (district->HasIronDeposits ())
-    {
-        industryProductionRelativePrice *= configuration->GetIndustryProductionRelativePriceHasIronModifer ();
-    }
-    if (district->HasSilverDeposits ())
-    {
-        industryProductionRelativePrice *= configuration->GetIndustryProductionRelativePriceHasSilverModifer ();
-    }
-    if (district->HasGoldDeposits ())
-    {
-        industryProductionRelativePrice *= configuration->GetIndustryProductionRelativePriceHasGoldModifer ();
-    }
-
-    industryProductionRelativePrice *= sqrt (sqrt (district->GetIndustryEvolutionPoints ()));
-    return industryProductionRelativePrice;
-}
-
-float InternalTradeArea::CalculateDistrictFarmsProductionQuality (District *district, GameConfiguration *configuration)
-{
-    float farmsProductionQuality = 1.0f;
-    if (district->GetClimate () == CLIMATE_TROPICAL)
-    {
-        farmsProductionQuality *= configuration->GetFarmsProductionQualityTropicalClimateModifer ();
-    }
-    else if (district->GetClimate () == CLIMATE_HOT)
-    {
-        farmsProductionQuality *= configuration->GetFarmsProductionQualityHotClimateModifer ();
-    }
-    else if (district->GetClimate () == CLIMATE_TEMPERATE)
-    {
-        farmsProductionQuality *= configuration->GetFarmsProductionQualityTemperateClimateModifer ();
-    }
-    else if (district->GetClimate () == CLIMATE_TEMPERATE_CONTINENTAL)
-    {
-        farmsProductionQuality *= configuration->GetFarmsProductionQualityTemperateContinentalClimateModifer ();
-    }
-    else if (district->GetClimate () == CLIMATE_DESERT)
-    {
-        farmsProductionQuality *= configuration->GetFarmsProductionQualityDesertClimateModifer ();
-    }
-    else if (district->GetClimate () == CLIMATE_COLD)
-    {
-        farmsProductionQuality *= configuration->GetFarmsProductionQualityColdClimateModifer ();
-    }
-
-    farmsProductionQuality *= district->GetLandAverageFertility ();
-    farmsProductionQuality *= sqrt (sqrt (district->GetFarmsEvolutionPoints ()));
-    return farmsProductionQuality;
-}
-
-float InternalTradeArea::CalculateDistrictMinesProductionQuality (District *district, GameConfiguration *configuration)
-{
-    float minesProductionQuality = 1.0f;
-    if (district->HasCoalDeposits ())
-    {
-        minesProductionQuality *= configuration->GetMinesProductionQualityHasCoalModifer ();
-    }
-    if (district->HasIronDeposits ())
-    {
-        minesProductionQuality *= configuration->GetMinesProductionQualityHasIronModifer ();
-    }
-    if (district->HasSilverDeposits ())
-    {
-        minesProductionQuality *= configuration->GetMinesProductionQualityHasSilverModifer ();
-    }
-    if (district->HasGoldDeposits ())
-    {
-        minesProductionQuality *= configuration->GetMinesProductionQualityHasGoldModifer ();
-    }
-
-    minesProductionQuality *= sqrt (sqrt (district->GetMinesEvolutionPoints ()));
-    return minesProductionQuality;
-}
-
-float InternalTradeArea::CalculateDistrictIndustryProductionQuality (District *district, GameConfiguration *configuration)
-{
-    float industryProductionQuality = 1.0f;
-    if (district->HasCoalDeposits ())
-    {
-        industryProductionQuality *= configuration->GetIndustryProductionQualityHasCoalModifer ();
-    }
-    if (district->HasIronDeposits ())
-    {
-        industryProductionQuality *= configuration->GetIndustryProductionQualityHasIronModifer ();
-    }
-    if (district->HasSilverDeposits ())
-    {
-        industryProductionQuality *= configuration->GetIndustryProductionQualityHasSilverModifer ();
-    }
-    if (district->HasGoldDeposits ())
-    {
-        industryProductionQuality *= configuration->GetIndustryProductionQualityHasGoldModifer ();
-    }
-
-    industryProductionQuality *= sqrt (sqrt (district->GetIndustryEvolutionPoints ()));
-    return industryProductionQuality;
-}
-
 void InternalTradeArea::CalculateTotalProductionOfFarms (Urho3D::PODVector <District *> &realDistricts, GameConfiguration *configuration, Urho3D::Vector <DistrictProductionInfo> &output)
 {
     for (int index = 0; index < realDistricts.Size (); index++)
     {
         District *district = realDistricts.At (index);
         assert (district);
-        output.Push (CalculateDistrictProductionOfFarms (district, configuration));
+        output.Push (DistrictUtils::CalculateProductionOfFarms (district, configuration));
     }
     Urho3D::Sort <DistrictProductionInfo, DistrictProductionInfoComparator> (
                 output.Begin (), output.End (), DistrictProductionInfoComparators::HigherSellability);
@@ -317,7 +71,7 @@ void InternalTradeArea::CalculateTotalProductionOfMines (Urho3D::PODVector <Dist
     {
         District *district = realDistricts.At (index);
         assert (district);
-        output.Push (CalculateDistrictProductionOfMines (district, configuration));
+        output.Push (DistrictUtils::CalculateProductionOfMines (district, configuration));
     }
     Urho3D::Sort <DistrictProductionInfo, DistrictProductionInfoComparator> (
                 output.Begin (), output.End (), DistrictProductionInfoComparators::HigherSellability);
@@ -329,7 +83,7 @@ void InternalTradeArea::CalculateTotalProductionOfIndustry (Urho3D::PODVector <D
     {
         District *district = realDistricts.At (index);
         assert (district);
-        output.Push (CalculateDistrictProductionOfIndustry (district, configuration));
+        output.Push (DistrictUtils::CalculateProductionOfIndustry (district, configuration));
     }
     Urho3D::Sort <DistrictProductionInfo, DistrictProductionInfoComparator> (
                 output.Begin (), output.End (), DistrictProductionInfoComparators::HigherSellability);
@@ -342,7 +96,7 @@ float InternalTradeArea::CalculateTotalProductionConsumptionOfFarms (GameConfigu
     {
         District *district = realDistricts.At (index);
         assert (district);
-        totalConsumption += CalculateDistrictProductionConsumptionOfFarms (configuration, district);
+        totalConsumption += DistrictUtils::CalculateProductionConsumptionOfFarms (configuration, district);
     }
 
     float oneSoldierConsumption = configuration->GetOneSoldierFarmsProductionConsumption ();
@@ -357,7 +111,7 @@ float InternalTradeArea::CalculateTotalProductionConsumptionOfMines (GameConfigu
     {
         District *district = realDistricts.At (index);
         assert (district);
-        totalConsumption += CalculateDistrictProductionConsumptionOfMines (configuration, district);
+        totalConsumption += DistrictUtils::CalculateProductionConsumptionOfMines (configuration, district);
     }
 
     float oneSoldierConsumption = configuration->GetOneSoldierMinesProductionConsumption ();
@@ -372,50 +126,11 @@ float InternalTradeArea::CalculateTotalProductionConsumptionOfIndustry (GameConf
     {
         District *district = realDistricts.At (index);
         assert (district);
-        totalConsumption += CalculateDistrictProductionConsumptionOfIndustry (configuration, district);
+        totalConsumption += DistrictUtils::CalculateProductionConsumptionOfIndustry (configuration, district);
     }
 
     float oneSoldierConsumption = configuration->GetOneSoldierIndustryProductionConsumption ();
     totalConsumption += oneSoldierConsumption * soldiersCount;
-    return totalConsumption;
-}
-
-float InternalTradeArea::CalculateDistrictProductionConsumptionOfFarms (GameConfiguration *configuration, District *district)
-{
-    float oneColonistConsumption = configuration->GetOneColonistFarmsProductionConsumption ();
-    float minesConsumption = configuration->GetFarmsProductionMinesConsumption ();
-    float industryConsumption = configuration->GetFarmsProductionIndustryConsumption ();
-
-    float population = (district->GetMenCount () + district->GetWomenCount ());
-    float totalConsumption = oneColonistConsumption * population;
-    totalConsumption += minesConsumption * CalculateDistrictMinesProductionAmount (district, configuration);
-    totalConsumption += industryConsumption * CalculateDistrictIndustryProductionAmount (district, configuration);
-    return totalConsumption;
-}
-
-float InternalTradeArea::CalculateDistrictProductionConsumptionOfMines (GameConfiguration *configuration, District *district)
-{
-    float oneColonistConsumption = configuration->GetOneColonistMinesProductionConsumption ();
-    float farmsConsumption = configuration->GetMinesProductionFarmsConsumption ();
-    float industryConsumption = configuration->GetMinesProductionIndustryConsumption ();
-
-    float population = (district->GetMenCount () + district->GetWomenCount ());
-    float totalConsumption = oneColonistConsumption * population;
-    totalConsumption += farmsConsumption * CalculateDistrictFarmsProductionAmount (district, configuration);
-    totalConsumption += industryConsumption * CalculateDistrictIndustryProductionAmount (district, configuration);
-    return totalConsumption;
-}
-
-float InternalTradeArea::CalculateDistrictProductionConsumptionOfIndustry (GameConfiguration *configuration, District *district)
-{
-    float oneColonistConsumption = configuration->GetOneColonistIndustryProductionConsumption ();
-    float farmsConsumption = configuration->GetIndustryProductionFarmsConsumption ();
-    float minesConsumption = configuration->GetIndustryProductionMinesConsumption ();
-
-    float population = (district->GetMenCount () + district->GetWomenCount ());
-    float totalConsumption = oneColonistConsumption * population;
-    totalConsumption += farmsConsumption * CalculateDistrictFarmsProductionAmount (district, configuration);
-    totalConsumption += minesConsumption * CalculateDistrictMinesProductionAmount (district, configuration);
     return totalConsumption;
 }
 

@@ -17,11 +17,14 @@ void GameConfiguration_SetWayToEuropeDistricts (GameConfiguration *object, Urho3
     object->SetWayToEuropeDistricts (Urho3D::ArrayToPODVector <Urho3D::StringHash> (array));
 }
 
-void BindGameConfiguration (Urho3D::Script *script)
+void BindGameConfiguration (Urho3D::Script *script, bool bindInterface)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
     Urho3D::RegisterComponent <GameConfiguration> (engine, "GameConfiguration");
-    BindGameConfigurationInterface (script, "GameConfiguration");
+    if (bindInterface)
+    {
+        BindGameConfigurationInterface (script, "GameConfiguration");
+    }
 }
 
 void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String className)

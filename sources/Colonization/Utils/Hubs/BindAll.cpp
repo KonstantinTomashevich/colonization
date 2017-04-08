@@ -12,6 +12,7 @@
 #include <Colonization/AngelScriptBinders/Core/District/BindDistrictEnums.hpp>
 #include <Colonization/AngelScriptBinders/Core/District/BindDistrict.hpp>
 #include <Colonization/AngelScriptBinders/Core/District/BindColonyActions.hpp>
+#include <Colonization/AngelScriptBinders/Core/District/BindDistrictUtils.hpp>
 #include <Colonization/AngelScriptBinders/Core/BindGameConfiguration.hpp>
 #include <Colonization/AngelScriptBinders/Core/InternalTradeArea/BindDistrictProductionInfoKeys.hpp>
 #include <Colonization/AngelScriptBinders/Core/InternalTradeArea/BindTradeDistrictProcessingInfo.hpp>
@@ -41,12 +42,14 @@ void BindAll (Urho3D::Script *script)
     BindIngameClientActivity (script);
     BindMainMenuActivity (script);
 
+    BindGameConfiguration (script, false);
     BindDistrictEnums (script);
     BindDistrict (script);
     BindColonyActions (script);
+    BindDistrictUtils (script);
     BindUnit (script, false);
     BindMap (script);
-    BindGameConfiguration (script);
+    BindGameConfigurationInterface (script, "GameConfiguration");
     BindDistrictProductionInfoKeys (script);
     BindTradeDistrictProcessingInfo (script);
     BindInternalTradeArea (script);
