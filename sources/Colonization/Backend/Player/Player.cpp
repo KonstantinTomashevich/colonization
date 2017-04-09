@@ -180,6 +180,7 @@ Player::Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Color col
     scene_ (scene),
     timeUntilNewChatMessage_ (0.0f),
     actionsSequence_ (),
+    enemies_ (),
     connection_ (connection)
 {
     assert (scene_);
@@ -321,5 +322,50 @@ bool Player::IsReadyForStart () const
 void Player::SetIsReadyForStart (bool isReadyForStart)
 {
     isReadyForStart_ = isReadyForStart;
+}
+
+int Player::GetEnemiesCount () const
+{
+    return enemies_.Size ();
+}
+
+Urho3D::PODVector <Urho3D::StringHash> Player::GetEnemies () const
+{
+    return enemies_;
+}
+
+Urho3D::StringHash Player::GetEnemyByIndex (int index) const
+{
+    assert (index < enemies_.Size ());
+    return enemies_.At (index);
+}
+
+bool Player::IsAtWarWith (Urho3D::StringHash anotherPlayerNameHash) const
+{
+    return enemies_.Contains (anotherPlayerNameHash);
+}
+
+bool Player::AddEnemy (Urho3D::StringHash anotherPlayerNameHash)
+{
+    assert (anotherPlayerNameHash != Urho3D::StringHash (name_));
+    if (!enemies_.Contains (anotherPlayerNameHash))
+    {
+        enemies_.Push (anotherPlayerNameHash);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool Player::RemoveEnemy (Urho3D::StringHash anotherPlayerNameHash)
+{
+    return enemies_.Remove (anotherPlayerNameHash);
+}
+
+void Player::RemoveAllEnemies ()
+{
+    enemies_.Clear ();
 }
 }

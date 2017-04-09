@@ -125,6 +125,16 @@ void PlayersManager::UpdatePlayersInfos ()
                 updatePoints += 100.0f;
             }
 
+            if (playerInfo->GetEnemies () != player->GetEnemies ())
+            {
+                playerInfo->RemoveAllEnemies ();
+                for (int index = 0; index < player->GetEnemiesCount (); index++)
+                {
+                    playerInfo->AddEnemy (player->GetEnemyByIndex (index));
+                }
+                updatePoints += 100.0f;
+            }
+
             NetworkUpdateCounter *counter = playerInfo->GetNode ()->GetComponent <NetworkUpdateCounter> ();
             if (!counter)
             {

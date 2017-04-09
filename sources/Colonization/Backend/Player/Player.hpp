@@ -19,6 +19,7 @@ protected:
     Urho3D::Scene *scene_;
     float timeUntilNewChatMessage_;
     Urho3D::Vector <Urho3D::Pair <PlayerActionType, Urho3D::Variant> > actionsSequence_;
+    Urho3D::PODVector <Urho3D::StringHash> enemies_;
     Urho3D::Connection *connection_;
 
     void ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data);
@@ -56,5 +57,13 @@ public:
 
     bool IsReadyForStart () const;
     void SetIsReadyForStart (bool isReadyForStart);
+
+    int GetEnemiesCount () const;
+    Urho3D::PODVector <Urho3D::StringHash> GetEnemies () const;
+    Urho3D::StringHash GetEnemyByIndex (int index) const;
+    bool IsAtWarWith (Urho3D::StringHash anotherPlayerNameHash) const;
+    bool AddEnemy (Urho3D::StringHash anotherPlayerNameHash);
+    bool RemoveEnemy (Urho3D::StringHash anotherPlayerNameHash);
+    void RemoveAllEnemies ();
 };
 }
