@@ -249,9 +249,11 @@ void TradeProcessor::OnSceneSet (Urho3D::Scene *scene)
     SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (TradeProcessor, Update));
 }
 
-TradeProcessor::TradeProcessor (Urho3D::Context *context) : Urho3D::Component (context)
+TradeProcessor::TradeProcessor (Urho3D::Context *context) : Urho3D::Component (context),
+    tradeAreasUpdateDelay_ (10.0f),
+    untilTradeAreasUpdate_ (0.0f)
 {
-    untilTradeAreasUpdate_ = 0.0001f;
+
 }
 
 TradeProcessor::~TradeProcessor ()
@@ -263,6 +265,7 @@ void TradeProcessor::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <TradeProcessor> (COLONIZATION_SERVER_ONLY_CATEGORY);
     URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Trade Areas Update Delay", GetTradeAreasUpdateDelay, SetTradeAreasUpdateDelay, float, 10.0f, Urho3D::AM_DEFAULT);
 }
 
 void TradeProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
@@ -273,8 +276,8 @@ void TradeProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &e
         untilTradeAreasUpdate_ -= timeStep;
         if (untilTradeAreasUpdate_ <= 0.0f)
         {
-            UpdateTradeAreas (10.0f);
-            untilTradeAreasUpdate_ = 10.0f;
+            UpdateTradeAreas (tradeAreasUpdateDelay_);
+            untilTradeAreasUpdate_ = tradeAreasUpdateDelay_;
         }
     }
 }
@@ -288,5 +291,24 @@ InternalTradeArea *TradeProcessor::GetTradeAreaByIndex (int index) const
 {
     assert (index < tradeAreas_.Size ());
     return tradeAreas_.At (index);
+}
+
+float TradeProcessor::GetTimeUntilTradeAreasUpdate () const
+{
+    return untilTradeAreasUpdate_;
+}
+
+float TradeProcessor::GetTradeAreasUpdateDelay () const
+{
+    return tradeAreasUpdateDelay_;
+}
+
+void TradeProcessor::SetTradeAreasUpdateDelay (float tradeAreasUpdateDelay)
+{
+    tradeAreasUpdateDelay_ = tradeAreasUpdateDelay;
+    if (tradeAreasUpdateDelay_ > untilTradeAreasUpdate_)
+    {
+        untilTradeAreasUpdate_ = tradeAreasUpdateDelay;
+    }
 }
 }

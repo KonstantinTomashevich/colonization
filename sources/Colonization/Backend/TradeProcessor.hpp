@@ -12,6 +12,7 @@ class TradeProcessor : public Urho3D::Component
 URHO3D_OBJECT (TradeProcessor, Component)
 protected:
     Urho3D::Vector <Urho3D::SharedPtr <InternalTradeArea> > tradeAreas_;
+    float tradeAreasUpdateDelay_;
     float untilTradeAreasUpdate_;
 
     void UpdateTradeAreas (float updateDelay);
@@ -35,5 +36,9 @@ public:
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     int GetTradeAreasCount () const;
     InternalTradeArea *GetTradeAreaByIndex (int index) const;
+
+    float GetTimeUntilTradeAreasUpdate () const;
+    float GetTradeAreasUpdateDelay () const;
+    void SetTradeAreasUpdateDelay (float tradeAreasUpdateDelay);
 };
 }
