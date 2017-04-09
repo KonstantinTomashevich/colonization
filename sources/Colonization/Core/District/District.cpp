@@ -25,6 +25,14 @@ const char *neighborsHashesStructureElementsNames [] =
     0
 };
 
+const char *colonyActionsStructureElementsNames [] =
+{
+    "Colony Actions Count",
+    "   Type",
+    "   Data",
+    0
+};
+
 const char *climateTypesNames [] =
 {
     "Tropical",
@@ -168,8 +176,9 @@ void District::RegisterObject (Urho3D::Context *context)
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Has Colony", HasColony, SetColony, bool, false, Urho3D::AM_DEFAULT);
     URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Colony Owner Name", GetColonyOwnerName, SetColonyOwnerName, Urho3D::String, Urho3D::String::EMPTY, Urho3D::AM_DEFAULT);
-    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Colony Actions", GetColonyActionsAttribute, SetColonyActionsAttribute,
-                                     Urho3D::VariantVector, Urho3D::Variant::emptyVariantVector, Urho3D::AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_VARIANT_VECTOR_STRUCTURE_ATTRIBUTE ("Colony Actions", GetColonyActionsAttribute, SetColonyActionsAttribute,
+                                                              Urho3D::VariantVector, Urho3D::Variant::emptyVariantVector,
+                                                              colonyActionsStructureElementsNames, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Men Count", GetMenCount, SetMenCount, float, 0.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Women Count", GetWomenCount, SetWomenCount, float, 0.0f, Urho3D::AM_DEFAULT);
 
