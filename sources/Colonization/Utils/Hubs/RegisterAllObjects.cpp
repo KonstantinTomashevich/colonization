@@ -9,7 +9,7 @@
 #include <Colonization/Backend/PlayersPointsCalculator.hpp>
 #include <Colonization/Backend/TradeProcessor.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
-#include <Colonization/Backend/VictoryProgressUpdater.hpp>
+#include <Colonization/Backend/VictoryProgressUpdater/VictoryProgressUpdater.hpp>
 
 #include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>

@@ -16,11 +16,8 @@
 #include <Colonization/Core/PlayerInfo/PlayerInfoConstants.hpp>
 #include <Colonization/Core/PlayerInfo/VictoryTypeByPointsConstants.hpp>
 
-#include <Colonization/Backend/PlayersManager.hpp>
-#include <Colonization/Backend/UnitsManager.hpp>
-#include <Colonization/Backend/TradeProcessor.hpp>
+#include <Colonization/Backend/VictoryProgressUpdater/VictoryTypesProcessorScriptDataAccessor.hpp>
 #include <Colonization/Backend/Player/PlayerComparator.hpp>
-
 #include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
@@ -124,9 +121,10 @@ void VictoryProgressUpdater::ProcessScriptedVictoryTypes (float timeStep)
     Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
     UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
     TradeProcessor *tradeProcessor = node_->GetScene ()->GetComponent <TradeProcessor> ();
+    GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
 
     Urho3D::SharedPtr <VictoryTypesProcessorScriptDataAccessor> dataAccessor (new VictoryTypesProcessorScriptDataAccessor (context_));
-    dataAccessor->Setup (map, unitsManager, tradeProcessor);
+    dataAccessor->Setup (map, unitsManager, tradeProcessor, configuration);
 
     Urho3D::VariantVector executionParameters;
     executionParameters.Push (Urho3D::Variant (timeStep));
@@ -224,101 +222,28 @@ void VictoryProgressUpdater::Update (Urho3D::StringHash eventType, Urho3D::Varia
     }
 }
 
-float VictoryProgressUpdater::GetTimeUntilGameEnd ()
+float VictoryProgressUpdater::GetTimeUntilGameEnd () const
 {
     return timeUntilGameEnd_;
 }
 
-bool VictoryProgressUpdater::IsAnyoneWon ()
+bool VictoryProgressUpdater::IsAnyoneWon () const
 {
     return isAnyoneWon_;
 }
 
-Urho3D::String VictoryProgressUpdater::GetWinnerName ()
+Urho3D::String VictoryProgressUpdater::GetWinnerName () const
 {
     return winnerName_;
 }
 
-Urho3D::String VictoryProgressUpdater::GetVictoryType ()
+Urho3D::String VictoryProgressUpdater::GetVictoryType () const
 {
     return victoryType_;
 }
 
-Urho3D::String VictoryProgressUpdater::GetVictoryInfo ()
+Urho3D::String VictoryProgressUpdater::GetVictoryInfo () const
 {
     return victoryInfo_;
-}
-
-VictoryTypesProcessorScriptDataAccessor::VictoryTypesProcessorScriptDataAccessor (Urho3D::Context *context) : Urho3D::Object (context),
-    map_ (0),
-    unitsManager_ (0),
-    tradeProcessor_ (0),
-    playerInfo_ (0)
-{
-
-}
-
-VictoryTypesProcessorScriptDataAccessor::~VictoryTypesProcessorScriptDataAccessor ()
-{
-
-}
-
-void VictoryTypesProcessorScriptDataAccessor::Setup (Map *map, UnitsManager *unitsManager, TradeProcessor *tradeProcessor)
-{
-    assert (map);
-    assert (unitsManager);
-    assert (tradeProcessor);
-
-    map_ = map;
-    unitsManager_ = unitsManager;
-    tradeProcessor_ = tradeProcessor;
-}
-
-void VictoryTypesProcessorScriptDataAccessor::SetPlayerInfo (PlayerInfo *playerInfo)
-{
-    assert (playerInfo);
-    playerInfo_ = playerInfo;
-}
-
-const PlayerInfo *VictoryTypesProcessorScriptDataAccessor::GetPlayerInfo () const
-{
-    assert (playerInfo_);
-    return playerInfo_;
-}
-
-unsigned VictoryTypesProcessorScriptDataAccessor::GetDistrictsCount () const
-{
-    assert (map_);
-    return map_->GetDistrictsCount ();
-}
-
-const District *VictoryTypesProcessorScriptDataAccessor::GetDistrictByIndex (int index) const
-{
-    assert (map_);
-    return map_->GetDistrictByIndex (index);
-}
-
-unsigned VictoryTypesProcessorScriptDataAccessor::GetUnitsCount () const
-{
-    assert (unitsManager_);
-    return unitsManager_->GetUnitsCount ();
-}
-
-const Unit *VictoryTypesProcessorScriptDataAccessor::GetUnitByIndex (int index) const
-{
-    assert (unitsManager_);
-    return unitsManager_->GetUnitByIndex (index);
-}
-
-unsigned VictoryTypesProcessorScriptDataAccessor::GetInternalTradeAreasCount ()
-{
-    assert (tradeProcessor_);
-    return tradeProcessor_->GetTradeAreasCount ();
-}
-
-const InternalTradeArea *VictoryTypesProcessorScriptDataAccessor::GetInternalTradeAreaByIndex (int index) const
-{
-    assert (tradeProcessor_);
-    return tradeProcessor_->GetTradeAreaByIndex (index);
 }
 }
