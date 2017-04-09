@@ -15,7 +15,7 @@
 #include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Core/InternalTradeArea/InternalTradeArea.hpp>
 #include <Colonization/Core/Map.hpp>
-#include <Colonization/Core/PlayerInfo.hpp>
+#include <Colonization/Core/PlayerInfo/PlayerInfo.hpp>
 #include <Colonization/Core/Unit.hpp>
 
 #include <Colonization/Frontend/FogOfWarCalculator.hpp>

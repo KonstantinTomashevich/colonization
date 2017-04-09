@@ -9,7 +9,7 @@
 
 #include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
 #include <Colonization/Backend/MessagesHandler/MessagesHandler.hpp>
-#include <Colonization/Core/PlayerInfo.hpp>
+#include <Colonization/Core/PlayerInfo/PlayerInfo.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>

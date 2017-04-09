@@ -3,13 +3,6 @@
 
 namespace Colonization
 {
-const Urho3D::StringHash PLAYER_INFO_VICTORY_TYPE_NAME_KEY ("Name");
-const Urho3D::StringHash PLAYER_INFO_VICTORY_TYPE_INFO_KEY ("Info");
-const Urho3D::StringHash PLAYER_INFO_VICTORY_TYPE_PROGRESS_KEY ("Progress");
-const Urho3D::StringHash VICTORY_TYPE_BY_POINTS ("ByPoints");
-const Urho3D::String VICTORY_TYPE_BY_POINTS_NAME ("by points");
-const Urho3D::String VICTORY_TYPE_BY_POINTS_INFO ("Maximum game time elapsed. ${PlayerName} has biggest number of points.");
-
 class PlayerInfo : public Urho3D::Component
 {
 URHO3D_OBJECT (PlayerInfo, Component)

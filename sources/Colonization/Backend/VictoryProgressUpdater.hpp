@@ -12,7 +12,7 @@
 
 namespace Colonization
 {
-// Maybe split to VictoryProgressUpdater, VictoryTypesProcessorScriptDataAccessor.
+// TODO: Maybe split to VictoryProgressUpdater, VictoryTypesProcessorScriptDataAccessor.
 class VictoryProgressUpdater : public Urho3D::Component
 {
 URHO3D_OBJECT (VictoryProgressUpdater, Component)

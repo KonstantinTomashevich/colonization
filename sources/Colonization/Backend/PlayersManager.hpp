@@ -6,7 +6,7 @@
 
 #include <Colonization/Backend/Player/Player.hpp>
 #include <Colonization/Backend/MessagesHandler/MessagesHandler.hpp>
-#include <Colonization/Core/PlayerInfo.hpp>
+#include <Colonization/Core/PlayerInfo/PlayerInfo.hpp>
 
 namespace Colonization
 {

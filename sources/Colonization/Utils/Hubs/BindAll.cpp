@@ -18,7 +18,9 @@
 #include <Colonization/AngelScriptBinders/Core/InternalTradeArea/BindTradeDistrictProcessingInfo.hpp>
 #include <Colonization/AngelScriptBinders/Core/InternalTradeArea/BindInternalTradeArea.hpp>
 #include <Colonization/AngelScriptBinders/Core/BindMap.hpp>
-#include <Colonization/AngelScriptBinders/Core/BindPlayerInfo.hpp>
+#include <Colonization/AngelScriptBinders/Core/PlayerInfo/BindPlayerInfo.hpp>
+#include <Colonization/AngelScriptBinders/Core/PlayerInfo/BindPlayerInfoConstants.hpp>
+#include <Colonization/AngelScriptBinders/Core/PlayerInfo/BindVictoryTypeByPointsConstants.hpp>
 #include <Colonization/AngelScriptBinders/Core/BindUnit.hpp>
 
 #include <Colonization/AngelScriptBinders/Backend/BindNetworkMessageType.hpp>
@@ -54,6 +56,8 @@ void BindAll (Urho3D::Script *script)
     BindTradeDistrictProcessingInfo (script);
     BindInternalTradeArea (script);
     BindPlayerInfo (script);
+    BindPlayerInfoConstants (script);
+    BindVictoryTypeByPointsConstants (script);
     BindUnitInterface (script, "Unit");
 
     BindNetworkMessageType (script);

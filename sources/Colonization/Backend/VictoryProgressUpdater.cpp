@@ -13,6 +13,8 @@
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/InternalTradeArea/InternalTradeArea.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
+#include <Colonization/Core/PlayerInfo/PlayerInfoConstants.hpp>
+#include <Colonization/Core/PlayerInfo/VictoryTypeByPointsConstants.hpp>
 
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>

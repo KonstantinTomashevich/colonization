@@ -2,6 +2,7 @@
 #include "PlayerInfo.hpp"
 #include <Urho3D/Core/Context.h>
 #include <Urho3D/IO/Log.h>
+#include <Colonization/Core/PlayerInfo/PlayerInfoConstants.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
