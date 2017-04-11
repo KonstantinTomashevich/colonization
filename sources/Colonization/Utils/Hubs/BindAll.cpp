@@ -9,6 +9,7 @@
 #include <Colonization/AngelScriptBinders/Activities/BindIngameClientActivity.hpp>
 #include <Colonization/AngelScriptBinders/Activities/BindMainMenuActivity.hpp>
 
+#include <Colonization/AngelScriptBinders/Core/Diplomacy/BindDiplomacyWar.hpp>
 #include <Colonization/AngelScriptBinders/Core/District/BindDistrictEnums.hpp>
 #include <Colonization/AngelScriptBinders/Core/District/BindDistrict.hpp>
 #include <Colonization/AngelScriptBinders/Core/District/BindColonyActions.hpp>
@@ -44,6 +45,7 @@ void BindAll (Urho3D::Script *script)
     BindIngameClientActivity (script);
     BindMainMenuActivity (script);
 
+    BindDiplomacyWar (script);
     BindGameConfiguration (script, false);
     BindDistrictEnums (script);
     BindDistrict (script);

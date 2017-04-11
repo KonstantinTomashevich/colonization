@@ -23,6 +23,7 @@
 #include <Colonization/Backend/TradeProcessor.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Backend/VictoryProgressUpdater/VictoryProgressUpdater.hpp>
+#include <Colonization/Backend/Diplomacy/DiplomacyProcessor.hpp>
 
 namespace Colonization
 {
@@ -106,12 +107,14 @@ void HostActivity::SetupPlayingState ()
     Urho3D::String configurationPath;
     Urho3D::String mapPath;
     Urho3D::String unitsPath;
-    bool isMapLoaded = LoadAndParseMapInfo (configurationPath, mapPath, unitsPath);
+    Urho3D::String diplomacyPath;
+    bool isMapLoaded = LoadAndParseMapInfo (configurationPath, mapPath, unitsPath, diplomacyPath);
     assert (isMapLoaded);
 
     LoadGameConfiguration (resourceCache, configurationPath);
     LoadMap (resourceCache, mapPath);
     LoadUnits (resourceCache, unitsPath);
+    LoadDiplomacy (resourceCache, diplomacyPath);
     RecalculateUnitsHashes (scene_->GetChild ("units")->GetComponent <UnitsManager> ());
     CreateServerProcessorsAndManagers ();
     BanNewConnectionsAndSetStartGold ();
@@ -126,6 +129,7 @@ void HostActivity::SetupFinishedState ()
     scene_->GetComponent <TradeProcessor> ()->Remove ();
     scene_->GetComponent <PlayersPointsCalculator> ()->Remove ();
     scene_->GetComponent <VictoryProgressUpdater> ()->Remove ();
+    scene_->GetChild ("diplomacy")->GetComponent <DiplomacyProcessor> ()->Remove ();
     scene_->SetUpdateEnabled (false);
 }
 
@@ -154,6 +158,14 @@ void HostActivity::LoadUnits (Urho3D::ResourceCache *resourceCache, Urho3D::Stri
     unitsManager->UpdateUnitsList ();
 }
 
+void HostActivity::LoadDiplomacy (Urho3D::ResourceCache *resourceCache, Urho3D::String diplomacyPath)
+{
+    Urho3D::Node *diplomacyNode = scene_->CreateChild ("diplomacy", Urho3D::REPLICATED);
+    diplomacyNode->LoadXML (resourceCache->GetResource <Urho3D::XMLFile> (diplomacyPath)->GetRoot ());
+    DiplomacyProcessor *diplomacyProcessor = diplomacyNode->CreateComponent <DiplomacyProcessor> (Urho3D::LOCAL);
+    diplomacyProcessor->UpdateWarsList ();
+}
+
 void HostActivity::RecalculateUnitsHashes (UnitsManager *unitsManager)
 {
     for (int index = 0; index < unitsManager->GetUnitsCount (); index++)
@@ -178,7 +190,7 @@ void HostActivity::BanNewConnectionsAndSetStartGold ()
     playersManager->SetStartGoldForAllPlayers ();
 }
 
-bool HostActivity::LoadAndParseMapInfo (Urho3D::String &configurationPath, Urho3D::String &mapPath, Urho3D::String &unitsPath)
+bool HostActivity::LoadAndParseMapInfo (Urho3D::String &configurationPath, Urho3D::String &mapPath, Urho3D::String &unitsPath, Urho3D::String &diplomacyPath)
 {
     Urho3D::ResourceCache *resourceCache = context_->GetSubsystem <Urho3D::ResourceCache> ();
     Urho3D::XMLFile *infoFile = resourceCache->GetResource <Urho3D::XMLFile> (mapInfoPath_);
@@ -192,6 +204,7 @@ bool HostActivity::LoadAndParseMapInfo (Urho3D::String &configurationPath, Urho3
     configurationPath = mapFolder_ + filesInfoRoot.GetAttribute ("gameConfigurationXML");
     mapPath = mapFolder_ + filesInfoRoot.GetAttribute ("mapXML");
     unitsPath = mapFolder_ + filesInfoRoot.GetAttribute ("unitsXML");
+    diplomacyPath = mapFolder_ + filesInfoRoot.GetAttribute ("diplomacyPath");
     return true;
 }
 
