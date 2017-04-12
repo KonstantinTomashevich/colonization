@@ -10,6 +10,49 @@
 
 namespace Colonization
 {
+void DiplomacyProcessor::UpdateDiplomacyRequests (float timeStep)
+{
+    for (Urho3D::Vector <Urho3D::SharedPtr <DiplomacyRequest> >::Iterator iterator = requests_.Begin ();
+         iterator != requests_.End (); iterator++)
+    {
+        DiplomacyRequest *request = iterator->Get ();
+        request->TimeUpdate (timeStep);
+        if (request->IsCanBeFinished ())
+        {
+            request->FinishProcessing (node_->GetScene ());
+            iterator = requests_.Erase (iterator);
+        }
+    }
+}
+
+Urho3D::Vector <Urho3D::SharedPtr <DiplomacyRequest> >::Iterator DiplomacyProcessor::GetDiplomacyRequestIteratorById (unsigned requestId)
+{
+    for (Urho3D::Vector <Urho3D::SharedPtr <DiplomacyRequest> >::Iterator iterator = requests_.Begin ();
+         iterator != requests_.End (); iterator++)
+    {
+        DiplomacyRequest *request = iterator->Get ();
+        if (request->GetId () == requestId)
+        {
+            return iterator;
+        }
+    }
+    return requests_.End ();
+}
+
+unsigned DiplomacyProcessor::GetFreeDiplomacyRequestId()
+{
+    unsigned id = 1;
+    for (int index = 0; index < requests_.Size (); index++)
+    {
+        DiplomacyRequest *request = requests_.At (index);
+        if (request->GetId () >= id)
+        {
+            id = request->GetId () + 1;
+        }
+    }
+    return id;
+}
+
 void DiplomacyProcessor::OnSceneSet (Urho3D::Scene *scene)
 {
     UnsubscribeFromAllEvents ();
@@ -18,6 +61,7 @@ void DiplomacyProcessor::OnSceneSet (Urho3D::Scene *scene)
 }
 
 DiplomacyProcessor::DiplomacyProcessor (Urho3D::Context *context) : Urho3D::Component (context),
+    requests_ (),
     wars_ ()
 {
 
@@ -38,7 +82,31 @@ void DiplomacyProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMa
 {
     if (enabled_)
     {
+        float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
         UpdateWarsList ();
+        UpdateDiplomacyRequests (timeStep);
+        // TODO: Process wars escalation.
+    }
+}
+
+void DiplomacyProcessor::AddDiplomacyRequest (DiplomacyRequest *request)
+{
+    request->SetId (GetFreeDiplomacyRequestId ());
+    requests_.Push (Urho3D::SharedPtr <DiplomacyRequest> (request));
+}
+
+void DiplomacyProcessor::UpdateDiplomacyRequestPlayerStatus (unsigned requestId, Urho3D::StringHash playerNameHash, DiplomacyRequestPlayerStatus status)
+{
+    Urho3D::Vector <Urho3D::SharedPtr <DiplomacyRequest> >::Iterator requestIterator = GetDiplomacyRequestIteratorById (requestId);
+    if (requestIterator != requests_.End ())
+    {
+        DiplomacyRequest *request = requestIterator->Get ();
+        request->UpdatePlayerStatus (playerNameHash, status);
+        if (request->IsCanBeFinished ())
+        {
+            request->FinishProcessing (node_->GetScene ());
+            requests_.Erase (requestIterator);
+        }
     }
 }
 
