@@ -101,6 +101,7 @@ District *Map::CreateDistrict (Urho3D::String districtName)
     Urho3D::SharedPtr <District> district (districtNode->CreateComponent <District> (Urho3D::REPLICATED));
     district->SetName (districtName);
     districts_.Push (district);
+    district->UpdateHash (this);
     return district;
 }
 

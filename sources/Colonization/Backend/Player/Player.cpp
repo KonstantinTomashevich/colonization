@@ -110,7 +110,6 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
         unit->SetOwnerPlayerName (name_);
         unit->SetPositionHash (nearestEuropeDistrict->GetHash ());
         unit->SetUnitType (UNIT_COLONIZATORS);
-        unit->UpdateHash (unitsManager);
 
         if (!map->FindPath (targetDistrict->GetHash (), unit).Empty ())
         {

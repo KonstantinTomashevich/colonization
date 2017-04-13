@@ -280,6 +280,7 @@ Unit *UnitsManager::CreateUnit ()
     unitNode->SetName ("Unit" + Urho3D::String (unitNode->GetID ()));
     Urho3D::SharedPtr <Unit> unit (unitNode->CreateComponent <Unit> (Urho3D::REPLICATED));
     units_.Push (unit);
+    unit->UpdateHash (this);
     return unit;
 }
 

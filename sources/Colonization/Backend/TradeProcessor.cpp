@@ -230,7 +230,6 @@ void TradeProcessor::SendTrader (Map *map, UnitsManager *unitsManager, GameConfi
     District *nearestEuropeDistrict = map->GetDistrictByHash (
                 configuration->GetHeuristicNearestWayToEuropeDistrict (map, district));
     map->FindPath (nearestEuropeDistrict->GetHash (), unit);
-    unit->UpdateHash (unitsManager);
 }
 
 void TradeProcessor::ClearTradeAreas ()

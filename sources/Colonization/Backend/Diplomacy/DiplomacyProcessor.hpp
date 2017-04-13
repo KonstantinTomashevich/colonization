@@ -32,6 +32,7 @@ public:
 
     int GetWarsCount () const;
     void UpdateWarsList ();
+    DiplomacyWar *CreateWar ();
     DiplomacyWar *GetWarByIndex (int index);
     DiplomacyWar *GetWarByHash (Urho3D::StringHash hash);
 };

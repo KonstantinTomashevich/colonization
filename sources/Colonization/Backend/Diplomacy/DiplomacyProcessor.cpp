@@ -141,6 +141,17 @@ void DiplomacyProcessor::UpdateWarsList ()
     }
 }
 
+DiplomacyWar *DiplomacyProcessor::CreateWar ()
+{
+    assert (node_);
+    Urho3D::Node *warNode = node_->CreateChild ("War", Urho3D::REPLICATED);
+    warNode->SetName ("War" + Urho3D::String (warNode->GetID ()));
+    Urho3D::SharedPtr <DiplomacyWar> war (warNode->CreateComponent <DiplomacyWar> (Urho3D::REPLICATED));
+    wars_.Push (war);
+    war->UpdateHash (this);
+    return war;
+}
+
 DiplomacyWar *DiplomacyProcessor::GetWarByIndex (int index)
 {
     assert (index < wars_.Size ());

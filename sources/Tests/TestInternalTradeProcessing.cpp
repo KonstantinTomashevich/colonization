@@ -79,7 +79,6 @@ void TestInternalTradeProcessingApplication::Start ()
 
             district->SetUnitPosition (Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.65f));
             district->SetColonyPosition (Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.2f));
-            district->UpdateHash (map);
         }
     }
     map->RecalculateDistrictsNeighbors ();

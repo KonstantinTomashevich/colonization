@@ -88,7 +88,6 @@ void TestBasicColonyBalanceApplication::Start ()
             {
                 district->SetIsSea (true);
             }
-            district->UpdateHash (map);
         }
     }
     map->RecalculateDistrictsNeighbors ();
