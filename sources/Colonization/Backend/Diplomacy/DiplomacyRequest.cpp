@@ -4,7 +4,8 @@
 namespace Colonization
 {
 DiplomacyRequest::DiplomacyRequest (Urho3D::Context *context) : Urho3D::Object (context),
-    id_ ()
+    id_ (),
+    isFinished_ (false)
 {
 
 }
@@ -22,5 +23,10 @@ unsigned DiplomacyRequest::GetId () const
 void DiplomacyRequest::SetId (unsigned id)
 {
     id_ = id;
+}
+
+bool DiplomacyRequest::IsFinished ()
+{
+    return isFinished_;
 }
 }

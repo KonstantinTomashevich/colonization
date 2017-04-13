@@ -1,6 +1,7 @@
 #pragma once
 #include <Urho3D/Core/Object.h>
 #include <Urho3D/Scene/Component.h>
+#include <Colonization/Backend/Diplomacy/DiplomacyActionsExecutor.hpp>
 #include <Colonization/Backend/Diplomacy/DiplomacyRequest.hpp>
 #include <Colonization/Core/Diplomacy/DiplomacyWar.hpp>
 
@@ -10,6 +11,7 @@ class DiplomacyProcessor : public Urho3D::Component
 {
 URHO3D_OBJECT (DiplomacyProcessor, Component)
 protected:
+    DiplomacyActionsExecutor *diplomacyActionsExexutor_;
     Urho3D::Vector <Urho3D::SharedPtr <DiplomacyRequest> > requests_;
     Urho3D::Vector <Urho3D::SharedPtr <DiplomacyWar> > wars_;
 

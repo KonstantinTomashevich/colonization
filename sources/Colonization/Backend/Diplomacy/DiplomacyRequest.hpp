@@ -1,6 +1,7 @@
 #pragma once
 #include <Urho3D/Core/Object.h>
 #include <Urho3D/Scene/Scene.h>
+#include <Colonization/Backend/Diplomacy/DiplomacyActionsExecutor.hpp>
 
 namespace Colonization
 {
@@ -16,6 +17,7 @@ class DiplomacyRequest : public Urho3D::Object
 URHO3D_OBJECT (DiplomacyRequest, Object)
 protected:
     unsigned id_;
+    bool isFinished_;
 
 public:
     DiplomacyRequest (Urho3D::Context *context);
@@ -23,10 +25,9 @@ public:
 
     unsigned GetId () const;
     void SetId (unsigned id);
+    bool IsFinished ();
 
-    virtual bool IsCanBeFinished () = 0;
-    virtual void UpdatePlayerStatus (Urho3D::StringHash playerNameHash, DiplomacyRequestPlayerStatus status) = 0;
-    virtual void TimeUpdate (float timeStep) = 0;
-    virtual void FinishProcessing (const Urho3D::Scene *scene) = 0;
+    virtual void UpdatePlayerStatus (DiplomacyActionsExecutor *diplomacyActionsExecutor, Urho3D::StringHash playerNameHash, DiplomacyRequestPlayerStatus status) = 0;
+    virtual void TimeUpdate (DiplomacyActionsExecutor *diplomacyActionsExecutor, float timeStep) = 0;
 };
 }

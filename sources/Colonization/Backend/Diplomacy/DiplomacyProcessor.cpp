@@ -16,10 +16,9 @@ void DiplomacyProcessor::UpdateDiplomacyRequests (float timeStep)
          iterator != requests_.End (); iterator++)
     {
         DiplomacyRequest *request = iterator->Get ();
-        request->TimeUpdate (timeStep);
-        if (request->IsCanBeFinished ())
+        request->TimeUpdate (diplomacyActionsExexutor_, timeStep);
+        if (request->IsFinished ())
         {
-            request->FinishProcessing (node_->GetScene ());
             iterator = requests_.Erase (iterator);
         }
     }
@@ -58,9 +57,16 @@ void DiplomacyProcessor::OnSceneSet (Urho3D::Scene *scene)
     UnsubscribeFromAllEvents ();
     Urho3D::Component::OnSceneSet (scene);
     SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (DiplomacyProcessor, Update));
+
+    if (diplomacyActionsExexutor_)
+    {
+        delete diplomacyActionsExexutor_;
+    }
+    diplomacyActionsExexutor_ = new DiplomacyActionsExecutor (scene);
 }
 
 DiplomacyProcessor::DiplomacyProcessor (Urho3D::Context *context) : Urho3D::Component (context),
+    diplomacyActionsExexutor_ (0),
     requests_ (),
     wars_ ()
 {
@@ -69,7 +75,10 @@ DiplomacyProcessor::DiplomacyProcessor (Urho3D::Context *context) : Urho3D::Comp
 
 DiplomacyProcessor::~DiplomacyProcessor ()
 {
-
+    if (diplomacyActionsExexutor_)
+    {
+        delete diplomacyActionsExexutor_;
+    }
 }
 
 void DiplomacyProcessor::RegisterObject (Urho3D::Context *context)
@@ -101,10 +110,9 @@ void DiplomacyProcessor::UpdateDiplomacyRequestPlayerStatus (unsigned requestId,
     if (requestIterator != requests_.End ())
     {
         DiplomacyRequest *request = requestIterator->Get ();
-        request->UpdatePlayerStatus (playerNameHash, status);
-        if (request->IsCanBeFinished ())
+        request->UpdatePlayerStatus (diplomacyActionsExexutor_, playerNameHash, status);
+        if (request->IsFinished ())
         {
-            request->FinishProcessing (node_->GetScene ());
             requests_.Erase (requestIterator);
         }
     }
