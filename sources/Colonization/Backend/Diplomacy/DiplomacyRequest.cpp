@@ -1,11 +1,13 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "DiplomacyRequest.hpp"
+#include <Urho3D/Core/Context.h>
+#include <Colonization/Utils/Serialization/Categories.hpp>
+#include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
 namespace Colonization
 {
-DiplomacyRequest::DiplomacyRequest (Urho3D::Context *context) : Urho3D::Object (context),
-    id_ (),
-    isFinished_ (false)
+DiplomacyRequest::DiplomacyRequest (Urho3D::Context *context) : Urho3D::Component (context),
+    requestId_ ()
 {
 
 }
@@ -15,18 +17,18 @@ DiplomacyRequest::~DiplomacyRequest ()
 
 }
 
-unsigned DiplomacyRequest::GetId () const
+void DiplomacyRequest::RegisterObject (Urho3D::Context *context)
 {
-    return id_;
+    URHO3D_ACCESSOR_ATTRIBUTE ("Id", GetRequestId, SetRequestId, unsigned, 0, Urho3D::AM_DEFAULT);
 }
 
-void DiplomacyRequest::SetId (unsigned id)
+unsigned DiplomacyRequest::GetRequestId () const
 {
-    id_ = id;
+    return requestId_;
 }
 
-bool DiplomacyRequest::IsFinished ()
+void DiplomacyRequest::SetRequestId (unsigned id)
 {
-    return isFinished_;
+    requestId_ = id;
 }
 }

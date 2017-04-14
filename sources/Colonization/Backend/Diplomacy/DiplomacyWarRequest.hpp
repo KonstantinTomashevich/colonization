@@ -14,9 +14,14 @@ protected:
 public:
     DiplomacyWarRequest (Urho3D::Context *context);
     virtual ~DiplomacyWarRequest ();
+    static void RegisterObject (Urho3D::Context *context);
 
-    void Init (Urho3D::StringHash attacker, Urho3D::StringHash defender);
-    virtual void UpdatePlayerStatus (DiplomacyActionsExecutor *diplomacyActionsExecutor, Urho3D::StringHash playerNameHash, DiplomacyRequestPlayerStatus status);
-    virtual void TimeUpdate (DiplomacyActionsExecutor *diplomacyActionsExecutor, float timeStep);
+    Urho3D::StringHash GetAttacker () const;
+    void SetAttacker (const Urho3D::StringHash &attacker);
+    Urho3D::StringHash GetDefender () const;
+    void SetDefender (const Urho3D::StringHash &defender);
+
+    virtual bool UpdatePlayerStatus (DiplomacyActionsExecutor *diplomacyActionsExecutor, Urho3D::StringHash playerNameHash, DiplomacyRequestPlayerStatus status);
+    virtual bool TimeUpdate (DiplomacyActionsExecutor *diplomacyActionsExecutor, float timeStep);
 };
 }

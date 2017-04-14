@@ -12,12 +12,12 @@ class DiplomacyProcessor : public Urho3D::Component
 URHO3D_OBJECT (DiplomacyProcessor, Component)
 protected:
     DiplomacyActionsExecutor *diplomacyActionsExexutor_;
-    Urho3D::Vector <Urho3D::SharedPtr <DiplomacyRequest> > requests_;
     Urho3D::Vector <Urho3D::SharedPtr <DiplomacyWar> > wars_;
 
     void UpdateDiplomacyRequests (float timeStep);
-    Urho3D::Vector <Urho3D::SharedPtr <DiplomacyRequest> >::Iterator GetDiplomacyRequestIteratorById (unsigned requestId);
+    Urho3D::Node *GetDiplomacyRequestNodeById (unsigned requestId);
     unsigned GetFreeDiplomacyRequestId ();
+    Urho3D::Node *GetOrCreateRequestsNode ();
     virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:

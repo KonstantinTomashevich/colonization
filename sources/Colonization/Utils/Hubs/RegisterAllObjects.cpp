@@ -10,7 +10,10 @@
 #include <Colonization/Backend/TradeProcessor.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Backend/VictoryProgressUpdater/VictoryProgressUpdater.hpp>
+
 #include <Colonization/Backend/Diplomacy/DiplomacyProcessor.hpp>
+#include <Colonization/Backend/Diplomacy/DiplomacyRequest.hpp>
+#include <Colonization/Backend/Diplomacy/DiplomacyWarRequest.hpp>
 
 #include <Colonization/Core/Diplomacy/DiplomacyWar.hpp>
 #include <Colonization/Core/District/District.hpp>
@@ -38,7 +41,10 @@ void RegisterAllObjects (Urho3D::Context *context)
     TradeProcessor::RegisterObject (context);
     UnitsManager::RegisterObject (context);
     VictoryProgressUpdater::RegisterObject (context);
+
     DiplomacyProcessor::RegisterObject (context);
+    DiplomacyRequest::RegisterObject (context);
+    DiplomacyWarRequest::RegisterObject (context);
 
     DiplomacyWar::RegisterObject (context);
     District::RegisterObject (context);
