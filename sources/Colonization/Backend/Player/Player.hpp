@@ -27,6 +27,7 @@ protected:
     void ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer data);
     void ProcessAddColonyActionAction (Urho3D::VectorBuffer data);
     void ProcessRemoveColonyActionAction (Urho3D::VectorBuffer data);
+    void ProcessResponceToDiplomacyOfferAction (Urho3D::VectorBuffer data);
 public:
     Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Color color, Urho3D::Connection *connection, Urho3D::Scene *scene);
     virtual ~Player ();

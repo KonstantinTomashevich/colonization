@@ -32,7 +32,7 @@ void BindPlayerActionType(Urho3D::Script *script)
 
     engine->RegisterEnumValue ("PlayerActionType", "PLAYER_ACTION_START_WAR", PLAYER_ACTION_START_WAR);
     engine->RegisterEnumValue ("PlayerActionType", "PLAYER_ACTION_SEND_PEACE_TREATY", PLAYER_ACTION_SEND_PEACE_TREATY);
-    engine->RegisterEnumValue ("PlayerActionType", "PLAYER_ACTION_ACCEPT_PEACE_TREATY", PLAYER_ACTION_ACCEPT_PEACE_TREATY);
+    engine->RegisterEnumValue ("PlayerActionType", "PLAYER_ACTION_RESPONCE_TO_DIPLOMACY_OFFER", PLAYER_ACTION_RESPONCE_TO_DIPLOMACY_OFFER);
     engine->RegisterGlobalFunction ("float get_PLAYER_NEW_CHAT_MESSAGE_DELAY ()", asFUNCTION (get_PLAYER_NEW_CHAT_MESSAGE_DELAY), asCALL_CDECL);
 }
 }

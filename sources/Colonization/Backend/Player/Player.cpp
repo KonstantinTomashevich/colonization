@@ -6,6 +6,7 @@
 
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
+#include <Colonization/Backend/Diplomacy/DiplomacyProcessor.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Backend/ColoniesEvolutionManager.hpp>
 
@@ -168,6 +169,18 @@ void Player::ProcessRemoveColonyActionAction (Urho3D::VectorBuffer data)
     }
 }
 
+void Player::ProcessResponceToDiplomacyOfferAction (Urho3D::VectorBuffer data)
+{
+    DiplomacyProcessor *diplomacyProcessor = scene_->GetChild ("diplomacy")->GetComponent <DiplomacyProcessor> ();
+    // Skip action type.
+    data.ReadInt ();
+    assert (diplomacyProcessor);
+
+    unsigned diplomacyOfferId = data.ReadUInt ();
+    DiplomacyRequestPlayerStatus response = static_cast <DiplomacyRequestPlayerStatus> (data.ReadUInt ());
+    diplomacyProcessor->UpdateDiplomacyRequestPlayerStatus (diplomacyOfferId, Urho3D::StringHash (name_), response);
+}
+
 Player::Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Color color, Urho3D::Connection *connection, Urho3D::Scene *scene) :
     Urho3D::Object (context),
     name_ (name),
@@ -221,6 +234,10 @@ void Player::Update (float timeStep)
         else if (action.first_ == PLAYER_ACTION_REMOVE_COLONY_ACTION)
         {
             ProcessRemoveColonyActionAction (action.second_.GetVectorBuffer ());
+        }
+        else if (action.first_ == PLAYER_ACTION_RESPONCE_TO_DIPLOMACY_OFFER)
+        {
+            ProcessResponceToDiplomacyOfferAction (action.second_.GetVectorBuffer ());
         }
         actionsSequence_.Remove (actionsSequence_.At (0));
     }
