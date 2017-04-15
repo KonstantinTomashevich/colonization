@@ -70,7 +70,7 @@ void HostActivity::SendCurrentStateToClients ()
     MessagesHandler *messagesHandler = scene_->GetComponent <MessagesHandler> ();
     if (playersManager && messagesHandler)
     {
-        Urho3D::Vector <Player *> players = playersManager->GetAllPlayers ();
+        Urho3D::PODVector <Player *> players = playersManager->GetAllPlayers ();
         messagesHandler->SendGameState (currentState_, players);
     }
 }
@@ -83,7 +83,7 @@ void HostActivity::SendInformationAboutGameEnd ()
 
     if (victoryProgressUpdater && playersManager && messagesHandler)
     {
-        Urho3D::Vector <Player *> players = playersManager->GetAllPlayers ();
+        Urho3D::PODVector <Player *> players = playersManager->GetAllPlayers ();
         messagesHandler->SendGameEnded (victoryProgressUpdater->GetWinnerName (),
                                         victoryProgressUpdater->GetVictoryType (),
                                         victoryProgressUpdater->GetVictoryInfo (),
@@ -214,7 +214,7 @@ bool HostActivity::WillGoFromWaitingForStartToPlayingState ()
     if (isStartRequested_ && playersManager->GetPlayersCount () > 0 &&
             mapFolder_ != Urho3D::String::EMPTY && mapInfoPath_ != Urho3D::String::EMPTY)
     {
-        Urho3D::Vector <Player *> players = playersManager->GetAllPlayers ();
+        Urho3D::PODVector <Player *> players = playersManager->GetAllPlayers ();
         bool isAllReadyForStart = true;
         int index = 0;
 

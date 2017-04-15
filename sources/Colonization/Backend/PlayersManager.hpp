@@ -48,8 +48,8 @@ public:
     bool IsColorUsed (Urho3D::Color color, Player *excludePlayer = 0) const;
 
     void DisconnectAllUnidentificatedConnections ();
-    Urho3D::Vector <Player *> GetPlayersByNames (Urho3D::Vector <Urho3D::StringHash> namesHashes) const;
-    Urho3D::Vector <Player *> GetAllPlayers () const;
+    Urho3D::PODVector <Player *> GetPlayersByNames(Urho3D::PODVector <Urho3D::StringHash> namesHashes) const;
+    Urho3D::PODVector <Player *> GetAllPlayers() const;
 
     void PlayerIdentified (Urho3D::Connection *connection, Urho3D::String name, Urho3D::Color color);
     void DisconnectPlayer (Urho3D::StringHash nameHash);

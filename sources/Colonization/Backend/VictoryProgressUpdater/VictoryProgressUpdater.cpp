@@ -27,7 +27,7 @@ namespace Colonization
 void VictoryProgressUpdater::UpdateVictoryByPointsProgresses ()
 {
     PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
-    Urho3D::Vector <Player *> players = playersManager->GetAllPlayers ();
+    Urho3D::PODVector <Player *> players = playersManager->GetAllPlayers ();
     Urho3D::Sort <Player *, PlayerComparator> (players.Begin (), players.End (), PlayerComparators::HigherPoints);
 
     for (int index = 0; index < players.Size (); index++)
@@ -46,7 +46,7 @@ void VictoryProgressUpdater::UpdateVictoryByPointsProgresses ()
 void VictoryProgressUpdater::SetWinnerFromVictoryByPoints ()
 {
     PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
-    Urho3D::Vector <Player *>  players = playersManager->GetAllPlayers ();
+    Urho3D::PODVector <Player *>  players = playersManager->GetAllPlayers ();
     int currentBiggestIndex = -1;
     float currentBiggestPoints = -1.0f;
 
@@ -78,7 +78,7 @@ void VictoryProgressUpdater::SetWinnerFromVictoryByPoints ()
 void VictoryProgressUpdater::CheckForAnyVictory ()
 {
     PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
-    Urho3D::Vector <Player *>  players = playersManager->GetAllPlayers ();
+    Urho3D::PODVector <Player *>  players = playersManager->GetAllPlayers ();
 
     int index = 0;
     while (index < players.Size () && !isAnyoneWon_)

@@ -229,7 +229,7 @@ void PlayersManager::HandleClientDisconnected (Urho3D::StringHash eventType, Urh
         Player *player = GetPlayerByConnection (connection);
         if (player)
         {
-            Urho3D::Vector <Player *> allPlayers = players_.Values ();
+            Urho3D::PODVector <Player *> allPlayers = GetAllPlayers ();
             messagesHandler->SendTextInfoFromServer (GetPlayerByConnection (connection)->GetName () + " left game!", allPlayers);
             DisconnectPlayer (connection);
         }
@@ -354,9 +354,9 @@ void PlayersManager::DisconnectAllUnidentificatedConnections ()
     }
 }
 
-Urho3D::Vector <Player *> PlayersManager::GetPlayersByNames (Urho3D::Vector <Urho3D::StringHash> namesHashes) const
+Urho3D::PODVector <Player *> PlayersManager::GetPlayersByNames (Urho3D::PODVector<Urho3D::StringHash> namesHashes) const
 {
-    Urho3D::Vector <Player *> players;
+    Urho3D::PODVector <Player *> players;
     for (int index = 0; index < namesHashes.Size (); index++)
     {
         Player ** player = players_ [namesHashes.At (index)];
@@ -368,9 +368,15 @@ Urho3D::Vector <Player *> PlayersManager::GetPlayersByNames (Urho3D::Vector <Urh
     return players;
 }
 
-Urho3D::Vector <Player *> PlayersManager::GetAllPlayers () const
+Urho3D::PODVector <Player *> PlayersManager::GetAllPlayers () const
 {
-    return players_.Values ();
+    Urho3D::PODVector <Player *> allPlayers;
+    for (Urho3D::HashMap <Urho3D::StringHash, Player *>::ConstIterator iterator = players_.Begin ();
+         iterator != players_.End (); iterator++)
+    {
+        allPlayers.Push (iterator->second_);
+    }
+    return allPlayers;
 }
 
 void PlayersManager::PlayerIdentified (Urho3D::Connection *connection, Urho3D::String name, Urho3D::Color color)
@@ -383,7 +389,7 @@ void PlayersManager::PlayerIdentified (Urho3D::Connection *connection, Urho3D::S
 
     MessagesHandler *messagesHandler = node_->GetScene ()->GetComponent <MessagesHandler> ();
     assert (messagesHandler);
-    Urho3D::Vector <Player *> allPlayers = players_.Values ();
+    Urho3D::PODVector <Player *> allPlayers = GetAllPlayers ();
     messagesHandler->SendTextInfoFromServer (player->GetName () + " entered game!", allPlayers);
     connection->SetScene (node_->GetScene ());
 }
