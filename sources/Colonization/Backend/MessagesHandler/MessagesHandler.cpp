@@ -17,7 +17,7 @@ namespace Colonization
 void MessagesHandler::ProcessSendChatMessageInput (Player *player, Urho3D::VectorBuffer &messageData)
 {
     PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
-    Urho3D::Vector <Player *> players = playersManager->GetAllPlayers ();
+    Urho3D::PODVector <Player *> players = playersManager->GetAllPlayers ();
     SendChatMessage (player->GetName (), messageData.ReadString (), players, false);
     player->OnChatMessageSended ();
 }
@@ -26,14 +26,14 @@ void MessagesHandler::ProcessSendPrivateMessageInput (Player *player, Urho3D::Ve
 {
     PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
     Urho3D::String message = messageData.ReadString ();
-    Urho3D::Vector <Urho3D::StringHash> recievers;
+    Urho3D::PODVector <Urho3D::StringHash> recievers;
     recievers.Push (Urho3D::StringHash (player->GetName ()));
     while (!messageData.IsEof ())
     {
         recievers.Push (Urho3D::StringHash (messageData.ReadString ()));
     }
 
-    Urho3D::Vector <Player *> players = playersManager->GetPlayersByNames (recievers);
+    Urho3D::PODVector <Player *> players = playersManager->GetPlayersByNames (recievers);
     SendChatMessage (player->GetName (), message, players, true);
     player->OnChatMessageSended ();
 }
@@ -154,7 +154,7 @@ void MessagesHandler::SendPlayersStats (Player *player)
     player->GetConnection ()->SendMessage (STC_NETWORK_MESSAGE_SEND_PLAYER_STATS, true, false, messageData);
 }
 
-void MessagesHandler::SendChatMessage (Urho3D::String senderName, Urho3D::String message, Urho3D::Vector <Player *> &recieviers, bool isPrivate)
+void MessagesHandler::SendChatMessage (Urho3D::String senderName, Urho3D::String message, Urho3D::PODVector <Player *> &recieviers, bool isPrivate)
 {
     Urho3D::VectorBuffer messageData;
     messageData.WriteBool (isPrivate);
@@ -167,7 +167,7 @@ void MessagesHandler::SendChatMessage (Urho3D::String senderName, Urho3D::String
     }
 }
 
-void MessagesHandler::SendTextInfoFromServer (Urho3D::String info, Urho3D::Vector <Player *> &recieviers)
+void MessagesHandler::SendTextInfoFromServer (Urho3D::String info, Urho3D::PODVector <Player *> &recieviers)
 {
     Urho3D::VectorBuffer messageData;
     messageData.WriteString (info);
@@ -180,7 +180,7 @@ void MessagesHandler::SendTextInfoFromServer (Urho3D::String info, Urho3D::Vecto
     }
 }
 
-void MessagesHandler::SendGameState (GameStateType gameState, Urho3D::Vector <Player *> &recieviers)
+void MessagesHandler::SendGameState (GameStateType gameState, Urho3D::PODVector <Player *> &recieviers)
 {
     Urho3D::VectorBuffer messageData;
     messageData.WriteInt (static_cast <int> (gameState));
@@ -193,7 +193,7 @@ void MessagesHandler::SendGameState (GameStateType gameState, Urho3D::Vector <Pl
     }
 }
 
-void MessagesHandler::SendGameEnded (Urho3D::String winnerName, Urho3D::String victoryType, Urho3D::String victoryInfo, Urho3D::Vector<Player *> &recieviers)
+void MessagesHandler::SendGameEnded (Urho3D::String winnerName, Urho3D::String victoryType, Urho3D::String victoryInfo, Urho3D::PODVector <Player *> &recieviers)
 {
     Urho3D::VectorBuffer messageData;
     messageData.WriteString (winnerName);
@@ -205,6 +205,36 @@ void MessagesHandler::SendGameEnded (Urho3D::String winnerName, Urho3D::String v
         if (recieviers.At (index))
         {
             recieviers.At (index)->GetConnection ()->SendMessage (STC_NETWORK_MESSAGE_GAME_ENDED, true, false, messageData);
+        }
+    }
+}
+
+void MessagesHandler::SendDiplomacyInfo (Urho3D::StringHash infoType, Urho3D::VariantMap infoData, Urho3D::PODVector <Player *> &recieviers)
+{
+    Urho3D::VectorBuffer messageData;
+    messageData.WriteStringHash (infoType);
+    messageData.WriteVariantMap (infoData);
+
+    for (int index = 0; index < recieviers.Size (); index++)
+    {
+        {
+            recieviers.At (index)->GetConnection ()->SendMessage (STC_NETWORK_MESSAGE_DIPLOMACY_INFO, true, false, messageData);
+        }
+    }
+}
+
+void MessagesHandler::SendDiplomacyOffer (Urho3D::StringHash offerType, unsigned offerDiplomacyRequestId, float autodeclineTime, Urho3D::VariantMap offerData, Urho3D::PODVector <Player *> &recieviers)
+{
+    Urho3D::VectorBuffer messageData;
+    messageData.WriteStringHash (offerType);
+    messageData.WriteUInt (offerDiplomacyRequestId);
+    messageData.WriteFloat (autodeclineTime);
+    messageData.WriteVariantData (offerData);
+
+    for (int index = 0; index < recieviers.Size (); index++)
+    {
+        {
+            recieviers.At (index)->GetConnection ()->SendMessage (STC_NETWORK_MESSAGE_DIPLOMACY_OFFER, true, false, messageData);
         }
     }
 }
