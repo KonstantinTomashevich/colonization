@@ -21,7 +21,8 @@ public:
     Urho3D::StringHash GetDefender () const;
     void SetDefender (const Urho3D::StringHash &defender);
 
-    virtual bool UpdatePlayerStatus (DiplomacyActionsExecutor *diplomacyActionsExecutor, Urho3D::StringHash playerNameHash, DiplomacyRequestPlayerStatus status);
-    virtual bool TimeUpdate (DiplomacyActionsExecutor *diplomacyActionsExecutor, float timeStep);
+    virtual void OnAddition ();
+    virtual bool UpdatePlayerStatus (Urho3D::StringHash playerNameHash, DiplomacyRequestPlayerStatus status);
+    virtual bool TimeUpdate (float timeStep);
 };
 }

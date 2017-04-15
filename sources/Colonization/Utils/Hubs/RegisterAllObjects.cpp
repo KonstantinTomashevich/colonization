@@ -14,6 +14,7 @@
 #include <Colonization/Backend/Diplomacy/DiplomacyProcessor.hpp>
 #include <Colonization/Backend/Diplomacy/DiplomacyRequest.hpp>
 #include <Colonization/Backend/Diplomacy/DiplomacyWarRequest.hpp>
+#include <Colonization/Backend/Diplomacy/DiplomacyPeaceRequest.hpp>
 
 #include <Colonization/Core/Diplomacy/DiplomacyWar.hpp>
 #include <Colonization/Core/District/District.hpp>
@@ -45,6 +46,7 @@ void RegisterAllObjects (Urho3D::Context *context)
     DiplomacyProcessor::RegisterObject (context);
     DiplomacyRequest::RegisterObject (context);
     DiplomacyWarRequest::RegisterObject (context);
+    DiplomacyPeaceRequest::RegisterObject (context);
 
     DiplomacyWar::RegisterObject (context);
     District::RegisterObject (context);

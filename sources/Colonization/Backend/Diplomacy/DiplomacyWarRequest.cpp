@@ -3,6 +3,8 @@
 #include <Urho3D/Core/Context.h>
 
 #include <Colonization/Core/Diplomacy/DiplomacyWar.hpp>
+#include <Colonization/Backend/Diplomacy/DiplomacyRequestsUtils.hpp>
+#include <Colonization/Backend/Diplomacy/DiplomacyInfoType.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
@@ -49,19 +51,30 @@ void DiplomacyWarRequest::SetDefender (const Urho3D::StringHash &defender)
     defender_ = defender;
 }
 
-bool DiplomacyWarRequest::UpdatePlayerStatus (DiplomacyActionsExecutor *diplomacyActionsExecutor, Urho3D::StringHash playerNameHash, DiplomacyRequestPlayerStatus status)
+void DiplomacyWarRequest::OnAddition ()
+{
+    DiplomacyRequestsUtils::AddPlayerEnemy (node_->GetScene (), attacker_, defender_);
+    DiplomacyRequestsUtils::AddPlayerEnemy (node_->GetScene (), defender_, attacker_);
+
+    DiplomacyWar *war = DiplomacyRequestsUtils::CreateWar (node_->GetScene ());
+    war->AddAttackerNameHash (attacker_);
+    war->AddDefenderNameHash (defender_);
+
+    Urho3D::VariantMap infoData;
+    infoData [DiplomacyInfoWarStarted::ATTACKER] = Urho3D::Variant (attacker_);
+    infoData [DiplomacyInfoWarStarted::DEFENDER] = Urho3D::Variant (defender_);
+    DiplomacyRequestsUtils::SendDiplomacyInfoMessageToAllPlayers (node_->GetScene (),
+                                                                  DIPLOMACY_INFO_WAR_STARTED,
+                                                                  infoData);
+}
+
+bool DiplomacyWarRequest::UpdatePlayerStatus (Urho3D::StringHash playerNameHash, DiplomacyRequestPlayerStatus status)
 {
     return false;
 }
 
-bool DiplomacyWarRequest::TimeUpdate (DiplomacyActionsExecutor *diplomacyActionsExecutor, float timeStep)
+bool DiplomacyWarRequest::TimeUpdate (float timeStep)
 {
-    diplomacyActionsExecutor->AddPlayerEnemy (attacker_, defender_);
-    diplomacyActionsExecutor->AddPlayerEnemy (defender_, attacker_);
-
-    DiplomacyWar *war = diplomacyActionsExecutor->CreateWar ();
-    war->AddAttackerNameHash (attacker_);
-    war->AddDefenderNameHash (defender_);
     return true;
 }
 }
