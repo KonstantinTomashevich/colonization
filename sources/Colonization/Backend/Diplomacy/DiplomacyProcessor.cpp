@@ -19,7 +19,7 @@ void DiplomacyProcessor::UpdateDiplomacyRequests (float timeStep)
     {
         Urho3D::Node *requestNode = children.At (index).Get ();
         DiplomacyRequest *request = requestNode->GetDerivedComponent <DiplomacyRequest> ();
-        if (request->TimeUpdate (diplomacyActionsExexutor_, timeStep))
+        if (request->TimeUpdate (timeStep))
         {
             requestNode->Remove ();
         }
@@ -76,16 +76,9 @@ void DiplomacyProcessor::OnSceneSet (Urho3D::Scene *scene)
     UnsubscribeFromAllEvents ();
     Urho3D::Component::OnSceneSet (scene);
     SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (DiplomacyProcessor, Update));
-
-    if (diplomacyActionsExexutor_)
-    {
-        delete diplomacyActionsExexutor_;
-    }
-    diplomacyActionsExexutor_ = new DiplomacyActionsExecutor (scene);
 }
 
 DiplomacyProcessor::DiplomacyProcessor (Urho3D::Context *context) : Urho3D::Component (context),
-    diplomacyActionsExexutor_ (0),
     wars_ ()
 {
 
@@ -93,10 +86,7 @@ DiplomacyProcessor::DiplomacyProcessor (Urho3D::Context *context) : Urho3D::Comp
 
 DiplomacyProcessor::~DiplomacyProcessor ()
 {
-    if (diplomacyActionsExexutor_)
-    {
-        delete diplomacyActionsExexutor_;
-    }
+
 }
 
 void DiplomacyProcessor::RegisterObject (Urho3D::Context *context)
@@ -122,6 +112,7 @@ void DiplomacyProcessor::AddDiplomacyRequest (DiplomacyRequest *request)
     Urho3D::Node *requestNode = GetOrCreateRequestsNode ()->
             CreateChild ("Request" + Urho3D::String (request->GetRequestId ()), Urho3D::LOCAL);
     requestNode->AddComponent (request, requestNode->GetID () + 1, Urho3D::LOCAL);
+    request->OnAddition ();
 }
 
 void DiplomacyProcessor::UpdateDiplomacyRequestPlayerStatus (unsigned requestId, Urho3D::StringHash playerNameHash, DiplomacyRequestPlayerStatus status)
@@ -130,7 +121,7 @@ void DiplomacyProcessor::UpdateDiplomacyRequestPlayerStatus (unsigned requestId,
     if (requestNode)
     {
         DiplomacyRequest *request = requestNode->GetDerivedComponent <DiplomacyRequest> ();
-        if (request->UpdatePlayerStatus (diplomacyActionsExexutor_, playerNameHash, status))
+        if (request->UpdatePlayerStatus (playerNameHash, status))
         {
             requestNode->Remove ();
         }
@@ -188,5 +179,20 @@ DiplomacyWar *DiplomacyProcessor::GetWarByHash (Urho3D::StringHash hash)
         }
     }
     return 0;
+}
+
+bool DiplomacyProcessor::RemoveWarByHash (Urho3D::StringHash hash)
+{
+    Urho3D::SharedPtr <DiplomacyWar> war (GetWarByHash (hash));
+    if (war.NotNull ())
+    {
+        wars_.Remove (war);
+        war->GetNode ()->Remove ();
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 }

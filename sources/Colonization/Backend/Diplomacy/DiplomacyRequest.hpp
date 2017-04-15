@@ -1,14 +1,13 @@
 #pragma once
 #include <Urho3D/Scene/Component.h>
-#include <Colonization/Backend/Diplomacy/DiplomacyActionsExecutor.hpp>
 
 namespace Colonization
 {
 enum DiplomacyRequestPlayerStatus
 {
-    DPSTATUS_WAITING = 0,
-    DPSTATUS_CANCELLED = 1,
-    DPSTATUS_ACCEPTED = 2
+    DRPSTATUS_WAITING = 0,
+    DRPSTATUS_DECLINED = 1,
+    DRPSTATUS_ACCEPTED = 2
 };
 
 class DiplomacyRequest : public Urho3D::Component
@@ -25,7 +24,8 @@ public:
     unsigned GetRequestId () const;
     void SetRequestId (unsigned id);
 
-    virtual bool UpdatePlayerStatus (DiplomacyActionsExecutor *diplomacyActionsExecutor, Urho3D::StringHash playerNameHash, DiplomacyRequestPlayerStatus status) = 0;
-    virtual bool TimeUpdate (DiplomacyActionsExecutor *diplomacyActionsExecutor, float timeStep) = 0;
+    virtual void OnAddition () = 0;
+    virtual bool UpdatePlayerStatus (Urho3D::StringHash playerNameHash, DiplomacyRequestPlayerStatus status) = 0;
+    virtual bool TimeUpdate (float timeStep) = 0;
 };
 }
