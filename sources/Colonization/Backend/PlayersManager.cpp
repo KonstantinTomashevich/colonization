@@ -401,7 +401,6 @@ void PlayersManager::PlayerIdentified (Urho3D::Connection *connection, Urho3D::S
     Player *player = new Player (context_, name, color, connection, node_->GetScene ());
     players_ [name] = player;
     connectionHashToNameHashMap_ [Urho3D::StringHash (connection->ToString ())] = Urho3D::StringHash (name);
-    player->SetGold (1000.0f);
 
     MessagesHandler *messagesHandler = node_->GetScene ()->GetComponent <MessagesHandler> ();
     assert (messagesHandler);

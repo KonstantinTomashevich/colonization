@@ -4,7 +4,6 @@
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/Scene/SceneEvents.h>
 #include <Urho3D/IO/Log.h>
-#include <Urho3D/Network/Network.h>
 
 #include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/District/ColonyActions.hpp>

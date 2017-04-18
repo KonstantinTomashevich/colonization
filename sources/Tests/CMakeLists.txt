@@ -40,3 +40,8 @@ setup_executable ()
 target_link_libraries (TestMapMaskGeneration Colonization)
 add_test (NAME test_map_mask_generation COMMAND TestMapMaskGeneration)
 
+set (TARGET_NAME TestDiplomacyWarAndPeace)
+set (SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/TestDiplomacyWarAndPeace.hpp ${CMAKE_CURRENT_SOURCE_DIR}/TestDiplomacyWarAndPeace.cpp)
+setup_executable ()
+target_link_libraries (TestDiplomacyWarAndPeace Colonization)
+add_test (NAME test_diplomacy_war_and_peace COMMAND TestDiplomacyWarAndPeace)
