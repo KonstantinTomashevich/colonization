@@ -1,4 +1,5 @@
 #include "TestColonyActionBuildWarShip.hpp"
+#include "EmptyInternalPlayer.hpp"
 #include <Urho3D/Input/Input.h>
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/Scene/SceneEvents.h>
@@ -22,9 +23,7 @@ URHO3D_DEFINE_APPLICATION_MAIN (Tests::TestColonyActionBuildWarShipApplication)
 namespace Tests
 {
 TestColonyActionBuildWarShipApplication::TestColonyActionBuildWarShipApplication (Urho3D::Context *context) :
-    Urho3D::Application (context),
-    scene_ (),
-    sceneForReplication_ ()
+    Urho3D::Application (context)
 {
 
 }
@@ -54,9 +53,9 @@ void TestColonyActionBuildWarShipApplication::Start ()
     log->SetLevel (Urho3D::LOG_DEBUG);
 
     Colonization::RegisterAllObjects (context_);
-    scene_ = Urho3D::SharedPtr <Urho3D::Scene> (new Urho3D::Scene (context_));
-    Colonization::GameConfiguration *configuration = scene_->CreateComponent <Colonization::GameConfiguration> ();
-    Colonization::Map *map = scene_->CreateChild ("map")->CreateComponent <Colonization::Map> ();
+    Urho3D::SharedPtr <Urho3D::Scene> scene (new Urho3D::Scene (context_));
+    Colonization::GameConfiguration *configuration = scene->CreateComponent <Colonization::GameConfiguration> ();
+    Colonization::Map *map = scene->CreateChild ("map")->CreateComponent <Colonization::Map> ();
     const int mapWidth = 2;
     const int mapHeight = 2;
 
@@ -106,92 +105,67 @@ void TestColonyActionBuildWarShipApplication::Start ()
     wayToEuropeDistricts.Push (map->GetDistrictByIndex (0)->GetHash ());
     configuration->SetWayToEuropeDistricts (wayToEuropeDistricts);
 
-    scene_->CreateComponent <Colonization::MessagesHandler> ();
-    scene_->CreateChild ("players")->CreateComponent <Colonization::PlayersManager> ();
-    scene_->CreateComponent <Colonization::NetworkUpdateSmoother> ();
+    scene->CreateComponent <Colonization::MessagesHandler> ();
+    Colonization::PlayersManager *playersManager  = scene->CreateChild ("players")->CreateComponent <Colonization::PlayersManager> ();
+    scene->CreateComponent <Colonization::NetworkUpdateSmoother> ();
 
-    Urho3D::Network *network = context_->GetSubsystem <Urho3D::Network> ();
-    network->StartServer (3793);
-    sceneForReplication_ = Urho3D::SharedPtr <Urho3D::Scene> (new Urho3D::Scene (context_));
+    Colonization::UnitsManager *unitsManager =
+            scene->CreateChild ("units", Urho3D::REPLICATED)->CreateComponent <Colonization::UnitsManager> ();
+    Colonization::ColoniesActionsProcessor *actionsProcessor =
+            scene->CreateComponent <Colonization::ColoniesActionsProcessor> ();
 
-    Urho3D::VariantMap identity;
-    identity ["Name"] = "PlayerX";
-    network->Connect ("localhost", 3793, sceneForReplication_, identity);
-
-    SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (TestColonyActionBuildWarShipApplication, Update));
-    timeUntilAutoExit_ = 2.5f;
-}
-
-void TestColonyActionBuildWarShipApplication::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
-{
-    float timeStep = eventData [Urho3D::Update::P_TIMESTEP].GetFloat ();
-    timeUntilAutoExit_ -= timeStep;
-    if (timeUntilAutoExit_ <= 0.0f)
+    EmptyInternalPlayer *player = new EmptyInternalPlayer (context_, "PlayerX", Urho3D::Color::RED, scene);
+    if (!playersManager->AddInternalPlayer (player))
     {
-        ErrorExit ("Time elapsed!");
+        ErrorExit ("Can't create internal player!");
     }
+    player->SetGold (configuration->GetOneWarShipBuildingCost () * 3.5f);
 
-    Colonization::PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <Colonization::PlayersManager> ();
-    if (playersManager->GetPlayerByNameHash ("PlayerX"))
+    Urho3D::VariantMap updateEventData;
+    updateEventData [Urho3D::SceneUpdate::P_TIMESTEP] = configuration->GetOneWarShipBasicBuildTime () * 1.1f;
+
+    Colonization::District *colony = map->GetDistrictByIndex (1 * mapHeight + 1);
+    Urho3D::VariantMap buildShipAction1;
+    buildShipAction1 [Colonization::ColonyActions::BuildWarShip::TARGET_DISTRICT] = map->GetDistrictByIndex (0 * mapHeight + 1)->GetHash ();
+
+    Urho3D::VariantMap buildShipAction2;
+    buildShipAction2 [Colonization::ColonyActions::BuildWarShip::TARGET_DISTRICT] = map->GetDistrictByIndex (0 * mapHeight + 0)->GetHash ();
+
+    Urho3D::VariantMap buildShipAction3;
+    buildShipAction3 [Colonization::ColonyActions::BuildWarShip::TARGET_DISTRICT] = map->GetDistrictByIndex (1 * mapHeight + 0)->GetHash ();
+
+    colony->AddColonyAction (Colonization::ColonyActions::BUILD_WAR_SHIP, buildShipAction1);
+    colony->AddColonyAction (Colonization::ColonyActions::BUILD_WAR_SHIP, buildShipAction2);
+    colony->AddColonyAction (Colonization::ColonyActions::BUILD_WAR_SHIP, buildShipAction3);
+
+    actionsProcessor->Update (Urho3D::E_SCENEUPDATE, updateEventData);
+    if (unitsManager->GetUnitsCount () != 1)
     {
-        const int mapWidth = 2;
-        const int mapHeight = 2;
-        Colonization::Map *map = scene_->GetChild ("map")->GetComponent <Colonization::Map> ();
-        Colonization::Player *playerX = playersManager->GetPlayerByNameHash ("PlayerX");
-        Colonization::GameConfiguration *configuration = scene_->GetComponent <Colonization::GameConfiguration> ();
-
-        Colonization::UnitsManager *unitsManager =
-                scene_->CreateChild ("units", Urho3D::REPLICATED)->CreateComponent <Colonization::UnitsManager> ();
-        Colonization::ColoniesActionsProcessor *actionsProcessor =
-                scene_->CreateComponent <Colonization::ColoniesActionsProcessor> ();
-
-        Urho3D::VariantMap updateEventData;
-        updateEventData [Urho3D::SceneUpdate::P_TIMESTEP] = configuration->GetOneWarShipBasicBuildTime () * 1.1f;
-
-        // array (X * HEIGHT + Y) = (X, Y)
-        Colonization::District *colony = map->GetDistrictByIndex (1 * mapHeight + 1);
-        Urho3D::VariantMap buildShipAction1;
-        buildShipAction1 [Colonization::ColonyActions::BuildWarShip::TARGET_DISTRICT] = map->GetDistrictByIndex (0 * mapHeight + 1)->GetHash ();
-
-        Urho3D::VariantMap buildShipAction2;
-        buildShipAction2 [Colonization::ColonyActions::BuildWarShip::TARGET_DISTRICT] = map->GetDistrictByIndex (0 * mapHeight + 0)->GetHash ();
-
-        Urho3D::VariantMap buildShipAction3;
-        buildShipAction3 [Colonization::ColonyActions::BuildWarShip::TARGET_DISTRICT] = map->GetDistrictByIndex (1 * mapHeight + 0)->GetHash ();
-
-        colony->AddColonyAction (Colonization::ColonyActions::BUILD_WAR_SHIP, buildShipAction1);
-        colony->AddColonyAction (Colonization::ColonyActions::BUILD_WAR_SHIP, buildShipAction2);
-        colony->AddColonyAction (Colonization::ColonyActions::BUILD_WAR_SHIP, buildShipAction3);
-
+        ErrorExit ("Expected 1 created fleet unit at this check! But got " +
+                   Urho3D::String (unitsManager->GetUnitsCount ()) + " fleet units and " +
+                   Urho3D::String (colony->GetColonyActionsCount ()) + " colonyActions.");
+    }
+    else
+    {
         actionsProcessor->Update (Urho3D::E_SCENEUPDATE, updateEventData);
-        if (unitsManager->GetUnitsCount () != 1)
+        if (unitsManager->GetUnitsCount () != 1 || colony->GetColonyActionsCount () != 1)
         {
-            ErrorExit ("Expected 1 created fleet unit at this check! But got " +
+            ErrorExit ("Expected 1 created fleet unit and 1 colony action at this check! But got " +
                        Urho3D::String (unitsManager->GetUnitsCount ()) + " fleet units and " +
                        Urho3D::String (colony->GetColonyActionsCount ()) + " colonyActions.");
         }
         else
         {
             actionsProcessor->Update (Urho3D::E_SCENEUPDATE, updateEventData);
-            if (unitsManager->GetUnitsCount () != 1 || colony->GetColonyActionsCount () != 1)
+            if (unitsManager->GetUnitsCount () != 2 || colony->GetColonyActionsCount () != 0)
             {
-                ErrorExit ("Expected 1 created fleet unit and 1 colony action at this check! But got " +
+                ErrorExit ("Expected 2 created fleet unit and 0 colony action at this check! But got " +
                            Urho3D::String (unitsManager->GetUnitsCount ()) + " fleet units and " +
                            Urho3D::String (colony->GetColonyActionsCount ()) + " colonyActions.");
             }
             else
             {
-                actionsProcessor->Update (Urho3D::E_SCENEUPDATE, updateEventData);
-                if (unitsManager->GetUnitsCount () != 2 || colony->GetColonyActionsCount () != 0)
-                {
-                    ErrorExit ("Expected 2 created fleet unit and 0 colony action at this check! But got " +
-                               Urho3D::String (unitsManager->GetUnitsCount ()) + " fleet units and " +
-                               Urho3D::String (colony->GetColonyActionsCount ()) + " colonyActions.");
-                }
-                else
-                {
-                    engine_->Exit ();
-                }
+                engine_->Exit ();
             }
         }
     }
@@ -199,9 +173,6 @@ void TestColonyActionBuildWarShipApplication::Update (Urho3D::StringHash eventTy
 
 void TestColonyActionBuildWarShipApplication::Stop ()
 {
-    scene_->Clear (true, true);
-    Urho3D::Network *network = context_->GetSubsystem <Urho3D::Network> ();
-    network->StopServer ();
-    sceneForReplication_->Clear (true, true);
+
 }
 }

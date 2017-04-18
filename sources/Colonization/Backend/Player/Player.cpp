@@ -201,7 +201,6 @@ Player::Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Color col
     connection_ (connection)
 {
     assert (scene_);
-    assert (connection);
     assert (!name.Empty ());
 }
 

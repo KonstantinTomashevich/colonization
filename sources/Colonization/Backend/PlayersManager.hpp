@@ -39,6 +39,7 @@ public:
     void SetStartGoldForAllPlayers ();
 
     int GetPlayersCount () const;
+    bool AddInternalPlayer (Player *player);
     Player *GetPlayerByIndex (int index) const;
     Player *GetPlayerByConnection (Urho3D::Connection *connection) const;
     Player *GetPlayerByNameHash (Urho3D::StringHash nameHash) const;

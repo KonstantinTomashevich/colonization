@@ -263,6 +263,22 @@ int PlayersManager::GetPlayersCount () const
     return players_.Size ();
 }
 
+bool PlayersManager::AddInternalPlayer (Player *player)
+{
+    assert (player->IsInternal ());
+    if (player->IsInternal () &&
+            !IsColorUsed (player->GetColor ()) &&
+            !GetPlayerByNameHash (Urho3D::StringHash (player->GetName ())))
+    {
+        players_ [Urho3D::StringHash (player->GetName ())] = player;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 Player *PlayersManager::GetPlayerByIndex (int index) const
 {
     assert (index < players_.Size ());
