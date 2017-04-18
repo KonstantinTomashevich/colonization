@@ -400,9 +400,12 @@ void PlayersManager::DisconnectPlayer (Urho3D::StringHash nameHash)
     assert (player);
     players_.Erase (nameHash);
 
-    assert (player->GetConnection ());
-    connectionHashToNameHashMap_.Erase (Urho3D::StringHash (player->GetConnection ()->ToString ()));
-    player->GetConnection ()->Disconnect ();
+    assert (player->GetConnection () || player->IsInternal ());
+    if (player->GetConnection ())
+    {
+        connectionHashToNameHashMap_.Erase (Urho3D::StringHash (player->GetConnection ()->ToString ()));
+    }
+    player->Disconnect (0);
     delete player;
 }
 

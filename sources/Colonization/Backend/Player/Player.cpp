@@ -181,6 +181,11 @@ void Player::ProcessResponceToDiplomacyOfferAction (Urho3D::VectorBuffer data)
     diplomacyProcessor->UpdateDiplomacyRequestPlayerStatus (diplomacyOfferId, Urho3D::StringHash (name_), response);
 }
 
+void Player::AfterActionsProcessing (float timeStep)
+{
+
+}
+
 Player::Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Color color, Urho3D::Connection *connection, Urho3D::Scene *scene) :
     Urho3D::Object (context),
     name_ (name),
@@ -241,6 +246,22 @@ void Player::Update (float timeStep)
         }
         actionsSequence_.Remove (actionsSequence_.At (0));
     }
+    AfterActionsProcessing (timeStep);
+}
+
+void Player::SendMessage (int messageId, bool reliable, bool inOrder, const Urho3D::VectorBuffer &message, unsigned contentId)
+{
+    connection_->SendMessage (messageId, reliable, inOrder, message, contentId);
+}
+
+void Player::Disconnect (int wait)
+{
+    connection_->Disconnect (wait);
+}
+
+bool Player::IsInternal () const
+{
+    return false;
 }
 
 Urho3D::Pair <PlayerActionType, Urho3D::Variant> Player::GetAction(int index)

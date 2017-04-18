@@ -151,7 +151,7 @@ void MessagesHandler::SendPlayersStats (Player *player)
     Urho3D::VectorBuffer messageData;
     messageData.WriteFloat (player->GetGold ());
     messageData.WriteFloat (player->GetPoints ());
-    player->GetConnection ()->SendMessage (STC_NETWORK_MESSAGE_SEND_PLAYER_STATS, true, false, messageData);
+    player->SendMessage (STC_NETWORK_MESSAGE_SEND_PLAYER_STATS, true, false, messageData);
 }
 
 void MessagesHandler::SendChatMessage (Urho3D::String senderName, Urho3D::String message, Urho3D::PODVector <Player *> &recieviers, bool isPrivate)
@@ -163,7 +163,7 @@ void MessagesHandler::SendChatMessage (Urho3D::String senderName, Urho3D::String
 
     for (int index = 0; index < recieviers.Size (); index++)
     {
-        recieviers.At (index)->GetConnection ()->SendMessage (STC_NETWORK_MESSAGE_CHAT_MESSAGE, true, false, messageData);
+        recieviers.At (index)->SendMessage (STC_NETWORK_MESSAGE_CHAT_MESSAGE, true, false, messageData);
     }
 }
 
@@ -175,7 +175,7 @@ void MessagesHandler::SendTextInfoFromServer (Urho3D::String info, Urho3D::PODVe
     {
         if (recieviers.At (index))
         {
-            recieviers.At (index)->GetConnection ()->SendMessage (STC_NETWORK_MESSAGE_TEXT_INFO_FROM_SERVER, true, false, messageData);
+            recieviers.At (index)->SendMessage (STC_NETWORK_MESSAGE_TEXT_INFO_FROM_SERVER, true, false, messageData);
         }
     }
 }
@@ -188,7 +188,7 @@ void MessagesHandler::SendGameState (GameStateType gameState, Urho3D::PODVector 
     {
         if (recieviers.At (index))
         {
-            recieviers.At (index)->GetConnection ()->SendMessage (STC_NETWORK_MESSAGE_SEND_GAME_STATE, true, false, messageData);
+            recieviers.At (index)->SendMessage (STC_NETWORK_MESSAGE_SEND_GAME_STATE, true, false, messageData);
         }
     }
 }
@@ -204,7 +204,7 @@ void MessagesHandler::SendGameEnded (Urho3D::String winnerName, Urho3D::String v
     {
         if (recieviers.At (index))
         {
-            recieviers.At (index)->GetConnection ()->SendMessage (STC_NETWORK_MESSAGE_GAME_ENDED, true, false, messageData);
+            recieviers.At (index)->SendMessage (STC_NETWORK_MESSAGE_GAME_ENDED, true, false, messageData);
         }
     }
 }
@@ -218,7 +218,7 @@ void MessagesHandler::SendDiplomacyInfo (Urho3D::StringHash infoType, Urho3D::Va
     for (int index = 0; index < recieviers.Size (); index++)
     {
         {
-            recieviers.At (index)->GetConnection ()->SendMessage (STC_NETWORK_MESSAGE_DIPLOMACY_INFO, true, false, messageData);
+            recieviers.At (index)->SendMessage (STC_NETWORK_MESSAGE_DIPLOMACY_INFO, true, false, messageData);
         }
     }
 }
@@ -234,7 +234,7 @@ void MessagesHandler::SendDiplomacyOffer (Urho3D::StringHash offerType, unsigned
     for (int index = 0; index < recieviers.Size (); index++)
     {
         {
-            recieviers.At (index)->GetConnection ()->SendMessage (STC_NETWORK_MESSAGE_DIPLOMACY_OFFER, true, false, messageData);
+            recieviers.At (index)->SendMessage (STC_NETWORK_MESSAGE_DIPLOMACY_OFFER, true, false, messageData);
         }
     }
 }

@@ -28,11 +28,16 @@ protected:
     void ProcessAddColonyActionAction (Urho3D::VectorBuffer data);
     void ProcessRemoveColonyActionAction (Urho3D::VectorBuffer data);
     void ProcessResponceToDiplomacyOfferAction (Urho3D::VectorBuffer data);
+    virtual void AfterActionsProcessing (float timeStep);
 public:
     Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Color color, Urho3D::Connection *connection, Urho3D::Scene *scene);
     virtual ~Player ();
 
     void Update (float timeStep);
+    virtual void SendMessage (int messageId, bool reliable, bool inOrder, const Urho3D::VectorBuffer &message, unsigned contentId = 0);
+    virtual void Disconnect (int wait);
+    virtual bool IsInternal () const;
+
     Urho3D::Pair <PlayerActionType, Urho3D::Variant> GetAction (int index);
     void RemoveAction (int index);
     bool RemoveAction (Urho3D::Pair <PlayerActionType, Urho3D::Variant> &action);
