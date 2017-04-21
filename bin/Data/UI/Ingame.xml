@@ -23,17 +23,17 @@
 		<string value="EnableUiResizer" />
 	</attribute>
 	<element type="Window">
-		<attribute name="Name" value="playerStatsWindow" />
-		<attribute name="Size" value="282 141" />
+		<attribute name="Name" value="topActionBar" />
+		<attribute name="Size" value="1366 56" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Opacity" value="0.65" />
 		<attribute name="Variables">
-			<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
+			<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 			<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
 			<variant hash="511642371" type="String" value="ParentHeight" name="XDependency" />
 			<variant hash="2232932484" type="String" value="ParentHeight" name="YDependency" />
-			<variant hash="4144064518" type="Float" value="0.4" name="WidthModifer" />
-			<variant hash="4127232677" type="Float" value="0.2" name="HeightModifer" />
+			<variant hash="4144064518" type="Float" value="1" name="WidthModifer" />
+			<variant hash="4127232677" type="Float" value="0.08" name="HeightModifer" />
 			<variant hash="235997748" type="Float" value="0" name="XModifer" />
 			<variant hash="2971843571" type="Float" value="0" name="YModifer" />
 			<variant hash="376939691" type="None" value="" name="InvertXPosition" />
@@ -47,7 +47,7 @@
 		</attribute>
 		<element type="Text">
 			<attribute name="Name" value="playerStatsInfo" />
-			<attribute name="Position" value="14 14" />
+			<attribute name="Position" value="16 16" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
@@ -63,9 +63,9 @@
 				<variant hash="2232932484" type="String" value="ParentHeight" name="YDependency" />
 				<variant hash="4144064518" type="Float" value="0.8" name="WidthModifer" />
 				<variant hash="4127232677" type="Float" value="0.8" name="HeightModifer" />
-				<variant hash="235997748" type="Float" value="0.1" name="XModifer" />
-				<variant hash="2971843571" type="Float" value="0.1" name="YModifer" />
-				<variant hash="156785404" type="Float" value="0.15" name="FontSizeModifer" />
+				<variant hash="235997748" type="Float" value="0.3" name="XModifer" />
+				<variant hash="2971843571" type="Float" value="0.3" name="YModifer" />
+				<variant hash="156785404" type="Float" value="0.3" name="FontSizeModifer" />
 				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 				<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 				<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
@@ -75,91 +75,92 @@
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
 			</attribute>
-			<attribute name="Font Size" value="21" />
+			<attribute name="Font Size" value="16" />
 			<attribute name="Text" value="Player Name..." />
 			<attribute name="Text Effect" value="Stroke" />
 		</element>
-	</element>
-	<element type="Button" style="TextButton">
-		<attribute name="Name" value="exitButton" />
-		<attribute name="Position" value="1155 0" />
-		<attribute name="Size" value="211 70" />
-		<attribute name="Pivot" value="0 0" />
-		<attribute name="Opacity" value="0.65" />
-		<attribute name="Bring To Front" value="true" />
-		<attribute name="Bring To Back" value="false" />
-		<attribute name="Variables">
-			<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
-			<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
-			<variant hash="511642371" type="String" value="ParentHeight" name="XDependency" />
-			<variant hash="2232932484" type="String" value="ParentHeight" name="YDependency" />
-			<variant hash="4144064518" type="Float" value="0.3" name="WidthModifer" />
-			<variant hash="4127232677" type="Float" value="0.1" name="HeightModifer" />
-			<variant hash="235997748" type="Float" value="0.3" name="XModifer" />
-			<variant hash="2971843571" type="Float" value="0" name="YModifer" />
-			<variant hash="376939691" type="Bool" value="true" name="InvertXPosition" />
-			<variant hash="3869079501" type="String" value="ParentWidth" name="InvertXDependency" />
-			<variant hash="208094698" type="Float" value="1" name="InvertXModifer" />
-			<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
-			<variant hash="156785404" type="None" value="" name="FontSizeModifer" />
-			<variant hash="820293360" type="None" value="" name="InvertWidth" />
-			<variant hash="1025976573" type="None" value="" name="InvertHeight" />
-		</attribute>
-		<attribute name="Tags">
-			<string value="EnableUiResizer" />
-			<string value="SetPlayerColor" />
-		</attribute>
-		<element type="Text">
-			<attribute name="Name" value="text" />
-			<attribute name="Min Anchor" value="0.5 0.5" />
-			<attribute name="Max Anchor" value="0.5 0.5" />
-			<attribute name="Pivot" value="0.5 0.5" />
-			<attribute name="Color" value="0.85 0.85 0.85 1" />
-			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
-			<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
-			<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
-			<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
+		<element type="Button" style="TextButton">
+			<attribute name="Name" value="exitButton" />
+			<attribute name="Position" value="1226 0" />
+			<attribute name="Size" value="140 56" />
+			<attribute name="Pivot" value="0 0" />
+			<attribute name="Opacity" value="0.65" />
+			<attribute name="Bring To Front" value="true" />
+			<attribute name="Bring To Back" value="false" />
 			<attribute name="Variables">
-				<variant hash="234597041" type="String" value="disable" name="WidthDependency" />
-				<variant hash="2184685394" type="String" value="disable" name="HeightDependency" />
-				<variant hash="511642371" type="String" value="disable" name="XDependency" />
-				<variant hash="2232932484" type="String" value="disable" name="YDependency" />
-				<variant hash="4144064518" type="Float" value="0" name="WidthModifer" />
-				<variant hash="4127232677" type="Float" value="0" name="HeightModifer" />
-				<variant hash="235997748" type="Float" value="0" name="XModifer" />
+				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
+				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
+				<variant hash="511642371" type="String" value="ParentHeight" name="XDependency" />
+				<variant hash="2232932484" type="String" value="ParentHeight" name="YDependency" />
+				<variant hash="4144064518" type="Float" value="2.5" name="WidthModifer" />
+				<variant hash="4127232677" type="Float" value="1" name="HeightModifer" />
+				<variant hash="235997748" type="Float" value="2.5" name="XModifer" />
 				<variant hash="2971843571" type="Float" value="0" name="YModifer" />
-				<variant hash="156785404" type="Float" value="0.35" name="FontSizeModifer" />
-				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
-				<variant hash="376939691" type="None" value="" name="InvertXPosition" />
+				<variant hash="376939691" type="Bool" value="true" name="InvertXPosition" />
+				<variant hash="3869079501" type="String" value="ParentWidth" name="InvertXDependency" />
+				<variant hash="208094698" type="Float" value="1" name="InvertXModifer" />
 				<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+				<variant hash="156785404" type="None" value="" name="FontSizeModifer" />
 				<variant hash="820293360" type="None" value="" name="InvertWidth" />
 				<variant hash="1025976573" type="None" value="" name="InvertHeight" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
+				<string value="SetPlayerColor" />
 			</attribute>
-			<attribute name="Font Size" value="24" />
-			<attribute name="Text" value="Exit" />
-			<attribute name="Text Alignment" value="Center" />
-			<attribute name="Text Effect" value="Stroke" />
-			<attribute name="Stroke Thickness" value="2" />
+			<element type="Text">
+				<attribute name="Name" value="text" />
+				<attribute name="Min Anchor" value="0.5 0.5" />
+				<attribute name="Max Anchor" value="0.5 0.5" />
+				<attribute name="Pivot" value="0.5 0.5" />
+				<attribute name="Color" value="0.85 0.85 0.85 1" />
+				<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
+				<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
+				<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
+				<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
+				<attribute name="Variables">
+					<variant hash="234597041" type="String" value="disable" name="WidthDependency" />
+					<variant hash="2184685394" type="String" value="disable" name="HeightDependency" />
+					<variant hash="511642371" type="String" value="disable" name="XDependency" />
+					<variant hash="2232932484" type="String" value="disable" name="YDependency" />
+					<variant hash="4144064518" type="Float" value="0" name="WidthModifer" />
+					<variant hash="4127232677" type="Float" value="0" name="HeightModifer" />
+					<variant hash="235997748" type="Float" value="0" name="XModifer" />
+					<variant hash="2971843571" type="Float" value="0" name="YModifer" />
+					<variant hash="156785404" type="Float" value="0.35" name="FontSizeModifer" />
+					<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
+					<variant hash="376939691" type="None" value="" name="InvertXPosition" />
+					<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+					<variant hash="820293360" type="None" value="" name="InvertWidth" />
+					<variant hash="1025976573" type="None" value="" name="InvertHeight" />
+				</attribute>
+				<attribute name="Tags">
+					<string value="EnableUiResizer" />
+				</attribute>
+				<attribute name="Font Size" value="19" />
+				<attribute name="Text" value="Exit" />
+				<attribute name="Text Alignment" value="Center" />
+				<attribute name="Text Effect" value="Stroke" />
+				<attribute name="Stroke Thickness" value="2" />
+			</element>
 		</element>
 	</element>
 	<element type="Window">
 		<attribute name="Name" value="unitInfoWindow" />
-		<attribute name="Position" value="683 459" />
-		<attribute name="Size" value="683 247" />
+		<attribute name="Position" value="683 495" />
+		<attribute name="Size" value="683 211" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Opacity" value="0.65" />
+		<attribute name="Is Visible" value="false" />
 		<attribute name="Variables">
 			<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 			<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
 			<variant hash="511642371" type="String" value="ParentWidth" name="XDependency" />
 			<variant hash="2232932484" type="String" value="ParentHeight" name="YDependency" />
 			<variant hash="4144064518" type="Float" value="0.5" name="WidthModifer" />
-			<variant hash="4127232677" type="Float" value="0.35" name="HeightModifer" />
+			<variant hash="4127232677" type="Float" value="0.3" name="HeightModifer" />
 			<variant hash="235997748" type="Float" value="0.5" name="XModifer" />
-			<variant hash="2971843571" type="Float" value="0.35" name="YModifer" />
+			<variant hash="2971843571" type="Float" value="0.3" name="YModifer" />
 			<variant hash="376939691" type="Bool" value="true" name="InvertXPosition" />
 			<variant hash="3869079501" type="String" value="ParentWidth" name="InvertXDependency" />
 			<variant hash="208094698" type="Float" value="1" name="InvertXModifer" />
@@ -175,7 +176,7 @@
 		</attribute>
 		<element type="Text">
 			<attribute name="Name" value="ownerText" />
-			<attribute name="Position" value="20 24" />
+			<attribute name="Position" value="20 21" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
@@ -191,7 +192,7 @@
 				<variant hash="4127232677" type="Float" value="0.1" name="HeightModifer" />
 				<variant hash="235997748" type="Float" value="0.03" name="XModifer" />
 				<variant hash="2971843571" type="Float" value="0.1" name="YModifer" />
-				<variant hash="156785404" type="Float" value="0.15" name="FontSizeModifer" />
+				<variant hash="156785404" type="Float" value="0.125" name="FontSizeModifer" />
 				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 				<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 				<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
@@ -201,14 +202,14 @@
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
 			</attribute>
-			<attribute name="Font Size" value="37" />
+			<attribute name="Font Size" value="26" />
 			<attribute name="Text" value="AiPlayer's" />
 			<attribute name="Text Effect" value="Stroke" />
 			<attribute name="Stroke Thickness" value="2" />
 		</element>
 		<element type="Text">
 			<attribute name="Name" value="typeText" />
-			<attribute name="Position" value="102 74" />
+			<attribute name="Position" value="102 63" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
@@ -234,13 +235,13 @@
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
 			</attribute>
-			<attribute name="Font Size" value="24" />
+			<attribute name="Font Size" value="21" />
 			<attribute name="Text" value="Fleet" />
 			<attribute name="Text Effect" value="Stroke" />
 		</element>
 		<element type="Text">
 			<attribute name="Name" value="positionText" />
-			<attribute name="Position" value="20 103" />
+			<attribute name="Position" value="20 88" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
@@ -266,13 +267,13 @@
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
 			</attribute>
-			<attribute name="Font Size" value="24" />
+			<attribute name="Font Size" value="21" />
 			<attribute name="Text" value="in Green Harbor" />
 			<attribute name="Text Effect" value="Stroke" />
 		</element>
 		<element type="Text">
 			<attribute name="Name" value="anotherText" />
-			<attribute name="Position" value="273 24" />
+			<attribute name="Position" value="341 21" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
@@ -286,7 +287,7 @@
 				<variant hash="2232932484" type="String" value="ParentHeight" name="YDependency" />
 				<variant hash="4144064518" type="Float" value="0.25" name="WidthModifer" />
 				<variant hash="4127232677" type="Float" value="0.1" name="HeightModifer" />
-				<variant hash="235997748" type="Float" value="0.4" name="XModifer" />
+				<variant hash="235997748" type="Float" value="0.5" name="XModifer" />
 				<variant hash="2971843571" type="Float" value="0.1" name="YModifer" />
 				<variant hash="156785404" type="Float" value="0.075" name="FontSizeModifer" />
 				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
@@ -298,14 +299,13 @@
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
 			</attribute>
-			<attribute name="Font Size" value="18" />
 			<attribute name="Text" value="Another info:" />
 			<attribute name="Text Effect" value="Stroke" />
 		</element>
 		<element type="Button" style="TextButton">
 			<attribute name="Name" value="moveToButton" />
-			<attribute name="Position" value="20 143" />
-			<attribute name="Size" value="239 37" />
+			<attribute name="Position" value="20 122" />
+			<attribute name="Size" value="239 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
 			<attribute name="Variables">
@@ -359,7 +359,7 @@
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
 				</attribute>
-				<attribute name="Font Size" value="14" />
+				<attribute name="Font Size" value="12" />
 				<attribute name="Text" value="Move to..." />
 				<attribute name="Text Effect" value="Stroke" />
 			</element>
@@ -367,8 +367,8 @@
 	</element>
 	<element type="Window">
 		<attribute name="Name" value="districtInfoWindow" />
-		<attribute name="Position" value="683 459" />
-		<attribute name="Size" value="683 247" />
+		<attribute name="Position" value="683 495" />
+		<attribute name="Size" value="683 211" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Opacity" value="0.65" />
 		<attribute name="Variables">
@@ -377,9 +377,9 @@
 			<variant hash="511642371" type="String" value="ParentWidth" name="XDependency" />
 			<variant hash="2232932484" type="String" value="ParentHeight" name="YDependency" />
 			<variant hash="4144064518" type="Float" value="0.5" name="WidthModifer" />
-			<variant hash="4127232677" type="Float" value="0.35" name="HeightModifer" />
+			<variant hash="4127232677" type="Float" value="0.3" name="HeightModifer" />
 			<variant hash="235997748" type="Float" value="0.5" name="XModifer" />
-			<variant hash="2971843571" type="Float" value="0.35" name="YModifer" />
+			<variant hash="2971843571" type="Float" value="0.3" name="YModifer" />
 			<variant hash="376939691" type="Bool" value="true" name="InvertXPosition" />
 			<variant hash="3869079501" type="String" value="ParentWidth" name="InvertXDependency" />
 			<variant hash="208094698" type="Float" value="1" name="InvertXModifer" />
@@ -423,15 +423,15 @@
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
 			</attribute>
-			<attribute name="Font Size" value="24" />
+			<attribute name="Font Size" value="21" />
 			<attribute name="Text" value="DistrictX" />
 			<attribute name="Text Effect" value="Stroke" />
-			<attribute name="Stroke Thickness" value="3" />
+			<attribute name="Stroke Thickness" value="2" />
 		</element>
 		<element type="Button" style="TextButton">
 			<attribute name="Name" value="basicInfoButton" />
-			<attribute name="Position" value="20 74" />
-			<attribute name="Size" value="239 37" />
+			<attribute name="Position" value="20 52" />
+			<attribute name="Size" value="204 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
 			<attribute name="Variables">
@@ -439,10 +439,10 @@
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
 				<variant hash="511642371" type="String" value="ParentWidth" name="XDependency" />
 				<variant hash="2232932484" type="String" value="ParentHeight" name="YDependency" />
-				<variant hash="4144064518" type="Float" value="0.35" name="WidthModifer" />
+				<variant hash="4144064518" type="Float" value="0.3" name="WidthModifer" />
 				<variant hash="4127232677" type="Float" value="0.15" name="HeightModifer" />
 				<variant hash="235997748" type="Float" value="0.03" name="XModifer" />
-				<variant hash="2971843571" type="Float" value="0.3" name="YModifer" />
+				<variant hash="2971843571" type="Float" value="0.25" name="YModifer" />
 				<variant hash="376939691" type="Bool" value="false" name="InvertXPosition" />
 				<variant hash="3869079501" type="String" value="" name="InvertXDependency" />
 				<variant hash="208094698" type="Float" value="0" name="InvertXModifer" />
@@ -475,7 +475,7 @@
 					<variant hash="4127232677" type="Float" value="0" name="HeightModifer" />
 					<variant hash="235997748" type="Float" value="0" name="XModifer" />
 					<variant hash="2971843571" type="Float" value="0" name="YModifer" />
-					<variant hash="156785404" type="Float" value="0.3" name="FontSizeModifer" />
+					<variant hash="156785404" type="Float" value="0.4" name="FontSizeModifer" />
 					<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 					<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 					<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
@@ -485,15 +485,15 @@
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
 				</attribute>
-				<attribute name="Font Size" value="11" />
+				<attribute name="Font Size" value="12" />
 				<attribute name="Text" value="Basic information" />
 				<attribute name="Text Effect" value="Stroke" />
 			</element>
 		</element>
 		<element type="Button" style="TextButton">
 			<attribute name="Name" value="resourcesInfoButton" />
-			<attribute name="Position" value="20 111" />
-			<attribute name="Size" value="239 37" />
+			<attribute name="Position" value="20 84" />
+			<attribute name="Size" value="204 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
 			<attribute name="Variables">
@@ -501,10 +501,10 @@
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
 				<variant hash="511642371" type="String" value="ParentWidth" name="XDependency" />
 				<variant hash="2232932484" type="String" value="ParentHeight" name="YDependency" />
-				<variant hash="4144064518" type="Float" value="0.35" name="WidthModifer" />
+				<variant hash="4144064518" type="Float" value="0.3" name="WidthModifer" />
 				<variant hash="4127232677" type="Float" value="0.15" name="HeightModifer" />
 				<variant hash="235997748" type="Float" value="0.03" name="XModifer" />
-				<variant hash="2971843571" type="Float" value="0.45" name="YModifer" />
+				<variant hash="2971843571" type="Float" value="0.4" name="YModifer" />
 				<variant hash="376939691" type="Bool" value="false" name="InvertXPosition" />
 				<variant hash="3869079501" type="String" value="" name="InvertXDependency" />
 				<variant hash="208094698" type="Float" value="0" name="InvertXModifer" />
@@ -537,7 +537,7 @@
 					<variant hash="4127232677" type="Float" value="0" name="HeightModifer" />
 					<variant hash="235997748" type="Float" value="0" name="XModifer" />
 					<variant hash="2971843571" type="Float" value="0" name="YModifer" />
-					<variant hash="156785404" type="Float" value="0.3" name="FontSizeModifer" />
+					<variant hash="156785404" type="Float" value="0.4" name="FontSizeModifer" />
 					<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 					<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 					<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
@@ -547,15 +547,15 @@
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
 				</attribute>
-				<attribute name="Font Size" value="11" />
+				<attribute name="Font Size" value="12" />
 				<attribute name="Text" value="Resources information" />
 				<attribute name="Text Effect" value="Stroke" />
 			</element>
 		</element>
 		<element type="Button" style="TextButton">
 			<attribute name="Name" value="populationInfoButton" />
-			<attribute name="Position" value="20 148" />
-			<attribute name="Size" value="239 37" />
+			<attribute name="Position" value="20 116" />
+			<attribute name="Size" value="204 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
 			<attribute name="Variables">
@@ -563,10 +563,10 @@
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
 				<variant hash="511642371" type="String" value="ParentWidth" name="XDependency" />
 				<variant hash="2232932484" type="String" value="ParentHeight" name="YDependency" />
-				<variant hash="4144064518" type="Float" value="0.35" name="WidthModifer" />
+				<variant hash="4144064518" type="Float" value="0.3" name="WidthModifer" />
 				<variant hash="4127232677" type="Float" value="0.15" name="HeightModifer" />
 				<variant hash="235997748" type="Float" value="0.03" name="XModifer" />
-				<variant hash="2971843571" type="Float" value="0.6" name="YModifer" />
+				<variant hash="2971843571" type="Float" value="0.55" name="YModifer" />
 				<variant hash="376939691" type="Bool" value="false" name="InvertXPosition" />
 				<variant hash="3869079501" type="String" value="" name="InvertXDependency" />
 				<variant hash="208094698" type="Float" value="0" name="InvertXModifer" />
@@ -599,7 +599,7 @@
 					<variant hash="4127232677" type="Float" value="0" name="HeightModifer" />
 					<variant hash="235997748" type="Float" value="0" name="XModifer" />
 					<variant hash="2971843571" type="Float" value="0" name="YModifer" />
-					<variant hash="156785404" type="Float" value="0.3" name="FontSizeModifer" />
+					<variant hash="156785404" type="Float" value="0.4" name="FontSizeModifer" />
 					<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 					<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 					<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
@@ -609,15 +609,15 @@
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
 				</attribute>
-				<attribute name="Font Size" value="11" />
+				<attribute name="Font Size" value="12" />
 				<attribute name="Text" value="Population information" />
 				<attribute name="Text Effect" value="Stroke" />
 			</element>
 		</element>
 		<element type="Button" style="TextButton">
 			<attribute name="Name" value="colonyEvolutionInfoButton" />
-			<attribute name="Position" value="20 185" />
-			<attribute name="Size" value="239 37" />
+			<attribute name="Position" value="20 147" />
+			<attribute name="Size" value="204 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
 			<attribute name="Variables">
@@ -625,10 +625,10 @@
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
 				<variant hash="511642371" type="String" value="ParentWidth" name="XDependency" />
 				<variant hash="2232932484" type="String" value="ParentHeight" name="YDependency" />
-				<variant hash="4144064518" type="Float" value="0.35" name="WidthModifer" />
+				<variant hash="4144064518" type="Float" value="0.3" name="WidthModifer" />
 				<variant hash="4127232677" type="Float" value="0.15" name="HeightModifer" />
 				<variant hash="235997748" type="Float" value="0.03" name="XModifer" />
-				<variant hash="2971843571" type="Float" value="0.75" name="YModifer" />
+				<variant hash="2971843571" type="Float" value="0.7" name="YModifer" />
 				<variant hash="376939691" type="Bool" value="false" name="InvertXPosition" />
 				<variant hash="3869079501" type="String" value="" name="InvertXDependency" />
 				<variant hash="208094698" type="Float" value="0" name="InvertXModifer" />
@@ -661,7 +661,7 @@
 					<variant hash="4127232677" type="Float" value="0" name="HeightModifer" />
 					<variant hash="235997748" type="Float" value="0" name="XModifer" />
 					<variant hash="2971843571" type="Float" value="0" name="YModifer" />
-					<variant hash="156785404" type="Float" value="0.3" name="FontSizeModifer" />
+					<variant hash="156785404" type="Float" value="0.4" name="FontSizeModifer" />
 					<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 					<variant hash="376939691" type="None" value="" name="InvertXPosition" />
 					<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
@@ -671,14 +671,14 @@
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
 				</attribute>
-				<attribute name="Font Size" value="11" />
+				<attribute name="Font Size" value="12" />
 				<attribute name="Text" value="Colony information" />
 				<attribute name="Text Effect" value="Stroke" />
 			</element>
 		</element>
 		<element type="Text">
 			<attribute name="Name" value="informationText" />
-			<attribute name="Position" value="273 12" />
+			<attribute name="Position" value="273 10" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
@@ -704,13 +704,12 @@
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
 			</attribute>
-			<attribute name="Font Size" value="17" />
 			<attribute name="Text Effect" value="Stroke" />
 		</element>
 		<element>
 			<attribute name="Name" value="investButtons" />
-			<attribute name="Position" value="513 12" />
-			<attribute name="Size" value="170 148" />
+			<attribute name="Position" value="513 10" />
+			<attribute name="Size" value="170 126" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
@@ -735,7 +734,7 @@
 			</attribute>
 			<element type="Button" style="TextButton">
 				<attribute name="Name" value="investToFarms" />
-				<attribute name="Size" value="170 29" />
+				<attribute name="Size" value="170 25" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
 				<attribute name="Variables">
@@ -790,15 +789,15 @@
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
 					</attribute>
-					<attribute name="Font Size" value="14" />
+					<attribute name="Font Size" value="12" />
 					<attribute name="Text" value="Invest 100 gold" />
 					<attribute name="Text Effect" value="Stroke" />
 				</element>
 			</element>
 			<element type="Button" style="TextButton">
 				<attribute name="Name" value="investToMines" />
-				<attribute name="Position" value="0 29" />
-				<attribute name="Size" value="170 29" />
+				<attribute name="Position" value="0 25" />
+				<attribute name="Size" value="170 25" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
 				<attribute name="Variables">
@@ -853,15 +852,15 @@
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
 					</attribute>
-					<attribute name="Font Size" value="14" />
+					<attribute name="Font Size" value="12" />
 					<attribute name="Text" value="Invest 100 gold" />
 					<attribute name="Text Effect" value="Stroke" />
 				</element>
 			</element>
 			<element type="Button" style="TextButton">
 				<attribute name="Name" value="investToIndustry" />
-				<attribute name="Position" value="0 59" />
-				<attribute name="Size" value="170 29" />
+				<attribute name="Position" value="0 50" />
+				<attribute name="Size" value="170 25" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
 				<attribute name="Variables">
@@ -916,15 +915,15 @@
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
 					</attribute>
-					<attribute name="Font Size" value="14" />
+					<attribute name="Font Size" value="12" />
 					<attribute name="Text" value="Invest 100 gold" />
 					<attribute name="Text Effect" value="Stroke" />
 				</element>
 			</element>
 			<element type="Button" style="TextButton">
 				<attribute name="Name" value="investToLogistics" />
-				<attribute name="Position" value="0 88" />
-				<attribute name="Size" value="170 29" />
+				<attribute name="Position" value="0 75" />
+				<attribute name="Size" value="170 25" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
 				<attribute name="Variables">
@@ -979,15 +978,15 @@
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
 					</attribute>
-					<attribute name="Font Size" value="14" />
+					<attribute name="Font Size" value="12" />
 					<attribute name="Text" value="Invest 100 gold" />
 					<attribute name="Text Effect" value="Stroke" />
 				</element>
 			</element>
 			<element type="Button" style="TextButton">
 				<attribute name="Name" value="investToDefense" />
-				<attribute name="Position" value="0 118" />
-				<attribute name="Size" value="170 29" />
+				<attribute name="Position" value="0 100" />
+				<attribute name="Size" value="170 25" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
 				<attribute name="Variables">
@@ -1042,7 +1041,7 @@
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
 					</attribute>
-					<attribute name="Font Size" value="14" />
+					<attribute name="Font Size" value="12" />
 					<attribute name="Text" value="Invest 100 gold" />
 					<attribute name="Text Effect" value="Stroke" />
 				</element>
@@ -1050,8 +1049,8 @@
 		</element>
 		<element type="Button" style="TextButton">
 			<attribute name="Name" value="sendColonizatorsButton" />
-			<attribute name="Position" value="273 185" />
-			<attribute name="Size" value="375 37" />
+			<attribute name="Position" value="273 158" />
+			<attribute name="Size" value="375 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
 			<attribute name="Variables">
@@ -1105,15 +1104,15 @@
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
 				</attribute>
-				<attribute name="Font Size" value="11" />
+				<attribute name="Font Size" value="9" />
 				<attribute name="Text" value="Send 100 colonizators (cost: 100 gold)." />
 				<attribute name="Text Effect" value="Stroke" />
 			</element>
 		</element>
 		<element type="Button" style="TextButton">
 			<attribute name="Name" value="buildWarShipButton" />
-			<attribute name="Position" value="273 148" />
-			<attribute name="Size" value="375 37" />
+			<attribute name="Position" value="273 126" />
+			<attribute name="Size" value="375 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
 			<attribute name="Variables">
@@ -1167,7 +1166,7 @@
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
 				</attribute>
-				<attribute name="Font Size" value="11" />
+				<attribute name="Font Size" value="9" />
 				<attribute name="Text" value="Build war ship (cost: 30 gold + 20 men as crew)." />
 				<attribute name="Text Effect" value="Stroke" />
 			</element>
@@ -4388,8 +4387,8 @@
 	</element>
 	<element type="Window">
 		<attribute name="Name" value="gameEndedWindow" />
-		<attribute name="Position" value="542 0" />
-		<attribute name="Size" value="353 141" />
+		<attribute name="Position" value="401 56" />
+		<attribute name="Size" value="564 141" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Opacity" value="0.65" />
 		<attribute name="Variables">
@@ -4397,10 +4396,10 @@
 			<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
 			<variant hash="511642371" type="String" value="ParentHeight" name="XDependency" />
 			<variant hash="2232932484" type="String" value="ParentHeight" name="YDependency" />
-			<variant hash="4144064518" type="Float" value="0.5" name="WidthModifer" />
+			<variant hash="4144064518" type="Float" value="0.8" name="WidthModifer" />
 			<variant hash="4127232677" type="Float" value="0.2" name="HeightModifer" />
-			<variant hash="235997748" type="Float" value="0.2" name="XModifer" />
-			<variant hash="2971843571" type="Float" value="0" name="YModifer" />
+			<variant hash="235997748" type="Float" value="0.4" name="XModifer" />
+			<variant hash="2971843571" type="Float" value="0.08" name="YModifer" />
 			<variant hash="820293360" type="Bool" value="false" name="InvertWidth" />
 			<variant hash="376939691" type="Bool" value="true" name="InvertXPosition" />
 			<variant hash="3869079501" type="String" value="ParentWidth" name="InvertXDependency" />
@@ -4416,7 +4415,7 @@
 		</attribute>
 		<element type="Text">
 			<attribute name="Name" value="info" />
-			<attribute name="Position" value="7 7" />
+			<attribute name="Position" value="28 28" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Color" value="0.85 0.85 0.85 1" />
 			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
@@ -4426,14 +4425,14 @@
 			<attribute name="Bring To Front" value="true" />
 			<attribute name="Bring To Back" value="false" />
 			<attribute name="Variables">
-				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
+				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
-				<variant hash="511642371" type="String" value="ParentHeight" name="XDependency" />
+				<variant hash="511642371" type="String" value="ParentWidth" name="XDependency" />
 				<variant hash="2232932484" type="String" value="ParentHeight" name="YDependency" />
-				<variant hash="4144064518" type="Float" value="0.1" name="WidthModifer" />
+				<variant hash="4144064518" type="Float" value="0.7" name="WidthModifer" />
 				<variant hash="4127232677" type="Float" value="0.9" name="HeightModifer" />
 				<variant hash="235997748" type="Float" value="0.05" name="XModifer" />
-				<variant hash="2971843571" type="Float" value="0.05" name="YModifer" />
+				<variant hash="2971843571" type="Float" value="0.2" name="YModifer" />
 				<variant hash="156785404" type="Float" value="0.08" name="FontSizeModifer" />
 				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
 				<variant hash="376939691" type="None" value="" name="InvertXPosition" />
@@ -4448,6 +4447,38 @@
 			</attribute>
 			<attribute name="Font Size" value="11" />
 			<attribute name="Word Wrap" value="true" />
+			<attribute name="Text Effect" value="Stroke" />
+		</element>
+		<element type="Text">
+			<attribute name="Name" value="title" />
+			<attribute name="Position" value="7 7" />
+			<attribute name="Pivot" value="0 0" />
+			<attribute name="Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Variables">
+				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
+				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
+				<variant hash="511642371" type="String" value="ParentHeight" name="XDependency" />
+				<variant hash="2232932484" type="String" value="ParentHeight" name="YDependency" />
+				<variant hash="4144064518" type="Float" value="0.5" name="WidthModifer" />
+				<variant hash="4127232677" type="Float" value="0.1" name="HeightModifer" />
+				<variant hash="235997748" type="Float" value="0.05" name="XModifer" />
+				<variant hash="2971843571" type="Float" value="0.05" name="YModifer" />
+				<variant hash="156785404" type="Float" value="0.1" name="FontSizeModifer" />
+				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
+				<variant hash="376939691" type="None" value="" name="InvertXPosition" />
+				<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
+				<variant hash="1025976573" type="None" value="" name="InvertHeight" />
+			</attribute>
+			<attribute name="Tags">
+				<string value="EnableUiResizer" />
+			</attribute>
+			<attribute name="Font Size" value="14" />
+			<attribute name="Text" value="Game ended!" />
 			<attribute name="Text Effect" value="Stroke" />
 		</element>
 	</element>
