@@ -16,7 +16,10 @@ class TopActionBar : ScriptObject
     {
         Window @topActionBar = ui.root.GetChild ("ingame").GetChild ("topActionBar");
         Button @exitButton = topActionBar.GetChild ("exitButton");
+        Button @infoTableButton = topActionBar.GetChild ("infoTableButton");
+
         SubscribeToEvent (exitButton, "Released", "HandleExitClick");
+        SubscribeToEvent (infoTableButton, "Released", "HandleOpenInfoTableClick");
     }
 
     void Update (float timeStep)
@@ -40,5 +43,10 @@ class TopActionBar : ScriptObject
     void HandleExitClick ()
     {
         SendEvent ("GoToMainMenuRequest");
+    }
+
+    void HandleOpenInfoTableClick ()
+    {
+        ui.root.GetChild ("ingame").GetChild ("infoTableWindow").visible = true;
     }
 }

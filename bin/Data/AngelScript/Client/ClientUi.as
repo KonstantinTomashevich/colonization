@@ -113,6 +113,11 @@ class ClientUi : ScriptObject
         gameEndedWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
                                                          "AngelScript/Client/UiHandlers/Ingame/GameEndedWindow.as"),
                                                "GameEndedWindow");
+
+        ScriptInstance @infoTableControlsInstance = uiHandlersNode.CreateChild ("InfoTableControls", LOCAL).CreateComponent ("ScriptInstance");
+        infoTableControlsInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Client/UiHandlers/Ingame/InfoTableControls.as"),
+                                               "InfoTableControls");
     }
 
     ClientUi ()
