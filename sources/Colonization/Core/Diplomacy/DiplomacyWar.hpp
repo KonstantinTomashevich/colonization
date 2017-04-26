@@ -11,6 +11,7 @@ protected:
     Urho3D::StringHash hash_;
     Urho3D::PODVector <Urho3D::StringHash> attackersList_;
     Urho3D::PODVector <Urho3D::StringHash> defendersList_;
+    /// [0.0f, 100.0f]
     float conflictEscalation_;
 
 public:
@@ -25,13 +26,13 @@ public:
     float GetConflictEscalation () const;
     void SetConflictEscalation (float conflictEscalation);
 
-    int GetAttackersCount () const;
+    unsigned GetAttackersCount () const;
     Urho3D::StringHash GetAttackerNameHashByIndex (int index) const;
     bool AddAttackerNameHash (Urho3D::StringHash attackerNameHash);
     bool RemoveAttackerNameHash (Urho3D::StringHash attackerNameHash);
     Urho3D::PODVector <Urho3D::StringHash> GetAttackersList () const;
 
-    int GetDefendersCount () const;
+    unsigned GetDefendersCount () const;
     Urho3D::StringHash GetDefenderNameHashByIndex (int index) const;
     bool AddDefenderNameHash (Urho3D::StringHash defenderNameHash);
     bool RemoveDefenderNameHash (Urho3D::StringHash defenderNameHash);

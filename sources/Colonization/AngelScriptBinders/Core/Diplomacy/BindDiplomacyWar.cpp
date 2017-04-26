@@ -30,13 +30,13 @@ void BindDiplomacyWarInterface (Urho3D::Script *script, Urho3D::String className
     engine->RegisterObjectMethod (className.CString (), "float get_conflictEscalation () const", asMETHOD (DiplomacyWar, GetConflictEscalation), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_conflictEscalation (float conflictEscalation)", asMETHOD (DiplomacyWar, SetConflictEscalation), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod (className.CString (), "int get_attackersCount () const", asMETHOD (DiplomacyWar, GetAttackersCount), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "uint get_attackersCount () const", asMETHOD (DiplomacyWar, GetAttackersCount), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "StringHash GetAttackerNameHashByIndex (int index) const", asMETHOD (DiplomacyWar, GetAttackerNameHashByIndex), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "bool AddAttackerNameHash (StringHash attackerNameHash)", asMETHOD (DiplomacyWar, AddAttackerNameHash), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "bool RemoveAttackerNameHash (StringHash attackerNameHash)", asMETHOD (DiplomacyWar, RemoveAttackerNameHash), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "Array <StringHash> @get_attackersList () const", asFUNCTION (DiplomacyWar_GetAttackersList), asCALL_CDECL_OBJFIRST);
 
-    engine->RegisterObjectMethod (className.CString (), "int get_defendersCount () const", asMETHOD (DiplomacyWar, GetDefendersCount), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className.CString (), "uint get_defendersCount () const", asMETHOD (DiplomacyWar, GetDefendersCount), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "StringHash GetDefenderNameHashByIndex (int index) const", asMETHOD (DiplomacyWar, GetDefenderNameHashByIndex), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "bool AddDefenderNameHash (StringHash defenderNameHash)", asMETHOD (DiplomacyWar, AddDefenderNameHash), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "bool RemoveDefenderNameHash (StringHash defenderNameHash)", asMETHOD (DiplomacyWar, RemoveDefenderNameHash), asCALL_THISCALL);

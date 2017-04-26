@@ -77,7 +77,7 @@ void DiplomacyWar::SetConflictEscalation (float conflictEscalation)
     conflictEscalation_ = conflictEscalation;
 }
 
-int DiplomacyWar::GetAttackersCount () const
+unsigned DiplomacyWar::GetAttackersCount () const
 {
     return attackersList_.Size ();
 }
@@ -111,7 +111,7 @@ Urho3D::PODVector <Urho3D::StringHash> DiplomacyWar::GetAttackersList () const
     return attackersList_;
 }
 
-int DiplomacyWar::GetDefendersCount () const
+unsigned DiplomacyWar::GetDefendersCount () const
 {
     return defendersList_.Size ();
 }
