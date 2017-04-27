@@ -3,6 +3,8 @@
 
 class InfoTablePlayersList : StringListEditorUiHandler
 {
+    protected String currentPlayerName_;
+
     protected Window @GetWindow () override
     {
         return ui.root.GetChild ("ingame").GetChild ("infoTableWindow").GetChild ("playersList");
@@ -10,6 +12,8 @@ class InfoTablePlayersList : StringListEditorUiHandler
 
     protected Array <String> GetElements () override
     {
+        Node @scriptMain = GetScriptMain (scene);
+        currentPlayerName_ = scriptMain.vars ["playerName"].GetString ();
         return GetPlayersNamesList (scene);
     }
 
@@ -24,6 +28,20 @@ class InfoTablePlayersList : StringListEditorUiHandler
         if (playerInfo !is null)
         {
             String result = "" + (elementIndex + 1) + ". " + text;
+
+            if (playerInfo.IsAtWarWith (StringHash (currentPlayerName_)))
+            {
+                result += "  [At war with you]";
+            }
+            else if (playerInfo.name == currentPlayerName_)
+            {
+                result += "  [You]";
+            }
+            else
+            {
+                result += "  [At peace with you]";
+            }
+
             result += "  Points: " + playerInfo.points;
             return result;
         }
