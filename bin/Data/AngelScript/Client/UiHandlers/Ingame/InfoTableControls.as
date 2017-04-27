@@ -35,6 +35,11 @@ class InfoTableControls : ScriptObject
         infoTableShowWarInfoInstance.CreateObject (cache.GetResource ("ScriptFile",
                                                       "AngelScript/Client/UiHandlers/Ingame/InfoTableWindows/InfoTableShowWarInfo.as"),
                                          "InfoTableShowWarInfo");
+
+        ScriptInstance @infoTableShowDiplomacyWithPlayerInstance = node.CreateChild ("InfoTableShowDiplomacyWithPlayer", LOCAL).CreateComponent ("ScriptInstance");
+        infoTableShowDiplomacyWithPlayerInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                      "AngelScript/Client/UiHandlers/Ingame/InfoTableWindows/InfoTableShowDiplomacyWithPlayer.as"),
+                                         "InfoTableShowDiplomacyWithPlayer");
     }
 
     void Update (float timeStep)

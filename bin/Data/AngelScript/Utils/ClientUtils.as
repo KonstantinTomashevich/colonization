@@ -217,6 +217,52 @@ shared Unit @GetUnitByHash (Scene @scene_, StringHash unitHash)
     }
 }
 
+Array <DiplomacyWar @> GetWarsWithPlayer (Scene @scene_, StringHash playerNameHash)
+{
+    Array <DiplomacyWar @> wars;
+    if (scene_.GetChild ("diplomacy") is null)
+    {
+        return wars;
+    }
+
+    Array <Node @> warsNodes = scene_.GetChild ("diplomacy").GetChildrenWithComponent ("DiplomacyWar");
+    if (warsNodes.empty)
+    {
+        return wars;
+    }
+
+    for (uint index = 0; index < warsNodes.length; index++)
+    {
+        DiplomacyWar @war = warsNodes [index].GetComponent ("DiplomacyWar");
+        if (war.IsAttacker (playerNameHash) or war.IsDefender (playerNameHash))
+        {
+            wars.Push (war);
+        }
+    }
+    return wars;
+}
+
+Array <DiplomacyWar @> FindWarsWhereThesePlayersFight (Scene @scene_, StringHash firstNameHash, StringHash secondNameHash)
+{
+    Array <DiplomacyWar @> wars;
+    Array <DiplomacyWar @> warsOfFirstPlayer = GetWarsWithPlayer (scene_, firstNameHash);
+    if (warsOfFirstPlayer.empty)
+    {
+        return wars;
+    }
+
+    for (uint index = 0; index < warsOfFirstPlayer.length; index++)
+    {
+        DiplomacyWar @war = warsOfFirstPlayer [index];
+        if ((war.IsAttacker (firstNameHash) and war.IsDefender (secondNameHash)) or
+            (war.IsDefender (firstNameHash) and war.IsAttacker (secondNameHash)))
+        {
+            wars.Push (war);
+        }
+    }
+    return wars;
+}
+
 shared void RegisterLineEdit (Node @scriptMain, LineEdit @lineEdit)
 {
     Array <Variant> lineEditVector = scriptMain.vars ["lineEditVector"].GetVariantVector ();

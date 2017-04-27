@@ -65,6 +65,9 @@ class InfoTablePlayersList : StringListEditorUiHandler
         {
             BorderImage @colorSample = uiElement.GetChild ("colorSample");
             colorSample.color = playerInfo.color;
+
+            Button @diplomacyButton = uiElement.GetChild ("removeButton");
+            diplomacyButton.visible = (playerInfo.name != currentPlayerName_);
         }
     }
 
@@ -85,7 +88,17 @@ class InfoTablePlayersList : StringListEditorUiHandler
 
     void HandleRemoveElementClick (StringHash eventType, VariantMap &eventData) override
     {
-        // TODO: Implement after diplomacy ui implementation.
+        UIElement @element = eventData ["Element"].GetPtr ();
+        int elementOffset = element.vars ["ElementOffset"].GetInt ();
+        int summaryOffset = elementsShowOffset_ + elementOffset;
+
+        PlayerInfo @playerInfo = GetPlayerInfoByIndex (scene, summaryOffset);
+        if (playerInfo !is null)
+        {
+            Window @playersList = GetWindow ();
+            playersList.parent.vars ["selectedInfoType"] = "showDiplomacyWithPlayer";
+            playersList.parent.vars ["elementToShowHash"] = StringHash (playerInfo.name);
+        }
     }
 
     void HandleHideClick () override

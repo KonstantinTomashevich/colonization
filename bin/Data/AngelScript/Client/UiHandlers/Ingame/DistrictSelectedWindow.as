@@ -253,8 +253,10 @@ class DistrictSelectedWindow : ScriptObject
         Button @resourcesInfoButton = districtInfoWindow.GetChild ("resourcesInfoButton");
         Button @populationInfoButton = districtInfoWindow.GetChild ("populationInfoButton");
         Button @colonyEvolutionInfoButton = districtInfoWindow.GetChild ("colonyEvolutionInfoButton");
+
         Button @sendColonizatorsButton = districtInfoWindow.GetChild ("sendColonizatorsButton");
         Button @buildWarShipButton = districtInfoWindow.GetChild ("buildWarShipButton");
+        Button @openDiplomacyButton = districtInfoWindow.GetChild ("openDiplomacyButton");
 
         UIElement @investButtons = districtInfoWindow.GetChild ("investButtons");
         Button @investToFarmsButton = investButtons.GetChild ("investToFarms");
@@ -267,8 +269,10 @@ class DistrictSelectedWindow : ScriptObject
         SubscribeToEvent (resourcesInfoButton, "Released", "HandleResourcesInfoClick");
         SubscribeToEvent (populationInfoButton, "Released", "HandlePopulationInfoClick");
         SubscribeToEvent (colonyEvolutionInfoButton, "Released", "HandleColonyEvolutionInfoClick");
+
         SubscribeToEvent (sendColonizatorsButton, "Released", "HandleSendColonizatorsClick");
         SubscribeToEvent (buildWarShipButton, "Released", "HandleBuildWarShipClick");
+        SubscribeToEvent (openDiplomacyButton, "Released", "HandleOpenDiplomacyClick");
 
         SubscribeToEvent (investToFarmsButton, "Released", "HandleInvestClick");
         SubscribeToEvent (investToMinesButton, "Released", "HandleInvestClick");
@@ -363,14 +367,27 @@ class DistrictSelectedWindow : ScriptObject
         buffer.WriteFloat (DEFAULT_INVESTITION_SIZE);
 
         VariantMap taskData;
-        eventData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
-        eventData ["messageBuffer"] = Variant (buffer);
-        SendEvent ("NewNetworkTask", eventData);
+        taskData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+        taskData ["messageBuffer"] = Variant (buffer);
+        SendEvent ("NewNetworkTask", taskData);
     }
 
     void HandleBuildWarShipClick ()
     {
         Node @scriptMain = GetScriptMain (node);
         scriptMain.vars ["currentClickCommand"] = StringHash ("BuildWarShip");
+    }
+
+    void HandleOpenDiplomacyClick ()
+    {
+        Node @scriptMain = GetScriptMain (node);
+        Map @map = scene.GetChild ("map").GetComponent ("Map");
+        StringHash districtHash = scriptMain.vars ["selectedHash"].GetStringHash ();
+        District @district = map.GetDistrictByHash (districtHash);
+
+        Window @infoTableWindow = ui.root.GetChild ("ingame").GetChild ("infoTableWindow");
+        infoTableWindow.visible = true;
+        infoTableWindow.vars ["selectedInfoType"] = "showDiplomacyWithPlayer";
+        infoTableWindow.vars ["elementToShowHash"] = StringHash (district.colonyOwnerName);
     }
 }

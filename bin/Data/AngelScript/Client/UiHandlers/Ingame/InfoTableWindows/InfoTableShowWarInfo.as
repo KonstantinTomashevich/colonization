@@ -2,11 +2,11 @@
 
 class InfoTableShowWarInfo : ScriptObject
 {
-    protected StringHash lastShowedWarHash_;
+    protected StringHash warHash_;
 
     InfoTableShowWarInfo ()
     {
-        lastShowedWarHash_ = StringHash ();
+        warHash_ = StringHash ();
     }
 
     ~InfoTableShowWarInfo ()
@@ -22,11 +22,10 @@ class InfoTableShowWarInfo : ScriptObject
     void Update (float timeStep)
     {
         Window @showWarInfoWindow = ui.root.GetChild ("ingame").GetChild ("infoTableWindow").GetChild ("showWarInfo");
-        if (showWarInfoWindow.visible and
-            showWarInfoWindow.parent.vars ["elementToShowHash"].GetStringHash () != lastShowedWarHash_)
+        if (showWarInfoWindow.visible)
         {
-            lastShowedWarHash_ = showWarInfoWindow.parent.vars ["elementToShowHash"].GetStringHash ();
-            DiplomacyWar @war = GetWarByHash (scene, lastShowedWarHash_);
+            warHash_ = showWarInfoWindow.parent.vars ["elementToShowHash"].GetStringHash ();
+            DiplomacyWar @war = GetWarByHash (scene, warHash_);
             if (war !is null)
             {
                 Text @title = showWarInfoWindow.GetChild ("title");
@@ -53,14 +52,14 @@ class InfoTableShowWarInfo : ScriptObject
                 info += "\nDefenders (" + war.defendersCount + "):\n";
                 for (uint index = 0; index < war.defendersCount; index++)
                 {
-                    PlayerInfo @playerInfo = GetPlayerInfoByNameHash (scene, war.GetAttackerNameHashByIndex (index));
+                    PlayerInfo @playerInfo = GetPlayerInfoByNameHash (scene, war.GetDefenderNameHashByIndex (index));
                     if (playerInfo !is null)
                     {
                         info += "    " + playerInfo.name;
                     }
                     else
                     {
-                        info += "    Error: " + war.GetAttackerNameHashByIndex (index).ToString () + " not found!";
+                        info += "    Error: " + war.GetDefenderNameHashByIndex (index).ToString () + " not found!";
                     }
                     info += "\n";
                 }
