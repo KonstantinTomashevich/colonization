@@ -1,3 +1,5 @@
+// TODO: Add constants for events names and parameters names.
+
 const int COLONIZATORS_EXPEDITION_SIZE = 100;
 const uint NEW_GAME_DEFAULT_SERVER_PORT = 13768;
 const float DEFAULT_RAYCAST_RAY_LENGTH = 300.0f;

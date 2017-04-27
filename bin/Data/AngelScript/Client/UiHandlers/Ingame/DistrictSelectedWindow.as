@@ -55,6 +55,11 @@ class DistrictSelectedWindow : ScriptObject
         buildWarShipButtonText.text = "Build war ship (cost: " + int (configuration.oneWarShipBuildingCost) +
                                       " + " + int (configuration.oneWarShipCrew) + " men as crew).";
 
+        Button @openDiplomacyButton = districtInfoWindow.GetChild ("openDiplomacyButton");
+        openDiplomacyButton.visible = (infoType == StringHash ("Basic")) and
+                                         district.hasColony and
+                                         district.colonyOwnerName != playerName;
+
         if (infoType == StringHash ("Basic"))
         {
             UpdateDistrictBasicInfo (district, districtInfoWindow);
