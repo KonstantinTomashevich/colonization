@@ -5,8 +5,6 @@ class DistrictSelectedWindow : ScriptObject
 {
     protected bool isSceneLoaded_;
     protected float untilSelectionUpdate_;
-
-    protected float DEFAULT_INVESTITION_SIZE = 100.0f;
     protected float SELECTION_UPDATE_DELAY = 0.02f;
 
     protected void UpdateDistrictSelection ()

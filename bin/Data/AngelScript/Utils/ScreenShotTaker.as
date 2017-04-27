@@ -1,3 +1,5 @@
+#include "AngelScript/Utils/Constants.as"
+
 class ScreenShotTaker : ScriptObject
 {
     Array <int> keys_;
@@ -5,7 +7,7 @@ class ScreenShotTaker : ScriptObject
 
     ScreenShotTaker ()
     {
-        screenShotsFolder_ = "ScreenShots/";
+        screenShotsFolder_ = DEFAULT_SCREEN_SHOTS_FOLDER;
         keys_.Push (KEY_PRINTSCREEN);
     }
 
