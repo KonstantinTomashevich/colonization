@@ -53,12 +53,12 @@ void DiplomacyWarRequest::SetDefender (const Urho3D::StringHash &defender)
 
 void DiplomacyWarRequest::OnAddition ()
 {
-    DiplomacyRequestsUtils::AddPlayerEnemy (node_->GetScene (), attacker_, defender_);
-    DiplomacyRequestsUtils::AddPlayerEnemy (node_->GetScene (), defender_, attacker_);
-
     DiplomacyWar *war = DiplomacyRequestsUtils::CreateWar (node_->GetScene ());
     war->AddAttackerNameHash (attacker_);
     war->AddDefenderNameHash (defender_);
+
+    DiplomacyRequestsUtils::UpdatePlayerEnemies (node_->GetScene (), attacker_);
+    DiplomacyRequestsUtils::UpdatePlayerEnemies (node_->GetScene (), defender_);
 
     Urho3D::VariantMap infoData;
     infoData [DiplomacyInfoWarStarted::ATTACKER] = Urho3D::Variant (attacker_);

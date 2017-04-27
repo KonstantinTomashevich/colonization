@@ -21,8 +21,8 @@ void DiplomacyPeaceRequest::ProcessAcceptedResult ()
                                                                   infoData);
 
     DiplomacyRequestsUtils::RemoveWarByHash (node_->GetScene (), warHash_);
-    DiplomacyRequestsUtils::RemovePlayerEnemy (node_->GetScene (), peaceRequester_, enemy_);
-    DiplomacyRequestsUtils::RemovePlayerEnemy (node_->GetScene (), enemy_, peaceRequester_);
+    DiplomacyRequestsUtils::UpdatePlayerEnemies (node_->GetScene (), peaceRequester_);
+    DiplomacyRequestsUtils::UpdatePlayerEnemies (node_->GetScene (), enemy_);
 }
 
 void DiplomacyPeaceRequest::ProcessDeclinedResult ()

@@ -7,8 +7,7 @@ class DiplomacyWar;
 class Player;
 namespace DiplomacyRequestsUtils
 {
-void AddPlayerEnemy (Urho3D::Scene *scene, Urho3D::StringHash playerNameHash, Urho3D::StringHash newEnemyNameHash);
-void RemovePlayerEnemy (Urho3D::Scene *scene, Urho3D::StringHash playerNameHash, Urho3D::StringHash oldEnemyNameHash);
+void UpdatePlayerEnemies (Urho3D::Scene *scene, Urho3D::StringHash playerNameHash);
 DiplomacyWar *CreateWar (Urho3D::Scene *scene);
 bool RemoveWarByHash (Urho3D::Scene *scene, Urho3D::StringHash warHash);
 

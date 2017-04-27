@@ -1,7 +1,6 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "DiplomacyRequestsUtils.hpp"
 
-
 #include <Colonization/Backend/Diplomacy/DiplomacyProcessor.hpp>
 #include <Colonization/Backend/Player/Player.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
@@ -21,20 +20,6 @@ void AddPlayerEnemy (Urho3D::Scene *scene, Urho3D::StringHash playerNameHash, Ur
     if (isEnemyExists)
     {
         player->AddEnemy (newEnemyNameHash);
-    }
-}
-
-void RemovePlayerEnemy (Urho3D::Scene *scene, Urho3D::StringHash playerNameHash, Urho3D::StringHash oldEnemyNameHash)
-{
-    PlayersManager *playersManager = scene->GetChild ("players")->GetComponent <PlayersManager> ();
-    Player *player = playersManager->GetPlayerByNameHash (playerNameHash);
-    assert (player);
-
-    bool isEnemyExists = playersManager->GetPlayerByNameHash (oldEnemyNameHash);
-    assert (isEnemyExists);
-    if (isEnemyExists)
-    {
-        player->RemoveEnemy (oldEnemyNameHash);
     }
 }
 
@@ -84,6 +69,35 @@ void SendDiplomacyOfferMessage (Urho3D::Scene *scene, Urho3D::StringHash offerTy
 
     MessagesHandler *messagesHandler = scene->GetComponent <MessagesHandler> ();
     messagesHandler->SendDiplomacyOffer (offerType, offerDiplomacyRequestId, autodeclineTime, offerData, players);
+}
+
+void UpdatePlayerEnemies (Urho3D::Scene *scene, Urho3D::StringHash playerNameHash)
+{
+    PlayersManager *playersManager = scene->GetChild ("players")->GetComponent <PlayersManager> ();
+    Player *player = playersManager->GetPlayerByNameHash (playerNameHash);
+    assert (player);
+    player->RemoveAllEnemies ();
+
+    DiplomacyProcessor *diplomacyProcessor = scene->GetChild ("diplomacy")->GetComponent <DiplomacyProcessor> ();
+    for (int index = 0; index < diplomacyProcessor->GetWarsCount (); index++)
+    {
+        DiplomacyWar *war = diplomacyProcessor->GetWarByIndex (index);
+        if (war->IsAttacker (playerNameHash))
+        {
+            for (int defenderIndex = 0; defenderIndex < war->GetDefendersCount (); defenderIndex++)
+            {
+                player->AddEnemy (war->GetDefenderNameHashByIndex (defenderIndex));
+            }
+        }
+
+        else if (war->IsDefender (playerNameHash))
+        {
+            for (int attackerIndex = 0; attackerIndex < war->GetAttackersCount (); attackerIndex++)
+            {
+                player->AddEnemy (war->GetAttackerNameHashByIndex (attackerIndex));
+            }
+        }
+    }
 }
 }
 }
