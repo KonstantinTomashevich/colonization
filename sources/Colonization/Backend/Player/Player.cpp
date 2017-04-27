@@ -7,7 +7,10 @@
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
 #include <Colonization/Backend/Diplomacy/DiplomacyProcessor.hpp>
+#include <Colonization/Backend/Diplomacy/DiplomacyWarRequest.hpp>
+#include <Colonization/Backend/Diplomacy/DiplomacyPeaceRequest.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
+#include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/ColoniesEvolutionManager.hpp>
 
 namespace Colonization
@@ -169,6 +172,51 @@ void Player::ProcessRemoveColonyActionAction (Urho3D::VectorBuffer data)
     }
 }
 
+void Player::ProcessDeclareWarAction (Urho3D::VectorBuffer data)
+{
+    DiplomacyProcessor *diplomacyProcessor = scene_->GetChild ("diplomacy")->GetComponent <DiplomacyProcessor> ();
+    // Skip action type.
+    data.ReadInt ();
+    assert (diplomacyProcessor);
+
+    Urho3D::StringHash defenderNameHash = data.ReadStringHash ();
+    PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
+    assert (playersManager);
+    assert (playersManager->GetPlayerByNameHash (defenderNameHash));
+
+    if (playersManager->GetPlayerByNameHash (defenderNameHash))
+    {
+        DiplomacyWarRequest *warRequest = new DiplomacyWarRequest (context_);
+        warRequest->SetAttacker (Urho3D::StringHash (name_));
+        warRequest->SetDefender (defenderNameHash);
+        diplomacyProcessor->AddDiplomacyRequest (warRequest);
+    }
+}
+
+void Player::ProcessSendPeaceTreatyAction (Urho3D::VectorBuffer data)
+{
+    DiplomacyProcessor *diplomacyProcessor = scene_->GetChild ("diplomacy")->GetComponent <DiplomacyProcessor> ();
+    // Skip action type.
+    data.ReadInt ();
+    assert (diplomacyProcessor);
+
+    Urho3D::StringHash warHash = data.ReadStringHash ();
+    assert (diplomacyProcessor->GetWarByHash (warHash));
+    Urho3D::StringHash enemyNameHash = data.ReadStringHash ();
+    PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
+    assert (playersManager);
+    assert (playersManager->GetPlayerByNameHash (enemyNameHash));
+
+    if (playersManager->GetPlayerByNameHash (enemyNameHash) && diplomacyProcessor->GetWarByHash (warHash))
+    {
+        DiplomacyPeaceRequest *peaceRequest = new DiplomacyPeaceRequest (context_);
+        peaceRequest->SetPeaceRequester (Urho3D::StringHash (name_));
+        peaceRequest->SetEnemy (enemyNameHash);
+        peaceRequest->SetWarHash (warHash);
+        diplomacyProcessor->AddDiplomacyRequest (peaceRequest);
+    }
+}
+
 void Player::ProcessResponceToDiplomacyOfferAction (Urho3D::VectorBuffer data)
 {
     DiplomacyProcessor *diplomacyProcessor = scene_->GetChild ("diplomacy")->GetComponent <DiplomacyProcessor> ();
@@ -238,6 +286,14 @@ void Player::Update (float timeStep)
         else if (action.first_ == PLAYER_ACTION_REMOVE_COLONY_ACTION)
         {
             ProcessRemoveColonyActionAction (action.second_.GetVectorBuffer ());
+        }
+        else if (action.first_ == PLAYER_ACTION_DECLARE_WAR)
+        {
+            ProcessDeclareWarAction (action.second_.GetVectorBuffer ());
+        }
+        else if (action.first_ == PLAYER_ACTION_SEND_PEACE_TREATY)
+        {
+            ProcessSendPeaceTreatyAction (action.second_.GetVectorBuffer ());
         }
         else if (action.first_ == PLAYER_ACTION_RESPONCE_TO_DIPLOMACY_OFFER)
         {

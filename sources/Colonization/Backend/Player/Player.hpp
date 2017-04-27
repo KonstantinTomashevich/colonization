@@ -27,6 +27,9 @@ protected:
     void ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer data);
     void ProcessAddColonyActionAction (Urho3D::VectorBuffer data);
     void ProcessRemoveColonyActionAction (Urho3D::VectorBuffer data);
+
+    void ProcessDeclareWarAction (Urho3D::VectorBuffer data);
+    void ProcessSendPeaceTreatyAction (Urho3D::VectorBuffer data);
     void ProcessResponceToDiplomacyOfferAction (Urho3D::VectorBuffer data);
     virtual void AfterActionsProcessing (float timeStep);
 public:
