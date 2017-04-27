@@ -106,6 +106,11 @@ bool DiplomacyWar::RemoveAttackerNameHash (Urho3D::StringHash attackerNameHash)
     return attackersList_.Remove (attackerNameHash);
 }
 
+bool DiplomacyWar::IsAttacker (Urho3D::StringHash nameHash) const
+{
+    return attackersList_.Contains (nameHash);
+}
+
 Urho3D::PODVector <Urho3D::StringHash> DiplomacyWar::GetAttackersList () const
 {
     return attackersList_;
@@ -138,6 +143,11 @@ bool DiplomacyWar::AddDefenderNameHash (Urho3D::StringHash defenderNameHash)
 bool DiplomacyWar::RemoveDefenderNameHash (Urho3D::StringHash defenderNameHash)
 {
     return defendersList_.Remove (defenderNameHash);
+}
+
+bool DiplomacyWar::IsDefender (Urho3D::StringHash nameHash) const
+{
+    return defendersList_.Contains (nameHash);
 }
 
 Urho3D::PODVector <Urho3D::StringHash> DiplomacyWar::GetDefendersList () const

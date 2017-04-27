@@ -30,12 +30,14 @@ public:
     Urho3D::StringHash GetAttackerNameHashByIndex (int index) const;
     bool AddAttackerNameHash (Urho3D::StringHash attackerNameHash);
     bool RemoveAttackerNameHash (Urho3D::StringHash attackerNameHash);
+    bool IsAttacker (Urho3D::StringHash nameHash) const;
     Urho3D::PODVector <Urho3D::StringHash> GetAttackersList () const;
 
     unsigned GetDefendersCount () const;
     Urho3D::StringHash GetDefenderNameHashByIndex (int index) const;
     bool AddDefenderNameHash (Urho3D::StringHash defenderNameHash);
     bool RemoveDefenderNameHash (Urho3D::StringHash defenderNameHash);
+    bool IsDefender (Urho3D::StringHash nameHash) const;
     Urho3D::PODVector <Urho3D::StringHash> GetDefendersList () const;
 
     Urho3D::VariantVector GetAttackersListAttribute () const;
