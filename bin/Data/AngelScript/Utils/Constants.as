@@ -9,7 +9,7 @@ const Color NEUTRAL_COLOR = Color (0.5f, 0.5f, 0.5f, 1.0f);
 const String MAPS_FOLDER ("Data/Maps/");
 const String EMPTY_FILTER ("");
 const String MAP_INFO_FILE ("/info.xml");
-const String DEFAULT_SCREEN_SHOTS_FOLDER ("ScreenShots");
+const String DEFAULT_SCREEN_SHOTS_FOLDER ("ScreenShots/");
 
 const int DIPLOMACY_MESSAGE_INFO = 1;
 const int DIPLOMACY_MESSAGE_OFFER = 2;
