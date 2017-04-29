@@ -15,6 +15,8 @@ class ClientUi : ScriptObject
         uiResizerInstance.SetAttribute ("startElementName_", Variant ("UIRoot"));
         uiResizerInstance.SetAttribute ("continuousResize_", Variant (true));
 
+
+        // TODO: Maybe stop using ui player color painter?
         ScriptInstance @uiPlayerColorPainterInstance = utilHandlersNode.CreateChild ("UiPlayerColorPainter", LOCAL).CreateComponent ("ScriptInstance");
         uiPlayerColorPainterInstance.CreateObject (cache.GetResource ("ScriptFile",
                                                          "AngelScript/Utils/UiPlayerColorPainter.as"),
@@ -73,15 +75,10 @@ class ClientUi : ScriptObject
         uiRoot.GetChild ("chatPrivateReceiversWindow").visible = false;
         uiRoot.GetChild ("chatBlockedPlayersWindow").visible = false;
 
-        ScriptInstance @playerInfoWindowInstance = uiHandlersNode.CreateChild ("PlayerInfoWindow", LOCAL).CreateComponent ("ScriptInstance");
-        playerInfoWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/Client/UiHandlers/Ingame/PlayerInfoWindow.as"),
-                                               "PlayerInfoWindow");
-
-        ScriptInstance @menuWindowInstance = uiHandlersNode.CreateChild ("MenuWindow", LOCAL).CreateComponent ("ScriptInstance");
-        menuWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                      "AngelScript/Client/UiHandlers/Ingame/MenuWindow.as"),
-                                         "MenuWindow");
+        ScriptInstance @topActionBarInstance = uiHandlersNode.CreateChild ("TopActionBar", LOCAL).CreateComponent ("ScriptInstance");
+        topActionBarInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Client/UiHandlers/Ingame/TopActionBar.as"),
+                                               "TopActionBar");
 
         ScriptInstance @mapBillboardsInstance = uiHandlersNode.CreateChild ("MapBillboards", LOCAL).CreateComponent ("ScriptInstance");
         mapBillboardsInstance.CreateObject (cache.GetResource ("ScriptFile",
@@ -118,6 +115,16 @@ class ClientUi : ScriptObject
         gameEndedWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
                                                          "AngelScript/Client/UiHandlers/Ingame/GameEndedWindow.as"),
                                                "GameEndedWindow");
+
+        ScriptInstance @infoTableControlsInstance = uiHandlersNode.CreateChild ("InfoTableControls", LOCAL).CreateComponent ("ScriptInstance");
+        infoTableControlsInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Client/UiHandlers/Ingame/InfoTableControls.as"),
+                                               "InfoTableControls");
+
+        ScriptInstance @diplomacyMessagesProcessorInstance = uiHandlersNode.CreateChild ("DiplomacyMessagesProcessor", LOCAL).CreateComponent ("ScriptInstance");
+        diplomacyMessagesProcessorInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Client/UiHandlers/Ingame/DiplomacyMessagesProcessor.as"),
+                                               "DiplomacyMessagesProcessor");
     }
 
     ClientUi ()

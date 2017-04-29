@@ -31,12 +31,13 @@ protected:
     void LoadGameConfiguration (Urho3D::ResourceCache *resourceCache, Urho3D::String configurationPath);
     void LoadMap (Urho3D::ResourceCache *resourceCache, Urho3D::String mapPath);
     void LoadUnits (Urho3D::ResourceCache *resourceCache, Urho3D::String unitsPath);
+    void LoadDiplomacy (Urho3D::ResourceCache *resourceCache, Urho3D::String diplomacyPath);
     void RecalculateUnitsHashes (Colonization::UnitsManager *unitsManager);
     void CreateServerProcessorsAndManagers ();
     void BanNewConnectionsAndSetStartGold ();
 
     /// Parameters are parse output.
-    bool LoadAndParseMapInfo (Urho3D::String &configurationPath, Urho3D::String &mapPath, Urho3D::String &unitsPath);
+    bool LoadAndParseMapInfo (Urho3D::String &configurationPath, Urho3D::String &mapPath, Urho3D::String &unitsPath, Urho3D::String &diplomacyPath);
     bool WillGoFromWaitingForStartToPlayingState ();
     bool WillGoFromPlayingToFinishedState ();
 public:

@@ -21,7 +21,6 @@ float ColoniesEvolutionManager::GetTotalColonyEvolution(District *colony)
 
 void ColoniesEvolutionManager::ProcessColony (GameConfiguration *configuration, District *colony, float timeStep)
 {
-    // TODO: Think about balance.
     float updatePoints = 0.0f;
     updatePoints += ProcessColonyPopulation (configuration, colony, timeStep);
     updatePoints += ProcessColonyFarmsEvolution (configuration, colony, timeStep);

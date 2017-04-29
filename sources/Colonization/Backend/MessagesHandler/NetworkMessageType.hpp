@@ -15,6 +15,8 @@ enum NetworkMessageType
     STC_NETWORK_MESSAGE_CHAT_MESSAGE = 201, // Data: isPrivate (bool), senderName (String), message (String).
     STC_NETWORK_MESSAGE_TEXT_INFO_FROM_SERVER = 202, // Data: message (String).
     STC_NETWORK_MESSAGE_SEND_GAME_STATE = 203, // Data: int (GameState [enum]).
-    STC_NETWORK_MESSAGE_GAME_ENDED = 204 // Data: winnerName (String), victoryType (String), victoryInfo (String).
+    STC_NETWORK_MESSAGE_GAME_ENDED = 204, // Data: winnerName (String), victoryType (String), victoryInfo (String).
+    STC_NETWORK_MESSAGE_DIPLOMACY_INFO = 205, // Data: infoType (StringHash), infoData (VariantMap).
+    STC_NETWORK_MESSAGE_DIPLOMACY_OFFER = 206 // Data: offerType (StringHash), offerDiplomacyRequestId (unsigned), autodeclineTime (float), offerData (VariantMap).
 };
 }

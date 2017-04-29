@@ -102,7 +102,6 @@ bool ColoniesActionsProcessor::ProcessBuildWarShipAction (GameConfiguration *con
             newWarShip->SetPositionHash (targetDistrictHash);
             newWarShip->SetOwnerPlayerName (colony->GetColonyOwnerName ());
             newWarShip->FleetUnitSetWarShipsCount (1);
-            newWarShip->UpdateHash (unitsManager);
             return true;
         }
         else

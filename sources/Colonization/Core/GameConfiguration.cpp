@@ -124,8 +124,8 @@ GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Compon
     maximumGameDuration_ (1200.0f),
     colonyPointsModifer_ (0.15f),
     unitFleetPointsModifer_ (0.5f),
-    unitTradersPointsModifer_ (0.02f),
-    unitColonizatorsPointsModifer_ (0.02f),
+    unitTradersPointsModifer_ (0.0f),
+    unitColonizatorsPointsModifer_ (0.0f),
     unitArmyPointsModifer_ (0.02f),
     victoryTypesProcessorScriptPath_ ("AngelScript/Utils/DefaultVictoryTypesProcessor.as")
 {
@@ -333,9 +333,9 @@ void GameConfiguration::RegisterObject (Urho3D::Context *context)
     URHO3D_ACCESSOR_ATTRIBUTE ("Unit Fleet Points Modifer", GetUnitFleetPointsModifer,
                                SetUnitFleetPointsModifer, float, 0.5f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Unit Traders Points Modifer", GetUnitTradersPointsModifer,
-                               SetUnitTradersPointsModifer, float, 0.02f, Urho3D::AM_DEFAULT);
+                               SetUnitTradersPointsModifer, float, 0.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Unit Colonizators Points Modifer", GetUnitColonizatorsPointsModifer,
-                               SetUnitColonizatorsPointsModifer, float, 0.02f, Urho3D::AM_DEFAULT);
+                               SetUnitColonizatorsPointsModifer, float, 0.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Unit Army Points Modifer", GetUnitArmyPointsModifer,
                                SetUnitArmyPointsModifer, float, 0.02f, Urho3D::AM_DEFAULT);
 

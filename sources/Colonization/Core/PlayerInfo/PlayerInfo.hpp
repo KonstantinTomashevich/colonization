@@ -3,13 +3,6 @@
 
 namespace Colonization
 {
-const Urho3D::StringHash PLAYER_INFO_VICTORY_TYPE_NAME_KEY ("Name");
-const Urho3D::StringHash PLAYER_INFO_VICTORY_TYPE_INFO_KEY ("Info");
-const Urho3D::StringHash PLAYER_INFO_VICTORY_TYPE_PROGRESS_KEY ("Progress");
-const Urho3D::StringHash VICTORY_TYPE_BY_POINTS ("ByPoints");
-const Urho3D::String VICTORY_TYPE_BY_POINTS_NAME ("by points");
-const Urho3D::String VICTORY_TYPE_BY_POINTS_INFO ("Maximum game time elapsed. ${PlayerName} has biggest number of points.");
-
 class PlayerInfo : public Urho3D::Component
 {
 URHO3D_OBJECT (PlayerInfo, Component)
@@ -18,6 +11,7 @@ protected:
     float points_;
     Urho3D::Color color_;
     bool isReadyForStart_;
+    Urho3D::PODVector <Urho3D::StringHash> enemies_;
     /// Progresses to victories. Key is victory type name, value is VariantMap.
     /// Each value has progress indicator named "progress". It is float from 0.0 to 100.0.
     /// Each value has angel script function name, which parses this value and returns text for tooltip.
@@ -39,6 +33,17 @@ public:
 
     bool IsReadyForStart () const;
     void SetIsReadyForStart (bool isReadyForStart);
+
+    int GetEnemiesCount () const;
+    Urho3D::PODVector <Urho3D::StringHash> GetEnemies () const;
+    Urho3D::StringHash GetEnemyByIndex (int index) const;
+    bool IsAtWarWith (Urho3D::StringHash anotherPlayerNameHash) const;
+    bool AddEnemy (Urho3D::StringHash anotherPlayerNameHash);
+    bool RemoveEnemy (Urho3D::StringHash anotherPlayerNameHash);
+    void RemoveAllEnemies ();
+
+    Urho3D::VariantVector GetEnemiesAttribute () const;
+    void SetEnemiesAttribute (const Urho3D::VariantVector &enemies);
 
     Urho3D::VariantMap GetProgressToVictory () const;
     void SetProgressToVictory (const Urho3D::VariantMap &progressToVictory);

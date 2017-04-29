@@ -32,7 +32,7 @@ shared bool CheckIsSceneLoaded (Scene @scene_)
         return false;
 }
 
-shared PlayerInfo @GetPlayerInfoByName (Scene @scene_, String playerName)
+shared PlayerInfo @GetPlayerInfoByNameHash (Scene @scene_, StringHash playerNameHash)
 {
     if (scene_.GetChild ("players") is null)
     {
@@ -47,13 +47,13 @@ shared PlayerInfo @GetPlayerInfoByName (Scene @scene_, String playerName)
 
     PlayerInfo @playerInfo = playersNodes [0].GetComponent ("PlayerInfo");
     uint index = 1;
-    while (playerInfo.name != playerName and index < playersNodes.length)
+    while (StringHash (playerInfo.name) != playerNameHash and index < playersNodes.length)
     {
         playerInfo = playersNodes [index].GetComponent ("PlayerInfo");
         index++;
     }
 
-    if (playerInfo.name == playerName)
+    if (StringHash (playerInfo.name) == playerNameHash)
     {
         return playerInfo;
     }
@@ -61,6 +61,11 @@ shared PlayerInfo @GetPlayerInfoByName (Scene @scene_, String playerName)
     {
         return null;
     }
+}
+
+shared PlayerInfo @GetPlayerInfoByName (Scene @scene_, String playerName)
+{
+    return GetPlayerInfoByNameHash (scene_, StringHash (playerName));
 }
 
 shared PlayerInfo @GetPlayerInfoByIndex (Scene @scene_, uint index)
@@ -108,6 +113,79 @@ shared Array <String> GetPlayersNamesList (Scene @scene_)
     return playersNames;
 }
 
+shared String ConstructWarShortname (Scene @scene_, DiplomacyWar @war)
+{
+    PlayerInfo @firstAttacker = GetPlayerInfoByNameHash (scene_, war.GetAttackerNameHashByIndex (0));
+    PlayerInfo @firstDefender = GetPlayerInfoByNameHash (scene_, war.GetDefenderNameHashByIndex (0));
+    String shortname = firstAttacker.name;
+    if (war.attackersCount > 1)
+    {
+        shortname += " (" + war.attackersCount + ")";
+    }
+
+    shortname += " vs ";
+    shortname += firstDefender.name;
+    if (war.defendersCount > 1)
+    {
+        shortname += " (" + war.defendersCount + ")";
+    }
+    return shortname;
+}
+
+shared Array <String> GetWarsShortnamesList (Scene @scene_, Array <StringHash> &out warsHashesArray)
+{
+    Array <String> warsShortnames;
+    if (scene_.GetChild ("diplomacy") is null)
+    {
+        return warsShortnames;
+    }
+
+    Array <Node @> warsNodes = scene_.GetChild ("diplomacy").GetChildrenWithComponent ("DiplomacyWar");
+    if (warsNodes.empty)
+    {
+        return warsShortnames;
+    }
+
+    for (uint index = 0; index < warsNodes.length; index++)
+    {
+        DiplomacyWar @war = warsNodes [index].GetComponent ("DiplomacyWar");
+        warsHashesArray.Push (war.hash);
+        warsShortnames.Push (ConstructWarShortname (scene_, war));
+    }
+    return warsShortnames;
+}
+
+DiplomacyWar @GetWarByHash (Scene @scene_, StringHash warHash)
+{
+    if (scene_.GetChild ("diplomacy") is null)
+    {
+        return null;
+    }
+
+    Array <Node @> warsNodes = scene_.GetChild ("diplomacy").GetChildrenWithComponent ("DiplomacyWar");
+    if (warsNodes.empty)
+    {
+        return null;
+    }
+
+    DiplomacyWar @war = warsNodes [0].GetComponent ("DiplomacyWar");
+    uint index = 1;
+    while (war.hash != warHash and index < warsNodes.length)
+    {
+        war = warsNodes [index].GetComponent ("DiplomacyWar");
+        index++;
+    }
+
+    if (war.hash == warHash)
+    {
+        return war;
+    }
+    else
+    {
+        return null;
+    }
+}
+
 shared Unit @GetUnitByHash (Scene @scene_, StringHash unitHash)
 {
     if (scene_.GetChild ("units") is null)
@@ -137,6 +215,52 @@ shared Unit @GetUnitByHash (Scene @scene_, StringHash unitHash)
     {
         return null;
     }
+}
+
+Array <DiplomacyWar @> GetWarsWithPlayer (Scene @scene_, StringHash playerNameHash)
+{
+    Array <DiplomacyWar @> wars;
+    if (scene_.GetChild ("diplomacy") is null)
+    {
+        return wars;
+    }
+
+    Array <Node @> warsNodes = scene_.GetChild ("diplomacy").GetChildrenWithComponent ("DiplomacyWar");
+    if (warsNodes.empty)
+    {
+        return wars;
+    }
+
+    for (uint index = 0; index < warsNodes.length; index++)
+    {
+        DiplomacyWar @war = warsNodes [index].GetComponent ("DiplomacyWar");
+        if (war.IsAttacker (playerNameHash) or war.IsDefender (playerNameHash))
+        {
+            wars.Push (war);
+        }
+    }
+    return wars;
+}
+
+Array <DiplomacyWar @> FindWarsWhereThesePlayersFight (Scene @scene_, StringHash firstNameHash, StringHash secondNameHash)
+{
+    Array <DiplomacyWar @> wars;
+    Array <DiplomacyWar @> warsOfFirstPlayer = GetWarsWithPlayer (scene_, firstNameHash);
+    if (warsOfFirstPlayer.empty)
+    {
+        return wars;
+    }
+
+    for (uint index = 0; index < warsOfFirstPlayer.length; index++)
+    {
+        DiplomacyWar @war = warsOfFirstPlayer [index];
+        if ((war.IsAttacker (firstNameHash) and war.IsDefender (secondNameHash)) or
+            (war.IsDefender (firstNameHash) and war.IsAttacker (secondNameHash)))
+        {
+            wars.Push (war);
+        }
+    }
+    return wars;
 }
 
 shared void RegisterLineEdit (Node @scriptMain, LineEdit @lineEdit)

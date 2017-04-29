@@ -53,6 +53,14 @@ class ClientNetwork : ScriptObject
         {
             HandleGameEndedMessage (eventData);
         }
+        else if (eventData ["MessageID"].GetInt () == STC_NETWORK_MESSAGE_DIPLOMACY_INFO)
+        {
+            HandleDiplomacyInfoMessage (eventData);
+        }
+        else if (eventData ["MessageID"].GetInt () == STC_NETWORK_MESSAGE_DIPLOMACY_OFFER)
+        {
+            HandleDiplomacyOfferMessage (eventData);
+        }
     }
 
     void HandleNewNetworkTask (StringHash eventType, VariantMap &eventData)
@@ -139,5 +147,33 @@ class ClientNetwork : ScriptObject
         gameEndedEventData ["victoryType"] = Variant (victoryType);
         gameEndedEventData ["victoryInfo"] = Variant (victoryInfo);
         SendEvent ("GameEnded", gameEndedEventData);
+    }
+
+    void HandleDiplomacyInfoMessage (VariantMap &eventData)
+    {
+        VectorBuffer buffer = eventData ["Data"].GetBuffer ();
+        StringHash infoType = buffer.ReadStringHash ();
+        VariantMap infoData = buffer.ReadVariantMap ();
+
+        VariantMap diplomacyInfoEventData;
+        diplomacyInfoEventData ["type"] = infoType;
+        diplomacyInfoEventData ["data"] = infoData;
+        SendEvent ("DiplomacyInfo", diplomacyInfoEventData);
+    }
+
+    void HandleDiplomacyOfferMessage (VariantMap &eventData)
+    {
+        VectorBuffer buffer = eventData ["Data"].GetBuffer ();
+        StringHash offerType = buffer.ReadStringHash ();
+        uint offerId = buffer.ReadUInt ();
+        float autodeclineTime = buffer.ReadFloat ();
+        VariantMap offerData = buffer.ReadVariantMap ();
+
+        VariantMap diplomacyOfferEventData;
+        diplomacyOfferEventData ["type"] = offerType;
+        diplomacyOfferEventData ["id"] = offerId;
+        diplomacyOfferEventData ["untilAutodecline"] = autodeclineTime - 1.0f;
+        diplomacyOfferEventData ["data"] = offerData;
+        SendEvent ("DiplomacyOffer", diplomacyOfferEventData);
     }
 };

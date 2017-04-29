@@ -3,6 +3,7 @@
         gameConfigurationXML="/configuration.xml"
         mapXML="/map.xml"
         unitsXML="/units.xml"
+        diplomacyPath="/diplomacy.xml"
         preview="/terrain_texture.png"
         />
 

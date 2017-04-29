@@ -6,7 +6,11 @@
 
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
+#include <Colonization/Backend/Diplomacy/DiplomacyProcessor.hpp>
+#include <Colonization/Backend/Diplomacy/DiplomacyWarRequest.hpp>
+#include <Colonization/Backend/Diplomacy/DiplomacyPeaceRequest.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
+#include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/ColoniesEvolutionManager.hpp>
 
 namespace Colonization
@@ -110,7 +114,6 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
         unit->SetOwnerPlayerName (name_);
         unit->SetPositionHash (nearestEuropeDistrict->GetHash ());
         unit->SetUnitType (UNIT_COLONIZATORS);
-        unit->UpdateHash (unitsManager);
 
         if (!map->FindPath (targetDistrict->GetHash (), unit).Empty ())
         {
@@ -169,6 +172,68 @@ void Player::ProcessRemoveColonyActionAction (Urho3D::VectorBuffer data)
     }
 }
 
+void Player::ProcessDeclareWarAction (Urho3D::VectorBuffer data)
+{
+    DiplomacyProcessor *diplomacyProcessor = scene_->GetChild ("diplomacy")->GetComponent <DiplomacyProcessor> ();
+    // Skip action type.
+    data.ReadInt ();
+    assert (diplomacyProcessor);
+
+    Urho3D::StringHash defenderNameHash = data.ReadStringHash ();
+    PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
+    assert (playersManager);
+    assert (playersManager->GetPlayerByNameHash (defenderNameHash));
+
+    if (playersManager->GetPlayerByNameHash (defenderNameHash))
+    {
+        DiplomacyWarRequest *warRequest = new DiplomacyWarRequest (context_);
+        warRequest->SetAttacker (Urho3D::StringHash (name_));
+        warRequest->SetDefender (defenderNameHash);
+        diplomacyProcessor->AddDiplomacyRequest (warRequest);
+    }
+}
+
+void Player::ProcessSendPeaceTreatyAction (Urho3D::VectorBuffer data)
+{
+    DiplomacyProcessor *diplomacyProcessor = scene_->GetChild ("diplomacy")->GetComponent <DiplomacyProcessor> ();
+    // Skip action type.
+    data.ReadInt ();
+    assert (diplomacyProcessor);
+
+    Urho3D::StringHash warHash = data.ReadStringHash ();
+    assert (diplomacyProcessor->GetWarByHash (warHash));
+    Urho3D::StringHash enemyNameHash = data.ReadStringHash ();
+    PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
+    assert (playersManager);
+    assert (playersManager->GetPlayerByNameHash (enemyNameHash));
+
+    if (playersManager->GetPlayerByNameHash (enemyNameHash) && diplomacyProcessor->GetWarByHash (warHash))
+    {
+        DiplomacyPeaceRequest *peaceRequest = new DiplomacyPeaceRequest (context_);
+        peaceRequest->SetPeaceRequester (Urho3D::StringHash (name_));
+        peaceRequest->SetEnemy (enemyNameHash);
+        peaceRequest->SetWarHash (warHash);
+        diplomacyProcessor->AddDiplomacyRequest (peaceRequest);
+    }
+}
+
+void Player::ProcessResponceToDiplomacyOfferAction (Urho3D::VectorBuffer data)
+{
+    DiplomacyProcessor *diplomacyProcessor = scene_->GetChild ("diplomacy")->GetComponent <DiplomacyProcessor> ();
+    // Skip action type.
+    data.ReadInt ();
+    assert (diplomacyProcessor);
+
+    unsigned diplomacyOfferId = data.ReadUInt ();
+    DiplomacyRequestPlayerStatus response = static_cast <DiplomacyRequestPlayerStatus> (data.ReadUInt ());
+    diplomacyProcessor->UpdateDiplomacyRequestPlayerStatus (diplomacyOfferId, Urho3D::StringHash (name_), response);
+}
+
+void Player::AfterActionsProcessing (float timeStep)
+{
+
+}
+
 Player::Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Color color, Urho3D::Connection *connection, Urho3D::Scene *scene) :
     Urho3D::Object (context),
     name_ (name),
@@ -180,10 +245,10 @@ Player::Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Color col
     scene_ (scene),
     timeUntilNewChatMessage_ (0.0f),
     actionsSequence_ (),
+    enemies_ (),
     connection_ (connection)
 {
     assert (scene_);
-    assert (connection);
     assert (!name.Empty ());
 }
 
@@ -222,8 +287,36 @@ void Player::Update (float timeStep)
         {
             ProcessRemoveColonyActionAction (action.second_.GetVectorBuffer ());
         }
+        else if (action.first_ == PLAYER_ACTION_DECLARE_WAR)
+        {
+            ProcessDeclareWarAction (action.second_.GetVectorBuffer ());
+        }
+        else if (action.first_ == PLAYER_ACTION_SEND_PEACE_TREATY)
+        {
+            ProcessSendPeaceTreatyAction (action.second_.GetVectorBuffer ());
+        }
+        else if (action.first_ == PLAYER_ACTION_RESPONCE_TO_DIPLOMACY_OFFER)
+        {
+            ProcessResponceToDiplomacyOfferAction (action.second_.GetVectorBuffer ());
+        }
         actionsSequence_.Remove (actionsSequence_.At (0));
     }
+    AfterActionsProcessing (timeStep);
+}
+
+void Player::SendMessage (int messageId, bool reliable, bool inOrder, const Urho3D::VectorBuffer &message, unsigned contentId)
+{
+    connection_->SendMessage (messageId, reliable, inOrder, message, contentId);
+}
+
+void Player::Disconnect (int wait)
+{
+    connection_->Disconnect (wait);
+}
+
+bool Player::IsInternal () const
+{
+    return false;
 }
 
 Urho3D::Pair <PlayerActionType, Urho3D::Variant> Player::GetAction(int index)
@@ -321,5 +414,50 @@ bool Player::IsReadyForStart () const
 void Player::SetIsReadyForStart (bool isReadyForStart)
 {
     isReadyForStart_ = isReadyForStart;
+}
+
+int Player::GetEnemiesCount () const
+{
+    return enemies_.Size ();
+}
+
+Urho3D::PODVector <Urho3D::StringHash> Player::GetEnemies () const
+{
+    return enemies_;
+}
+
+Urho3D::StringHash Player::GetEnemyByIndex (int index) const
+{
+    assert (index < enemies_.Size ());
+    return enemies_.At (index);
+}
+
+bool Player::IsAtWarWith (Urho3D::StringHash anotherPlayerNameHash) const
+{
+    return enemies_.Contains (anotherPlayerNameHash);
+}
+
+bool Player::AddEnemy (Urho3D::StringHash anotherPlayerNameHash)
+{
+    assert (anotherPlayerNameHash != Urho3D::StringHash (name_));
+    if (!enemies_.Contains (anotherPlayerNameHash))
+    {
+        enemies_.Push (anotherPlayerNameHash);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool Player::RemoveEnemy (Urho3D::StringHash anotherPlayerNameHash)
+{
+    return enemies_.Remove (anotherPlayerNameHash);
+}
+
+void Player::RemoveAllEnemies ()
+{
+    enemies_.Clear ();
 }
 }

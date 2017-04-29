@@ -3,8 +3,6 @@
 
 class ScreenPressesHandler : ScriptObject
 {
-    protected float RAYCAST_RAY_LENGTH = 300.0f;
-
     protected Node @GetFirstReplicatedParentOf (Node @localNode)
     {
         Node @scanningNode = localNode;
@@ -173,7 +171,7 @@ class ScreenPressesHandler : ScriptObject
             Camera @camera = scene.GetChild ("camera").GetComponent ("Camera");
             Ray ray = camera.GetScreenRay (eventData ["X"].GetInt () * 1.0f / graphics.width,
                                            eventData ["Y"].GetInt () * 1.0f / graphics.height);
-            RayQueryResult result = octree.RaycastSingle (ray, RAY_TRIANGLE, RAYCAST_RAY_LENGTH, DRAWABLE_GEOMETRY);
+            RayQueryResult result = octree.RaycastSingle (ray, RAY_TRIANGLE, DEFAULT_RAYCAST_RAY_LENGTH, DRAWABLE_GEOMETRY);
 
             if (result.node !is null)
             {

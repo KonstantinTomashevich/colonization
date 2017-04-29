@@ -9,7 +9,7 @@
 
 #include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
 #include <Colonization/Backend/MessagesHandler/MessagesHandler.hpp>
-#include <Colonization/Core/PlayerInfo.hpp>
+#include <Colonization/Core/PlayerInfo/PlayerInfo.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
@@ -125,6 +125,16 @@ void PlayersManager::UpdatePlayersInfos ()
                 updatePoints += 100.0f;
             }
 
+            if (playerInfo->GetEnemies () != player->GetEnemies ())
+            {
+                playerInfo->RemoveAllEnemies ();
+                for (int index = 0; index < player->GetEnemiesCount (); index++)
+                {
+                    playerInfo->AddEnemy (player->GetEnemyByIndex (index));
+                }
+                updatePoints += 100.0f;
+            }
+
             NetworkUpdateCounter *counter = playerInfo->GetNode ()->GetComponent <NetworkUpdateCounter> ();
             if (!counter)
             {
@@ -219,7 +229,7 @@ void PlayersManager::HandleClientDisconnected (Urho3D::StringHash eventType, Urh
         Player *player = GetPlayerByConnection (connection);
         if (player)
         {
-            Urho3D::Vector <Player *> allPlayers = players_.Values ();
+            Urho3D::PODVector <Player *> allPlayers = GetAllPlayers ();
             messagesHandler->SendTextInfoFromServer (GetPlayerByConnection (connection)->GetName () + " left game!", allPlayers);
             DisconnectPlayer (connection);
         }
@@ -251,6 +261,22 @@ void PlayersManager::SetStartGoldForAllPlayers ()
 int PlayersManager::GetPlayersCount () const
 {
     return players_.Size ();
+}
+
+bool PlayersManager::AddInternalPlayer (Player *player)
+{
+    assert (player->IsInternal ());
+    if (player->IsInternal () &&
+            !IsColorUsed (player->GetColor ()) &&
+            !GetPlayerByNameHash (Urho3D::StringHash (player->GetName ())))
+    {
+        players_ [Urho3D::StringHash (player->GetName ())] = player;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 Player *PlayersManager::GetPlayerByIndex (int index) const
@@ -344,9 +370,9 @@ void PlayersManager::DisconnectAllUnidentificatedConnections ()
     }
 }
 
-Urho3D::Vector <Player *> PlayersManager::GetPlayersByNames (Urho3D::Vector <Urho3D::StringHash> namesHashes) const
+Urho3D::PODVector <Player *> PlayersManager::GetPlayersByNames (Urho3D::PODVector<Urho3D::StringHash> namesHashes) const
 {
-    Urho3D::Vector <Player *> players;
+    Urho3D::PODVector <Player *> players;
     for (int index = 0; index < namesHashes.Size (); index++)
     {
         Player ** player = players_ [namesHashes.At (index)];
@@ -358,9 +384,15 @@ Urho3D::Vector <Player *> PlayersManager::GetPlayersByNames (Urho3D::Vector <Urh
     return players;
 }
 
-Urho3D::Vector <Player *> PlayersManager::GetAllPlayers () const
+Urho3D::PODVector <Player *> PlayersManager::GetAllPlayers () const
 {
-    return players_.Values ();
+    Urho3D::PODVector <Player *> allPlayers;
+    for (Urho3D::HashMap <Urho3D::StringHash, Player *>::ConstIterator iterator = players_.Begin ();
+         iterator != players_.End (); iterator++)
+    {
+        allPlayers.Push (iterator->second_);
+    }
+    return allPlayers;
 }
 
 void PlayersManager::PlayerIdentified (Urho3D::Connection *connection, Urho3D::String name, Urho3D::Color color)
@@ -369,11 +401,10 @@ void PlayersManager::PlayerIdentified (Urho3D::Connection *connection, Urho3D::S
     Player *player = new Player (context_, name, color, connection, node_->GetScene ());
     players_ [name] = player;
     connectionHashToNameHashMap_ [Urho3D::StringHash (connection->ToString ())] = Urho3D::StringHash (name);
-    player->SetGold (1000.0f);
 
     MessagesHandler *messagesHandler = node_->GetScene ()->GetComponent <MessagesHandler> ();
     assert (messagesHandler);
-    Urho3D::Vector <Player *> allPlayers = players_.Values ();
+    Urho3D::PODVector <Player *> allPlayers = GetAllPlayers ();
     messagesHandler->SendTextInfoFromServer (player->GetName () + " entered game!", allPlayers);
     connection->SetScene (node_->GetScene ());
 }
@@ -384,9 +415,12 @@ void PlayersManager::DisconnectPlayer (Urho3D::StringHash nameHash)
     assert (player);
     players_.Erase (nameHash);
 
-    assert (player->GetConnection ());
-    connectionHashToNameHashMap_.Erase (Urho3D::StringHash (player->GetConnection ()->ToString ()));
-    player->GetConnection ()->Disconnect ();
+    assert (player->GetConnection () || player->IsInternal ());
+    if (player->GetConnection ())
+    {
+        connectionHashToNameHashMap_.Erase (Urho3D::StringHash (player->GetConnection ()->ToString ()));
+    }
+    player->Disconnect (0);
     delete player;
 }
 

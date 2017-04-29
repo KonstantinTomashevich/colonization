@@ -1,3 +1,4 @@
+#include "AngelScript/Utils/Constants.as"
 #include "AngelScript/Utils/ClientUtils.as"
 
 class MapBillboards : ScriptObject
@@ -8,7 +9,6 @@ class MapBillboards : ScriptObject
     protected XMLFile @unitIconXML_;
     protected bool isSceneLoaded_;
 
-    protected Color NEUTRAL_COLOR = Color (0.5f, 0.5f, 0.5f, 1.0f);
     protected Vector3 BILLBOARD_WORLD_POSITION_OFFSET = Vector3 (0.0f, 1.0f, 0.0f);
     protected Vector2 BILLBOARD_MIN_SCREEN_POINT = Vector2 (-0.2f, -0.2f);
     protected Vector2 BILLBOARD_MAX_SCREEN_POINT = Vector2 (1.2f, 1.2f);

@@ -25,6 +25,14 @@ const char *neighborsHashesStructureElementsNames [] =
     0
 };
 
+const char *colonyActionsStructureElementsNames [] =
+{
+    "Colony Actions Count",
+    "   Type",
+    "   Data",
+    0
+};
+
 const char *climateTypesNames [] =
 {
     "Tropical",
@@ -168,8 +176,9 @@ void District::RegisterObject (Urho3D::Context *context)
 
     URHO3D_ACCESSOR_ATTRIBUTE ("Has Colony", HasColony, SetColony, bool, false, Urho3D::AM_DEFAULT);
     URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Colony Owner Name", GetColonyOwnerName, SetColonyOwnerName, Urho3D::String, Urho3D::String::EMPTY, Urho3D::AM_DEFAULT);
-    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Colony Actions", GetColonyActionsAttribute, SetColonyActionsAttribute,
-                                     Urho3D::VariantVector, Urho3D::Variant::emptyVariantVector, Urho3D::AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_VARIANT_VECTOR_STRUCTURE_ATTRIBUTE ("Colony Actions", GetColonyActionsAttribute, SetColonyActionsAttribute,
+                                                              Urho3D::VariantVector, Urho3D::Variant::emptyVariantVector,
+                                                              colonyActionsStructureElementsNames, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Men Count", GetMenCount, SetMenCount, float, 0.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Women Count", GetWomenCount, SetWomenCount, float, 0.0f, Urho3D::AM_DEFAULT);
 
@@ -675,6 +684,7 @@ void District::SetColonyOwnerName (const Urho3D::String &colonyOwnerName)
 Urho3D::VariantVector District::GetColonyActionsAttribute () const
 {
     Urho3D::VariantVector variantVector;
+    variantVector.Push (colonyActions_.Size ());
     for (int index = 0; index < colonyActions_.Size (); index++)
     {
         variantVector.Push (colonyActions_.At (index).first_);
@@ -684,14 +694,29 @@ Urho3D::VariantVector District::GetColonyActionsAttribute () const
 }
 
 void District::SetColonyActionsAttribute (const Urho3D::VariantVector &colonyActions)
-{
+{    
     colonyActions_.Clear ();
-    for (int index = 0; index + 1 < colonyActions.Size (); index++)
+    if (!colonyActions.Empty ())
     {
-        Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> action;
-        action.first_ = colonyActions.At (index).GetStringHash ();
-        action.second_ = colonyActions.At (index + 1).GetVariantMap ();
-        colonyActions_.Push (action);
+        int requestedSize = colonyActions.At (0).GetInt ();
+        if (requestedSize > 0)
+        {
+            for (int index = 0; index < requestedSize; index++)
+            {
+                if ((index + 1) * 2 < colonyActions.Size ())
+                {
+                    Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> action;
+                    action.first_ = colonyActions.At (index * 2 + 1).GetStringHash ();
+                    action.second_ = colonyActions.At ((index + 1) * 2).GetVariantMap ();
+                    colonyActions_.Push (action);
+                }
+                else
+                {
+                    Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> action;
+                    colonyActions_.Push (action);
+                }
+            }
+        }
     }
 }
 

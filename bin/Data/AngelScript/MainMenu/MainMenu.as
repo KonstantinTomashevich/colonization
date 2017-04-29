@@ -1,7 +1,8 @@
+#include "AngelScript/Utils/Constants.as"
+
 class MainMenu : ScriptObject
 {
     protected ActivitiesApplication @activitiesApplication_;
-    protected uint NEW_GAME_SERVER_PORT = 13768;
 
     protected void SetupBackground ()
     {
@@ -76,7 +77,7 @@ class MainMenu : ScriptObject
     void Start ()
     {
         node.AddTag ("ScriptMain");
-        node.vars ["serverPort"] = Variant (NEW_GAME_SERVER_PORT);
+        node.vars ["serverPort"] = Variant (NEW_GAME_DEFAULT_SERVER_PORT);
         ui.root.RemoveAllChildren ();
         XMLFile@ style = cache.GetResource ("XMLFile", "UI/ColonizationUIStyle.xml");
         ui.root.defaultStyle = style;
@@ -126,14 +127,14 @@ class MainMenu : ScriptObject
         }
 
         HostActivity @hostActivity = HostActivity ();
-        hostActivity.serverPort = NEW_GAME_SERVER_PORT;
+        hostActivity.serverPort = NEW_GAME_DEFAULT_SERVER_PORT;
         hostActivity.mapFolder = eventData ["selectedMapFolder"].GetString ();
         hostActivity.mapInfoPath = eventData ["selectedMapInfo"].GetString ();
         activitiesApplication_.SetupActivityNextFrame (hostActivity);
 
         IngameClientActivity @ingameClientActivity = IngameClientActivity ();
         ingameClientActivity.serverAdress = "localhost";
-        ingameClientActivity.serverPort = NEW_GAME_SERVER_PORT;
+        ingameClientActivity.serverPort = NEW_GAME_DEFAULT_SERVER_PORT;
         ingameClientActivity.isAdmin = true;
         ingameClientActivity.playerName = eventData ["nickname"].GetString ();
         ingameClientActivity.playerColor = eventData ["color"].GetColor ();

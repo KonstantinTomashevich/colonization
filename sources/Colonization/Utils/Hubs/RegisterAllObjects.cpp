@@ -9,13 +9,19 @@
 #include <Colonization/Backend/PlayersPointsCalculator.hpp>
 #include <Colonization/Backend/TradeProcessor.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
-#include <Colonization/Backend/VictoryProgressUpdater.hpp>
+#include <Colonization/Backend/VictoryProgressUpdater/VictoryProgressUpdater.hpp>
 
+#include <Colonization/Backend/Diplomacy/DiplomacyProcessor.hpp>
+#include <Colonization/Backend/Diplomacy/DiplomacyRequest.hpp>
+#include <Colonization/Backend/Diplomacy/DiplomacyWarRequest.hpp>
+#include <Colonization/Backend/Diplomacy/DiplomacyPeaceRequest.hpp>
+
+#include <Colonization/Core/Diplomacy/DiplomacyWar.hpp>
 #include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Core/InternalTradeArea/InternalTradeArea.hpp>
 #include <Colonization/Core/Map.hpp>
-#include <Colonization/Core/PlayerInfo.hpp>
+#include <Colonization/Core/PlayerInfo/PlayerInfo.hpp>
 #include <Colonization/Core/Unit.hpp>
 
 #include <Colonization/Frontend/FogOfWarCalculator.hpp>
@@ -37,6 +43,12 @@ void RegisterAllObjects (Urho3D::Context *context)
     UnitsManager::RegisterObject (context);
     VictoryProgressUpdater::RegisterObject (context);
 
+    DiplomacyProcessor::RegisterObject (context);
+    DiplomacyRequest::RegisterObject (context);
+    DiplomacyWarRequest::RegisterObject (context);
+    DiplomacyPeaceRequest::RegisterObject (context);
+
+    DiplomacyWar::RegisterObject (context);
     District::RegisterObject (context);
     GameConfiguration::RegisterObject (context);
     InternalTradeArea::RegisterObject (context);
