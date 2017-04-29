@@ -15,6 +15,8 @@ class ClientUi : ScriptObject
         uiResizerInstance.SetAttribute ("startElementName_", Variant ("UIRoot"));
         uiResizerInstance.SetAttribute ("continuousResize_", Variant (true));
 
+
+        // TODO: Maybe stop using ui player color painter?
         ScriptInstance @uiPlayerColorPainterInstance = utilHandlersNode.CreateChild ("UiPlayerColorPainter", LOCAL).CreateComponent ("ScriptInstance");
         uiPlayerColorPainterInstance.CreateObject (cache.GetResource ("ScriptFile",
                                                          "AngelScript/Utils/UiPlayerColorPainter.as"),
@@ -118,6 +120,11 @@ class ClientUi : ScriptObject
         infoTableControlsInstance.CreateObject (cache.GetResource ("ScriptFile",
                                                          "AngelScript/Client/UiHandlers/Ingame/InfoTableControls.as"),
                                                "InfoTableControls");
+
+        ScriptInstance @diplomacyMessagesProcessorInstance = uiHandlersNode.CreateChild ("DiplomacyMessagesProcessor", LOCAL).CreateComponent ("ScriptInstance");
+        diplomacyMessagesProcessorInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Client/UiHandlers/Ingame/DiplomacyMessagesProcessor.as"),
+                                               "DiplomacyMessagesProcessor");
     }
 
     ClientUi ()
