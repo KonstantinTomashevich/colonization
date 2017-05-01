@@ -33,6 +33,10 @@ class TopActionBar : ScriptObject
         playerStatsInfo += "Gold: " + Floor (scriptMain.vars ["gold"].GetFloat ()) + "  ";
         playerStatsInfo += "Points: " + Floor (scriptMain.vars ["points"].GetFloat ());
         playerStatsText.text = playerStatsInfo;
+
+        BorderImage @colorSample = topActionBar.GetChild ("colorSample");
+        PlayerInfo @playerInfo = GetPlayerInfoByName (scene, scriptMain.vars ["playerName"].GetString ());
+        colorSample.color = playerInfo.color;
     }
 
     void Stop ()

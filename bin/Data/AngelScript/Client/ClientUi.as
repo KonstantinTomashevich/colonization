@@ -14,13 +14,6 @@ class ClientUi : ScriptObject
                                         "UiResizer");
         uiResizerInstance.SetAttribute ("startElementName_", Variant ("UIRoot"));
         uiResizerInstance.SetAttribute ("continuousResize_", Variant (true));
-
-
-        // TODO: Maybe stop using ui player color painter?
-        ScriptInstance @uiPlayerColorPainterInstance = utilHandlersNode.CreateChild ("UiPlayerColorPainter", LOCAL).CreateComponent ("ScriptInstance");
-        uiPlayerColorPainterInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/Utils/UiPlayerColorPainter.as"),
-                                        "UiPlayerColorPainter");
     }
 
     protected void AddWaitingForStartStateUiHandlers ()
@@ -154,16 +147,6 @@ class ClientUi : ScriptObject
         if (!isSceneLoaded_ and scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
         {
             isSceneLoaded_ = CheckIsSceneLoaded (scene);
-        }
-        else
-        {
-            PlayerInfo @playerInfo = GetPlayerInfoByName (scene, scriptMain.vars ["playerName"].GetString ());
-            if (playerInfo !is null)
-            {
-                ScriptInstance @uiPlayerColorPainterInstance = node.GetChild ("utilHandlers").
-                            GetChild ("UiPlayerColorPainter").GetComponent ("ScriptInstance");
-                uiPlayerColorPainterInstance.SetAttribute ("playerColor_", Variant (playerInfo.color));
-            }
         }
     }
 

@@ -27,6 +27,11 @@
 		<attribute name="Size" value="1366 56" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Opacity" value="0.65" />
+		<attribute name="Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 		<attribute name="Variables">
 			<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 			<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -43,41 +48,36 @@
 		</attribute>
 		<attribute name="Tags">
 			<string value="EnableUiResizer" />
-			<string value="SetPlayerColor" />
 		</attribute>
-		<element type="Text">
-			<attribute name="Name" value="playerStatsInfo" />
-			<attribute name="Position" value="16 16" />
+		<element type="BorderImage" style="BorderImage">
+			<attribute name="Name" value="colorSample" />
+			<attribute name="Size" value="683 56" />
 			<attribute name="Pivot" value="0 0" />
-			<attribute name="Color" value="0.85 0.85 0.85 1" />
-			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
-			<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
-			<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
-			<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
-			<attribute name="Bring To Front" value="true" />
-			<attribute name="Bring To Back" value="false" />
+			<attribute name="Use Derived Opacity" value="false" />
 			<attribute name="Variables">
-				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
+				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
 				<variant hash="511642371" type="String" value="ParentHeight" name="XDependency" />
 				<variant hash="2232932484" type="String" value="ParentHeight" name="YDependency" />
-				<variant hash="4144064518" type="Float" value="0.8" name="WidthModifer" />
-				<variant hash="4127232677" type="Float" value="0.8" name="HeightModifer" />
-				<variant hash="235997748" type="Float" value="0.3" name="XModifer" />
-				<variant hash="2971843571" type="Float" value="0.3" name="YModifer" />
-				<variant hash="156785404" type="Float" value="0.3" name="FontSizeModifer" />
-				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
-				<variant hash="376939691" type="None" value="" name="InvertXPosition" />
-				<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
-				<variant hash="820293360" type="None" value="" name="InvertWidth" />
+				<variant hash="4144064518" type="Float" value="0.5" name="WidthModifer" />
+				<variant hash="4127232677" type="Float" value="1" name="HeightModifer" />
+				<variant hash="235997748" type="Float" value="0" name="XModifer" />
+				<variant hash="2971843571" type="Float" value="0" name="YModifer" />
+				<variant hash="376939691" type="Bool" value="false" name="InvertXPosition" />
+				<variant hash="3869079501" type="String" value="" name="InvertXDependency" />
+				<variant hash="208094698" type="Float" value="0" name="InvertXModifer" />
+				<variant hash="3918619308" type="Bool" value="false" name="InvertYPosition" />
+				<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
+				<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
+				<variant hash="820293360" type="Bool" value="false" name="InvertWidth" />
+				<variant hash="1219562875" type="String" value="" name="InvertWidthDependency" />
+				<variant hash="2739416508" type="Float" value="0" name="InvertWidthModifer" />
 				<variant hash="1025976573" type="None" value="" name="InvertHeight" />
+				<variant hash="200199343" type="Int" value="6" name="ElementOffset" />
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
 			</attribute>
-			<attribute name="Font Size" value="16" />
-			<attribute name="Text" value="Player Name..." />
-			<attribute name="Text Effect" value="Stroke" />
 		</element>
 		<element type="Button" style="TextButton">
 			<attribute name="Name" value="exitButton" />
@@ -85,6 +85,11 @@
 			<attribute name="Size" value="140 56" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Bring To Front" value="true" />
 			<attribute name="Bring To Back" value="false" />
 			<attribute name="Variables">
@@ -106,7 +111,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -149,6 +153,11 @@
 			<attribute name="Size" value="224 56" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Bring To Front" value="true" />
 			<attribute name="Bring To Back" value="false" />
 			<attribute name="Variables">
@@ -170,7 +179,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -207,6 +215,40 @@
 				<attribute name="Text Effect" value="Stroke" />
 			</element>
 		</element>
+		<element type="Text">
+			<attribute name="Name" value="playerStatsInfo" />
+			<attribute name="Position" value="16 16" />
+			<attribute name="Pivot" value="0 0" />
+			<attribute name="Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Bring To Front" value="true" />
+			<attribute name="Bring To Back" value="false" />
+			<attribute name="Variables">
+				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
+				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
+				<variant hash="511642371" type="String" value="ParentHeight" name="XDependency" />
+				<variant hash="2232932484" type="String" value="ParentHeight" name="YDependency" />
+				<variant hash="4144064518" type="Float" value="0.8" name="WidthModifer" />
+				<variant hash="4127232677" type="Float" value="0.8" name="HeightModifer" />
+				<variant hash="235997748" type="Float" value="0.3" name="XModifer" />
+				<variant hash="2971843571" type="Float" value="0.3" name="YModifer" />
+				<variant hash="156785404" type="Float" value="0.3" name="FontSizeModifer" />
+				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
+				<variant hash="376939691" type="None" value="" name="InvertXPosition" />
+				<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
+				<variant hash="1025976573" type="None" value="" name="InvertHeight" />
+			</attribute>
+			<attribute name="Tags">
+				<string value="EnableUiResizer" />
+			</attribute>
+			<attribute name="Font Size" value="16" />
+			<attribute name="Text" value="Player Name..." />
+			<attribute name="Text Effect" value="Stroke" />
+		</element>
 	</element>
 	<element type="Window">
 		<attribute name="Name" value="unitInfoWindow" />
@@ -214,7 +256,11 @@
 		<attribute name="Size" value="683 211" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Opacity" value="0.65" />
-		<attribute name="Is Visible" value="false" />
+		<attribute name="Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 		<attribute name="Variables">
 			<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 			<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -235,41 +281,7 @@
 		</attribute>
 		<attribute name="Tags">
 			<string value="EnableUiResizer" />
-			<string value="SetPlayerColor" />
 		</attribute>
-		<element type="Text">
-			<attribute name="Name" value="ownerText" />
-			<attribute name="Position" value="20 21" />
-			<attribute name="Pivot" value="0 0" />
-			<attribute name="Color" value="0.85 0.85 0.85 1" />
-			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
-			<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
-			<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
-			<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
-			<attribute name="Variables">
-				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
-				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
-				<variant hash="511642371" type="String" value="ParentWidth" name="XDependency" />
-				<variant hash="2232932484" type="String" value="ParentHeight" name="YDependency" />
-				<variant hash="4144064518" type="Float" value="0.25" name="WidthModifer" />
-				<variant hash="4127232677" type="Float" value="0.1" name="HeightModifer" />
-				<variant hash="235997748" type="Float" value="0.03" name="XModifer" />
-				<variant hash="2971843571" type="Float" value="0.1" name="YModifer" />
-				<variant hash="156785404" type="Float" value="0.125" name="FontSizeModifer" />
-				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
-				<variant hash="376939691" type="None" value="" name="InvertXPosition" />
-				<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
-				<variant hash="820293360" type="None" value="" name="InvertWidth" />
-				<variant hash="1025976573" type="None" value="" name="InvertHeight" />
-			</attribute>
-			<attribute name="Tags">
-				<string value="EnableUiResizer" />
-			</attribute>
-			<attribute name="Font Size" value="26" />
-			<attribute name="Text" value="AiPlayer's" />
-			<attribute name="Text Effect" value="Stroke" />
-			<attribute name="Stroke Thickness" value="2" />
-		</element>
 		<element type="Text">
 			<attribute name="Name" value="typeText" />
 			<attribute name="Position" value="102 63" />
@@ -371,6 +383,11 @@
 			<attribute name="Size" value="239 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -391,7 +408,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -427,6 +443,70 @@
 				<attribute name="Text Effect" value="Stroke" />
 			</element>
 		</element>
+		<element type="BorderImage" style="BorderImage">
+			<attribute name="Name" value="colorSample" />
+			<attribute name="Position" value="0 14" />
+			<attribute name="Size" value="273 52" />
+			<attribute name="Pivot" value="0 0" />
+			<attribute name="Use Derived Opacity" value="false" />
+			<attribute name="Variables">
+				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
+				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
+				<variant hash="511642371" type="String" value="ParentWidth" name="XDependency" />
+				<variant hash="2232932484" type="String" value="ParentHeight" name="YDependency" />
+				<variant hash="4144064518" type="Float" value="0.4" name="WidthModifer" />
+				<variant hash="4127232677" type="Float" value="0.25" name="HeightModifer" />
+				<variant hash="235997748" type="Float" value="0" name="XModifer" />
+				<variant hash="2971843571" type="Float" value="0.07" name="YModifer" />
+				<variant hash="376939691" type="Bool" value="false" name="InvertXPosition" />
+				<variant hash="3869079501" type="String" value="" name="InvertXDependency" />
+				<variant hash="208094698" type="Float" value="0" name="InvertXModifer" />
+				<variant hash="3918619308" type="Bool" value="false" name="InvertYPosition" />
+				<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
+				<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
+				<variant hash="820293360" type="Bool" value="false" name="InvertWidth" />
+				<variant hash="1219562875" type="String" value="" name="InvertWidthDependency" />
+				<variant hash="2739416508" type="Float" value="0" name="InvertWidthModifer" />
+				<variant hash="1025976573" type="None" value="" name="InvertHeight" />
+				<variant hash="200199343" type="Int" value="6" name="ElementOffset" />
+			</attribute>
+			<attribute name="Tags">
+				<string value="EnableUiResizer" />
+			</attribute>
+		</element>
+		<element type="Text">
+			<attribute name="Name" value="ownerText" />
+			<attribute name="Position" value="20 21" />
+			<attribute name="Pivot" value="0 0" />
+			<attribute name="Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Variables">
+				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
+				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
+				<variant hash="511642371" type="String" value="ParentWidth" name="XDependency" />
+				<variant hash="2232932484" type="String" value="ParentHeight" name="YDependency" />
+				<variant hash="4144064518" type="Float" value="0.25" name="WidthModifer" />
+				<variant hash="4127232677" type="Float" value="0.1" name="HeightModifer" />
+				<variant hash="235997748" type="Float" value="0.03" name="XModifer" />
+				<variant hash="2971843571" type="Float" value="0.1" name="YModifer" />
+				<variant hash="156785404" type="Float" value="0.125" name="FontSizeModifer" />
+				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
+				<variant hash="376939691" type="None" value="" name="InvertXPosition" />
+				<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
+				<variant hash="1025976573" type="None" value="" name="InvertHeight" />
+			</attribute>
+			<attribute name="Tags">
+				<string value="EnableUiResizer" />
+			</attribute>
+			<attribute name="Font Size" value="26" />
+			<attribute name="Text" value="AiPlayer's" />
+			<attribute name="Text Effect" value="Stroke" />
+			<attribute name="Stroke Thickness" value="2" />
+		</element>
 	</element>
 	<element type="Window">
 		<attribute name="Name" value="districtInfoWindow" />
@@ -434,6 +514,12 @@
 		<attribute name="Size" value="683 211" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Opacity" value="0.65" />
+		<attribute name="Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
+		<attribute name="Is Visible" value="false" />
 		<attribute name="Variables">
 			<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 			<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -454,49 +540,18 @@
 		</attribute>
 		<attribute name="Tags">
 			<string value="EnableUiResizer" />
-			<string value="SetPlayerColor" />
 		</attribute>
-		<element type="Text">
-			<attribute name="Name" value="nameText" />
-			<attribute name="Min Anchor" value="0.025 0.05" />
-			<attribute name="Max Anchor" value="0.4 0.2" />
-			<attribute name="Pivot" value="0 0" />
-			<attribute name="Enable Anchor" value="true" />
-			<attribute name="Color" value="0.85 0.85 0.85 1" />
-			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
-			<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
-			<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
-			<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
-			<attribute name="Variables">
-				<variant hash="234597041" type="String" value="disable" name="WidthDependency" />
-				<variant hash="2184685394" type="String" value="disable" name="HeightDependency" />
-				<variant hash="511642371" type="String" value="disable" name="XDependency" />
-				<variant hash="2232932484" type="String" value="disable" name="YDependency" />
-				<variant hash="4144064518" type="Float" value="0" name="WidthModifer" />
-				<variant hash="4127232677" type="Float" value="0" name="HeightModifer" />
-				<variant hash="235997748" type="Float" value="0" name="XModifer" />
-				<variant hash="2971843571" type="Float" value="0" name="YModifer" />
-				<variant hash="156785404" type="Float" value="0.1" name="FontSizeModifer" />
-				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
-				<variant hash="376939691" type="None" value="" name="InvertXPosition" />
-				<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
-				<variant hash="820293360" type="None" value="" name="InvertWidth" />
-				<variant hash="1025976573" type="None" value="" name="InvertHeight" />
-			</attribute>
-			<attribute name="Tags">
-				<string value="EnableUiResizer" />
-			</attribute>
-			<attribute name="Font Size" value="21" />
-			<attribute name="Text" value="DistrictX" />
-			<attribute name="Text Effect" value="Stroke" />
-			<attribute name="Stroke Thickness" value="2" />
-		</element>
 		<element type="Button" style="TextButton">
 			<attribute name="Name" value="basicInfoButton" />
 			<attribute name="Position" value="20 52" />
 			<attribute name="Size" value="204 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -517,7 +572,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -559,6 +613,11 @@
 			<attribute name="Size" value="204 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -579,7 +638,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -621,6 +679,11 @@
 			<attribute name="Size" value="204 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -641,7 +704,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -683,6 +745,11 @@
 			<attribute name="Size" value="204 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -703,7 +770,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -800,6 +866,11 @@
 				<attribute name="Size" value="170 25" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0.08 0.8 0 1" />
+				<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+				<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+				<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+				<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -821,7 +892,6 @@
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
-					<string value="SetPlayerColor" />
 				</attribute>
 				<element type="Text">
 					<attribute name="Name" value="text" />
@@ -863,6 +933,11 @@
 				<attribute name="Size" value="170 25" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0.08 0.8 0 1" />
+				<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+				<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+				<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+				<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -884,7 +959,6 @@
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
-					<string value="SetPlayerColor" />
 				</attribute>
 				<element type="Text">
 					<attribute name="Name" value="text" />
@@ -926,6 +1000,11 @@
 				<attribute name="Size" value="170 25" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0.08 0.8 0 1" />
+				<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+				<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+				<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+				<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -947,7 +1026,6 @@
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
-					<string value="SetPlayerColor" />
 				</attribute>
 				<element type="Text">
 					<attribute name="Name" value="text" />
@@ -989,6 +1067,11 @@
 				<attribute name="Size" value="170 25" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0.08 0.8 0 1" />
+				<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+				<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+				<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+				<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -1010,7 +1093,6 @@
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
-					<string value="SetPlayerColor" />
 				</attribute>
 				<element type="Text">
 					<attribute name="Name" value="text" />
@@ -1052,6 +1134,11 @@
 				<attribute name="Size" value="170 25" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0.08 0.8 0 1" />
+				<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+				<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+				<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+				<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -1073,7 +1160,6 @@
 				</attribute>
 				<attribute name="Tags">
 					<string value="EnableUiResizer" />
-					<string value="SetPlayerColor" />
 				</attribute>
 				<element type="Text">
 					<attribute name="Name" value="text" />
@@ -1116,6 +1202,11 @@
 			<attribute name="Size" value="375 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0.08 0.8 0 1" />
+			<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+			<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+			<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+			<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -1136,7 +1227,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -1178,6 +1268,11 @@
 			<attribute name="Size" value="375 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0.8 0.03 0 1" />
+			<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+			<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+			<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+			<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -1198,7 +1293,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -1240,6 +1334,11 @@
 			<attribute name="Size" value="375 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0.08 0.8 0 1" />
+			<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+			<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+			<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+			<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 			<attribute name="Is Visible" value="false" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
@@ -1261,7 +1360,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -1297,6 +1395,71 @@
 				<attribute name="Text Effect" value="Stroke" />
 			</element>
 		</element>
+		<element type="BorderImage" style="BorderImage">
+			<attribute name="Name" value="colorSample" />
+			<attribute name="Size" value="273 52" />
+			<attribute name="Pivot" value="0 0" />
+			<attribute name="Use Derived Opacity" value="false" />
+			<attribute name="Variables">
+				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
+				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
+				<variant hash="511642371" type="String" value="ParentWidth" name="XDependency" />
+				<variant hash="2232932484" type="String" value="ParentHeight" name="YDependency" />
+				<variant hash="4144064518" type="Float" value="0.35" name="WidthModifer" />
+				<variant hash="4127232677" type="Float" value="0.25" name="HeightModifer" />
+				<variant hash="235997748" type="Float" value="0" name="XModifer" />
+				<variant hash="2971843571" type="Float" value="0" name="YModifer" />
+				<variant hash="376939691" type="Bool" value="false" name="InvertXPosition" />
+				<variant hash="3869079501" type="String" value="" name="InvertXDependency" />
+				<variant hash="208094698" type="Float" value="0" name="InvertXModifer" />
+				<variant hash="3918619308" type="Bool" value="false" name="InvertYPosition" />
+				<variant hash="2943940521" type="Float" value="0" name="InvertYModifer" />
+				<variant hash="1295402318" type="String" value="" name="InvertYDependency" />
+				<variant hash="820293360" type="Bool" value="false" name="InvertWidth" />
+				<variant hash="1219562875" type="String" value="" name="InvertWidthDependency" />
+				<variant hash="2739416508" type="Float" value="0" name="InvertWidthModifer" />
+				<variant hash="1025976573" type="None" value="" name="InvertHeight" />
+				<variant hash="200199343" type="Int" value="6" name="ElementOffset" />
+			</attribute>
+			<attribute name="Tags">
+				<string value="EnableUiResizer" />
+			</attribute>
+		</element>
+		<element type="Text">
+			<attribute name="Name" value="nameText" />
+			<attribute name="Min Anchor" value="0.025 0.05" />
+			<attribute name="Max Anchor" value="0.4 0.2" />
+			<attribute name="Pivot" value="0 0" />
+			<attribute name="Enable Anchor" value="true" />
+			<attribute name="Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Top Left Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Top Right Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Bottom Left Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Bottom Right Color" value="0.85 0.85 0.85 1" />
+			<attribute name="Variables">
+				<variant hash="234597041" type="String" value="disable" name="WidthDependency" />
+				<variant hash="2184685394" type="String" value="disable" name="HeightDependency" />
+				<variant hash="511642371" type="String" value="disable" name="XDependency" />
+				<variant hash="2232932484" type="String" value="disable" name="YDependency" />
+				<variant hash="4144064518" type="Float" value="0" name="WidthModifer" />
+				<variant hash="4127232677" type="Float" value="0" name="HeightModifer" />
+				<variant hash="235997748" type="Float" value="0" name="XModifer" />
+				<variant hash="2971843571" type="Float" value="0" name="YModifer" />
+				<variant hash="156785404" type="Float" value="0.1" name="FontSizeModifer" />
+				<variant hash="3272003643" type="String" value="ParentHeight" name="FontSizeDependency" />
+				<variant hash="376939691" type="None" value="" name="InvertXPosition" />
+				<variant hash="3918619308" type="None" value="" name="InvertYPosition" />
+				<variant hash="820293360" type="None" value="" name="InvertWidth" />
+				<variant hash="1025976573" type="None" value="" name="InvertHeight" />
+			</attribute>
+			<attribute name="Tags">
+				<string value="EnableUiResizer" />
+			</attribute>
+			<attribute name="Font Size" value="21" />
+			<attribute name="Text" value="DistrictX" />
+			<attribute name="Text Effect" value="Stroke" />
+			<attribute name="Stroke Thickness" value="2" />
+		</element>
 	</element>
 	<element type="Window">
 		<attribute name="Name" value="chatWindow" />
@@ -1304,6 +1467,11 @@
 		<attribute name="Size" value="683 247" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Opacity" value="0.65" />
+		<attribute name="Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 		<attribute name="Variables">
 			<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 			<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -1324,7 +1492,6 @@
 		</attribute>
 		<attribute name="Tags">
 			<string value="EnableUiResizer" />
-			<string value="SetPlayerColor" />
 		</attribute>
 		<element type="Button" style="TextButton">
 			<attribute name="Name" value="showHideButton" />
@@ -1332,6 +1499,11 @@
 			<attribute name="Size" value="98 49" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -1352,7 +1524,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -1426,6 +1597,11 @@
 			<attribute name="Position" value="12 209" />
 			<attribute name="Size" value="461 29" />
 			<attribute name="Pivot" value="0 0" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -1448,7 +1624,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<attribute name="Max Length" value="100" />
 			<element type="Text" internal="true" style="none">
@@ -1472,6 +1647,11 @@
 			<attribute name="Size" value="98 29" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -1492,7 +1672,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -1534,6 +1713,11 @@
 			<attribute name="Size" value="98 29" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -1554,7 +1738,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -1628,6 +1811,11 @@
 			<attribute name="Size" value="98 29" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -1648,7 +1836,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -1690,6 +1877,11 @@
 			<attribute name="Size" value="98 29" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -1710,7 +1902,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -1789,6 +1980,11 @@
 			<attribute name="Size" value="98 29" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -1809,7 +2005,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -1851,6 +2046,11 @@
 			<attribute name="Size" value="98 29" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -1871,7 +2071,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -1914,6 +2113,11 @@
 		<attribute name="Size" value="282 317" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Opacity" value="0.65" />
+		<attribute name="Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 		<attribute name="Is Visible" value="false" />
 		<attribute name="Variables">
 			<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
@@ -1931,7 +2135,6 @@
 		</attribute>
 		<attribute name="Tags">
 			<string value="EnableUiResizer" />
-			<string value="SetPlayerColor" />
 		</attribute>
 		<element type="Text">
 			<attribute name="Name" value="title" />
@@ -1971,6 +2174,11 @@
 			<attribute name="Size" value="71 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -1991,7 +2199,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -2070,6 +2277,11 @@
 			<attribute name="Size" value="71 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -2090,7 +2302,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -2132,6 +2343,11 @@
 			<attribute name="Size" value="71 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -2152,7 +2368,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -2285,6 +2500,11 @@
 					<attribute name="Size" value="29 29" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 						<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -2306,7 +2526,6 @@
 					</attribute>
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
-						<string value="SetPlayerColor" />
 					</attribute>
 					<element type="Text">
 						<attribute name="Name" value="text" />
@@ -2411,6 +2630,11 @@
 					<attribute name="Size" value="29 29" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 						<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -2432,7 +2656,6 @@
 					</attribute>
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
-						<string value="SetPlayerColor" />
 					</attribute>
 					<element type="Text">
 						<attribute name="Name" value="text" />
@@ -2537,6 +2760,11 @@
 					<attribute name="Size" value="29 29" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 						<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -2558,7 +2786,6 @@
 					</attribute>
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
-						<string value="SetPlayerColor" />
 					</attribute>
 					<element type="Text">
 						<attribute name="Name" value="text" />
@@ -2663,6 +2890,11 @@
 					<attribute name="Size" value="29 29" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 						<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -2684,7 +2916,6 @@
 					</attribute>
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
-						<string value="SetPlayerColor" />
 					</attribute>
 					<element type="Text">
 						<attribute name="Name" value="text" />
@@ -2789,6 +3020,11 @@
 					<attribute name="Size" value="29 29" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 						<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -2810,7 +3046,6 @@
 					</attribute>
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
-						<string value="SetPlayerColor" />
 					</attribute>
 					<element type="Text">
 						<attribute name="Name" value="text" />
@@ -2915,6 +3150,11 @@
 					<attribute name="Size" value="29 29" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 						<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -2936,7 +3176,6 @@
 					</attribute>
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
-						<string value="SetPlayerColor" />
 					</attribute>
 					<element type="Text">
 						<attribute name="Name" value="text" />
@@ -3041,6 +3280,11 @@
 					<attribute name="Size" value="29 29" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 						<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -3062,7 +3306,6 @@
 					</attribute>
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
-						<string value="SetPlayerColor" />
 					</attribute>
 					<element type="Text">
 						<attribute name="Name" value="text" />
@@ -3106,6 +3349,11 @@
 			<attribute name="Size" value="71 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -3126,7 +3374,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -3167,6 +3414,11 @@
 			<attribute name="Position" value="15 278" />
 			<attribute name="Size" value="187 31" />
 			<attribute name="Pivot" value="0 0" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -3191,7 +3443,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<attribute name="Max Length" value="100" />
 			<element type="Text" internal="true" style="none">
@@ -3216,6 +3467,12 @@
 		<attribute name="Size" value="282 317" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Opacity" value="0.65" />
+		<attribute name="Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
+		<attribute name="Is Visible" value="false" />
 		<attribute name="Variables">
 			<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 			<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -3232,7 +3489,6 @@
 		</attribute>
 		<attribute name="Tags">
 			<string value="EnableUiResizer" />
-			<string value="SetPlayerColor" />
 		</attribute>
 		<element type="Text">
 			<attribute name="Name" value="title" />
@@ -3272,6 +3528,11 @@
 			<attribute name="Size" value="71 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -3292,7 +3553,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -3371,6 +3631,11 @@
 			<attribute name="Size" value="71 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -3391,7 +3656,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -3433,6 +3697,11 @@
 			<attribute name="Size" value="71 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -3453,7 +3722,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -3586,6 +3854,11 @@
 					<attribute name="Size" value="29 29" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 						<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -3607,7 +3880,6 @@
 					</attribute>
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
-						<string value="SetPlayerColor" />
 					</attribute>
 					<element type="Text">
 						<attribute name="Name" value="text" />
@@ -3712,6 +3984,11 @@
 					<attribute name="Size" value="29 29" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 						<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -3733,7 +4010,6 @@
 					</attribute>
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
-						<string value="SetPlayerColor" />
 					</attribute>
 					<element type="Text">
 						<attribute name="Name" value="text" />
@@ -3838,6 +4114,11 @@
 					<attribute name="Size" value="29 29" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 						<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -3859,7 +4140,6 @@
 					</attribute>
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
-						<string value="SetPlayerColor" />
 					</attribute>
 					<element type="Text">
 						<attribute name="Name" value="text" />
@@ -3964,6 +4244,11 @@
 					<attribute name="Size" value="29 29" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 						<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -3985,7 +4270,6 @@
 					</attribute>
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
-						<string value="SetPlayerColor" />
 					</attribute>
 					<element type="Text">
 						<attribute name="Name" value="text" />
@@ -4090,6 +4374,11 @@
 					<attribute name="Size" value="29 29" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 						<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -4111,7 +4400,6 @@
 					</attribute>
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
-						<string value="SetPlayerColor" />
 					</attribute>
 					<element type="Text">
 						<attribute name="Name" value="text" />
@@ -4216,6 +4504,11 @@
 					<attribute name="Size" value="29 29" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 						<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -4237,7 +4530,6 @@
 					</attribute>
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
-						<string value="SetPlayerColor" />
 					</attribute>
 					<element type="Text">
 						<attribute name="Name" value="text" />
@@ -4342,6 +4634,11 @@
 					<attribute name="Size" value="29 29" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 						<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -4363,7 +4660,6 @@
 					</attribute>
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
-						<string value="SetPlayerColor" />
 					</attribute>
 					<element type="Text">
 						<attribute name="Name" value="text" />
@@ -4407,6 +4703,11 @@
 			<attribute name="Size" value="71 31" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -4427,7 +4728,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -4468,6 +4768,11 @@
 			<attribute name="Position" value="15 278" />
 			<attribute name="Size" value="187 31" />
 			<attribute name="Pivot" value="0 0" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -4492,7 +4797,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<attribute name="Max Length" value="100" />
 			<element type="Text" internal="true" style="none">
@@ -4517,6 +4821,11 @@
 		<attribute name="Size" value="564 141" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Opacity" value="0.65" />
+		<attribute name="Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 		<attribute name="Is Visible" value="false" />
 		<attribute name="Variables">
 			<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
@@ -4538,7 +4847,6 @@
 		</attribute>
 		<attribute name="Tags">
 			<string value="EnableUiResizer" />
-			<string value="SetPlayerColor" />
 		</attribute>
 		<element type="Text">
 			<attribute name="Name" value="info" />
@@ -4615,6 +4923,11 @@
 		<attribute name="Size" value="819 402" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Opacity" value="0.65" />
+		<attribute name="Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 		<attribute name="Is Visible" value="false" />
 		<attribute name="Variables">
 			<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
@@ -4637,7 +4950,6 @@
 		</attribute>
 		<attribute name="Tags">
 			<string value="EnableUiResizer" />
-			<string value="SetPlayerColor" />
 		</attribute>
 		<element type="Button" style="TextButton">
 			<attribute name="Name" value="hideButton" />
@@ -4645,6 +4957,11 @@
 			<attribute name="Size" value="72 36" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -4665,7 +4982,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -4706,6 +5022,11 @@
 			<attribute name="Position" value="0 80" />
 			<attribute name="Size" value="819 321" />
 			<attribute name="Pivot" value="0 0" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Is Visible" value="false" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
@@ -4728,7 +5049,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="title" />
@@ -4768,6 +5088,11 @@
 				<attribute name="Size" value="72 32" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Is Visible" value="false" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
@@ -4867,6 +5192,11 @@
 				<attribute name="Size" value="72 32" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -4928,6 +5258,11 @@
 				<attribute name="Size" value="72 32" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -5080,6 +5415,11 @@
 						<attribute name="Size" value="89 29" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -5236,6 +5576,11 @@
 						<attribute name="Size" value="89 29" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -5392,6 +5737,11 @@
 						<attribute name="Size" value="89 29" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -5548,6 +5898,11 @@
 						<attribute name="Size" value="89 29" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -5704,6 +6059,11 @@
 						<attribute name="Size" value="89 29" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -5860,6 +6220,11 @@
 						<attribute name="Size" value="89 29" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -6016,6 +6381,11 @@
 						<attribute name="Size" value="89 29" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -6111,6 +6481,11 @@
 				<attribute name="Size" value="72 32" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Is Visible" value="false" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
@@ -6172,6 +6547,11 @@
 				<attribute name="Position" value="16 281" />
 				<attribute name="Size" value="723 32" />
 				<attribute name="Pivot" value="0 0" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Is Visible" value="false" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
@@ -6221,6 +6601,11 @@
 			<attribute name="Size" value="80 36" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -6241,7 +6626,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -6283,6 +6667,11 @@
 			<attribute name="Size" value="80 36" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -6303,7 +6692,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -6344,6 +6732,11 @@
 			<attribute name="Position" value="0 80" />
 			<attribute name="Size" value="819 321" />
 			<attribute name="Pivot" value="0 0" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Is Visible" value="false" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
@@ -6366,7 +6759,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="title" />
@@ -6406,6 +6798,11 @@
 				<attribute name="Size" value="72 32" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Is Visible" value="false" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
@@ -6505,6 +6902,11 @@
 				<attribute name="Size" value="72 32" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -6566,6 +6968,11 @@
 				<attribute name="Size" value="72 32" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -6718,6 +7125,11 @@
 						<attribute name="Size" value="89 29" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0 0.1 0.44 1" />
+						<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+						<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+						<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+						<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -6843,6 +7255,11 @@
 						<attribute name="Size" value="89 29" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0 0.1 0.44 1" />
+						<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+						<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+						<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+						<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -6968,6 +7385,11 @@
 						<attribute name="Size" value="89 29" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0 0.1 0.44 1" />
+						<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+						<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+						<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+						<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -7093,6 +7515,11 @@
 						<attribute name="Size" value="89 29" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0 0.1 0.44 1" />
+						<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+						<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+						<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+						<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -7218,6 +7645,11 @@
 						<attribute name="Size" value="89 29" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0 0.1 0.44 1" />
+						<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+						<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+						<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+						<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -7343,6 +7775,11 @@
 						<attribute name="Size" value="89 29" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0 0.1 0.44 1" />
+						<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+						<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+						<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+						<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -7468,6 +7905,11 @@
 						<attribute name="Size" value="89 29" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0 0.1 0.44 1" />
+						<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+						<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+						<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+						<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -7532,6 +7974,11 @@
 				<attribute name="Size" value="72 32" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Is Visible" value="false" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
@@ -7593,6 +8040,11 @@
 				<attribute name="Position" value="16 281" />
 				<attribute name="Size" value="723 32" />
 				<attribute name="Pivot" value="0 0" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Is Visible" value="false" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
@@ -7641,6 +8093,11 @@
 			<attribute name="Position" value="0 80" />
 			<attribute name="Size" value="819 321" />
 			<attribute name="Pivot" value="0 0" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Is Visible" value="false" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
@@ -7663,7 +8120,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="title" />
@@ -7735,6 +8191,11 @@
 			<attribute name="Position" value="0 80" />
 			<attribute name="Size" value="819 321" />
 			<attribute name="Pivot" value="0 0" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -7756,7 +8217,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="title" />
@@ -7853,6 +8313,11 @@
 					<attribute name="Size" value="192 38" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 						<variant hash="2184685394" type="String" value="ParentWidth" name="HeightDependency" />
@@ -7873,7 +8338,6 @@
 					</attribute>
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
-						<string value="SetPlayerColor" />
 					</attribute>
 					<element type="Text">
 						<attribute name="Name" value="text" />
@@ -7914,6 +8378,11 @@
 					<attribute name="Size" value="192 38" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.08 0.8 0 1" />
+					<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+					<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+					<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+					<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 					<attribute name="Is Visible" value="false" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
@@ -7935,7 +8404,6 @@
 					</attribute>
 					<attribute name="Tags">
 						<string value="EnableUiResizer" />
-						<string value="SetPlayerColor" />
 					</attribute>
 					<element type="Text">
 						<attribute name="Name" value="text" />
@@ -8012,6 +8480,11 @@
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Priority" value="2" />
 		<attribute name="Opacity" value="0.65" />
+		<attribute name="Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 		<attribute name="Is Visible" value="false" />
 		<attribute name="Variables">
 			<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
@@ -8034,7 +8507,6 @@
 		</attribute>
 		<attribute name="Tags">
 			<string value="EnableUiResizer" />
-			<string value="SetPlayerColor" />
 		</attribute>
 		<element type="Text">
 			<attribute name="Name" value="title" />
@@ -8140,6 +8612,11 @@
 			<attribute name="Size" value="683 42" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Is Visible" value="false" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
@@ -8161,7 +8638,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -8203,6 +8679,11 @@
 			<attribute name="Size" value="341 42" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0.8 0.03 0 1" />
+			<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+			<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+			<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+			<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -8223,7 +8704,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
@@ -8265,6 +8745,11 @@
 			<attribute name="Size" value="341 42" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0.08 0.8 0 1" />
+			<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+			<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+			<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+			<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -8285,7 +8770,6 @@
 			</attribute>
 			<attribute name="Tags">
 				<string value="EnableUiResizer" />
-				<string value="SetPlayerColor" />
 			</attribute>
 			<element type="Text">
 				<attribute name="Name" value="text" />
