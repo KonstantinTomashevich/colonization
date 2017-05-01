@@ -630,6 +630,11 @@
 			<attribute name="Value" value="4" />
 			<element type="BorderImage" internal="true">
 				<attribute name="Pivot" value="0 0" />
+				<attribute name="Color" value="0 0.1 0.8 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.8 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.8 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.8 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.8 1" />
 			</element>
 		</element>
 		<element type="Slider">
@@ -669,6 +674,11 @@
 			<attribute name="Value" value="1" />
 			<element type="BorderImage" internal="true">
 				<attribute name="Pivot" value="0 0" />
+				<attribute name="Color" value="0 0.1 0.8 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.8 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.8 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.8 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.8 1" />
 			</element>
 		</element>
 		<element type="Slider">
@@ -708,6 +718,11 @@
 			<attribute name="Value" value="1" />
 			<element type="BorderImage" internal="true">
 				<attribute name="Pivot" value="0 0" />
+				<attribute name="Color" value="0 0.1 0.8 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.8 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.8 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.8 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.8 1" />
 			</element>
 		</element>
 		<element type="Button" style="TextButton">
@@ -2466,6 +2481,11 @@
 			<attribute name="Value" value="1" />
 			<element type="BorderImage" internal="true">
 				<attribute name="Pivot" value="0 0" />
+				<attribute name="Color" value="0 0.1 0.8 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.8 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.8 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.8 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.8 1" />
 			</element>
 		</element>
 		<element type="Slider">
@@ -2505,6 +2525,11 @@
 			<attribute name="Value" value="1" />
 			<element type="BorderImage" internal="true">
 				<attribute name="Pivot" value="0 0" />
+				<attribute name="Color" value="0 0.1 0.8 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.8 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.8 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.8 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.8 1" />
 			</element>
 		</element>
 		<element type="Slider">
@@ -2544,6 +2569,11 @@
 			<attribute name="Value" value="4" />
 			<element type="BorderImage" internal="true">
 				<attribute name="Pivot" value="0 0" />
+				<attribute name="Color" value="0 0.1 0.8 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.8 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.8 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.8 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.8 1" />
 			</element>
 		</element>
 		<element type="Text">

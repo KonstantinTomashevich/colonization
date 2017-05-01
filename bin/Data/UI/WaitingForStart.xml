@@ -27,6 +27,11 @@
 		<attribute name="Position" value="1013 0" />
 		<attribute name="Size" value="353 52" />
 		<attribute name="Pivot" value="0 0" />
+		<attribute name="Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 		<attribute name="Bring To Front" value="true" />
 		<attribute name="Bring To Back" value="false" />
 		<attribute name="Variables">
@@ -90,6 +95,11 @@
 		<attribute name="Position" value="0 423" />
 		<attribute name="Size" value="1013 282" />
 		<attribute name="Pivot" value="0 0" />
+		<attribute name="Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 		<attribute name="Variables">
 			<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 			<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -119,6 +129,11 @@
 			<attribute name="Size" value="112 56" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Is Visible" value="false" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
@@ -213,6 +228,11 @@
 			<attribute name="Position" value="14 239" />
 			<attribute name="Size" value="759 33" />
 			<attribute name="Pivot" value="0 0" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -258,6 +278,11 @@
 			<attribute name="Size" value="112 33" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -319,6 +344,11 @@
 			<attribute name="Size" value="112 33" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -412,6 +442,11 @@
 			<attribute name="Size" value="112 33" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -473,6 +508,11 @@
 			<attribute name="Size" value="112 33" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -571,6 +611,11 @@
 			<attribute name="Size" value="112 33" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -632,6 +677,11 @@
 			<attribute name="Size" value="112 33" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -692,6 +742,11 @@
 		<attribute name="Name" value="playersListWindow" />
 		<attribute name="Size" value="1013 423" />
 		<attribute name="Pivot" value="0 0" />
+		<attribute name="Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 		<attribute name="Variables">
 			<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 			<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -751,6 +806,11 @@
 			<attribute name="Size" value="95 42" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Is Visible" value="false" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
@@ -850,6 +910,11 @@
 			<attribute name="Size" value="95 42" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -911,6 +976,11 @@
 			<attribute name="Size" value="95 42" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -1063,6 +1133,11 @@
 					<attribute name="Size" value="79 39" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 						<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -1218,6 +1293,11 @@
 					<attribute name="Size" value="79 39" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 						<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -1373,6 +1453,11 @@
 					<attribute name="Size" value="79 39" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 						<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -1528,6 +1613,11 @@
 					<attribute name="Size" value="79 39" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 						<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -1683,6 +1773,11 @@
 					<attribute name="Size" value="79 39" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 						<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -1838,6 +1933,11 @@
 					<attribute name="Size" value="79 39" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 						<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -1993,6 +2093,11 @@
 					<attribute name="Size" value="79 39" />
 					<attribute name="Pivot" value="0 0" />
 					<attribute name="Opacity" value="0.65" />
+					<attribute name="Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+					<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 					<attribute name="Variables">
 						<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 						<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -2196,6 +2301,11 @@
 		<attribute name="Position" value="1013 52" />
 		<attribute name="Size" value="353 370" />
 		<attribute name="Pivot" value="0 0" />
+		<attribute name="Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+		<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 		<attribute name="Variables">
 			<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 			<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -2285,6 +2395,11 @@
 			<attribute name="Size" value="316 27" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -2347,6 +2462,11 @@
 			<attribute name="Size" value="316 27" />
 			<attribute name="Pivot" value="0 0" />
 			<attribute name="Opacity" value="0.65" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -2432,6 +2552,11 @@
 			<attribute name="Name" value="chatBlockedPlayersWindow" />
 			<attribute name="Size" value="353 282" />
 			<attribute name="Pivot" value="0 0" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Is Visible" value="false" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
@@ -2490,6 +2615,11 @@
 				<attribute name="Size" value="63 28" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -2588,6 +2718,11 @@
 				<attribute name="Size" value="63 28" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -2649,6 +2784,11 @@
 				<attribute name="Size" value="63 28" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -2801,6 +2941,11 @@
 						<attribute name="Size" value="26 26" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -2926,6 +3071,11 @@
 						<attribute name="Size" value="26 26" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -3051,6 +3201,11 @@
 						<attribute name="Size" value="26 26" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -3176,6 +3331,11 @@
 						<attribute name="Size" value="26 26" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -3301,6 +3461,11 @@
 						<attribute name="Size" value="26 26" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -3426,6 +3591,11 @@
 						<attribute name="Size" value="26 26" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -3551,6 +3721,11 @@
 						<attribute name="Size" value="26 26" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -3615,6 +3790,11 @@
 				<attribute name="Size" value="63 28" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -3675,6 +3855,11 @@
 				<attribute name="Position" value="14 246" />
 				<attribute name="Size" value="268 28" />
 				<attribute name="Pivot" value="0 0" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -3721,6 +3906,11 @@
 			<attribute name="Name" value="chatPrivateReceiversWindow" />
 			<attribute name="Size" value="353 282" />
 			<attribute name="Pivot" value="0 0" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Is Visible" value="false" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
@@ -3779,6 +3969,11 @@
 				<attribute name="Size" value="63 28" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -3877,6 +4072,11 @@
 				<attribute name="Size" value="63 28" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -3938,6 +4138,11 @@
 				<attribute name="Size" value="63 28" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -4090,6 +4295,11 @@
 						<attribute name="Size" value="26 26" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -4215,6 +4425,11 @@
 						<attribute name="Size" value="26 26" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -4340,6 +4555,11 @@
 						<attribute name="Size" value="26 26" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -4465,6 +4685,11 @@
 						<attribute name="Size" value="26 26" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -4590,6 +4815,11 @@
 						<attribute name="Size" value="26 26" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -4715,6 +4945,11 @@
 						<attribute name="Size" value="26 26" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -4840,6 +5075,11 @@
 						<attribute name="Size" value="26 26" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+						<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -4904,6 +5144,11 @@
 				<attribute name="Size" value="63 28" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -4964,6 +5209,11 @@
 				<attribute name="Position" value="14 246" />
 				<attribute name="Size" value="268 28" />
 				<attribute name="Pivot" value="0 0" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -5010,6 +5260,11 @@
 			<attribute name="Name" value="mapsListWindow" />
 			<attribute name="Size" value="353 282" />
 			<attribute name="Pivot" value="0 0" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Is Visible" value="false" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
@@ -5072,6 +5327,11 @@
 				<attribute name="Size" value="63 28" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -5170,6 +5430,11 @@
 				<attribute name="Size" value="63 28" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -5231,6 +5496,11 @@
 				<attribute name="Size" value="63 28" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -5383,6 +5653,11 @@
 						<attribute name="Size" value="58 26" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -5508,6 +5783,11 @@
 						<attribute name="Size" value="58 26" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -5633,6 +5913,11 @@
 						<attribute name="Size" value="58 26" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -5758,6 +6043,11 @@
 						<attribute name="Size" value="58 26" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -5883,6 +6173,11 @@
 						<attribute name="Size" value="58 26" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -6008,6 +6303,11 @@
 						<attribute name="Size" value="58 26" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -6133,6 +6433,11 @@
 						<attribute name="Size" value="58 26" />
 						<attribute name="Pivot" value="0 0" />
 						<attribute name="Opacity" value="0.65" />
+						<attribute name="Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+						<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 						<attribute name="Variables">
 							<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 							<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -6197,6 +6502,11 @@
 				<attribute name="Size" value="63 28" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Is Visible" value="false" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
@@ -6258,6 +6568,11 @@
 				<attribute name="Position" value="14 246" />
 				<attribute name="Size" value="268 28" />
 				<attribute name="Pivot" value="0 0" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Is Visible" value="false" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
@@ -6305,7 +6620,11 @@
 			<attribute name="Name" value="actionsWindow" />
 			<attribute name="Size" value="353 282" />
 			<attribute name="Pivot" value="0 0" />
-			<attribute name="Is Visible" value="false" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -6334,6 +6653,12 @@
 				<attribute name="Position" value="14 14" />
 				<attribute name="Size" value="324 42" />
 				<attribute name="Pivot" value="0 0" />
+				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Bring To Front" value="true" />
 				<attribute name="Bring To Back" value="false" />
 				<attribute name="Variables">
@@ -6398,6 +6723,12 @@
 				<attribute name="Position" value="14 70" />
 				<attribute name="Size" value="324 42" />
 				<attribute name="Pivot" value="0 0" />
+				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0.08 0.8 0 1" />
+				<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+				<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+				<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+				<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 				<attribute name="Bring To Front" value="true" />
 				<attribute name="Bring To Back" value="false" />
 				<attribute name="Variables">
@@ -6462,6 +6793,12 @@
 				<attribute name="Position" value="14 126" />
 				<attribute name="Size" value="324 42" />
 				<attribute name="Pivot" value="0 0" />
+				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0.8 0.03 0 1" />
+				<attribute name="Top Left Color" value="0.8 0.03 0 1" />
+				<attribute name="Top Right Color" value="0.8 0.03 0 1" />
+				<attribute name="Bottom Left Color" value="0.8 0.03 0 1" />
+				<attribute name="Bottom Right Color" value="0.8 0.03 0 1" />
 				<attribute name="Bring To Front" value="true" />
 				<attribute name="Bring To Back" value="false" />
 				<attribute name="Variables">
@@ -6526,6 +6863,12 @@
 				<attribute name="Position" value="14 183" />
 				<attribute name="Size" value="324 42" />
 				<attribute name="Pivot" value="0 0" />
+				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0.08 0.8 0 1" />
+				<attribute name="Top Left Color" value="0.08 0.8 0 1" />
+				<attribute name="Top Right Color" value="0.08 0.8 0 1" />
+				<attribute name="Bottom Left Color" value="0.08 0.8 0 1" />
+				<attribute name="Bottom Right Color" value="0.08 0.8 0 1" />
 				<attribute name="Bring To Front" value="true" />
 				<attribute name="Bring To Back" value="false" />
 				<attribute name="Variables">
@@ -6590,6 +6933,12 @@
 			<attribute name="Name" value="selectPlayerColorWindow" />
 			<attribute name="Size" value="353 282" />
 			<attribute name="Pivot" value="0 0" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Is Visible" value="false" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
 				<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -6651,6 +7000,11 @@
 				<attribute name="Size" value="84 35" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -6806,6 +7160,11 @@
 				<attribute name="Position" value="98 112" />
 				<attribute name="Size" value="240 28" />
 				<attribute name="Pivot" value="0 0" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -6833,6 +7192,11 @@
 				<attribute name="Value" value="2" />
 				<element type="BorderImage" internal="true">
 					<attribute name="Pivot" value="0 0" />
+					<attribute name="Color" value="0 0.1 0.8 1" />
+					<attribute name="Top Left Color" value="0 0.1 0.8 1" />
+					<attribute name="Top Right Color" value="0 0.1 0.8 1" />
+					<attribute name="Bottom Left Color" value="0 0.1 0.8 1" />
+					<attribute name="Bottom Right Color" value="0 0.1 0.8 1" />
 				</element>
 			</element>
 			<element type="Slider">
@@ -6840,6 +7204,11 @@
 				<attribute name="Position" value="98 141" />
 				<attribute name="Size" value="240 28" />
 				<attribute name="Pivot" value="0 0" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -6867,6 +7236,11 @@
 				<attribute name="Value" value="1" />
 				<element type="BorderImage" internal="true">
 					<attribute name="Pivot" value="0 0" />
+					<attribute name="Color" value="0 0.1 0.8 1" />
+					<attribute name="Top Left Color" value="0 0.1 0.8 1" />
+					<attribute name="Top Right Color" value="0 0.1 0.8 1" />
+					<attribute name="Bottom Left Color" value="0 0.1 0.8 1" />
+					<attribute name="Bottom Right Color" value="0 0.1 0.8 1" />
 				</element>
 			</element>
 			<element type="Slider">
@@ -6874,6 +7248,11 @@
 				<attribute name="Position" value="98 169" />
 				<attribute name="Size" value="240 28" />
 				<attribute name="Pivot" value="0 0" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -6901,6 +7280,11 @@
 				<attribute name="Value" value="1.38503" />
 				<element type="BorderImage" internal="true">
 					<attribute name="Pivot" value="0 0" />
+					<attribute name="Color" value="0 0.1 0.8 1" />
+					<attribute name="Top Left Color" value="0 0.1 0.8 1" />
+					<attribute name="Top Right Color" value="0 0.1 0.8 1" />
+					<attribute name="Bottom Left Color" value="0 0.1 0.8 1" />
+					<attribute name="Bottom Right Color" value="0 0.1 0.8 1" />
 				</element>
 			</element>
 			<element type="BorderImage" style="BorderImage">
@@ -6939,6 +7323,11 @@
 				<attribute name="Size" value="324 35" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
@@ -6999,6 +7388,11 @@
 			<attribute name="Name" value="mapInfoWindow" />
 			<attribute name="Size" value="353 282" />
 			<attribute name="Pivot" value="0 0" />
+			<attribute name="Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+			<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 			<attribute name="Is Visible" value="false" />
 			<attribute name="Variables">
 				<variant hash="234597041" type="String" value="ParentWidth" name="WidthDependency" />
@@ -7061,6 +7455,11 @@
 				<attribute name="Size" value="63 28" />
 				<attribute name="Pivot" value="0 0" />
 				<attribute name="Opacity" value="0.65" />
+				<attribute name="Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Top Right Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Left Color" value="0 0.1 0.44 1" />
+				<attribute name="Bottom Right Color" value="0 0.1 0.44 1" />
 				<attribute name="Variables">
 					<variant hash="234597041" type="String" value="ParentHeight" name="WidthDependency" />
 					<variant hash="2184685394" type="String" value="ParentHeight" name="HeightDependency" />
