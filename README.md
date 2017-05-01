@@ -10,7 +10,7 @@ Multiplayer RTS game in colonization setting.
 - [x] Different victory types like Civilization (victory types can be added by separate script, specified in map info xml).
 - [x] Colonies evolution system (for now, evolution of farms, mines, industry, logistics and defense).
 - [x] Trade areas system (district with good logistics unite to trade area and it will give you additional profit).
-- [ ] Diplomacy system.
+- [x] Diplomacy system (basic, you can declare war and send peace treaty).
 - [ ] Colony level of life system.
 - [ ] Natives and relations with them.
 - [x] Multiplayer support (scene replication is one-directional, the server always has authority, the client responds with network messages).
