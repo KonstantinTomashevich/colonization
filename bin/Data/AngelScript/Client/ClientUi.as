@@ -14,13 +14,6 @@ class ClientUi : ScriptObject
                                         "UiResizer");
         uiResizerInstance.SetAttribute ("startElementName_", Variant ("UIRoot"));
         uiResizerInstance.SetAttribute ("continuousResize_", Variant (true));
-
-
-        // TODO: Maybe stop using ui player color painter?
-        ScriptInstance @uiPlayerColorPainterInstance = utilHandlersNode.CreateChild ("UiPlayerColorPainter", LOCAL).CreateComponent ("ScriptInstance");
-        uiPlayerColorPainterInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/Utils/UiPlayerColorPainter.as"),
-                                        "UiPlayerColorPainter");
     }
 
     protected void AddWaitingForStartStateUiHandlers ()
