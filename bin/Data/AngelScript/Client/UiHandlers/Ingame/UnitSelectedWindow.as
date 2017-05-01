@@ -20,6 +20,17 @@ class UnitSelectedWindow : ScriptObject
             Text @ownerText = unitInfoWindow.GetChild ("ownerText");
             ownerText.text = unit.ownerPlayerName + "'s";
 
+            BorderImage @colorSample = unitInfoWindow.GetChild ("colorSample");
+            PlayerInfo @unitOwner = GetPlayerInfoByName (scene, unit.ownerPlayerName);
+            if (unitOwner !is null)
+            {
+                colorSample.color = unitOwner.color;
+            }
+            else
+            {
+                colorSample.color = NEUTRAL_COLOR;
+            }
+
             Text @typeText = unitInfoWindow.GetChild ("typeText");
             if (unit.unitType == UNIT_FLEET)
             {

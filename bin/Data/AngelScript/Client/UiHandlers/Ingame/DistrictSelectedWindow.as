@@ -60,6 +60,25 @@ class DistrictSelectedWindow : ScriptObject
                                          district.hasColony and
                                          district.colonyOwnerName != playerName;
 
+        BorderImage @colorSample = districtInfoWindow.GetChild ("colorSample");
+        if (district.hasColony)
+        {
+            colorSample.visible = true;
+            PlayerInfo @colonyOwner = GetPlayerInfoByName (scene, district.colonyOwnerName);
+            if (colonyOwner !is null)
+            {
+                colorSample.color = colonyOwner.color;
+            }
+            else
+            {
+                colorSample.color = NEUTRAL_COLOR;
+            }
+        }
+        else
+        {
+            colorSample.visible = false;
+        }
+
         if (infoType == StringHash ("Basic"))
         {
             UpdateDistrictBasicInfo (district, districtInfoWindow);
