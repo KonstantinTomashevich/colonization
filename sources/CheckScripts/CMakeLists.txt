@@ -8,6 +8,6 @@ add_test (NAME check_scripts COMMAND CheckScripts)
 set_target_properties (
     CheckScripts
     PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/Utils"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/Tools"
     )
 

@@ -32,7 +32,7 @@ Step 5. Build and run tests.
 ```bash
 make && make test
 ```
-Step 6. Executables will be in `${CMAKE_BINARY_DIR}/bin` in `Utils`, `Tests` and `GameLauncher` folders.
+Step 6. Executables will be in `${CMAKE_BINARY_DIR}/bin` in `Tools`, `Tests` and `GameLauncher` folders.
 
 ## Screenshots
 ![0](https://s12.postimg.org/4ipmrhf25/image.png)

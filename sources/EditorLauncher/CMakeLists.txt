@@ -6,5 +6,5 @@ target_link_libraries (EditorLauncher Colonization)
 set_target_properties (
     EditorLauncher
     PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/Utils"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/Tools"
     )

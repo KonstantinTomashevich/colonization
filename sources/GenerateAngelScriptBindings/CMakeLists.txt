@@ -8,5 +8,5 @@ add_test (NAME generate_angel_script_bindings COMMAND GenerateAngelScriptBinding
 set_target_properties (
     GenerateAngelScriptBindings
     PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/Utils"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/Tools"
     )
