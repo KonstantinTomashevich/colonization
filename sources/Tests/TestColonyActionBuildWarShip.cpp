@@ -38,6 +38,7 @@ void TestColonyActionBuildWarShipApplication::Setup ()
     engineParameters_ ["WindowResizable"] = true;
     engineParameters_ ["LogName"] = "TestColonyActionBuildWarShip.log";
     engineParameters_ ["WindowTitle"] = "TestColonyActionBuildWarShip";
+    engineParameters_ ["ResourcePrefixPaths"] = "..;.";
 }
 
 void TestColonyActionBuildWarShipApplication::Start ()

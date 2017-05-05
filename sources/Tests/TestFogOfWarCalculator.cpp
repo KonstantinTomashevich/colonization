@@ -34,6 +34,7 @@ void TestFogOfWarCalculatorApplication::Setup ()
     engineParameters_ ["WindowResizable"] = true;
     engineParameters_ ["LogName"] = "TestFogOfWarCalculator.log";
     engineParameters_ ["WindowTitle"] = "TestFogOfWarCalculator";
+    engineParameters_ ["ResourcePrefixPaths"] = "..;.";
 }
 
 void TestFogOfWarCalculatorApplication::Start ()

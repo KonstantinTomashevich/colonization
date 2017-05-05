@@ -23,6 +23,7 @@ void GenerateAngelScriptBindings::Setup ()
     engineParameters_ ["WindowWidth"] = 100;
     engineParameters_ ["WindowHeight"] = 100;
     engineParameters_ ["WindowTitle"] = "Generating AngelScript API header...";
+    engineParameters_ ["ResourcePrefixPaths"] = "..;.";
 }
 
 void GenerateAngelScriptBindings::Start ()

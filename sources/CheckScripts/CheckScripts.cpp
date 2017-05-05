@@ -29,6 +29,7 @@ void CheckScripts::Setup ()
     engineParameters_ ["WindowHeight"] = 100;
     engineParameters_ ["WindowTitle"] = "Checking scripts...";
     engineParameters_ ["LogName"] = "CheckScripts.log";
+    engineParameters_ ["ResourcePrefixPaths"] = "..;.";
 }
 
 void CheckScripts::Start ()

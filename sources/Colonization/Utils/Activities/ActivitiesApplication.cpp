@@ -24,10 +24,7 @@ ActivitiesApplication::~ActivitiesApplication ()
 
 void ActivitiesApplication::Setup ()
 {
-    engineParameters_ ["FullScreen"] = false;
-    engineParameters_ ["WindowResizable"] = true;
-    engineParameters_ ["LogName"] = "Colonization.log";
-    engineParameters_ ["WindowTitle"] = "Colonization";
+
 }
 
 void ActivitiesApplication::Start ()

@@ -30,6 +30,7 @@ void TestBasicColonyBalanceApplication::Setup ()
     engineParameters_ ["WindowResizable"] = true;
     engineParameters_ ["LogName"] = "TestBasicColonyBalance.log";
     engineParameters_ ["WindowTitle"] = "TestBasicColonyBalance";
+    engineParameters_ ["ResourcePrefixPaths"] = "..;.";
 }
 
 void TestBasicColonyBalanceApplication::Start ()

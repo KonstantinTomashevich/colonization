@@ -30,6 +30,7 @@ void TestMapPathFindingApplication::Setup ()
     engineParameters_ ["WindowResizable"] = true;
     engineParameters_ ["LogName"] = "TestMapPathFinding.log";
     engineParameters_ ["WindowTitle"] = "TestMapPathFinding";
+    engineParameters_ ["ResourcePrefixPaths"] = "..;.";
 }
 
 void TestMapPathFindingApplication::Start ()

@@ -28,6 +28,7 @@ void TestDistrictsNeighborsCalculationApplication::Setup ()
     engineParameters_ ["WindowResizable"] = true;
     engineParameters_ ["LogName"] = "TestDistrictsNeighborsCalculation.log";
     engineParameters_ ["WindowTitle"] = "TestDistrictsNeighborsCalculation";
+    engineParameters_ ["ResourcePrefixPaths"] = "..;.";
 }
 
 void TestDistrictsNeighborsCalculationApplication::Start ()

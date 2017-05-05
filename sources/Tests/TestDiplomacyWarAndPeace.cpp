@@ -36,6 +36,7 @@ void TestDiplomacyWarAndPeaceApplication::Setup ()
     engineParameters_ ["WindowResizable"] = true;
     engineParameters_ ["LogName"] = "TestDiplomacyWarAndPeace.log";
     engineParameters_ ["WindowTitle"] = "TestDiplomacyWarAndPeace";
+    engineParameters_ ["ResourcePrefixPaths"] = "..;.";
 }
 
 void TestDiplomacyWarAndPeaceApplication::Start ()

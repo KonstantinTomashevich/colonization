@@ -45,3 +45,17 @@ set (SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/TestDiplomacyWarAndPeace.hpp ${CMA
 setup_executable ()
 target_link_libraries (TestDiplomacyWarAndPeace Colonization)
 add_test (NAME test_diplomacy_war_and_peace COMMAND TestDiplomacyWarAndPeace)
+
+set_target_properties (
+    TestDistrictsNeighborsCalculation
+    TestMapPathFinding
+    TestBasicColonyBalance
+    TestInternalTradeProcessing
+    TestColonyActionBuildWarShip
+    TestFogOfWarCalculator
+    TestMapMaskGeneration
+    TestDiplomacyWarAndPeace
+
+    PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/Tests"
+    )

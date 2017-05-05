@@ -16,7 +16,11 @@ LauncherApplication::~LauncherApplication ()
 
 void LauncherApplication::Setup ()
 {
-    ActivitiesApplication::Setup ();
+    engineParameters_ ["FullScreen"] = false;
+    engineParameters_ ["WindowResizable"] = true;
+    engineParameters_ ["LogName"] = "Colonization.log";
+    engineParameters_ ["WindowTitle"] = "Colonization";
+    engineParameters_ ["ResourcePrefixPaths"] = "..;.";
 }
 
 void LauncherApplication::Start ()

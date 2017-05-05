@@ -37,6 +37,7 @@ void TestInternalTradeProcessingApplication::Setup ()
     engineParameters_ ["WindowResizable"] = true;
     engineParameters_ ["LogName"] = "TestInternalTradeProcessing.log";
     engineParameters_ ["WindowTitle"] = "TestInternalTradeProcessing";
+    engineParameters_ ["ResourcePrefixPaths"] = "..;.";
 }
 
 void TestInternalTradeProcessingApplication::Start ()

@@ -26,6 +26,7 @@ void EditorLauncher::Setup ()
     engineParameters_ ["WindowResizable"] = true;
     engineParameters_ ["LogName"] = "Editor.log";
     engineParameters_ ["WindowTitle"] = "Urho3D Editor with Colonization components";
+    engineParameters_ ["ResourcePrefixPaths"] = "..;.";
     engineParameters_ ["ResourcePaths"] = "Data;CoreData;Urho3DEditorData";
 }
 

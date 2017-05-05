@@ -36,6 +36,7 @@ void TestMapMaskGenerationApplication::Setup ()
     engineParameters_ ["WindowResizable"] = true;
     engineParameters_ ["LogName"] = "TestMapMaskGeneration.log";
     engineParameters_ ["WindowTitle"] = "TestMapMaskGeneration";
+    engineParameters_ ["ResourcePrefixPaths"] = "..;.";
 }
 
 void TestMapMaskGenerationApplication::Start ()

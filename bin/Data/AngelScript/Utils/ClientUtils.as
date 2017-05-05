@@ -295,17 +295,18 @@ shared bool IsAnyLineEditFocused (Node @scriptMain)
     return false;
 }
 
-Array <String> GetMapsFoldersNames (String mapsFolder = MAPS_FOLDER,
+Array <String> GetMapsFoldersNames (String filesystemPrefix = FILESYSTEM_PREFIX,
+     String mapsFolder = MAPS_FOLDER,
      String mapInfoFileName = MAP_INFO_FILE,
      String filter = EMPTY_FILTER)
 {
     Array <String> foldersNames;
-    foldersNames = fileSystem.ScanDir (mapsFolder, mapInfoFileName, SCAN_DIRS, false);
+    foldersNames = fileSystem.ScanDir (filesystemPrefix + mapsFolder, mapInfoFileName, SCAN_DIRS, false);
     // Check maps list and delete items if they aren't maps.
     uint index = 0;
     while (index < foldersNames .length)
     {
-        if (fileSystem.FileExists (mapsFolder + foldersNames [index] + mapInfoFileName))
+        if (fileSystem.FileExists (filesystemPrefix + mapsFolder + foldersNames [index] + mapInfoFileName))
         {
             index++;
         }

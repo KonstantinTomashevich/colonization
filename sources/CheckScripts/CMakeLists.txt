@@ -5,3 +5,9 @@ define_source_files ()
 setup_executable ()
 target_link_libraries (CheckScripts Colonization)
 add_test (NAME check_scripts COMMAND CheckScripts)
+set_target_properties (
+    CheckScripts
+    PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/Utils"
+    )
+
