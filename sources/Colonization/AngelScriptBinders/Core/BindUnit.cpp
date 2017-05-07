@@ -18,12 +18,12 @@ void Unit_SetWay (Unit *unit, Urho3D::CScriptArray *array)
 
 Urho3D::CScriptArray *Unit_FleetUnitGetWarShipsHealthPoints (Unit *unit)
 {
-    return Urho3D::VectorToArray <Urho3D::Variant> (unit->FleetUnitGetWarShipsHealthPoints (), "Array<Variant>");
+    return Urho3D::VectorToArray <float> (unit->FleetUnitGetWarShipsHealthPoints (), "Array<float>");
 }
 
 void Unit_FleetUnitSetWarShipsHealthPoints (Unit *unit, Urho3D::CScriptArray *array)
 {
-    unit->FleetUnitSetWarShipsHealthPoints (Urho3D::ArrayToVector <Urho3D::Variant> (array));
+    unit->FleetUnitSetWarShipsHealthPoints (Urho3D::ArrayToPODVector <float> (array));
 }
 
 void BindUnit (Urho3D::Script *script, bool bindInterface)
@@ -71,8 +71,8 @@ void BindUnitInterface (Urho3D::Script *script, Urho3D::String className)
     engine->RegisterObjectMethod (className.CString (), "int get_fleetUnitWarShipsCount () const", asMETHOD (Unit, FleetUnitGetWarShipsCount), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_fleetUnitWarShipsCount (int fleetUnitWarShipsCount)", asMETHOD (Unit, FleetUnitSetWarShipsCount), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod (className.CString (), "Array <Variant> @get_fleetUnitGetWarShipsHealthPoints () const", asFUNCTION (Unit_FleetUnitGetWarShipsHealthPoints), asCALL_CDECL_OBJFIRST);
-    engine->RegisterObjectMethod (className.CString (), "void set_fleetUnitSetWarShipsHealthPoints (Array <Variant> @fleetUnitSetWarShipsHealthPoints)", asFUNCTION (Unit_FleetUnitSetWarShipsHealthPoints), asCALL_CDECL_OBJFIRST);
+    engine->RegisterObjectMethod (className.CString (), "Array <float> @get_fleetUnitGetWarShipsHealthPoints () const", asFUNCTION (Unit_FleetUnitGetWarShipsHealthPoints), asCALL_CDECL_OBJFIRST);
+    engine->RegisterObjectMethod (className.CString (), "void set_fleetUnitSetWarShipsHealthPoints (Array <float> @fleetUnitSetWarShipsHealthPoints)", asFUNCTION (Unit_FleetUnitSetWarShipsHealthPoints), asCALL_CDECL_OBJFIRST);
 
     engine->RegisterObjectMethod (className.CString (), "float get_tradersUnitTradeGoodsCost () const", asMETHOD (Unit, TradersUnitGetTradeGoodsCost), asCALL_THISCALL);
     engine->RegisterObjectMethod (className.CString (), "void set_tradersUnitTradeGoodsCost (float tradersUnitTradeGoodsCost)", asMETHOD (Unit, TradersUnitSetTradeGoodsCost), asCALL_THISCALL);

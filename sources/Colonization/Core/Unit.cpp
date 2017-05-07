@@ -42,7 +42,13 @@ Unit::Unit (Urho3D::Context *context) : Urho3D::Component (context),
     positionHash_ (),
     way_ (),
     wayToNextDistrictProgressInPercents_ (0.0f),
-    unitTypeSpecificVars_ ()
+
+    fleetUnitWarShipsCount_ (0),
+    fleetUnitWarShipsHealthPoints_ (),
+
+    tradersUnitTradeGoodsCost_ (0.0f),
+    colonizatorsUnitColonizatorsCount_ (0),
+    armyUnitSoldiersCount_ (0)
 {
 
 }
@@ -72,8 +78,8 @@ void Unit::RegisterObject (Urho3D::Context *context)
                                FleetUnitSetWarShipsCount, int, 0, Urho3D::AM_DEFAULT);
 
     URHO3D_MIXED_ACCESSOR_VARIANT_VECTOR_STRUCTURE_ATTRIBUTE  ("[Fleet Only] War Ships Health Points",
-                               FleetUnitGetWarShipsHealthPoints,
-                               FleetUnitSetWarShipsHealthPoints, Urho3D::VariantVector, Urho3D::Variant::emptyVariantVector,
+                               FleetUnitGetWarShipsHealthPointsAttribute,
+                               FleetUnitSetWarShipsHealthPointsAttribute, Urho3D::VariantVector, Urho3D::Variant::emptyVariantVector,
                                warShipsHealthPointsElementsNames, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("[Traders Only] Trade Goods Cost",
@@ -308,117 +314,99 @@ void Unit::SetWayToNextDistrictProgressInPercents (float wayToNextDistrictProgre
 
 int Unit::FleetUnitGetWarShipsCount () const
 {
-    Urho3D::Variant *value = unitTypeSpecificVars_ ["WarShipsCount"];
-    if (value)
-    {
-        return value->GetInt ();
-    }
-    else
-    {
-        return 0;
-    }
+    return fleetUnitWarShipsCount_;
 }
 
 void Unit::FleetUnitSetWarShipsCount (int warShipsCount)
 {
-    unitTypeSpecificVars_ ["WarShipsCount"] = warShipsCount;
-    Urho3D::VariantVector shipsHealthPoints = unitTypeSpecificVars_ ["WarShipsHealthPoints"].GetVariantVector ();
-    if (shipsHealthPoints.Size () != warShipsCount)
-    {
-        if (shipsHealthPoints.Size () > warShipsCount)
-        {
-            shipsHealthPoints.Erase (warShipsCount, shipsHealthPoints.Size () - warShipsCount);
-        }
+    fleetUnitWarShipsCount_ = warShipsCount;
+}
 
-        while (shipsHealthPoints.Size () < warShipsCount)
-        {
-            shipsHealthPoints.Push (100.0f);
-        }
-        unitTypeSpecificVars_ ["WarShipsHealthPoints"] = shipsHealthPoints;
+Urho3D::PODVector <float> Unit::FleetUnitGetWarShipsHealthPoints () const
+{
+    return fleetUnitWarShipsHealthPoints_;
+}
+
+void Unit::FleetUnitSetWarShipsHealthPoints (const Urho3D::PODVector <float> &warShipsHealthPoints)
+{
+    fleetUnitWarShipsHealthPoints_ = warShipsHealthPoints;
+    if (fleetUnitWarShipsHealthPoints_.Size () > fleetUnitWarShipsCount_)
+    {
+        fleetUnitWarShipsHealthPoints_.Erase (fleetUnitWarShipsCount_, fleetUnitWarShipsHealthPoints_.Size () - fleetUnitWarShipsCount_);
+    }
+
+    while (fleetUnitWarShipsHealthPoints_.Size () < fleetUnitWarShipsCount_)
+    {
+        fleetUnitWarShipsHealthPoints_.Push (100.0f);
     }
 }
 
-Urho3D::VariantVector Unit::FleetUnitGetWarShipsHealthPoints () const
+Urho3D::VariantVector Unit::FleetUnitGetWarShipsHealthPointsAttribute () const
 {
-    Urho3D::VariantVector shipsHealthPoints;
-    shipsHealthPoints.Push (FleetUnitGetWarShipsCount ());
-    Urho3D::Variant *savedArray = unitTypeSpecificVars_ ["WarShipsHealthPoints"];
-    if (savedArray)
+    Urho3D::VariantVector vector;
+    vector.Push (fleetUnitWarShipsCount_);
+    for (int index = 0; index < fleetUnitWarShipsCount_; index++)
     {
-        shipsHealthPoints.Push (savedArray->GetVariantVector ());
-    }
-    return shipsHealthPoints;
-}
-
-void Unit::FleetUnitSetWarShipsHealthPoints (const Urho3D::VariantVector &warShipsHealthPoints)
-{
-    Urho3D::VariantVector shipsHealthPoints;
-    int shipsCount = FleetUnitGetWarShipsCount ();
-    for (int index = 0; index < shipsCount; index++)
-    {
-        if (index + 1 < warShipsHealthPoints.Size ())
+        if (index < fleetUnitWarShipsHealthPoints_.Size ())
         {
-            shipsHealthPoints.Push (warShipsHealthPoints.At (index + 1));
+            vector.Push (fleetUnitWarShipsHealthPoints_.At (index));
         }
         else
         {
-            shipsHealthPoints.Push (100.0f);
+            vector.Push (100.0f);
         }
     }
-    unitTypeSpecificVars_ ["WarShipsHealthPoints"] = shipsHealthPoints;
+    return vector;
+}
+
+void Unit::FleetUnitSetWarShipsHealthPointsAttribute (const Urho3D::VariantVector &warShipsHealthPoints)
+{
+    fleetUnitWarShipsHealthPoints_.Clear ();
+    if (warShipsHealthPoints.Empty ())
+    {
+        return;
+    }
+
+    for (int index = 0; index < fleetUnitWarShipsCount_; index++)
+    {
+        if (index + 1 < warShipsHealthPoints.Size ())
+        {
+            fleetUnitWarShipsHealthPoints_.Push (warShipsHealthPoints.At (index + 1).GetFloat ());
+        }
+        else
+        {
+            fleetUnitWarShipsHealthPoints_.Push (100.0f);
+        }
+    }
 }
 
 float Unit::TradersUnitGetTradeGoodsCost () const
 {
-    Urho3D::Variant *value = unitTypeSpecificVars_ ["TradeGoodsCost"];
-    if (value)
-    {
-        return value->GetFloat ();
-    }
-    else
-    {
-        return 0.0f;
-    }
+    return tradersUnitTradeGoodsCost_;
 }
 
 void Unit::TradersUnitSetTradeGoodsCost (float tradeGoodsCost)
 {
-    unitTypeSpecificVars_ ["TradeGoodsCost"] = tradeGoodsCost;
+    tradersUnitTradeGoodsCost_ = tradeGoodsCost;
 }
 
 int Unit::ColonizatorsUnitGetColonizatorsCount () const
 {
-    Urho3D::Variant *value = unitTypeSpecificVars_ ["ColonizatorsCount"];
-    if (value)
-    {
-        return value->GetInt ();
-    }
-    else
-    {
-        return 0;
-    }
+    return colonizatorsUnitColonizatorsCount_;
 }
 
 void Unit::ColonizatorsUnitSetColonizatorsCount (int colonizatorsCount)
 {
-    unitTypeSpecificVars_ ["ColonizatorsCount"] = colonizatorsCount;
+    colonizatorsUnitColonizatorsCount_ = colonizatorsCount;
 }
 
 int Unit::ArmyUnitGetSoldiersCount () const
 {
-    Urho3D::Variant *value = unitTypeSpecificVars_ ["SoldiersCount"];
-    if (value)
-    {
-        return value->GetInt ();
-    }
-    else
-    {
-        return 0;
-    }
+    return armyUnitSoldiersCount_;
 }
 
 void Unit::ArmyUnitSetSoldiersCount (int soldiersCount)
 {
-    unitTypeSpecificVars_ ["SoldiersCount"] = soldiersCount;
+    armyUnitSoldiersCount_ = soldiersCount;
 }
 }

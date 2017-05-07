@@ -15,6 +15,7 @@ enum UnitType
     UNIT_ARMY = 3
 };
 
+// TODO: Maybe really split it? One class for each unit type.
 class Unit : public Urho3D::Component
 {
 URHO3D_OBJECT (Unit, Component)
@@ -25,7 +26,13 @@ protected:
     Urho3D::StringHash positionHash_;
     Urho3D::PODVector <Urho3D::StringHash> way_;
     float wayToNextDistrictProgressInPercents_;
-    Urho3D::VariantMap unitTypeSpecificVars_;
+
+    int fleetUnitWarShipsCount_;
+    Urho3D::PODVector <float> fleetUnitWarShipsHealthPoints_;
+
+    float tradersUnitTradeGoodsCost_;
+    int colonizatorsUnitColonizatorsCount_;
+    int armyUnitSoldiersCount_;
 
 public:
     Unit (Urho3D::Context *context);
@@ -60,8 +67,10 @@ public:
     void FleetUnitSetWarShipsCount (int warShipsCount);
 
     /// Any war ship health is in (0.0f, 100.0f].
-    Urho3D::VariantVector FleetUnitGetWarShipsHealthPoints () const;
-    void FleetUnitSetWarShipsHealthPoints (const Urho3D::VariantVector &warShipsHealthPoints);
+    Urho3D::PODVector <float> FleetUnitGetWarShipsHealthPoints () const;
+    void FleetUnitSetWarShipsHealthPoints (const Urho3D::PODVector <float> &warShipsHealthPoints);
+    Urho3D::VariantVector FleetUnitGetWarShipsHealthPointsAttribute () const;
+    void FleetUnitSetWarShipsHealthPointsAttribute (const Urho3D::VariantVector &warShipsHealthPoints);
 
     float TradersUnitGetTradeGoodsCost () const;
     void TradersUnitSetTradeGoodsCost (float tradeGoodsCost);
