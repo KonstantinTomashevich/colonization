@@ -37,6 +37,7 @@ class ScreenPressesHandler : ScriptObject
     {
         scriptMain.vars ["selectionType"] = StringHash ("None");
         scriptMain.vars ["selectedHash"] = StringHash ();
+        scriptMain.vars ["currentClickCommand"] = StringHash ("NoCommand");
 
         // Inform map mask updater about selection.
         MapMaskUpdater @mapMaskUpdater = scene.GetComponent ("MapMaskUpdater");
