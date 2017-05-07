@@ -19,6 +19,13 @@ const char *wayStructureElementsNames [] =
     0
 };
 
+const char *warShipsHealthPointsElementsNames [] =
+{
+    "War Ships Count:",
+    "   War Ship HP",
+    0
+};
+
 const char *unitTypesNames [] =
 {
     "Fleet",
@@ -63,6 +70,11 @@ void Unit::RegisterObject (Urho3D::Context *context)
     URHO3D_ACCESSOR_ATTRIBUTE ("[Fleet Only] War Ships Count",
                                FleetUnitGetWarShipsCount,
                                FleetUnitSetWarShipsCount, int, 0, Urho3D::AM_DEFAULT);
+
+    URHO3D_MIXED_ACCESSOR_VARIANT_VECTOR_STRUCTURE_ATTRIBUTE  ("[Fleet Only] War Ships Health Points",
+                               FleetUnitGetWarShipsHealthPoints,
+                               FleetUnitSetWarShipsHealthPoints, Urho3D::VariantVector, Urho3D::Variant::emptyVariantVector,
+                               warShipsHealthPointsElementsNames, Urho3D::AM_DEFAULT);
 
     URHO3D_ACCESSOR_ATTRIBUTE ("[Traders Only] Trade Goods Cost",
                                TradersUnitGetTradeGoodsCost,
@@ -310,6 +322,50 @@ int Unit::FleetUnitGetWarShipsCount () const
 void Unit::FleetUnitSetWarShipsCount (int warShipsCount)
 {
     unitTypeSpecificVars_ ["WarShipsCount"] = warShipsCount;
+    Urho3D::VariantVector shipsHealthPoints = unitTypeSpecificVars_ ["WarShipsHealthPoints"].GetVariantVector ();
+    if (shipsHealthPoints.Size () != warShipsCount)
+    {
+        if (shipsHealthPoints.Size () > warShipsCount)
+        {
+            shipsHealthPoints.Erase (warShipsCount, shipsHealthPoints.Size () - warShipsCount);
+        }
+
+        while (shipsHealthPoints.Size () < warShipsCount)
+        {
+            shipsHealthPoints.Push (100.0f);
+        }
+        unitTypeSpecificVars_ ["WarShipsHealthPoints"] = shipsHealthPoints;
+    }
+}
+
+Urho3D::VariantVector Unit::FleetUnitGetWarShipsHealthPoints () const
+{
+    Urho3D::VariantVector shipsHealthPoints;
+    shipsHealthPoints.Push (FleetUnitGetWarShipsCount ());
+    Urho3D::Variant *savedArray = unitTypeSpecificVars_ ["WarShipsHealthPoints"];
+    if (savedArray)
+    {
+        shipsHealthPoints.Push (savedArray->GetVariantVector ());
+    }
+    return shipsHealthPoints;
+}
+
+void Unit::FleetUnitSetWarShipsHealthPoints (const Urho3D::VariantVector &warShipsHealthPoints)
+{
+    Urho3D::VariantVector shipsHealthPoints;
+    int shipsCount = FleetUnitGetWarShipsCount ();
+    for (int index = 0; index < shipsCount; index++)
+    {
+        if (index + 1 < warShipsHealthPoints.Size ())
+        {
+            shipsHealthPoints.Push (warShipsHealthPoints.At (index + 1));
+        }
+        else
+        {
+            shipsHealthPoints.Push (100.0f);
+        }
+    }
+    unitTypeSpecificVars_ ["WarShipsHealthPoints"] = shipsHealthPoints;
 }
 
 float Unit::TradersUnitGetTradeGoodsCost () const

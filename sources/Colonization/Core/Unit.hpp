@@ -59,6 +59,10 @@ public:
     int FleetUnitGetWarShipsCount () const;
     void FleetUnitSetWarShipsCount (int warShipsCount);
 
+    /// Any war ship health is in (0.0f, 100.0f].
+    Urho3D::VariantVector FleetUnitGetWarShipsHealthPoints () const;
+    void FleetUnitSetWarShipsHealthPoints (const Urho3D::VariantVector &warShipsHealthPoints);
+
     float TradersUnitGetTradeGoodsCost () const;
     void TradersUnitSetTradeGoodsCost (float tradeGoodsCost);
 
