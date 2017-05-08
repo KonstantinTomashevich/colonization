@@ -41,7 +41,6 @@
 #include <Colonization/AngelScriptBinders/Frontend/BindFogOfWarCalculator.hpp>
 #include <Colonization/AngelScriptBinders/Frontend/BindMapMaskUpdater.hpp>
 #include <Colonization/AngelScriptBinders/Utils/BindActivitiesApplication.hpp>
-#include <Colonization/AngelScriptBinders/Utils/BindIsObjectTypeOf.hpp>
 
 namespace Colonization
 {
@@ -95,6 +94,5 @@ void BindAll (Urho3D::Script *script)
     BindFogOfWarCalculator (script);
     BindMapMaskUpdater (script);
     BindActivitiesApplication (script);
-    BindIsObjectTypeOf (script);
 }
 }

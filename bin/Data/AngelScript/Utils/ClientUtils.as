@@ -192,7 +192,7 @@ shared Component @GetFirstComponentOfNodeDerivedFrom (Node @node_, StringHash ty
     for (uint index = 0; index < components.length; index++)
     {
         Component @component = components [index];
-        if (IsObjectTypeOf (component, type))
+        if ((cast <Unit> (component)) !is null)
         {
             return component;
         }

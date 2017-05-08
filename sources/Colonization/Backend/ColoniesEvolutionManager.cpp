@@ -196,6 +196,7 @@ float ColoniesEvolutionManager::ProcessColonyMinesEvolution (GameConfiguration *
     if (evolutionAddition > 0.0f)
     {
         colony->SetMinesEvolutionPoints (oldMinesEvolution + evolutionAddition);
+        // TODO: Should evolution cost depend on colony population?
         float evolutionCost = configuration->GetEvolutionCostPerLevel () * evolutionAddition;
         colony->SetMinesBalance (balance - evolutionCost);
     }
