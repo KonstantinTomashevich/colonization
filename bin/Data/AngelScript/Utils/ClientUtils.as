@@ -186,6 +186,20 @@ DiplomacyWar @GetWarByHash (Scene @scene_, StringHash warHash)
     }
 }
 
+shared Component @GetFirstComponentOfNodeDerivedFrom (Node @node_, StringHash type)
+{
+    Array <Component @> components = node_.GetComponents ();
+    for (uint index = 0; index < components.length; index++)
+    {
+        Component @component = components [index];
+        if (IsObjectTypeOf (component, type))
+        {
+            return component;
+        }
+    }
+    return null;
+}
+
 shared Unit @GetUnitByHash (Scene @scene_, StringHash unitHash)
 {
     if (scene_.GetChild ("units") is null)
@@ -193,17 +207,17 @@ shared Unit @GetUnitByHash (Scene @scene_, StringHash unitHash)
         return null;
     }
 
-    Array <Node @> unitsNodes = scene_.GetChild ("units").GetChildrenWithComponent ("Unit");
+    Array <Node @> unitsNodes = scene_.GetChild ("units").GetChildrenWithTag (TAG_UNIT);
     if (unitsNodes.empty)
     {
         return null;
     }
 
-    Unit @unit = unitsNodes [0].GetComponent ("Unit");
+    Unit @unit = cast <Unit> (GetFirstComponentOfNodeDerivedFrom (unitsNodes [0], StringHash ("Unit")));
     uint index = 1;
     while (unit.hash != unitHash and index < unitsNodes.length)
     {
-        unit = unitsNodes [index].GetComponent ("Unit");
+        unit = cast <Unit> (GetFirstComponentOfNodeDerivedFrom (unitsNodes [index], StringHash ("Unit")));
         index++;
     }
 
