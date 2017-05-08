@@ -44,7 +44,10 @@ void ActivitiesApplication::Start ()
     context_->RegisterSubsystem (script);
     BindAll (script);
     bool compilationResult = CompileAllScripts (context_);
-    assert (compilationResult);
+    if (!compilationResult)
+    {
+        ErrorExit ("Scripts compilation failed! See Colonization.log for more information.");
+    }
 }
 
 void ActivitiesApplication::UpdateActivities (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)

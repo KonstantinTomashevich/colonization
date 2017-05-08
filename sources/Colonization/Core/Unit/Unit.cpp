@@ -19,13 +19,6 @@ const char *wayStructureElementsNames [] =
     0
 };
 
-const char *warShipsHealthPointsElementsNames [] =
-{
-    "War Ships Count:",
-    "   War Ship HP",
-    0
-};
-
 const char *unitTypesNames [] =
 {
     "Fleet",
@@ -41,14 +34,7 @@ Unit::Unit (Urho3D::Context *context) : Urho3D::Component (context),
     unitType_ (UNIT_FLEET),
     positionHash_ (),
     way_ (),
-    wayToNextDistrictProgressInPercents_ (0.0f),
-
-    fleetUnitWarShipsCount_ (0),
-    fleetUnitWarShipsHealthPoints_ (),
-
-    tradersUnitTradeGoodsCost_ (0.0f),
-    colonizatorsUnitColonizatorsCount_ (0),
-    armyUnitSoldiersCount_ (0)
+    wayToNextDistrictProgressInPercents_ (0.0f)
 {
 
 }
@@ -60,8 +46,6 @@ Unit::~Unit ()
 
 void Unit::RegisterObject (Urho3D::Context *context)
 {
-    context->RegisterFactory <Unit> (COLONIZATION_CORE_CATEGORY);
-
     URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
     URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Hash", GetHash, SetHash, Urho3D::StringHash, Urho3D::StringHash ("nothing"), Urho3D::AM_DEFAULT);
     URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Owner Player Name", GetOwnerPlayerName, SetOwnerPlayerName, Urho3D::String, Urho3D::String ("Unit without owner"), Urho3D::AM_DEFAULT);
@@ -72,40 +56,6 @@ void Unit::RegisterObject (Urho3D::Context *context)
                                GetWayToNextDistrictProgressInPercents,
                                SetWayToNextDistrictProgressInPercents,
                                float, 0.0f, Urho3D::AM_DEFAULT);
-
-    URHO3D_ACCESSOR_ATTRIBUTE ("[Fleet Only] War Ships Count",
-                               FleetUnitGetWarShipsCount,
-                               FleetUnitSetWarShipsCount, int, 0, Urho3D::AM_DEFAULT);
-
-    URHO3D_MIXED_ACCESSOR_VARIANT_VECTOR_STRUCTURE_ATTRIBUTE  ("[Fleet Only] War Ships Health Points",
-                               FleetUnitGetWarShipsHealthPointsAttribute,
-                               FleetUnitSetWarShipsHealthPointsAttribute, Urho3D::VariantVector, Urho3D::Variant::emptyVariantVector,
-                               warShipsHealthPointsElementsNames, Urho3D::AM_DEFAULT);
-
-    URHO3D_ACCESSOR_ATTRIBUTE ("[Traders Only] Trade Goods Cost",
-                               TradersUnitGetTradeGoodsCost,
-                               TradersUnitSetTradeGoodsCost, float, 0.0f, Urho3D::AM_DEFAULT);
-
-    URHO3D_ACCESSOR_ATTRIBUTE ("[Colonizators Only] Colonizators Count",
-                               ColonizatorsUnitGetColonizatorsCount,
-                               ColonizatorsUnitSetColonizatorsCount, int, 0, Urho3D::AM_DEFAULT);
-
-    URHO3D_ACCESSOR_ATTRIBUTE ("[Army Only] War Ships Count",
-                               ArmyUnitGetSoldiersCount,
-                               ArmyUnitSetSoldiersCount, int, 0, Urho3D::AM_DEFAULT);
-}
-
-void Unit::DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest)
-{
-    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
-    assert (map);
-
-    District *district = map->GetDistrictByHash (positionHash_);
-    if (district)
-    {
-        Urho3D::Sphere sphere (district->GetUnitPosition (), 0.15f);
-        debug->AddSphere (sphere, Urho3D::Color::GREEN, depthTest);
-    }
 }
 
 bool Unit::IsCanGoTo (const District *district, const Map *map, Urho3D::StringHash imaginePosition) const
@@ -310,103 +260,5 @@ float Unit::GetWayToNextDistrictProgressInPercents () const
 void Unit::SetWayToNextDistrictProgressInPercents (float wayToNextDistrictProgressInPercents)
 {
     wayToNextDistrictProgressInPercents_ = wayToNextDistrictProgressInPercents;
-}
-
-int Unit::FleetUnitGetWarShipsCount () const
-{
-    return fleetUnitWarShipsCount_;
-}
-
-void Unit::FleetUnitSetWarShipsCount (int warShipsCount)
-{
-    fleetUnitWarShipsCount_ = warShipsCount;
-}
-
-Urho3D::PODVector <float> Unit::FleetUnitGetWarShipsHealthPoints () const
-{
-    return fleetUnitWarShipsHealthPoints_;
-}
-
-void Unit::FleetUnitSetWarShipsHealthPoints (const Urho3D::PODVector <float> &warShipsHealthPoints)
-{
-    fleetUnitWarShipsHealthPoints_ = warShipsHealthPoints;
-    if (fleetUnitWarShipsHealthPoints_.Size () > fleetUnitWarShipsCount_)
-    {
-        fleetUnitWarShipsHealthPoints_.Erase (fleetUnitWarShipsCount_, fleetUnitWarShipsHealthPoints_.Size () - fleetUnitWarShipsCount_);
-    }
-
-    while (fleetUnitWarShipsHealthPoints_.Size () < fleetUnitWarShipsCount_)
-    {
-        fleetUnitWarShipsHealthPoints_.Push (100.0f);
-    }
-}
-
-Urho3D::VariantVector Unit::FleetUnitGetWarShipsHealthPointsAttribute () const
-{
-    Urho3D::VariantVector vector;
-    vector.Push (fleetUnitWarShipsCount_);
-    for (int index = 0; index < fleetUnitWarShipsCount_; index++)
-    {
-        if (index < fleetUnitWarShipsHealthPoints_.Size ())
-        {
-            vector.Push (fleetUnitWarShipsHealthPoints_.At (index));
-        }
-        else
-        {
-            vector.Push (100.0f);
-        }
-    }
-    return vector;
-}
-
-void Unit::FleetUnitSetWarShipsHealthPointsAttribute (const Urho3D::VariantVector &warShipsHealthPoints)
-{
-    fleetUnitWarShipsHealthPoints_.Clear ();
-    if (warShipsHealthPoints.Empty ())
-    {
-        return;
-    }
-
-    for (int index = 0; index < fleetUnitWarShipsCount_; index++)
-    {
-        if (index + 1 < warShipsHealthPoints.Size ())
-        {
-            fleetUnitWarShipsHealthPoints_.Push (warShipsHealthPoints.At (index + 1).GetFloat ());
-        }
-        else
-        {
-            fleetUnitWarShipsHealthPoints_.Push (100.0f);
-        }
-    }
-}
-
-float Unit::TradersUnitGetTradeGoodsCost () const
-{
-    return tradersUnitTradeGoodsCost_;
-}
-
-void Unit::TradersUnitSetTradeGoodsCost (float tradeGoodsCost)
-{
-    tradersUnitTradeGoodsCost_ = tradeGoodsCost;
-}
-
-int Unit::ColonizatorsUnitGetColonizatorsCount () const
-{
-    return colonizatorsUnitColonizatorsCount_;
-}
-
-void Unit::ColonizatorsUnitSetColonizatorsCount (int colonizatorsCount)
-{
-    colonizatorsUnitColonizatorsCount_ = colonizatorsCount;
-}
-
-int Unit::ArmyUnitGetSoldiersCount () const
-{
-    return armyUnitSoldiersCount_;
-}
-
-void Unit::ArmyUnitSetSoldiersCount (int soldiersCount)
-{
-    armyUnitSoldiersCount_ = soldiersCount;
 }
 }

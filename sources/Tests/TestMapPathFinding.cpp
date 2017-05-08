@@ -102,8 +102,7 @@ void TestMapPathFindingApplication::Start ()
 
     // Create UnitsManager and Unit.
     Colonization::UnitsManager *unitsManager = scene->CreateChild ("units")->CreateComponent <Colonization::UnitsManager> ();
-    Colonization::Unit *unit = unitsManager->CreateUnit ();
-    unit->SetUnitType (Colonization::UNIT_TRADERS);
+    Colonization::Unit *unit = unitsManager->CreateUnit (Colonization::UNIT_TRADERS);
     unit->SetOwnerPlayerName ("PlayerX");
     unit->SetPositionHash (map->GetDistrictByIndex (4 * mapHeight + 0)->GetHash ());
 

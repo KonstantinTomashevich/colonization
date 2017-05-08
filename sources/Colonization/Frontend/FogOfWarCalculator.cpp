@@ -8,7 +8,8 @@
 
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Core/Map.hpp>
-#include <Colonization/Core/Unit.hpp>
+#include <Colonization/Core/Unit/Unit.hpp>
+#include <Colonization/Core/Unit/UnitTags.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
 namespace Colonization
@@ -77,11 +78,11 @@ void FogOfWarCalculator::Update (Urho3D::StringHash eventType, Urho3D::VariantMa
         if (unitsContainerNode)
         {
             Urho3D::PODVector <Urho3D::Node *> unitsNodes;
-            unitsContainerNode->GetChildrenWithComponent (unitsNodes, Unit::GetTypeStatic ());
+            unitsContainerNode->GetChildrenWithTag (unitsNodes, TAG_UNIT);
             for (int index = 0; index < unitsNodes.Size (); index++)
             {
-                Unit *unit = unitsNodes.At (index)->GetComponent <Unit> ();
-                if (Urho3D::StringHash (unit->GetOwnerPlayerName ()) == playerNameHash)
+                Unit *unit = unitsNodes.At (index)->GetDerivedComponent <Unit> ();
+                if (unit && Urho3D::StringHash (unit->GetOwnerPlayerName ()) == playerNameHash)
                 {
                     District *position = map->GetDistrictByHash (unit->GetPositionHash ());
                     assert (position);

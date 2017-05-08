@@ -72,6 +72,7 @@ float ColoniesEvolutionManager::ProcessColonyPopulation (GameConfiguration *conf
 
 float ColoniesEvolutionManager::ProcessColonyFarmsEvolution (GameConfiguration *configuration, District *colony, float timeStep)
 {
+    // TODO:
     float totalColonyEvolution = GetTotalColonyEvolution (colony);
     float colonyFarmsEvolution = colony->GetFarmsEvolutionPoints ();
     float farmsEvolutionInColonyEvolution = colonyFarmsEvolution / totalColonyEvolution;
@@ -79,6 +80,7 @@ float ColoniesEvolutionManager::ProcessColonyFarmsEvolution (GameConfiguration *
     float canBePlanted = (colony->GetMenCount () + colony->GetWomenCount ()) * farmsEvolutionInColonyEvolution *
             configuration->GetCanBePlantedByOneColonist () * sqrt (colonyFarmsEvolution);
 
+    // TODO: Remove all magic numbers there!
     float climateModifer = 1.0f;
     if (colony->GetClimate () == CLIMATE_TEMPERATE)
     {
@@ -105,7 +107,7 @@ float ColoniesEvolutionManager::ProcessColonyFarmsEvolution (GameConfiguration *
         climateModifer = 0.25f;
     }
 
-
+    // TODO: Farms evolution is inbalanced. Rewrite it.
     float evolutionModifer = 2.0f * (colony->GetFarmingSquare () - canBePlanted) / colony->GetFarmingSquare ();
     evolutionModifer *= colony->GetLandAverageFertility ();
     evolutionModifer *= climateModifer;

@@ -10,6 +10,7 @@
 #include <Colonization/AngelScriptBinders/Activities/BindMainMenuActivity.hpp>
 
 #include <Colonization/AngelScriptBinders/Core/Diplomacy/BindDiplomacyWar.hpp>
+#include <Colonization/AngelScriptBinders/Core/Diplomacy/BindDiplomacyTags.hpp>
 #include <Colonization/AngelScriptBinders/Core/District/BindDistrictEnums.hpp>
 #include <Colonization/AngelScriptBinders/Core/District/BindDistrict.hpp>
 #include <Colonization/AngelScriptBinders/Core/District/BindColonyActions.hpp>
@@ -22,7 +23,12 @@
 #include <Colonization/AngelScriptBinders/Core/PlayerInfo/BindPlayerInfo.hpp>
 #include <Colonization/AngelScriptBinders/Core/PlayerInfo/BindPlayerInfoConstants.hpp>
 #include <Colonization/AngelScriptBinders/Core/PlayerInfo/BindVictoryTypeByPointsConstants.hpp>
-#include <Colonization/AngelScriptBinders/Core/BindUnit.hpp>
+
+#include <Colonization/AngelScriptBinders/Core/Unit/BindUnit.hpp>
+#include <Colonization/AngelScriptBinders/Core/Unit/BindFleetUnit.hpp>
+#include <Colonization/AngelScriptBinders/Core/Unit/BindTradersUnit.hpp>
+#include <Colonization/AngelScriptBinders/Core/Unit/BindColonizatorsUnit.hpp>
+#include <Colonization/AngelScriptBinders/Core/Unit/BindArmyUnit.hpp>
 
 #include <Colonization/AngelScriptBinders/Backend/BindDiplomacyInfoType.hpp>
 #include <Colonization/AngelScriptBinders/Backend/BindDiplomacyOfferType.hpp>
@@ -35,6 +41,7 @@
 #include <Colonization/AngelScriptBinders/Frontend/BindFogOfWarCalculator.hpp>
 #include <Colonization/AngelScriptBinders/Frontend/BindMapMaskUpdater.hpp>
 #include <Colonization/AngelScriptBinders/Utils/BindActivitiesApplication.hpp>
+#include <Colonization/AngelScriptBinders/Utils/BindIsObjectTypeOf.hpp>
 
 namespace Colonization
 {
@@ -49,21 +56,33 @@ void BindAll (Urho3D::Script *script)
     BindMainMenuActivity (script);
 
     BindDiplomacyWar (script);
+    BindDiplomacyTags (script);
     BindGameConfiguration (script, false);
     BindDistrictEnums (script);
     BindDistrict (script);
     BindColonyActions (script);
     BindDistrictUtils (script);
+
     BindUnit (script, false);
+    BindFleetUnit (script, false);
+    BindTradersUnit (script, false);
+    BindColonizatorsUnit (script, false);
+    BindArmyUnit (script, false);
+
     BindMap (script);
-    BindGameConfigurationInterface (script, "GameConfiguration");
+    BindGameConfiguration (script, true);
     BindDistrictProductionInfoKeys (script);
     BindTradeDistrictProcessingInfo (script);
     BindInternalTradeArea (script);
     BindPlayerInfo (script);
     BindPlayerInfoConstants (script);
     BindVictoryTypeByPointsConstants (script);
-    BindUnitInterface (script, "Unit");
+
+    BindUnit (script, true);
+    BindFleetUnit (script, true);
+    BindTradersUnit (script, true);
+    BindColonizatorsUnit (script, true);
+    BindArmyUnit (script, true);
 
     BindDiplomacyInfoType (script);
     BindDiplomacyOfferType (script);
@@ -76,5 +95,6 @@ void BindAll (Urho3D::Script *script)
     BindFogOfWarCalculator (script);
     BindMapMaskUpdater (script);
     BindActivitiesApplication (script);
+    BindIsObjectTypeOf (script);
 }
 }

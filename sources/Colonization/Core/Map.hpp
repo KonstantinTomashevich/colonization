@@ -7,6 +7,7 @@ namespace Colonization
 {
 class Unit;
 float HeuristicDistanceForPathFinding (District *goal, District *next);
+const Urho3D::String TAG_DISTRICT ("District");
 
 class Map : public Urho3D::Component
 {

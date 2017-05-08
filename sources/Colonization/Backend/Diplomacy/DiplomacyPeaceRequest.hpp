@@ -36,5 +36,6 @@ public:
     virtual void OnAddition ();
     virtual bool UpdatePlayerStatus (Urho3D::StringHash playerNameHash, DiplomacyRequestPlayerStatus status);
     virtual bool TimeUpdate (float timeStep);
+    virtual Urho3D::String GetRequestTypeTag () const;
 };
 }

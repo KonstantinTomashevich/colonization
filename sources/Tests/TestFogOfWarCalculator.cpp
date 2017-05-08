@@ -8,7 +8,7 @@
 #include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
-#include <Colonization/Core/Unit.hpp>
+#include <Colonization/Core/Unit/Unit.hpp>
 
 #include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Frontend/FogOfWarCalculator.hpp>
@@ -106,11 +106,8 @@ void TestFogOfWarCalculatorApplication::Start ()
 
     Colonization::UnitsManager *unitsManager =
             scene->CreateChild ("units", Urho3D::REPLICATED)->CreateComponent <Colonization::UnitsManager> ();
-    Colonization::Unit *unit1 = unitsManager->CreateUnit ();
-    Colonization::Unit *unit2 = unitsManager->CreateUnit ();
-
-    unit1->SetUnitType (Colonization::UNIT_FLEET);
-    unit2->SetUnitType (Colonization::UNIT_FLEET);
+    Colonization::Unit *unit1 = unitsManager->CreateUnit (Colonization::UNIT_FLEET);
+    Colonization::Unit *unit2 = unitsManager->CreateUnit (Colonization::UNIT_FLEET);
 
     unit1->SetOwnerPlayerName ("PlayerX");
     unit2->SetOwnerPlayerName ("PlayerX");
@@ -127,13 +124,23 @@ void TestFogOfWarCalculatorApplication::Start ()
 
     Urho3D::HashMap <Urho3D::StringHash, bool> resultMap = fogOfWarCalculator->GetFogOfWarMap ();
     Urho3D::Log::Write (Urho3D::LOG_INFO, "Result fog of war map:");
-    for (Urho3D::HashMap <Urho3D::StringHash, bool>::ConstIterator iterator = resultMap.Begin ();
-         iterator != resultMap.End (); iterator++)
+    Urho3D::String resultMapStr = "\n";
+    for (int y = 0; y < mapHeight; y++)
     {
-        Urho3D::Log::Write (Urho3D::LOG_INFO, "    " +
-                            map->GetDistrictByHash (iterator->first_)->GetName () + ": " +
-                            Urho3D::String (iterator->second_));
+        for (int x = 0; x < mapWidth; x++)
+        {
+            if (resultMap [map->GetDistrictByIndex (x * mapHeight + y)->GetHash ()])
+            {
+                resultMapStr += "+";
+            }
+            else
+            {
+                resultMapStr += "#";
+            }
+        }
+        resultMapStr += "|\n";
     }
+    Urho3D::Log::Write (Urho3D::LOG_INFO, resultMapStr);
 
     Urho3D::HashMap <Urho3D::StringHash, bool> expectedMap;
     for (int index = 0; index < mapWidth * mapHeight; index++)
@@ -157,13 +164,24 @@ void TestFogOfWarCalculatorApplication::Start ()
     expectedMap [map->GetDistrictByIndex (4 * mapHeight + 0)->GetHash ()] = true;
 
     Urho3D::Log::Write (Urho3D::LOG_INFO, "Expected fog of war map:");
-    for (Urho3D::HashMap <Urho3D::StringHash, bool>::ConstIterator iterator = expectedMap.Begin ();
-         iterator != expectedMap.End (); iterator++)
+    Urho3D::String expectedMapStr = "\n";
+    for (int y = 0; y < mapHeight; y++)
     {
-        Urho3D::Log::Write (Urho3D::LOG_INFO, "    " +
-                            map->GetDistrictByHash (iterator->first_)->GetName () + ": " +
-                            Urho3D::String (iterator->second_));
+        for (int x = 0; x < mapWidth; x++)
+        {
+            if (expectedMap [map->GetDistrictByIndex (x * mapHeight + y)->GetHash ()])
+            {
+                expectedMapStr += "+";
+            }
+            else
+            {
+                expectedMapStr += "#";
+            }
+        }
+        expectedMapStr += "|\n";
     }
+    Urho3D::Log::Write (Urho3D::LOG_INFO, expectedMapStr);
+
     if (resultMap != expectedMap)
     {
         ErrorExit ("Result fog of war map don't match expected!");

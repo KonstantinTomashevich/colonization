@@ -9,7 +9,7 @@
 #include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
-#include <Colonization/Core/Unit.hpp>
+#include <Colonization/Core/Unit/Unit.hpp>
 
 #include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Frontend/FogOfWarCalculator.hpp>
@@ -108,11 +108,8 @@ void TestMapMaskGenerationApplication::Start ()
 
     Colonization::UnitsManager *unitsManager =
             scene->CreateChild ("units", Urho3D::REPLICATED)->CreateComponent <Colonization::UnitsManager> ();
-    Colonization::Unit *unit1 = unitsManager->CreateUnit ();
-    Colonization::Unit *unit2 = unitsManager->CreateUnit ();
-
-    unit1->SetUnitType (Colonization::UNIT_FLEET);
-    unit2->SetUnitType (Colonization::UNIT_FLEET);
+    Colonization::Unit *unit1 = unitsManager->CreateUnit (Colonization::UNIT_FLEET);
+    Colonization::Unit *unit2 = unitsManager->CreateUnit (Colonization::UNIT_FLEET);
 
     unit1->SetOwnerPlayerName ("PlayerX");
     unit2->SetOwnerPlayerName ("PlayerX");

@@ -3,6 +3,7 @@
 #include <Urho3D/Core/Context.h>
 
 #include <Colonization/Core/Diplomacy/DiplomacyWar.hpp>
+#include <Colonization/Core/Diplomacy/DiplomacyTags.hpp>
 #include <Colonization/Backend/Diplomacy/DiplomacyRequestsUtils.hpp>
 #include <Colonization/Backend/Diplomacy/DiplomacyInfoType.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
@@ -76,5 +77,10 @@ bool DiplomacyWarRequest::UpdatePlayerStatus (Urho3D::StringHash playerNameHash,
 bool DiplomacyWarRequest::TimeUpdate (float timeStep)
 {
     return true;
+}
+
+Urho3D::String DiplomacyWarRequest::GetRequestTypeTag () const
+{
+    return TAG_WAR;
 }
 }

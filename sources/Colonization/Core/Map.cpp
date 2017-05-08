@@ -8,7 +8,7 @@
 
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
-#include <Colonization/Core/Unit.hpp>
+#include <Colonization/Core/Unit/Unit.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
 namespace Colonization
@@ -99,6 +99,7 @@ District *Map::CreateDistrict (Urho3D::String districtName)
     assert (node_);
     Urho3D::Node *districtNode = node_->CreateChild (districtName, Urho3D::REPLICATED);
     Urho3D::SharedPtr <District> district (districtNode->CreateComponent <District> (Urho3D::REPLICATED));
+    districtNode->AddTag (TAG_DISTRICT);
     district->SetName (districtName);
     districts_.Push (district);
     district->UpdateHash (this);

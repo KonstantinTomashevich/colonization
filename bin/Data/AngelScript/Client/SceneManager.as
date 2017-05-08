@@ -52,7 +52,7 @@ class SceneManager : ScriptObject
     protected void UpdateDistricts ()
     {
         Map @map = scene.GetChild ("map").GetComponent ("Map");
-        Array <Node @> districtsNodes = scene.GetChild ("map").GetChildrenWithComponent ("District");
+        Array <Node @> districtsNodes = scene.GetChild ("map").GetChildrenWithTag (TAG_DISTRICT);
 
         for (uint index = 0; index < districtsNodes.length; index++)
         {
@@ -112,7 +112,9 @@ class SceneManager : ScriptObject
             unit.node.GetChild ("local").worldRotation = Quaternion (0.0f, 180.0f + rotation.yaw, 0.0f);
         }
         else
+        {
             unit.node.GetChild ("local").worldRotation = Quaternion ();
+        }
     }
 
     protected void UpdateUnits ()
@@ -120,7 +122,7 @@ class SceneManager : ScriptObject
         FogOfWarCalculator @fogOfWarCalculator = scene.GetComponent ("FogOfWarCalculator");
         Map @map = scene.GetChild ("map").GetComponent ("Map");
         Node @scriptMain = GetScriptMain (node);
-        Array <Node @> unitsNodes = scene.GetChild ("units").GetChildrenWithComponent ("Unit");
+        Array <Node @> unitsNodes = scene.GetChild ("units").GetChildrenWithTag (TAG_UNIT);
         VariantMap isDistrictOccupied;
 
         StringHash selectionType = scriptMain.GetChild ("screenPressesHandlerScriptNode").
@@ -140,7 +142,7 @@ class SceneManager : ScriptObject
 
         for (uint index = 0; index < unitsNodes.length; index++)
         {
-            Unit @unit = unitsNodes [index].GetComponent ("Unit");
+            Unit @unit = cast <Unit> (GetFirstComponentOfNodeDerivedFrom (unitsNodes [index], StringHash ("Unit")));
             if (!isDistrictOccupied [unit.positionHash].GetBool () and fogOfWarCalculator.IsDistrictVisible (unit.positionHash))
             {
                 isDistrictOccupied [unit.positionHash] = true;

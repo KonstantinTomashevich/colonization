@@ -45,7 +45,7 @@ int InternalTradeArea::CalculateTotalSoldiersCount ()
                 Unit *unit = unitsInDistrict.At (unitIndex);
                 if (unit->GetUnitType () == UNIT_ARMY)
                 {
-                    totalSoldiersCount += unit->ArmyUnitGetSoldiersCount ();
+                    totalSoldiersCount += ((ArmyUnit *) (unit))->GetSoldiersCount ();
                 }
             }
         }

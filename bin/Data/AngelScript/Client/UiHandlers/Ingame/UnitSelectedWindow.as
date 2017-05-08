@@ -11,12 +11,12 @@ class UnitSelectedWindow : ScriptObject
         Node @scriptMain = GetScriptMain (node);
         FogOfWarCalculator @fogOfWarCalculator = scene.GetComponent ("FogOfWarCalculator");
         Window @unitInfoWindow = ui.root.GetChild ("ingame").GetChild ("unitInfoWindow");
-        unitInfoWindow.visible = true;
-
         StringHash unitHash = scriptMain.vars ["selectedHash"].GetStringHash ();
         Unit @unit = GetUnitByHash (scene, unitHash);
+
         if (unit !is null and fogOfWarCalculator.IsDistrictVisible (unit.positionHash))
         {
+            unitInfoWindow.visible = true;
             Text @ownerText = unitInfoWindow.GetChild ("ownerText");
             ownerText.text = unit.ownerPlayerName + "'s";
 
@@ -66,22 +66,22 @@ class UnitSelectedWindow : ScriptObject
             String additionalInfo;
             if (unit.unitType == UNIT_FLEET)
             {
-                additionalInfo += "War ships count: " + unit.fleetUnitWarShipsCount + ".\n";
+                additionalInfo += "War ships count: " +( cast <FleetUnit> (unit)).warShipsCount + ".\n";
             }
 
             else if (unit.unitType == UNIT_TRADERS)
             {
-                additionalInfo += "Trade goods cost: " + Floor (unit.tradersUnitTradeGoodsCost * 100.0f) / 100.0f + ".\n";
+                additionalInfo += "Trade goods cost: " + Floor ((cast <TradersUnit> (unit)).tradeGoodsCost * 100.0f) / 100.0f + ".\n";
             }
 
             else if (unit.unitType == UNIT_COLONIZATORS)
             {
-                additionalInfo += "Colonizators count: " + unit.colonizatorsUnitColonizatorsCount + ".\n";
+                additionalInfo += "Colonizators count: " + (cast <ColonizatorsUnit> (unit)).colonizatorsCount + ".\n";
             }
 
             else if (unit.unitType == UNIT_ARMY)
             {
-                additionalInfo += "Soldiers count: " + unit.armyUnitSoldiersCount + ".\n";
+                additionalInfo += "Soldiers count: " + (cast <ArmyUnit> (unit)).soldiersCount + ".\n";
             }
 
             if (unit.GetWay ().length > 0)

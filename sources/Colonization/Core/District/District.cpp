@@ -139,10 +139,10 @@ void District::DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest)
     }
 
     Urho3D::Sphere colonySphere (colonyPosition_, 0.25f);
-    debug->AddSphere (colonySphere, Urho3D::Color::YELLOW, depthTest);
+    debug->AddSphere (colonySphere, Urho3D::Color::GRAY, depthTest);
 
     Urho3D::Sphere unitSphere (unitPosition_, 0.15f);
-    debug->AddSphere (unitSphere, Urho3D::Color::GREEN, depthTest);
+    debug->AddSphere (unitSphere, Urho3D::Color::BLACK, depthTest);
 }
 
 void District::RegisterObject (Urho3D::Context *context)
