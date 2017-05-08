@@ -29,22 +29,22 @@ float PlayersPointsCalculator::CalculateUnitPoints (Unit *unit, GameConfiguratio
     if (unit->GetUnitType () == UNIT_FLEET)
     {
         modifer = configuration->GetUnitFleetPointsModifer ();
-        mainProperty = unit->FleetUnitGetWarShipsCount ();
+        mainProperty = ((FleetUnit *) (unit))->GetWarShipsCount ();
     }
     else if (unit->GetUnitType () == UNIT_TRADERS)
     {
         modifer = configuration->GetUnitTradersPointsModifer ();
-        mainProperty = unit->TradersUnitGetTradeGoodsCost ();
+        mainProperty = ((TradersUnit *) (unit))->GetTradeGoodsCost ();
     }
     else if (unit->GetUnitType () == UNIT_COLONIZATORS)
     {
         modifer = configuration->GetUnitColonizatorsPointsModifer ();
-        mainProperty = unit->ColonizatorsUnitGetColonizatorsCount ();
+        mainProperty = ((ColonizatorsUnit *) (unit))->GetColonizatorsCount ();
     }
     else if (unit->GetUnitType () == UNIT_ARMY)
     {
         modifer = configuration->GetUnitArmyPointsModifer ();
-        mainProperty = unit->ArmyUnitGetSoldiersCount ();
+        mainProperty = ((ArmyUnit *) (unit))->GetSoldiersCount ();
     }
 
     return (modifer * mainProperty);

@@ -110,15 +110,14 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
         District *nearestEuropeDistrict = map->GetDistrictByHash (
                     configuration->GetHeuristicNearestWayToEuropeDistrict (map, targetDistrict));
 
-        Unit *unit = unitsManager->CreateUnit ();
+        Unit *unit = unitsManager->CreateUnit (UNIT_COLONIZATORS);
         unit->SetOwnerPlayerName (name_);
         unit->SetPositionHash (nearestEuropeDistrict->GetHash ());
-        unit->SetUnitType (UNIT_COLONIZATORS);
 
         if (!map->FindPath (targetDistrict->GetHash (), unit).Empty ())
         {
             gold_ -= cost;
-            unit->ColonizatorsUnitSetColonizatorsCount (colonizatorsCount);
+            ((ColonizatorsUnit *) (unit))->SetColonizatorsCount (colonizatorsCount);
 
             NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
             if (!counter)

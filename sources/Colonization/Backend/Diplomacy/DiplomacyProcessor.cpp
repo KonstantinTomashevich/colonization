@@ -5,6 +5,7 @@
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/Scene/Scene.h>
 
+#include <Colonization/Core/Diplomacy/DiplomacyTags.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
@@ -112,6 +113,8 @@ void DiplomacyProcessor::AddDiplomacyRequest (DiplomacyRequest *request)
     Urho3D::Node *requestNode = GetOrCreateRequestsNode ()->
             CreateChild ("Request" + Urho3D::String (request->GetRequestId ()), Urho3D::LOCAL);
     requestNode->AddComponent (request, requestNode->GetID () + 1, Urho3D::LOCAL);
+    requestNode->AddTag (TAG_DIPLOMACY_REQUEST);
+    requestNode->AddTag (request->GetRequestTypeTag ());
     request->OnAddition ();
 }
 
@@ -156,6 +159,9 @@ DiplomacyWar *DiplomacyProcessor::CreateWar ()
     assert (node_);
     Urho3D::Node *warNode = node_->CreateChild ("War", Urho3D::REPLICATED);
     warNode->SetName ("War" + Urho3D::String (warNode->GetID ()));
+    warNode->AddTag (TAG_DIPLOMACY_RELATION);
+    warNode->AddTag (TAG_WAR);
+
     Urho3D::SharedPtr <DiplomacyWar> war (warNode->CreateComponent <DiplomacyWar> (Urho3D::REPLICATED));
     wars_.Push (war);
     war->UpdateHash (this);

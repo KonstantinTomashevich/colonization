@@ -22,7 +22,12 @@
 #include <Colonization/Core/InternalTradeArea/InternalTradeArea.hpp>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/PlayerInfo/PlayerInfo.hpp>
-#include <Colonization/Core/Unit.hpp>
+
+#include <Colonization/Core/Unit/Unit.hpp>
+#include <Colonization/Core/Unit/FleetUnit.hpp>
+#include <Colonization/Core/Unit/TradersUnit.hpp>
+#include <Colonization/Core/Unit/ColonizatorsUnit.hpp>
+#include <Colonization/Core/Unit/ArmyUnit.hpp>
 
 #include <Colonization/Frontend/FogOfWarCalculator.hpp>
 #include <Colonization/Frontend/MapMaskUpdater.hpp>
@@ -54,7 +59,12 @@ void RegisterAllObjects (Urho3D::Context *context)
     InternalTradeArea::RegisterObject (context);
     Map::RegisterObject (context);
     PlayerInfo::RegisterObject (context);
+
     Unit::RegisterObject (context);
+    FleetUnit::RegisterObject (context);
+    TradersUnit::RegisterObject (context);
+    ColonizatorsUnit::RegisterObject (context);
+    ArmyUnit::RegisterObject (context);
 
     FogOfWarCalculator::RegisterObject (context);
     MapMaskUpdater::RegisterObject (context);

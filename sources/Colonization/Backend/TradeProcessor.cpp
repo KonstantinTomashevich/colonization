@@ -221,9 +221,8 @@ float TradeProcessor::CalculateUnsoldGoodsCost (GameConfiguration *configuration
 void TradeProcessor::SendTrader (Map *map, UnitsManager *unitsManager, GameConfiguration *configuration,
                                  District *district, float goodsCost)
 {
-    Unit *unit = unitsManager->CreateUnit ();
-    unit->SetUnitType (UNIT_TRADERS);
-    unit->TradersUnitSetTradeGoodsCost (goodsCost);
+    Unit *unit = unitsManager->CreateUnit (UNIT_TRADERS);
+    ((TradersUnit *) (unit))->SetTradeGoodsCost (goodsCost);
     unit->SetOwnerPlayerName (district->GetColonyOwnerName ());
     unit->SetPositionHash (district->GetHash ());
 

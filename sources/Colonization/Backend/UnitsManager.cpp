@@ -5,18 +5,17 @@
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/Scene/Scene.h>
 
-#include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
+#include <Colonization/Core/Unit/UnitTags.hpp>
+#include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
 namespace Colonization
 {
-void UnitsManager::SettleColonizator (Unit *unit, Map *map)
+void UnitsManager::SettleColonizator (ColonizatorsUnit *unit, Map *map)
 {
     assert (unit);
-    assert (unit->GetUnitType () == UNIT_COLONIZATORS);
-
     District *colony = map->GetDistrictByHash (unit->GetPositionHash ());
     assert (colony);
 
@@ -36,13 +35,15 @@ void UnitsManager::SettleColonizator (Unit *unit, Map *map)
     {
         Urho3D::Log::Write (Urho3D::LOG_WARNING, "Can't settle colonizator of " + unit->GetOwnerPlayerName () +
                             " in " + colony->GetName () + ". Because there is a colony of " + colony->GetColonyOwnerName () + "!");
+        // TODO: Add ability to reselect colonizators target.
         unit->GetNode ()->Remove ();
     }
     else
     {
+        // TODO: If there are a lot of women in colony and small count of men, spawn much more men.
         float menPercent = Urho3D::Random (0.45f, 0.55f);
-        colony->SetMenCount (colony->GetMenCount () + unit->ColonizatorsUnitGetColonizatorsCount () * 1.0f * menPercent);
-        colony->SetWomenCount (colony->GetWomenCount () + unit->ColonizatorsUnitGetColonizatorsCount () * 1.0f * (1.0f - menPercent));
+        colony->SetMenCount (colony->GetMenCount () + unit->GetColonizatorsCount () * 1.0f * menPercent);
+        colony->SetWomenCount (colony->GetWomenCount () + unit->GetColonizatorsCount () * 1.0f * (1.0f - menPercent));
         unit->GetNode ()->Remove ();
 
         NetworkUpdateCounter *counter = colony->GetNode ()->GetComponent <NetworkUpdateCounter> ();
@@ -54,11 +55,9 @@ void UnitsManager::SettleColonizator (Unit *unit, Map *map)
     }
 }
 
-void UnitsManager::ProcessTrader (GameConfiguration *configuration, Unit *unit)
+void UnitsManager::ProcessTrader (GameConfiguration *configuration, TradersUnit *unit)
 {
     assert (unit);
-    assert (unit->GetUnitType () == UNIT_TRADERS);
-
     PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
     assert (playersManager);
 
@@ -66,7 +65,7 @@ void UnitsManager::ProcessTrader (GameConfiguration *configuration, Unit *unit)
     assert (player);
 
     float externalTaxes = configuration->GetExternalTaxes ();
-    player->SetGold (player->GetGold () + unit->TradersUnitGetTradeGoodsCost () * externalTaxes);
+    player->SetGold (player->GetGold () + unit->GetTradeGoodsCost () * externalTaxes);
     unit->GetNode ()->Remove ();
 }
 
@@ -104,12 +103,12 @@ bool UnitsManager::OnNextTargetReached (Unit *unit, Urho3D::PODVector <Urho3D::S
 
     if (unitWay.Empty () && unit->GetUnitType () == UNIT_COLONIZATORS)
     {
-        SettleColonizator (unit, map);
+        SettleColonizator (((ColonizatorsUnit *) (unit)), map);
         return false;
     }
     else if (unitWay.Empty () && unit->GetUnitType () == UNIT_TRADERS)
     {
-        ProcessTrader (configuration, unit);
+        ProcessTrader (configuration, ((TradersUnit *) (unit)));
         return false;
     }
     return true;
@@ -225,13 +224,17 @@ void UnitsManager::UpdateUnitsList ()
     assert (node_);
     units_.Clear ();
     Urho3D::PODVector <Urho3D::Node *> unitsNodes;
-    node_->GetChildrenWithComponent (unitsNodes, Unit::GetTypeStatic ());
+    node_->GetChildrenWithTag (unitsNodes, TAG_UNIT);
     for (int index = 0; index < unitsNodes.Size (); index++)
     {
         Urho3D::Node *unitNode = unitsNodes.At (index);
         if (unitNode->GetID () < Urho3D::FIRST_LOCAL_ID)
         {
-            units_.Push (Urho3D::SharedPtr <Unit> (unitNode->GetComponent <Unit> ()));
+            Unit *unit = unitNode->GetDerivedComponent <Unit> ();
+            if (unit)
+            {
+                units_.Push (Urho3D::SharedPtr <Unit> (unit));
+            }
         }
     }
 }
@@ -273,14 +276,40 @@ Urho3D::PODVector <Urho3D::StringHash> UnitsManager::GetUnitsOfPlayer (Urho3D::S
     return units;
 }
 
-Unit *UnitsManager::CreateUnit ()
+Unit *UnitsManager::CreateUnit (UnitType unitType)
 {
     assert (node_);
     Urho3D::Node *unitNode = node_->CreateChild ("unit", Urho3D::REPLICATED);
-    unitNode->SetName ("Unit" + Urho3D::String (unitNode->GetID ()));
-    Urho3D::SharedPtr <Unit> unit (unitNode->CreateComponent <Unit> (Urho3D::REPLICATED));
-    units_.Push (unit);
-    unit->UpdateHash (this);
+    Urho3D::SharedPtr <Unit> unit;
+    if (unitType == UNIT_FLEET)
+    {
+        unit = Urho3D::SharedPtr <Unit> (unitNode->CreateComponent <FleetUnit> (Urho3D::REPLICATED));
+    }
+    else if (unitType == UNIT_TRADERS)
+    {
+        unit = Urho3D::SharedPtr <Unit> (unitNode->CreateComponent <TradersUnit> (Urho3D::REPLICATED));
+    }
+    else if (unitType == UNIT_COLONIZATORS)
+    {
+        unit = Urho3D::SharedPtr <Unit> (unitNode->CreateComponent <ColonizatorsUnit> (Urho3D::REPLICATED));
+    }
+    else if (unitType == UNIT_ARMY)
+    {
+        unit = Urho3D::SharedPtr <Unit> (unitNode->CreateComponent <ArmyUnit> (Urho3D::REPLICATED));
+    }
+
+    if (unit.NotNull ())
+    {
+        unitNode->SetName (unit->GetUnitTypeTag () + Urho3D::String (unitNode->GetID ()));
+        unitNode->AddTag (TAG_UNIT);
+        unitNode->AddTag (unit->GetUnitTypeTag ());
+        units_.Push (unit);
+        unit->UpdateHash (this);
+    }
+    else
+    {
+        unitNode->Remove ();
+    }
     return unit;
 }
 
@@ -288,15 +317,15 @@ Urho3D::PODVector <Unit *> GetUnitsInDistrict (Urho3D::Scene *scene, Urho3D::Str
 {
     Urho3D::PODVector <Unit *> unitsInDistrict;
     Urho3D::PODVector <Urho3D::Node *> unitsNodes;
-    scene->GetChild ("units")->GetChildrenWithComponent (unitsNodes, Unit::GetTypeStatic ());
+    scene->GetChild ("units")->GetChildrenWithTag (unitsNodes, TAG_UNIT);
 
     for (int index = 0; index < unitsNodes.Size (); index++)
     {
         Urho3D::Node *unitNode = unitsNodes.At (index);
         if (unitNode->GetID () < Urho3D::FIRST_LOCAL_ID)
         {
-            Unit *unit = unitNode->GetComponent <Unit> ();
-            if (unit->GetPositionHash () == districtHash)
+            Unit *unit = unitNode->GetDerivedComponent <Unit> ();
+            if (unit && unit->GetPositionHash () == districtHash)
             {
                 unitsInDistrict.Push (unit);
             }

@@ -1,7 +1,11 @@
 #pragma once
 #include <Urho3D/Core/Object.h>
 #include <Urho3D/Scene/Component.h>
-#include <Colonization/Core/Unit.hpp>
+#include <Colonization/Core/Unit/Unit.hpp>
+#include <Colonization/Core/Unit/FleetUnit.hpp>
+#include <Colonization/Core/Unit/TradersUnit.hpp>
+#include <Colonization/Core/Unit/ColonizatorsUnit.hpp>
+#include <Colonization/Core/Unit/ArmyUnit.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
 
 namespace Colonization
@@ -13,8 +17,8 @@ URHO3D_OBJECT (UnitsManager, Component)
 protected:
     Urho3D::Vector <Urho3D::SharedPtr <Unit> > units_;
 
-    void SettleColonizator (Unit *unit, Map *map);
-    void ProcessTrader (GameConfiguration *configuration, Unit *unit);
+    void SettleColonizator (ColonizatorsUnit *unit, Map *map);
+    void ProcessTrader (GameConfiguration *configuration, TradersUnit *unit);
     float GetUnitSpeedBetween (District *position, District *target, GameConfiguration *configuration);
     /// Returns true if unit exists after it, otherwise false.
     bool OnNextTargetReached (Unit *unit, Urho3D::PODVector <Urho3D::StringHash> &unitWay,
@@ -35,6 +39,6 @@ public:
     Unit *GetUnitByIndex (int index) const;
     Unit *GetUnitByHash (Urho3D::StringHash hash) const;
     Urho3D::PODVector <Urho3D::StringHash> GetUnitsOfPlayer (Urho3D::StringHash playerNameHash);
-    Unit *CreateUnit ();
+    Unit *CreateUnit (UnitType unitType);
 };
 }

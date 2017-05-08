@@ -3,6 +3,7 @@
 #include <Urho3D/Core/Context.h>
 
 #include <Colonization/Core/Diplomacy/DiplomacyWar.hpp>
+#include <Colonization/Core/Diplomacy/DiplomacyTags.hpp>
 #include <Colonization/Backend/Diplomacy/DiplomacyRequestsUtils.hpp>
 #include <Colonization/Backend/Diplomacy/DiplomacyOfferType.hpp>
 #include <Colonization/Backend/Diplomacy/DiplomacyInfoType.hpp>
@@ -152,5 +153,10 @@ bool DiplomacyPeaceRequest::TimeUpdate (float timeStep)
     {
         return false;
     }
+}
+
+Urho3D::String DiplomacyPeaceRequest::GetRequestTypeTag () const
+{
+    return TAG_PEACE;
 }
 }
