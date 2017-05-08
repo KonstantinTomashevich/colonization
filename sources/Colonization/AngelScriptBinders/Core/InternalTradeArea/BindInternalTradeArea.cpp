@@ -19,16 +19,11 @@ void BindInternalTradeArea (Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
     Urho3D::RegisterComponent <InternalTradeArea> (engine, "InternalTradeArea");
-    BindInternalTradeAreaInterface (script, "InternalTradeArea");
-}
 
-void BindInternalTradeAreaInterface (Urho3D::Script *script, Urho3D::String className)
-{
-    asIScriptEngine *engine = script->GetScriptEngine ();
-    engine->RegisterObjectMethod (className.CString (), "TradeDistrictProcessingInfo @ProcessTrade (Map @+ map, float updateDelay, bool writeDistrictsBalance)", asFUNCTION (InternalTradeArea_ProcessTrade), asCALL_CDECL_OBJFIRST);
-    engine->RegisterObjectMethod (className.CString (), "int get_districtsHashesCount ()", asMETHOD (InternalTradeArea, GetDistrictsHashesCount), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className.CString (), "StringHash GetDistrictHashByIndex (int index)", asMETHOD (InternalTradeArea, GetDistrictHashByIndex), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className.CString (), "void AddDistrictHash (StringHash districtHash)", asMETHOD (InternalTradeArea, AddDistrictHash), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className.CString (), "bool ContainsDistrictHash (StringHash districtHash)", asMETHOD (InternalTradeArea, ContainsDistrictHash), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("InternalTradeArea", "TradeDistrictProcessingInfo @ProcessTrade (Map @+ map, float updateDelay, bool writeDistrictsBalance)", asFUNCTION (InternalTradeArea_ProcessTrade), asCALL_CDECL_OBJFIRST);
+    engine->RegisterObjectMethod ("InternalTradeArea", "int get_districtsHashesCount ()", asMETHOD (InternalTradeArea, GetDistrictsHashesCount), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("InternalTradeArea", "StringHash GetDistrictHashByIndex (int index)", asMETHOD (InternalTradeArea, GetDistrictHashByIndex), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("InternalTradeArea", "void AddDistrictHash (StringHash districtHash)", asMETHOD (InternalTradeArea, AddDistrictHash), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("InternalTradeArea", "bool ContainsDistrictHash (StringHash districtHash)", asMETHOD (InternalTradeArea, ContainsDistrictHash), asCALL_THISCALL);
 }
 }

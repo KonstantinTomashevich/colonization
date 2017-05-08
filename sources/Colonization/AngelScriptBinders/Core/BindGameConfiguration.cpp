@@ -20,8 +20,11 @@ void GameConfiguration_SetWayToEuropeDistricts (GameConfiguration *object, Urho3
 void BindGameConfiguration (Urho3D::Script *script, bool bindInterface)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
-    Urho3D::RegisterComponent <GameConfiguration> (engine, "GameConfiguration");
-    if (bindInterface)
+    if (!bindInterface)
+    {
+        Urho3D::RegisterComponent <GameConfiguration> (engine, "GameConfiguration");
+    }
+    else
     {
         BindGameConfigurationInterface (script, "GameConfiguration");
     }

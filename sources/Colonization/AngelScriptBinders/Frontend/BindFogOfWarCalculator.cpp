@@ -22,16 +22,11 @@ void BindFogOfWarCalculator (Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
     Urho3D::RegisterComponent <FogOfWarCalculator> (engine, "FogOfWarCalculator");
-    BindFogOfWarCalculatorInterface (script, "FogOfWarCalculator");
-}
 
-void BindFogOfWarCalculatorInterface (Urho3D::Script *script, Urho3D::String className)
-{
-    asIScriptEngine *engine = script->GetScriptEngine ();
-    engine->RegisterObjectMethod (className.CString (), "String get_playerName () const", asMETHOD (FogOfWarCalculator, GetPlayerName), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className.CString (), "void set_playerName (String playerName)", asMETHOD (FogOfWarCalculator, SetPlayerName), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("FogOfWarCalculator", "String get_playerName () const", asMETHOD (FogOfWarCalculator, GetPlayerName), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("FogOfWarCalculator", "void set_playerName (String playerName)", asMETHOD (FogOfWarCalculator, SetPlayerName), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod (className.CString (), "bool IsDistrictVisible (StringHash districtHash)", asMETHOD (FogOfWarCalculator, IsDistrictVisible), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className.CString (), "VariantMap get_fogOfWarMap ()", asFUNCTION (FogOfWarCalculator_GetFogOfWarMap), asCALL_CDECL_OBJFIRST);
+    engine->RegisterObjectMethod ("FogOfWarCalculator", "bool IsDistrictVisible (StringHash districtHash)", asMETHOD (FogOfWarCalculator, IsDistrictVisible), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("FogOfWarCalculator", "VariantMap get_fogOfWarMap ()", asFUNCTION (FogOfWarCalculator_GetFogOfWarMap), asCALL_CDECL_OBJFIRST);
 }
 }

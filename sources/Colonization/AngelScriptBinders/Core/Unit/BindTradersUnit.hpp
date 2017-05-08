@@ -2,5 +2,5 @@
 #include <Urho3D/AngelScript/Script.h>
 namespace Colonization
 {
-void BindFogOfWarCalculator (Urho3D::Script *script);
+void BindTradersUnit (Urho3D::Script *script, bool bindInterface = true);
 }

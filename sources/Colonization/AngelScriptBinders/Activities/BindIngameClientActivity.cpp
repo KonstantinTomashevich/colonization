@@ -1,5 +1,6 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "BindIngameClientActivity.hpp"
+#include <Colonization/AngelScriptBinders/Templates/BindActivityInterface.hpp>
 #include <Urho3D/ThirdParty/AngelScript/angelscript.h>
 #include <Urho3D/AngelScript/APITemplates.h>
 #include <Colonization/Utils/Activities/Activity.hpp>
@@ -13,8 +14,7 @@ void BindIngameClientActivity (Urho3D::Script *script)
     asIScriptEngine *engine = script->GetScriptEngine ();
     Urho3D::RegisterObject <IngameClientActivity> (engine, "IngameClientActivity");
     Urho3D::RegisterObjectConstructor <IngameClientActivity> (engine, "IngameClientActivity");
-    Urho3D::RegisterSubclass <Activity, IngameClientActivity> (engine, "Activity", "IngameClientActivity");
-    BindActivityInterface (script, "IngameClientActivity");
+    BindActivityInterface <IngameClientActivity> (script, "IngameClientActivity");
 
     engine->RegisterObjectMethod ("IngameClientActivity", "String get_serverAdress ()", asMETHOD (IngameClientActivity, GetServerAdress), asCALL_THISCALL);
     engine->RegisterObjectMethod ("IngameClientActivity", "void set_serverAdress (String serverAdress)", asMETHOD (IngameClientActivity, SetServerAdress), asCALL_THISCALL);

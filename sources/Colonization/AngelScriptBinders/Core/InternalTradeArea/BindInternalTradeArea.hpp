@@ -3,5 +3,4 @@
 namespace Colonization
 {
 void BindInternalTradeArea (Urho3D::Script *script);
-void BindInternalTradeAreaInterface (Urho3D::Script *script, Urho3D::String className);
 }

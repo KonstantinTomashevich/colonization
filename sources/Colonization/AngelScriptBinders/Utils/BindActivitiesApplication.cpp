@@ -4,7 +4,6 @@
 #include <Urho3D/AngelScript/APITemplates.h>
 #include <Colonization/Utils/Activities/ActivitiesApplication.hpp>
 
-
 namespace Colonization
 {
 void BindActivitiesApplication (Urho3D::Script *script)
