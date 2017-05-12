@@ -6,8 +6,8 @@ before_install:
 - sudo apt-get install -y lua5.2
 - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
 - sudo apt-get update -q
-- sudo apt-get install -y gcc-6
-- sudo apt-get install -y g++-6
+- sudo apt-get install -y gcc-4.9
+- sudo apt-get install -y g++-4.9
 
 before_script:
 - wget http://downloads.sourceforge.net/project/urho3d/Urho3D/1.6/Urho3D-1.6-Linux-64bit-STATIC.tar.gz -O Urho3D.tar.gz --no-check-certificate && tar -xvf Urho3D.tar.gz && export URHO3D_HOME=$PWD/Urho3D-1.6-Linux-64bit-STATIC/usr/local
