@@ -16,7 +16,9 @@ Multiplayer RTS game in colonization setting.
 - [x] Multiplayer support (scene replication is one-directional, the server always has authority, the client responds with network messages).
 
 ## How to build
-Step 1. Download Urho3D SDK binary release from [SourceForge](https://sourceforge.net/projects/urho3d/files/Urho3D/). Recommended version -- **1.6**. Also you can build Urho3D from source, for more information visit [Urho3D Site](https://urho3d.github.io).
+WARNING! `Lua` required. Build scripts use `lua` command.
+
+Step 1. Download `Urho3D` SDK binary release from [SourceForge](https://sourceforge.net/projects/urho3d/files/Urho3D/). Recommended version -- **1.6**. Also you can build Urho3D from source, for more information visit [Urho3D Site](https://urho3d.github.io).
 
 Step 2. Set `URHO3D_HOME` environment var equal to the unpacked sdk dir.
 
