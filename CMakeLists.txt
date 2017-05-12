@@ -52,7 +52,7 @@ if (NOT EXISTS "${CMAKE_BINARY_DIR}/bin/Urho3DEditorData")
 endif ()
 
 message (STATUS "Generation GameConfiguration class from scaffold...")
-set (GENERATOR_SCRIPT "./code-generation/GenerateGameConfiguration.lua")
+set (GENERATOR_SCRIPT "./code-generation/GenerateDataObjectFromScaffold/Main.lua")
 set (SCAFFOLD "./sources/Colonization/Core/GameConfiguration.scaffold")
 set (OUTPUT_HPP "./sources/Colonization/Core/GameConfiguration.hpp")
 set (OUTPUT_CPP "./sources/Colonization/Core/GameConfiguration.cpp")
