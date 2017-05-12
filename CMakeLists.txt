@@ -51,13 +51,21 @@ if (NOT EXISTS "${CMAKE_BINARY_DIR}/bin/Urho3DEditorData")
     file (COPY "${CMAKE_SOURCE_DIR}/bin/Urho3DEditorData/" DESTINATION "${CMAKE_BINARY_DIR}/bin/Urho3DEditorData")
 endif ()
 
+find_program (IS_LUA_PROGRAM_EXISTS lua)
+if (NOT IS_LUA_PROGRAM_EXISTS)
+    set (LUA "$ENV{URHO3D_HOME}/bin/lua")
+else ()
+    set (LUA lua)
+endif ()
+message (STATUS "Lua command: ${LUA}")
+
 message (STATUS "Generation GameConfiguration class from scaffold...")
 set (GENERATOR_SCRIPT "./code-generation/GenerateDataObjectFromScaffold/Main.lua")
 set (SCAFFOLD "./sources/Colonization/Core/GameConfiguration.scaffold")
 set (OUTPUT_HPP "./sources/Colonization/Core/GameConfiguration.hpp")
 set (OUTPUT_CPP "./sources/Colonization/Core/GameConfiguration.cpp")
 set (OUTPUT_BINDINGS "./sources/Colonization/AngelScriptBinders/Core/BindGameConfiguration.cpp")
-execute_process (COMMAND lua ${GENERATOR_SCRIPT} ${SCAFFOLD} ${OUTPUT_HPP} ${OUTPUT_CPP} ${OUTPUT_BINDINGS}
+execute_process (COMMAND ${LUA} ${GENERATOR_SCRIPT} ${SCAFFOLD} ${OUTPUT_HPP} ${OUTPUT_CPP} ${OUTPUT_BINDINGS}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     OUTPUT_VARIABLE GENERATION_OUTPUT)
 message (STATUS ${GENERATION_OUTPUT})
