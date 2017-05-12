@@ -80,9 +80,12 @@ execute_process (COMMAND ${LUA} ${GENERATOR_SCRIPT} ${SCAFFOLD} ${OUTPUT_HPP} ${
 message (STATUS ${GENERATION_OUTPUT})
 message (STATUS "GameConfiguration class generated from scaffold.")
 
-if (TRAVIS_CLANG_QUICK_FIX)
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__extern_always_inline=\"extern __always_inline\"")
-endif ()
++if ((CMAKE_CXX_COMPILER_ID MATCHES Clang) AND (CMAKE_BUILD_TYPE STREQUAL "Release"))
++    try_compile(CHECK_CLANG "${CMAKE_CURRENT_BINARY_DIR}/cxx" "${CMAKE_SOURCE_DIR}/cmake/checkclang.cpp")
++    if (NOT ${CHECK_CLANG})
++        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -D__extern_always_inline=inline" )
++    endif()
++endif()
 
 include (Urho3D-CMake-common)
 find_package (Urho3D REQUIRED)
