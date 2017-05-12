@@ -60,7 +60,7 @@ if (NOT IS_LUA_PROGRAM_EXISTS)
     endif ()
 
     find_program (IS_NEW_LUA_PROGRAM_EXISTS ${LUA})
-    if (NOT IS_NEW_LUA_PORGRAM_EXISTS)
+    if (NOT IS_NEW_LUA_PROGRAM_EXISTS)
         message (FATAL_ERROR "${LUA} isn't exists! Can't build without Lua.")
     endif ()
 else ()
@@ -79,10 +79,6 @@ execute_process (COMMAND ${LUA} ${GENERATOR_SCRIPT} ${SCAFFOLD} ${OUTPUT_HPP} ${
     OUTPUT_VARIABLE GENERATION_OUTPUT)
 message (STATUS ${GENERATION_OUTPUT})
 message (STATUS "GameConfiguration class generated from scaffold.")
-
-if ((CMAKE_CXX_COMPILER_ID MATCHES Clang) AND (CMAKE_BUILD_TYPE STREQUAL "Release"))
-    set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -D__extern_always_inline=inline" )
-endif()
 
 include (Urho3D-CMake-common)
 find_package (Urho3D REQUIRED)
