@@ -19,6 +19,6 @@ before_script:
 
 script:
 - git clone https://github.com/urho3d/Urho3D.git && cd Urho3D && mkdir Build && cd Build && cmake .. -DCMAKE_INSTALL_PREFIX=SDK && make && make install && export URHO3D_HOME=$PWD/SDK && cd .. && cd ..
--- echo $URHO3D_HOME && echo $PWD
+- echo $URHO3D_HOME && echo $PWD
 - mkdir build && cd build && cmake .. -DCOLONIZATION_ENABLE_ASSERTION=1 && make  && make test
 - echo "Testing log:" && cat "Testing/Temporary/LastTest.log"
