@@ -34,21 +34,21 @@ float CalculateFarmsProductionAmount (District *district, GameConfiguration *con
     }
     float districtPopulation = district->GetMenCount () + district->GetWomenCount ();
     return districtPopulation * configuration->GetFarmsProductionPerColonist () *
-            sqrt (district->GetFarmsEvolutionPoints ()) * district->GetLandAverageFertility () * climateModifer;
+            Urho3D::Sqrt (district->GetFarmsEvolutionPoints ()) * district->GetLandAverageFertility () * climateModifer;
 }
 
 float CalculateMinesProductionAmount (District *district, GameConfiguration *configuration)
 {
     float districtPopulation = district->GetMenCount () + district->GetWomenCount ();
     return districtPopulation * configuration->GetMinesProductionPerColonist () *
-            sqrt (district->GetMinesEvolutionPoints ());
+            Urho3D::Sqrt (district->GetMinesEvolutionPoints ());
 }
 
 float CalculateIndustryProductionAmount (District *district, GameConfiguration *configuration)
 {
     float districtPopulation = district->GetMenCount () + district->GetWomenCount ();
     return districtPopulation * configuration->GetIndustryProductionPerColonist () *
-            sqrt (district->GetIndustryEvolutionPoints ());
+            Urho3D::Sqrt (district->GetIndustryEvolutionPoints ());
 }
 
 DistrictProductionInfo CalculateProductionOfFarms (District *district, GameConfiguration *configuration)
@@ -118,8 +118,8 @@ float CalculateFarmsProductionRelativePrice (District *district, GameConfigurati
         farmsProductionRelativePrice *= configuration->GetFarmsProductionRelativePriceColdClimateModifer ();
     }
 
-    farmsProductionRelativePrice /= sqrt (district->GetLandAverageFertility ());
-    farmsProductionRelativePrice *= sqrt (sqrt (district->GetFarmsEvolutionPoints ()));
+    farmsProductionRelativePrice /= Urho3D::Sqrt (district->GetLandAverageFertility ());
+    farmsProductionRelativePrice *= Urho3D::Sqrt (Urho3D::Sqrt (district->GetFarmsEvolutionPoints ()));
     return farmsProductionRelativePrice;
 }
 
@@ -143,7 +143,7 @@ float CalculateMinesProductionRelativePrice (District *district, GameConfigurati
         minesProductionRelativePrice *= configuration->GetMinesProductionRelativePriceHasGoldModifer ();
     }
 
-    minesProductionRelativePrice *= sqrt (sqrt (district->GetMinesEvolutionPoints ()));
+    minesProductionRelativePrice *= Urho3D::Sqrt (Urho3D::Sqrt (district->GetMinesEvolutionPoints ()));
     return minesProductionRelativePrice;
 }
 
@@ -167,7 +167,7 @@ float CalculateIndustryProductionRelativePrice (District *district, GameConfigur
         industryProductionRelativePrice *= configuration->GetIndustryProductionRelativePriceHasGoldModifer ();
     }
 
-    industryProductionRelativePrice *= sqrt (sqrt (district->GetIndustryEvolutionPoints ()));
+    industryProductionRelativePrice *= Urho3D::Sqrt (Urho3D::Sqrt (district->GetIndustryEvolutionPoints ()));
     return industryProductionRelativePrice;
 }
 
@@ -200,7 +200,7 @@ float CalculateFarmsProductionQuality (District *district, GameConfiguration *co
     }
 
     farmsProductionQuality *= district->GetLandAverageFertility ();
-    farmsProductionQuality *= sqrt (sqrt (district->GetFarmsEvolutionPoints ()));
+    farmsProductionQuality *= Urho3D::Sqrt (Urho3D::Sqrt (district->GetFarmsEvolutionPoints ()));
     return farmsProductionQuality;
 }
 
@@ -224,7 +224,7 @@ float CalculateMinesProductionQuality (District *district, GameConfiguration *co
         minesProductionQuality *= configuration->GetMinesProductionQualityHasGoldModifer ();
     }
 
-    minesProductionQuality *= sqrt (sqrt (district->GetMinesEvolutionPoints ()));
+    minesProductionQuality *= Urho3D::Sqrt (Urho3D::Sqrt (district->GetMinesEvolutionPoints ()));
     return minesProductionQuality;
 }
 
@@ -248,7 +248,7 @@ float CalculateIndustryProductionQuality (District *district, GameConfiguration 
         industryProductionQuality *= configuration->GetIndustryProductionQualityHasGoldModifer ();
     }
 
-    industryProductionQuality *= sqrt (sqrt (district->GetIndustryEvolutionPoints ()));
+    industryProductionQuality *= Urho3D::Sqrt (Urho3D::Sqrt (district->GetIndustryEvolutionPoints ()));
     return industryProductionQuality;
 }
 

@@ -35,8 +35,8 @@ class MapBillboards : ScriptObject
                     }
 
                     UIElement @billboard = billboardsRoot_.GetChildren () [nextBillboardIndex];
-                    billboard.SetPosition (int (screenPoint.x * graphics.width - billboard.width / 2),
-                        int (screenPoint.y * graphics.height - billboard.height / 2));
+                    billboard.SetPosition (FloorToInt (screenPoint.x * graphics.width - billboard.width / 2),
+                       FloorToInt (screenPoint.y * graphics.height - billboard.height / 2));
 
                     UpdateDistrictBillboardTitle (billboard, district);
                     UpdateDistrictBillboardBackground (billboard, district);

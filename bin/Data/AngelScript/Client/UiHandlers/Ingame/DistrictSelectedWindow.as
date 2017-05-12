@@ -41,7 +41,7 @@ class DistrictSelectedWindow : ScriptObject
                                          (district.colonyOwnerName == playerName or not district.hasColony) and
                                          scriptMain.vars ["gold"].GetFloat () > colonizatorsExpeditionCost;
         Text @sendColonizatorsButtonText = sendColonizatorsButton.GetChild ("text");
-        sendColonizatorsButtonText.text = "Send 100 colonizators (cost: " + int (colonizatorsExpeditionCost) +
+        sendColonizatorsButtonText.text = "Send 100 colonizators (cost: " +FloorToInt (colonizatorsExpeditionCost) +
                                       " gold).";
 
 
@@ -52,8 +52,8 @@ class DistrictSelectedWindow : ScriptObject
                                          district.menCount > configuration.oneWarShipCrew and
                                          scriptMain.vars ["gold"].GetFloat () > configuration.oneWarShipBuildingCost;
         Text @buildWarShipButtonText = buildWarShipButton.GetChild ("text");
-        buildWarShipButtonText.text = "Build war ship (cost: " + int (configuration.oneWarShipBuildingCost) +
-                                      " + " + int (configuration.oneWarShipCrew) + " men as crew).";
+        buildWarShipButtonText.text = "Build war ship (cost: " +FloorToInt (configuration.oneWarShipBuildingCost) +
+                                      " + " +FloorToInt (configuration.oneWarShipCrew) + " men as crew).";
 
         Button @openDiplomacyButton = districtInfoWindow.GetChild ("openDiplomacyButton");
         openDiplomacyButton.visible = (infoType == StringHash ("Basic")) and

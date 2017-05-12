@@ -80,7 +80,7 @@ execute_process (COMMAND ${LUA} ${GENERATOR_SCRIPT} ${SCAFFOLD} ${OUTPUT_HPP} ${
 message (STATUS ${GENERATION_OUTPUT})
 message (STATUS "GameConfiguration class generated from scaffold.")
 
-include (Urho3D-CMake-common)
+include (UrhoCommon)
 find_package (Urho3D REQUIRED)
 include_directories (${URHO3D_INCLUDE_DIRS})
 enable_testing ()

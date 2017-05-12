@@ -44,7 +44,7 @@ void NetworkUpdateSmoother::NetworkUpdate (Urho3D::StringHash, Urho3D::VariantMa
     }
     else if (toSend * 2 < requests_.Size ())
     {
-        toSend = toSend * sqrt ((toSend / requests_.Size ()) - 1);
+        toSend = toSend * Urho3D::Sqrt ((toSend / requests_.Size ()) - 1);
     }
 
     if (toSend > maxMarksPerUpdate_)

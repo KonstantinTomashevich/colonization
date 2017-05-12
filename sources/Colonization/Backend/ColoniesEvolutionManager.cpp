@@ -78,7 +78,7 @@ float ColoniesEvolutionManager::ProcessColonyFarmsEvolution (GameConfiguration *
     float farmsEvolutionInColonyEvolution = colonyFarmsEvolution / totalColonyEvolution;
 
     float canBePlanted = (colony->GetMenCount () + colony->GetWomenCount ()) * farmsEvolutionInColonyEvolution *
-            configuration->GetCanBePlantedByOneColonist () * sqrt (colonyFarmsEvolution);
+            configuration->GetCanBePlantedByOneColonist () * Urho3D::Sqrt (colonyFarmsEvolution);
 
     // TODO: Remove all magic numbers there!
     float climateModifer = 1.0f;
@@ -180,7 +180,7 @@ float ColoniesEvolutionManager::ProcessColonyMinesEvolution (GameConfiguration *
         perspective += 1.5f;
     }
 
-    perspective = sqrt (perspective);
+    perspective = Urho3D::Sqrt (perspective);
     float balance = colony->GetMinesBalance ();
     if (balance > 0.0f)
     {
@@ -215,8 +215,8 @@ float ColoniesEvolutionManager::ProcessColonyMinesEvolution (GameConfiguration *
 float ColoniesEvolutionManager::ProcessColonyIndustryEvolution (GameConfiguration *configuration, District *colony, float timeStep)
 {
     float perspective = 0.0f;
-    perspective += sqrt (colony->GetMinesEvolutionPoints ()) * 0.75f;
-    perspective += sqrt (colony->GetLogisticsEvolutionPoints ()) * 0.75f;
+    perspective += Urho3D::Sqrt (colony->GetMinesEvolutionPoints ()) * 0.75f;
+    perspective += Urho3D::Sqrt (colony->GetLogisticsEvolutionPoints ()) * 0.75f;
 
     if (colony->HasCoalDeposits () && colony->HasIronDeposits ())
     {
@@ -231,7 +231,7 @@ float ColoniesEvolutionManager::ProcessColonyIndustryEvolution (GameConfiguratio
         perspective += 1.0f;
     }
 
-    perspective = sqrt (perspective);
+    perspective = Urho3D::Sqrt (perspective);
     float balance = colony->GetIndustryBalance ();
     if (balance > 0.0f)
     {
@@ -270,12 +270,12 @@ float ColoniesEvolutionManager::ProcessColonyLogisticsEvolution (GameConfigurati
     float logisticsEvolutionInColonyEvolution = colonyLogisticsEvolution / totalColonyEvolution;
 
     float perspective = 0.0f;
-    perspective += sqrt (colony->GetFarmsEvolutionPoints ()) * 0.4f;
-    perspective += sqrt (colony->GetMinesEvolutionPoints ()) * 0.4f;
-    perspective += sqrt (colony->GetIndustryEvolutionPoints ()) * 0.75f;
-    perspective += sqrt (colony->GetDefenseEvolutionPoints ());
+    perspective += Urho3D::Sqrt (colony->GetFarmsEvolutionPoints ()) * 0.4f;
+    perspective += Urho3D::Sqrt (colony->GetMinesEvolutionPoints ()) * 0.4f;
+    perspective += Urho3D::Sqrt (colony->GetIndustryEvolutionPoints ()) * 0.75f;
+    perspective += Urho3D::Sqrt (colony->GetDefenseEvolutionPoints ());
 
-    perspective = sqrt (perspective);
+    perspective = Urho3D::Sqrt (perspective);
     float balance = colony->GetLogisticsBalance ();
     if (balance > 0.0f)
     {

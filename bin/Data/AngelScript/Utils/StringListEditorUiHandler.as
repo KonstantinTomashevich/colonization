@@ -61,15 +61,15 @@ shared abstract class StringListEditorUiHandler : ScriptObjectWithBeforeStop
 
     protected void CheckElementsShowOffset (Array <UIElement @> &elementsUi, uint elementsStringsLength)
     {
-        if (int (elementsShowOffset_) > int (int (elementsStringsLength) - elementsUi.length))
+        if (FloorToInt (elementsShowOffset_) >FloorToInt (FloorToInt (elementsStringsLength) - elementsUi.length))
         {
-            if (int (elementsStringsLength) - elementsUi.length < 0)
+            if (FloorToInt (elementsStringsLength) - elementsUi.length < 0)
             {
                 elementsShowOffset_ = 0;
             }
             else
             {
-                elementsShowOffset_ = uint (int (elementsStringsLength) - elementsUi.length);
+                elementsShowOffset_ = uint (FloorToInt (elementsStringsLength) - elementsUi.length);
             }
         }
     }

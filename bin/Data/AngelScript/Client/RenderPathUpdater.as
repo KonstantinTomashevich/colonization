@@ -12,7 +12,7 @@ class RenderPathUpdater : ScriptObject
 
     void UpdateAllMaterials ()
     {
-        Array <Resource @> materials = GetAllCachedResources (StringHash ("Material"));
+        Array <Resource @> materials = cache.GetResources (StringHash ("Material"));
         for (uint index = 0; index < materials.length; index++)
         {
             Material @material = materials [index];
@@ -40,7 +40,7 @@ class RenderPathUpdater : ScriptObject
 
     void Update (float timeStep)
     {
-        
+
     }
 
     void Stop ()

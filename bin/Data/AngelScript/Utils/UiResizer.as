@@ -56,38 +56,38 @@ class UiResizer : ScriptObject
         float xModifer = element.vars ["XModifer"].GetFloat ();
         float yModifer = element.vars ["YModifer"].GetFloat ();
 
-        int xPos = int (dependenciesMap [xDependency].GetFloat () * xModifer);
-        int yPos = int (dependenciesMap [yDependency].GetFloat () * yModifer);
+        int xPos =FloorToInt (dependenciesMap [xDependency].GetFloat () * xModifer);
+        int yPos =FloorToInt (dependenciesMap [yDependency].GetFloat () * yModifer);
 
-        int width = int (dependenciesMap [widthDependency].GetFloat () * widthModifer);
-        int height = int (dependenciesMap [heightDependency].GetFloat () * heightModifer);
+        int width =FloorToInt (dependenciesMap [widthDependency].GetFloat () * widthModifer);
+        int height =FloorToInt (dependenciesMap [heightDependency].GetFloat () * heightModifer);
 
         if (element.vars ["InvertXPosition"].GetBool ())
         {
             StringHash invDependency = StringHash (element.vars ["InvertXDependency"].GetString ());
             float invertedPositionModifer = element.vars ["InvertXModifer"].GetFloat ();
-            xPos = int (dependenciesMap [invDependency].GetFloat () * invertedPositionModifer - xPos);
+            xPos =FloorToInt (dependenciesMap [invDependency].GetFloat () * invertedPositionModifer - xPos);
         }
 
         if (element.vars ["InvertYPosition"].GetBool ())
         {
             StringHash invDependency = StringHash (element.vars ["InvertYDependency"].GetString ());
             float invertedPositionModifer = element.vars ["InvertYModifer"].GetFloat ();
-            yPos = int (dependenciesMap [invDependency].GetFloat () * invertedPositionModifer - yPos);
+            yPos =FloorToInt (dependenciesMap [invDependency].GetFloat () * invertedPositionModifer - yPos);
         }
 
         if (element.vars ["InvertWidth"].GetBool ())
         {
             StringHash invDependency = StringHash (element.vars ["InvertWidthDependency"].GetString ());
             float invertedPositionModifer = element.vars ["InvertWidthModifer"].GetFloat ();
-            width = int (dependenciesMap [invDependency].GetFloat () * invertedPositionModifer - width);
+            width =FloorToInt (dependenciesMap [invDependency].GetFloat () * invertedPositionModifer - width);
         }
 
         if (element.vars ["InvertHeight"].GetBool ())
         {
             StringHash invDependency = StringHash (element.vars ["InvertHeightDependency"].GetString ());
             float invertedPositionModifer = element.vars ["InvertHeightModifer"].GetFloat ();
-            height = int (dependenciesMap [invDependency].GetFloat () * invertedPositionModifer - height);
+            height =FloorToInt (dependenciesMap [invDependency].GetFloat () * invertedPositionModifer - height);
         }
 
         if (xDependency != StringHash ("disable") and yDependency != StringHash ("disable"))
@@ -108,12 +108,12 @@ class UiResizer : ScriptObject
             if (element.typeName == "Text")
             {
                 Text @text = element;
-                text.fontSize = int (dependenciesMap [fontSizeDependency].GetFloat () * fontSizeModifer);
+                text.fontSize =FloorToInt (dependenciesMap [fontSizeDependency].GetFloat () * fontSizeModifer);
             }
             else if (element.typeName == "LineEdit")
             {
                 LineEdit @lineEdit = element;
-                lineEdit.textElement.fontSize = int (dependenciesMap [fontSizeDependency].GetFloat () * fontSizeModifer);
+                lineEdit.textElement.fontSize =FloorToInt (dependenciesMap [fontSizeDependency].GetFloat () * fontSizeModifer);
             }
         }
     }

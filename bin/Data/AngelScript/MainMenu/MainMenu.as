@@ -19,7 +19,7 @@ class MainMenu : ScriptObject
 
     protected void DisableFogOfWar ()
     {
-        Array <Resource @> materials = GetAllCachedResources (StringHash ("Material"));
+        Array <Resource @> materials = cache.GetResources (StringHash ("Material"));
         for (uint index = 0; index < materials.length; index++)
         {
             Material @material = materials [index];
