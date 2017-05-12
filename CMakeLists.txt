@@ -80,11 +80,8 @@ execute_process (COMMAND ${LUA} ${GENERATOR_SCRIPT} ${SCAFFOLD} ${OUTPUT_HPP} ${
 message (STATUS ${GENERATION_OUTPUT})
 message (STATUS "GameConfiguration class generated from scaffold.")
 
-if ( (CMAKE_CXX_COMPILER_ID MATCHES Clang) AND (CMAKE_BUILD_TYPE STREQUAL "Release"))
-    try_compile (CHECK_CLANG "${CMAKE_CURRENT_BINARY_DIR}/cxx" "${CMAKE_SOURCE_DIR}/cmake/checkclang.cpp")
-    if (NOT ${CHECK_CLANG})
-        set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -D__extern_always_inline=inline" )
-    endif ()
+if ((CMAKE_CXX_COMPILER_ID MATCHES Clang) AND (CMAKE_BUILD_TYPE STREQUAL "Release"))
+    set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -D__extern_always_inline=inline" )
 endif()
 
 include (Urho3D-CMake-common)
