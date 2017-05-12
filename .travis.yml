@@ -1,6 +1,6 @@
 language: cpp
 compiler: gcc
-dist: stable
+dist: trusty
 before_install:
 - sudo apt-get -qq update
 - sudo apt-get install -y lua5.2
