@@ -4,5 +4,5 @@
 namespace Colonization
 {
 void BindGameConfiguration (Urho3D::Script *script, bool bindInterface = true);
-void BindGameConfigurationInterface (Urho3D::Script *script, Urho3D::String className);
+void BindGameConfigurationInterface (Urho3D::Script *script);
 }

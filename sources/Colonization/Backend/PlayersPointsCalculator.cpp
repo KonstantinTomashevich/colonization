@@ -18,6 +18,7 @@ float PlayersPointsCalculator::CalculateColonyPoints (District *district, GameCo
     float totalEvolution = district->GetFarmsEvolutionPoints () + district->GetMinesEvolutionPoints () +
             district->GetIndustryEvolutionPoints () + district->GetLogisticsEvolutionPoints () +
             district->GetDefenseEvolutionPoints ();
+    // TODO: Maybe median colony evolution instead of total?
     return (modifer * population * totalEvolution);
 }
 
