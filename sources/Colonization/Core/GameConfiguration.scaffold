@@ -1,0 +1,314 @@
+tab: "    "
+className: GameConfiguration
+
+vars:
+float playerStartGold_ =500.0f$Player Start Gold
+float sailSpeed_ =0.4f$Sail Speed
+float marchSpeed_ =0.15f$VarDef
+float embarkationSpeed_ =0.11f$VarDef
+float disembarkationSpeed_ =0.11f$VarDef
+
+float oneColonizatorSendingCost_ =1.0f$One Colonizator Sending Cost
+float oneWarShipBuildingCost_ =30.0f$One War Ship Building Cost
+float oneWarShipCrew_ =20.0f$One War Ship Crew
+float oneWarShipBasicBuildTime_ =20.0f$One War Ship Basic Build Time
+
+float oneColonistFarmsProductionConsumption_ =0.02f$One Colonist Farms Production Consumption
+float oneSoldierFarmsProductionConsumption_ =0.0225f$One Soldier Farms Production Consumption
+float farmsProductionMinesConsumption_ =0.025f$Farms Production Mines Consumption
+float farmsProductionIndustryConsumption_ =0.2f$Farms Production Industry Consumption
+
+float oneColonistMinesProductionConsumption_ =0.001f$One Colonist Mines Production Consumption
+float oneSoldierMinesProductionConsumption_ =0.001f$One Soldier Mines Production Consumption
+float minesProductionFarmsConsumption_ =0.1f$Mines Production Farms Consumption
+float minesProductionIndustryConsumption_ =0.55f$Mines Production Industry Consumption
+
+float oneColonistIndustryProductionConsumption_ =0.0015f$One Colonist Industry Production Consumption
+float oneSoldierIndustryProductionConsumption_ =0.0035f$One Soldier Industry Production Consumption
+float industryProductionFarmsConsumption_ =0.0025f$Industry Production Farms Consumption
+float industryProductionMinesConsumption_ =0.05f$Industry Production Mines Consumption
+
+float farmsProductionPerColonist_ =0.05f$Farms Production Per Colonist
+float minesProductionPerColonist_ =0.025f$Mines Production Per Colonist
+float industryProductionPerColonist_ =0.0125f$Industry Production Per Colonist
+
+float farmsProductionInternalCost_ =1.0f$Farms Production Internal Cost
+float minesProductionInternalCost_ =2.0f$Mines Production Internal Cost
+float industryProductionInternalCost_ =5.0f$Industry Production Internal Cost
+
+float farmsProductionExternalCost_ =0.85f$Farms Production External Cost
+float minesProductionExternalCost_ =1.7f$Mines Production External Cost
+float industryProductionExternalCost_ =4.25f$Industry Production External Cost
+
+float tradeAreaInternalProfitToBalance_ =0.85f$Trade Area Internal Profit To Balance
+float tradeAreaExternalProfitToBalance_ =0.35f$Trade Area External Profit To Balance
+
+float tradeAreaFarmsLogisticsExpenses_ =0.3f$Trade Area Farms Logistics Expenses
+float tradeAreaMinesLogisticsExpenses_ =0.16f$Trade Area Mines Logistics Expenses
+float tradeAreaIndustryLogisticsExpenses_ =0.35f$Trade Area Industry Logistics Expenses
+
+float tradeAreaFarmsDefenseExpenses_ =0.16f$Trade Area Farms Defense Expenses
+float tradeAreaMinesDefenseExpenses_ =0.31f$Trade Area Mines Defense Expenses
+float tradeAreaIndustryDefenseExpenses_ =0.3f$Trade Area Industry Defense Expenses
+
+float evolutionCostPerLevel_ =1000.0f$Evolution Cost Per Level
+float degradationCostPerLevel_ =1000.0f$Degradation Cost Per Level
+float basicEvolutionSpeed_ =0.01f$Basic Evolution Speed
+float basicDegradationSpeed_ =0.01f$Basic Degradation Speed
+
+float internalTaxes_ =0.25f$Internal Taxes
+float externalTaxes_ =0.25f$External Taxes
+
+float coloniesBasicPopulationIncrease_ =0.0005f$Colonies Basic Population Increase
+float canBePlantedByOneColonist_ =0.5f$Can Be Planted By One Colonist
+float minimumLogisticsToUniteDistrictsToTradeArea_ =4.0f$Minimum Logistics To Unite Districts To Trade Area
+float minimumLogisticsToUniteDistrictsToTradeAreaBySea_ =7.0f$Minimum Logistics To Unite Districts To Trade Area By Sea
+
+float farmsProductionTropicalClimateModifer_ =1.15f$Farms Production Tropical Climate Modifer
+float farmsProductionHotClimateModifer_ =1.1f$Farms Production Hot Climate Modifer
+float farmsProductionTemperateClimateModifer_ =1.0f$Farms Production Temperate Climate Modifer
+float farmsProductionTemperateContinentalClimateModifer_ =0.95f$Farms Production Temperate Continental Climate Modifer
+float farmsProductionDesertClimateModifer_ =0.65f$Farms Production Desert Climate Modifer
+float farmsProductionColdClimateModifer_ =0.75f$Farms Production Cold Climate Modifer
+
+float farmsProductionRelativePriceTropicalClimateModifer_ =1.5f$Farms Production Relative Price Tropical Climate Modifer
+float farmsProductionRelativePriceHotClimateModifer_ =1.3f$Farms Production Relative Price Hot Climate Modifer
+float farmsProductionRelativePriceTemperateClimateModifer_ =1.0f$Farms Production Relative Price Temperate Climate Modifer
+float farmsProductionRelativePriceTemperateContinentalClimateModifer_ =1.0f$Farms Production Relative Price Temperate Continental Climate Modifer
+float farmsProductionRelativePriceDesertClimateModifer_ =0.9f$Farms Production Relative Price Desert Climate Modifer
+float farmsProductionRelativePriceColdClimateModifer_ =0.9f$Farms Production Relative Price Cold Climate Modifer
+
+float farmsProductionQualityTropicalClimateModifer_ =1.2f$Farms Production Quality Tropical Climate Modifer
+float farmsProductionQualityHotClimateModifer_ =1.3f$Farms Production Quality Hot Climate Modifer
+float farmsProductionQualityTemperateClimateModifer_ =1.1f$Farms Production Quality Temperate Climate Modifer
+float farmsProductionQualityTemperateContinentalClimateModifer_ =1.0f$Farms Production Quality Temperate Continental Climate Modifer
+float farmsProductionQualityDesertClimateModifer_ =0.9f$Farms Production Quality Desert Climate Modifer
+float farmsProductionQualityColdClimateModifer_ =0.9f$Farms Production Quality Cold Climate Modifer
+
+float minesProductionRelativePriceHasCoalModifer_ =1.15f$Mines Production Relative Price Has Coal Modifer
+float minesProductionRelativePriceHasIronModifer_ =1.25f$Mines Production Relative Price Has Iron Modifer
+float minesProductionRelativePriceHasSilverModifer_ =1.4f$Mines Production Relative Price Has Silver Modifer
+float minesProductionRelativePriceHasGoldModifer_ =1.5f$Mines Production Relative Price Has Gold Modifer
+
+float minesProductionQualityHasCoalModifer_ =1.2f$Mines Production Quality Has Coal Modifer
+float minesProductionQualityHasIronModifer_ =1.2f$Mines Production Quality Has Iron Modifer
+float minesProductionQualityHasSilverModifer_ =1.1f$Mines Production Quality Has Silver Modifer
+float minesProductionQualityHasGoldModifer_ =1.1f$Mines Production Quality Has Gold Modifer
+
+float industryProductionRelativePriceHasCoalModifer_ =1.2f$Industry Production Relative Price Has Coal Modifer
+float industryProductionRelativePriceHasIronModifer_ =1.4f$Industry Production Relative Price Has Iron Modifer
+float industryProductionRelativePriceHasSilverModifer_ =1.1f$Industry Production Relative Price Has Silver Modifer
+float industryProductionRelativePriceHasGoldModifer_ =1.2f$Industry Production Relative Price Has Gold Modifer
+
+float industryProductionQualityHasCoalModifer_ =1.2f$Industry Production Quality Has Coal Modifer
+float industryProductionQualityHasIronModifer_ =1.3f$Industry Production Quality Has Iron Modifer
+float industryProductionQualityHasSilverModifer_ =1.1f$Industry Production Quality Has Silver Modifer
+float industryProductionQualityHasGoldModifer_ =1.1f$Industry Production Quality Has Gold Modifer
+
+float maximumGameDuration_ =900.0f$Maximum Game Duration
+float colonyPointsModifer_ =0.15f$Colony Points Modifer
+float unitFleetPointsModifer_ =0.5f$Unit Fleet Points Modifer
+float unitTradersPointsModifer_ =0.0f$Unit Traders Points Modifer
+float unitColonizatorsPointsModifer_ =0.0f$Unit Colonizators Points Modifer
+float unitArmyPointsModifer_ =0.02f$Unit Army Points Modifer
+Urho3D::String victoryTypesProcessorScriptPath_ ="AngelScript/Utils/DefaultVictoryTypesProcessor.as"$Victory Types Processor Script Path
+
+header:
+#pragma once
+#include <Urho3D/Scene/Component.h>
+
+namespace Colonization
+{
+class Map;
+class District;
+
+class GameConfiguration : public Urho3D::Component
+{
+URHO3D_OBJECT (GameConfiguration, Component)
+protected:
+    // TODO: Move taxes to player. In next game versions player should have ability to set them.
+    Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts_;
+//@Insert var list
+
+public:
+    GameConfiguration (Urho3D::Context *context);
+    virtual ~GameConfiguration ();
+    static void RegisterObject (Urho3D::Context *context);
+
+    Urho3D::PODVector <Urho3D::StringHash> GetWayToEuropeDistricts () const;
+    void SetWayToEuropeDistricts (Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts);
+    Urho3D::VariantVector GetWayToEuropeDistrictsAttribute () const;
+    void SetWayToEuropeDistrictsAttribute (const Urho3D::VariantVector &wayToEuropeDistricts);
+    Urho3D::StringHash GetHeuristicNearestWayToEuropeDistrict (Map *map, District *wayStartDistrict) const;
+
+//@Insert vars getters and setters
+};
+}
+
+object:
+#include <Colonization/BuildConfiguration.hpp>
+#include "GameConfiguration.hpp"
+#include <Urho3D/Core/Context.h>
+
+#include <Colonization/Core/Map.hpp>
+#include <Colonization/Core/District/District.hpp>
+#include <Colonization/Utils/Serialization/Categories.hpp>
+#include <Colonization/Utils/Serialization/AttributeMacro.hpp>
+
+namespace Colonization
+{
+const char *wayToEuropeStructureElementsNames [] =
+{
+    "Way To Europe Districts Count",
+    "   District Hash",
+    0
+};
+
+GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Component (context),
+    wayToEuropeDistricts_ (),
+//@Insert vars initialization
+{
+
+}
+
+GameConfiguration::~GameConfiguration ()
+{
+
+}
+
+void GameConfiguration::RegisterObject (Urho3D::Context *context)
+{
+    context->RegisterFactory <GameConfiguration> (COLONIZATION_CORE_CATEGORY);
+
+    URHO3D_MIXED_ACCESSOR_VARIANT_VECTOR_STRUCTURE_ATTRIBUTE ("Way To Europe Districts", GetWayToEuropeDistrictsAttribute, SetWayToEuropeDistrictsAttribute,
+                                                              Urho3D::VariantVector, Urho3D::Variant::emptyVariantVector,
+                                                              wayToEuropeStructureElementsNames, Urho3D::AM_DEFAULT);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
+//@Insert attributes registration
+}
+
+Urho3D::PODVector <Urho3D::StringHash> GameConfiguration::GetWayToEuropeDistricts () const
+{
+    return wayToEuropeDistricts_;
+}
+
+void GameConfiguration::SetWayToEuropeDistricts (Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts)
+{
+    wayToEuropeDistricts_ = wayToEuropeDistricts;
+}
+
+Urho3D::VariantVector GameConfiguration::GetWayToEuropeDistrictsAttribute () const
+{
+    Urho3D::VariantVector variantVector;
+    variantVector.Push (Urho3D::Variant (wayToEuropeDistricts_.Size ()));
+    for (int index = 0; index < wayToEuropeDistricts_.Size (); index++)
+    {
+        variantVector.Push (Urho3D::Variant (wayToEuropeDistricts_.At (index)));
+    }
+    return variantVector;
+}
+
+void GameConfiguration::SetWayToEuropeDistrictsAttribute (const Urho3D::VariantVector &wayToEuropeDistricts)
+{
+    wayToEuropeDistricts_.Clear ();
+    if (!wayToEuropeDistricts.Empty ())
+    {
+        int requestedSize = wayToEuropeDistricts.At (0).GetInt ();
+        if (requestedSize > 0)
+        {
+            for (int index = 0; index < requestedSize; index++)
+            {
+                if (index + 1 < wayToEuropeDistricts.Size ())
+                {
+                    wayToEuropeDistricts_.Push (wayToEuropeDistricts.At (index + 1).GetStringHash ());
+                }
+                else
+                {
+                    wayToEuropeDistricts_.Push (Urho3D::StringHash ());
+                }
+            }
+        }
+    }
+}
+
+Urho3D::StringHash GameConfiguration::GetHeuristicNearestWayToEuropeDistrict (Map *map, District *wayStartDistrict) const
+{
+    if (wayToEuropeDistricts_.Empty ())
+    {
+        return Urho3D::StringHash::ZERO;
+    }
+
+    if (wayToEuropeDistricts_.Size () == 1)
+    {
+        return wayToEuropeDistricts_.At (0);
+    }
+
+    Urho3D::StringHash heuristicNearest;
+    int index = 0;
+    float minHeuristicDistance = -1.0f;
+
+    do
+    {
+        Urho3D::StringHash wayToEuropeDistrictHash = wayToEuropeDistricts_.At (index);
+        District *wayToEuropeDistrict = map->GetDistrictByHash (wayToEuropeDistrictHash);
+        assert (wayToEuropeDistrict);
+        float heuristicDistance = HeuristicDistanceForPathFinding (wayToEuropeDistrict, wayStartDistrict);
+
+        if (heuristicDistance < minHeuristicDistance || minHeuristicDistance <= 0.0f)
+        {
+            minHeuristicDistance = heuristicDistance;
+            heuristicNearest = wayToEuropeDistrictHash;
+        }
+        index++;
+    }
+    while (index < wayToEuropeDistricts_.Size ());
+    return heuristicNearest;
+}
+
+//@Insert vars getters and setters
+}
+
+bindings:
+#include <Colonization/BuildConfiguration.hpp>
+#include "BindGameConfiguration.hpp"
+#include <Urho3D/AngelScript/APITemplates.h>
+#include <Urho3D/ThirdParty/AngelScript/angelscript.h>
+#include <Colonization/Core/GameConfiguration.hpp>
+
+namespace Colonization
+{
+Urho3D::CScriptArray *GameConfiguration_GetWayToEuropeDistricts (GameConfiguration *object)
+{
+    Urho3D::PODVector <Urho3D::StringHash> array = object->GetWayToEuropeDistricts ();
+    return Urho3D::VectorToArray <Urho3D::StringHash> (array, "Array<StringHash>");
+}
+
+void GameConfiguration_SetWayToEuropeDistricts (GameConfiguration *object, Urho3D::CScriptArray *array)
+{
+    object->SetWayToEuropeDistricts (Urho3D::ArrayToPODVector <Urho3D::StringHash> (array));
+}
+
+void BindGameConfiguration (Urho3D::Script *script, bool bindInterface)
+{
+    asIScriptEngine *engine = script->GetScriptEngine ();
+    if (!bindInterface)
+    {
+        Urho3D::RegisterComponent <GameConfiguration> (engine, "GameConfiguration");
+    }
+    else
+    {
+        BindGameConfigurationInterface (script);
+    }
+}
+
+void BindGameConfigurationInterface (Urho3D::Script *script)
+{
+    asIScriptEngine *engine = script->GetScriptEngine ();
+    engine->RegisterObjectMethod ("GameConfiguration", "Array <StringHash> @get_wayToEuropeDistricts ()", asFUNCTION (GameConfiguration_GetWayToEuropeDistricts), asCALL_CDECL_OBJFIRST);
+    engine->RegisterObjectMethod ("GameConfiguration", "void set_wayToEuropeDistricts (Array <StringHash> @wayToEuropeDistricts)", asFUNCTION (GameConfiguration_SetWayToEuropeDistricts), asCALL_CDECL_OBJFIRST);
+    engine->RegisterObjectMethod ("GameConfiguration", "StringHash GetHeuristicNearestWayToEuropeDistrict (Map @map, District @wayStartDistrict) const", asMETHOD (GameConfiguration, GetHeuristicNearestWayToEuropeDistrict), asCALL_THISCALL);
+
+//@Insert getters and setters bindings
+}
+}
