@@ -1,6 +1,10 @@
 language: cpp
 compiler: gcc
 dist: stable
+before_install:
+- sudo apt-get -qq update
+- sudo apt-get install -y lua5.2
+
 before_script:
 - wget http://downloads.sourceforge.net/project/urho3d/Urho3D/1.6/Urho3D-1.6-Linux-64bit-STATIC.tar.gz -O Urho3D.tar.gz --no-check-certificate && tar -xvf Urho3D.tar.gz && export URHO3D_HOME=$PWD/Urho3D-1.6-Linux-64bit-STATIC/usr/local
 - "export DISPLAY=:99.0"
