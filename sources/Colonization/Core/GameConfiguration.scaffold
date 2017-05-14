@@ -2,6 +2,7 @@ tab: "    "
 className: GameConfiguration
 
 vars:
+Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts_ =$Way To Europe Districts
 float playerStartGold_ =500.0f$Player Start Gold
 float sailSpeed_ =0.4f$Sail Speed
 float marchSpeed_ =0.15f$VarDef
@@ -127,21 +128,16 @@ class GameConfiguration : public Urho3D::Component
 URHO3D_OBJECT (GameConfiguration, Component)
 protected:
     // TODO: Move taxes to player. In next game versions player should have ability to set them.
-    Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts_;
-//@Insert var list
+    //@Insert var list
 
 public:
     GameConfiguration (Urho3D::Context *context);
     virtual ~GameConfiguration ();
-    static void RegisterObject (Urho3D::Context *context);
 
-    Urho3D::PODVector <Urho3D::StringHash> GetWayToEuropeDistricts () const;
-    void SetWayToEuropeDistricts (Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts);
-    Urho3D::VariantVector GetWayToEuropeDistrictsAttribute () const;
-    void SetWayToEuropeDistrictsAttribute (const Urho3D::VariantVector &wayToEuropeDistricts);
+    static void RegisterObject (Urho3D::Context *context);
     Urho3D::StringHash GetHeuristicNearestWayToEuropeDistrict (Map *map, District *wayStartDistrict) const;
 
-//@Insert vars getters and setters
+    //@Insert vars getters and setters
 };
 }
 
@@ -157,7 +153,7 @@ object:
 
 namespace Colonization
 {
-const char *wayToEuropeStructureElementsNames [] =
+const char *wayToEuropeDistrictsStructureElementsNames [] =
 {
     "Way To Europe Districts Count",
     "   District Hash",
@@ -165,8 +161,7 @@ const char *wayToEuropeStructureElementsNames [] =
 };
 
 GameConfiguration::GameConfiguration (Urho3D::Context *context) : Urho3D::Component (context),
-    wayToEuropeDistricts_ (),
-//@Insert vars initialization
+    //@Insert vars initialization
 {
 
 }
@@ -179,57 +174,9 @@ GameConfiguration::~GameConfiguration ()
 void GameConfiguration::RegisterObject (Urho3D::Context *context)
 {
     context->RegisterFactory <GameConfiguration> (COLONIZATION_CORE_CATEGORY);
-
-    URHO3D_MIXED_ACCESSOR_VARIANT_VECTOR_STRUCTURE_ATTRIBUTE ("Way To Europe Districts", GetWayToEuropeDistrictsAttribute, SetWayToEuropeDistrictsAttribute,
-                                                              Urho3D::VariantVector, Urho3D::Variant::emptyVariantVector,
-                                                              wayToEuropeStructureElementsNames, Urho3D::AM_DEFAULT);
-
     URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
-//@Insert attributes registration
-}
 
-Urho3D::PODVector <Urho3D::StringHash> GameConfiguration::GetWayToEuropeDistricts () const
-{
-    return wayToEuropeDistricts_;
-}
-
-void GameConfiguration::SetWayToEuropeDistricts (Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts)
-{
-    wayToEuropeDistricts_ = wayToEuropeDistricts;
-}
-
-Urho3D::VariantVector GameConfiguration::GetWayToEuropeDistrictsAttribute () const
-{
-    Urho3D::VariantVector variantVector;
-    variantVector.Push (Urho3D::Variant (wayToEuropeDistricts_.Size ()));
-    for (int index = 0; index < wayToEuropeDistricts_.Size (); index++)
-    {
-        variantVector.Push (Urho3D::Variant (wayToEuropeDistricts_.At (index)));
-    }
-    return variantVector;
-}
-
-void GameConfiguration::SetWayToEuropeDistrictsAttribute (const Urho3D::VariantVector &wayToEuropeDistricts)
-{
-    wayToEuropeDistricts_.Clear ();
-    if (!wayToEuropeDistricts.Empty ())
-    {
-        int requestedSize = wayToEuropeDistricts.At (0).GetInt ();
-        if (requestedSize > 0)
-        {
-            for (int index = 0; index < requestedSize; index++)
-            {
-                if (index + 1 < wayToEuropeDistricts.Size ())
-                {
-                    wayToEuropeDistricts_.Push (wayToEuropeDistricts.At (index + 1).GetStringHash ());
-                }
-                else
-                {
-                    wayToEuropeDistricts_.Push (Urho3D::StringHash ());
-                }
-            }
-        }
-    }
+    //@Insert attributes registration
 }
 
 Urho3D::StringHash GameConfiguration::GetHeuristicNearestWayToEuropeDistrict (Map *map, District *wayStartDistrict) const
@@ -278,17 +225,7 @@ bindings:
 
 namespace Colonization
 {
-Urho3D::CScriptArray *GameConfiguration_GetWayToEuropeDistricts (GameConfiguration *object)
-{
-    Urho3D::PODVector <Urho3D::StringHash> array = object->GetWayToEuropeDistricts ();
-    return Urho3D::VectorToArray <Urho3D::StringHash> (array, "Array<StringHash>");
-}
-
-void GameConfiguration_SetWayToEuropeDistricts (GameConfiguration *object, Urho3D::CScriptArray *array)
-{
-    object->SetWayToEuropeDistricts (Urho3D::ArrayToPODVector <Urho3D::StringHash> (array));
-}
-
+//@Insert arrays getters and setters
 void BindGameConfiguration (Urho3D::Script *script, bool bindInterface)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
@@ -305,10 +242,7 @@ void BindGameConfiguration (Urho3D::Script *script, bool bindInterface)
 void BindGameConfigurationInterface (Urho3D::Script *script)
 {
     asIScriptEngine *engine = script->GetScriptEngine ();
-    engine->RegisterObjectMethod ("GameConfiguration", "Array <StringHash> @get_wayToEuropeDistricts ()", asFUNCTION (GameConfiguration_GetWayToEuropeDistricts), asCALL_CDECL_OBJFIRST);
-    engine->RegisterObjectMethod ("GameConfiguration", "void set_wayToEuropeDistricts (Array <StringHash> @wayToEuropeDistricts)", asFUNCTION (GameConfiguration_SetWayToEuropeDistricts), asCALL_CDECL_OBJFIRST);
     engine->RegisterObjectMethod ("GameConfiguration", "StringHash GetHeuristicNearestWayToEuropeDistrict (Map @map, District @wayStartDistrict) const", asMETHOD (GameConfiguration, GetHeuristicNearestWayToEuropeDistrict), asCALL_THISCALL);
-
-//@Insert getters and setters bindings
+    //@Insert getters and setters bindings
 }
 }

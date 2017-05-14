@@ -27,7 +27,7 @@ function ReadVar (readedLine)
                 nextChar == "," or nextChar == "<" or nextChar == ">" or previousChar == "," then
                 reading = reading .. char
             else
-                varData ["type"] = reading
+                varData.type = reading
                 reading = ""
                 readProcess = "name"
             end
@@ -36,7 +36,7 @@ function ReadVar (readedLine)
             if char ~= " " and char ~= "=" then
                 reading = reading .. char
             elseif char == "=" then
-                varData ["name"] = reading
+                varData.name = reading
                 reading = ""
                 readProcess = "default"
             end
@@ -45,7 +45,7 @@ function ReadVar (readedLine)
             if char ~= "$" then
                 reading = reading .. char
             else
-                varData ["default"] = reading
+                varData.default = reading
                 reading = ""
                 readProcess = "description"
             end
@@ -56,11 +56,11 @@ function ReadVar (readedLine)
         index = index + 1
     end
 
-    varData ["description"] = reading
+    varData.description = reading
     table.insert (_vars, varData)
 
-    print ("New var:\n    type: " .. varData ["type"] .. "\n" ..
-        "    name: " .. varData ["name"] .. "\n" ..
-        "    default: " .. varData ["default"] .. "\n" ..
-        "    description: " .. varData ["description"])
+    print ("New var:\n    type: " .. varData.type .. "\n" ..
+        "    name: " .. varData.name .. "\n" ..
+        "    default: " .. varData.default .. "\n" ..
+        "    description: " .. varData.description)
 end

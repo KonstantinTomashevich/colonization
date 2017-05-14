@@ -1,5 +1,3 @@
---- TODO: Implement arrays support.
-
 scriptDirectory = "./code-generation/GenerateDataObjectFromScaffold/"
 require (scriptDirectory .. "Globals")
 require (scriptDirectory .. "ProcessConfiguration")
@@ -22,7 +20,7 @@ end
 print ("Input scaffold: " .. _inputFileName .. "\nOutput header: " .. _outputHeaderFileName ..
     "\nOutput object: " .. _outputObjectFileName ..
     "\nOutput bindings: " .. _outputBindingsObjectFileName)
-print ("WARNING: Currently, arrays (Urho3D::PODVector and Urho3D::Vector) NOT supported!")
+print ("WARNING: Currently, only one level Urho3D arrays are supported!")
 
 --- Load files
 _headerFile = io.open (_outputHeaderFileName, "w+")

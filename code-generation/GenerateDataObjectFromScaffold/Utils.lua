@@ -32,6 +32,7 @@ function VarCodeTypeToBindingsVarType (varType)
     local bindingsType = varType
     bindingsType = bindingsType:gsub ("unsigned ", "u")
     bindingsType = bindingsType:gsub ("long", "int64")
+    bindingsType = bindingsType:gsub ("*", "@")
 
     local index = bindingsType:find ("::")
     if index == nil then
@@ -53,5 +54,34 @@ function VarCodeTypeToBindingsVarType (varType)
             index = bindingsType:find ("::")
         end
         return bindingsType
+    end
+end
+
+function IsArrayType (varType)
+    return (varType:find ("Vector <") ~= nil or varType:find ("PODVector <") ~= nil)
+end
+
+function GetArrayValueType (arrayType)
+    local index = arrayType:find ("<")
+    if index ~= nil then
+        index = index + 1
+        local char = arrayType:sub (index, index)
+        local valueType = ""
+        while index <= arrayType:len () and char ~= ">" do
+            valueType = valueType .. char
+            index = index + 1
+            char = arrayType:sub (index, index)
+        end
+        return valueType
+    else
+        return "VALUE_TYPE_DETECTION_ERROR"
+    end
+end
+
+function GetArrayBindingsConversionFunction (arrayType)
+    if arrayType:find ("PODVector") ~= nil then
+        return "Urho3D::ArrayToPODVector"
+    else
+        return "Urho3D::ArrayToVector"
     end
 end
