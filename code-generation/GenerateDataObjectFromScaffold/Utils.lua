@@ -23,6 +23,8 @@ end
 function GetRegistrationMacro (varType)
     if _elementalTypes [varType] ~= nil then
         return "URHO3D_ACCESSOR_ATTRIBUTE"
+    elseif IsArrayType (varType) then
+        return "URHO3D_MIXED_ACCESSOR_VARIANT_VECTOR_STRUCTURE_ATTRIBUTE"
     else
         return "URHO3D_MIXED_ACCESSOR_ATTRIBUTE"
     end
@@ -84,4 +86,46 @@ function GetArrayBindingsConversionFunction (arrayType)
     else
         return "Urho3D::ArrayToVector"
     end
+end
+
+function GetToArrayBindingsConversionFunction (arrayType)
+    if arrayType:find ("@") ~= nil then
+        return "Urho3D::VectorToHandleArray"
+    else
+        return "Urho3D::VectorToArray"
+    end
+end
+
+function ConstructVarTemplateVars (var)
+    local templateVars = {}
+    templateVars ["    "] = _tab
+    templateVars ["${className}"] = _className
+
+    templateVars ["${var.type}"] = var.type
+    templateVars ["${var.name}"] = var.name
+    templateVars ["${var.default}"] = var.default
+    templateVars ["${var.description}"] = var.description
+
+    templateVars ["${var.shortName}"] = var.name:sub (1, var.name:len () - 1)
+    templateVars ["${var.prettyName}"] = VarCodeNameToPrettyName (var.name)
+    templateVars ["${var.setterArgType}"] = VarTypeToSetterArgType (var.type)
+    templateVars ["${var.attributeDefault}"] = GetVarAttributeDefault (var.type, var.default)
+    templateVars ["${var.registrationMacro}"] = GetRegistrationMacro (var.type)
+    templateVars ["${var.bindingsType}"] = VarCodeTypeToBindingsVarType (var.type)
+
+    if IsArrayType (var.type) then
+        templateVars ["${var.arrayValueType}"] = GetArrayValueType (var.type)
+        templateVars ["${var.arrayValueTypeWithoutPtr}"] = GetArrayValueType (var.type):gsub ("*", "")
+        templateVars ["${var.arrayValueBindingsType}"] = VarCodeTypeToBindingsVarType (GetArrayValueType (var.type))
+        templateVars ["${var.arrayConversionFunction}"] = GetArrayBindingsConversionFunction (var.type)
+        templateVars ["${var.toArrayConversionFunction}"] = GetToArrayBindingsConversionFunction (var.type)
+    end
+    return templateVars
+end
+
+function ProcessTemplate (template, templateVars)
+    for key, value in pairs (templateVars) do
+        template = template:gsub (key, value)
+    end
+    return template
 end

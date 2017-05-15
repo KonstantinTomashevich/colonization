@@ -1,6 +1,68 @@
 require (scriptDirectory .. "Globals")
 require (scriptDirectory .. "Utils")
 
+_object_varsInitializationItemTemplate =
+[[    ${var.name} (${var.default}),
+]]
+
+_object_varsAttributesItemTemplate =
+[[    ${var.registrationMacro} ("${var.description}", Get${var.prettyName}, Set${var.prettyName}, ${var.type}, ${var.attributeDefault}, Urho3D::AM_DEFAULT);
+]]
+
+_object_varsArrayAttributesItemTemplate =
+[[    ${var.registrationMacro} ("${var.description}", Get${var.prettyName}Attribute, Set${var.prettyName}Attribute, Urho3D::VariantVector, Urho3D::Variant::emptyVariantVector, ${var.shortName}StructureElementsNames, Urho3D::AM_DEFAULT);
+]]
+
+_object_varsGetterAndSetterItemTemplate =
+[[${var.type} ${className}::Get${var.prettyName} () const
+{
+    return ${var.name};
+}
+
+void ${className}::Set${var.prettyName} (${var.setterArgType} ${var.shortName})
+{
+    ${var.name} = ${var.shortName};
+}
+
+]]
+
+_object_varsArrayGetterAndSetterItemTemplate =
+[[Urho3D::VariantVector ${className}::Get${var.prettyName}Attribute () const
+{
+    Urho3D::VariantVector variantVector;
+    variantVector.Push (Urho3D::Variant (${var.name}.Size ()));
+    for (int index = 0; index < ${var.name}.Size (); index++)
+    {
+        variantVector.Push (Urho3D::Variant (${var.name}.At (index)));
+    }
+    return variantVector;
+}
+
+void ${className}::Set${var.prettyName}Attribute (const Urho3D::VariantVector &${var.shortName})
+{
+    ${var.name}.Clear ();
+    if (!${var.shortName}.Empty ())
+    {
+        int requestedSize = ${var.shortName}.At (0).GetInt ();
+        if (requestedSize > 0)
+        {
+            for (int index = 0; index < requestedSize; index++)
+            {
+                if (index + 1 < ${var.shortName}.Size ())
+                {
+                    ${var.name}.Push (${var.shortName}.At (index + 1).Get${var.arrayValueBindingsType} ());
+                }
+                else
+                {
+                    ${var.name}.Push (${var.arrayValueType} ());
+                }
+            }
+        }
+    }
+}
+
+]]
+
 function ProcessObjectLine (readedLine)
     if readedLine:find ("//@Insert vars initialization") ~= nil then
         WriteObjectVarsInitialization ()
@@ -16,7 +78,7 @@ end
 function WriteObjectVarsInitialization ()
     local code = ""
     for index, var in ipairs (_vars) do
-        code = code .. _tab .. var.name .. " (" .. var.default .. "),\n"
+        code = code .. ProcessTemplate (_object_varsInitializationItemTemplate, ConstructVarTemplateVars (var))
     end
     code = code:sub (1, code:len () - 2)
     _objectFile:write (code .. "\n")
@@ -24,66 +86,19 @@ end
 
 function WriteObjectAttributesRegistration ()
     for index, var in ipairs (_vars) do
-        local prettyName = VarCodeNameToPrettyName (var.name)
         if IsArrayType (var.type) then
-            _objectFile:write (_tab .. "URHO3D_MIXED_ACCESSOR_VARIANT_VECTOR_STRUCTURE_ATTRIBUTE (\"" ..
-                               var.description .. "\", Get" .. prettyName .. "Attribute, Set" ..
-                               prettyName .. "Attribute, Urho3D::VariantVector, " ..
-                               "Urho3D::Variant::emptyVariantVector, " ..
-                               var.name:sub (1, var.name:len () - 1) .. "StructureElementsNames, Urho3D::AM_DEFAULT);\n")
+            _objectFile:write (ProcessTemplate (_object_varsArrayAttributesItemTemplate, ConstructVarTemplateVars (var)))
         else
-            _objectFile:write (_tab .. GetRegistrationMacro (var.type) .. " (\"" ..
-                            var.description .. "\", Get" .. prettyName ..
-                            ", Set" .. prettyName .. ", " .. var.type ..
-                            ", " .. GetVarAttributeDefault (var.type, var.default) ..
-                            ", Urho3D::AM_DEFAULT);\n")
+            _objectFile:write (ProcessTemplate (_object_varsAttributesItemTemplate, ConstructVarTemplateVars (var)))
         end
     end
 end
 
 function WriteObjectVarsGettersAndSetters ()
     for index, var in ipairs (_vars) do
-        _objectFile:write (var.type .. " " .. _className .. "::Get" .. VarCodeNameToPrettyName (var.name) ..
-                        " () const\n" .. "{\n" .. _tab .. "return " .. var.name .. ";\n}\n\n")
-        _objectFile:write ("void " .. _className .. "::Set" .. VarCodeNameToPrettyName (var.name) ..
-                        " (" .. VarTypeToSetterArgType (var.type) ..
-                        var.name:sub (1, var.name:len () - 1) .. ")\n{\n" ..
-                        _tab .. var.name .. " = " .. var.name:sub (1, var.name:len () - 1) ..
-                        ";\n}\n\n")
-
+        _objectFile:write (ProcessTemplate (_object_varsGetterAndSetterItemTemplate, ConstructVarTemplateVars (var)))
         if IsArrayType (var.type) then
-            local shortenedName = var.name:sub (1, var.name:len () - 1)
-            local prettyName = VarCodeNameToPrettyName (var.name)
-
-            _objectFile:write ("Urho3D::VariantVector " .. _className .. "::Get" .. prettyName .. "Attribute () const\n{\n" ..
-                               _tab .. "Urho3D::VariantVector variantVector;\n" ..
-                               _tab .. "variantVector.Push (Urho3D::Variant (" .. var.name .. ".Size ()));\n" ..
-                               _tab .. "for (int index = 0; index < " .. var.name .. ".Size (); index++)\n" ..
-                               _tab .. "{\n" ..
-                               _tab .. _tab .. "variantVector.Push (Urho3D::Variant (" .. var.name .. ".At (index)));\n" ..
-                               _tab .. "}\n" ..
-                               _tab .. "return variantVector;\n}\n\n")
-
-            _objectFile:write ("void " .. _className .. "::Set" .. prettyName ..
-                               "Attribute (const Urho3D::VariantVector &" .. shortenedName .. ")\n{\n" ..
-                               _tab .. var.name .. ".Clear ();\n" ..
-                               _tab .. "if (!" .. shortenedName .. ".Empty ())\n" .. _tab .. "{\n" ..
-                               _tab .. _tab .. "int requestedSize = " .. shortenedName .. ".At (0).GetInt ();\n" ..
-                               _tab .. _tab .. "if (requestedSize > 0)\n" .. _tab .. _tab .. "{\n" ..
-                               _tab .. _tab .. _tab .. "for (int index = 0; index < requestedSize; index++)\n" ..
-                               _tab .. _tab .. _tab .. "{\n" ..
-                               _tab .. _tab .. _tab .. _tab .. "if (index + 1 < " .. shortenedName .. ".Size ())\n" ..
-                               _tab .. _tab .. _tab .. _tab .. "{\n" ..
-                               _tab .. _tab .. _tab .. _tab .. _tab .. var.name .. ".Push (" .. shortenedName .. ".At (index + 1).Get" .. VarCodeTypeToBindingsVarType (GetArrayValueType (var.type)) .. " ());\n" ..
-                               _tab .. _tab .. _tab .. _tab .. "}\n" ..
-                               _tab .. _tab .. _tab .. _tab .. "else\n" ..
-                               _tab .. _tab .. _tab .. _tab .. "{\n" ..
-                               _tab .. _tab .. _tab .. _tab .. _tab .. var.name .. ".Push (" .. GetArrayValueType (var.type) .. " ());\n"..
-                               _tab .. _tab .. _tab .. _tab .. "}\n" ..
-                               _tab .. _tab .. _tab .. "}\n" ..
-                               _tab .. _tab .. "}\n" ..
-                               _tab .. "}\n" ..
-                               "}\n\n")
+            _objectFile:write (ProcessTemplate (_object_varsArrayGetterAndSetterItemTemplate, ConstructVarTemplateVars (var)))
         end
     end
 end
