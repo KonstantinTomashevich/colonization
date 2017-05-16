@@ -5,6 +5,8 @@ Multiplayer RTS game in colonization setting.
 
 **Programming languages:** C++ (main library, tests, launchers) and AngelScript (client, custom victory types, *in future: AIs*), AngelScript **!=** ActionScript.
 
+**Travis CI:** [![Build Status](https://travis-ci.org/KonstantinTomashevich/colonization.svg?branch=master)](https://travis-ci.org/KonstantinTomashevich/colonization)
+
 ## Features:
 - [x] Districts system like Europa Universalis.
 - [x] Different victory types like Civilization (victory types can be added by separate script, specified in map info xml).
