@@ -6,7 +6,7 @@ function ReadFile (fileName)
     local lineIndex = 1
     for line in file:lines () do
         if currentlyProcessing ~= nil then
-            if currentlyProcessing:Process (line, lineIndex) then
+            if currentlyProcessing:ProcessFileLine (line, lineIndex) then
                 table.insert (data [currentlyProcessing:GetDataDestination ()], currentlyProcessing)
                 currentlyProcessing = nil
             end
