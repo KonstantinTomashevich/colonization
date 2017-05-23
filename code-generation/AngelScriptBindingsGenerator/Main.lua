@@ -25,6 +25,24 @@ print ("\n")
 
 print ("Enums: ")
 for index, value in pairs (data.enums) do
-    value:PrintInfo ()
+    print (value:ToString ("    "))
 end
-print ("\n")
+print ("")
+
+print ("Constants: ")
+for index, value in pairs (data.constants) do
+    print (value:ToString ("    "))
+end
+print ("")
+
+print ("Free functions: ")
+for index, value in pairs (data.freeFunctions) do
+    print (value:ToString ("    "))
+end
+print ("")
+
+print ("Classes: ")
+for index, value in pairs (data.classes) do
+    print (value:ToString ("    "))
+end
+print ("")

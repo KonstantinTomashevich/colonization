@@ -29,12 +29,12 @@ Enum.Parse = function (self, tokensList)
     end
 end
 
-Enum.PrintInfo = function (self)
-    print ("    " .. self.name .. " from file " .. self.fileName)
+Enum.ToString = function (self, indent)
+    local string = indent .. self.name .. " from file " .. self.fileName .. "\n"
     for index, value in pairs (self.values) do
-        print ("        " .. value)
+        string = string .. indent .. "    " .. value .. "\n"
     end
-    print ("")
+    return string
 end
 
 Enum.SkipUntilEnumKeyword = function (self, tokensList)

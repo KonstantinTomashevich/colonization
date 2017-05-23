@@ -1,7 +1,6 @@
 data = {}
-data.classes = {}
 data.enums = {}
-data.freeFunctions = {}
 data.constants = {}
-
+data.freeFunctions = {}
+data.classes = {}
 return data
