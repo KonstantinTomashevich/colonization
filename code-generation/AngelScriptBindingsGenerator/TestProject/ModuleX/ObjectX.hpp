@@ -22,6 +22,8 @@ protected:
 
 public:
     ObjectX (Urho3D::Context *context);
+    //@ASBindGen Constructor UseUrho3DDefaultConstructorTemplate
+    ObjectX (Urho3D::Context *context, MyEnumType myEnumType);
     virtual ~ObjectX ();
 
     //@ASBindGen Function OverrideName=get_array
