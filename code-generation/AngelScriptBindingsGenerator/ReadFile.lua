@@ -1,47 +1,50 @@
-local data = require (scriptDirectory .. "Data")
+local TokenizeFile = require (scriptDirectory .. "Tokenization/TokenizeFile")
+if TokensList == nil then
+    TokensList = require (scriptDirectory .. "Tokenization/TokensList")
+end
+if Tokens == nil then
+    Tokens = require (scriptDirectory .. "Tokenization/Tokens")
+end
 local currentlyProcessing = nil
 
 function ReadFile (fileName)
     local file = io.open (configuration.pathPrefix .. "/" .. configuration.projectDir .. "/" .. fileName, "r")
-    local lineIndex = 1
-    for line in file:lines () do
+    local tokens = TokenizeFile (file)
+    local tokensList = TokensList (tokens)
+    local token = tokensList:CurrentToken ()
+    
+    while token ~= nil do
         if currentlyProcessing ~= nil then
-            if currentlyProcessing:ProcessFileLine (line, lineIndex) then
+            if not currentlyProcessing:Parse (tokensList) then
+                currentlyProcessing = nil
+                return false
+            else
                 table.insert (data [currentlyProcessing:GetDataDestination ()], currentlyProcessing)
                 currentlyProcessing = nil
             end
-        else
-            local index = line:find (configuration.bindingsGeneratorCommand)
-            if index ~= nil then
-                index = index + configuration.bindingsGeneratorCommand:len () + 1
-                local commandLine = line:sub (index, line:len ())
+        elseif token.type == Tokens.Command then
+            local command = nil
+            local arguments = {}
 
-                local command = nil
-                local arguments = {}
-                for element in commandLine:gmatch ("%S+") do
-                    if command == nil then
-                        command = element
-                    else
-                        table.insert (arguments, element)
-                    end
-                end
-
-                local bindingType = bindingTypes [command]
-                if bindingType ~= nil then
-                    currentlyProcessing = bindingType (fileName, arguments)
-                else
-                    print ("    Line " .. lineIndex .. ": unknown command \"" .. command .. "\".")
+            for part in token.value:gmatch ("%S+") do
+                if command == nil and part ~= "" then
+                    command = part
+                elseif part ~= "" then
+                    table.insert (arguments, part)
                 end
             end
+
+            if bindingTypes [command] ~= nil then
+                currentlyProcessing = bindingTypes [command] (fileName, arguments)
+            else
+                print ("Line " .. token.line .. ": Unknown command \"" .. command .. "\"!")
+            end
         end
-        lineIndex = lineIndex + 1
+        token = tokensList:NextToken ()
     end
 
-    if currentlyProcessing ~= nil then
-        print ("    Processing of " .. currentlyProcessing:GetTypeName () .. " isn't finished, end of file reached!")
-        table.insert (data [currentlyProcessing.GetDataDestination ()], currentlyProcessing)
-    end
     file:close ()
+    return true
 end
 
 return ReadFile

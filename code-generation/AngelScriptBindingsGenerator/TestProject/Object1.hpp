@@ -33,7 +33,7 @@ public:
     //@ASBindGen Function
     static void StaticFunction ();
     //@ASBindGen Function
-    void DoSomething ();
+    void DoSomething (float first, unsigned int second);
 
     //@ASBindGen Function OverrideName=get_string
     Urho3D::String GetString () const;
