@@ -2,163 +2,116 @@ if Class == nil then
     Class = require (scriptDirectory .. "ElementsTypes/Class")
 end
 
+if Tokens == nil then
+    Tokens = require (scriptDirectory .. "Tokenization/Tokens")
+end
+
 Enum = Class ()
 Enum.Construct = function (self, fileName, bindingAguments)
     self.fileName = fileName
     self.name = ""
     self.values = {}
-    self.braceOpened = false
     self.arguments = bindingAguments
-
-    self.enumWordReaded = false
-    self.nameReaded = false
 end
 
--- Process file line, returns true if binding processing finished.
-Enum.ProcessFileLine = function (self, line, lineIndex)
-    local commentPosition = line:find ("//")
-    if commentPosition == nil then
-        commentPosition = 999999
-    end
+-- Return true if no errors.
+Enum.Parse = function (self, tokensList)
+    if not self:SkipUntilEnumKeyword (tokensList) then
+        return false
 
-    if not self.enumWordReaded then
-        local enumPosition = line:find ("enum")
-        if enumPosition ~= nil and enumPosition < commentPosition then
-            self.enumWordReaded = true
-            local readNamePosition = enumPosition + ("enum "):len ()
-            local lastReadPosition = self:ReadName (line, readNamePosition, commentPosition)
+    elseif not self:ReadName (tokensList) then
+        return false
 
-            if self.enumWordReaded and self.nameReaded and self.braceOpened then
-                return self:ReadLineAfterInitialization (line, lineIndex, lastReadPosition, commentPosition)
-            else
-                return false
-            end
-        end
-
-    elseif self.enumWordReaded and not self.nameReaded then
-        local readStartPosition = 1
-        local char = line:sub (readStartPosition, readStartPosition)
-        while char == " " and readStartPosition < commentPosition and readStartPosition < line:len () do
-            readStartPosition = readStartPosition + 1
-            char = line:sub (readStartPosition, readStartPosition)
-        end
-
-        local lastReadPosition = 1
-        if readStartPosition < commentPosition and readStartPosition < line:len () then
-            lastReadPosition = self:ReadName (line, readStartPosition, commentPosition)
-        end
-
-        if self.enumWordReaded and self.nameReaded and self.braceOpened then
-            return self:ReadLineAfterInitialization (line, lineIndex, lastReadPosition, commentPosition)
-        else
-            return false
-        end
-
-    elseif self.braceOpened and (not self.enumWordReaded or not self.nameReaded) then
-        print ("    Line " .. lineIndex .. ": Can't read Enum, \"{\" reached, but name not readed!")
+    elseif not self:ReadValues (tokensList) then
+        return false
+    else
         return true
-
-    elseif self.enumWordReaded and self.nameReaded then
-        return self:ReadLineAfterInitialization (line, lineIndex, 1, commentPosition)
     end
 end
 
-Enum.ReadName = function (self, line, readStartPosition, commentPosition)
-    local readPosition = readStartPosition
-    if readPosition < line:len () and (commentPosition == nil or readPosition < commentPosition) then
-        local char = line:sub (readPosition, readPosition)
-        while char ~= " " and char ~= "\n" and char ~= "{" and
-            readPosition <= line:len () and readPosition < commentPosition do
+Enum.PrintInfo = function (self)
+    print ("    " .. self.name .. " from file " .. self.fileName)
+    for index, value in pairs (self.values) do
+        print ("        " .. value)
+    end
+    print ("")
+end
 
-            self.name = self.name .. char
-            readPosition = readPosition + 1
-            char = line:sub (readPosition, readPosition)
-        end
+Enum.SkipUntilEnumKeyword = function (self, tokensList)
+    local token = tokensList:CurrentToken ()
+    while token.type ~= Tokens.TypeOrName and token ~= nil do
+        token = tokensList:NextToken ()
+    end
 
-        self.nameReaded = true
-        while readPosition <= line:len () and readPosition < commentPosition do
-            if char == "{" then
-                self.braceOpened = true
-                return readPosition
-            end
+    if token == nil then
+        print ("End of file reached when trying to find \"enum\" keyword while reading enum!")
+        return false
 
-            readPosition = readPosition + 1
-            char = line:sub (readPosition, readPosition)
-        end
-        return readPosition
+    elseif token.value ~= "enum" then
+        print ("Line " .. token.line .. ": Expected \"enum\", but got \"" .. token.value .. "\"!")
+        return false
+    else
+        return true
     end
 end
 
-Enum.ReadLineAfterInitialization = function (self, line, lineIndex, readStartPosition, commentPosition)
-    local readingIndex = readStartPosition
-    local char = line:sub (readingIndex, readingIndex)
-
-    if not self.braceOpened then
-        while char ~= "{" and readingIndex < commentPosition and readingIndex <= line:len () do
-            char = line:sub (readingIndex, readingIndex)
-            readingIndex = readingIndex + 1
-        end
-
-        if char == "{" then
-            self.braceOpened = true
-        else
-            return false
-        end
+Enum.ReadName = function (self, tokensList)
+    local token = tokensList:NextToken ()
+    while token.type ~= Tokens.TypeOrName and token ~= nil do
+        token = tokensList:NextToken ()
     end
 
-    local currentlyReadingName = ""
-    local readingName = true
-    while readingIndex < commentPosition and readingIndex <= line:len () do
-        char = line:sub (readingIndex, readingIndex)
+    if token == nil then
+        print ("End of file reached when trying to read name while reading enum!")
+        return false
 
-        if readingName then
-            if char ~= " " and char ~= "," and char ~= "=" and char ~= "{" and char ~= "}" then
-                currentlyReadingName = currentlyReadingName .. char
+    else
+        self.name = token.value
+        return true
+    end
+end
 
-            elseif char == "," or (currentlyReadingName == "" and char ~= "}") then
-                if currentlyReadingName ~= "" then
-                    table.insert (self.values, currentlyReadingName)
-                end
+Enum.ReadValues = function (self, tokensList)
+    if not self:SkipUntilValuesBlockBegin (tokensList) then
+        return false
+    end
 
-                currentlyReadingName = ""
-                readingName = true
+    local isNextNameTokenEnumValue = true
+    local token = tokensList:NextToken ()
 
-            elseif char == "{" then
-                print ("    Line " .. lineIndex .. ": Can't read Enum, second \"{\" reached!")
-                return true
-
-            elseif char == "}" then
-                if currentlyReadingName ~= "" then
-                    table.insert (self.values, currentlyReadingName)
-                end
-                return true
-
-            else
-                if currentlyReadingName ~= "" then
-                    table.insert (self.values, currentlyReadingName)
-                end
-
-                currentlyReadingName = ""
-                readingName = false
-            end
-        else
-            if char == "," then
-                readingName = true
-            elseif char == "{" then
-                print ("    Line " .. lineIndex .. ": Can't read Enum, second \"{\" reached!")
-                return true
-
-            elseif char == "}" then
-                return true
-            end
+    while token ~= nil and not (token.type == Tokens.Operator and token.value == "}") do
+        if token.type == Tokens.TypeOrName and isNextNameTokenEnumValue then
+            table.insert (self.values, token.value)
+            isNextNameTokenEnumValue = false
+        elseif token.type == Tokens.Operator and token.value == "," then
+            isNextNameTokenEnumValue = true
         end
-        readingIndex = readingIndex + 1
+        token = tokensList:NextToken ()
     end
 
-    if currentlyReadingName ~= "" then
-        table.insert (self.values, currentlyReadingName)
+    if token == nil then
+        print ("End of file reached when trying to read values names while reading enum!")
+    else
+        return true
     end
-    return false
+end
+
+Enum.SkipUntilValuesBlockBegin = function (self, tokensList)
+    local token = tokensList:NextToken ()
+    while token.type ~= Tokens.Operator and token ~= nil do
+        token = tokensList:NextToken ()
+    end
+
+    if token == nil then
+        print ("End of file reached when trying to find value block begin while reading enum!")
+        return false
+
+    elseif token.value ~= "{" then
+        print ("Line " .. token.line .. ": Expected \"{\", but got \"" .. token.value .. "\"!")
+        return false
+    else
+        return true
+    end
 end
 
 Enum.GetDataDestination = function ()
