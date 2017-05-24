@@ -3,6 +3,9 @@
 
 namespace TestProject
 {
+//@ASBindGen Urho3DSubsystem OverrideName=subsystemX
+//@ASBindGen SubsystemX
+
 //@ASBindGen Enum
 enum MyEnumType
 {
