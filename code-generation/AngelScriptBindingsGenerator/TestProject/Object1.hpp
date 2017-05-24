@@ -30,10 +30,10 @@ public:
     Object1 (Urho3D::Context *context);
     virtual ~Object1 ();
 
+    //@ASBindGen Function return_TypeReplace=&| return_TypeReplace=const|
+    static const Urho3D::String &StaticFunction ();
     //@ASBindGen Function
-    static void StaticFunction ();
-    //@ASBindGen Function
-    void DoSomething (float first, unsigned int second);
+    void DoSomething (float first = 3.14f, unsigned int second = 10);
 
     //@ASBindGen Function OverrideName=get_string
     Urho3D::String GetString () const;
@@ -43,6 +43,6 @@ public:
     //@ASBindGen Function OverrideName=get_number
     float GetNumber () const;
     //@ASBindGen Function OverrideName=get_number
-    void SetNumber (float string);
+    void SetNumber (float number);
 };
 }
