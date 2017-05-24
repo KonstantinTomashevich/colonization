@@ -6,6 +6,10 @@ if Tokens == nil then
     Tokens = require (scriptDirectory .. "Tokenization/Tokens")
 end
 
+if TokenToString == nil then
+    TokenToString, TokenTypeToString = require (scriptDirectory .. "Tokenization/TokenToString")
+end
+
 Function = CreateNewClass ()
 Function.Construct = function (self, fileName, bindingAguments, isConstructor)
     self.fileName = fileName
@@ -60,7 +64,7 @@ Function.ReadReturnType = function (self, tokensList)
         print ("Fatal error, token is nil!")
         return false
     elseif token.type ~= Tokens.TypeOrName then
-        print ("Line " .. token.line .. ": Expected function return type, but got \"" .. token.value .. "\"!")
+        print ("Line " .. token.line .. ": Expected function return type, but got \"" .. TokenToString (token) .. "\"!")
         return false
     else
         self.returnType = token.value
@@ -80,7 +84,7 @@ Function.ReadName = function (self, tokensList)
         print ("Fatal error, token is nil!")
         return false
     elseif token.type ~= Tokens.TypeOrName then
-        print ("Line " .. token.line .. ": Expected function name, but got \"" .. token.value .. "\"!")
+        print ("Line " .. token.line .. ": Expected function name, but got \"" .. TokenToString (token) .. "\"!")
         return false
     else
         self.name = token.value
@@ -140,7 +144,7 @@ Function.ReadCallArguments = function (self, tokensList)
             end
 
         else
-            print ("Line " .. token.line .. ": Unexpected token \"" .. token.value .. "\" while reading function call arguments!")
+            print ("Line " .. token.line .. ": Unexpected token \"" .. TokenToString (token) .. "\" while reading function call arguments!")
             return false
         end
         token = tokensList:NextToken ()
@@ -175,7 +179,7 @@ Function.ReadIsConst = function (self, tokensList)
             self.isConst = true
             return true
         else
-            print ("Line " .. token.line .. ": Expected function declaration end, but got \"" .. token.value .. "\"!")
+            print ("Line " .. token.line .. ": Expected function declaration end, but got \"" .. TokenToString (token) .. "\"!")
             return false
         end
     end
@@ -187,7 +191,7 @@ Function.SkipUntilArgumentsListBegin = function (self, tokensList)
         print ("Fatal error, token is nil!")
         return false
     elseif token.type ~= Tokens.Operator and token.value ~= "(" then
-        print ("Line " .. token.line .. ": Expected \"(\", but got \"" .. token.value .. "\"!")
+        print ("Line " .. token.line .. ": Expected \"(\", but got \"" .. TokenToString (token) .. "\"!")
         return false
     else
         return true
