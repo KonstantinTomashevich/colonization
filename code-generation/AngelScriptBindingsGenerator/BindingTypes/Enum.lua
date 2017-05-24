@@ -25,10 +25,11 @@ Enum.Parse = function (self, tokensList)
 end
 
 Enum.ToString = function (self, indent)
-    local string = indent .. self.name .. " from file " .. self.fileName .. "\n"
+    local string = indent .. self.name .. " from file " .. self.fileName .. "\n" .. indent .. "{\n"
     for index, value in pairs (self.values) do
         string = string .. indent .. "    " .. value .. "\n"
     end
+    string = string .. indent .. "}\n"
     return string
 end
 

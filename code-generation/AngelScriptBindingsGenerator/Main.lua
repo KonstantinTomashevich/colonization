@@ -11,6 +11,7 @@ bindingTypes ["Constant"] = require (scriptDirectory .. "BindingTypes/Constant")
 bindingTypes ["Function"] = require (scriptDirectory .. "BindingTypes/Function")
 bindingTypes ["Constructor"] = function (fileName, bindingAguments) return bindingTypes ["Function"] (fileName, bindingAguments, true) end
 bindingTypes ["Urho3DSubsystem"] = require (scriptDirectory .. "BindingTypes/Urho3DSubsystem")
+bindingTypes ["Class"] = require (scriptDirectory .. "BindingTypes/Class")
 
 local configurationFile = arg [1]:gsub (".lua", "")
 configuration = require (configurationFile)
