@@ -44,7 +44,7 @@ Enum.SkipUntilEnumKeyword = function (self, tokensList)
     end
 
     if token == nil then
-        print ("End of file reached when trying to find \"enum\" keyword while reading enum!")
+        print ("End of file reached while trying to find \"enum\" keyword while reading enum!")
         return false
 
     elseif token.type ~= Tokens.TypeOrName or token.value ~= "enum" then
@@ -62,7 +62,7 @@ Enum.ReadName = function (self, tokensList)
     end
 
     if token == nil then
-        print ("End of file reached when trying to read name while reading enum!")
+        print ("End of file reached while trying to read name while reading enum!")
         return false
 
     elseif token.type ~= Tokens.TypeOrName then
@@ -94,7 +94,8 @@ Enum.ReadValues = function (self, tokensList)
     end
 
     if token == nil then
-        print ("End of file reached when trying to read values names while reading enum!")
+        print ("End of file reached while trying to read values names while reading enum!")
+        return false
     else
         return true
     end
@@ -107,7 +108,7 @@ Enum.SkipUntilValuesBlockBegin = function (self, tokensList)
     end
 
     if token == nil then
-        print ("End of file reached when trying to find value block begin while reading enum!")
+        print ("End of file reached while trying to find value block begin while reading enum!")
         return false
 
     elseif token.type ~= Tokens.Operator or token.value ~= "{" then
