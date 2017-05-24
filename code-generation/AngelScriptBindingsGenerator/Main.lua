@@ -10,6 +10,7 @@ bindingTypes ["Enum"] = require (scriptDirectory .. "BindingTypes/Enum")
 bindingTypes ["Constant"] = require (scriptDirectory .. "BindingTypes/Constant")
 bindingTypes ["Function"] = require (scriptDirectory .. "BindingTypes/Function")
 bindingTypes ["Constructor"] = function (fileName, bindingAguments) return bindingTypes ["Function"] (fileName, bindingAguments, true) end
+bindingTypes ["Urho3DSubsystem"] = require (scriptDirectory .. "BindingTypes/Urho3DSubsystem")
 
 local configurationFile = arg [1]:gsub (".lua", "")
 configuration = require (configurationFile)

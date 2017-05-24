@@ -65,4 +65,4 @@ Constant.GetTypeName = function ()
     return "Constant"
 end
 
-return Constant;
+return Constant

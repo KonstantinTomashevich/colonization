@@ -202,4 +202,4 @@ Function.GetTypeName = function ()
     return "Function"
 end
 
-return Function;
+return Function

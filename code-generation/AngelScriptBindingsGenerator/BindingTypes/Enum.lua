@@ -106,4 +106,4 @@ Enum.GetTypeName = function ()
     return "Enum"
 end
 
-return Enum;
+return Enum
