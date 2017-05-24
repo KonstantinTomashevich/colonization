@@ -2,7 +2,7 @@ scriptDirectory = ""
 local PrintConfiguration = require (scriptDirectory .. "PrintConfiguration")
 local ReadFile = require (scriptDirectory .. "ReadFile")
 
-Class = require (scriptDirectory .. "BindingTypes/Class")
+Class = require (scriptDirectory .. "BindingTypes/CreateNewClass")
 data, GetBindingTypesOfFile = require (scriptDirectory .. "Data")
 
 bindingTypes = {}

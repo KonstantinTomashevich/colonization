@@ -1,4 +1,4 @@
-function Class (...)
+function CreateNewClass (...)
     local newClass = {}
     local bases = {...}
 
@@ -32,4 +32,4 @@ function Class (...)
     })
     return newClass
 end
-return Class
+return CreateNewClass

@@ -1,12 +1,12 @@
-if Class == nil then
-    Class = require (scriptDirectory .. "ElementsTypes/Class")
+if CreateNewClass == nil then
+    CreateNewClass = require (scriptDirectory .. "BindingTypes/CreateNewClass")
 end
 
 if Tokens == nil then
     Tokens = require (scriptDirectory .. "Tokenization/Tokens")
 end
 
-Enum = Class ()
+Enum = CreateNewClass ()
 Enum.Construct = function (self, fileName, bindingAguments)
     self.fileName = fileName
     self.name = ""

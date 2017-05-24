@@ -1,8 +1,8 @@
-if Class == nil then
-    Class = require (scriptDirectory .. "BindingTypes/Class")
+if CreateNewClass == nil then
+    CreateNewClass = require (scriptDirectory .. "BindingTypes/CreateNewClass")
 end
 
-TokensList = Class ()
+TokensList = CreateNewClass ()
 TokensList.Construct = function (self, tokens)
     self.currentIndex = 1
     self.tokens = tokens
