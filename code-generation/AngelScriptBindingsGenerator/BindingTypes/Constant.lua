@@ -6,6 +6,10 @@ if Tokens == nil then
     Tokens = require (scriptDirectory .. "Tokenization/Tokens")
 end
 
+if TokenToString == nil then
+    TokenToString, TokenTypeToString = require (scriptDirectory .. "Tokenization/TokenToString")
+end
+
 Constant = CreateNewClass ()
 Constant.Construct = function (self, fileName, bindingAguments)
     self.fileName = fileName
@@ -16,15 +20,8 @@ end
 
 -- Return true if no errors.
 Constant.Parse = function (self, tokensList)
-    if not self:ReadType (tokensList) then
-        return false
-
-    elseif not self:ReadName (tokensList) then
-        return false
-
-    else
-        return true
-    end
+    tokensList.skipEndOfLineTokens = true
+    return (self:ReadType (tokensList) and self:ReadName (tokensList));
 end
 
 Constant.ToString = function (self, indent)
@@ -33,19 +30,13 @@ Constant.ToString = function (self, indent)
 end
 
 Constant.ReadType = function (self, tokensList)
-    local token = tokensList:CurrentToken ()
-    while token.type == Tokens.EndOfLine and token ~= nil do
-        token = tokensList:NextToken ()
-    end
-
+    local token = tokensList:CurrentOrNextToken ()
     if token == nil then
-        print ("End of file reached while trying to read type while reading constant!")
+        print ("Fatal error, token is nil!")
         return false
-
     elseif token.type ~= Tokens.TypeOrName then
-        print ("Line " .. token.line .. ": Expected constant type, but got \"" .. token.value .. "\"!")
+        print ("Line " .. token.line .. ": Expected constant type, but got " .. TokenToString (token) .. "!")
         return false
-
     else
         self.type = token.value
         return true
@@ -53,19 +44,13 @@ Constant.ReadType = function (self, tokensList)
 end
 
 Constant.ReadName = function (self, tokensList)
-    local token = tokensList:NextToken ()
-    while token.type == Tokens.EndOfLine and token ~= nil do
-        token = tokensList:NextToken ()
-    end
-
+    token = tokensList:NextToken ()
     if token == nil then
-        print ("End of file reached while trying to read type while reading constant!")
+        print ("Fatal error, token is nil!")
         return false
-
-    elseif token.type ~= Tokens.TypeOrName then
-        print ("Line " .. token.line .. ": Expected constant type, but got \"" .. token.value .. "\"!")
+    elseif token == nil or token.type ~= Tokens.TypeOrName then
+        print ("Line " .. token.line .. ": Expected constant name, but got " .. TokenToString (token) .. "!")
         return false
-
     else
         self.name = token.value
         return true

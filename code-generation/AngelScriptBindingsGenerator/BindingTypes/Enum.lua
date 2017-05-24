@@ -6,6 +6,10 @@ if Tokens == nil then
     Tokens = require (scriptDirectory .. "Tokenization/Tokens")
 end
 
+if TokenToString == nil then
+    TokenToString, TokenTypeToString = require (scriptDirectory .. "Tokenization/TokenToString")
+end
+
 Enum = CreateNewClass ()
 Enum.Construct = function (self, fileName, bindingAguments)
     self.fileName = fileName
@@ -16,17 +20,8 @@ end
 
 -- Return true if no errors.
 Enum.Parse = function (self, tokensList)
-    if not self:SkipUntilEnumKeyword (tokensList) then
-        return false
-
-    elseif not self:ReadName (tokensList) then
-        return false
-
-    elseif not self:ReadValues (tokensList) then
-        return false
-    else
-        return true
-    end
+    tokensList.skipEndOfLineTokens = true
+    return (self:SkipUntilEnumKeyword (tokensList) and self:ReadName (tokensList) and self:ReadValues (tokensList))
 end
 
 Enum.ToString = function (self, indent)
@@ -38,17 +33,12 @@ Enum.ToString = function (self, indent)
 end
 
 Enum.SkipUntilEnumKeyword = function (self, tokensList)
-    local token = tokensList:CurrentToken ()
-    while token.type == Tokens.EndOfLine and token ~= nil do
-        token = tokensList:NextToken ()
-    end
-
+    local token = tokensList:CurrentOrNextToken ()
     if token == nil then
-        print ("End of file reached while trying to find \"enum\" keyword while reading enum!")
+        print ("Fatal error, token is nil!")
         return false
-
     elseif token.type ~= Tokens.TypeOrName or token.value ~= "enum" then
-        print ("Line " .. token.line .. ": Expected \"enum\", but got \"" .. token.value .. "\"!")
+        print ("Line " .. token.line .. ": Expected \"enum\"(Type Or Name), but got \"" .. TokenToString (token) .. "\"!")
         return false
     else
         return true
@@ -57,18 +47,12 @@ end
 
 Enum.ReadName = function (self, tokensList)
     local token = tokensList:NextToken ()
-    while token.type == Tokens.EndOfLine and token ~= nil do
-        token = tokensList:NextToken ()
-    end
-
     if token == nil then
-        print ("End of file reached while trying to read name while reading enum!")
+        print ("Fatal error, token is nil!")
         return false
-
     elseif token.type ~= Tokens.TypeOrName then
-        print ("Line " .. token.line .. ": Expected enum name, but got \"" .. token.value .. "\"!")
+        print ("Line " .. token.line .. ": Expected enum name, but got \"" .. TokenToString (token) .. "\"!")
         return false
-
     else
         self.name = token.value
         return true
@@ -94,7 +78,7 @@ Enum.ReadValues = function (self, tokensList)
     end
 
     if token == nil then
-        print ("End of file reached while trying to read values names while reading enum!")
+        print ("Fatal error, token is nil!")
         return false
     else
         return true
@@ -103,16 +87,11 @@ end
 
 Enum.SkipUntilValuesBlockBegin = function (self, tokensList)
     local token = tokensList:NextToken ()
-    while token.type == Tokens.EndOfLine and token ~= nil do
-        token = tokensList:NextToken ()
-    end
-
     if token == nil then
-        print ("End of file reached while trying to find value block begin while reading enum!")
+        print ("Fatal error, token is nil!")
         return false
-
     elseif token.type ~= Tokens.Operator or token.value ~= "{" then
-        print ("Line " .. token.line .. ": Expected \"{\", but got \"" .. token.value .. "\"!")
+        print ("Line " .. token.line .. ": Expected \"{\"(Operator), but got \"" .. TokenToString (token) .. "\"!")
         return false
     else
         return true

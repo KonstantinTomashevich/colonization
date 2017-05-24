@@ -13,6 +13,7 @@ Function.Construct = function (self, fileName, bindingAguments)
     self.returnType = ""
     self.name = ""
     self.callArguments = {}
+
     self.isConst = false
     self.isStatic = false
     self.arguments = bindingAguments
@@ -20,20 +21,9 @@ end
 
 -- Return true if no errors.
 Function.Parse = function (self, tokensList)
-    if not self:ReadReturnType (tokensList) then
-        return false
-
-    elseif not self:ReadName (tokensList) then
-        return false
-
-    elseif not self:ReadCallArguments (tokensList) then
-        return false
-
-    elseif not self:ReadIsConst (tokensList) then
-        return false
-    else
-        return true
-    end
+    tokensList.skipEndOfLineTokens = true
+    return (self:ReadReturnType (tokensList) and self:ReadName (tokensList) and
+        self:ReadCallArguments (tokensList) and self:ReadIsConst (tokensList))
 end
 
 Function.ToString = function (self, indent)
@@ -55,28 +45,18 @@ Function.ToString = function (self, indent)
 end
 
 Function.ReadReturnType = function (self, tokensList)
-    local token = tokensList:CurrentToken ()
-    while token.type == Tokens.EndOfLine and token ~= nil do
-        token = tokensList:NextToken ()
-    end
-
+    local token = tokensList:CurrentOrNextToken ()
     if token.type == Tokens.TypeOrName and token.value == "static" then
         self.isStatic = true
         token = tokensList:NextToken ()
-        while token.type == Tokens.EndOfLine and token ~= nil do
-            print (token.value)
-            token = tokensList:NextToken ()
-        end
     end
 
     if token == nil then
-        print ("End of file reached while trying to read return type while reading function!")
+        print ("Fatal error, token is nil!")
         return false
-
     elseif token.type ~= Tokens.TypeOrName then
         print ("Line " .. token.line .. ": Expected function return type, but got \"" .. token.value .. "\"!")
         return false
-
     else
         self.returnType = token.value
         return true
@@ -85,18 +65,12 @@ end
 
 Function.ReadName = function (self, tokensList)
     local token = tokensList:NextToken ()
-    while token.type == Tokens.EndOfLine and token ~= nil do
-        token = tokensList:NextToken ()
-    end
-
     if token == nil then
-        print ("End of file reached while trying to read name while reading function!")
+        print ("Fatal error, token is nil!")
         return false
-
     elseif token.type ~= Tokens.TypeOrName then
         print ("Line " .. token.line .. ": Expected function name, but got \"" .. token.value .. "\"!")
         return false
-
     else
         self.name = token.value
         return true
@@ -180,17 +154,11 @@ end
 
 Function.ReadIsConst = function (self, tokensList)
     local token = tokensList:NextToken ()
-    while token.type == Tokens.EndOfLine and token ~= nil do
-        token = tokensList:NextToken ()
-    end
-
     if token == nil then
-        print ("End of file reached while trying to find declaration end while reading function!")
+        print ("Fatal error, token is nil!")
         return false
-
     elseif token.type == Tokens.Operator and (token.value == ";" or token.value == "{") then
         return true
-
     elseif token.type == Tokens.TypeOrName then
         if token.value == "const" then
             self.isConst = true
@@ -204,18 +172,12 @@ end
 
 Function.SkipUntilArgumentsListBegin = function (self, tokensList)
     local token = tokensList:NextToken ()
-    while token.type == Tokens.EndOfLine and token ~= nil do
-        token = tokensList:NextToken ()
-    end
-
     if token == nil then
-        print ("End of file reached while trying to find arguments list begin while reading function!")
+        print ("Fatal error, token is nil!")
         return false
-
     elseif token.type ~= Tokens.Operator and token.value ~= "(" then
         print ("Line " .. token.line .. ": Expected \"(\", but got \"" .. token.value .. "\"!")
         return false
-
     else
         return true
     end
