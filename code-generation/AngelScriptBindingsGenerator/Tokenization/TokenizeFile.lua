@@ -19,7 +19,7 @@ function Read (config, previousChar, char, nextChar, line)
     elseif char == "\n" then
         return {{type = Tokens.EndOfLine}}
 
-    elseif char:match ("%a+") ~= nil then
+    elseif char:match ("%a") ~= nil or char:match ("%d") or char == "\"" or char == "'" then
         config.immediateData = {}
         config.currentReader = ReadTypeOrName
         return nil
@@ -47,14 +47,15 @@ function ReadTypeOrName (config, previousChar, char, nextChar, line)
         config.immediateData.openedTemplates = 0
     end
 
-    if char:match ("%a+") ~= nil or char:match ("%d+") ~= nil or
-        char == "_" or char == "-" or config.immediateData.readed == "unsigned" or
-        config.immediateData.readed == "const" or
+    if char:match ("%a") ~= nil or char:match ("%d") ~= nil or char == "." or
+        char == "\"" or char == "'" or char == "_" or char == "-" or
+        (config.immediateData.readed == "unsigned" and nextChar:match ("%a")) or
+        (config.immediateData.readed == "const" and nextChar:match ("%a")) or
         (char == ":" and (nextChar == ":" or previousChar == ":")) or
         nextChar == "*" or nextChar == "&" or char == "<" or char == ">" or
         nextChar == "<" or nextChar == ">" or config.immediateData.openedTemplates > 0 then
 
-        if (char ~= "\n") then
+        if char ~= "\n" then
             config.immediateData.readed = config.immediateData.readed .. char
         end
 
