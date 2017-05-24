@@ -28,32 +28,16 @@ for index, fileName in ipairs (configuration.files) do
 end
 print ("\n")
 
-print ("Enums: ")
-for index, value in pairs (data.enums) do
-    print (value:ToString ("    "))
+local toPrint = {}
+table.insert (toPrint, {name = "Enums:", key = "enums"})
+table.insert (toPrint, {name = "Constants:", key = "constants"})
+table.insert (toPrint, {name = "Free Functions:", key = "freeFunctions"})
+table.insert (toPrint, {name = "Classes:", key = "classes"})
+table.insert (toPrint, {name = "Subsystems:", key = "subsystems"})
+for key, value in pairs (toPrint) do
+    print (value.name)
+    for index, value in pairs (data [value.key]) do
+        print (value:ToString ("    "))
+    end
+    print ("")
 end
-print ("")
-
-print ("Constants: ")
-for index, value in pairs (data.constants) do
-    print (value:ToString ("    "))
-end
-print ("")
-
-print ("Free functions: ")
-for index, value in pairs (data.freeFunctions) do
-    print (value:ToString ("    "))
-end
-print ("")
-
-print ("Classes: ")
-for index, value in pairs (data.classes) do
-    print (value:ToString ("    "))
-end
-print ("")
-
-print ("Subsystems: ")
-for index, value in pairs (data.subsystems) do
-    print (value:ToString ("    "))
-end
-print ("")
