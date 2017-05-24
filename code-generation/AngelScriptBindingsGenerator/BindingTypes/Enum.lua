@@ -39,7 +39,7 @@ end
 
 Enum.SkipUntilEnumKeyword = function (self, tokensList)
     local token = tokensList:CurrentToken ()
-    while token.type ~= Tokens.TypeOrName and token ~= nil do
+    while token.type == Tokens.EndOfLine and token ~= nil do
         token = tokensList:NextToken ()
     end
 
@@ -47,7 +47,7 @@ Enum.SkipUntilEnumKeyword = function (self, tokensList)
         print ("End of file reached when trying to find \"enum\" keyword while reading enum!")
         return false
 
-    elseif token.value ~= "enum" then
+    elseif token.type ~= Tokens.TypeOrName or token.value ~= "enum" then
         print ("Line " .. token.line .. ": Expected \"enum\", but got \"" .. token.value .. "\"!")
         return false
     else
@@ -57,12 +57,16 @@ end
 
 Enum.ReadName = function (self, tokensList)
     local token = tokensList:NextToken ()
-    while token.type ~= Tokens.TypeOrName and token ~= nil do
+    while token.type == Tokens.EndOfLine and token ~= nil do
         token = tokensList:NextToken ()
     end
 
     if token == nil then
         print ("End of file reached when trying to read name while reading enum!")
+        return false
+
+    elseif token.type ~= Tokens.TypeOrName then
+        print ("Line " .. token.line .. ": Expected enum name, but got \"" .. token.value .. "\"!")
         return false
 
     else
@@ -98,7 +102,7 @@ end
 
 Enum.SkipUntilValuesBlockBegin = function (self, tokensList)
     local token = tokensList:NextToken ()
-    while token.type ~= Tokens.Operator and token ~= nil do
+    while token.type == Tokens.EndOfLine and token ~= nil do
         token = tokensList:NextToken ()
     end
 
@@ -106,7 +110,7 @@ Enum.SkipUntilValuesBlockBegin = function (self, tokensList)
         print ("End of file reached when trying to find value block begin while reading enum!")
         return false
 
-    elseif token.value ~= "{" then
+    elseif token.type ~= Tokens.Operator or token.value ~= "{" then
         print ("Line " .. token.line .. ": Expected \"{\", but got \"" .. token.value .. "\"!")
         return false
     else
