@@ -7,7 +7,7 @@ if Tokens == nil then
 end
 
 Function = CreateNewClass ()
-Function.Construct = function (self, fileName, bindingAguments)
+Function.Construct = function (self, fileName, bindingAguments, isConstructor)
     self.fileName = fileName
     self.ownerClassName = nil
     self.returnType = ""
@@ -16,14 +16,19 @@ Function.Construct = function (self, fileName, bindingAguments)
 
     self.isConst = false
     self.isStatic = false
+    if isConstructor ~= nil then
+        self.isConstructor = isConstructor
+    else
+        self.isConstructor = false
+    end
     self.arguments = bindingAguments
 end
 
 -- Return true if no errors.
 Function.Parse = function (self, tokensList)
     tokensList.skipEndOfLineTokens = true
-    return (self:ReadReturnType (tokensList) and self:ReadName (tokensList) and
-        self:ReadCallArguments (tokensList) and self:ReadIsConst (tokensList))
+    return ((self.isConstructor or self:ReadReturnType (tokensList)) and
+        self:ReadName (tokensList) and self:ReadCallArguments (tokensList) and self:ReadIsConst (tokensList))
 end
 
 Function.ToString = function (self, indent)
@@ -64,7 +69,13 @@ Function.ReadReturnType = function (self, tokensList)
 end
 
 Function.ReadName = function (self, tokensList)
-    local token = tokensList:NextToken ()
+    local token = nil
+    if (self.isConstructor) then
+        token = tokensList:CurrentOrNextToken ()
+    else
+        token = tokensList:NextToken ()
+    end
+
     if token == nil then
         print ("Fatal error, token is nil!")
         return false

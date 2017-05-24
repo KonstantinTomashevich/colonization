@@ -3,6 +3,7 @@ data.enums = {}
 data.constants = {}
 data.freeFunctions = {}
 data.classes = {}
+data.subsystems = {}
 
 function GetBindingTypesOfFile (fileName)
     local fileBindingTypes = {}

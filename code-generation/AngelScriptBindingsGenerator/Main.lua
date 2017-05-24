@@ -7,8 +7,9 @@ data, GetBindingTypesOfFile = require (scriptDirectory .. "Data")
 
 bindingTypes = {}
 bindingTypes ["Enum"] = require (scriptDirectory .. "BindingTypes/Enum")
-bindingTypes ["Function"] = require (scriptDirectory .. "BindingTypes/Function")
 bindingTypes ["Constant"] = require (scriptDirectory .. "BindingTypes/Constant")
+bindingTypes ["Function"] = require (scriptDirectory .. "BindingTypes/Function")
+bindingTypes ["Constructor"] = function (fileName, bindingAguments) return bindingTypes ["Function"] (fileName, bindingAguments, true) end
 
 local configurationFile = arg [1]:gsub (".lua", "")
 configuration = require (configurationFile)
@@ -45,6 +46,12 @@ print ("")
 
 print ("Classes: ")
 for index, value in pairs (data.classes) do
+    print (value:ToString ("    "))
+end
+print ("")
+
+print ("Subsystems: ")
+for index, value in pairs (data.subsystems) do
     print (value:ToString ("    "))
 end
 print ("")
