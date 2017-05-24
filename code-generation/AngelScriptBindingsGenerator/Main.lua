@@ -3,7 +3,7 @@ local PrintConfiguration = require (scriptDirectory .. "PrintConfiguration")
 local ReadFile = require (scriptDirectory .. "ReadFile")
 
 Class = require (scriptDirectory .. "BindingTypes/Class")
-data = require (scriptDirectory .. "Data")
+data, GetBindingTypesOfFile = require (scriptDirectory .. "Data")
 
 bindingTypes = {}
 bindingTypes ["Enum"] = require (scriptDirectory .. "BindingTypes/Enum")
