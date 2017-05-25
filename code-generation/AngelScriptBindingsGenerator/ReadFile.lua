@@ -8,11 +8,11 @@ end
 local currentlyProcessing = nil
 
 function ReadFile (fileName)
-    local file = io.open (configuration.pathPrefix .. "/" .. configuration.projectDir .. "/" .. fileName, "r")
+    local file = io.open (ConfigurationUtils.LocalFileNameToFilePath (fileName), "r")
     local tokens = TokenizeFile (file)
     local tokensList = TokensList (tokens)
     local token = tokensList:CurrentToken ()
-    
+
     while token ~= nil do
         if currentlyProcessing ~= nil then
             if not currentlyProcessing:Parse (tokensList) then

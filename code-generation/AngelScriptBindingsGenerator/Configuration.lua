@@ -2,6 +2,7 @@ configuration = {}
 configuration.pathPrefix = "."
 configuration.projectDir = "TestProject"
 configuration.bindingsDir = "Bindings"
+configuration.bindingsFileName = "Bindings"
 configuration.bindingsGeneratorCommand = "//@ASBindGen"
 
 configuration.files = {

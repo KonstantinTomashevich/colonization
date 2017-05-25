@@ -1,8 +1,10 @@
-function PrintConfiguration ()
+ConfigurationUtils = {}
+ConfigurationUtils.PrintConfiguration = function ()
     print ("### Angel Script Bindings Generator Configuration:")
     print ("    Path prefix: " .. configuration.pathPrefix)
     print ("    Project dir: " .. configuration.projectDir)
     print ("    Bindings dir: " .. configuration.bindingsDir)
+    print ("    Bindings file name: " .. configuration.bindingsFileName)
     print ("    Bindings generator command: " .. configuration.bindingsGeneratorCommand .. "\n")
 
     print ("    Files: ")
@@ -16,4 +18,12 @@ function PrintConfiguration ()
     print ("\n")
     print ("\n")
 end
-return PrintConfiguration
+
+ConfigurationUtils.LocalFileNameToFilePath = function (fileName)
+    return configuration.pathPrefix .. "/" .. configuration.projectDir .. "/" .. fileName
+end
+
+ConfigurationUtils.LocalFileNameToBindingsFilePath = function (fileName)
+    return configuration.pathPrefix .. "/" .. configuration.projectDir .. "/" .. configuration.bindingsDir .. "/" .. fileName
+end
+return ConfigurationUtils
