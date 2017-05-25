@@ -1,5 +1,5 @@
 if CreateNewClass == nil then
-    CreateNewClass = require (scriptDirectory .. "BindingTypes/CreateNewClass")
+    CreateNewClass = require (scriptDirectory .. "CreateNewClass")
 end
 
 if Tokens == nil then
@@ -162,8 +162,8 @@ Class.ReadContent = function (self, tokensList)
                 end
             end
 
-            if bindingTypes [command] ~= nil then
-                currentChildReader = bindingTypes [command] (self.fileName, arguments)
+            if bindables [command] ~= nil then
+                currentChildReader = bindables [command] (self.fileName, arguments)
             else
                 print ("Line " .. token.line .. ": Unknown command \"" .. command .. "\"!")
             end

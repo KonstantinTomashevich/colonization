@@ -34,8 +34,8 @@ function ReadFile (fileName)
                 end
             end
 
-            if bindingTypes [command] ~= nil then
-                currentlyProcessing = bindingTypes [command] (fileName, arguments)
+            if bindables [command] ~= nil then
+                currentlyProcessing = bindables [command] (fileName, arguments)
             else
                 print ("Line " .. token.line .. ": Unknown command \"" .. command .. "\"!")
             end

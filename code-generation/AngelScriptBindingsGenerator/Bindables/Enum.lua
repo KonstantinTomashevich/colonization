@@ -1,5 +1,5 @@
 if CreateNewClass == nil then
-    CreateNewClass = require (scriptDirectory .. "BindingTypes/CreateNewClass")
+    CreateNewClass = require (scriptDirectory .. "CreateNewClass")
 end
 
 if Tokens == nil then
