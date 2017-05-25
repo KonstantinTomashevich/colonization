@@ -1,3 +1,4 @@
+-- TODO: Maybe it's better to read script directory from command line (such as AngelScriptBindingsGenerator does)?
 scriptDirectory = "./code-generation/GenerateDataObjectFromScaffold/"
 require (scriptDirectory .. "Globals")
 require (scriptDirectory .. "ProcessConfiguration")
