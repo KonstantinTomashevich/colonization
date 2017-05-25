@@ -4,30 +4,16 @@ data.constants = {}
 data.freeFunctions = {}
 data.classes = {}
 data.subsystems = {}
+data.filesToWriteList = {}
 
-function GetBindingTypesOfFile (fileName)
+function GetBindablesOfFile (fileName)
     local fileBindingTypes = {}
-    for key, value in pairs (data.enums) do
-        if value.fileName == fileName then
-            table.insert (fileBindingTypes, value)
-        end
-    end
-
-    for key, value in pairs (data.constants) do
-        if value.fileName == fileName then
-            table.insert (fileBindingTypes, value)
-        end
-    end
-
-    for key, value in pairs (data.freeFunctions) do
-        if value.fileName == fileName then
-            table.insert (fileBindingTypes, value)
-        end
-    end
-
-    for key, value in pairs (data.classes) do
-        if value.fileName == fileName then
-            table.insert (fileBindingTypes, value)
+    local toCheck = {"enums", "constants", "freeFunctions", "classes"}
+    for index, toCheckItem in ipairs (toCheck) do
+        for key, value in pairs (data [toCheckItem]) do
+            if value.fileName == fileName then
+                table.insert (fileBindingTypes, value)
+            end
         end
     end
     return fileBindingTypes
