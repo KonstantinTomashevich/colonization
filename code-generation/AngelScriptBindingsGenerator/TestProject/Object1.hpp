@@ -16,7 +16,7 @@ public:
     void DoAnything ();
 };
 
-//@ASBindGen Class ObjectType=Ref
+//@ASBindGen Class ObjectType=Ref OverrideName=MyBaseObject
 class Object1 :
     public Urho3D::Object,
     private DontBindMe

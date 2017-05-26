@@ -17,6 +17,9 @@ Class.Construct = function (self, fileName, bindingAguments)
     self.publicBases = {}
     self.constructors = {}
     self.methods = {}
+
+    self.bindingName = ""
+    self.bindingPublicBases = {}
     self.arguments = bindingAguments
     self.openedBraces = 0
 end
@@ -29,10 +32,24 @@ Class.Parse = function (self, tokensList)
 end
 
 Class.ToString = function (self, indent)
-    local string = indent .. self.name .. " from file " .. self.fileName .. "\n" .. indent ..
+    local string = indent .. self.bindingName
+    if self.name ~= self.bindingName then
+        string = string .. " (from " .. self.name .. ")"
+    end
+    string = string .. " from file " .. self.fileName .. "\n" .. indent ..
         "    " .. "inherits "
-    for key, value in pairs (self.publicBases) do
-        string = string .. value .. " "
+
+    for key, value in pairs (self.bindingPublicBases) do
+        local base = DataUtils.GetNamedValueOfTable (data.classes, value)
+        if base ~= nil then
+            if base.bindingName == value then
+                string = string .. value .. ", "
+            else
+                string = string .. base.bindingName .. " (from " .. value .. ") "
+            end
+        else
+            string = string .. value .. " (external) "
+        end
     end
 
     string = string .. "\n" .. indent .. "{\n" .. indent .. "constructors:\n"
@@ -49,6 +66,21 @@ Class.ToString = function (self, indent)
 end
 
 Class.ApplyArguments = function (self)
+    self.bindingName = self.name
+    for index, value in ipairs (self.publicBases) do
+        self.bindingPublicBases [value] = value
+    end
+
+    for key, value in pairs (self.arguments) do
+        key = key:gsub ("?", "")
+        if key == "OverrideName" then
+            self.bindingName = value
+
+        elseif key:find ("ExcludeBase_") == 1 then
+            local toExclude = key:sub (("ExcludeBase_"):len () + 1, key:len ())
+            self.bindingPublicBases [toExclude] = nil
+        end
+    end
 end
 
 Class.SkipUntilClassKeyword = function (self, tokensList)
@@ -74,6 +106,12 @@ Class.ReadName = function (self, tokensList)
         return false
     else
         self.name = token.value;
+        -- Set binding name there, because it affects names of constructors and static functions.
+        if self.arguments ["OverrideName"] ~= nil then
+            self.bindingName = self.arguments ["OverrideName"]
+        else
+            self.bindingName = self.name
+        end
         return true
     end
 end
@@ -139,6 +177,7 @@ Class.ReadContent = function (self, tokensList)
 
             elseif currentChildReader.isConstructor then
                 currentChildReader.ownerClassName = self.name
+                currentChildReader.name = self.bindingName
                 currentChildReader:ApplyArguments ()
                 table.insert (self.constructors, currentChildReader)
                 currentChildReader = nil
@@ -146,7 +185,7 @@ Class.ReadContent = function (self, tokensList)
             else
                 currentChildReader.ownerClassName = self.name
                 if currentChildReader.isStatic then
-                    currentChildReader.name = self.name .. currentChildReader.name
+                    currentChildReader.name = self.bindingName .. currentChildReader.name
                     currentChildReader:ApplyArguments ()
                     table.insert (data [currentChildReader:GetDataDestination ()], currentChildReader)
                 else
