@@ -27,10 +27,10 @@ Core.LoadConfiguration = function (scriptPath)
 end
 
 Core.ParseInputFiles = function ()
-    print ("Parsing files...")
+    print ("### Parsing files...")
     local filesCount = #configuration.files
     for index, fileName in ipairs (configuration.files) do
-        print ("[" .. (index * 100.0 / filesCount) .. "%] " .. fileName)
+        print ("    [" .. (index * 100.0 / filesCount) .. "%] " .. fileName)
         if not ReadFile (fileName) then
             print ("Error while reading and parsing file!")
             return false
@@ -41,12 +41,13 @@ Core.ParseInputFiles = function ()
 end
 
 Core.PrintParsedBindables = function ()
+    print ()
     local toPrint = {}
-    table.insert (toPrint, {name = "Enums:", key = "enums"})
-    table.insert (toPrint, {name = "Constants:", key = "constants"})
-    table.insert (toPrint, {name = "Free Functions:", key = "freeFunctions"})
-    table.insert (toPrint, {name = "Classes:", key = "classes"})
-    table.insert (toPrint, {name = "Subsystems:", key = "subsystems"})
+    table.insert (toPrint, {name = "### Enums:", key = "enums"})
+    table.insert (toPrint, {name = "### Constants:", key = "constants"})
+    table.insert (toPrint, {name = "### Free Functions:", key = "freeFunctions"})
+    table.insert (toPrint, {name = "### Classes:", key = "classes"})
+    table.insert (toPrint, {name = "### Subsystems:", key = "subsystems"})
     for key, value in pairs (toPrint) do
         print (value.name)
         for index, value in pairs (data [value.key]) do
@@ -58,7 +59,7 @@ Core.PrintParsedBindables = function ()
 end
 
 Core.CreateAndPrintFilesToWriteList = function ()
-    print ("Files will be generated:\n    " ..
+    print ("### Files will be generated:\n    " ..
         ConfigurationUtils.LocalFileNameToBindingsFilePath (configuration.bindingsFileName .. ".cpp") .. "\n    " ..
         ConfigurationUtils.LocalFileNameToBindingsFilePath (configuration.bindingsFileName .. ".hpp"))
 
