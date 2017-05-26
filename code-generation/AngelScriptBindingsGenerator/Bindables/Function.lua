@@ -18,6 +18,10 @@ Function.Construct = function (self, fileName, bindingAguments, isConstructor)
     self.name = ""
     self.callArguments = {}
 
+    self.bindingName = ""
+    self.bindingReturnType = ""
+    self.bindingCallArguments = {}
+
     self.isConst = false
     self.isStatic = false
     if isConstructor ~= nil then
@@ -32,15 +36,38 @@ end
 Function.Parse = function (self, tokensList)
     tokensList.skipEndOfLineTokens = true
     return ((self.isConstructor or self:ReadReturnType (tokensList)) and
-        self:ReadName (tokensList) and self:ReadCallArguments (tokensList) and self:ReadIsConst (tokensList))
+        self:ReadName (tokensList) and self:ReadCallArguments (tokensList) and
+        self:ReadIsConst (tokensList))
 end
 
 Function.ToString = function (self, indent)
-    local string = indent .. self.returnType .. " " .. self.name .. " from file " .. self.fileName .. "\n" .. indent .. "(\n"
-    for key, value in pairs (self.callArguments) do
-        string = string .. indent .. "    " .. value.type .. " " .. value.name
-        if value.default ~= nil then
-            string = string .. " = " .. value.default
+    local string = indent .. self.bindingReturnType .. " " .. self.bindingName
+    if self.bindingName ~= self.name or self.bindingReturnType ~= self.returnType then
+        string = string .. " (from " .. self.returnType .. " " .. self.name .. ")"
+    end
+    string = string .. " from file " .. self.fileName .. "\n" .. indent .. "(\n"
+
+    for key, value in pairs (self.bindingCallArguments) do
+        string = string .. indent .. "    "
+        if value.type == "UseUrho3DScriptContext" then
+            string = string .. "[Urho3D script context will be passed as argument]"
+        else
+            string = string .. value.type .. " " .. value.name
+            if value.default ~= nil then
+                string = string .. " = " .. value.default
+            end
+
+            local sourceCallArgument = self.callArguments [key]
+            if sourceCallArgument.type ~= value.type or
+                sourceCallArgument.name ~= value.name or
+                sourceCallArgument.default ~= value.default then
+
+                string = string .. " (from " .. sourceCallArgument.type .. " " .. sourceCallArgument.name
+                if sourceCallArgument.default ~= nil then
+                    string = string .. " = " .. sourceCallArgument.default
+                end
+                string = string .. ")"
+            end
         end
         string = string .. "\n"
     end
@@ -51,6 +78,68 @@ Function.ToString = function (self, indent)
     end
     string = string .. "\n"
     return string
+end
+
+Function.ApplyArguments = function (self)
+    self.bindingName = self.name
+    self.bindingReturnType = self.returnType
+    for key, value in pairs (self.callArguments) do
+        self.bindingCallArguments [key] = {}
+        for innerKey, innerValue in pairs (value) do
+            self.bindingCallArguments [key] [innerKey] = innerValue
+        end
+    end
+
+    for key, value in pairs (self.arguments) do
+        key = key:gsub ("?", "")
+        if key == "OverrideName" then
+            self.bindingName = value
+
+        elseif key:find ("OverrideType_") == 1 then
+            local argumentIndex = tonumber (key:sub (("OverrideType_arg"):len () + 1, key:len ()))
+            if argumentIndex == -1 then
+                self.bindingReturnType = value
+            else
+                self.bindingCallArguments [argumentIndex + 1].type = value
+            end
+
+        elseif key:find ("OverrideName_") == 1 then
+            local argumentIndex = tonumber (key:sub (("OverrideName_arg"):len () + 1, key:len ()))
+            self.bindingCallArguments [argumentIndex + 1].name = value
+
+        elseif key:find ("Replace") == 1 then
+            local pattern = nil
+            local replace = ""
+            local valueCopy = value:gsub ("|", " ")
+            for part in valueCopy:gmatch ("%S+") do
+                if pattern == nil then
+                    pattern = part
+                elseif replace == "" then
+                    replace = part
+                else
+                    replace = replace .. "|"
+                end
+            end
+
+            if key:find ("ReplaceInType_") == 1 then
+                local argumentIndex = tonumber (key:sub (("ReplaceInType_arg"):len () + 1, key:len ()))
+                if argumentIndex == -1 then
+                    self.bindingReturnType = self.bindingReturnType:gsub (pattern, replace)
+                else
+                    self.bindingCallArguments [argumentIndex + 1].type =
+                    self.bindingCallArguments [argumentIndex + 1].type:gsub (pattern, replace)
+                end
+            elseif key:find ("ReplaceInName_") == 1 then
+                local argumentIndex = tonumber (key:sub (("ReplaceInName_arg"):len () + 1, key:len ()))
+                self.bindingCallArguments [argumentIndex + 1].name =
+                self.bindingCallArguments [argumentIndex + 1].name:gsub (pattern, replace)
+            end
+
+        elseif key:find ("UseUrho3DScriptContext_") == 1 then
+            local argumentIndex = tonumber (key:sub (("UseUrho3DScriptContext_arg"):len () + 1, key:len ()))
+            self.bindingCallArguments [argumentIndex + 1].type = "UseUrho3DScriptContext"
+        end
+    end
 end
 
 Function.ReadReturnType = function (self, tokensList)
