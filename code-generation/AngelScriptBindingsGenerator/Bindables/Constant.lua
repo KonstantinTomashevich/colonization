@@ -23,7 +23,7 @@ end
 -- Return true if no errors.
 Constant.Parse = function (self, tokensList)
     tokensList.skipEndOfLineTokens = true
-    return (self:ReadType (tokensList) and self:ReadName (tokensList) and self:ApplyArguments ());
+    return (self:ReadType (tokensList) and self:ReadName (tokensList));
 end
 
 Constant.ToString = function (self, indent)
@@ -47,7 +47,6 @@ Constant.ApplyArguments = function (self)
     else
         self.bindingName = self.name
     end
-    return true
 end
 
 Constant.ReadType = function (self, tokensList)

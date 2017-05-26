@@ -19,6 +19,7 @@ function ReadFile (fileName)
                 currentlyProcessing = nil
                 return false
             else
+                currentlyProcessing:ApplyArguments ()
                 table.insert (data [currentlyProcessing:GetDataDestination ()], currentlyProcessing)
                 currentlyProcessing = nil
             end
@@ -41,6 +42,10 @@ function ReadFile (fileName)
                         else
                             argValue = argValue .. "=" .. argPart
                         end
+                    end
+
+                    while arguments [argName] ~= nil do
+                        argName = argName .. "?"
                     end
                     arguments [argName] = argValue
                 end

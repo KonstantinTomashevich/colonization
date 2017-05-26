@@ -48,6 +48,9 @@ Class.ToString = function (self, indent)
     return string
 end
 
+Class.ApplyArguments = function (self)
+end
+
 Class.SkipUntilClassKeyword = function (self, tokensList)
     local token = tokensList:CurrentOrNextToken ()
     if token == nil then
@@ -136,6 +139,7 @@ Class.ReadContent = function (self, tokensList)
 
             elseif currentChildReader.isConstructor then
                 currentChildReader.ownerClassName = self.name
+                currentChildReader:ApplyArguments ()
                 table.insert (self.constructors, currentChildReader)
                 currentChildReader = nil
 
@@ -143,8 +147,10 @@ Class.ReadContent = function (self, tokensList)
                 currentChildReader.ownerClassName = self.name
                 if currentChildReader.isStatic then
                     currentChildReader.name = self.name .. currentChildReader.name
+                    currentChildReader:ApplyArguments ()
                     table.insert (data [currentChildReader:GetDataDestination ()], currentChildReader)
                 else
+                    currentChildReader:ApplyArguments ()
                     table.insert (self.methods, currentChildReader)
                 end
                 currentChildReader = nil
@@ -158,7 +164,23 @@ Class.ReadContent = function (self, tokensList)
                 if command == nil and part ~= "" then
                     command = part
                 elseif part ~= "" then
-                    table.insert (arguments, part)
+                    local argName = nil
+                    local argValue = ""
+                    part = part:gsub ("=", " ")
+                    for argPart in part:gmatch ("%S+") do
+                        if argName == nil then
+                            argName = argPart
+                        elseif argValue == "" then
+                            argValue = argPart
+                        else
+                            argValue = argValue .. "=" .. argPart
+                        end
+                    end
+
+                    while arguments [argName] ~= nil do
+                        argName = argName .. "?"
+                    end
+                    arguments [argName] = argValue
                 end
             end
 

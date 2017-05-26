@@ -24,7 +24,7 @@ end
 Enum.Parse = function (self, tokensList)
     tokensList.skipEndOfLineTokens = true
     return (self:SkipUntilEnumKeyword (tokensList) and self:ReadName (tokensList) and
-        self:ReadValues (tokensList) and self:ApplyArguments ())
+        self:ReadValues (tokensList))
 end
 
 Enum.ToString = function (self, indent)
@@ -56,6 +56,7 @@ Enum.ApplyArguments = function (self)
     end
 
     for key, value in pairs (self.arguments) do
+        key = key:gsub ("?", "")
         if key == "OverrideName" then
             self.bindingName = value
 
@@ -68,7 +69,6 @@ Enum.ApplyArguments = function (self)
             self.bindingValues [toRename] = value
         end
     end
-    return true
 end
 
 Enum.SkipUntilEnumKeyword = function (self, tokensList)
