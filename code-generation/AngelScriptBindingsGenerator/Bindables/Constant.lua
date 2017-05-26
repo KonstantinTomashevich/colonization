@@ -15,18 +15,39 @@ Constant.Construct = function (self, fileName, bindingAguments)
     self.fileName = fileName
     self.type = ""
     self.name = ""
+    self.bindingType = ""
+    self.bindingName = ""
     self.arguments = bindingAguments
 end
 
 -- Return true if no errors.
 Constant.Parse = function (self, tokensList)
     tokensList.skipEndOfLineTokens = true
-    return (self:ReadType (tokensList) and self:ReadName (tokensList));
+    return (self:ReadType (tokensList) and self:ReadName (tokensList) and self:ApplyArguments ());
 end
 
 Constant.ToString = function (self, indent)
-    local string = indent .. self.type .. " " .. self.name .. " from file " .. self.fileName .. "\n"
+    local string = indent .. self.bindingType .. " " .. self.bindingName
+    if self.bindingType ~= self.type or self.bindingName ~= self.name then
+        string = string .. " (from " .. self.type .. " " .. self.name .. ")"
+    end
+    string = string .. " from file " .. self.fileName .. "\n"
     return string
+end
+
+Constant.ApplyArguments = function (self)
+    if self.arguments ["OverrideType"] ~= nil then
+        self.bindingType = self.arguments ["OverrideType"]
+    else
+        self.bindingType = self.type
+    end
+
+    if self.arguments ["OverrideName"] ~= nil then
+        self.bindingName = self.arguments ["OverrideName"]
+    else
+        self.bindingName = self.name
+    end
+    return true
 end
 
 Constant.ReadType = function (self, tokensList)
