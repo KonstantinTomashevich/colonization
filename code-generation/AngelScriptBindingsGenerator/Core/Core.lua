@@ -1,10 +1,10 @@
 Core = {}
 Core.LoadCoreScripts = function ()
-    ConfigurationUtils = require (scriptDirectory .. "ConfigurationUtils")
-    ReadFile = require (scriptDirectory .. "ReadFile")
+    ConfigurationUtils = require (scriptDirectory .. "Core/ConfigurationUtils")
+    ReadFile = require (scriptDirectory .. "Core/ReadFile")
 
-    Class = require (scriptDirectory .. "CreateNewClass")
-    data, GetBindingTypesOfFile = require (scriptDirectory .. "Data")
+    Class = require (scriptDirectory .. "Core/CreateNewClass")
+    data, GetBindingTypesOfFile = require (scriptDirectory .. "Core/Data")
     return true
 end
 

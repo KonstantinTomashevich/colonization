@@ -1,5 +1,5 @@
 if CreateNewClass == nil then
-    CreateNewClass = require (scriptDirectory .. "CreateNewClass")
+    CreateNewClass = require (scriptDirectory .. "Core/CreateNewClass")
 end
 
 if Tokens == nil then
