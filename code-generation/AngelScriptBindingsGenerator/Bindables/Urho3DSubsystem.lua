@@ -14,6 +14,7 @@ Urho3DSubsystem = CreateNewClass ()
 Urho3DSubsystem.Construct = function (self, fileName, bindingAguments)
     self.fileName = fileName
     self.name = ""
+    self.bindingName = ""
     self.arguments = bindingAguments
 end
 
@@ -34,8 +35,20 @@ Urho3DSubsystem.Parse = function (self, tokensList)
 end
 
 Urho3DSubsystem.ToString = function (self, indent)
-    local string = indent .. self.name .. " from file " .. self.fileName .. "\n"
+    local string = indent .. self.bindingName
+    if self.bindingName ~= self.name then
+        string = string .. " (from " .. self.name .. ")"
+    end
+    string = string .. " from file " .. self.fileName .. "\n"
     return string
+end
+
+Urho3DSubsystem.ApplyArguments = function (self)
+    if self.arguments ["OverrideName"] ~= nil then
+        self.bindingName = self.arguments ["OverrideName"]
+    else
+        self.bindingName = self.name
+    end
 end
 
 Urho3DSubsystem.GetDataDestination = function ()
