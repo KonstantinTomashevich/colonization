@@ -1,10 +1,11 @@
 Core = {}
 Core.LoadCoreScripts = function ()
     ConfigurationUtils = require (scriptDirectory .. "Core/ConfigurationUtils")
+    DataUtils = require (scriptDirectory .. "Core/DataUtils")
     ReadFile = require (scriptDirectory .. "Core/ReadFile")
 
     Class = require (scriptDirectory .. "Core/CreateNewClass")
-    data, GetBindingTypesOfFile = require (scriptDirectory .. "Core/Data")
+    data = require (scriptDirectory .. "Core/Data")
     return true
 end
 
@@ -65,7 +66,7 @@ Core.CreateAndPrintFilesToWriteList = function ()
 
     data.filesToWriteList = {}
     for index, fileName in ipairs (configuration.files) do
-        local fileBindables = GetBindablesOfFile (fileName)
+        local fileBindables = DataUtils.GetBindablesOfFile (fileName)
         if #fileBindables > 0 then
             data.filesToWriteList [fileName] = fileBindables
             print ("    " .. ConfigurationUtils.LocalFileNameToBindingsFilePath (fileName))
