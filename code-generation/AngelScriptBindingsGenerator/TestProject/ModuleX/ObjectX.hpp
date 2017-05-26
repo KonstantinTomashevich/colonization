@@ -15,7 +15,7 @@ enum MyEnumType
     ME_VALUES_COUNT
 };
 
-//@ASBindGen Class ObjectType=Ref AddUrho3DDefaultConstructor
+//@ASBindGen Class ObjectType=Ref
 class ObjectX :
     public Object1
 {
@@ -24,14 +24,15 @@ protected:
     Urho3D::Vector <Urho3D::String> stringArray_;
 
 public:
+    //@ASBindGen Constructor UseUrho3DScriptContext_arg0
     ObjectX (Urho3D::Context *context);
-    //@ASBindGen Constructor UseUrho3DDefaultConstructorTemplate
+    //@ASBindGen Constructor UseUrho3DScriptContext_arg0
     ObjectX (Urho3D::Context *context, MyEnumType myEnumType);
     virtual ~ObjectX ();
 
     //@ASBindGen Function OverrideName=get_array
     Urho3D::Vector <Urho3D::String> GetArray () const;
-    //@ASBindGen Function OverrideName=set_array arg_array_TypeReplace=&| arg_array_TypeReplace=const|
+    //@ASBindGen Function OverrideName=set_array ReplaceInType_arg0=&| ReplaceInType_arg0=const|
     void SetArray (const Urho3D::Vector <Urho3D::String> &array);
 };
 }

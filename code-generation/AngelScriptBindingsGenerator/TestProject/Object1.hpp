@@ -16,7 +16,7 @@ public:
     void DoAnything ();
 };
 
-//@ASBindGen Class ObjectType=Ref AddUrho3DDefaultConstructor
+//@ASBindGen Class ObjectType=Ref
 class Object1 :
     public Urho3D::Object,
     private DontBindMe
@@ -27,22 +27,23 @@ protected:
     float number_;
 
 public:
+    //@ASBindGen Constructor UseUrho3DScriptContext_arg0
     Object1 (Urho3D::Context *context);
     virtual ~Object1 ();
 
-    //@ASBindGen Function return_TypeReplace=&| return_TypeReplace=const|
+    //@ASBindGen Function ReplaceInType_arg-1=&| ReplaceInType_arg-1=const|
     static const Urho3D::String &StaticFunction ();
     //@ASBindGen Function
     void DoSomething (float first = 3.14f, unsigned int second = 10);
 
     //@ASBindGen Function OverrideName=get_string
     Urho3D::String GetString () const;
-    //@ASBindGen Function OverrideName=set_string arg_string_TypeReplace=&| arg_string_TypeReplace=const|
+    //@ASBindGen Function OverrideName=set_string ReplaceInType_arg0=&| ReplaceInType_arg0=const|
     void SetString (const Urho3D::String &string);
 
     //@ASBindGen Function OverrideName=get_number
     float GetNumber () const;
-    //@ASBindGen Function OverrideName=get_number
+    //@ASBindGen Function OverrideName=set_number
     void SetNumber (float number);
 };
 }
