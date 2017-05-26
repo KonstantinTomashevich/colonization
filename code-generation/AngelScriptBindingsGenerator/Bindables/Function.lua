@@ -41,7 +41,12 @@ Function.Parse = function (self, tokensList)
 end
 
 Function.ToString = function (self, indent)
-    local string = indent .. self.bindingReturnType .. " " .. self.bindingName
+    local string = indent
+    if not self.isConstructor then
+        string = string .. self.bindingReturnType .. " "
+    end
+    string = string .. self.bindingName
+
     if self.bindingName ~= self.name or self.bindingReturnType ~= self.returnType then
         string = string .. " (from " .. self.returnType .. " " .. self.name .. ")"
     end
