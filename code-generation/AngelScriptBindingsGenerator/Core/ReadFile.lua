@@ -30,7 +30,19 @@ function ReadFile (fileName)
                 if command == nil and part ~= "" then
                     command = part
                 elseif part ~= "" then
-                    table.insert (arguments, part)
+                    local argName = nil
+                    local argValue = ""
+                    part = part:gsub ("=", " ")
+                    for argPart in part:gmatch ("%S+") do
+                        if argName == nil then
+                            argName = argPart
+                        elseif argValue == "" then
+                            argValue = argPart
+                        else
+                            argValue = argValue .. "=" .. argPart
+                        end
+                    end
+                    arguments [argName] = argValue
                 end
             end
 
