@@ -6,6 +6,7 @@ if Core.LoadCoreScripts () and
     Core.ParseInputFiles () and
     Core.PrintParsedBindables () and
     Core.CreateAndPrintFilesToWriteList () then
+
     return 0
 else
     return 1
