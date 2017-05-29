@@ -76,8 +76,7 @@ Core.CreateAndPrintFilesToWriteList = function ()
     for index, fileName in ipairs (configuration.files) do
         local fileBindables = DataUtils.GetBindablesOfFile (fileName)
         if #fileBindables > 0 then
-            table.insert (data.filesToWriteList,
-                {name = ConfigurationUtils.LocalFileNameToBindingsFilePath (fileName), bindables = fileBindables})
+            table.insert (data.filesToWriteList, {name = fileName, bindables = fileBindables})
             print ("    " .. ConfigurationUtils.LocalFileNameToBindingsFilePath (fileName))
         end
     end
