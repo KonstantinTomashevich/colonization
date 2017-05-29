@@ -5,7 +5,8 @@ if Core.LoadCoreScripts () and
     Core.LoadConfiguration (arg [1]:gsub (".lua", "")) and
     Core.ParseInputFiles () and
     Core.PrintParsedBindables () and
-    Core.CreateAndPrintFilesToWriteList () then
+    Core.CreateAndPrintFilesToWriteList () and
+    Core.WriteBindings () then
 
     return 0
 else

@@ -10,6 +10,6 @@ configuration.files = {
     "ModuleX/ObjectX.hpp"
 }
 
-configuration.outputHppFileTemplate = "Templates/BindingsTepmplate.hpp"
-configuration.outputCppFileTemplate = "Templates/BindingsTepmplate.cpp"
+configuration.outputHppFileTemplate = "./Templates/BindingsTemplate.hpp"
+configuration.outputCppFileTemplate = "./Templates/BindingsTemplate.cpp"
 return configuration

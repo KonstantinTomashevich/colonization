@@ -1,0 +1,6 @@
+namespace TestProject
+{
+namespace Bindings
+{
+}
+}

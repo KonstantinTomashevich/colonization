@@ -7,21 +7,24 @@ TemplatesUtils.ProcessTemplateString = function (string, vars)
     return resultString
 end
 
-TemplatesUtils.ProcessTemplateFile = function (inputFile, outputFile, commands)
-    for line in inputFile:lines () do
+TemplatesUtils.ProcessTemplateFile = function (inputFileName, outputFile, commands)
+    for line in io.lines (inputFileName) do
         local isCommand = false
         for command, processor in pairs (commands) do
             if not isCommand then
                 if line:find (configuration.bindingsGeneratorCommand .. " " .. command) ~= nil then
-                    processor:Write (outputFile)
+                    if not processor:Write (outputFile) then
+                        return false
+                    end
                     isCommand = true
                 end
             end
         end
 
         if not isCommand then
-            outputFile:write (line)
+            outputFile:write (line .. "\n")
         end
     end
+    return true
 end
 return TemplatesUtils

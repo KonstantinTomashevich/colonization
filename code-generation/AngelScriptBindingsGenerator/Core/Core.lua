@@ -2,12 +2,17 @@ Core = {}
 Core.LoadCoreScripts = function ()
     ConfigurationUtils = require (scriptDirectory .. "Core/ConfigurationUtils")
     DataUtils = require (scriptDirectory .. "Core/DataUtils")
-    ReadFile = require (scriptDirectory .. "Core/ReadFile")
     TemplatesUtils = require (scriptDirectory .. "Templates/TemplatesUtils")
     TypeUtils = require (scriptDirectory .. "Core/TypeUtils")
-    Templates = require (scriptDirectory .. "Templates/Templates")
+    FileUtils = require (scriptDirectory .. "Core/FileUtils")
 
+    Templates = require (scriptDirectory .. "Templates/Templates")
     Class = require (scriptDirectory .. "Core/CreateNewClass")
+    ReadFile = require (scriptDirectory .. "Core/ReadFile")
+    WriteFile = require (scriptDirectory .. "Writer/WriteFile")
+    WriteMainCPP = require (scriptDirectory .. "Writer/WriteMainCPP")
+    WriteMainHPP = require (scriptDirectory .. "Writer/WriteMainHPP")
+
     data = require (scriptDirectory .. "Core/Data")
     return true
 end
@@ -71,11 +76,37 @@ Core.CreateAndPrintFilesToWriteList = function ()
     for index, fileName in ipairs (configuration.files) do
         local fileBindables = DataUtils.GetBindablesOfFile (fileName)
         if #fileBindables > 0 then
-            data.filesToWriteList [fileName] = fileBindables
+            table.insert (data.filesToWriteList,
+                {name = ConfigurationUtils.LocalFileNameToBindingsFilePath (fileName), bindables = fileBindables})
             print ("    " .. ConfigurationUtils.LocalFileNameToBindingsFilePath (fileName))
         end
     end
     print ("")
+    return true
+end
+
+Core.WriteBindings = function ()
+    print ("### Writing bindings...")
+    local filesCount = #data.filesToWriteList + 2
+
+    print ("    [" .. (1 * 100.0 / filesCount) .. "%] " ..
+        ConfigurationUtils.LocalFileNameToBindingsFilePath (configuration.bindingsFileName .. ".cpp"))
+    if not WriteMainCPP () then
+        return false
+    end
+
+    print ("    [" .. (2 * 100.0 / filesCount) .. "%] " ..
+        ConfigurationUtils.LocalFileNameToBindingsFilePath (configuration.bindingsFileName .. ".hpp"))
+    if not WriteMainHPP () then
+        return false
+    end
+
+    for index, fileData in ipairs (data.filesToWriteList) do
+        print ("    [" .. ((index + 2) * 100.0 / filesCount) .. "%] " .. fileData.name)
+        if not WriteFile (fileData) then
+            return false
+        end
+    end
     return true
 end
 return Core
