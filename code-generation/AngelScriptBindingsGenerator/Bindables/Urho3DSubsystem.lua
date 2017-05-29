@@ -10,8 +10,6 @@ end
 -- Return true if no errors.
 Urho3DSubsystem.Parse = function (self, tokensList)
     local commandToken = tokensList:PreviousToken ()
-    tokensList:NextToken ()
-
     self.type = self.arguments ["Type"]
     self.bindingName = self.arguments ["BindingName"]
 
