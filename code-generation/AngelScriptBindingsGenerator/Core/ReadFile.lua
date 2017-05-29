@@ -20,7 +20,10 @@ function ReadFile (fileName)
                 return false
             else
                 currentlyProcessing:ApplyArguments ()
-                table.insert (data [currentlyProcessing:GetDataDestination ()], currentlyProcessing)
+                -- For correct methods parsing, classes do self-insertion before methods parsing.
+                if currentlyProcessing:GetTypeName () ~= "Class" then
+                    table.insert (data [currentlyProcessing:GetDataDestination ()], currentlyProcessing)
+                end
                 currentlyProcessing = nil
             end
         elseif token.type == Tokens.Command then

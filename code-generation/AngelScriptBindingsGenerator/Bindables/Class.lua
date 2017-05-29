@@ -16,7 +16,7 @@ end
 Class.Parse = function (self, tokensList)
     tokensList.skipEndOfLineTokens = true
     return (self:SkipUntilClassKeyword (tokensList) and self:ReadName (tokensList) and
-        self:ReadBases (tokensList) and self:ReadContent (tokensList))
+        self:ReadBases (tokensList) and self:PreInsertSelfToData () and self:ReadContent (tokensList))
 end
 
 Class.ToString = function (self, indent)
@@ -149,6 +149,11 @@ Class.ReadBases = function (self, tokensList)
         print ("Line " .. token.line .. ": Expected \":\" or \"{\", but got \"" .. TokenToString (token) .. "\"!")
         return false
     end
+end
+
+Class.PreInsertSelfToData = function (self)
+    table.insert (data [self:GetDataDestination ()], self)
+    return true
 end
 
 Class.ReadContent = function (self, tokensList)
