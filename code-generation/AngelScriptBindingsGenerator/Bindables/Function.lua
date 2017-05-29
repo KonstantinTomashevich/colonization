@@ -1,15 +1,5 @@
-if CreateNewClass == nil then
-    CreateNewClass = require (scriptDirectory .. "Core/CreateNewClass")
-end
-
-if Tokens == nil then
-    Tokens = require (scriptDirectory .. "Tokenization/Tokens")
-end
-
-if TokenToString == nil then
-    TokenToString, TokenTypeToString = require (scriptDirectory .. "Tokenization/TokenToString")
-end
-
+-- TODO: Implement automatic call arguments and return bindings classes parsing.
+-- TODO: Implement AddRef argument!
 Function = CreateNewClass ()
 Function.Construct = function (self, fileName, bindingAguments, isConstructor)
     self.fileName = fileName

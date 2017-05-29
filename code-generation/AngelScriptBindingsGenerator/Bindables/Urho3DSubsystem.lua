@@ -1,15 +1,3 @@
-if CreateNewClass == nil then
-    CreateNewClass = require (scriptDirectory .. "Core/CreateNewClass")
-end
-
-if Tokens == nil then
-    Tokens = require (scriptDirectory .. "Tokenization/Tokens")
-end
-
-if TokenToString == nil then
-    TokenToString, TokenTypeToString = require (scriptDirectory .. "Tokenization/TokenToString")
-end
-
 Urho3DSubsystem = CreateNewClass ()
 Urho3DSubsystem.Construct = function (self, fileName, bindingAguments)
     self.fileName = fileName
@@ -43,6 +31,7 @@ Urho3DSubsystem.ToString = function (self, indent)
     return string
 end
 
+-- TODO: What about bindings type name? Because subsystem can be registered with name "network" (get_network ()), but with type "Network".
 Urho3DSubsystem.ApplyArguments = function (self)
     if self.arguments ["OverrideName"] ~= nil then
         self.bindingName = self.arguments ["OverrideName"]

@@ -1,15 +1,3 @@
-if CreateNewClass == nil then
-    CreateNewClass = require (scriptDirectory .. "Core/CreateNewClass")
-end
-
-if Tokens == nil then
-    Tokens = require (scriptDirectory .. "Tokenization/Tokens")
-end
-
-if TokenToString == nil then
-    TokenToString, TokenTypeToString = require (scriptDirectory .. "Tokenization/TokenToString")
-end
-
 Constant = CreateNewClass ()
 Constant.Construct = function (self, fileName, bindingAguments)
     self.fileName = fileName
