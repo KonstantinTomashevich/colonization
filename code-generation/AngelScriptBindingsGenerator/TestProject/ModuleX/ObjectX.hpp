@@ -3,9 +3,7 @@
 
 namespace TestProject
 {
-//@ASBindGen Urho3DSubsystem OverrideName=subsystemX
-//@ASBindGen SubsystemX
-
+//@ASBindGen Urho3DSubsystem BindingName=subsystemX Type=MyNameSpace::SubsystemX BindingType=SubsystemX
 //@ASBindGen Enum
 enum MyEnumType
 {

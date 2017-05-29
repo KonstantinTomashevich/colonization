@@ -1,43 +1,53 @@
 Urho3DSubsystem = CreateNewClass ()
 Urho3DSubsystem.Construct = function (self, fileName, bindingAguments)
     self.fileName = fileName
-    self.name = ""
+    self.type = ""
+    self.bindingType = ""
     self.bindingName = ""
     self.arguments = bindingAguments
 end
 
 -- Return true if no errors.
 Urho3DSubsystem.Parse = function (self, tokensList)
-    tokensList.skipEndOfLineTokens = true
-    local token = tokensList:CurrentOrNextToken ()
-    if token == nil then
-        print ("Fatal error, token is nil!")
+    local commandToken = tokensList:PreviousToken ()
+    tokensList:NextToken ()
+
+    self.type = self.arguments ["Type"]
+    self.bindingName = self.arguments ["BindingName"]
+
+    if self.arguments ["BindingType"] ~= nil then
+        self.bindingType = self.arguments ["BindingType"]
+    else
+        self.bindingType = self.type
+    end
+
+    if self.type == nil then
+        print ("Line " .. token.line .. ": Can't read subsystem type!")
         return false
-    elseif token.type ~= Tokens.Command then
-        print ("Line " .. token.line .. ": Expected subsystem name as binder command, but got " .. TokenToString (token) .. "!")
+
+    elseif self.bindingName == nil then
+        print ("Line " .. token.line .. ": Can't read subsystem binding name!")
+        return false
+
+    elseif self.bindingType == nil then
+        print ("Line " .. token.line .. ": Can't read subsystem binding type!")
         return false
     else
-        self.name = token.value
         return true
     end
 end
 
 Urho3DSubsystem.ToString = function (self, indent)
-    local string = indent .. self.bindingName
-    if self.bindingName ~= self.name then
-        string = string .. " (from " .. self.name .. ")"
+    local string = indent .. self.bindingName .. " of type " .. self.bindingType
+    if self.bindingType ~= self.type then
+        string = string .. " (from " .. self.type .. ")"
     end
     string = string .. " from file " .. self.fileName .. "\n"
     return string
 end
 
--- TODO: What about bindings type name? Because subsystem can be registered with name "network" (get_network ()), but with type "Network".
 Urho3DSubsystem.ApplyArguments = function (self)
-    if self.arguments ["OverrideName"] ~= nil then
-        self.bindingName = self.arguments ["OverrideName"]
-    else
-        self.bindingName = self.name
-    end
+
 end
 
 Urho3DSubsystem.GetDataDestination = function ()
