@@ -1,10 +1,19 @@
+local mainHppBody =
+[[void RegisterAnything (asIScriptEngine *engine);
+void RegisterEnums (asIScriptEngine *engine);
+void RegisterClassesForwardDeclarations (asIScriptEngine *engine);
+void RegisterConstants (asIScriptEngine *engine);
+void RegisterFreeFunctions (asIScriptEngine *engine);
+void RegisterUrho3DSubsystems (asIScriptEngine *engine);
+void RegisterClass (asIScriptEngine *engine);
+]]
+
 local IncludesWriter = Class ()
 IncludesWriter.Construct = function (self)
 
 end
 
 IncludesWriter.Write = function (self, outputFile)
-    print ("Writing main hpp includes.")
     return true
 end
 
@@ -14,12 +23,12 @@ BodyWriter.Construct = function (self)
 end
 
 BodyWriter.Write = function (self, outputFile)
-    print ("Writing main hpp body.")
+    outputFile:write (mainHppBody)
     return true
 end
 
 function WriteMainHPP ()
-    local inputFileName = configuration.outputCppFileTemplate
+    local inputFileName = configuration.outputHppFileTemplate
     local fileName = ConfigurationUtils.LocalFileNameToBindingsFilePath (configuration.bindingsFileName .. ".hpp")
     local outputFile = FileUtils.OpenFile (fileName)
 

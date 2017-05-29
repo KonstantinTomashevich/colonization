@@ -10,8 +10,8 @@ Core.LoadCoreScripts = function ()
     Class = require (scriptDirectory .. "Core/CreateNewClass")
     ReadFile = require (scriptDirectory .. "Core/ReadFile")
     WriteFile = require (scriptDirectory .. "Writer/WriteFile")
-    WriteMainCPP = require (scriptDirectory .. "Writer/WriteMainCPP")
-    WriteMainHPP = require (scriptDirectory .. "Writer/WriteMainHPP")
+    WriteMainCpp = require (scriptDirectory .. "Writer/WriteMainCpp")
+    WriteMainHpp = require (scriptDirectory .. "Writer/WriteMainHpp")
 
     data = require (scriptDirectory .. "Core/Data")
     return true
@@ -91,13 +91,13 @@ Core.WriteBindings = function ()
 
     print ("    [" .. (1 * 100.0 / filesCount) .. "%] " ..
         ConfigurationUtils.LocalFileNameToBindingsFilePath (configuration.bindingsFileName .. ".cpp"))
-    if not WriteMainCPP () then
+    if not WriteMainCpp () then
         return false
     end
 
     print ("    [" .. (2 * 100.0 / filesCount) .. "%] " ..
         ConfigurationUtils.LocalFileNameToBindingsFilePath (configuration.bindingsFileName .. ".hpp"))
-    if not WriteMainHPP () then
+    if not WriteMainHpp () then
         return false
     end
 
