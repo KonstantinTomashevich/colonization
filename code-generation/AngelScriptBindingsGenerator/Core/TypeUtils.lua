@@ -3,6 +3,15 @@ TypeUtils.BasicCXXToASType = function (type)
     return type:gsub ("*", "@"):gsub ("unsigned ", "u"):gsub ("long", "int64")
 end
 
+TypeUtils.CheckParsedClassesNames = function (type)
+    for index, parsedClass in ipairs (data.classes) do
+        if parsedClass.name ~= parsedClass.bindingName then
+            type = type:gsub (parsedClass.name, parsedClass.bindingName)
+        end
+    end
+    return type
+end
+
 TypeUtils.RemoveNamespaces = function (type)
     local newType = type
     local index = newType:find ("::")
@@ -28,6 +37,6 @@ TypeUtils.RemoveNamespaces = function (type)
 end
 
 TypeUtils.ConvertCXXToASType = function (type)
-    return TypeUtils.RemoveNamespaces (TypeUtils.BasicCXXToASType (type))
+    return TypeUtils.RemoveNamespaces (TypeUtils.CheckParsedClassesNames (TypeUtils.BasicCXXToASType (type)))
 end
 return TypeUtils
