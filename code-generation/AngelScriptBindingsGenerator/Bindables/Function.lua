@@ -1,4 +1,3 @@
--- TODO: Implement automatic call arguments and return bindings classes parsing.
 -- TODO: Implement AddRef argument!
 Function = CreateNewClass ()
 Function.Construct = function (self, fileName, bindingAguments, isConstructor)
@@ -77,11 +76,15 @@ end
 
 Function.ApplyArguments = function (self)
     self.bindingName = self.name
-    self.bindingReturnType = self.returnType
+    self.bindingReturnType = TypeUtils.ConvertCXXToASType (self.returnType)
     for key, value in pairs (self.callArguments) do
         self.bindingCallArguments [key] = {}
         for innerKey, innerValue in pairs (value) do
-            self.bindingCallArguments [key] [innerKey] = innerValue
+            if innerKey == "type" then
+                self.bindingCallArguments [key] [innerKey] = TypeUtils.ConvertCXXToASType (innerValue)
+            else
+                self.bindingCallArguments [key] [innerKey] = innerValue
+            end
         end
     end
 

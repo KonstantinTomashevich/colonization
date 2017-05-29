@@ -38,7 +38,7 @@ Enum.ToString = function (self, indent)
 end
 
 Enum.ApplyArguments = function (self)
-    self.bindingName = self.name
+    self.bindingName = TypeUtils.ConvertCXXToASType (self.name)
     for index, value in ipairs (self.values) do
         self.bindingValues [value] = value
     end

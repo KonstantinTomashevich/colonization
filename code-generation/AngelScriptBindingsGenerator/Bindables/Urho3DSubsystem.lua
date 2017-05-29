@@ -18,7 +18,7 @@ Urho3DSubsystem.Parse = function (self, tokensList)
     if self.arguments ["BindingType"] ~= nil then
         self.bindingType = self.arguments ["BindingType"]
     else
-        self.bindingType = self.type
+        self.bindingType = TypeUtils.ConvertCXXToASType (self.type)
     end
 
     if self.type == nil then

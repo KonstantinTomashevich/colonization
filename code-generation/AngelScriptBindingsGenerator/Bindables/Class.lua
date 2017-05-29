@@ -54,9 +54,9 @@ Class.ToString = function (self, indent)
 end
 
 Class.ApplyArguments = function (self)
-    self.bindingName = self.name
+    self.bindingName = TypeUtils.ConvertCXXToASType (self.name)
     for index, value in ipairs (self.publicBases) do
-        self.bindingPublicBases [value] = value
+        self.bindingPublicBases [value] = TypeUtils.ConvertCXXToASType (value)
     end
 
     for key, value in pairs (self.arguments) do

@@ -27,7 +27,7 @@ Constant.ApplyArguments = function (self)
     if self.arguments ["OverrideType"] ~= nil then
         self.bindingType = self.arguments ["OverrideType"]
     else
-        self.bindingType = self.type
+        self.bindingType = TypeUtils.ConvertCXXToASType (self.type)
     end
 
     if self.arguments ["OverrideName"] ~= nil then
