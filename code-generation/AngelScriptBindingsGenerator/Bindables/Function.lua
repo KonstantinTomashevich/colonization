@@ -125,17 +125,26 @@ Function.ApplyArguments = function (self)
                     self.bindingReturnType = self.bindingReturnType:gsub (pattern, replace)
                 else
                     self.bindingCallArguments [argumentIndex + 1].type =
-                    self.bindingCallArguments [argumentIndex + 1].type:gsub (pattern, replace)
+                        self.bindingCallArguments [argumentIndex + 1].type:gsub (pattern, replace)
                 end
             elseif key:find ("ReplaceInName_") == 1 then
                 local argumentIndex = tonumber (key:sub (("ReplaceInName_arg"):len () + 1, key:len ()))
                 self.bindingCallArguments [argumentIndex + 1].name =
-                self.bindingCallArguments [argumentIndex + 1].name:gsub (pattern, replace)
+                    self.bindingCallArguments [argumentIndex + 1].name:gsub (pattern, replace)
             end
 
         elseif key:find ("UseUrho3DScriptContext_") == 1 then
             local argumentIndex = tonumber (key:sub (("UseUrho3DScriptContext_arg"):len () + 1, key:len ()))
             self.bindingCallArguments [argumentIndex + 1].type = "UseUrho3DScriptContext"
+
+        elseif key:find ("AddRef_") == 1 then
+            local argumentIndex = tonumber (key:sub (("AddRef_arg"):len () + 1, key:len ()))
+            if argumentIndex == -1 then
+                self.bindingReturnType = self.bindingReturnType .. "+"
+            else
+                self.bindingCallArguments [argumentIndex + 1].type =
+                    self.bindingCallArguments [argumentIndex + 1].type .. "+"
+            end
         end
     end
 end

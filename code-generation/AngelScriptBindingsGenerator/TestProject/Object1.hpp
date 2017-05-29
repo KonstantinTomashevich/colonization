@@ -33,8 +33,8 @@ public:
 
     //@ASBindGen Function ReplaceInType_arg-1=&| ReplaceInType_arg-1=const|
     static const Urho3D::String &StaticFunction ();
-    //@ASBindGen Function
-    void DoSomething (float first = 3.14f, unsigned int second = 10);
+    //@ASBindGen Function AddRef_arg-1
+    Object1 *DoSomething (float first = 3.14f, unsigned int second = 10);
 
     //@ASBindGen Function OverrideName=get_string
     Urho3D::String GetString () const;
