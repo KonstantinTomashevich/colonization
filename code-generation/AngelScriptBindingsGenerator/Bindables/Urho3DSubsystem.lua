@@ -1,6 +1,7 @@
 Urho3DSubsystem = CreateNewClass ()
 Urho3DSubsystem.Construct = function (self, fileName, bindingAguments)
     self.fileName = fileName
+    self.name = ""
     self.type = ""
     self.bindingType = ""
     self.bindingName = ""
@@ -31,6 +32,7 @@ Urho3DSubsystem.Parse = function (self, tokensList)
         print ("Line " .. token.line .. ": Can't read subsystem binding type!")
         return false
     else
+        self.name = self.bindingType
         return true
     end
 end
