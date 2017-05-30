@@ -41,6 +41,14 @@ Constant.GetRequiredBindingsIncludes = function (self)
     return {}
 end
 
+Constant.GenerateWrappers = function (self)
+    return ""
+end
+
+Constant.GenerateRegistratorCode = function (self)
+    return ""
+end
+
 Constant.ReadType = function (self, tokensList)
     local token = tokensList:CurrentOrNextToken ()
     if token == nil then

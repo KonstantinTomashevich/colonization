@@ -29,6 +29,32 @@ BodyWriter.Construct = function (self, fileData)
 end
 
 BodyWriter.Write = function (self, outputFile)
+    for index, bindable in ipairs (self.bindables) do
+        outputFile:write (bindable:GenerateWrappers ())
+    end
+
+    local registratorsCodes = {}
+    for index, bindable in ipairs (self.bindables) do
+        local code = bindable:GenerateRegistratorCode ()
+        if registratorsCodes [bindable.name] == nil then
+            registratorsCodes [bindable.name] = {}
+            registratorsCodes [bindable.name].code = code
+        else
+            registratorsCodes [bindable.name].code =
+                registratorsCodes [bindable.name].code .. "\n" .. code
+        end
+
+        if bindable:GetTypeName () == "Class" then
+            registratorsCodes [bindable.name].functionTemplate = Templates.ClassRegisterFunction
+        else
+            registratorsCodes [bindable.name].functionTemplate = Templates.StandartRegisterFunction
+        end
+    end
+
+    for registratorName, registrator in pairs (registratorsCodes) do
+        outputFile:write (TemplatesUtils.ProcessTemplateString (registrator.functionTemplate, {name = registratorName}) ..
+                            "{\n\n" .. registrator.code .. "}\n\n")
+    end
     return true
 end
 

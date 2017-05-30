@@ -92,6 +92,14 @@ Class.GetRequiredBindingsIncludes = function (self)
     return bindingsIncludes
 end
 
+Class.GenerateWrappers = function (self)
+    return ""
+end
+
+Class.GenerateRegistratorCode = function (self)
+    return ""
+end
+
 Class.SkipUntilClassKeyword = function (self, tokensList)
     local token = tokensList:CurrentOrNextToken ()
     if token == nil then

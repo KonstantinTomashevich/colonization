@@ -153,6 +153,15 @@ Function.GetRequiredBindingsIncludes = function (self)
     return {}
 end
 
+Function.GenerateWrappers = function (self)
+    -- TODO: Maybe wrappers names should be ${ownerClassName}_${name}_${argumentsNames}? (for support of functions with same name)
+    return ""
+end
+
+Function.GenerateRegistratorCode = function (self)
+    return ""
+end
+
 Function.ReadReturnType = function (self, tokensList)
     local token = tokensList:CurrentOrNextToken ()
     if token.type == Tokens.TypeOrName and token.value == "static" then

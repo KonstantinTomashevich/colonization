@@ -54,6 +54,14 @@ Urho3DSubsystem.GetRequiredBindingsIncludes = function (self)
     return {}
 end
 
+Urho3DSubsystem.GenerateWrappers = function (self)
+    return ""
+end
+
+Urho3DSubsystem.GenerateRegistratorCode = function (self)
+    return ""
+end
+
 Urho3DSubsystem.GetDataDestination = function ()
     return "subsystems"
 end

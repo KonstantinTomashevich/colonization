@@ -63,6 +63,14 @@ Enum.GetRequiredBindingsIncludes = function (self)
     return {}
 end
 
+Enum.GenerateWrappers = function (self)
+    return ""
+end
+
+Enum.GenerateRegistratorCode = function (self)
+    return ""
+end
+
 Enum.SkipUntilEnumKeyword = function (self, tokensList)
     local token = tokensList:CurrentOrNextToken ()
     if token == nil then

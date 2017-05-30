@@ -70,9 +70,13 @@ BodyWriter.WriteStandartBindings = function (self, outputFile)
 
     for configIndex, config in ipairs (toBindStandart) do
         outputFile:write (config.functionName .. "\n{\n")
+        local alreadyCalled = {}
         for index, value in ipairs (data [config.key]) do
-            outputFile:write (TemplatesUtils.ProcessTemplateString (Templates.CallStandartRegister,
-                                {name = value.name}))
+            if alreadyCalled [value.name] == nil then
+                outputFile:write (TemplatesUtils.ProcessTemplateString (Templates.CallStandartRegister,
+                                    {name = value.name}))
+                alreadyCalled [value.name] = true
+            end
         end
         outputFile:write ("}\n\n")
     end
