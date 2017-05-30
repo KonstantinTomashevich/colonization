@@ -37,6 +37,10 @@ Constant.ApplyArguments = function (self)
     end
 end
 
+Constant.GetRequiredBindingsIncludes = function (self)
+    return {}
+end
+
 Constant.ReadType = function (self, tokensList)
     local token = tokensList:CurrentOrNextToken ()
     if token == nil then

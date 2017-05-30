@@ -27,8 +27,8 @@ Class.ToString = function (self, indent)
     string = string .. " from file " .. self.fileName .. "\n" .. indent ..
         "    " .. "inherits "
 
-    for key, value in pairs (self.bindingPublicBases) do
-        local base = DataUtils.GetNamedValueOfTable (data.classes, value)
+    for key, value in pairs (self.publicBases) do
+        local base = DataUtils.GetNamedValueOfTable (data.classes, TypeUtils.RemoveNamespaces (value))
         if base ~= nil then
             if base.bindingName == value then
                 string = string .. value .. ", "
@@ -69,6 +69,27 @@ Class.ApplyArguments = function (self)
             self.bindingPublicBases [toExclude] = nil
         end
     end
+end
+
+Class.GetRequiredBindingsIncludes = function (self)
+    local bindingsIncludes = {}
+    local toCheck = {"methods", "constructors"}
+    for itemIndex, toCheckItem in ipairs (toCheck) do
+        for index, value in ipairs (self [toCheckItem]) do
+            local includes = value:GetRequiredBindingsIncludes ()
+            for includeIndex, include in ipairs (includes) do
+                table.insert (bindingsIncludes, include)
+            end
+        end
+    end
+
+    for key, baseName in pairs (self.publicBases) do
+        local base = DataUtils.GetNamedValueOfTable (data.classes, TypeUtils.RemoveNamespaces (baseName))
+        if base ~= nil then
+            table.insert (bindingsIncludes, base.fileName)
+        end
+    end
+    return bindingsIncludes
 end
 
 Class.SkipUntilClassKeyword = function (self, tokensList)

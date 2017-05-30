@@ -68,7 +68,7 @@ BodyWriter.WriteStandartBindings = function (self, outputFile)
     table.insert (toBindStandart, {functionName = "void RegisterFreeFunctions (asIScriptEngine *engine)", key = "freeFunctions"})
     table.insert (toBindStandart, {functionName = "void RegisterUrho3DSubsystems (asIScriptEngine *engine)", key = "subsystems"})
 
-    for index, config in ipairs (toBindStandart) do
+    for configIndex, config in ipairs (toBindStandart) do
         outputFile:write (config.functionName .. "\n{\n")
         for index, value in ipairs (data [config.key]) do
             outputFile:write (TemplatesUtils.ProcessTemplateString (Templates.CallStandartRegister,

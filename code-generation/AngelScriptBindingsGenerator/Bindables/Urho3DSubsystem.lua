@@ -50,6 +50,10 @@ Urho3DSubsystem.ApplyArguments = function (self)
 
 end
 
+Urho3DSubsystem.GetRequiredBindingsIncludes = function (self)
+    return {}
+end
+
 Urho3DSubsystem.GetDataDestination = function ()
     return "subsystems"
 end

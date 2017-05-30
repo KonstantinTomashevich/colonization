@@ -1,20 +1,34 @@
 local IncludesWriter = Class ()
-IncludesWriter.Construct = function (self, bindables)
-    self.bindables = bindables
+IncludesWriter.Construct = function (self, fileData)
+    self.fileName = fileData.name
+    self.bindables = fileData.bindables
 end
 
 IncludesWriter.Write = function (self, outputFile)
-    print ("Writing includes.")
+    outputFile:write (TemplatesUtils.ProcessTemplateString (Templates.IncludeFullPath,
+                        {file = ConfigurationUtils.LocalFileNameToProjectIncludePath (self.fileName)}))
+
+    local alreadyIncluded = {}
+    for index, bindable in ipairs (self.bindables) do
+        local requiredIncludes = bindable:GetRequiredBindingsIncludes ()
+        for include, include in ipairs (requiredIncludes) do
+            if alreadyIncluded [include] == nil then
+                outputFile:write (TemplatesUtils.ProcessTemplateString (Templates.IncludeFullPath,
+                                    {file = ConfigurationUtils.LocalFileNameToProjectBindingsIncludePath (include)}))
+                alreadyIncluded [include] = 1
+            end
+        end
+    end
     return true
 end
 
 local BodyWriter = Class ()
-BodyWriter.Construct = function (self, bindables)
-    self.bindables = bindables
+BodyWriter.Construct = function (self, fileData)
+    self.fileName = fileData.name
+    self.bindables = fileData.bindables
 end
 
 BodyWriter.Write = function (self, outputFile)
-    print ("Writing body.")
     return true
 end
 
@@ -23,8 +37,8 @@ function WriteFile (fileData)
     local outputFile = FileUtils.OpenFile (ConfigurationUtils.LocalFileNameToBindingsFilePath (fileData.name))
 
     local commands = {}
-    commands ["WriteIncludes"] = IncludesWriter (fileData.bindables)
-    commands ["WriteBody"] = BodyWriter (fileData.bindables)
+    commands ["WriteIncludes"] = IncludesWriter (fileData)
+    commands ["WriteBody"] = BodyWriter (fileData)
 
     local result = TemplatesUtils.ProcessTemplateFile (inputFileName, outputFile, commands)
     outputFile:close ()

@@ -149,6 +149,10 @@ Function.ApplyArguments = function (self)
     end
 end
 
+Function.GetRequiredBindingsIncludes = function (self)
+    return {}
+end
+
 Function.ReadReturnType = function (self, tokensList)
     local token = tokensList:CurrentOrNextToken ()
     if token.type == Tokens.TypeOrName and token.value == "static" then
