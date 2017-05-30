@@ -1,6 +1,6 @@
 #include "Bindings.hpp"
-#include <TestProject/Object1.hpp>
-#include <TestProject/ModuleX/ObjectX.hpp>
+#include <TestProject/Bindings/Object1.hpp>
+#include <TestProject/Bindings/ModuleX/ObjectX.hpp>
 
 namespace TestProject
 {

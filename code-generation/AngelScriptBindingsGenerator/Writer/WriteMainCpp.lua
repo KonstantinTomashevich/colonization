@@ -22,7 +22,7 @@ IncludesWriter.Write = function (self, outputFile)
 
     for index, fileData in ipairs (data.filesToWriteList) do
         outputFile:write (TemplatesUtils.ProcessTemplateString (Templates.IncludeFullPath,
-                            {file = ConfigurationUtils.LocalFileNameToProjectIncludePath (fileData.name)}))
+                            {file = ConfigurationUtils.LocalFileNameToProjectBindingsIncludePath (fileData.name)}))
     end
     return true
 end

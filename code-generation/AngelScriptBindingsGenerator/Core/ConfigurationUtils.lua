@@ -30,4 +30,8 @@ end
 ConfigurationUtils.LocalFileNameToProjectIncludePath = function (fileName)
     return configuration.projectDir .. "/" .. fileName
 end
+
+ConfigurationUtils.LocalFileNameToProjectBindingsIncludePath = function (fileName)
+    return configuration.projectDir .. "/" .. configuration.bindingsDir .. "/" .. fileName
+end
 return ConfigurationUtils
