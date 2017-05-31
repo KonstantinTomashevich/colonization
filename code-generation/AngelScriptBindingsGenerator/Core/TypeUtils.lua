@@ -1,8 +1,8 @@
 TypeUtils = {}
 TypeUtils.BasicCXXToASType = function (type)
     local newType = type:gsub ("*", "@"):gsub ("unsigned ", "u"):gsub ("long", "int64"):
-            gsub ("Urho3D::Vector ", "Array "):gsub ("Urho3D::Vector<", "Array<"):
-            gsub ("Urho3D::PODVector ", "Array "):gsub ("Urho3D::PODVector<", "Array<")
+            gsub ("PODVector <", "Array <"):gsub ("PODVector<", "Array<"):
+            gsub ("Vector <", "Array <"):gsub ("Vector<", "Array<")
     if newType:find ("Array ") ~= nil or newType:find ("Array<") ~= nil then
         newType = newType .. " @"
     end
