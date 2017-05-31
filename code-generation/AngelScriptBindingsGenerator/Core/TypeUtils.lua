@@ -39,4 +39,8 @@ end
 TypeUtils.ConvertCXXToASType = function (type)
     return TypeUtils.RemoveNamespaces (TypeUtils.CheckParsedClassesNames (TypeUtils.BasicCXXToASType (type)))
 end
+
+TypeUtils.IsCXXArray = function (type)
+    return type:find ("Vector ") ~= nil or type:find ("Vector<") ~= nil
+end
 return TypeUtils

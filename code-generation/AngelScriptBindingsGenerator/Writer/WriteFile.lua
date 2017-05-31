@@ -36,18 +36,18 @@ BodyWriter.Write = function (self, outputFile)
     local registratorsCodes = {}
     for index, bindable in ipairs (self.bindables) do
         local code = bindable:GenerateRegistratorCode ()
-        if registratorsCodes [bindable.name] == nil then
-            registratorsCodes [bindable.name] = {}
-            registratorsCodes [bindable.name].code = code
+        if registratorsCodes [bindable.bindingName] == nil then
+            registratorsCodes [bindable.bindingName] = {}
+            registratorsCodes [bindable.bindingName].code = code
         else
-            registratorsCodes [bindable.name].code =
-                registratorsCodes [bindable.name].code .. "\n" .. code
+            registratorsCodes [bindable.bindingName].code =
+                registratorsCodes [bindable.bindingName].code .. "\n" .. code
         end
 
         if bindable:GetTypeName () == "Class" then
-            registratorsCodes [bindable.name].functionTemplate = Templates.ClassRegisterFunction
+            registratorsCodes [bindable.bindingName].functionTemplate = Templates.ClassRegisterFunction
         else
-            registratorsCodes [bindable.name].functionTemplate = Templates.StandartRegisterFunction
+            registratorsCodes [bindable.bindingName].functionTemplate = Templates.StandartRegisterFunction
         end
     end
 

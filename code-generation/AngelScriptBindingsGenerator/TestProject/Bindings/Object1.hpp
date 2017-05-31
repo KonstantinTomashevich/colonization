@@ -8,9 +8,10 @@ namespace Bindings
 void RegisterMyFreeFunction (asIScriptEngine *engine)
 {
 
+
 }
 
-template <class T> void RegisterObject1 (asIScriptEngine *engine, char *className)
+void RegisterMyBaseObjectStaticFunction (asIScriptEngine *engine)
 {
 
 }
@@ -20,7 +21,7 @@ void RegisterMY_CONSTANT (asIScriptEngine *engine)
 
 }
 
-void RegisterMyBaseObjectStaticFunction (asIScriptEngine *engine)
+template <class T> void RegisterMyBaseObject (asIScriptEngine *engine, char *className)
 {
 
 }
