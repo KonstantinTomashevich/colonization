@@ -5,6 +5,17 @@ namespace TestProject
 {
 namespace Bindings
 {
+Urho3D::CScriptArray * wrapper_MyFreeFunction_argument (Urho3D::CScriptArray * argument)
+{
+    Urho3D::Vector <Object1 *> result = MyFreeFunction (Urho3D::ArrayToPODVector <float> (argument));
+    return Urho3D::VectorToHandleArray <Object1 *> (result, "Array <MyBaseObject @>");
+}
+
+Object1 * wrapper_Object1_constructor ()
+{
+    return Object1 (Urho3D::GetScriptContext ());
+}
+
 void RegisterMyFreeFunction (asIScriptEngine *engine)
 {
 

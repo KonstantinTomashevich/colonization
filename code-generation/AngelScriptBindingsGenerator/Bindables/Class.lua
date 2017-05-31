@@ -100,7 +100,14 @@ Class.GetRequiredBindingsIncludes = function (self)
 end
 
 Class.GenerateWrappers = function (self)
-    return ""
+    local wrappers = ""
+    local toGenerate = {"constructors", "methods"}
+    for itemIndex, toGenerateItem in ipairs (toGenerate) do
+        for index, value in ipairs (self [toGenerateItem]) do
+            wrappers = wrappers .. value:GenerateWrappers ()
+        end
+    end
+    return wrappers
 end
 
 Class.GenerateRegistratorCode = function (self)

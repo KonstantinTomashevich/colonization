@@ -1,6 +1,12 @@
 TypeUtils = {}
 TypeUtils.BasicCXXToASType = function (type)
-    return type:gsub ("*", "@"):gsub ("unsigned ", "u"):gsub ("long", "int64")
+    local newType = type:gsub ("*", "@"):gsub ("unsigned ", "u"):gsub ("long", "int64"):
+            gsub ("Urho3D::Vector ", "Array "):gsub ("Urho3D::Vector<", "Array<"):
+            gsub ("Urho3D::PODVector ", "Array "):gsub ("Urho3D::PODVector<", "Array<")
+    if newType:find ("Array ") ~= nil or newType:find ("Array<") ~= nil then
+        newType = newType .. " @"
+    end
+    return newType
 end
 
 TypeUtils.CheckParsedClassesNames = function (type)
@@ -42,5 +48,36 @@ end
 
 TypeUtils.IsCXXArray = function (type)
     return type:find ("Vector ") ~= nil or type:find ("Vector<") ~= nil
+end
+
+TypeUtils.ASArrayTypeInCXX = function (type)
+    return "Urho3D::CScriptArray *"
+end
+
+TypeUtils.GetArrayShortType = function (type)
+    local typeWithoutNamespaces = TypeUtils.RemoveNamespaces (type):gsub ("const ", "")
+    local index = 1
+    local shortType = ""
+    local char = ""
+
+    while char ~= "<" and char ~= " " and index <= typeWithoutNamespaces:len () do
+        shortType = shortType .. char
+        char = typeWithoutNamespaces:sub (index, index)
+        index = index + 1
+    end
+    return shortType
+end
+
+TypeUtils.GetArrayElementType = function (type)
+    local index = type:find ("<") + 1
+    local elementType = ""
+    local char = ""
+
+    while char ~= ">" and index <= type:len () do
+        elementType = elementType .. char
+        char = type:sub (index, index)
+        index = index + 1
+    end
+    return elementType
 end
 return TypeUtils

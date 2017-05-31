@@ -156,7 +156,10 @@ end
 Function.GenerateWrappers = function (self)
     -- TODO: Maybe wrappers names should be ${ownerClassName}_${name}_${argumentsNames}? (for support of functions with same name)
     if self:IsWrapperNeeded () then
-        return ""
+        return self:GenerateWrapperReturnType () .. " " ..
+                self:GenerateWrapperName () .. " (" ..
+                self:GenerateWrapperArguments () .. ")" .. "\n" .. "{\n" ..
+                self:GenerateWrapperCode () .. "}\n\n"
     else
         return ""
     end
@@ -312,7 +315,7 @@ Function.SkipUntilArgumentsListBegin = function (self, tokensList)
 end
 
 Function.IsWrapperNeeded = function (self)
-    if TypeUtils.IsCXXArray (self.returnType) then
+    if TypeUtils.IsCXXArray (self.returnType) or self.isConstructor then
         return true
     end
 
@@ -322,6 +325,134 @@ Function.IsWrapperNeeded = function (self)
         end
     end
     return false
+end
+
+Function.GenerateWrapperReturnType = function (self)
+    if self.isConstructor then
+        return self.ownerClassName .. " *"
+    elseif TypeUtils.IsCXXArray (self.returnType) then
+        return TypeUtils.ASArrayTypeInCXX ()
+    else
+        return self.returnType
+    end
+end
+
+Function.GenerateWrapperName = function (self)
+    local wrapperName = ""
+    wrapperName = wrapperName .. "wrapper_"
+    if self.ownerClassName ~= nil then
+        wrapperName = wrapperName .. self.ownerClassName .. "_"
+    end
+
+    if self.isConstructor then
+        wrapperName = wrapperName .. "constructor"
+    else
+        wrapperName = wrapperName .. self.name
+    end
+
+    for key, callArgument in pairs (self.bindingCallArguments) do
+        if callArgument.type ~= "UseUrho3DScriptContext" then
+            wrapperName = wrapperName .. "_" .. callArgument.name
+        end
+    end
+    return wrapperName
+end
+
+Function.GenerateWrapperArguments = function (self)
+    local wrapperArguments = ""
+    local isFirstCallArgument = true
+    if self.ownerClassName ~= nil and not self.isConstructor then
+        wrapperArguments = wrapperArguments .. self.ownerClassName .. "* objectPtr"
+        isFirstCallArgument = false
+    end
+
+    for key, callArgument in pairs (self.bindingCallArguments) do
+        if callArgument.type ~= "UseUrho3DScriptContext" then
+            if not isFirstCallArgument then
+                wrapperArguments = wrapperArguments .. ", "
+            else
+                isFirstCallArgument = false
+            end
+
+            local sourceCallArgument = self.callArguments [key]
+            if TypeUtils.IsCXXArray (sourceCallArgument.type) then
+                wrapperArguments = wrapperArguments .. TypeUtils.ASArrayTypeInCXX ()
+            else
+                wrapperArguments = wrapperArguments .. sourceCallArgument.type
+            end
+            wrapperArguments = wrapperArguments .. " " .. sourceCallArgument.name
+
+            if sourceCallArgument.default ~= nil then
+                wrapperArguments = wrapperArguments .. " = " .. sourceCallArgument.default
+            end
+        end
+    end
+    return wrapperArguments
+end
+
+Function.GenerateWrapperCode = function (self)
+    local wrapperCode = "    "
+    if self.isConstructor then
+        wrapperCode = wrapperCode .. "return " .. self.ownerClassName .. " (" ..
+                    self:GenerateWrapperFunctionCallArguments () .. ");\n"
+    else
+        if self.returnType ~= "void" then
+            wrapperCode = wrapperCode .. self.returnType .. " result = "
+        end
+
+        if self.ownerClassName ~= nil then
+            wrapperCode = wrapperCode .. "objectPtr->"
+        end
+        wrapperCode = wrapperCode .. self.name .. " (" ..
+                    self:GenerateWrapperFunctionCallArguments () .. ");\n"
+
+        if self.returnType ~= "void" then
+            if TypeUtils.IsCXXArray (self.returnType) then
+                local template = ""
+                if self.arguments ["ReturnHandleArray"] ~= nil then
+                    template = Templates.CXXArrayToASHandleArray
+                else
+                    template = Templates.CXXArrayToASArray
+                end
+                wrapperCode = wrapperCode .. "    return " ..
+                        TemplatesUtils.ProcessTemplateString (template,
+                            {cxxArrayElementType = TypeUtils.GetArrayElementType (self.returnType),
+                             cxxArrayName = "result",
+                             asArrayElementType = TypeUtils.GetArrayElementType (self.bindingReturnType)}) .. ";\n"
+            else
+                wrapperCode = wrapperCode .. "    return result;\n"
+            end
+        end
+    end
+    return wrapperCode
+end
+
+Function.GenerateWrapperFunctionCallArguments = function (self)
+    local isFirstCallArgument = true
+    local wrapperFunctionCallArguments = ""
+    for key, callArgument in pairs (self.callArguments) do
+        if not isFirstCallArgument then
+            wrapperFunctionCallArguments = wrapperFunctionCallArguments .. ", "
+        else
+            isFirstCallArgument = false
+        end
+
+        local bindingCallArgument = self.bindingCallArguments [key]
+        if bindingCallArgument.type == "UseUrho3DScriptContext" then
+            wrapperFunctionCallArguments = wrapperFunctionCallArguments .. "Urho3D::GetScriptContext ()"
+        else
+            if TypeUtils.IsCXXArray (callArgument.type) then
+                wrapperFunctionCallArguments = wrapperFunctionCallArguments ..
+                        TemplatesUtils.ProcessTemplateString (Templates.ASArrayToCXXArray,
+                            {cxxArrayShortType = TypeUtils.GetArrayShortType (callArgument.type),
+                             cxxArrayElementType = TypeUtils.GetArrayElementType (callArgument.type),
+                             asArrayName = bindingCallArgument.name})
+            else
+                wrapperFunctionCallArguments = wrapperFunctionCallArguments .. callArgument.name
+            end
+        end
+    end
+    return wrapperFunctionCallArguments
 end
 
 Function.GetDataDestination = function ()

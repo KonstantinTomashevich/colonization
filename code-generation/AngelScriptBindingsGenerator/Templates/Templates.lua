@@ -22,16 +22,13 @@ Templates.SubsystemWrapper =
 ]]
 
 Templates.CXXArrayToASArray =
-[[Urho3D::VectorToArray <${cxxArrayElementType}> (${cxxArrayName}, "Array <${asArrayElementType}>");
-]]
+[[Urho3D::VectorToArray <${cxxArrayElementType}> (${cxxArrayName}, "Array <${asArrayElementType}>")]]
 
 Templates.CXXArrayToASHandleArray =
-[[Urho3D::VectorToHandleArray <${cxxArrayElementType}> (${cxxArrayName}, "Array <${asArrayElementType}>");
-]]
+[[Urho3D::VectorToHandleArray <${cxxArrayElementType}> (${cxxArrayName}, "Array <${asArrayElementType}>")]]
 
 Templates.ASArrayToCXXArray =
-[[Urho3D::ArrayTo${cxxArrayShortType} <${cxxArrayElementType}> (${asArrayName});
-]]
+[[Urho3D::ArrayTo${cxxArrayShortType} <${cxxArrayElementType}> (${asArrayName})]]
 
 Templates.StandartRegisterFunction =
 [[void Register${name} (asIScriptEngine *engine)

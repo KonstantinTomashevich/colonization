@@ -5,8 +5,8 @@ namespace TestProject
 {
 //@ASBindGen Function
 float MyFreeFunction ();
-//@ASBindGen Function
-Urho3D::String MyFreeFunction (Urho3D::PODVector <float> argument);
+//@ASBindGen Function ReturnHandleArray
+Urho3D::Vector <Object1 *> MyFreeFunction (Urho3D::PODVector <float> argument);
 //@ASBindGen Constant
 const Urho3D::StringHash MY_CONSTANT;
 
