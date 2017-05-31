@@ -128,14 +128,23 @@ Class.GenerateRegistratorCode = function (self)
                     TemplatesUtils.ProcessTemplateString (Templates.CallClassRegister,
                         {baseName = self.bindingPublicBases [value],
                          templateName = "T",
-                         bindingName = "className"}) .. "\n"
+                         bindingName = "className",
+                         registerConstructors = "false"}) .. "\n"
         end
     end
 
     local toGenerate = {"constructors", "methods"}
     for itemIndex, toGenerateItem in ipairs (toGenerate) do
+        if toGenerateItem == "constructors" then
+            registratorCode = registratorCode .. "    if (registerConstructors)\n    {\n"
+        end
+
         for index, value in ipairs (self [toGenerateItem]) do
             registratorCode = registratorCode .. value:GenerateRegistratorCode ()
+        end
+
+        if toGenerateItem == "constructors" then
+            registratorCode = registratorCode .. "    }\n\n"
         end
     end
     return registratorCode

@@ -35,7 +35,7 @@ Templates.StandartRegisterFunction =
 ]]
 
 Templates.ClassRegisterFunction =
-[[template <class T> void Register${name} (asIScriptEngine *engine, char *className)
+[[template <class T> void Register${name} (asIScriptEngine *engine, char *className, bool registerConstructors)
 ]]
 
 Templates.CallStandartRegister =
@@ -43,7 +43,7 @@ Templates.CallStandartRegister =
 ]]
 
 Templates.CallClassRegister =
-[[    Register${baseName} <${templateName}> (engine, ${bindingName});
+[[    Register${baseName} <${templateName}> (engine, ${bindingName}, ${registerConstructors});
 ]]
 
 Templates.DeclareClass =
@@ -70,20 +70,20 @@ Templates.RegisterEnumValue =
 [[    engine->RegisterEnumValue ("${bindingEnumName}", "${bindingValue}", ${value});
 ]]
 
-Templates.RegisterFreeFunctionWithoutArrays =
+Templates.RegisterFreeFunctionWithoutWrapper =
 [[    engine->RegisterGlobalFunction ("${bindingReturnType} ${bindingName} (${bindingArgs})", asFUNCTION (${name}), asCALL_CDECL);
 ]]
 
-Templates.RegisterFreeFunctionWithArrays =
-[[    engine->RegisterGlobalFunction ("${bindingReturnType} ${bindingName} (${bindingArgs})", asFUNCTION (wrapper_${name}), asCALL_CDECL);
+Templates.RegisterFreeFunctionWithWrapper =
+[[    engine->RegisterGlobalFunction ("${bindingReturnType} ${bindingName} (${bindingArgs})", asFUNCTION (${wrapperName}), asCALL_CDECL);
 ]]
 
-Templates.RegisterClassMethodWithoutArrays =
+Templates.RegisterClassMethodWithoutWrapper =
 [[    engine->RegisterObjectMethod (className, "${bindingReturnType} ${bindingName} (${bindingArgs}) ${modifers}", asMETHOD (T, ${name}), asCALL_THISCALL);
 ]]
 
-Templates.RegisterClassMethodWithArrays =
-[[    engine->RegisterObjectMethod (className, "${bindingReturnType} ${bindingName} (${bindingArgs}) ${modifers}", asFUNCTION (wrapper_${ownerClassName}_${name}), asCALL_CDECL_OBJFIRST);
+Templates.RegisterClassMethodWithWrapper =
+[[    engine->RegisterObjectMethod (className, "${bindingReturnType} ${bindingName} (${bindingArgs}) ${modifers}", asFUNCTION (${wrapperName}), asCALL_CDECL_OBJFIRST);
 ]]
 
 Templates.RegisterSubsystem =

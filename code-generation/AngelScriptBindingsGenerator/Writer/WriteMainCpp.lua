@@ -89,7 +89,8 @@ BodyWriter.WriteClassesBindings = function (self, outputFile)
         outputFile:write (TemplatesUtils.ProcessTemplateString (Templates.CallClassRegister,
                             {baseName = class.bindingName,
                              templateName = class.name,
-                             bindingName = "\"" .. class.bindingName .. "\""}))
+                             bindingName = "\"" .. class.bindingName .. "\"",
+                             registerConstructors = "true"}))
     end
     outputFile:write ("}\n\n")
     return true
