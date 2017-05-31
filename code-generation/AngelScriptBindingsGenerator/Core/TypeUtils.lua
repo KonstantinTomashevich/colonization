@@ -3,8 +3,13 @@ TypeUtils.BasicCXXToASType = function (type)
     local newType = type:gsub ("*", "@"):gsub ("unsigned ", "u"):gsub ("long", "int64"):
             gsub ("PODVector <", "Array <"):gsub ("PODVector<", "Array<"):
             gsub ("Vector <", "Array <"):gsub ("Vector<", "Array<")
+
     if newType:find ("Array ") ~= nil or newType:find ("Array<") ~= nil then
         newType = newType .. " @"
+    end
+
+    if newType:find ("SharedPtr <") or newType:find ("SharedPtr<") then
+        newType = TypeUtils.GetArrayElementType (newType)
     end
     return newType
 end
@@ -69,14 +74,20 @@ TypeUtils.GetArrayShortType = function (type)
 end
 
 TypeUtils.GetArrayElementType = function (type)
-    local index = type:find ("<") + 1
-    local elementType = ""
-    local char = ""
+    local elementType = type
+    while elementType:find ("Vector <") or elementType:find ("Vector<") or
+        elementType:find ("SharedPtr <") or elementType:find ("SharedPtr<") do
 
-    while char ~= ">" and index <= type:len () do
-        elementType = elementType .. char
-        char = type:sub (index, index)
-        index = index + 1
+        local index = elementType:find ("<") + 1
+        local newElementType = ""
+        local char = ""
+
+        while char ~= ">" and index <= type:len () do
+            newElementType = newElementType .. char
+            char = type:sub (index, index)
+            index = index + 1
+        end
+        elementType = newElementType
     end
     return elementType
 end
