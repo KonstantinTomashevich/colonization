@@ -14,10 +14,13 @@ TypeUtils.BasicCXXToASType = function (type)
     return newType
 end
 
-TypeUtils.CheckParsedClassesNames = function (type)
-    for index, parsedClass in ipairs (data.classes) do
-        if parsedClass.name ~= parsedClass.bindingName then
-            type = type:gsub (parsedClass.name, parsedClass.bindingName)
+TypeUtils.CheckParsedClassesAndEnumsNames = function (type)
+    local toCheck = {"classes", "enums"}
+    for itemIndex, toCheckItem in ipairs (toCheck) do
+        for index, parsed in ipairs (data [toCheckItem]) do
+            if parsed.name ~= parsed.bindingName and type ~= parsed.name then
+                type = type:gsub (parsed.name, parsed.bindingName)
+            end
         end
     end
     return type
@@ -48,7 +51,7 @@ TypeUtils.RemoveNamespaces = function (type)
 end
 
 TypeUtils.ConvertCXXToASType = function (type)
-    return TypeUtils.RemoveNamespaces (TypeUtils.CheckParsedClassesNames (TypeUtils.BasicCXXToASType (type)))
+    return TypeUtils.RemoveNamespaces (TypeUtils.CheckParsedClassesAndEnumsNames (TypeUtils.BasicCXXToASType (type)))
 end
 
 TypeUtils.IsCXXArray = function (type)
