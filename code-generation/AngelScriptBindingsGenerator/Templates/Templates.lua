@@ -43,7 +43,7 @@ Templates.CallStandartRegister =
 ]]
 
 Templates.CallClassRegister =
-[[    Register${shortName} <${fullName}> (engine, "${bindingName}");
+[[    Register${baseName} <${templateName}> (engine, ${bindingName});
 ]]
 
 Templates.DeclareClass =
@@ -51,7 +51,7 @@ Templates.DeclareClass =
 ]]
 
 Templates.RegisterSubclass =
-[[    Urho3D::RegisterSubclass <${baseName}, ${inheritorName}> (engine, "${baseBindingName}", "${inheritorBindingName}");
+[[    Urho3D::RegisterSubclass <${baseName}, ${inheritorName}> (engine, ${baseBindingName}, ${inheritorBindingName});
 ]]
 
 Templates.RegisterClassBase =

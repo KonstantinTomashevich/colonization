@@ -87,7 +87,9 @@ BodyWriter.WriteClassesBindings = function (self, outputFile)
     outputFile:write ("void RegisterClasses (asIScriptEngine *engine)\n{\n")
     for index, class in ipairs (data.classes) do
         outputFile:write (TemplatesUtils.ProcessTemplateString (Templates.CallClassRegister,
-                            {shortName = class.bindingName, fullName = class.name, bindingName = class.bindingName}))
+                            {baseName = class.bindingName,
+                             templateName = class.name,
+                             bindingName = "\"" .. class.bindingName .. "\""}))
     end
     outputFile:write ("}\n\n")
     return true

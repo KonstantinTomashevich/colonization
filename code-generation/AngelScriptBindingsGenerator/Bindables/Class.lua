@@ -29,7 +29,7 @@ Class.ToString = function (self, indent)
 
     for key, value in pairs (self.publicBases) do
         local base = DataUtils.GetNamedValueOfTable (data.classes, TypeUtils.RemoveNamespaces (value))
-        if base ~= nil then
+        if base ~= nil and self.bindingPublicBases [value] ~= nil then
             if base.bindingName == value then
                 string = string .. value .. ", "
             else
@@ -56,7 +56,12 @@ end
 Class.ApplyArguments = function (self)
     self.bindingName = TypeUtils.ConvertCXXToASType (self.name)
     for index, value in ipairs (self.publicBases) do
-        self.bindingPublicBases [value] = TypeUtils.ConvertCXXToASType (value)
+        local base = DataUtils.GetNamedValueOfTable (data.classes, TypeUtils.RemoveNamespaces (value))
+        if base ~= nil then
+            self.bindingPublicBases [value] = base.bindingName
+        else
+            self.bindingPublicBases [value] = TypeUtils.ConvertCXXToASType (value)
+        end
     end
 
     for key, value in pairs (self.arguments) do
@@ -111,7 +116,29 @@ Class.GenerateWrappers = function (self)
 end
 
 Class.GenerateRegistratorCode = function (self)
-    return ""
+    local registratorCode = ""
+    for key, value in pairs (self.publicBases) do
+        if self.bindingPublicBases [value] ~= nil then
+            registratorCode = registratorCode ..
+                    TemplatesUtils.ProcessTemplateString (Templates.RegisterSubclass,
+                        {baseName = value,
+                         inheritorName = "T",
+                         baseBindingName = "\"" .. self.bindingPublicBases [value] .. "\"",
+                         inheritorBindingName = "className"}) ..
+                    TemplatesUtils.ProcessTemplateString (Templates.CallClassRegister,
+                        {baseName = self.bindingPublicBases [value],
+                         templateName = "T",
+                         bindingName = "className"}) .. "\n"
+        end
+    end
+
+    local toGenerate = {"constructors", "methods"}
+    for itemIndex, toGenerateItem in ipairs (toGenerate) do
+        for index, value in ipairs (self [toGenerateItem]) do
+            registratorCode = registratorCode .. value:GenerateRegistratorCode ()
+        end
+    end
+    return registratorCode
 end
 
 Class.SkipUntilClassKeyword = function (self, tokensList)

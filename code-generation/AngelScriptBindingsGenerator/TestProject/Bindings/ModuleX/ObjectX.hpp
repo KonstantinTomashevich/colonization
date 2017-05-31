@@ -35,6 +35,9 @@ void RegisterMyEnumType (asIScriptEngine *engine)
 template <class T> void RegisterObjectX (asIScriptEngine *engine, char *className)
 {
 
+    Urho3D::RegisterSubclass <Object1, T> (engine, "MyBaseObject", className);
+    RegisterMyBaseObject <T> (engine, className);
+
 }
 
 }
