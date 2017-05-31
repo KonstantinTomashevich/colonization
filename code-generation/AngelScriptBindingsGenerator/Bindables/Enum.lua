@@ -145,4 +145,7 @@ Enum.GetTypeName = function ()
     return "Enum"
 end
 
+Enum.IsSelfInserted = function ()
+    return false
+end
 return Enum

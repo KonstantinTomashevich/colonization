@@ -49,6 +49,17 @@ Core.ParseInputFiles = function ()
     return true
 end
 
+Core.ApplyArguments = function ()
+    print ("### Applying arguments...")
+    local toApply = {"enums", "constants", "freeFunctions", "classes", "subsystems"}
+    for itemIndex, toApplyItem in ipairs (toApply) do
+        for index, value in ipairs (data [toApplyItem]) do
+            value:ApplyArguments ()
+        end
+    end
+    return true
+end
+
 Core.PrintParsedBindables = function ()
     print ()
     local toPrint = {}

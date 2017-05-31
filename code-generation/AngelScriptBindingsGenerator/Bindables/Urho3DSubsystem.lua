@@ -70,4 +70,7 @@ Urho3DSubsystem.GetTypeName = function ()
     return "Urho3DSubsystem"
 end
 
+Urho3DSubsystem.IsSelfInserted = function ()
+    return false
+end
 return Urho3DSubsystem

@@ -85,4 +85,7 @@ Constant.GetTypeName = function ()
     return "Constant"
 end
 
+Constant.IsSelfInserted = function ()
+    return false
+end
 return Constant

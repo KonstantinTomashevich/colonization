@@ -19,9 +19,8 @@ function ReadFile (fileName)
                 currentlyProcessing = nil
                 return false
             else
-                currentlyProcessing:ApplyArguments ()
                 -- For correct methods parsing, classes do self-insertion before methods parsing.
-                if currentlyProcessing:GetTypeName () ~= "Class" then
+                if not currentlyProcessing:IsSelfInserted () then
                     table.insert (data [currentlyProcessing:GetDataDestination ()], currentlyProcessing)
                 end
                 currentlyProcessing = nil

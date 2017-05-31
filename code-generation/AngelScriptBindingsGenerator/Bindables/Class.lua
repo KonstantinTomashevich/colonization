@@ -35,8 +35,8 @@ Class.ToString = function (self, indent)
             else
                 string = string .. base.bindingName .. " (from " .. value .. ") "
             end
-        else
-            string = string .. value .. " (external) "
+        elseif self.bindingPublicBases [value] ~= nil then
+            string = string .. self.bindingPublicBases [value] .. " (external) "
         end
     end
 
@@ -67,6 +67,13 @@ Class.ApplyArguments = function (self)
         elseif key:find ("ExcludeBase_") == 1 then
             local toExclude = key:sub (("ExcludeBase_"):len () + 1, key:len ())
             self.bindingPublicBases [toExclude] = nil
+        end
+    end
+
+    local toApply = {"constructors", "methods"}
+    for itemIndex, toApplyItem in ipairs (toApply) do
+        for index, value in ipairs (self [toApplyItem]) do
+            value:ApplyArguments ()
         end
     end
 end
@@ -200,7 +207,6 @@ Class.ReadContent = function (self, tokensList)
             elseif currentChildReader.isConstructor then
                 currentChildReader.ownerClassName = self.name
                 currentChildReader.name = self.bindingName
-                currentChildReader:ApplyArguments ()
                 table.insert (self.constructors, currentChildReader)
                 currentChildReader = nil
 
@@ -208,10 +214,8 @@ Class.ReadContent = function (self, tokensList)
                 currentChildReader.ownerClassName = self.name
                 if currentChildReader.isStatic then
                     currentChildReader.name = self.bindingName .. currentChildReader.name
-                    currentChildReader:ApplyArguments ()
                     table.insert (data [currentChildReader:GetDataDestination ()], currentChildReader)
                 else
-                    currentChildReader:ApplyArguments ()
                     table.insert (self.methods, currentChildReader)
                 end
                 currentChildReader = nil
@@ -279,4 +283,7 @@ Class.GetTypeName = function ()
     return "Class"
 end
 
+Class.IsSelfInserted = function ()
+    return true
+end
 return Class

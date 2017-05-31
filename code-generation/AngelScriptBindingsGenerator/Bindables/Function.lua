@@ -155,7 +155,11 @@ end
 
 Function.GenerateWrappers = function (self)
     -- TODO: Maybe wrappers names should be ${ownerClassName}_${name}_${argumentsNames}? (for support of functions with same name)
-    return ""
+    if self:IsWrapperNeeded () then
+        return ""
+    else
+        return ""
+    end
 end
 
 Function.GenerateRegistratorCode = function (self)
@@ -307,6 +311,19 @@ Function.SkipUntilArgumentsListBegin = function (self, tokensList)
     end
 end
 
+Function.IsWrapperNeeded = function (self)
+    if TypeUtils.IsCXXArray (self.returnType) then
+        return true
+    end
+
+    for index, callArgument in ipairs (self.callArguments) do
+        if TypeUtils.IsCXXArray (callArgument.type) then
+            return true
+        end
+    end
+    return false
+end
+
 Function.GetDataDestination = function ()
     return "freeFunctions"
 end
@@ -315,4 +332,7 @@ Function.GetTypeName = function ()
     return "Function"
 end
 
+Function.IsSelfInserted = function ()
+    return false
+end
 return Function
