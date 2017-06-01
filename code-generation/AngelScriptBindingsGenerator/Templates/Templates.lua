@@ -70,12 +70,12 @@ Templates.RegisterEnumValue =
 [[    engine->RegisterEnumValue ("${bindingEnumName}", "${bindingValue}", ${value});
 ]]
 
-Templates.RegisterFreeFunctionWithoutWrapper =
+Templates.RegisterFreeFunction =
 [[    engine->RegisterGlobalFunction ("${bindingReturnType} ${bindingName} (${bindingArgs})", asFUNCTION (${name}), asCALL_CDECL);
 ]]
 
-Templates.RegisterFreeFunctionWithWrapper =
-[[    engine->RegisterGlobalFunction ("${bindingReturnType} ${bindingName} (${bindingArgs})", asFUNCTION (${wrapperName}), asCALL_CDECL);
+Templates.RegisterClassConstructor =
+[[        engine->RegisterObjectBehaviour (className, asBEHAVE_FACTORY, (Urho3D::String (className) + "@+ f (${wrapperArgs})").CString (), asFUNCTION (${wrapperName}), asCALL_CDECL);
 ]]
 
 Templates.RegisterClassMethodWithoutWrapper =

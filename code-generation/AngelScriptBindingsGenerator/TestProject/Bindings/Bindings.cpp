@@ -45,8 +45,8 @@ void RegisterUrho3DSubsystems (asIScriptEngine *engine)
 
 void RegisterClasses (asIScriptEngine *engine)
 {
-    RegisterMyBaseObject <Object1> (engine, "MyBaseObject");
-    RegisterObjectX <ObjectX> (engine, "ObjectX");
+    RegisterMyBaseObject <Object1> (engine, "MyBaseObject", true);
+    RegisterObjectX <ObjectX> (engine, "ObjectX", true);
 }
 
 }

@@ -41,7 +41,7 @@ BodyWriter.Write = function (self, outputFile)
             registratorsCodes [bindable.bindingName].code = code
         else
             registratorsCodes [bindable.bindingName].code =
-                registratorsCodes [bindable.bindingName].code .. "\n" .. code
+                registratorsCodes [bindable.bindingName].code .. code
         end
 
         if bindable:GetTypeName () == "Class" then
@@ -53,7 +53,7 @@ BodyWriter.Write = function (self, outputFile)
 
     for registratorName, registrator in pairs (registratorsCodes) do
         outputFile:write (TemplatesUtils.ProcessTemplateString (registrator.functionTemplate, {name = registratorName}) ..
-                            "{\n\n" .. registrator.code .. "}\n\n")
+                            "{\n" .. registrator.code .. "}\n\n")
     end
     return true
 end

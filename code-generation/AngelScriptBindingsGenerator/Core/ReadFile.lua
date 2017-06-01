@@ -23,6 +23,7 @@ function ReadFile (fileName)
                 if not currentlyProcessing:IsSelfInserted () then
                     table.insert (data [currentlyProcessing:GetDataDestination ()], currentlyProcessing)
                 end
+                currentlyProcessing.isStatic = true
                 currentlyProcessing = nil
             end
         elseif token.type == Tokens.Command then

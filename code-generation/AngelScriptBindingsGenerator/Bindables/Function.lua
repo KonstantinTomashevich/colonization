@@ -166,7 +166,13 @@ Function.GenerateWrappers = function (self)
 end
 
 Function.GenerateRegistratorCode = function (self)
-    return ""
+    if self.isConstructor then
+        return self:GenerateConstructorRegistrator ()
+    elseif self.isStatic then
+        return self:GenerateStaticRegistrator ()
+    else
+        return self:GenerateMethodRegistrator ()
+    end
 end
 
 Function.ReadReturnType = function (self, tokensList)
@@ -453,6 +459,69 @@ Function.GenerateWrapperFunctionCallArguments = function (self)
         end
     end
     return wrapperFunctionCallArguments
+end
+
+Function.GenerateConstructorRegistrator = function (self)
+    return TemplatesUtils.ProcessTemplateString (Templates.RegisterClassConstructor,
+                {wrapperName = self:GenerateWrapperName (),
+                 wrapperArgs = self:GenerateBindingArguments ()})
+end
+
+Function.GenerateStaticRegistrator = function (self)
+    local callName = ""
+    if self:IsWrapperNeeded () then
+        callName = self:GenerateWrapperName ()
+    else
+        callName = self.name
+    end
+
+    return TemplatesUtils.ProcessTemplateString (Templates.RegisterFreeFunction,
+                {bindingReturnType = self.bindingReturnType,
+                 bindingName = self.bindingName,
+                 bindingArgs = self:GenerateBindingArguments (),
+                 name = callName})
+end
+
+Function.GenerateMethodRegistrator = function (self)
+    local template = ""
+    if self:IsWrapperNeeded () then
+        template = Templates.RegisterClassMethodWithWrapper
+    else
+        template = Templates.RegisterClassMethodWithoutWrapper
+    end
+
+    local modifers = ""
+    if self.isConst then
+        modifers = "const"
+    end
+
+    return TemplatesUtils.ProcessTemplateString (template,
+                {bindingReturnType = self.bindingReturnType,
+                 bindingName = self.bindingName,
+                 bindingArgs = self:GenerateBindingArguments (),
+                 modifers = modifers,
+                 name = self.name,
+                 wrapperName = self:GenerateWrapperName ()})
+end
+
+Function.GenerateBindingArguments = function (self)
+    local isFirstCallArgument = true
+    local args = ""
+    for key, callArgument in pairs (self.bindingCallArguments) do
+        if callArgument.type ~= "UseUrho3DScriptContext" then
+            if not isFirstCallArgument then
+                args = args .. ", "
+            else
+                isFirstCallArgument = false
+            end
+
+            args = args ..  callArgument.type .. " " .. callArgument.name
+            if callArgument.default ~= nil then
+                args = args .. " = " .. callArgument.default
+            end
+        end
+    end
+    return args
 end
 
 Function.GetDataDestination = function ()
