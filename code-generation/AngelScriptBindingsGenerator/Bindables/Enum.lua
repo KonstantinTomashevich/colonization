@@ -68,7 +68,16 @@ Enum.GenerateWrappers = function (self)
 end
 
 Enum.GenerateRegistratorCode = function (self)
-    return ""
+    local registratorCode = TemplatesUtils.ProcessTemplateString (Templates.RegisterEnumType,
+                                {bindingName = self.bindingName})
+    for sourceName, bindingName in pairs (self.bindingValues) do
+        registratorCode = registratorCode ..
+                TemplatesUtils.ProcessTemplateString (Templates.RegisterEnumValue,
+                        {bindingEnumName = self.bindingName,
+                         bindingValue = bindingName,
+                         value = sourceName})
+    end
+    return registratorCode
 end
 
 Enum.SkipUntilEnumKeyword = function (self, tokensList)

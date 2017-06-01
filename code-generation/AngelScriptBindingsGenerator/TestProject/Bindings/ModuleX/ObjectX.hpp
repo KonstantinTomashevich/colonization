@@ -49,6 +49,11 @@ template <class T> void RegisterObjectX (asIScriptEngine *engine, char *classNam
 
 void RegisterMyEnumType (asIScriptEngine *engine)
 {
+    engine->RegisterEnum ("MyEnumType");
+    engine->RegisterEnumValue ("MyEnumType", "ME_THIRD_VALUE", ME_THIRD_VALUE);
+    engine->RegisterEnumValue ("MyEnumType", "ME_VALUES_COUNT", ME_VALUES_COUNT);
+    engine->RegisterEnumValue ("MyEnumType", "ME_SECOND_VALUE", ME_SECOND_VALUE);
+    engine->RegisterEnumValue ("MyEnumType", "ME_FIRST_VALUE", ME_FIRST_VALUE);
 }
 
 void RegistersubsystemX (asIScriptEngine *engine)
