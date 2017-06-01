@@ -55,11 +55,15 @@ Urho3DSubsystem.GetRequiredBindingsIncludes = function (self)
 end
 
 Urho3DSubsystem.GenerateWrappers = function (self)
-    return ""
+    return TemplatesUtils.ProcessTemplateString (Templates.SubsystemWrapper,
+                {bindingName = self.bindingName,
+                 type = self.type})
 end
 
 Urho3DSubsystem.GenerateRegistratorCode = function (self)
-    return ""
+    return TemplatesUtils.ProcessTemplateString (Templates.RegisterSubsystem,
+                {bindingName = self.bindingName,
+                 bindingType = self.bindingType})
 end
 
 Urho3DSubsystem.GetDataDestination = function ()

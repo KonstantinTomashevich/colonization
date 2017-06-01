@@ -12,13 +12,15 @@ Templates.ConstantWrapper =
 {
     return ${name};
 }
+
 ]]
 
 Templates.SubsystemWrapper =
-[[${name} *wrapper_${bindingName} ()
+[[${type} *wrapper_${bindingName} ()
 {
     return Urho3D::GetScriptContext ()->GetSubsystem <${type}> ();
 }
+
 ]]
 
 Templates.CXXArrayToASArray =

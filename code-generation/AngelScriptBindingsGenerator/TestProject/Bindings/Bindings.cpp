@@ -40,7 +40,7 @@ void RegisterFreeFunctions (asIScriptEngine *engine)
 
 void RegisterUrho3DSubsystems (asIScriptEngine *engine)
 {
-    RegisterSubsystemX (engine);
+    RegistersubsystemX (engine);
 }
 
 void RegisterClasses (asIScriptEngine *engine)

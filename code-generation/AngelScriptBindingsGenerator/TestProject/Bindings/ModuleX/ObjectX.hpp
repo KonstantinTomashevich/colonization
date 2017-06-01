@@ -27,8 +27,9 @@ void wrapper_ObjectX_SetArray_array (ObjectX* objectPtr, Urho3D::CScriptArray * 
     objectPtr->SetArray (Urho3D::ArrayToVector <Urho3D::String> (array));
 }
 
-void RegisterMyEnumType (asIScriptEngine *engine)
+MyNameSpace::SubsystemX *wrapper_subsystemX ()
 {
+    return Urho3D::GetScriptContext ()->GetSubsystem <MyNameSpace::SubsystemX> ();
 }
 
 template <class T> void RegisterObjectX (asIScriptEngine *engine, char *className, bool registerConstructors)
@@ -44,6 +45,15 @@ template <class T> void RegisterObjectX (asIScriptEngine *engine, char *classNam
 
     engine->RegisterObjectMethod (className, "Array <String> @ get_array () const", asFUNCTION (wrapper_ObjectX_GetArray), asCALL_CDECL_OBJFIRST);
     engine->RegisterObjectMethod (className, "void set_array ( Array <String>  @ array) ", asFUNCTION (wrapper_ObjectX_SetArray_array), asCALL_CDECL_OBJFIRST);
+}
+
+void RegisterMyEnumType (asIScriptEngine *engine)
+{
+}
+
+void RegistersubsystemX (asIScriptEngine *engine)
+{
+    engine->RegisterGlobalFunction ("SubsystemX @+ get_subsystemX ()", asFUNCTION (wrapper_subsystemX), asCALL_CDECL);
 }
 
 }

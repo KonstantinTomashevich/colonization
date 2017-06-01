@@ -1,7 +1,7 @@
 DataUtils = {}
 DataUtils.GetBindablesOfFile = function (fileName)
     local fileBindingTypes = {}
-    local toCheck = {"enums", "constants", "freeFunctions", "classes"}
+    local toCheck = {"enums", "constants", "freeFunctions", "classes", "subsystems"}
     for index, toCheckItem in ipairs (toCheck) do
         for key, value in pairs (data [toCheckItem]) do
             if value.fileName == fileName then
