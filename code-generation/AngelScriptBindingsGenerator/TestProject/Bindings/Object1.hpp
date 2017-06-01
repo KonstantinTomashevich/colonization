@@ -5,6 +5,11 @@ namespace TestProject
 {
 namespace Bindings
 {
+const Urho3D::StringHash wrapper_MY_CONSTANT ()
+{
+    return MY_CONSTANT;
+}
+
 Urho3D::CScriptArray * wrapper_MyFreeFunction_argument (Urho3D::CScriptArray * argument)
 {
     Urho3D::Vector <Object1 *> result = MyFreeFunction (Urho3D::ArrayToPODVector <float> (argument));
@@ -29,6 +34,7 @@ void RegisterMyBaseObjectStaticFunction (asIScriptEngine *engine)
 
 void RegisterMY_CONSTANT (asIScriptEngine *engine)
 {
+    engine->RegisterGlobalFunction ("const StringHash get_MY_CONSTANT ()", asFUNCTION (wrapper_MY_CONSTANT), asCALL_CDECL);
 }
 
 template <class T> void RegisterMyBaseObject (asIScriptEngine *engine, char *className, bool registerConstructors)

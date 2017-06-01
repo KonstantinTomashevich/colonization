@@ -8,7 +8,7 @@ Templates.IncludeFullPath =
 ]]
 
 Templates.ConstantWrapper =
-[[${type} wrapper_${name} ()
+[[${type} wrapper_${bindingName} ()
 {
     return ${name};
 }
@@ -61,7 +61,7 @@ Templates.RegisterClassBase =
 ]]
 
 Templates.RegisterConstant =
-[[    engine->RegisterGlobalFunction ("${bindingType} get_${bindingName} ()", asFUNCTION (wrapper_${name}), asCALL_CDECL);
+[[    engine->RegisterGlobalFunction ("${bindingType} get_${bindingName} ()", asFUNCTION (wrapper_${bindingName}), asCALL_CDECL);
 ]]
 
 Templates.RegisterEnumType =

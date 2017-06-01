@@ -42,11 +42,16 @@ Constant.GetRequiredBindingsIncludes = function (self)
 end
 
 Constant.GenerateWrappers = function (self)
-    return ""
+    return TemplatesUtils.ProcessTemplateString (Templates.ConstantWrapper,
+                {name = self.name,
+                 bindingName = self.bindingName,
+                 type = self.type})
 end
 
 Constant.GenerateRegistratorCode = function (self)
-    return ""
+    return TemplatesUtils.ProcessTemplateString (Templates.RegisterConstant,
+                {bindingName = self.bindingName,
+                 bindingType = self.bindingType})
 end
 
 Constant.ReadType = function (self, tokensList)
