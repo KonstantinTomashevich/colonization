@@ -177,7 +177,7 @@ void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map
     else
     {
         float internalTaxes = configuration->GetInternalTaxes ();
-        Urho3D::SharedPtr <TradeDistrictProcessingInfo> result = tradeArea->ProcessTrade (map, updateDelay, true);
+        Urho3D::SharedPtr <TradeDistrictProcessingInfo> result (tradeArea->ProcessTrade (map, updateDelay, true));
         float playersIncome = result->GetSoldTradeGoodsCost () * internalTaxes;
         player->SetGold (player->GetGold () + playersIncome);
 

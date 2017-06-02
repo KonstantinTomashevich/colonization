@@ -10,6 +10,7 @@
 
 namespace Colonization
 {
+//@ASBindGen Class ObjectType=Ref
 class InternalTradeArea : public Urho3D::Component
 {
 URHO3D_OBJECT (InternalTradeArea, Component)
@@ -41,10 +42,10 @@ protected:
                                          Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsProductionInfo,
                                          float updateDelay);
 
-    void WriteDistrictsBalanceAdditions (Map *map, Urho3D::SharedPtr <TradeDistrictProcessingInfo> result,
+    void WriteDistrictsBalanceAdditions (Map *map, TradeDistrictProcessingInfo *result,
                                          Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsBalanceAdditions,
                                          bool changeDistrictsVars);
-    void WriteDistrictsProduction (Map *map, Urho3D::SharedPtr <TradeDistrictProcessingInfo> result,
+    void WriteDistrictsProduction (Map *map, TradeDistrictProcessingInfo *result,
                                    Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsProduction, bool changeDistrictsVars);
     void CallDistrictsUpdate (Urho3D::PODVector<District *> &districts);
 
@@ -62,13 +63,20 @@ public:
 
     virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);
     static void RegisterObject (Urho3D::Context *context);
-    Urho3D::SharedPtr <TradeDistrictProcessingInfo> ProcessTrade (Map *map, float updateDelay, bool changeDistrictsVars);
+    //@ASBindGen Function AddRef_arg-1
+    TradeDistrictProcessingInfo *ProcessTrade (Map *map, float updateDelay, bool changeDistrictsVars);
 
+    //@ASBindGen Function OverrideName=get_districtsHashesCount
     int GetDistrictsHashesCount ();
+    //@ASBindGen Function
     Urho3D::StringHash GetDistrictHashByIndex (int index);
+    //@ASBindGen Function
     Urho3D::PODVector <Urho3D::StringHash> GetDistrictsHashesArray ();
+    //@ASBindGen Function
     void AddDistrictHash (Urho3D::StringHash districtHash);
+    //@ASBindGen Function
     bool ContainsDistrictHash (Urho3D::StringHash districtHash);
+    //@ASBindGen Function
     bool RemoveDistrictHash (Urho3D::StringHash districtHash);
 
     Urho3D::VariantVector GetDistrictsHashesArrayAttribute () const;

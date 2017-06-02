@@ -96,7 +96,7 @@ void TestBasicColonyBalanceApplication::Start ()
 
     Colonization::InternalTradeArea *internalTradeArea = scene->CreateComponent <Colonization::InternalTradeArea> ();
     internalTradeArea->AddDistrictHash (map->GetDistrictByIndex (1 * mapHeight + 1)->GetHash ());
-    Urho3D::SharedPtr <Colonization::TradeDistrictProcessingInfo> result = internalTradeArea->ProcessTrade (map, 10.0f, true);
+    Urho3D::SharedPtr <Colonization::TradeDistrictProcessingInfo> result  (internalTradeArea->ProcessTrade (map, 10.0f, true));
 
     float soldGoodsCost = result->GetSoldTradeGoodsCost ();
     float unsoldGoodsCost = result->GetUnsoldTradeGoodsCost ();
