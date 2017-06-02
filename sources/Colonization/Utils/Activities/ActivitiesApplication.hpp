@@ -6,6 +6,7 @@
 
 namespace Colonization
 {
+//@ASBindGen Class ObjectType=Ref
 class ActivitiesApplication : public Urho3D::Application
 {
 URHO3D_OBJECT (ActivitiesApplication, Application)
@@ -22,9 +23,13 @@ public:
     void UpdateActivities (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     virtual void Stop ();
 
+    //@ASBindGen Function AddRef_arg0
     void SetupActivityNextFrame (Colonization::Activity *activity);
+    //@ASBindGen Function AddRef_arg0
     void StopActivityNextFrame (Colonization::Activity *activity);
+    //@ASBindGen Function OverrideName=get_activitiesCount
     unsigned GetActivitiesCount ();
+    //@ASBindGen Function AddRef_arg-1
     Colonization::Activity *GetActivityByIndex (int index);
 };
 }
