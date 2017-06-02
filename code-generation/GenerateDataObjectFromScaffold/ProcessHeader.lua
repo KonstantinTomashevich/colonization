@@ -11,6 +11,14 @@ _header_varsGettersAndSettersItemTemplate =
 
 ]]
 
+_header_varsGettersAndSettersWithASBindGenItemTemplate =
+[[    //@${asBindGenCommand} Function OverrideName=get_${var.shortName}
+    ${var.type} Get${var.prettyName} () const;
+    //@${asBindGenCommand} Function OverrideName=set_${var.shortName}
+    void Set${var.prettyName} (${var.setterArgType} ${var.shortName});
+
+]]
+
 _header_varsGettersAndSettersArrayAttributeTemplate =
 [[    Urho3D::VariantVector Get${var.prettyName}Attribute () const;
     void Set${var.prettyName}Attribute (const Urho3D::VariantVector &${var.shortName});
@@ -35,7 +43,12 @@ end
 
 function WriteHeaderVarsGettersAndSetters ()
     for index, var in ipairs (_vars) do
-        _headerFile:write (ProcessTemplate (_header_varsGettersAndSettersItemTemplate, ConstructVarTemplateVars (var)));
+        local template = _header_varsGettersAndSettersItemTemplate
+        if _asBindGenCommand ~= nil then
+            template = _header_varsGettersAndSettersWithASBindGenItemTemplate
+        end
+        _headerFile:write (ProcessTemplate (template, ConstructVarTemplateVars (var)));
+
         if IsArrayType (var.type) then
             _headerFile:write (ProcessTemplate (_header_varsGettersAndSettersArrayAttributeTemplate, ConstructVarTemplateVars (var)));
         end

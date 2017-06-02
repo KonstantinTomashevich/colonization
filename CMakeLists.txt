@@ -73,8 +73,8 @@ set (GENERATOR_SCRIPT "./code-generation/GenerateDataObjectFromScaffold/Main.lua
 set (SCAFFOLD "./sources/Colonization/Core/GameConfiguration.scaffold")
 set (OUTPUT_HPP "./sources/Colonization/Core/GameConfiguration.hpp")
 set (OUTPUT_CPP "./sources/Colonization/Core/GameConfiguration.cpp")
-set (OUTPUT_BINDINGS "./sources/Colonization/AngelScriptBinders/Core/BindGameConfiguration.cpp")
-execute_process (COMMAND ${LUA} ${GENERATOR_SCRIPT} ${SCAFFOLD} ${OUTPUT_HPP} ${OUTPUT_CPP} ${OUTPUT_BINDINGS}
+set (AS_BIND_GEN_COMMAND "ASBindGenCommand=ASBindGen")
+execute_process (COMMAND ${LUA} ${GENERATOR_SCRIPT} ${SCAFFOLD} ${OUTPUT_HPP} ${OUTPUT_CPP} ${AS_BIND_GEN_COMMAND}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     OUTPUT_VARIABLE GENERATION_OUTPUT)
 message (STATUS ${GENERATION_OUTPUT})

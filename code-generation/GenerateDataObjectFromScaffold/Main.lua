@@ -23,10 +23,17 @@ print ("Input scaffold: " .. _inputFileName .. "\nOutput header: " .. _outputHea
     "\nOutput bindings: " .. _outputBindingsObjectFileName)
 print ("WARNING: Currently, only one level Urho3D arrays are supported!")
 
---- Load files
+-- Load files
 _headerFile = io.open (_outputHeaderFileName, "w+")
 _objectFile = io.open (_outputObjectFileName, "w+")
-_bindingsFile = io.open (_outputBindingsObjectFileName, "w+")
+
+-- If output binding file name starts with "ASBindGenCommand=", detect it as ASBindGen command name
+-- and write ASBindGen comments instead of bindings object.
+if _outputBindingsObjectFileName:find ("ASBindGenCommand=") == 1 then
+    _asBindGenCommand = _outputBindingsObjectFileName:sub (("ASBindGenCommand="):len () + 1, _outputBindingsObjectFileName:len ())
+else
+    _bindingsFile = io.open (_outputBindingsObjectFileName, "w+")
+end
 
 for readedLine in io.lines (_inputFileName) do
     if _processMode == "Configuration" then
@@ -57,7 +64,7 @@ for readedLine in io.lines (_inputFileName) do
             ProcessObjectLine (readedLine)
         end
 
-    elseif _processMode == "Bindings" then
+    elseif _processMode == "Bindings" and _asBindGenCommand == nil then
         UpdateProcessMode (readedLine, false)
         if _processMode == "Bindings" then
             ProcessBindingsLine (readedLine)
@@ -67,4 +74,6 @@ end
 
 _headerFile:close ()
 _objectFile:close ()
-_bindingsFile:close ()
+if _bindingsFile ~= nil then
+    _bindingsFile:close ()
+end
