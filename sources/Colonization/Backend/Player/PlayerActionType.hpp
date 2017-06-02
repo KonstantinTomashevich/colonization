@@ -1,6 +1,7 @@
 #pragma once
 namespace Colonization
 {
+//@ASBindGen Enum
 enum PlayerActionType
 {
     PLAYER_ACTION_NONE = 0,

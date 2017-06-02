@@ -3,6 +3,7 @@
 
 namespace Colonization
 {
+//@ASBindGen Enum
 enum DiplomacyRequestPlayerStatus
 {
     DRPSTATUS_WAITING = 0,

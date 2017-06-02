@@ -10,6 +10,7 @@
 
 namespace Colonization
 {
+//@ASBindGen Function ReturnHandleArray
 Urho3D::PODVector <Unit *> GetUnitsInDistrict (Urho3D::Scene *scene, Urho3D::StringHash districtHash);
 class UnitsManager : public Urho3D::Component
 {
