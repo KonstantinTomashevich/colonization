@@ -1,5 +1,9 @@
 TypeUtils = {}
 TypeUtils.BasicCXXToASType = function (type)
+    if type == "unsigned" then
+        return "uint"
+    end
+
     local newType = type:gsub ("*", "@"):gsub ("unsigned ", "u"):gsub ("long", "int64"):
             gsub ("PODVector <", "Array <"):gsub ("PODVector<", "Array<"):
             gsub ("Vector <", "Array <"):gsub ("Vector<", "Array<")
