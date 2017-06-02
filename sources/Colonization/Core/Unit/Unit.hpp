@@ -9,6 +9,7 @@
 namespace Colonization
 {
 class UnitsManager;
+//@ASBindGen Class ObjectType=Ref
 class Unit : public Urho3D::Component
 {
 URHO3D_OBJECT (Unit, Component)
@@ -27,31 +28,47 @@ public:
     static void RegisterObject (Urho3D::Context *context);
     virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest) = 0;
 
+    //@ASBindGen Function
     bool IsCanGoTo (const District *district, const Map *map, Urho3D::StringHash imaginePosition = Urho3D::StringHash::ZERO) const;
     void UpdateHash (const UnitsManager *owner);
+    //@ASBindGen Function OverrideName=get_hash
     Urho3D::StringHash GetHash () const;
+    //@ASBindGen Function OverrideName=set_hash
     void SetHash (const Urho3D::StringHash &hash);
 
+    //@ASBindGen Function OverrideName=get_unitType
     UnitType GetUnitType () const;
+    //@ASBindGen Function OverrideName=set_unitType
     void SetUnitType (UnitType unitType);
 
+    //@ASBindGen Function OverrideName=get_ownerPlayerName
     Urho3D::String GetOwnerPlayerName () const;
+    //@ASBindGen Function OverrideName=set_ownerPlayerName
     void SetOwnerPlayerName (const Urho3D::String &ownerPlayerName);
 
+    //@ASBindGen Function OverrideName=get_positionHash
     Urho3D::StringHash GetPositionHash () const;
+    //@ASBindGen Function OverrideName=set_positionHash
     void SetPositionHash (const Urho3D::StringHash &positionHash);
 
+    //@ASBindGen Function OverrideName=get_way
     Urho3D::PODVector <Urho3D::StringHash> GetWay () const;
+    //@ASBindGen Function OverrideName=set_way
     void SetWay (Urho3D::PODVector <Urho3D::StringHash> way);
     Urho3D::VariantVector GetWayAttribute () const;
     void SetWayAttribute (const Urho3D::VariantVector &way);
 
+    //@ASBindGen Function OverrideName=get_wayToNextDistrictProgressInPercents
     float GetWayToNextDistrictProgressInPercents () const;
+    //@ASBindGen Function OverrideName=set_wayToNextDistrictProgressInPercents
     void SetWayToNextDistrictProgressInPercents (float wayToNextDistrictProgressInPercents);
 
+    //@ASBindGen Function
     // TODO: Implement it in all units.
     virtual float GetBattleAttackForce (GameConfiguration *configuration, bool isNaval) const = 0;
+    //@ASBindGen Function
     virtual bool ApplyDamage (GameConfiguration *configuration, float damage) = 0;
+    //@ASBindGen Function
     virtual Urho3D::String GetUnitTypeTag () const = 0;
 };
 }

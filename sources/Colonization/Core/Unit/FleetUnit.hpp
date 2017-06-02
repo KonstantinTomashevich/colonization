@@ -5,6 +5,7 @@
 
 namespace Colonization
 {
+//@ASBindGen Class ObjectType=Ref
 class FleetUnit : public Unit
 {
 URHO3D_OBJECT (FleetUnit, Unit)
@@ -19,11 +20,15 @@ public:
     static void RegisterObject (Urho3D::Context *context);
     virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);
 
+    //@ASBindGen Function OverrideName=get_warShipsCount
     int GetWarShipsCount () const;
+    //@ASBindGen Function OverrideName=set_warShipsCount
     void SetWarShipsCount (int warShipsCount);
 
+    //@ASBindGen Function OverrideName=get_warShipsHealthPoints
     /// Any war ship health is in (0.0f, 100.0f].
     Urho3D::PODVector <float> GetWarShipsHealthPoints () const;
+    //@ASBindGen Function OverrideName=set_warShipsHealthPoints
     void SetWarShipsHealthPoints (const Urho3D::PODVector <float> &warShipsHealthPoints);
     Urho3D::VariantVector GetWarShipsHealthPointsAttribute () const;
     void SetWarShipsHealthPointsAttribute (const Urho3D::VariantVector &warShipsHealthPoints);

@@ -90,6 +90,21 @@ DistrictProductionInfo CalculateProductionOfIndustry (District *district, GameCo
     return production;
 }
 
+Urho3D::VariantMap CalculateProductionOfFarmsAsVariantMap (District *district, GameConfiguration *configuration)
+{
+    return CalculateProductionOfFarms (district, configuration).ToVariantMap ();
+}
+
+Urho3D::VariantMap CalculateProductionOfMinesAsVariantMap (District *district, GameConfiguration *configuration)
+{
+    return CalculateProductionOfMines (district, configuration).ToVariantMap ();
+}
+
+Urho3D::VariantMap CalculateProductionOfIndustryAsVariantMap (District *district, GameConfiguration *configuration)
+{
+    return CalculateProductionOfIndustry (district, configuration).ToVariantMap ();
+}
+
 float CalculateFarmsProductionRelativePrice (District *district, GameConfiguration *configuration)
 {
     float farmsProductionRelativePrice = 1.0f;

@@ -5,6 +5,7 @@
 
 namespace Colonization
 {
+//@ASBindGen Class ObjectType=Ref
 // TODO: Maybe add isSettleAtCurrentMoveTarget_? And add ability to rule colonizators from client.
 class ColonizatorsUnit : public Unit
 {
@@ -19,7 +20,9 @@ public:
     static void RegisterObject (Urho3D::Context *context);
     virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);
 
+    //@ASBindGen Function OverrideName=get_colonizatorsCount
     int GetColonizatorsCount () const;
+    //@ASBindGen Function OverrideName=set_colonizatorsCount
     void SetColonizatorsCount (int colonizatorsCount);
 
     virtual float GetBattleAttackForce (GameConfiguration *configuration, bool isNaval) const;

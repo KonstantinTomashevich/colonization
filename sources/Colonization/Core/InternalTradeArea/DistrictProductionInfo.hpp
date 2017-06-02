@@ -4,10 +4,15 @@
 
 namespace Colonization
 {
+//@ASBindGen Constant
 const Urho3D::StringHash DISTRICT_PRODUCTION_AMOUNT_KEY ("DistrictProductionAmount");
+//@ASBindGen Constant
 const Urho3D::StringHash DISTRICT_PRODUCTION_RELATIVE_PRICE_KEY ("DistrictProductionRelativePrice");
+//@ASBindGen Constant
 const Urho3D::StringHash DISTRICT_PRODUCTION_QUALITY_KEY ("DistrictProductionQuality");
+//@ASBindGen Constant
 const Urho3D::StringHash DISTRICT_PRODUCTION_SELLABILITY_KEY ("DistrictProductionSellability");
+//@ASBindGen Constant
 const Urho3D::StringHash DISTRICT_PRODUCTION_SELLED_KEY ("DistrictProductionSelled");
 
 struct DistrictProductionInfo
