@@ -215,34 +215,3 @@ Urho3D::StringHash GameConfiguration::GetHeuristicNearestWayToEuropeDistrict (Ma
 
 //@Insert vars getters and setters
 }
-
-bindings:
-#include <Colonization/BuildConfiguration.hpp>
-#include "BindGameConfiguration.hpp"
-#include <Urho3D/AngelScript/APITemplates.h>
-#include <Urho3D/ThirdParty/AngelScript/angelscript.h>
-#include <Colonization/Core/GameConfiguration.hpp>
-
-namespace Colonization
-{
-//@Insert arrays getters and setters
-void BindGameConfiguration (Urho3D::Script *script, bool bindInterface)
-{
-    asIScriptEngine *engine = script->GetScriptEngine ();
-    if (!bindInterface)
-    {
-        Urho3D::RegisterComponent <GameConfiguration> (engine, "GameConfiguration");
-    }
-    else
-    {
-        BindGameConfigurationInterface (script);
-    }
-}
-
-void BindGameConfigurationInterface (Urho3D::Script *script)
-{
-    asIScriptEngine *engine = script->GetScriptEngine ();
-    engine->RegisterObjectMethod ("GameConfiguration", "StringHash GetHeuristicNearestWayToEuropeDistrict (Map @map, District @wayStartDistrict) const", asMETHOD (GameConfiguration, GetHeuristicNearestWayToEuropeDistrict), asCALL_THISCALL);
-    //@Insert getters and setters bindings
-}
-}
