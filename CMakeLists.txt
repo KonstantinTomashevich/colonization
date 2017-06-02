@@ -68,17 +68,29 @@ else ()
 endif ()
 message (STATUS "Lua command: ${LUA}")
 
-message (STATUS "Generation GameConfiguration class from scaffold...")
-set (GENERATOR_SCRIPT "./code-generation/GenerateDataObjectFromScaffold/Main.lua")
-set (SCAFFOLD "./sources/Colonization/Core/GameConfiguration.scaffold")
-set (OUTPUT_HPP "./sources/Colonization/Core/GameConfiguration.hpp")
-set (OUTPUT_CPP "./sources/Colonization/Core/GameConfiguration.cpp")
+message (STATUS "Unwrapping scaffolds...")
+set (UNWRAPPER_SCRIPT "./code-generation/GenerateDataObjectFromScaffold/Main.lua")
 set (AS_BIND_GEN_COMMAND "ASBindGenCommand=ASBindGen")
-execute_process (COMMAND ${LUA} ${GENERATOR_SCRIPT} ${SCAFFOLD} ${OUTPUT_HPP} ${OUTPUT_CPP} ${AS_BIND_GEN_COMMAND}
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    OUTPUT_VARIABLE GENERATION_OUTPUT)
-message (STATUS ${GENERATION_OUTPUT})
-message (STATUS "GameConfiguration class generated from scaffold.")
+file (GLOB_RECURSE SCAFFOLDS "*.scaffold")
+file (MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/UnwrapperLogs/)
+
+foreach (SCAFFOLD ${SCAFFOLDS})
+    file (RELATIVE_PATH SCAFFOLD_REL ${CMAKE_SOURCE_DIR} ${SCAFFOLD})
+    get_filename_component (DIR ${SCAFFOLD_REL} DIRECTORY)
+    get_filename_component (NAME ${SCAFFOLD} NAME_WE)
+    message (STATUS "Unwrapping ${NAME}...")
+
+    set (OUTPUT_HPP "${DIR}/${NAME}.hpp")
+    set (OUTPUT_CPP "${DIR}/${NAME}.cpp")
+    execute_process (COMMAND ${LUA} ${UNWRAPPER_SCRIPT} ${SCAFFOLD_REL} ${OUTPUT_HPP} ${OUTPUT_CPP} ${AS_BIND_GEN_COMMAND}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        RESULT_VARIABLE RESULT
+        OUTPUT_FILE "${CMAKE_BINARY_DIR}/UnwrapperLogs/${NAME}.log")
+
+    if (NOT RESULT EQUAL 0)
+        message (FATAL_ERROR "Can't unwrap ${NAME}! See BinaryDir/UnwrapperLogs/${NAME}.log")
+    endif ()
+endforeach ()
 
 include (UrhoCommon)
 find_package (Urho3D REQUIRED)
