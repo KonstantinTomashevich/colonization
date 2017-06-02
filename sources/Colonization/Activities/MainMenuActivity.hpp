@@ -5,6 +5,7 @@
 
 namespace Colonization
 {
+//@ASBindGen Class ObjectType=Ref
 class MainMenuActivity : public Activity
 {
 URHO3D_OBJECT (MainMenuActivity, Activity)
@@ -12,6 +13,7 @@ protected:
     Urho3D::Scene *backgroundScene_;
     Urho3D::ScriptInstance *angelScriptGUI_;
 public:
+    //@ASBindGen Constructor UseUrho3DScriptContext_arg0
     MainMenuActivity (Urho3D::Context *context);
     virtual ~MainMenuActivity ();
 
