@@ -5,9 +5,9 @@ vars:
 Urho3D::PODVector <Urho3D::StringHash> wayToEuropeDistricts_ =$Way To Europe Districts
 float playerStartGold_ =500.0f$Player Start Gold
 float sailSpeed_ =0.4f$Sail Speed
-float marchSpeed_ =0.15f$VarDef
-float embarkationSpeed_ =0.11f$VarDef
-float disembarkationSpeed_ =0.11f$VarDef
+float marchSpeed_ =0.15f$March Speed
+float embarkationSpeed_ =0.11f$Embarkation Speed
+float disembarkationSpeed_ =0.11f$Disembarkation Speed
 
 float oneColonizatorSendingCost_ =1.0f$One Colonizator Sending Cost
 float oneWarShipBuildingCost_ =30.0f$One War Ship Building Cost

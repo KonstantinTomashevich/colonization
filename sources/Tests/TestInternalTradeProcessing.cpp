@@ -104,7 +104,7 @@ void TestInternalTradeProcessingApplication::Start ()
     {
         Urho3D::Vector3 coordinate = coloniesCoordinatesWithLogistics.At (index);
         Colonization::District *district = map->GetDistrictByIndex (coordinate.x_ * mapHeight + coordinate.y_);
-        district->SetColony (true);
+        district->SetHasColony (true);
         district->SetColonyOwnerName ("PlayerX");
         district->SetFarmsEvolutionPoints (4.0f);
         district->SetMinesEvolutionPoints (2.0f);

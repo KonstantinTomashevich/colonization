@@ -12,7 +12,7 @@ namespace Colonization
 {
 float PlayersPointsCalculator::CalculateColonyPoints (District *district, GameConfiguration *configuration)
 {
-    assert (district->HasColony ());
+    assert (district->GetHasColony ());
     float modifer = configuration->GetColonyPointsModifer ();
     float population = district->GetMenCount () + district->GetWomenCount ();
     float totalEvolution = district->GetFarmsEvolutionPoints () + district->GetMinesEvolutionPoints () +

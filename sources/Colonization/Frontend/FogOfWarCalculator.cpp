@@ -64,7 +64,7 @@ void FogOfWarCalculator::Update (Urho3D::StringHash eventType, Urho3D::VariantMa
         for (int index = 0; index < map->GetDistrictsCount (); index++)
         {
             District *district = map->GetDistrictByIndex (index);
-            if (district->HasColony () && Urho3D::StringHash (district->GetColonyOwnerName ()) == playerNameHash)
+            if (district->GetHasColony () && Urho3D::StringHash (district->GetColonyOwnerName ()) == playerNameHash)
             {
                 districtsToOpen.Push (district);
             }

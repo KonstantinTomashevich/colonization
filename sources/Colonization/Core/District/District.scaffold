@@ -1,0 +1,411 @@
+tab: "    "
+className: District
+
+vars:
+Urho3D::StringHash hash_ =$Hash
+bool isSea_ =true$Is Sea
+bool isImpassable_ =false$IsImpassable
+Urho3D::String name_ =$Name
+Urho3D::PODVector <Urho3D::Vector3> polygonPoints_ =$Polygon Points
+Urho3D::Vector3 unitPosition_ =$Unit Position
+Urho3D::Vector3 colonyPosition_ =$Colony Position
+Urho3D::PODVector <Urho3D::StringHash> neighborsHashes_ =$Neighbors Hashes
+
+float farmingSquare_ =1.0f$Farming Square
+float forestsSquare_ =1.0f$Forests Square
+float landAverageFertility_ =1.0f$Land Average Fertility
+
+bool hasCoalDeposits_ =false$Has Coal Deposits
+bool hasIronDeposits_ =false$Has Iron Deposits
+bool hasSilverDeposits_ =false$Has Silver Deposits
+bool hasGoldDeposits_ =false$Has Gold Deposits
+
+float nativesCount_ =0.0f$Natives Count
+float nativesFightingTechnologyLevel_ =1.0f$Natives Fighting Technology Level
+float nativesAggressiveness_ =1.0f$Natives Aggressiveness
+
+bool hasColony_ =false$Has Colony
+Urho3D::String colonyOwnerName_ =$Colony Owner Name
+float menCount_ =0.0f$Men Count
+float womenCount_ =0.0f$Women Count
+
+float farmsEvolutionPoints_ =0.0f$Farms Evolution Points
+float minesEvolutionPoints_ =0.0f$Mines Evolution Points
+float industryEvolutionPoints_ =0.0f$Industry Evolution Points
+float logisticsEvolutionPoints_ =0.0f$Logistics Evolution Points
+float defenseEvolutionPoints_ =0.0f$Defense Evolution Points
+
+float farmsBalance_ =0.0f$Farms Balance
+float minesBalance_ =0.0f$Mines Balance
+float industryBalance_ =0.0f$Industry Balance
+float logisticsBalance_ =0.0f$Logistics Balance
+float defenseBalance_ =0.0f$Defense Balance
+float averageLevelOfLifePoints_ =0.0f$Average Level Of Life Points
+
+Urho3D::VariantMap lastTradeFarmsProduction_ =$Last Trade Farms Production
+Urho3D::VariantMap lastTradeMinesProduction_ =$Last Trade Mines Production
+Urho3D::VariantMap lastTradeIndustryProduction_ =$Last Trade Industry Production
+
+float lastTradeFarmsBalanceAddition_ =0.0f$Last Trade Farms Balance Addition
+float lastTradeMinesBalanceAddition_ =0.0f$Last Trade Mines Balance Addition
+float lastTradeIndustryBalanceAddition_ =0.0f$Last Trade Industry Balance Addition
+float lastTradeLogisticsBalanceAddition_ =0.0f$Last Trade Logistics Balance Addition
+float lastTradeDefenseBalanceAddition_ =0.0f$Last Trade Defense Balance Addition
+
+header:
+#pragma once
+#include <Urho3D/Math/Vector3.h>
+#include <Urho3D/Container/Vector.h>
+#include <Urho3D/Scene/Node.h>
+#include <Urho3D/Container/Str.h>
+#include <Urho3D/Scene/LogicComponent.h>
+#include <Colonization/Core/District/DistrictEnums.hpp>
+
+namespace Colonization
+{
+class Map;
+class District : public Urho3D::Component
+{
+URHO3D_OBJECT (District, Component)
+protected:
+    ClimateType climate_;
+    NativesCharacterType nativesCharacter_;
+    Urho3D::Vector <Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> > colonyActions_;
+    //@Insert var list
+
+public:
+    District (Urho3D::Context *context);
+    virtual ~District ();
+
+    virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);
+    static void RegisterObject (Urho3D::Context *context);
+    void CalculateNeighbors (Urho3D::Vector <Urho3D::SharedPtr <District> > &allDistricts);
+    void Invest (Urho3D::StringHash investitionType, float money);
+
+    void AddColonyAction (Urho3D::StringHash actionType, Urho3D::VariantMap &actionData);
+    int GetColonyActionsCount () const;
+    Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> GetColonyActionByIndex (int index) const;
+    Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> GetColonyActionById (Urho3D::StringHash id, bool &found) const;
+
+    bool SetColonyActionAtIndexData (int index, Urho3D::VariantMap &actionData);
+    bool SetColonyActionWithIdData (Urho3D::VariantMap &actionData);
+    void RemoveColonyActionByIndex (int index);
+    bool RemoveColonyActionById(Urho3D::StringHash id);
+
+    void UpdateHash (Map *owner);
+    bool IsNeighborsWith (Urho3D::StringHash otherDistrict) const;
+
+    ClimateType GetClimate () const;
+    void SetClimate (ClimateType climate);
+
+    NativesCharacterType GetNativesCharacter () const;
+    void SetNativesCharacter (NativesCharacterType nativesCharacter);
+
+    //@Insert vars getters and setters
+};
+}
+
+object:
+#include <Colonization/BuildConfiguration.hpp>
+#include "District.hpp"
+#include <Urho3D/IO/Log.h>
+#include <Urho3D/Core/Context.h>
+#include <Urho3D/Graphics/DebugRenderer.h>
+
+#include <Colonization/Utils/Serialization/Categories.hpp>
+#include <Colonization/Core/Map.hpp>
+#include <Colonization/Core/District/ColonyActions.hpp>
+#include <Colonization/Utils/Serialization/AttributeMacro.hpp>
+
+namespace Colonization
+{
+const char *polygonPointsStructureElementsNames [] =
+{
+    "Polygon Points Count",
+    "   Point",
+    0
+};
+
+const char *neighborsHashesStructureElementsNames [] =
+{
+    "Neighbors Count",
+    "   District Hash",
+    0
+};
+
+const char *colonyActionsStructureElementsNames [] =
+{
+    "Colony Actions Count",
+    "   Type",
+    "   Data",
+    0
+};
+
+const char *climateTypesNames [] =
+{
+    "Tropical",
+    "Hot",
+    "Temperate",
+    "Temperate Continental",
+    "Desert",
+    "Cold",
+    0
+};
+
+const char *nativesCharacterTypesNames [] =
+{
+    "Friendly",
+    "Medium",
+    "Cold",
+    "Isolationist",
+    "Aggressive",
+    0
+};
+
+District::District (Urho3D::Context *context) : Urho3D::Component (context),
+    climate_ (CLIMATE_TEMPERATE),
+    nativesCharacter_ (NATIVES_CHARACTER_MEDIUM),
+    colonyActions_ (),
+    //@Insert vars initialization
+{
+
+}
+
+District::~District ()
+{
+
+}
+
+void District::DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest)
+{
+    if (!polygonPoints_.Empty ())
+    {
+        for (int index = 0; index < polygonPoints_.Size (); index++)
+        {
+            Urho3D::Vector3 firstPoint = polygonPoints_.At (index);
+            Urho3D::Vector3 secondPoint;
+
+            if (index + 1 < polygonPoints_.Size ())
+            {
+                secondPoint = polygonPoints_.At (index + 1);
+            }
+            else
+            {
+                secondPoint = polygonPoints_.At (0);
+            }
+
+            debug->AddLine (firstPoint, secondPoint, Urho3D::Color::RED, depthTest);
+        }
+    }
+
+    Urho3D::Sphere colonySphere (colonyPosition_, 0.25f);
+    debug->AddSphere (colonySphere, Urho3D::Color::GRAY, depthTest);
+
+    Urho3D::Sphere unitSphere (unitPosition_, 0.15f);
+    debug->AddSphere (unitSphere, Urho3D::Color::BLACK, depthTest);
+}
+
+void District::RegisterObject (Urho3D::Context *context)
+{
+    context->RegisterFactory <District> (COLONIZATION_CORE_CATEGORY);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
+    URHO3D_ENUM_ACCESSOR_ATTRIBUTE ("Climate", GetClimate, SetClimate, ClimateType, climateTypesNames, CLIMATE_TEMPERATE, Urho3D::AM_DEFAULT);
+    URHO3D_ENUM_ACCESSOR_ATTRIBUTE ("Natives Character", GetNativesCharacter, SetNativesCharacter, NativesCharacterType, nativesCharacterTypesNames, NATIVES_CHARACTER_MEDIUM, Urho3D::AM_DEFAULT);
+
+    //@Insert attributes registration
+}
+
+void District::CalculateNeighbors (Urho3D::Vector<Urho3D::SharedPtr<District> > &allDistricts)
+{
+    assert (!allDistricts.Empty ());
+    neighborsHashes_.Clear ();
+    for (int index = 0; index < allDistricts.Size (); index++)
+    {
+        Urho3D::SharedPtr <District> another = allDistricts.At (index);
+        Urho3D::PODVector <Urho3D::Vector3> anotherPolygonPoints = another->GetPolygonPoints ();
+        assert (another);
+
+        if (another != this && !anotherPolygonPoints.Empty () && !polygonPoints_.Empty ())
+        {
+            int contactsCount = 0;
+            for (int anotherPolygonPointIndex = 0;
+                 anotherPolygonPointIndex < anotherPolygonPoints.Size (); anotherPolygonPointIndex++)
+            {
+
+                for (int thisPolygonPointIndex = 0;
+                     thisPolygonPointIndex < polygonPoints_.Size (); thisPolygonPointIndex++)
+                {
+
+                    if (anotherPolygonPoints.At (anotherPolygonPointIndex) ==
+                            polygonPoints_.At (thisPolygonPointIndex))
+                    {
+                        contactsCount += 1;
+                    }
+                }
+            }
+
+            if (contactsCount >= 2)
+            {
+                neighborsHashes_.Push (another->GetHash ());
+            }
+        }
+    }
+}
+
+void District::Invest (Urho3D::StringHash investitionType, float money)
+{
+    if (investitionType == Urho3D::StringHash ("farms"))
+    {
+        farmsBalance_ += money;
+    }
+    else if (investitionType == Urho3D::StringHash ("mines"))
+    {
+        minesBalance_ += money;
+    }
+    else if (investitionType == Urho3D::StringHash ("industry"))
+    {
+        industryBalance_ += money;
+    }
+    else if (investitionType == Urho3D::StringHash ("logistics"))
+    {
+        logisticsBalance_ += money;
+    }
+    else if (investitionType == Urho3D::StringHash ("defense"))
+    {
+        defenseBalance_ += money;
+    }
+}
+
+void District::AddColonyAction (Urho3D::StringHash actionType, Urho3D::VariantMap &actionData)
+{
+    Urho3D::StringHash id;
+    bool found = false;
+    do
+    {
+        id = Urho3D::StringHash (Urho3D::Random (0, 100000));
+        GetColonyActionById (id, found);
+    }
+    while (found);
+    actionData [COLONY_ACTION_ID] = Urho3D::Variant (id);
+    actionData [COLONY_ACTION_PROGRESS] = Urho3D::Variant (0.0f);
+
+    Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> action;
+    action.first_ = actionType;
+    action.second_ = actionData;
+    colonyActions_.Push (action);
+}
+
+int District::GetColonyActionsCount () const
+{
+    return colonyActions_.Size ();
+}
+
+Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> District::GetColonyActionByIndex (int index) const
+{
+    assert (index < colonyActions_.Size ());
+    return colonyActions_.At (index);
+}
+
+Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> District::GetColonyActionById (Urho3D::StringHash id, bool &found) const
+{
+    for (int index = 0; index < colonyActions_.Size (); index++)
+    {
+        Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> action = colonyActions_.At (index);
+        if (action.second_ [COLONY_ACTION_ID].GetStringHash () == id)
+        {
+            found = true;
+            return action;
+        }
+    }
+
+    found = false;
+    Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> empty;
+    return empty;
+}
+
+bool District::SetColonyActionAtIndexData (int index, Urho3D::VariantMap &actionData)
+{
+    assert (index < colonyActions_.Size ());
+    // Prevent actions from overriding.
+    if (colonyActions_.At (index).second_ [COLONY_ACTION_ID].GetStringHash () ==
+            actionData [COLONY_ACTION_ID].GetStringHash ())
+    {
+        colonyActions_.At (index).second_ = actionData;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool District::SetColonyActionWithIdData (Urho3D::VariantMap &actionData)
+{
+    for (Urho3D::Vector <Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> >::Iterator iterator = colonyActions_.Begin ();
+         iterator != colonyActions_.End (); iterator++)
+    {
+        if (iterator->second_ [COLONY_ACTION_ID].GetStringHash () == actionData [COLONY_ACTION_ID].GetStringHash ())
+        {
+            iterator->second_ = actionData;
+            return true;
+        }
+    }
+    return false;
+}
+
+void District::RemoveColonyActionByIndex (int index)
+{
+    assert (index < colonyActions_.Size ());
+    colonyActions_.Erase (index);
+}
+
+bool District::RemoveColonyActionById (Urho3D::StringHash id)
+{
+    for (Urho3D::Vector <Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> >::Iterator iterator = colonyActions_.Begin ();
+         iterator != colonyActions_.End (); iterator++)
+    {
+        if (iterator->second_ [COLONY_ACTION_ID].GetStringHash () == id)
+        {
+            iterator = colonyActions_.Erase (iterator);
+            return true;
+        }
+    }
+    return false;
+}
+
+void District::UpdateHash (Map *owner)
+{
+    do
+    {
+        hash_ = Urho3D::StringHash (name_ + Urho3D::String (Urho3D::Random (0, 100000)));
+    }
+    while (owner->GetDistrictByHash (hash_) != this && hash_ != Urho3D::StringHash::ZERO);
+}
+
+bool District::IsNeighborsWith (Urho3D::StringHash otherDistrict) const
+{
+    return neighborsHashes_.Contains (otherDistrict);
+}
+
+ClimateType District::GetClimate () const
+{
+    return climate_;
+}
+
+void District::SetClimate (ClimateType climate)
+{
+    climate_ = climate;
+}
+
+NativesCharacterType District::GetNativesCharacter () const
+{
+    return nativesCharacter_;
+}
+
+void District::SetNativesCharacter (NativesCharacterType nativesCharacter)
+{
+    nativesCharacter_ = nativesCharacter;
+}
+
+//@Insert vars getters and setters
+}

@@ -91,6 +91,7 @@ foreach (SCAFFOLD ${SCAFFOLDS})
         message (FATAL_ERROR "Can't unwrap ${NAME}! See BinaryDir/UnwrapperLogs/${NAME}.log")
     endif ()
 endforeach ()
+message (STATUS "Unwrapping scaffolds done.")
 
 include (UrhoCommon)
 find_package (Urho3D REQUIRED)

@@ -126,19 +126,19 @@ float CalculateFarmsProductionRelativePrice (District *district, GameConfigurati
 float CalculateMinesProductionRelativePrice (District *district, GameConfiguration *configuration)
 {
     float minesProductionRelativePrice = 1.0f;
-    if (district->HasCoalDeposits ())
+    if (district->GetHasCoalDeposits ())
     {
         minesProductionRelativePrice *= configuration->GetMinesProductionRelativePriceHasCoalModifer ();
     }
-    if (district->HasIronDeposits ())
+    if (district->GetHasIronDeposits ())
     {
         minesProductionRelativePrice *= configuration->GetMinesProductionRelativePriceHasIronModifer ();
     }
-    if (district->HasSilverDeposits ())
+    if (district->GetHasSilverDeposits ())
     {
         minesProductionRelativePrice *= configuration->GetMinesProductionRelativePriceHasSilverModifer ();
     }
-    if (district->HasGoldDeposits ())
+    if (district->GetHasGoldDeposits ())
     {
         minesProductionRelativePrice *= configuration->GetMinesProductionRelativePriceHasGoldModifer ();
     }
@@ -150,19 +150,19 @@ float CalculateMinesProductionRelativePrice (District *district, GameConfigurati
 float CalculateIndustryProductionRelativePrice (District *district, GameConfiguration *configuration)
 {
     float industryProductionRelativePrice = 1.0f;
-    if (district->HasCoalDeposits ())
+    if (district->GetHasCoalDeposits ())
     {
         industryProductionRelativePrice *= configuration->GetIndustryProductionRelativePriceHasCoalModifer ();
     }
-    if (district->HasIronDeposits ())
+    if (district->GetHasIronDeposits ())
     {
         industryProductionRelativePrice *= configuration->GetIndustryProductionRelativePriceHasIronModifer ();
     }
-    if (district->HasSilverDeposits ())
+    if (district->GetHasSilverDeposits ())
     {
         industryProductionRelativePrice *= configuration->GetIndustryProductionRelativePriceHasSilverModifer ();
     }
-    if (district->HasGoldDeposits ())
+    if (district->GetHasGoldDeposits ())
     {
         industryProductionRelativePrice *= configuration->GetIndustryProductionRelativePriceHasGoldModifer ();
     }
@@ -207,19 +207,19 @@ float CalculateFarmsProductionQuality (District *district, GameConfiguration *co
 float CalculateMinesProductionQuality (District *district, GameConfiguration *configuration)
 {
     float minesProductionQuality = 1.0f;
-    if (district->HasCoalDeposits ())
+    if (district->GetHasCoalDeposits ())
     {
         minesProductionQuality *= configuration->GetMinesProductionQualityHasCoalModifer ();
     }
-    if (district->HasIronDeposits ())
+    if (district->GetHasIronDeposits ())
     {
         minesProductionQuality *= configuration->GetMinesProductionQualityHasIronModifer ();
     }
-    if (district->HasSilverDeposits ())
+    if (district->GetHasSilverDeposits ())
     {
         minesProductionQuality *= configuration->GetMinesProductionQualityHasSilverModifer ();
     }
-    if (district->HasGoldDeposits ())
+    if (district->GetHasGoldDeposits ())
     {
         minesProductionQuality *= configuration->GetMinesProductionQualityHasGoldModifer ();
     }
@@ -231,19 +231,19 @@ float CalculateMinesProductionQuality (District *district, GameConfiguration *co
 float CalculateIndustryProductionQuality (District *district, GameConfiguration *configuration)
 {
     float industryProductionQuality = 1.0f;
-    if (district->HasCoalDeposits ())
+    if (district->GetHasCoalDeposits ())
     {
         industryProductionQuality *= configuration->GetIndustryProductionQualityHasCoalModifer ();
     }
-    if (district->HasIronDeposits ())
+    if (district->GetHasIronDeposits ())
     {
         industryProductionQuality *= configuration->GetIndustryProductionQualityHasIronModifer ();
     }
-    if (district->HasSilverDeposits ())
+    if (district->GetHasSilverDeposits ())
     {
         industryProductionQuality *= configuration->GetIndustryProductionQualityHasSilverModifer ();
     }
-    if (district->HasGoldDeposits ())
+    if (district->GetHasGoldDeposits ())
     {
         industryProductionQuality *= configuration->GetIndustryProductionQualityHasGoldModifer ();
     }

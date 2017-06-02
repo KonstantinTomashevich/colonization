@@ -66,10 +66,10 @@ void BindDistrict (Urho3D::Script *script)
     engine->RegisterObjectMethod ("District", "void RemoveColonyActionByIndex (int index)", asMETHOD (District, RemoveColonyActionByIndex), asCALL_THISCALL);
     engine->RegisterObjectMethod ("District", "bool RemoveColonyActionById (StringHash id)", asMETHOD (District, RemoveColonyActionById), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod ("District", "bool get_isSea () const", asMETHOD (District, IsSea), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("District", "bool get_isSea () const", asMETHOD (District, GetIsSea), asCALL_THISCALL);
     engine->RegisterObjectMethod ("District", "void set_isSea (bool isSea)", asMETHOD (District, SetIsSea), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod ("District", "bool get_isImpassable () const", asMETHOD (District, IsImpassable), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("District", "bool get_isImpassable () const", asMETHOD (District, GetIsImpassable), asCALL_THISCALL);
     engine->RegisterObjectMethod ("District", "void set_isImpassable (bool isImpassable)", asMETHOD (District, SetIsImpassable), asCALL_THISCALL);
 
     engine->RegisterObjectMethod ("District", "String get_name () const", asMETHOD (District, GetName), asCALL_THISCALL);
@@ -100,17 +100,17 @@ void BindDistrict (Urho3D::Script *script)
     engine->RegisterObjectMethod ("District", "ClimateType get_climate () const", asMETHOD (District, GetClimate), asCALL_THISCALL);
     engine->RegisterObjectMethod ("District", "void set_climate (ClimateType climate)", asMETHOD (District, SetClimate), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod ("District", "bool get_hasCoalDeposits () const", asMETHOD (District, HasCoalDeposits), asCALL_THISCALL);
-    engine->RegisterObjectMethod ("District", "void set_hasCoalDeposits (bool hasCoalDeposits)", asMETHOD (District, SetCoalDeposits), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("District", "bool get_hasCoalDeposits () const", asMETHOD (District, GetHasCoalDeposits), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("District", "void set_hasCoalDeposits (bool hasCoalDeposits)", asMETHOD (District, SetHasCoalDeposits), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod ("District", "bool get_hasIronDeposits () const", asMETHOD (District, HasIronDeposits), asCALL_THISCALL);
-    engine->RegisterObjectMethod ("District", "void set_hasIronDeposits (bool hasIronDeposits)", asMETHOD (District, SetIronDeposits), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("District", "bool get_hasIronDeposits () const", asMETHOD (District, GetHasIronDeposits), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("District", "void set_hasIronDeposits (bool hasIronDeposits)", asMETHOD (District, SetHasIronDeposits), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod ("District", "bool get_hasSilverDeposits () const", asMETHOD (District, HasSilverDeposits), asCALL_THISCALL);
-    engine->RegisterObjectMethod ("District", "void set_hasSilverDeposits (bool hasSilverDeposits)", asMETHOD (District, SetSilverDeposits), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("District", "bool get_hasSilverDeposits () const", asMETHOD (District, GetHasSilverDeposits), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("District", "void set_hasSilverDeposits (bool hasSilverDeposits)", asMETHOD (District, SetHasSilverDeposits), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod ("District", "bool get_hasGoldDeposits () const", asMETHOD (District, HasGoldDeposits), asCALL_THISCALL);
-    engine->RegisterObjectMethod ("District", "void set_hasGoldDeposits (bool hasGoldDeposits)", asMETHOD (District, SetGoldDeposits), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("District", "bool get_hasGoldDeposits () const", asMETHOD (District, GetHasGoldDeposits), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("District", "void set_hasGoldDeposits (bool hasGoldDeposits)", asMETHOD (District, SetHasGoldDeposits), asCALL_THISCALL);
 
     engine->RegisterObjectMethod ("District", "float get_nativesCount () const", asMETHOD (District, GetNativesCount), asCALL_THISCALL);
     engine->RegisterObjectMethod ("District", "void set_nativesCount (float nativesCount)", asMETHOD (District, SetNativesCount), asCALL_THISCALL);
@@ -124,8 +124,8 @@ void BindDistrict (Urho3D::Script *script)
     engine->RegisterObjectMethod ("District", "NativesCharacterType get_nativesCharacter () const", asMETHOD (District, GetNativesCharacter), asCALL_THISCALL);
     engine->RegisterObjectMethod ("District", "void set_nativesCharacter (NativesCharacterType nativesCharacter)", asMETHOD (District, SetNativesCharacter), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod ("District", "bool get_hasColony () const", asMETHOD (District, HasColony), asCALL_THISCALL);
-    engine->RegisterObjectMethod ("District", "void set_hasColony (bool hasColony)", asMETHOD (District, SetColony), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("District", "bool get_hasColony () const", asMETHOD (District, GetHasColony), asCALL_THISCALL);
+    engine->RegisterObjectMethod ("District", "void set_hasColony (bool hasColony)", asMETHOD (District, SetHasColony), asCALL_THISCALL);
 
     engine->RegisterObjectMethod ("District", "String get_colonyOwnerName () const", asMETHOD (District, GetColonyOwnerName), asCALL_THISCALL);
     engine->RegisterObjectMethod ("District", "void set_colonyOwnerName (String colonyOwnerName)", asMETHOD (District, SetColonyOwnerName), asCALL_THISCALL);
