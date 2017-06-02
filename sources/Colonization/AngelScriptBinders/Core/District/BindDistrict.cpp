@@ -38,14 +38,12 @@ Urho3D::VariantMap District_GetColonyActionDataByIndex (District *district, int 
 
 Urho3D::StringHash District_GetColonyActionTypeById (District *district, Urho3D::StringHash id)
 {
-    bool found;
-    return district->GetColonyActionById (id, found).first_;
+    return district->GetColonyActionById (id).first_;
 }
 
 Urho3D::VariantMap District_GetColonyActionDataById (District *district, Urho3D::StringHash id)
 {
-    bool found;
-    return district->GetColonyActionById (id, found).second_;
+    return district->GetColonyActionById (id).second_;
 }
 
 void BindDistrict (Urho3D::Script *script)

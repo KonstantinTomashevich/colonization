@@ -64,6 +64,7 @@ header:
 namespace Colonization
 {
 class Map;
+//@ASBindGen Class ObjectType=Ref
 class District : public Urho3D::Component
 {
 URHO3D_OBJECT (District, Component)
@@ -80,25 +81,47 @@ public:
     virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);
     static void RegisterObject (Urho3D::Context *context);
     void CalculateNeighbors (Urho3D::Vector <Urho3D::SharedPtr <District> > &allDistricts);
+    //@ASBindGen Function
     void Invest (Urho3D::StringHash investitionType, float money);
 
+    //@ASBindGen Function
     void AddColonyAction (Urho3D::StringHash actionType, Urho3D::VariantMap &actionData);
+    //@ASBindGen Function
     int GetColonyActionsCount () const;
     Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> GetColonyActionByIndex (int index) const;
-    Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> GetColonyActionById (Urho3D::StringHash id, bool &found) const;
+    Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> GetColonyActionById (Urho3D::StringHash id) const;
 
+    //@ASBindGen Function
+    Urho3D::StringHash GetColonyActionTypeByIndex (int index);
+    //@ASBindGen Function
+    Urho3D::VariantMap GetColonyActionDataByIndex (int index);
+
+    //@ASBindGen Function
+    Urho3D::StringHash GetColonyActionTypeById (Urho3D::StringHash id);
+    //@ASBindGen Function
+    Urho3D::VariantMap GetColonyActionDataById (Urho3D::StringHash id);
+
+    //@ASBindGen Function
     bool SetColonyActionAtIndexData (int index, Urho3D::VariantMap &actionData);
+    //@ASBindGen Function
     bool SetColonyActionWithIdData (Urho3D::VariantMap &actionData);
+    //@ASBindGen Function
     void RemoveColonyActionByIndex (int index);
-    bool RemoveColonyActionById(Urho3D::StringHash id);
+    //@ASBindGen Function
+    bool RemoveColonyActionById (Urho3D::StringHash id);
 
     void UpdateHash (Map *owner);
+    //@ASBindGen Function
     bool IsNeighborsWith (Urho3D::StringHash otherDistrict) const;
 
+    //@ASBindGen Function OverrideName=get_climate
     ClimateType GetClimate () const;
+    //@ASBindGen Function OverrideName=set_climate
     void SetClimate (ClimateType climate);
 
+    //@ASBindGen Function OverrideName=get_nativesCharacter
     NativesCharacterType GetNativesCharacter () const;
+    //@ASBindGen Function OverrideName=set_nativesCharacter
     void SetNativesCharacter (NativesCharacterType nativesCharacter);
 
     //@Insert vars getters and setters
@@ -282,8 +305,8 @@ void District::AddColonyAction (Urho3D::StringHash actionType, Urho3D::VariantMa
     bool found = false;
     do
     {
-        id = Urho3D::StringHash (Urho3D::Random (0, 100000));
-        GetColonyActionById (id, found);
+        id = Urho3D::StringHash (Urho3D::Random (1, 100000));
+        found = GetColonyActionTypeById (id) != Urho3D::StringHash::ZERO;
     }
     while (found);
     actionData [COLONY_ACTION_ID] = Urho3D::Variant (id);
@@ -306,21 +329,39 @@ Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> District::GetColonyActionB
     return colonyActions_.At (index);
 }
 
-Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> District::GetColonyActionById (Urho3D::StringHash id, bool &found) const
+Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> District::GetColonyActionById (Urho3D::StringHash id) const
 {
     for (int index = 0; index < colonyActions_.Size (); index++)
     {
         Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> action = colonyActions_.At (index);
         if (action.second_ [COLONY_ACTION_ID].GetStringHash () == id)
         {
-            found = true;
             return action;
         }
     }
 
-    found = false;
     Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> empty;
     return empty;
+}
+
+Urho3D::StringHash District::GetColonyActionTypeByIndex (int index)
+{
+    return GetColonyActionByIndex (index).first_;
+}
+
+Urho3D::VariantMap District::GetColonyActionDataByIndex (int index)
+{
+    return GetColonyActionByIndex (index).second_;
+}
+
+Urho3D::StringHash District::GetColonyActionTypeById (Urho3D::StringHash id)
+{
+    return GetColonyActionById (id).first_;
+}
+
+Urho3D::VariantMap District::GetColonyActionDataById (Urho3D::StringHash id)
+{
+    return GetColonyActionById (id).second_;
 }
 
 bool District::SetColonyActionAtIndexData (int index, Urho3D::VariantMap &actionData)

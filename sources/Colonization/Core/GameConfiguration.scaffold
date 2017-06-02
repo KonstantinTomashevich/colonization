@@ -123,6 +123,7 @@ namespace Colonization
 class Map;
 class District;
 
+//@ASBindGen Class ObjectType=Ref
 class GameConfiguration : public Urho3D::Component
 {
 URHO3D_OBJECT (GameConfiguration, Component)
@@ -135,6 +136,7 @@ public:
     virtual ~GameConfiguration ();
 
     static void RegisterObject (Urho3D::Context *context);
+    //@ASBindGen Function
     Urho3D::StringHash GetHeuristicNearestWayToEuropeDistrict (Map *map, District *wayStartDistrict) const;
 
     //@Insert vars getters and setters
