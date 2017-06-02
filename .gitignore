@@ -48,3 +48,5 @@ GameConfiguration.cpp
 GameConfiguration.hpp
 District.cpp
 District.hpp
+ASBindGenConfiguration.lua
+AngelScriptBindings/*
