@@ -48,13 +48,10 @@ foreach (HEADER ${H_FILES})
 endforeach ()
 configure_file (${CMAKE_SOURCE_DIR}/ASBindGenConfiguration.lua.cmake ${CMAKE_SOURCE_DIR}/ASBindGenConfiguration.lua)
 
-message (STATUS "Generation Angel Script bindings via ASBindGen...")
 set (ASBINDGEN_SCRIPT "./code-generation/AngelScriptBindingsGenerator/Main.lua")
-execute_process (COMMAND ${LUA} ${ASBINDGEN_SCRIPT} "ASBindGenConfiguration.lua"
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    RESULT_VARIABLE RESULT
-    OUTPUT_FILE "${CMAKE_BINARY_DIR}/ASBindGen.log")
-if (NOT RESULT EQUAL 0)
-    message (FATAL_ERROR "Can't generate Angel Script bindings! See BinaryDir/ASBindGen.log")
-endif ()
-message (STATUS "Angel Script bindings generated.")
+add_custom_target (ColonizationASBindGen
+                    COMMAND ${LUA} ${ASBINDGEN_SCRIPT} "ASBindGenConfiguration.lua"
+                    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                    COMMENT "Generating Angel Script bindings for Colonization via ASBindGen..."
+                    VERBATIM)
+add_dependencies (Colonization ColonizationASBindGen)
