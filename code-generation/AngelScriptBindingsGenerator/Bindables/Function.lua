@@ -531,6 +531,8 @@ Function.GenerateStaticOrFreeRegistrator = function (self)
     local callName = ""
     if self:IsWrapperNeeded () then
         callName = self:GenerateWrapperName ()
+    elseif self.arguments ["AddNamespaceToCallName"] ~= nil then
+        callName = self.arguments ["AddNamespaceToCallName"] .. "::" .. self.name
     else
         callName = self.name
     end
