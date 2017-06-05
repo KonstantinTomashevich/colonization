@@ -116,56 +116,13 @@ Class.GenerateWrappers = function (self)
 end
 
 Class.GenerateRegistratorCode = function (self)
-    local registratorCode = ""
-    for key, value in pairs (self.publicBases) do
-        if self.bindingPublicBases [value] ~= nil then
-            if DataUtils.GetNamedValueOfTable (data.classes, TypeUtils.RemoveNamespaces (value)) then
-                registratorCode = registratorCode ..
-                        TemplatesUtils.ProcessTemplateString (Templates.CallClassRegister,
-                            {baseName = self.bindingPublicBases [value],
-                             templateName = "T",
-                             bindingName = "className",
-                             registerConstructors = "false"}) .. "\n"
-
-            else
-                local bindingBase = self.bindingPublicBases [value]
-                local externalClass = DataUtils.GetNamedValueOfTable (data.externalClasses, TypeUtils.RemoveNamespaces (bindingBase))
-                if externalClass ~= nil then
-                    registratorCode = registratorCode ..
-                            TemplatesUtils.ProcessTemplateString (externalClass.registratorTemplate,
-                                {baseName = self.bindingPublicBases [value],
-                                 templateName = "T",
-                                 bindingName = "className",
-                                 registerConstructors = "false"}) .. "\n"
-                else
-                    print ("Error! Can't inherite from \"" .. bindingBase ..
-                            "\"! Can't find this class neither in classes or external classes!")
-                end
-            end
-        end
-    end
+    local registratorCode = self:GenerateInheritanceRegistrator ()
 
     local toGenerate = {"constructors", "methods"}
     for itemIndex, toGenerateItem in ipairs (toGenerate) do
         if toGenerateItem == "constructors" then
-            registratorCode = registratorCode .. "    if (registerConstructors)\n    {\n"
-            for key, value in pairs (self.publicBases) do
-                if self.bindingPublicBases [value] ~= nil then
-                    local base = DataUtils.GetNamedValueOfTable (data.classes, TypeUtils.RemoveNamespaces (value))
-                    local bindingBase = self.bindingPublicBases [value]
-                    local externalClass = DataUtils.GetNamedValueOfTable (data.externalClasses, TypeUtils.RemoveNamespaces (bindingBase))
-
-                    if base ~= nil or (externalClass ~= nil and not externalClass.excludeSubclassRegistration) then
-                        registratorCode = registratorCode ..
-                                TemplatesUtils.ProcessTemplateString (Templates.RegisterSubclass,
-                                    {baseName = value,
-                                     inheritorName = "T",
-                                     baseBindingName = "\"" .. self.bindingPublicBases [value] .. "\"",
-                                     inheritorBindingName = "className"})
-                    end
-                end
-            end
-            registratorCode = registratorCode .. "\n"
+            registratorCode = registratorCode .. "    if (registerConstructors)\n    {\n" ..
+                    self:GenerateSubclassesRegistrator () .. "\n"
         end
 
         for index, value in ipairs (self [toGenerateItem]) do
@@ -344,6 +301,59 @@ Class.ReadContent = function (self, tokensList)
     else
         return true
     end
+end
+
+Class.GenerateInheritanceRegistrator = function (self)
+    local registratorCode = ""
+    for key, value in pairs (self.publicBases) do
+        if self.bindingPublicBases [value] ~= nil then
+            if DataUtils.GetNamedValueOfTable (data.classes, TypeUtils.RemoveNamespaces (value)) then
+                registratorCode = registratorCode ..
+                        TemplatesUtils.ProcessTemplateString (Templates.CallClassRegister,
+                            {baseName = self.bindingPublicBases [value],
+                             templateName = "T",
+                             bindingName = "className",
+                             registerConstructors = "false"}) .. "\n"
+
+            else
+                local bindingBase = self.bindingPublicBases [value]
+                local externalClass = DataUtils.GetNamedValueOfTable (data.externalClasses, TypeUtils.RemoveNamespaces (bindingBase))
+                if externalClass ~= nil then
+                    registratorCode = registratorCode ..
+                            TemplatesUtils.ProcessTemplateString (externalClass.registratorTemplate,
+                                {baseName = self.bindingPublicBases [value],
+                                 templateName = "T",
+                                 bindingName = "className",
+                                 registerConstructors = "false"}) .. "\n"
+                else
+                    print ("Error! Can't inherite from \"" .. bindingBase ..
+                            "\"! Can't find this class neither in classes or external classes!")
+                end
+            end
+        end
+    end
+    return registratorCode
+end
+
+Class.GenerateSubclassesRegistrator = function (self)
+    local registratorCode = ""
+    for key, value in pairs (self.publicBases) do
+        if self.bindingPublicBases [value] ~= nil then
+            local base = DataUtils.GetNamedValueOfTable (data.classes, TypeUtils.RemoveNamespaces (value))
+            local bindingBase = self.bindingPublicBases [value]
+            local externalClass = DataUtils.GetNamedValueOfTable (data.externalClasses, TypeUtils.RemoveNamespaces (bindingBase))
+
+            if base ~= nil or (externalClass ~= nil and not externalClass.excludeSubclassRegistration) then
+                registratorCode = registratorCode ..
+                        TemplatesUtils.ProcessTemplateString (Templates.RegisterSubclass,
+                            {baseName = value,
+                             inheritorName = "T",
+                             baseBindingName = "\"" .. self.bindingPublicBases [value] .. "\"",
+                             inheritorBindingName = "className"})
+            end
+        end
+    end
+    return registratorCode
 end
 
 Class.GetDataDestination = function ()
