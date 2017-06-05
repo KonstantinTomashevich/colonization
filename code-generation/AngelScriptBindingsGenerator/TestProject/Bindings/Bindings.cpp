@@ -8,12 +8,12 @@ namespace Bindings
 {
 void RegisterAnything (asIScriptEngine *engine)
 {
-    void RegisterClassesForwardDeclarations (engine);
-    void RegisterEnums (engine);
-    void RegisterConstants (engine);
-    void RegisterFreeFunctions (engine);
-    void RegisterUrho3DSubsystems (engine);
-    void RegisterClasses (engine);
+    RegisterClassesForwardDeclarations (engine);
+    RegisterEnums (engine);
+    RegisterConstants (engine);
+    RegisterFreeFunctions (engine);
+    RegisterUrho3DSubsystems (engine);
+    RegisterClasses (engine);
 }
 
 void RegisterClassesForwardDeclarations (asIScriptEngine *engine)

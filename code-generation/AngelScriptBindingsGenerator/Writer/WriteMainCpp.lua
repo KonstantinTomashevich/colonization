@@ -99,7 +99,7 @@ end
 function WriteMainCpp ()
     local inputFileName = configuration.outputCppFileTemplate
     local fileName = ConfigurationUtils.LocalFileNameToBindingsFilePath (configuration.bindingsFileName .. ".cpp")
-    local outputFile = FileUtils.OpenFile (fileName)
+    local outputFile = FileUtils.CreateNewFile (fileName)
 
     local commands = {}
     commands ["WriteIncludes"] = IncludesWriter ()

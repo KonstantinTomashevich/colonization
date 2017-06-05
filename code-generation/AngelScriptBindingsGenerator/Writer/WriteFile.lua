@@ -60,7 +60,7 @@ end
 
 function WriteFile (fileData)
     local inputFileName = configuration.outputHppFileTemplate
-    local outputFile = FileUtils.OpenFile (ConfigurationUtils.LocalFileNameToBindingsFilePath (fileData.name))
+    local outputFile = FileUtils.CreateNewFile (ConfigurationUtils.LocalFileNameToBindingsFilePath (fileData.name))
 
     local commands = {}
     commands ["WriteIncludes"] = IncludesWriter (fileData)

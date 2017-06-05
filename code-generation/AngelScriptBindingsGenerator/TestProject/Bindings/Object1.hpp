@@ -43,13 +43,14 @@ void RegisterMY_CONSTANT (asIScriptEngine *engine)
     engine->RegisterGlobalFunction ("const StringHash get_MY_CONSTANT ()", asFUNCTION (wrapper_MY_CONSTANT), asCALL_CDECL);
 }
 
-template <class T> void RegisterMyBaseObject (asIScriptEngine *engine, char *className, bool registerConstructors)
+template <class T> void RegisterMyBaseObject (asIScriptEngine *engine, const char *className, bool registerConstructors)
 {
-    Urho3D::RegisterSubclass <Urho3D::Object, T> (engine, "Object", className);
     Urho3D::RegisterObject <T> (engine, className);
 
     if (registerConstructors)
     {
+        Urho3D::RegisterSubclass <Urho3D::Object, T> (engine, "Object", className);
+
         engine->RegisterObjectBehaviour (className, asBEHAVE_FACTORY, (Urho3D::String (className) + "@+ f ()").CString (), asFUNCTION (wrapper_MyBaseObject_constructor), asCALL_CDECL);
     }
 

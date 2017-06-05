@@ -19,7 +19,7 @@ ObjectX * wrapper_ObjectX_constructor_myEnumType (MyEnumType myEnumType)
 Urho3D::CScriptArray * wrapper_ObjectX_GetArray (ObjectX* objectPtr)
 {
     Urho3D::Vector <Urho3D::String> result = objectPtr->GetArray ();
-    return Urho3D::VectorToArray <${cxxArrayElementType}> (result, "Array <String>");
+    return Urho3D::VectorToArray <Urho3D::String> (result, "Array <String>");
 }
 
 void wrapper_ObjectX_SetArray_array (ObjectX* objectPtr, Urho3D::CScriptArray * array)
@@ -32,13 +32,14 @@ MyNameSpace::SubsystemX *wrapper_subsystemX ()
     return Urho3D::GetScriptContext ()->GetSubsystem <MyNameSpace::SubsystemX> ();
 }
 
-template <class T> void RegisterObjectX (asIScriptEngine *engine, char *className, bool registerConstructors)
+template <class T> void RegisterObjectX (asIScriptEngine *engine, const char *className, bool registerConstructors)
 {
-    Urho3D::RegisterSubclass <Object1, T> (engine, "MyBaseObject", className);
     RegisterMyBaseObject <T> (engine, className, false);
 
     if (registerConstructors)
     {
+        Urho3D::RegisterSubclass <Object1, T> (engine, "MyBaseObject", className);
+
         engine->RegisterObjectBehaviour (className, asBEHAVE_FACTORY, (Urho3D::String (className) + "@+ f ()").CString (), asFUNCTION (wrapper_ObjectX_constructor), asCALL_CDECL);
         engine->RegisterObjectBehaviour (className, asBEHAVE_FACTORY, (Urho3D::String (className) + "@+ f (MyEnumType myEnumType)").CString (), asFUNCTION (wrapper_ObjectX_constructor_myEnumType), asCALL_CDECL);
     }

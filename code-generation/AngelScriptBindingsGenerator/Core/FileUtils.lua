@@ -7,21 +7,38 @@ FileUtils.RemoveBeginPointsInPath = function (path)
     return newPath
 end
 
-FileUtils.OpenFile = function (fileName)
+FileUtils.IsWindowsCmd = function ()
+    return (os.execute ("cls") == 0)
+end
+
+FileUtils.MakePath = function (path)
+    local chunkTemplate = ""
+    if FileUtils.IsWindowsCmd () then
+        chunkTemplate = "(cd ${dir} || mkdir ${dir} && cd ${dir})"
+    else
+        chunkTemplate = "cd ${dir} || mkdir ${dir} && cd ${dir}"
+    end
+
+    local command = ""
+    local isFirst = true
+    for dir in path:gmatch ("%a+/") do
+        if isFirst then
+            isFirst = false
+        else
+            command = command .. " && "
+        end
+        command = command .. chunkTemplate:gsub ("${dir}", dir:sub (1, dir:len () - 1))
+    end
+    os.execute (command)
+end
+
+FileUtils.CreateNewFile = function (fileName)
     local file = io.open (fileName, "w+")
     if file == nil then
-        local dir = fileName:match (".*/")
-        dir = FileUtils.RemoveBeginPointsInPath (dir)
-
-        if os.execute ("mkdir " .. dir) == 1 then
-            dir = dir:gsub ("/", "\\")
-            os.execute ("mkdir " .. dir)
-        end
-
+        local dir = FileUtils.RemoveBeginPointsInPath (fileName:match (".*/"))
+        FileUtils.MakePath (dir)
         file = io.open (fileName, "w+")
-        return file
-    else
-        return file
     end
+    return file
 end
 return FileUtils

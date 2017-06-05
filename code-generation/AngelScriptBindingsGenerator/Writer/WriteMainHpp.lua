@@ -30,7 +30,7 @@ end
 function WriteMainHpp ()
     local inputFileName = configuration.outputHppFileTemplate
     local fileName = ConfigurationUtils.LocalFileNameToBindingsFilePath (configuration.bindingsFileName .. ".hpp")
-    local outputFile = FileUtils.OpenFile (fileName)
+    local outputFile = FileUtils.CreateNewFile (fileName)
 
     local commands = {}
     commands ["WriteIncludes"] = IncludesWriter ()
