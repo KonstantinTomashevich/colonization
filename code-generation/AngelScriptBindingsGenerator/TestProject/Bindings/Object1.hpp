@@ -16,20 +16,26 @@ Urho3D::CScriptArray * wrapper_MyFreeFunction_argument (Urho3D::CScriptArray * a
     return Urho3D::VectorToHandleArray <Object1 *> (result, "Array <Array <MyBaseObject @> @>");
 }
 
-Object1 * wrapper_Object1_constructor ()
+const Urho3D::String & wrapper_MyBaseObject_StaticFunction ()
 {
-    return Object1 (Urho3D::GetScriptContext ());
+    const Urho3D::String & result = Object1::StaticFunction ();
+    return result;
+}
+
+Object1 * wrapper_MyBaseObject_constructor ()
+{
+    return new Object1 (Urho3D::GetScriptContext ());
 }
 
 void RegisterMyFreeFunction (asIScriptEngine *engine)
 {
-    engine->RegisterGlobalFunction ("float MyFreeFunction ()", asFUNCTION (MyFreeFunction), asCALL_CDECL);
-    engine->RegisterGlobalFunction ("Array <MyBaseObject @> @ MyFreeFunction (Array <float> @ argument)", asFUNCTION (wrapper_MyFreeFunction_argument), asCALL_CDECL);
+    engine->RegisterObjectMethod (className, "float MyFreeFunction () ", asMETHOD (T, MyFreeFunction), asCALL_THISCALL);
+    engine->RegisterObjectMethod (className, "Array <MyBaseObject @> @ MyFreeFunction (Array <float> @ argument) ", asFUNCTION (wrapper_MyFreeFunction_argument), asCALL_CDECL_OBJFIRST);
 }
 
 void RegisterMyBaseObjectStaticFunction (asIScriptEngine *engine)
 {
-    engine->RegisterGlobalFunction (" String  MyBaseObjectStaticFunction ()", asFUNCTION (MyBaseObjectStaticFunction), asCALL_CDECL);
+    engine->RegisterGlobalFunction (" String  MyBaseObjectStaticFunction ()", asFUNCTION (wrapper_MyBaseObject_StaticFunction), asCALL_CDECL);
 }
 
 void RegisterMY_CONSTANT (asIScriptEngine *engine)
@@ -44,7 +50,7 @@ template <class T> void RegisterMyBaseObject (asIScriptEngine *engine, char *cla
 
     if (registerConstructors)
     {
-        engine->RegisterObjectBehaviour (className, asBEHAVE_FACTORY, (Urho3D::String (className) + "@+ f ()").CString (), asFUNCTION (wrapper_Object1_constructor), asCALL_CDECL);
+        engine->RegisterObjectBehaviour (className, asBEHAVE_FACTORY, (Urho3D::String (className) + "@+ f ()").CString (), asFUNCTION (wrapper_MyBaseObject_constructor), asCALL_CDECL);
     }
 
     engine->RegisterObjectMethod (className, "MyBaseObject @+ DoSomething (float first = 3.14f, uint second = 10) ", asMETHOD (T, DoSomething), asCALL_THISCALL);

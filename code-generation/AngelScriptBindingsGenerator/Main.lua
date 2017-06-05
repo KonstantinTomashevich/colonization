@@ -1,4 +1,3 @@
--- TODO: Static functions MUST use wrappers! At the moment static functions binding is INCORRECT!
 -- TODO: Maybe add external classes table? They will give information about how they will be inherited. Also print warnings about external classes use.
 scriptDirectory = arg [0]:gsub ("Main.lua", "")
 Core = require (scriptDirectory .. "/Core/Core")

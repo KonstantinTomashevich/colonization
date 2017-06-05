@@ -256,7 +256,6 @@ Class.ReadContent = function (self, tokensList)
             else
                 currentChildReader.ownerClassName = self.name
                 if currentChildReader.isStatic then
-                    currentChildReader.name = self.bindingName .. currentChildReader.name
                     table.insert (data [currentChildReader:GetDataDestination ()], currentChildReader)
                 else
                     table.insert (self.methods, currentChildReader)

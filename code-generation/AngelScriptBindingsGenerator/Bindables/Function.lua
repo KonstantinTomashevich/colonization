@@ -75,7 +75,17 @@ Function.ToString = function (self, indent)
 end
 
 Function.ApplyArguments = function (self)
-    self.bindingName = self.name
+    if self.ownerClassName ~= nil then
+        local owner = DataUtils.GetNamedValueOfTable (data.classes, TypeUtils.RemoveNamespaces (self.ownerClassName))
+        self.ownerClassBindingName = owner.bindingName
+    end
+
+    if self.isStatic then
+        self.bindingName = self.ownerClassBindingName .. self.name
+    else
+        self.bindingName = self.name
+    end
+
     self.bindingReturnType = TypeUtils.ConvertCXXToASType (self.returnType)
     for key, value in pairs (self.callArguments) do
         self.bindingCallArguments [key] = {}
@@ -360,7 +370,7 @@ Function.SkipUntilArgumentsListBegin = function (self, tokensList)
 end
 
 Function.IsWrapperNeeded = function (self)
-    if TypeUtils.IsCXXArray (self.returnType) or self.isConstructor then
+    if TypeUtils.IsCXXArray (self.returnType) or self.isConstructor or self.isStatic then
         return true
     end
 
@@ -386,7 +396,7 @@ Function.GenerateWrapperName = function (self)
     local wrapperName = ""
     wrapperName = wrapperName .. "wrapper_"
     if self.ownerClassName ~= nil then
-        wrapperName = wrapperName .. self.ownerClassName .. "_"
+        wrapperName = wrapperName .. self.ownerClassBindingName .. "_"
     end
 
     if self.isConstructor then
@@ -406,7 +416,7 @@ end
 Function.GenerateWrapperArguments = function (self)
     local wrapperArguments = ""
     local isFirstCallArgument = true
-    if self.ownerClassName ~= nil and not self.isConstructor then
+    if self.ownerClassName ~= nil and not self.isConstructor and not self.isStatic then
         wrapperArguments = wrapperArguments .. self.ownerClassName .. "* objectPtr"
         isFirstCallArgument = false
     end
@@ -445,9 +455,14 @@ Function.GenerateWrapperCode = function (self)
             wrapperCode = wrapperCode .. self.returnType .. " result = "
         end
 
-        if self.ownerClassName ~= nil then
+        if self.ownerClassName ~= nil and not self.isStatic then
             wrapperCode = wrapperCode .. "objectPtr->"
         end
+
+        if self.isStatic then
+            wrapperCode = wrapperCode .. self.ownerClassName .. "::"
+        end
+
         wrapperCode = wrapperCode .. self.name .. " (" ..
                     self:GenerateWrapperFunctionCallArguments () .. ");\n"
 

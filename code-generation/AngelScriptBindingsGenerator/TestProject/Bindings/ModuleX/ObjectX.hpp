@@ -8,12 +8,12 @@ namespace Bindings
 {
 ObjectX * wrapper_ObjectX_constructor ()
 {
-    return ObjectX (Urho3D::GetScriptContext ());
+    return new ObjectX (Urho3D::GetScriptContext ());
 }
 
 ObjectX * wrapper_ObjectX_constructor_myEnumType (MyEnumType myEnumType)
 {
-    return ObjectX (Urho3D::GetScriptContext (), myEnumType);
+    return new ObjectX (Urho3D::GetScriptContext (), myEnumType);
 }
 
 Urho3D::CScriptArray * wrapper_ObjectX_GetArray (ObjectX* objectPtr)
