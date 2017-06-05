@@ -28,7 +28,7 @@ public:
     //@ASBindGen Function OverrideName=get_warShipsHealthPoints
     /// Any war ship health is in (0.0f, 100.0f].
     Urho3D::PODVector <float> GetWarShipsHealthPoints () const;
-    //@ASBindGen Function OverrideName=set_warShipsHealthPoints
+    //@ASBindGen Function OverrideName=set_warShipsHealthPoints ReplaceInType_arg0=&|
     void SetWarShipsHealthPoints (const Urho3D::PODVector <float> &warShipsHealthPoints);
     Urho3D::VariantVector GetWarShipsHealthPointsAttribute () const;
     void SetWarShipsHealthPointsAttribute (const Urho3D::VariantVector &warShipsHealthPoints);

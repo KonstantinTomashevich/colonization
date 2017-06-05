@@ -5,6 +5,7 @@ TypeUtils.BasicCXXToASType = function (type)
     end
 
     local newType = type:gsub ("*", "@"):gsub ("unsigned ", "u"):gsub ("long", "int64"):
+            gsub ("short", "int16"):gsub ("byte", "int8"):
             gsub ("PODVector <", "Array <"):gsub ("PODVector<", "Array<"):
             gsub ("Vector <", "Array <"):gsub ("Vector<", "Array<")
 

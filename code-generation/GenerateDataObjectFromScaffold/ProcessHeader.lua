@@ -12,9 +12,9 @@ _header_varsGettersAndSettersItemTemplate =
 ]]
 
 _header_varsGettersAndSettersWithASBindGenItemTemplate =
-[[    //@${asBindGenCommand} Function OverrideName=get_${var.shortName}
+[[    //@${asBindGenCommand} Function OverrideName=get_${var.shortName} ${getterAdditionalArgs}
     ${var.type} Get${var.prettyName} () const;
-    //@${asBindGenCommand} Function OverrideName=set_${var.shortName}
+    //@${asBindGenCommand} Function OverrideName=set_${var.shortName} ${setterAdditionalArgs}
     void Set${var.prettyName} (${var.setterArgType} ${var.shortName});
 
 ]]
@@ -47,7 +47,16 @@ function WriteHeaderVarsGettersAndSetters ()
         if _asBindGenCommand ~= nil then
             template = _header_varsGettersAndSettersWithASBindGenItemTemplate
         end
-        _headerFile:write (ProcessTemplate (template, ConstructVarTemplateVars (var)));
+
+        local templateVars = ConstructVarTemplateVars (var)
+        if IsArrayType (var.type) then
+            templateVars ["${getterAdditionalArgs}"] = ""
+            templateVars ["${setterAdditionalArgs}"] = "ReplaceInType_arg0=&|"
+        else
+            templateVars ["${getterAdditionalArgs}"] = ""
+            templateVars ["${setterAdditionalArgs}"] = ""
+        end
+        _headerFile:write (ProcessTemplate (template, templateVars));
 
         if IsArrayType (var.type) then
             _headerFile:write (ProcessTemplate (_header_varsGettersAndSettersArrayAttributeTemplate, ConstructVarTemplateVars (var)));
