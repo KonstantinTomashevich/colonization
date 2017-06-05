@@ -19,7 +19,7 @@ ObjectX * wrapper_ObjectX_constructor_myEnumType (MyEnumType myEnumType)
 Urho3D::CScriptArray * wrapper_ObjectX_GetArray (ObjectX* objectPtr)
 {
     Urho3D::Vector <Urho3D::String> result = objectPtr->GetArray ();
-    return Urho3D::VectorToArray <Urho3D::String> (result, "Array <Array <String> @>");
+    return Urho3D::VectorToArray <${cxxArrayElementType}> (result, "Array <String>");
 }
 
 void wrapper_ObjectX_SetArray_array (ObjectX* objectPtr, Urho3D::CScriptArray * array)

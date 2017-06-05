@@ -178,8 +178,8 @@ end
 Function.GenerateRegistratorCode = function (self)
     if self.isConstructor then
         return self:GenerateConstructorRegistrator ()
-    elseif self.isStatic then
-        return self:GenerateStaticRegistrator ()
+    elseif self.isStatic or self.ownerClassName == nil then
+        return self:GenerateStaticOrFreeRegistrator ()
     else
         return self:GenerateMethodRegistrator ()
     end
@@ -521,7 +521,7 @@ Function.GenerateConstructorRegistrator = function (self)
                  wrapperArgs = self:GenerateBindingArguments ()})
 end
 
-Function.GenerateStaticRegistrator = function (self)
+Function.GenerateStaticOrFreeRegistrator = function (self)
     local callName = ""
     if self:IsWrapperNeeded () then
         callName = self:GenerateWrapperName ()

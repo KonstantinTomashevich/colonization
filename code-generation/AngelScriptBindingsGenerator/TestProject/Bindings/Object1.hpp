@@ -13,7 +13,7 @@ const Urho3D::StringHash wrapper_MY_CONSTANT ()
 Urho3D::CScriptArray * wrapper_MyFreeFunction_argument (Urho3D::CScriptArray * argument)
 {
     Urho3D::Vector <Object1 *> result = MyFreeFunction (Urho3D::ArrayToPODVector <float> (argument));
-    return Urho3D::VectorToHandleArray <Object1 *> (result, "Array <Array <MyBaseObject @> @>");
+    return Urho3D::VectorToHandleArray <Object1 > (result, "Array <MyBaseObject @>");
 }
 
 const Urho3D::String & wrapper_MyBaseObject_StaticFunction ()
@@ -29,8 +29,8 @@ Object1 * wrapper_MyBaseObject_constructor ()
 
 void RegisterMyFreeFunction (asIScriptEngine *engine)
 {
-    engine->RegisterObjectMethod (className, "float MyFreeFunction () ", asMETHOD (T, MyFreeFunction), asCALL_THISCALL);
-    engine->RegisterObjectMethod (className, "Array <MyBaseObject @> @ MyFreeFunction (Array <float> @ argument) ", asFUNCTION (wrapper_MyFreeFunction_argument), asCALL_CDECL_OBJFIRST);
+    engine->RegisterGlobalFunction ("float MyFreeFunction ()", asFUNCTION (MyFreeFunction), asCALL_CDECL);
+    engine->RegisterGlobalFunction ("Array <MyBaseObject @> @ MyFreeFunction (Array <float> @ argument)", asFUNCTION (wrapper_MyFreeFunction_argument), asCALL_CDECL);
 }
 
 void RegisterMyBaseObjectStaticFunction (asIScriptEngine *engine)
