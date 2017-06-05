@@ -86,7 +86,7 @@ Enum.SkipUntilEnumKeyword = function (self, tokensList)
         print ("Fatal error, token is nil!")
         return false
     elseif token.type ~= Tokens.TypeOrName or token.value ~= "enum" then
-        print ("Line " .. token.line .. ": Expected \"enum\"(Type Or Name), but got \"" .. TokenToString (token) .. "\"!")
+        print ("Line " .. token.line .. ": Expected \"enum\"(Type Or Name), but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
         return false
     else
         return true
@@ -99,7 +99,7 @@ Enum.ReadName = function (self, tokensList)
         print ("Fatal error, token is nil!")
         return false
     elseif token.type ~= Tokens.TypeOrName then
-        print ("Line " .. token.line .. ": Expected enum name, but got \"" .. TokenToString (token) .. "\"!")
+        print ("Line " .. token.line .. ": Expected enum name, but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
         return false
     else
         self.name = token.value
@@ -139,7 +139,7 @@ Enum.SkipUntilValuesBlockBegin = function (self, tokensList)
         print ("Fatal error, token is nil!")
         return false
     elseif token.type ~= Tokens.Operator or token.value ~= "{" then
-        print ("Line " .. token.line .. ": Expected \"{\"(Operator), but got \"" .. TokenToString (token) .. "\"!")
+        print ("Line " .. token.line .. ": Expected \"{\"(Operator), but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
         return false
     else
         return true

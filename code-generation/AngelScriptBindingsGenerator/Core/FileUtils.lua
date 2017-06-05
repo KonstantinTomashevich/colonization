@@ -2,7 +2,7 @@ FileUtils = {}
 FileUtils.RemoveBeginPointsInPath = function (path)
     local newPath = path
     while newPath:sub (1, 1) == "." or newPath:sub (1, 1) == "/" do
-        newPath = dir:sub (2, newPath:len ())
+        newPath = newPath:sub (2, newPath:len ())
     end
     return newPath
 end
@@ -17,7 +17,7 @@ FileUtils.OpenFile = function (fileName)
             dir = dir:gsub ("/", "\\")
             os.execute ("mkdir " .. dir)
         end
-        
+
         file = io.open (fileName, "w+")
         return file
     else

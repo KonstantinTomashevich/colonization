@@ -4,9 +4,9 @@
 
 namespace Colonization
 {
+//@ASBindGen Class ObjectType=Ref
 class TradeDistrictProcessingInfo : public Urho3D::Object
 {
-//@ASBindGen Class ObjectType=Ref
 URHO3D_OBJECT (TradeDistrictProcessingInfo, Object)
 protected:
     Urho3D::HashMap <Urho3D::StringHash, float> unusedProduction_;

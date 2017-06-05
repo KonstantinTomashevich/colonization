@@ -3,6 +3,7 @@ Core.LoadCoreScripts = function ()
     ConfigurationUtils = require (scriptDirectory .. "Core/ConfigurationUtils")
     DataUtils = require (scriptDirectory .. "Core/DataUtils")
     TemplatesUtils = require (scriptDirectory .. "Templates/TemplatesUtils")
+    TokenUtils = require (scriptDirectory .. "Tokenization/TokenUtils")
     TypeUtils = require (scriptDirectory .. "Core/TypeUtils")
     FileUtils = require (scriptDirectory .. "Core/FileUtils")
 
@@ -39,7 +40,7 @@ Core.ParseInputFiles = function ()
     print ("### Parsing files...")
     local filesCount = #configuration.files
     for index, fileName in ipairs (configuration.files) do
-        print ("    [" .. (index * 100.0 / filesCount) .. "%] " .. fileName)
+        print ("    [" .. (math.ceil (index * 1000.0 / filesCount) / 10.0) .. "%] " .. fileName)
         if not ReadFile (fileName) then
             print ("Error while reading and parsing file!")
             return false
@@ -99,20 +100,20 @@ Core.WriteBindings = function ()
     print ("### Writing bindings...")
     local filesCount = #data.filesToWriteList + 2
 
-    print ("    [" .. (1 * 100.0 / filesCount) .. "%] " ..
+    print ("    [" .. (math.ceil (1 * 1000.0 / filesCount) / 10.0) .. "%] " ..
         ConfigurationUtils.LocalFileNameToBindingsFilePath (configuration.bindingsFileName .. ".cpp"))
     if not WriteMainCpp () then
         return false
     end
 
-    print ("    [" .. (2 * 100.0 / filesCount) .. "%] " ..
+    print ("    [" .. (math.ceil (2 * 1000.0 / filesCount) / 10.0) .. "%] " ..
         ConfigurationUtils.LocalFileNameToBindingsFilePath (configuration.bindingsFileName .. ".hpp"))
     if not WriteMainHpp () then
         return false
     end
 
     for index, fileData in ipairs (data.filesToWriteList) do
-        print ("    [" .. ((index + 2) * 100.0 / filesCount) .. "%] " .. fileData.name)
+        print ("    [" .. (math.ceil ((index + 2) * 1000.0 / filesCount) / 10.0) .. "%] " .. fileData.name)
         if not WriteFile (fileData) then
             return false
         end

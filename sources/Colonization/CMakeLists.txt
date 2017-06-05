@@ -25,6 +25,29 @@ message (STATUS "Unwrapping scaffolds done.")
 
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/BuildConfiguration.hpp.cmake ${CMAKE_CURRENT_SOURCE_DIR}/BuildConfiguration.hpp)
 set (TARGET_NAME Colonization)
-define_source_files (RECURSE GLOB_H_PATTERNS "*.hpp" EXCLUDE_PATTERNS "AngelScriptBindings/*")
+define_source_files (RECURSE GLOB_H_PATTERNS "*.hpp" EXCLUDE_PATTERNS "AngelScriptBindings/[^;]+;")
+
+set (COLONIZATION_HEADERS_LIST )
+set (IS_FIRST_ITEM 1)
+foreach (HEADER ${H_FILES})
+    if (NOT IS_FIRST_ITEM)
+        set (START ",\n    ")
+    else ()
+        set (IS_FIRST_ITEM 0)
+        set (START "    ")
+    endif ()
+    set (COLONIZATION_HEADERS_LIST "${COLONIZATION_HEADERS_LIST}${START}\"${HEADER}\"")
+endforeach ()
+configure_file (${CMAKE_SOURCE_DIR}/ASBindGenConfiguration.lua.cmake ${CMAKE_SOURCE_DIR}/ASBindGenConfiguration.lua)
+
+set (ASBINDGEN_SCRIPT "./code-generation/AngelScriptBindingsGenerator/Main.lua")
+execute_process (COMMAND ${LUA} ${ASBINDGEN_SCRIPT} "ASBindGenConfiguration.lua"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    RESULT_VARIABLE RESULT
+    OUTPUT_FILE "${CMAKE_BINARY_DIR}/ASBindGen.log")
+if (NOT RESULT EQUAL 0)
+    message (FATAL_ERROR "Can't generate angelscript bindings! See BinaryDir/ASBindGen.log")
+endif ()
+
 define_dependency_libs (Urho3D)
 setup_library (STATIC)

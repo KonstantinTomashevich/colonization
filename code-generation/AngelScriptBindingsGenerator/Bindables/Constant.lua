@@ -42,8 +42,13 @@ Constant.GetRequiredBindingsIncludes = function (self)
 end
 
 Constant.GenerateWrappers = function (self)
+    local getName = self.name
+    if self.arguments ["AddNamespaceToName"] ~= nil then
+        getName = self.arguments ["AddNamespaceToName"] .. "::" .. self.name
+    end
+
     return TemplatesUtils.ProcessTemplateString (Templates.ConstantWrapper,
-                {name = self.name,
+                {name = getName,
                  bindingName = self.bindingName,
                  type = self.type})
 end
@@ -60,7 +65,7 @@ Constant.ReadType = function (self, tokensList)
         print ("Fatal error, token is nil!")
         return false
     elseif token.type ~= Tokens.TypeOrName then
-        print ("Line " .. token.line .. ": Expected constant type, but got " .. TokenToString (token) .. "!")
+        print ("Line " .. token.line .. ": Expected constant type, but got " .. TokenUtils.TokenToString (token) .. "!")
         return false
     else
         self.type = token.value
@@ -74,7 +79,7 @@ Constant.ReadName = function (self, tokensList)
         print ("Fatal error, token is nil!")
         return false
     elseif token == nil or token.type ~= Tokens.TypeOrName then
-        print ("Line " .. token.line .. ": Expected constant name, but got " .. TokenToString (token) .. "!")
+        print ("Line " .. token.line .. ": Expected constant name, but got " .. TokenUtils.TokenToString (token) .. "!")
         return false
     else
         self.name = token.value

@@ -25,7 +25,7 @@ public:
 
     //@ASBindGen Function OverrideName=get_accumulatedUpdatePoints
     float GetAccumulatedUpdatePoints ();
-    //@ASBindGen Functio
+    //@ASBindGen Function
     void AddUpdatePoints (float points);
 };
 

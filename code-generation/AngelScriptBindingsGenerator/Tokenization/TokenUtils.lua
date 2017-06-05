@@ -1,8 +1,6 @@
-if Tokens == nil then
-    Tokens = require (scriptDirectory .. "Tokenization/Tokens")
-end
+TokenUtils = {}
 
-function TokenTypeToString (token)
+TokenUtils.TokenTypeToString = function (token)
     if token.type == Tokens.Operator then
         return "Operator"
     elseif token.type == Tokens.TypeOrName then
@@ -18,11 +16,11 @@ function TokenTypeToString (token)
     end
 end
 
-function TokenToString (token)
+TokenUtils.TokenToString = function (token)
     local tokenValue = token.value
     if tokenValue == nil then
         tokenValue = "nil"
     end
-    return "\"" .. tokenValue .. "\"(" .. TokenTypeToString (token) .. ")"
+    return "\"" .. tokenValue .. "\"(" .. TokenUtils.TokenTypeToString (token) .. ")"
 end
-return TokenToString, TokenTypeToString
+return TokenUtils

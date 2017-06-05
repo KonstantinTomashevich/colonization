@@ -156,7 +156,7 @@ Class.SkipUntilClassKeyword = function (self, tokensList)
         print ("Fatal error, token is nil!")
         return false
     elseif token.type ~= Tokens.TypeOrName and token.value ~= "class" then
-        print ("Line " .. token.line .. ": Expected \"class\", but got \"" .. TokenToString (token) .. "\"!")
+        print ("Line " .. token.line .. ": Expected \"class\", but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
         return false
     else
         return true
@@ -169,7 +169,7 @@ Class.ReadName = function (self, tokensList)
         print ("Fatal error, token is nil!")
         return false
     elseif token.type ~= Tokens.TypeOrName then
-        print ("Line " .. token.line .. ": Expected class name, but got \"" .. TokenToString (token) .. "\"!")
+        print ("Line " .. token.line .. ": Expected class name, but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
         return false
     else
         self.name = token.value;
@@ -190,7 +190,7 @@ Class.ReadBases = function (self, tokensList)
         return false
 
     elseif token.type ~= Tokens.Operator then
-        print ("Line " .. token.line .. ": Expected \":\" or \"{\", but got \"" .. TokenToString (token) .. "\"!")
+        print ("Line " .. token.line .. ": Expected \":\" or \"{\", but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
         return false
 
     elseif token.value == "{" then
@@ -202,7 +202,7 @@ Class.ReadBases = function (self, tokensList)
         local isNextBasePublic = false
         while token ~= nil and (token.type ~= Tokens.Operator and token.value ~= "{") do
             if token.type == Tokens.Operator and token.value == "," and isNextBasePublic then
-                print ("Line " .. token.line .. ": Expected public base class name, but got \"" .. TokenToString (token) .. "\"!")
+                print ("Line " .. token.line .. ": Expected public base class name, but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
                 return false
 
             elseif token.type == Tokens.TypeOrName then
@@ -225,7 +225,7 @@ Class.ReadBases = function (self, tokensList)
         end
 
     else
-        print ("Line " .. token.line .. ": Expected \":\" or \"{\", but got \"" .. TokenToString (token) .. "\"!")
+        print ("Line " .. token.line .. ": Expected \":\" or \"{\", but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
         return false
     end
 end

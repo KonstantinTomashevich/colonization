@@ -177,8 +177,10 @@ end
 
 Function.ReadReturnType = function (self, tokensList)
     local token = tokensList:CurrentOrNextToken ()
-    if token.type == Tokens.TypeOrName and token.value == "static" then
-        self.isStatic = true
+    while token.type == Tokens.TypeOrName and (token.value == "static" or token.value == "virtual") do
+        if token.value == "static" then
+            self.isStatic = true
+        end
         token = tokensList:NextToken ()
     end
 
@@ -186,7 +188,7 @@ Function.ReadReturnType = function (self, tokensList)
         print ("Fatal error, token is nil!")
         return false
     elseif token.type ~= Tokens.TypeOrName then
-        print ("Line " .. token.line .. ": Expected function return type, but got \"" .. TokenToString (token) .. "\"!")
+        print ("Line " .. token.line .. ": Expected function return type, but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
         return false
     else
         self.returnType = token.value
@@ -206,8 +208,15 @@ Function.ReadName = function (self, tokensList)
         print ("Fatal error, token is nil!")
         return false
     elseif token.type ~= Tokens.TypeOrName then
-        print ("Line " .. token.line .. ": Expected function name, but got \"" .. TokenToString (token) .. "\"!")
-        return false
+        if self.returnType:find ("unsigned ") == 1 then
+            self.name = self.returnType:sub (("unsigned "):len () + 1, self.returnType:len ())
+            self.returnType = "unsigned"
+            tokensList:PreviousToken ()
+            return true
+        else
+            print ("Line " .. token.line .. ": Expected function name, but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
+            return false
+        end
     else
         self.name = token.value
         return true
@@ -244,8 +253,14 @@ Function.ReadCallArguments = function (self, tokensList)
 
         elseif token.type == Tokens.Operator and token.value == "=" then
             if currentArg.type == nil or currentArg.name == nil then
-                print ("Line " .. token.line .. ": Call argument type or name is not readed, but got \"=\"!")
-                return false
+                if currentArg.type:find ("unsigned ") == 1 then
+                    currentArg.name = currentArg.type:sub (("unsigned "):len () + 1, currentArg.type:len ())
+                    currentArg.type = "unsigned"
+                    whatNextNameTokenWillBe = "default"
+                else
+                    print ("Line " .. token.line .. ": Call argument type or name is not readed, but got \"=\"!")
+                    return false
+                end
             else
                 whatNextNameTokenWillBe = "default"
             end
@@ -256,8 +271,17 @@ Function.ReadCallArguments = function (self, tokensList)
                 return false
 
             elseif currentArg.type == nil or currentArg.name == nil then
-                print ("Line " .. token.line .. ": Call argument type or name is not readed, but got \",\"!")
-                return false
+                if currentArg.type:find ("unsigned ") == 1 then
+                    currentArg.name = currentArg.type:sub (("unsigned "):len () + 1, currentArg.type:len ())
+                    currentArg.type = "unsigned"
+
+                    whatNextNameTokenWillBe = "type"
+                    table.insert (self.callArguments, currentArg)
+                    currentArg = nil
+                else
+                    print ("Line " .. token.line .. ": Call argument type or name is not readed, but got \",\"!")
+                    return false
+                end
 
             else
                 whatNextNameTokenWillBe = "type"
@@ -266,7 +290,7 @@ Function.ReadCallArguments = function (self, tokensList)
             end
 
         else
-            print ("Line " .. token.line .. ": Unexpected token \"" .. TokenToString (token) .. "\" while reading function call arguments!")
+            print ("Line " .. token.line .. ": Unexpected token \"" .. TokenUtils.TokenToString (token) .. "\" while reading function call arguments!")
             return false
         end
         token = tokensList:NextToken ()
@@ -277,8 +301,17 @@ Function.ReadCallArguments = function (self, tokensList)
         return false
     elseif currentArg ~= nil then
         if currentArg.type == nil or currentArg.name == nil then
-            print ("Line " .. token.line .. ": Call argument type or name is not readed, but got \")\"!")
-            return false
+            if currentArg.type:find ("unsigned ") == 1 then
+                currentArg.name = currentArg.type:sub (("unsigned "):len () + 1, currentArg.type:len ())
+                currentArg.type = "unsigned"
+
+                table.insert (self.callArguments, currentArg)
+                currentArg = nil
+                return true
+            else
+                print ("Line " .. token.line .. ": Call argument type or name is not readed, but got \")\"!")
+                return false
+            end
         else
             table.insert (self.callArguments, currentArg)
             currentArg = nil
@@ -294,14 +327,20 @@ Function.ReadIsConst = function (self, tokensList)
     if token == nil then
         print ("Fatal error, token is nil!")
         return false
-    elseif token.type == Tokens.Operator and (token.value == ";" or token.value == "{") then
-        return true
+    elseif token.type == Tokens.Operator then
+        if token.value == ";" or token.value == "{" or token.value == "=" then
+            return true
+        else
+            print ("Line " .. token.line .. ": Expected function declaration end, but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
+            return false
+        end
+
     elseif token.type == Tokens.TypeOrName then
         if token.value == "const" then
             self.isConst = true
             return true
         else
-            print ("Line " .. token.line .. ": Expected function declaration end, but got \"" .. TokenToString (token) .. "\"!")
+            print ("Line " .. token.line .. ": Expected function declaration end, but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
             return false
         end
     end
@@ -313,7 +352,7 @@ Function.SkipUntilArgumentsListBegin = function (self, tokensList)
         print ("Fatal error, token is nil!")
         return false
     elseif token.type ~= Tokens.Operator and token.value ~= "(" then
-        print ("Line " .. token.line .. ": Expected \"(\", but got \"" .. TokenToString (token) .. "\"!")
+        print ("Line " .. token.line .. ": Expected \"(\", but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
         return false
     else
         return true
@@ -399,7 +438,7 @@ end
 Function.GenerateWrapperCode = function (self)
     local wrapperCode = "    "
     if self.isConstructor then
-        wrapperCode = wrapperCode .. "return " .. self.ownerClassName .. " (" ..
+        wrapperCode = wrapperCode .. "return new " .. self.ownerClassName .. " (" ..
                     self:GenerateWrapperFunctionCallArguments () .. ");\n"
     else
         if self.returnType ~= "void" then
