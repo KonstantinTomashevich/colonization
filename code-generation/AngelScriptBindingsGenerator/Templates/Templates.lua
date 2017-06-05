@@ -37,7 +37,7 @@ Templates.StandartRegisterFunction =
 ]]
 
 Templates.ClassRegisterFunction =
-[[template <class T> void Register${name} (asIScriptEngine *engine, char *className, bool registerConstructors)
+[[template <class T> void Register${name} (asIScriptEngine *engine, const char *className, bool registerConstructors)
 ]]
 
 Templates.CallStandartRegister =
