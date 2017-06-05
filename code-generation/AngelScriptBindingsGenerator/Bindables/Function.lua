@@ -476,7 +476,7 @@ Function.GenerateWrapperCode = function (self)
                 end
                 wrapperCode = wrapperCode .. "    return " ..
                         TemplatesUtils.ProcessTemplateString (template,
-                            {cxxArrayElementType = TypeUtils.GetArrayElementType (self.returnType),
+                            {cxxArrayElementTypeWithoutPtr = TypeUtils.GetArrayElementType (self.returnType):gsub ("*", ""),
                              cxxArrayName = "result",
                              asArrayElementType = TypeUtils.GetArrayElementType (self.bindingReturnType)}) .. ";\n"
             else

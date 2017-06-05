@@ -83,7 +83,8 @@ end
 TypeUtils.GetArrayElementType = function (type)
     local elementType = type
     while elementType:find ("Vector <") or elementType:find ("Vector<") or
-        elementType:find ("SharedPtr <") or elementType:find ("SharedPtr<") do
+        elementType:find ("SharedPtr <") or elementType:find ("SharedPtr<") or
+        elementType:find ("Array <") or elementType:find ("Array<") do
 
         local index = elementType:find ("<") + 1
         local newElementType = ""
