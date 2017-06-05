@@ -151,12 +151,18 @@ Class.GenerateRegistratorCode = function (self)
             registratorCode = registratorCode .. "    if (registerConstructors)\n    {\n"
             for key, value in pairs (self.publicBases) do
                 if self.bindingPublicBases [value] ~= nil then
-                    registratorCode = registratorCode ..
-                            TemplatesUtils.ProcessTemplateString (Templates.RegisterSubclass,
-                                {baseName = value,
-                                 inheritorName = "T",
-                                 baseBindingName = "\"" .. self.bindingPublicBases [value] .. "\"",
-                                 inheritorBindingName = "className"})
+                    local base = DataUtils.GetNamedValueOfTable (data.classes, TypeUtils.RemoveNamespaces (value))
+                    local bindingBase = self.bindingPublicBases [value]
+                    local externalClass = DataUtils.GetNamedValueOfTable (data.externalClasses, TypeUtils.RemoveNamespaces (bindingBase))
+
+                    if base ~= nil or (externalClass ~= nil and not externalClass.excludeSubclassRegistration) then
+                        registratorCode = registratorCode ..
+                                TemplatesUtils.ProcessTemplateString (Templates.RegisterSubclass,
+                                    {baseName = value,
+                                     inheritorName = "T",
+                                     baseBindingName = "\"" .. self.bindingPublicBases [value] .. "\"",
+                                     inheritorBindingName = "className"})
+                    end
                 end
             end
             registratorCode = registratorCode .. "\n"

@@ -50,7 +50,7 @@ public:
     unsigned short GetServerPort () const;
     //@ASBindGen Function OverrideName=set_serverPort
     void SetServerPort (unsigned short serverPort);
-    //@ASBindGen Function AddRef_arg-1
+    //@ASBindGen Function AddRef_arg-1 OverrideName=get_scene
     Urho3D::Scene *GetScene () const;
 
     //@ASBindGen Function OverrideName=get_mapFolder

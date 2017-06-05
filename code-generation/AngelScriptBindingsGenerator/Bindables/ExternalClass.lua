@@ -4,6 +4,7 @@ ExternalClass.Construct = function (self, fileName, bindingAguments)
     self.name = ""
     self.bindingName = ""
     self.registratorTemplate = ""
+    self.excludeSubclassRegistration = false
     self.arguments = bindingAguments
 end
 
@@ -11,6 +12,9 @@ end
 ExternalClass.Parse = function (self, tokensList)
     local token = tokensList:PreviousToken ()
     self.name = self.arguments ["Name"]
+    if self.arguments ["ExcludeSubclassRegistration"] ~= nil then
+        self.excludeSubclassRegistration = true
+    end
     self.bindingName = self.name
 
     token = tokensList:NextToken ()
