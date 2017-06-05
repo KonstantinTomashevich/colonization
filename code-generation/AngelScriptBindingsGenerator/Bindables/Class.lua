@@ -119,13 +119,6 @@ Class.GenerateRegistratorCode = function (self)
     local registratorCode = ""
     for key, value in pairs (self.publicBases) do
         if self.bindingPublicBases [value] ~= nil then
-            registratorCode = registratorCode ..
-                    TemplatesUtils.ProcessTemplateString (Templates.RegisterSubclass,
-                        {baseName = value,
-                         inheritorName = "T",
-                         baseBindingName = "\"" .. self.bindingPublicBases [value] .. "\"",
-                         inheritorBindingName = "className"})
-
             if DataUtils.GetNamedValueOfTable (data.classes, TypeUtils.RemoveNamespaces (value)) then
                 registratorCode = registratorCode ..
                         TemplatesUtils.ProcessTemplateString (Templates.CallClassRegister,
@@ -156,6 +149,17 @@ Class.GenerateRegistratorCode = function (self)
     for itemIndex, toGenerateItem in ipairs (toGenerate) do
         if toGenerateItem == "constructors" then
             registratorCode = registratorCode .. "    if (registerConstructors)\n    {\n"
+            for key, value in pairs (self.publicBases) do
+                if self.bindingPublicBases [value] ~= nil then
+                    registratorCode = registratorCode ..
+                            TemplatesUtils.ProcessTemplateString (Templates.RegisterSubclass,
+                                {baseName = value,
+                                 inheritorName = "T",
+                                 baseBindingName = "\"" .. self.bindingPublicBases [value] .. "\"",
+                                 inheritorBindingName = "className"})
+                end
+            end
+            registratorCode = registratorCode .. "\n"
         end
 
         for index, value in ipairs (self [toGenerateItem]) do
