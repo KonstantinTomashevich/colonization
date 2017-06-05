@@ -124,12 +124,26 @@ Class.GenerateRegistratorCode = function (self)
                         {baseName = value,
                          inheritorName = "T",
                          baseBindingName = "\"" .. self.bindingPublicBases [value] .. "\"",
-                         inheritorBindingName = "className"}) ..
-                    TemplatesUtils.ProcessTemplateString (Templates.CallClassRegister,
-                        {baseName = self.bindingPublicBases [value],
-                         templateName = "T",
-                         bindingName = "className",
-                         registerConstructors = "false"}) .. "\n"
+                         inheritorBindingName = "className"})
+
+            if DataUtils.GetNamedValueOfTable (data.classes, TypeUtils.RemoveNamespaces (value)) then
+                registratorCode = registratorCode ..
+                        TemplatesUtils.ProcessTemplateString (Templates.CallClassRegister,
+                            {baseName = self.bindingPublicBases [value],
+                             templateName = "T",
+                             bindingName = "className",
+                             registerConstructors = "false"}) .. "\n"
+
+            else
+                local bindingBase = self.bindingPublicBases [value]
+                local externalClass = DataUtils.GetNamedValueOfTable (data.externalClasses, TypeUtils.RemoveNamespaces (bindingBase))
+                registratorCode = registratorCode ..
+                        TemplatesUtils.ProcessTemplateString (externalClass.registratorTemplate,
+                            {baseName = self.bindingPublicBases [value],
+                             templateName = "T",
+                             bindingName = "className",
+                             registerConstructors = "false"}) .. "\n"
+            end
         end
     end
 

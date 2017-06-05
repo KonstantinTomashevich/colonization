@@ -26,6 +26,7 @@ Core.LoadBindables = function ()
     bindables ["Constructor"] = function (fileName, bindingAguments) return bindables ["Function"] (fileName, bindingAguments, true) end
     bindables ["Urho3DSubsystem"] = require (scriptDirectory .. "Bindables/Urho3DSubsystem")
     bindables ["Class"] = require (scriptDirectory .. "Bindables/Class")
+    bindables ["ExternalClass"] = require (scriptDirectory .. "Bindables/ExternalClass")
     return true
 end
 
@@ -69,6 +70,7 @@ Core.PrintParsedBindables = function ()
     table.insert (toPrint, {name = "### Free Functions:", key = "freeFunctions"})
     table.insert (toPrint, {name = "### Classes:", key = "classes"})
     table.insert (toPrint, {name = "### Subsystems:", key = "subsystems"})
+    table.insert (toPrint, {name = "### External classes:", key = "externalClasses"})
     for key, value in pairs (toPrint) do
         print (value.name)
         for index, value in pairs (data [value.key]) do

@@ -18,6 +18,9 @@ public:
     void DoAnything ();
 };
 
+//@ASBindGen ExternalClass Name=Object
+//@ASBindGen    Urho3D::RegisterObject <${templateName}> (engine, ${bindingName});
+
 //@ASBindGen Class ObjectType=Ref OverrideName=MyBaseObject
 class Object1 :
     public Urho3D::Object,

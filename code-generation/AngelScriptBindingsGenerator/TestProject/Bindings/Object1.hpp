@@ -46,7 +46,7 @@ void RegisterMY_CONSTANT (asIScriptEngine *engine)
 template <class T> void RegisterMyBaseObject (asIScriptEngine *engine, char *className, bool registerConstructors)
 {
     Urho3D::RegisterSubclass <Urho3D::Object, T> (engine, "Object", className);
-    RegisterObject <T> (engine, className, false);
+    Urho3D::RegisterObject <T> (engine, className);
 
     if (registerConstructors)
     {
