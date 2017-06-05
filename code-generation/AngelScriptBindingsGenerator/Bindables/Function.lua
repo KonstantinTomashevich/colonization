@@ -474,9 +474,15 @@ Function.GenerateWrapperCode = function (self)
                 else
                     template = Templates.CXXArrayToASArray
                 end
+
+                local cxxArrayElementType = TypeUtils.GetArrayElementType (self.returnType)
+                if self.arguments ["ReturnHandleArray"] ~= nil then
+                    cxxArrayElementType = cxxArrayElementType:gsub ("*", "")
+                end
+
                 wrapperCode = wrapperCode .. "    return " ..
                         TemplatesUtils.ProcessTemplateString (template,
-                            {cxxArrayElementTypeWithoutPtr = TypeUtils.GetArrayElementType (self.returnType):gsub ("*", ""),
+                            {cxxArrayElementType = cxxArrayElementType,
                              cxxArrayName = "result",
                              asArrayElementType = TypeUtils.GetArrayElementType (self.bindingReturnType)}) .. ";\n"
             else
