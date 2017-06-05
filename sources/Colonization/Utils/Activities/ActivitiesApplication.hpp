@@ -6,7 +6,7 @@
 
 namespace Colonization
 {
-//@ASBindGen Class ObjectType=Ref ExcludeBase_Urho3D::Application
+//@ASBindGen Class ObjectType=Ref
 class ActivitiesApplication : public Urho3D::Application
 {
 URHO3D_OBJECT (ActivitiesApplication, Application)
