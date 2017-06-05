@@ -121,7 +121,7 @@ class MainMenu : ScriptObject
 
     void HandleStartGameRequest (StringHash eventType, VariantMap &eventData)
     {
-        for (uint index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
+        for (uint index = 0; index < activitiesApplication_.activitiesCount; index++)
         {
             activitiesApplication_.StopActivityNextFrame (activitiesApplication_.GetActivityByIndex (index));
         }
@@ -143,7 +143,7 @@ class MainMenu : ScriptObject
 
     void HandleJoinGameRequest (StringHash eventType, VariantMap &eventData)
     {
-        for (uint index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
+        for (uint index = 0; index < activitiesApplication_.activitiesCount; index++)
         {
             activitiesApplication_.StopActivityNextFrame (activitiesApplication_.GetActivityByIndex (index));
         }
@@ -159,7 +159,7 @@ class MainMenu : ScriptObject
 
     void HandleExitRequest ()
     {
-        for (uint index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
+        for (uint index = 0; index < activitiesApplication_.activitiesCount; index++)
         {
             activitiesApplication_.StopActivityNextFrame (activitiesApplication_.GetActivityByIndex (index));
         }

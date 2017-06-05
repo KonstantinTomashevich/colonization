@@ -98,14 +98,14 @@ public:
     //@ASBindGen Function OverrideName=set_districtUnderFogColor
     void SetDistrictUnderFogColor (const Urho3D::Color &districtUnderFogColor);
 
-    //@ASBindGen Function AddRef_arg-1
+    //@ASBindGen Function AddRef_arg-1 OverrideName=get_fogOfWarMaskImage
     Urho3D::Image *GetFogOfWarMaskImage () const;
-    //@ASBindGen Function AddRef_arg-1
+    //@ASBindGen Function AddRef_arg-1 OverrideName=get_fogOfWarMaskTexture
     Urho3D::Texture2D *GetFogOfWarMaskTexture () const;
 
-    //@ASBindGen Function AddRef_arg-1
+    //@ASBindGen Function AddRef_arg-1 OverrideName=get_maskTexture
     Urho3D::Image *GetMaskImage () const;
-    //@ASBindGen Function AddRef_arg-1
+    //@ASBindGen Function AddRef_arg-1 OverrideName=set_maskTexture
     Urho3D::Texture2D *GetMaskTexture () const;
 
     //@ASBindGen Function OverrideName=get_mapMinPoint

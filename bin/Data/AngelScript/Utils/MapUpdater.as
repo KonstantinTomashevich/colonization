@@ -72,7 +72,7 @@ class MapUpdater : ScriptObject
         if (calculateUnitsPositionsAsCentersNextFrame_)
         {
             Map @map = scene.GetNode (mapNodeId_).GetComponent ("Map");
-            for (uint index = 0; index < map.GetDistrictsCount (); index++)
+            for (uint index = 0; index < map.districtsCount; index++)
             {
                 CalculateUnitPositionAsCenter (map.GetDistrictByIndex (index));
             }
@@ -83,7 +83,7 @@ class MapUpdater : ScriptObject
         {
             Map @map = scene.GetNode (mapNodeId_).GetComponent ("Map");
             Terrain @terrain = scene.GetNode (mapNodeId_).GetChild ("local").GetComponent ("Terrain");
-            for (uint index = 0; index < map.GetDistrictsCount (); index++)
+            for (uint index = 0; index < map.districtsCount; index++)
             {
                 CorrectYForUnitAndColonyPosition (map.GetDistrictByIndex (index), terrain);
             }

@@ -5,6 +5,7 @@
 
 namespace Colonization
 {
+//@ASBindGen Constant
 const float PLAYER_NEW_CHAT_MESSAGE_DELAY = 1.0f;
 class Player : public Urho3D::Object
 {

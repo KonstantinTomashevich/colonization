@@ -72,7 +72,6 @@ float ColoniesEvolutionManager::ProcessColonyPopulation (GameConfiguration *conf
 
 float ColoniesEvolutionManager::ProcessColonyFarmsEvolution (GameConfiguration *configuration, District *colony, float timeStep)
 {
-    // TODO:
     float totalColonyEvolution = GetTotalColonyEvolution (colony);
     float colonyFarmsEvolution = colony->GetFarmsEvolutionPoints ();
     float farmsEvolutionInColonyEvolution = colonyFarmsEvolution / totalColonyEvolution;

@@ -51,7 +51,7 @@ function WriteHeaderVarsGettersAndSetters ()
         local templateVars = ConstructVarTemplateVars (var)
         if IsArrayType (var.type) then
             templateVars ["${getterAdditionalArgs}"] = ""
-            templateVars ["${setterAdditionalArgs}"] = "ReplaceInType_arg0=&|"
+            templateVars ["${setterAdditionalArgs}"] = "ReplaceInType_arg0=&| ReplaceInType_arg0=const|"
         else
             templateVars ["${getterAdditionalArgs}"] = ""
             templateVars ["${setterAdditionalArgs}"] = ""

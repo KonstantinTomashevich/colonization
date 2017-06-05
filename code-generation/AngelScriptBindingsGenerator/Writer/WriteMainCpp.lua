@@ -75,7 +75,7 @@ BodyWriter.WriteStandartBindings = function (self, outputFile)
             if alreadyCalled [value.name] == nil then
                 outputFile:write (TemplatesUtils.ProcessTemplateString (Templates.CallStandartRegister,
                                     {name = value.bindingName}))
-                alreadyCalled [value.name] = true
+                alreadyCalled [value.bindingName] = true
             end
         end
         outputFile:write ("}\n\n")
