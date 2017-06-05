@@ -1,5 +1,5 @@
 configuration = {}
-configuration.pathPrefix = "./sources/"
+configuration.pathPrefix = "./sources"
 configuration.projectDir = "Colonization"
 configuration.bindingsDir = "AngelScriptBindings"
 configuration.bindingsFileName = "Bindings"
