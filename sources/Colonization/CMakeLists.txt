@@ -18,23 +18,6 @@ define_source_files (RECURSE GLOB_H_PATTERNS "*.hpp" EXCLUDE_PATTERNS "AngelScri
 define_dependency_libs (Urho3D)
 setup_library (STATIC)
 
-set (UNWRAPPER_SCRIPT "./code-generation/GenerateDataObjectFromScaffold/Main.lua")
-file (MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/UnwrapperLogs/)
-foreach (SCAFFOLD ${SCAFFOLDS})
-    file (RELATIVE_PATH SCAFFOLD_REL ${CMAKE_SOURCE_DIR} ${SCAFFOLD})
-    get_filename_component (DIR ${SCAFFOLD_REL} DIRECTORY)
-    get_filename_component (NAME ${SCAFFOLD} NAME_WE)
-
-    set (OUTPUT_HPP "${DIR}/${NAME}.hpp")
-    set (OUTPUT_CPP "${DIR}/${NAME}.cpp")
-    add_custom_target ("Unwrap${NAME}"
-                        COMMAND ${LUA} ${UNWRAPPER_SCRIPT} ${SCAFFOLD_REL} ${OUTPUT_HPP} ${OUTPUT_CPP} ${AS_BIND_GEN_COMMAND}
-                        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-                        COMMENT "Unwrapping ${NAME}..."
-                        VERBATIM)
-    add_dependencies (Colonization "Unwrap${NAME}")
-endforeach ()
-
 set (COLONIZATION_HEADERS_LIST )
 set (IS_FIRST_ITEM 1)
 foreach (HEADER ${H_FILES})
@@ -55,3 +38,21 @@ add_custom_target (ColonizationASBindGen
                     COMMENT "Generating Angel Script bindings for Colonization via ASBindGen..."
                     VERBATIM)
 add_dependencies (Colonization ColonizationASBindGen)
+
+set (UNWRAPPER_SCRIPT "./code-generation/GenerateDataObjectFromScaffold/Main.lua")
+file (MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/UnwrapperLogs/)
+foreach (SCAFFOLD ${SCAFFOLDS})
+    file (RELATIVE_PATH SCAFFOLD_REL ${CMAKE_SOURCE_DIR} ${SCAFFOLD})
+    get_filename_component (DIR ${SCAFFOLD_REL} DIRECTORY)
+    get_filename_component (NAME ${SCAFFOLD} NAME_WE)
+
+    set (OUTPUT_HPP "${DIR}/${NAME}.hpp")
+    set (OUTPUT_CPP "${DIR}/${NAME}.cpp")
+    add_custom_target ("Unwrap${NAME}"
+                        COMMAND ${LUA} ${UNWRAPPER_SCRIPT} ${SCAFFOLD_REL} ${OUTPUT_HPP} ${OUTPUT_CPP} ${AS_BIND_GEN_COMMAND}
+                        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                        COMMENT "Unwrapping ${NAME}..."
+                        VERBATIM)
+    add_dependencies (Colonization "Unwrap${NAME}")
+    add_dependencies (ColonizationASBindGen "Unwrap${NAME}")
+endforeach ()
