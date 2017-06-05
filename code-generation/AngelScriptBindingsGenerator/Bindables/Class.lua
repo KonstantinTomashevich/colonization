@@ -250,37 +250,11 @@ Class.ReadContent = function (self, tokensList)
             end
 
         elseif token.type == Tokens.Command then
-            local command = nil
-            local arguments = {}
-
-            for part in token.value:gmatch ("%S+") do
-                if command == nil and part ~= "" then
-                    command = part
-                elseif part ~= "" then
-                    local argName = nil
-                    local argValue = ""
-                    part = part:gsub ("=", " ")
-                    for argPart in part:gmatch ("%S+") do
-                        if argName == nil then
-                            argName = argPart
-                        elseif argValue == "" then
-                            argValue = argPart
-                        else
-                            argValue = argValue .. "=" .. argPart
-                        end
-                    end
-
-                    while arguments [argName] ~= nil do
-                        argName = argName .. "?"
-                    end
-                    arguments [argName] = argValue
-                end
-            end
-
-            if bindables [command] ~= nil then
-                currentChildReader = bindables [command] (self.fileName, arguments)
+            local commandData = TokenUtils.ParseCommand (token)
+            if bindables [commandData.command] ~= nil then
+                currentChildReader = bindables [commandData.command] (self.fileName, commandData.arguments)
             else
-                print ("Line " .. token.line .. ": Unknown command \"" .. command .. "\"!")
+                print ("Line " .. token.line .. ": Unknown command \"" .. commandData.command .. "\"!")
             end
         end
 

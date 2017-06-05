@@ -23,4 +23,34 @@ TokenUtils.TokenToString = function (token)
     end
     return "\"" .. tokenValue .. "\"(" .. TokenUtils.TokenTypeToString (token) .. ")"
 end
+
+TokenUtils.ParseCommand = function (token)
+    local command = nil
+    local arguments = {}
+
+    for part in token.value:gmatch ("%S+") do
+        if command == nil and part ~= "" then
+            command = part
+        elseif part ~= "" then
+            local argName = nil
+            local argValue = ""
+            part = part:gsub ("=", " ")
+            for argPart in part:gmatch ("%S+") do
+                if argName == nil then
+                    argName = argPart
+                elseif argValue == "" then
+                    argValue = argPart
+                else
+                    argValue = argValue .. "=" .. argPart
+                end
+            end
+
+            while arguments [argName] ~= nil do
+                argName = argName .. "?"
+            end
+            arguments [argName] = argValue
+        end
+    end
+    return {command = command, arguments = arguments}
+end
 return TokenUtils
