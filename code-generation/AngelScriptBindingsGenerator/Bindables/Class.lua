@@ -137,12 +137,17 @@ Class.GenerateRegistratorCode = function (self)
             else
                 local bindingBase = self.bindingPublicBases [value]
                 local externalClass = DataUtils.GetNamedValueOfTable (data.externalClasses, TypeUtils.RemoveNamespaces (bindingBase))
-                registratorCode = registratorCode ..
-                        TemplatesUtils.ProcessTemplateString (externalClass.registratorTemplate,
-                            {baseName = self.bindingPublicBases [value],
-                             templateName = "T",
-                             bindingName = "className",
-                             registerConstructors = "false"}) .. "\n"
+                if externalClass ~= nil then
+                    registratorCode = registratorCode ..
+                            TemplatesUtils.ProcessTemplateString (externalClass.registratorTemplate,
+                                {baseName = self.bindingPublicBases [value],
+                                 templateName = "T",
+                                 bindingName = "className",
+                                 registerConstructors = "false"}) .. "\n"
+                else
+                    print ("Error! Can't inherite from \"" .. bindingBase ..
+                            "\"! Can't find this class neither in classes or external classes!")
+                end
             end
         end
     end
