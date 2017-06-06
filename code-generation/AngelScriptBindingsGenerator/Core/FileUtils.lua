@@ -13,21 +13,34 @@ end
 
 FileUtils.MakePath = function (path)
     local chunkTemplate = ""
-    if FileUtils.IsWindowsCmd () then
-        chunkTemplate = "(cd ${dir} || mkdir ${dir} && cd ${dir})"
-    else
-        chunkTemplate = "cd ${dir} || mkdir ${dir} && cd ${dir}"
-    end
+    chunkTemplate = "((cd ${dir} && cd ${exit} ) || mkdir ${dir})"
 
     local command = ""
-    local isFirst = true
+    local dirIndex = 1
+    local pathAddition = ""
+    local pathSeparator = "/"
+    if FileUtils.IsWindowsCmd () then
+        pathSeparator = "\\"
+    end
+
     for dir in path:gmatch ("%a+/") do
-        if isFirst then
-            isFirst = false
-        else
+        if dirIndex > 1 then
             command = command .. " && "
         end
-        command = command .. chunkTemplate:gsub ("${dir}", dir:sub (1, dir:len () - 1))
+
+        local exitPath = ""
+        for index = 1, dirIndex do
+            if index > 1 then
+                exitPath = exitPath .. pathSeparator
+            end
+            exitPath = exitPath .. ".."
+        end
+
+        local dirName = dir:sub (1, dir:len () - 1)
+        command = command .. chunkTemplate:gsub ("${dir}", pathAddition .. dirName):
+                gsub ("${exit}", exitPath)
+        pathAddition = pathAddition .. dirName .. pathSeparator
+        dirIndex = dirIndex + 1
     end
     Log ("FileUtils command: " .. command)
     os.execute (command)
