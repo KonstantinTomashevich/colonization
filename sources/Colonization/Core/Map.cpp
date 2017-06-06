@@ -86,7 +86,7 @@ Urho3D::PODVector <Urho3D::StringHash> Map::GetColoniesOfPlayer (Urho3D::StringH
     for (int index = 0; index < districts_.Size (); index++)
     {
         District *district = districts_.At (index);
-        if (district->HasColony () && Urho3D::StringHash (district->GetColonyOwnerName ()) == playerNameHash)
+        if (district->GetHasColony () && Urho3D::StringHash (district->GetColonyOwnerName ()) == playerNameHash)
         {
             colonies.Push (district->GetHash ());
         }
@@ -242,9 +242,9 @@ Urho3D::PODVector<Urho3D::StringHash> Map::FindPath(const Urho3D::StringHash &ta
                                 "\n"
                                 "listingNeighbor (index): " + Urho3D::String (index) + "\n"
                                 "listingNeighbor (name): " + next->GetName () + "\n"
-                                "isImpassable: " + Urho3D::String (next->IsImpassable ()) + "\n"
-                                "isSea: " + Urho3D::String (next->IsSea ()) + "\n"
-                                "hasColony: " + Urho3D::String (next->HasColony ()) + "\n"
+                                "isImpassable: " + Urho3D::String (next->GetIsImpassable ()) + "\n"
+                                "isSea: " + Urho3D::String (next->GetIsSea ()) + "\n"
+                                "hasColony: " + Urho3D::String (next->GetHasColony ()) + "\n"
                                 "colonyOwnerName: " + next->GetColonyOwnerName () + "\n");
 
             if (unit->IsCanGoTo (next, this, current->GetHash ()))
@@ -254,19 +254,19 @@ Urho3D::PODVector<Urho3D::StringHash> Map::FindPath(const Urho3D::StringHash &ta
                 float newCost = costSoFar [current->GetName ()];
                 float distance = (current->GetUnitPosition () - next->GetUnitPosition ()).Length ();
 
-                if (current->IsSea () && next->IsSea ())
+                if (current->GetIsSea () && next->GetIsSea ())
                 {
                     newCost += (distance / sailSpeed);
                 }
-                else if (!current->IsSea () && !next->IsSea ())
+                else if (!current->GetIsSea () && !next->GetIsSea ())
                 {
                     newCost += (distance / marchSpeed);
                 }
-                else if (!current->IsSea () && next->IsSea ())
+                else if (!current->GetIsSea () && next->GetIsSea ())
                 {
                     newCost += (distance / embarkationSpeed);
                 }
-                else if (current->IsSea () && !next->IsSea ())
+                else if (current->GetIsSea () && !next->GetIsSea ())
                 {
                     newCost += (distance / disembarkationSpeed);
                 }

@@ -5,6 +5,7 @@
 
 namespace Colonization
 {
+//@ASBindGen Class ObjectType=Ref
 class TradersUnit : public Unit
 {
 URHO3D_OBJECT (TradersUnit, Unit)
@@ -18,7 +19,9 @@ public:
     static void RegisterObject (Urho3D::Context *context);
     virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);
 
+    //@ASBindGen Function OverrideName=get_tradeGoodsCost
     float GetTradeGoodsCost () const;
+    //@ASBindGen Function OverrideName=set_tradeGoodsCost
     void SetTradeGoodsCost (float tradeGoodsCost);
 
     virtual float GetBattleAttackForce (GameConfiguration *configuration, bool isNaval) const;

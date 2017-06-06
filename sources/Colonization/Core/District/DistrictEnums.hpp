@@ -1,6 +1,7 @@
 #pragma once
 namespace Colonization
 {
+//@ASBindGen Enum
 enum ClimateType
 {
     CLIMATE_TROPICAL = 0,
@@ -11,6 +12,7 @@ enum ClimateType
     CLIMATE_COLD = 5,
 };
 
+//@ASBindGen Enum
 enum NativesCharacterType
 {
     NATIVES_CHARACTER_FRIENDLY = 0,

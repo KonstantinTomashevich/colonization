@@ -96,7 +96,7 @@ void TestMapPathFindingApplication::Start ()
     map->GetDistrictByIndex (1 * mapHeight + 1)->SetIsSea (false);
     map->GetDistrictByIndex (1 * mapHeight + 0)->SetIsSea (false);
 
-    map->GetDistrictByIndex (2 * mapHeight + 1)->SetColony (true);
+    map->GetDistrictByIndex (2 * mapHeight + 1)->SetHasColony (true);
     map->GetDistrictByIndex (2 * mapHeight + 1)->SetColonyOwnerName ("PlayerX");
     map->RecalculateDistrictsNeighbors ();
 

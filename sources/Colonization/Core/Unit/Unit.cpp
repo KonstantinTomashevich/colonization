@@ -76,29 +76,29 @@ bool Unit::IsCanGoTo (const District *district, const Map *map, Urho3D::StringHa
     }
     else if (unitType_ == UNIT_FLEET)
     {
-        return district->IsSea () && !district->IsImpassable ();
+        return district->GetIsSea () && !district->GetIsImpassable ();
     }
     // TODO: Current rule for army units is temporary!
     else if (unitType_ == UNIT_TRADERS || unitType_ == UNIT_ARMY)
     {
-        return (district->IsSea () || (district->HasColony () && district->GetColonyOwnerName () == ownerPlayerName_))
-                && !district->IsImpassable ();
+        return (district->GetIsSea () || (district->GetHasColony () && district->GetColonyOwnerName () == ownerPlayerName_))
+                && !district->GetIsImpassable ();
     }
     else if (unitType_ == UNIT_COLONIZATORS)
     {
-        if (district->IsSea () || (district->HasColony () && district->GetColonyOwnerName () == ownerPlayerName_))
+        if (district->GetIsSea () || (district->GetHasColony () && district->GetColonyOwnerName () == ownerPlayerName_))
         {
-            return !district->IsImpassable ();
+            return !district->GetIsImpassable ();
         }
-        else if (!district->IsImpassable () && !district->HasColony ())
+        else if (!district->GetIsImpassable () && !district->GetHasColony ())
         {
             Urho3D::PODVector <Urho3D::StringHash> targetNeighbors = district->GetNeighborsHashes ();
             for (int index = 0; index < targetNeighbors.Size (); index++)
             {
                 District *targetNeighbor = map->GetDistrictByHash (targetNeighbors.At (index));
-                if ((targetNeighbor->IsSea () || (targetNeighbor->HasColony () &&
+                if ((targetNeighbor->GetIsSea () || (targetNeighbor->GetHasColony () &&
                                                   targetNeighbor->GetColonyOwnerName () == ownerPlayerName_))
-                        && !targetNeighbor->IsImpassable ())
+                        && !targetNeighbor->GetIsImpassable ())
                 {
                     return true;
                 }

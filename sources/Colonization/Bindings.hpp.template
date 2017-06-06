@@ -1,0 +1,13 @@
+#pragma once
+#include <Urho3D/AngelScript/Script.h>
+#include <Urho3D/ThirdParty/AngelScript/angelscript.h>
+#include <Urho3D/AngelScript/APITemplates.h>
+//@ASBindGen WriteIncludes
+
+namespace Colonization
+{
+namespace Bindings
+{
+//@ASBindGen WriteBody
+}
+}

@@ -99,6 +99,7 @@ end
 function ConstructVarTemplateVars (var)
     local templateVars = {}
     templateVars ["    "] = _tab
+    templateVars ["${asBindGenCommand}"] = _asBindGenCommand
     templateVars ["${className}"] = _className
 
     templateVars ["${var.type}"] = var.type

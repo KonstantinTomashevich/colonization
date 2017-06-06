@@ -27,7 +27,7 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
     for (int index = 0; index < map->GetDistrictsCount (); index++)
     {
         District *district = map->GetDistrictByIndex (index);
-        if (district->HasColony ())
+        if (district->GetHasColony ())
         {
             toScan.Push (district);
         }
@@ -128,19 +128,19 @@ void TradeProcessor::ProcessTradeAreaDistrict (Map *map, District *district, Urh
             District *neighbor = map->GetDistrictByHash (districtNeighborsHashes.At (index));
             assert (neighbor);
 
-            if (neighbor->HasColony () && neighbor->GetColonyOwnerName () == district->GetColonyOwnerName ())
+            if (neighbor->GetHasColony () && neighbor->GetColonyOwnerName () == district->GetColonyOwnerName ())
             {
                 neighbors.Push (neighbor);
             }
 
             else if (district->GetLogisticsEvolutionPoints () >= configuration->GetMinimumLogisticsToUniteDistrictsToTradeAreaBySea ()
-                     && neighbor->IsSea () && !neighbor->IsImpassable ())
+                     && neighbor->GetIsSea () && !neighbor->GetIsImpassable ())
             {
                 Urho3D::PODVector <Urho3D::StringHash> neighborsOfNeighborsHashes = neighbor->GetNeighborsHashes ();
                 for (int neighborOfNeighboarIndex = 0; neighborOfNeighboarIndex < neighborsOfNeighborsHashes.Size (); neighborOfNeighboarIndex++)
                 {
                     District *neighborOfNeighbor = map->GetDistrictByHash (neighborsOfNeighborsHashes.At (neighborOfNeighboarIndex));
-                    if (neighborOfNeighbor->HasColony () && neighborOfNeighbor->GetColonyOwnerName () == district->GetColonyOwnerName ())
+                    if (neighborOfNeighbor->GetHasColony () && neighborOfNeighbor->GetColonyOwnerName () == district->GetColonyOwnerName ())
                     {
                         neighbors.Push (neighborOfNeighbor);
                     }
@@ -177,7 +177,7 @@ void TradeProcessor::ProcessTradeAreaIncome (PlayersManager *playersManager, Map
     else
     {
         float internalTaxes = configuration->GetInternalTaxes ();
-        Urho3D::SharedPtr <TradeDistrictProcessingInfo> result = tradeArea->ProcessTrade (map, updateDelay, true);
+        Urho3D::SharedPtr <TradeDistrictProcessingInfo> result (tradeArea->ProcessTrade (map, updateDelay, true));
         float playersIncome = result->GetSoldTradeGoodsCost () * internalTaxes;
         player->SetGold (player->GetGold () + playersIncome);
 

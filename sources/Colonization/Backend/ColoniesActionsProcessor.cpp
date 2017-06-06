@@ -70,7 +70,7 @@ bool ColoniesActionsProcessor::ProcessBuildWarShipAction (GameConfiguration *con
 
     Urho3D::StringHash targetDistrictHash = actionData [ColonyActions::BuildWarShip::TARGET_DISTRICT].GetStringHash ();
     District *targetDistrict = map->GetDistrictByHash (targetDistrictHash);
-    if (!targetDistrict || !colony->IsNeighborsWith (targetDistrictHash) || !targetDistrict->IsSea ())
+    if (!targetDistrict || !colony->IsNeighborsWith (targetDistrictHash) || !targetDistrict->GetIsSea ())
     {
         Urho3D::Log::Write (Urho3D::LOG_ERROR, "Can't build war ships in " + colony->GetHash ().ToString () +
                             " because target district " + targetDistrictHash.ToString () + " is incorrect!");
@@ -142,7 +142,7 @@ void ColoniesActionsProcessor::Update (Urho3D::StringHash eventType, Urho3D::Var
         for (int index = 0; index < map->GetDistrictsCount (); index++)
         {
             District *district = map->GetDistrictByIndex (index);
-            if (district->HasColony () && district->GetColonyActionsCount () > 0)
+            if (district->GetHasColony () && district->GetColonyActionsCount () > 0)
             {
                 ProcessColonyActions (district, timeStep);
             }

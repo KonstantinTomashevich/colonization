@@ -19,9 +19,9 @@ void UnitsManager::SettleColonizator (ColonizatorsUnit *unit, Map *map)
     District *colony = map->GetDistrictByHash (unit->GetPositionHash ());
     assert (colony);
 
-    if (!colony->HasColony ())
+    if (!colony->GetHasColony ())
     {
-        colony->SetColony (true);
+        colony->SetHasColony (true);
         colony->SetColonyOwnerName (unit->GetOwnerPlayerName ());
 
         colony->SetFarmsEvolutionPoints (1.0f);
@@ -31,7 +31,7 @@ void UnitsManager::SettleColonizator (ColonizatorsUnit *unit, Map *map)
         colony->SetDefenseEvolutionPoints (1.0f);
     }
 
-    if (colony->HasColony () && colony->GetColonyOwnerName () != unit->GetOwnerPlayerName ())
+    if (colony->GetHasColony () && colony->GetColonyOwnerName () != unit->GetOwnerPlayerName ())
     {
         Urho3D::Log::Write (Urho3D::LOG_WARNING, "Can't settle colonizator of " + unit->GetOwnerPlayerName () +
                             " in " + colony->GetName () + ". Because there is a colony of " + colony->GetColonyOwnerName () + "!");
@@ -71,19 +71,19 @@ void UnitsManager::ProcessTrader (GameConfiguration *configuration, TradersUnit 
 
 float UnitsManager::GetUnitSpeedBetween (District *position, District *target, GameConfiguration *configuration)
 {
-    if (position->IsSea () && target->IsSea ())
+    if (position->GetIsSea () && target->GetIsSea ())
     {
         return configuration->GetSailSpeed ();
     }
-    else if (!position->IsSea () && !target->IsSea ())
+    else if (!position->GetIsSea () && !target->GetIsSea ())
     {
         return configuration->GetMarchSpeed ();
     }
-    else if (!position->IsSea () && target->IsSea ())
+    else if (!position->GetIsSea () && target->GetIsSea ())
     {
         return configuration->GetEmbarkationSpeed ();
     }
-    else if (position->IsSea () && !target->IsSea ())
+    else if (position->GetIsSea () && !target->GetIsSea ())
     {
         return configuration->GetDisembarkationSpeed ();
     }

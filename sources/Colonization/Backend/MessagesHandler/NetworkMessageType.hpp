@@ -1,6 +1,7 @@
 #pragma once
 namespace Colonization
 {
+//@ASBindGen Enum
 enum NetworkMessageType
 {
     // CTS -- client to server message.

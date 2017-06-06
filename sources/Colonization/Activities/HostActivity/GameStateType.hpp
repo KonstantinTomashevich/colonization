@@ -1,6 +1,7 @@
 #pragma once
 namespace Colonization
 {
+//@ASBindGen Enum
 enum GameStateType
 {
     GAME_STATE_UNITIALIZED = 0,

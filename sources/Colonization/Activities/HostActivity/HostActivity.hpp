@@ -7,6 +7,7 @@
 
 namespace Colonization
 {
+//@ASBindGen Class ObjectType=Ref
 class HostActivity : public Activity
 {
 URHO3D_OBJECT (HostActivity, Activity)
@@ -41,19 +42,28 @@ protected:
     bool WillGoFromWaitingForStartToPlayingState ();
     bool WillGoFromPlayingToFinishedState ();
 public:
+    //@ASBindGen Constructor UseUrho3DScriptContext_arg0
     HostActivity (Urho3D::Context *context);
     virtual ~HostActivity ();
 
+    //@ASBindGen Function OverrideName=get_serverPort
     unsigned short GetServerPort () const;
+    //@ASBindGen Function OverrideName=set_serverPort
     void SetServerPort (unsigned short serverPort);
+    //@ASBindGen Function AddRef_arg-1 OverrideName=get_scene
     Urho3D::Scene *GetScene () const;
 
+    //@ASBindGen Function OverrideName=get_mapFolder
     Urho3D::String GetMapFolder () const;
+    //@ASBindGen Function OverrideName=set_mapFolder
     void SetMapFolder (Urho3D::String mapFolder);
 
+    //@ASBindGen Function OverrideName=get_mapInfoPath
     Urho3D::String GetMapInfoPath () const;
+    //@ASBindGen Function OverrideName=set_mapInfoPath
     void SetMapInfoPath (Urho3D::String mapInfoPath);
 
+    //@ASBindGen Function
     bool IsStartRequested () const;
     void HandleGameStartRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     void HandleKickPlayerRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);

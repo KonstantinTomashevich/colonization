@@ -84,9 +84,9 @@ class UnitSelectedWindow : ScriptObject
                 additionalInfo += "Soldiers count: " + (cast <ArmyUnit> (unit)).soldiersCount + ".\n";
             }
 
-            if (unit.GetWay ().length > 0)
+            if (unit.way.length > 0)
             {
-                Array <StringHash> unitWay = unit.GetWay ();
+                Array <StringHash> unitWay = unit.way;
                 additionalInfo += "Going to: " + map.GetDistrictByHash (unitWay [unitWay.length - 1]).name + ".\n";
                 additionalInfo += "Next waypoint: " + map.GetDistrictByHash (unitWay [0]).name + "\n";
                 additionalInfo += "Traveled to next waypoit: " +

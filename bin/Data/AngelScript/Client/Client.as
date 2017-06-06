@@ -60,7 +60,7 @@ class Client : ScriptObject
         SubscribeToEvent ("ConnectFailed", "HandleConnectFailed");
         SubscribeToEvent ("GoToMainMenuRequest", "HandleGoToMainMenuRequest");
     }
-        
+
     void Update (float timeStep)
     {
 
@@ -109,7 +109,7 @@ class Client : ScriptObject
 
     void GoToMainMenuState ()
     {
-        for (uint index = 0; index < activitiesApplication_.GetActivitiesCount (); index++)
+        for (uint index = 0; index < activitiesApplication_.activitiesCount; index++)
         {
             activitiesApplication_.StopActivityNextFrame (activitiesApplication_.GetActivityByIndex (index));
         }

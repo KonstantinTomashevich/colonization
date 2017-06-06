@@ -72,7 +72,6 @@ float ColoniesEvolutionManager::ProcessColonyPopulation (GameConfiguration *conf
 
 float ColoniesEvolutionManager::ProcessColonyFarmsEvolution (GameConfiguration *configuration, District *colony, float timeStep)
 {
-    // TODO:
     float totalColonyEvolution = GetTotalColonyEvolution (colony);
     float colonyFarmsEvolution = colony->GetFarmsEvolutionPoints ();
     float farmsEvolutionInColonyEvolution = colonyFarmsEvolution / totalColonyEvolution;
@@ -163,19 +162,19 @@ float ColoniesEvolutionManager::ProcessColonyMinesEvolution (GameConfiguration *
         perspective += 1.0f;
     }
 
-    if (colony->HasCoalDeposits ())
+    if (colony->GetHasCoalDeposits ())
     {
         perspective += 0.5f;
     }
-    if (colony->HasIronDeposits ())
+    if (colony->GetHasIronDeposits ())
     {
         perspective += 0.75f;
     }
-    if (colony->HasSilverDeposits ())
+    if (colony->GetHasSilverDeposits ())
     {
         perspective += 1.25f;
     }
-    if (colony->HasGoldDeposits ())
+    if (colony->GetHasGoldDeposits ())
     {
         perspective += 1.5f;
     }
@@ -218,15 +217,15 @@ float ColoniesEvolutionManager::ProcessColonyIndustryEvolution (GameConfiguratio
     perspective += Urho3D::Sqrt (colony->GetMinesEvolutionPoints ()) * 0.75f;
     perspective += Urho3D::Sqrt (colony->GetLogisticsEvolutionPoints ()) * 0.75f;
 
-    if (colony->HasCoalDeposits () && colony->HasIronDeposits ())
+    if (colony->GetHasCoalDeposits () && colony->GetHasIronDeposits ())
     {
         perspective += 2.0f;
     }
-    else if (colony->HasCoalDeposits ())
+    else if (colony->GetHasCoalDeposits ())
     {
         perspective += 0.5f;
     }
-    else if (colony->HasIronDeposits ())
+    else if (colony->GetHasIronDeposits ())
     {
         perspective += 1.0f;
     }
@@ -379,7 +378,7 @@ void ColoniesEvolutionManager::Update (Urho3D::StringHash eventType, Urho3D::Var
         for (int index = 0; index < map->GetDistrictsCount (); index++)
         {
             District *district = map->GetDistrictByIndex (index);
-            if (district->HasColony ())
+            if (district->GetHasColony ())
             {
                 ProcessColony (configuration, district, timeStep);
             }

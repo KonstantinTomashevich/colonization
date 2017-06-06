@@ -11,7 +11,7 @@
 namespace Colonization
 {
 NetworkUpdateCounter::NetworkUpdateCounter (Urho3D::Context *context) : Urho3D::Component (context),
-    object_ (0),
+    trackingObject_ (0),
     accumulatedUpdatePoints_ (0.0f)
 {
 
@@ -28,15 +28,15 @@ void NetworkUpdateCounter::RegisterObject (Urho3D::Context *context)
     URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
 }
 
-Urho3D::Serializable *NetworkUpdateCounter::GetObject ()
+Urho3D::Serializable *NetworkUpdateCounter::GetTrackingObject ()
 {
-    return object_;
+    return trackingObject_;
 }
 
-void NetworkUpdateCounter::SetObject (Urho3D::Serializable *object)
+void NetworkUpdateCounter::SetTrackingObject (Urho3D::Serializable *trackingObject)
 {
-    assert (object);
-    object_ = object;
+    assert (trackingObject);
+    trackingObject_ = trackingObject;
 }
 
 float NetworkUpdateCounter::GetAccumulatedUpdatePoints ()
@@ -49,10 +49,10 @@ void NetworkUpdateCounter::AddUpdatePoints (float points)
     accumulatedUpdatePoints_ += points;
     if (accumulatedUpdatePoints_ >= 100.0f)
     {
-        if (object_)
+        if (trackingObject_)
         {
             NetworkUpdateSmoother *smoother = node_->GetScene ()->GetComponent <NetworkUpdateSmoother> ();
-            smoother->RequestNetworkUpdate (object_);
+            smoother->RequestNetworkUpdate (trackingObject_);
         }
         accumulatedUpdatePoints_ = 0.0f;
     }
@@ -61,14 +61,14 @@ void NetworkUpdateCounter::AddUpdatePoints (float points)
 NetworkUpdateCounter *CreateNetworkUpdateCounterForComponent(Urho3D::Component *component)
 {
     NetworkUpdateCounter *counter = component->GetNode ()->CreateComponent <NetworkUpdateCounter> (Urho3D::LOCAL);
-    counter->SetObject (component);
+    counter->SetTrackingObject (component);
     return counter;
 }
 
 NetworkUpdateCounter *CreateNetworkUpdateCounterForNode(Urho3D::Node *node)
 {
     NetworkUpdateCounter *counter = node->CreateComponent <NetworkUpdateCounter> (Urho3D::LOCAL);
-    counter->SetObject (node);
+    counter->SetTrackingObject (node);
     return counter;
 }
 }

@@ -317,7 +317,7 @@ void InternalTradeArea::ProcessDistrictsProductionInfo (Urho3D::Vector <District
     }
 }
 
-void InternalTradeArea::WriteDistrictsBalanceAdditions (Map *map, Urho3D::SharedPtr<TradeDistrictProcessingInfo> result,
+void InternalTradeArea::WriteDistrictsBalanceAdditions (Map *map, TradeDistrictProcessingInfo *result,
                                                         Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsBalanceAdditions,
                                                         bool changeDistrictsVars)
 {
@@ -340,7 +340,7 @@ void InternalTradeArea::WriteDistrictsBalanceAdditions (Map *map, Urho3D::Shared
     }
 }
 
-void InternalTradeArea::WriteDistrictsProduction (Map *map, Urho3D::SharedPtr<TradeDistrictProcessingInfo> result,
+void InternalTradeArea::WriteDistrictsProduction (Map *map, TradeDistrictProcessingInfo *result,
                                                   Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> &districtsProduction,
                                                   bool changeDistrictsVars)
 {
@@ -488,7 +488,7 @@ void InternalTradeArea::RegisterObject (Urho3D::Context *context)
                                                               districtsHashesStructureElementsNames, Urho3D::AM_DEFAULT);
 }
 
-Urho3D::SharedPtr <TradeDistrictProcessingInfo> InternalTradeArea::ProcessTrade (Map *map, float updateDelay, bool changeDistrictsVars)
+TradeDistrictProcessingInfo *InternalTradeArea::ProcessTrade (Map *map, float updateDelay, bool changeDistrictsVars)
 {
     GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
     assert (configuration);
@@ -516,7 +516,7 @@ Urho3D::SharedPtr <TradeDistrictProcessingInfo> InternalTradeArea::ProcessTrade 
     ConsumeProduction (totalMinesConsumption, minesTotalProduction);
     ConsumeProduction (totalIndustryConsumption, industryTotalProduction);
 
-    Urho3D::SharedPtr <TradeDistrictProcessingInfo> result (new TradeDistrictProcessingInfo (context_));
+    TradeDistrictProcessingInfo *result = new TradeDistrictProcessingInfo (context_);
     result->SetUnusedProductionOf ("farms", (totalFarmsProduction - totalFarmsConsumption) * updateDelay);
     result->SetUnusedProductionOf ("mines", (totalMinesProduction - totalMinesConsumption) * updateDelay);
     result->SetUnusedProductionOf ("industry", (totalIndustryProduction - totalIndustryConsumption) * updateDelay);
@@ -540,8 +540,6 @@ Urho3D::SharedPtr <TradeDistrictProcessingInfo> InternalTradeArea::ProcessTrade 
     ProcessDistrictsProductionInfo (minesTotalProduction, Urho3D::StringHash ("mines"), districtsProduction, updateDelay);
     ProcessDistrictsProductionInfo (industryTotalProduction, Urho3D::StringHash ("industry"), districtsProduction, updateDelay);
     WriteDistrictsProduction (map, result, districtsProduction, changeDistrictsVars);
-
-
 
     if (changeDistrictsVars)
     {

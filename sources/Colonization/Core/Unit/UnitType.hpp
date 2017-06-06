@@ -1,6 +1,7 @@
 #pragma once
 namespace Colonization
 {
+//@ASBindGen Enum
 enum UnitType
 {
     UNIT_FLEET = 0,

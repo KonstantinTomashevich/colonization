@@ -12,6 +12,7 @@
 
 namespace Colonization
 {
+//@ASBindGen Class ObjectType=Ref
 class VictoryTypesProcessorScriptDataAccessor : public Urho3D::Object
 {
 URHO3D_OBJECT (VictoryTypesProcessorScriptDataAccessor, Object)
@@ -27,18 +28,26 @@ public:
     virtual ~VictoryTypesProcessorScriptDataAccessor ();
 
     void Setup (Map *map, UnitsManager *unitsManager, TradeProcessor *tradeProcessor, GameConfiguration *configuration);
+    //@ASBindGen Function AddRef_arg-1 OverrideName=get_gameConfiguration
     const GameConfiguration *GetGameConfiguration () const;
 
     void SetPlayerInfo (PlayerInfo *playerInfo);
+    //@ASBindGen Function AddRef_arg-1 OverrideName=get_playerInfo
     const PlayerInfo *GetPlayerInfo () const;
 
+    //@ASBindGen Function OverrideName=get_districtsCount
     unsigned GetDistrictsCount () const;
+    //@ASBindGen Function AddRef_arg-1
     const District *GetDistrictByIndex (int index) const;
 
+    //@ASBindGen Function OverrideName=get_unitsCount
     unsigned GetUnitsCount() const;
+    //@ASBindGen Function AddRef_arg-1
     const Unit *GetUnitByIndex (int index) const;
 
+    //@ASBindGen Function OverrideName=get_internalTradeAreasCount
     unsigned GetInternalTradeAreasCount ();
+    //@ASBindGen Function AddRef_arg-1
     const InternalTradeArea *GetInternalTradeAreaByIndex (int index) const;
 };
 }

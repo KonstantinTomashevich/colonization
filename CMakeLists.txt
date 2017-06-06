@@ -68,18 +68,6 @@ else ()
 endif ()
 message (STATUS "Lua command: ${LUA}")
 
-message (STATUS "Generation GameConfiguration class from scaffold...")
-set (GENERATOR_SCRIPT "./code-generation/GenerateDataObjectFromScaffold/Main.lua")
-set (SCAFFOLD "./sources/Colonization/Core/GameConfiguration.scaffold")
-set (OUTPUT_HPP "./sources/Colonization/Core/GameConfiguration.hpp")
-set (OUTPUT_CPP "./sources/Colonization/Core/GameConfiguration.cpp")
-set (OUTPUT_BINDINGS "./sources/Colonization/AngelScriptBinders/Core/BindGameConfiguration.cpp")
-execute_process (COMMAND ${LUA} ${GENERATOR_SCRIPT} ${SCAFFOLD} ${OUTPUT_HPP} ${OUTPUT_CPP} ${OUTPUT_BINDINGS}
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    OUTPUT_VARIABLE GENERATION_OUTPUT)
-message (STATUS ${GENERATION_OUTPUT})
-message (STATUS "GameConfiguration class generated from scaffold.")
-
 include (UrhoCommon)
 find_package (Urho3D REQUIRED)
 include_directories (${URHO3D_INCLUDE_DIRS})

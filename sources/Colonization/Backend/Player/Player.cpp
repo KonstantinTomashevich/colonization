@@ -39,9 +39,9 @@ void Player::ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data)
         return;
     }
 
-    if ((unit->GetUnitType () == UNIT_FLEET && target->IsSea ()) ||
-            (unit->GetUnitType () != UNIT_FLEET && target->HasColony () && target->GetColonyOwnerName () == name_) ||
-            (unit->GetUnitType () == UNIT_COLONIZATORS && !target->IsSea ()))
+    if ((unit->GetUnitType () == UNIT_FLEET && target->GetIsSea ()) ||
+            (unit->GetUnitType () != UNIT_FLEET && target->GetHasColony () && target->GetColonyOwnerName () == name_) ||
+            (unit->GetUnitType () == UNIT_COLONIZATORS && !target->GetIsSea ()))
     {
         map->FindPath (target->GetHash (), unit);
 
@@ -64,9 +64,9 @@ void Player::ProcessInvestToColonyAction (Urho3D::VectorBuffer data)
     Urho3D::StringHash targetDistrictHash = data.ReadStringHash ();
     District *targetDistrict = map->GetDistrictByHash (targetDistrictHash);
     assert (targetDistrict);
-    assert (!targetDistrict->IsSea ());
-    assert (!targetDistrict->IsImpassable ());
-    assert (targetDistrict->HasColony () && targetDistrict->GetColonyOwnerName () == name_);
+    assert (!targetDistrict->GetIsSea ());
+    assert (!targetDistrict->GetIsImpassable ());
+    assert (targetDistrict->GetHasColony () && targetDistrict->GetColonyOwnerName () == name_);
 
     Urho3D::StringHash investitionType = data.ReadStringHash ();
     float money = data.ReadFloat ();
@@ -97,9 +97,9 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
     Urho3D::StringHash targetDistrictHash = data.ReadStringHash ();
     District *targetDistrict = map->GetDistrictByHash (targetDistrictHash);
     assert (targetDistrict);
-    assert (!targetDistrict->IsSea ());
-    assert (!targetDistrict->IsImpassable ());
-    assert (!targetDistrict->HasColony () || (targetDistrict->HasColony () && targetDistrict->GetColonyOwnerName () == name_));
+    assert (!targetDistrict->GetIsSea ());
+    assert (!targetDistrict->GetIsImpassable ());
+    assert (!targetDistrict->GetHasColony () || (targetDistrict->GetHasColony () && targetDistrict->GetColonyOwnerName () == name_));
 
     GameConfiguration *configuration = scene_->GetComponent <GameConfiguration> ();
     int colonizatorsCount = data.ReadInt ();
@@ -146,7 +146,7 @@ void Player::ProcessAddColonyActionAction (Urho3D::VectorBuffer data)
     District *colony = map->GetDistrictByHash (colonyHash);
     assert (colony);
 
-    if (colony->HasColony () && colony->GetColonyOwnerName () == name_)
+    if (colony->GetHasColony () && colony->GetColonyOwnerName () == name_)
     {
         Urho3D::StringHash actionType = data.ReadStringHash ();
         Urho3D::VariantMap actionData = data.ReadVariantMap ();
@@ -164,7 +164,7 @@ void Player::ProcessRemoveColonyActionAction (Urho3D::VectorBuffer data)
     District *colony = map->GetDistrictByHash (colonyHash);
     assert (colony);
 
-    if (colony->HasColony () && colony->GetColonyOwnerName () == name_)
+    if (colony->GetHasColony () && colony->GetColonyOwnerName () == name_)
     {
         Urho3D::StringHash actionId = data.ReadStringHash ();
         colony->RemoveColonyActionById (actionId);

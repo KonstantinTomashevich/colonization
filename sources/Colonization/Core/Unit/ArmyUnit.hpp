@@ -5,6 +5,7 @@
 
 namespace Colonization
 {
+//@ASBindGen Class ObjectType=Ref
 class ArmyUnit : public Unit
 {
 URHO3D_OBJECT (ArmyUnit, Unit)
@@ -18,7 +19,9 @@ public:
     static void RegisterObject (Urho3D::Context *context);
     virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);
 
+    //@ASBindGen Function OverrideName=get_soldiersCount
     int GetSoldiersCount () const;
+    //@ASBindGen Function OverrideName=set_soldiersCount
     void SetSoldiersCount (int soldiersCount);
 
     virtual float GetBattleAttackForce (GameConfiguration *configuration, bool isNaval) const;

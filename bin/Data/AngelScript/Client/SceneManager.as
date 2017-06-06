@@ -103,9 +103,9 @@ class SceneManager : ScriptObject
         District @district = map.GetDistrictByHash (unit.positionHash);
         unit.node.GetChild ("local").worldPosition = district.unitPosition;
 
-        if (unit.GetWay ().length > 0)
+        if (unit.way.length > 0)
         {
-            Array <StringHash> unitWay = unit.GetWay ();
+            Array <StringHash> unitWay = unit.way;
             District @nextWaypoint = map.GetDistrictByHash (unitWay [0]);
             unit.node.GetChild ("local").LookAt (nextWaypoint.unitPosition);
             Quaternion rotation = unit.node.GetChild ("local").worldRotation;

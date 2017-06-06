@@ -5,6 +5,7 @@
 
 namespace Colonization
 {
+//@ASBindGen Class ObjectType=Ref
 class NetworkUpdateSmoother : public Urho3D::Component
 {
 URHO3D_OBJECT (NetworkUpdateSmoother, Component)
@@ -22,10 +23,14 @@ public:
     void NetworkUpdate (Urho3D::StringHash, Urho3D::VariantMap &eventData);
     void RequestNetworkUpdate (Urho3D::Serializable *object);
 
+    //@ASBindGen Function OverrideName=get_averageMarksPerUpdate
     int GetAverageMarksPerUpdate ();
+    //@ASBindGen Function OverrideName=set_averageMarksPerUpdate
     void SetAverageMarksPerUpdate (int averageMarksPerUpdate);
 
+    //@ASBindGen Function OverrideName=get_maxMarksPerUpdate
     int GetMaxMarksPerUpdate ();
+    //@ASBindGen Function OverrideName=get_maxMarksPerUpdate
     void SetMaxMarksPerUpdate (int maxMarksPerUpdate);
 };
 }

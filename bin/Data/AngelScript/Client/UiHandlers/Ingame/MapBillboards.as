@@ -22,7 +22,7 @@ class MapBillboards : ScriptObject
         if (cameraNode !is null)
         {
             Camera @camera = cameraNode.GetComponent ("Camera");
-            for (uint index = 0; index < map.GetDistrictsCount (); index++)
+            for (uint index = 0; index < map.districtsCount; index++)
             {
                 District @district = map.GetDistrictByIndex (index);
                 Vector2 screenPoint = camera.WorldToScreenPoint (district.unitPosition + BILLBOARD_WORLD_POSITION_OFFSET);
