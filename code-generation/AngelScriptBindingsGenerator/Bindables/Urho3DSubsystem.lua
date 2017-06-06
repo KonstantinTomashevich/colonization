@@ -21,15 +21,15 @@ Urho3DSubsystem.Parse = function (self, tokensList)
     end
 
     if self.type == nil then
-        print ("Line " .. token.line .. ": Can't read subsystem type!")
+        Log ("Line " .. token.line .. ": Can't read subsystem type!")
         return false
 
     elseif self.bindingName == nil then
-        print ("Line " .. token.line .. ": Can't read subsystem binding name!")
+        Log ("Line " .. token.line .. ": Can't read subsystem binding name!")
         return false
 
     elseif self.bindingType == nil then
-        print ("Line " .. token.line .. ": Can't read subsystem binding type!")
+        Log ("Line " .. token.line .. ": Can't read subsystem binding type!")
         return false
     else
         self.name = self.bindingType

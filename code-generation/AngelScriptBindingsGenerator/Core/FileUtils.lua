@@ -29,6 +29,7 @@ FileUtils.MakePath = function (path)
         end
         command = command .. chunkTemplate:gsub ("${dir}", dir:sub (1, dir:len () - 1))
     end
+    Log ("FileUtils command: " .. command)
     os.execute (command)
 end
 

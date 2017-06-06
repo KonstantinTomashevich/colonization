@@ -139,10 +139,10 @@ end
 Class.SkipUntilClassKeyword = function (self, tokensList)
     local token = tokensList:CurrentOrNextToken ()
     if token == nil then
-        print ("Fatal error, token is nil!")
+        Log ("Fatal error, token is nil!")
         return false
     elseif token.type ~= Tokens.TypeOrName and token.value ~= "class" then
-        print ("Line " .. token.line .. ": Expected \"class\", but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
+        Log ("Line " .. token.line .. ": Expected \"class\", but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
         return false
     else
         return true
@@ -152,10 +152,10 @@ end
 Class.ReadName = function (self, tokensList)
     local token = tokensList:NextToken ()
     if token == nil then
-        print ("Fatal error, token is nil!")
+        Log ("Fatal error, token is nil!")
         return false
     elseif token.type ~= Tokens.TypeOrName then
-        print ("Line " .. token.line .. ": Expected class name, but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
+        Log ("Line " .. token.line .. ": Expected class name, but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
         return false
     else
         self.name = token.value;
@@ -172,11 +172,11 @@ end
 Class.ReadBases = function (self, tokensList)
     local token = tokensList:NextToken ()
     if token == nil then
-        print ("Fatal error, token is nil!")
+        Log ("Fatal error, token is nil!")
         return false
 
     elseif token.type ~= Tokens.Operator then
-        print ("Line " .. token.line .. ": Expected \":\" or \"{\", but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
+        Log ("Line " .. token.line .. ": Expected \":\" or \"{\", but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
         return false
 
     elseif token.value == "{" then
@@ -188,7 +188,7 @@ Class.ReadBases = function (self, tokensList)
         local isNextBasePublic = false
         while token ~= nil and (token.type ~= Tokens.Operator and token.value ~= "{") do
             if token.type == Tokens.Operator and token.value == "," and isNextBasePublic then
-                print ("Line " .. token.line .. ": Expected public base class name, but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
+                Log ("Line " .. token.line .. ": Expected public base class name, but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
                 return false
 
             elseif token.type == Tokens.TypeOrName then
@@ -203,7 +203,7 @@ Class.ReadBases = function (self, tokensList)
         end
 
         if token == nil then
-            print ("Fatal error, token is nil!")
+            Log ("Fatal error, token is nil!")
             return false
         else
             self.openedBraces = 1
@@ -211,7 +211,7 @@ Class.ReadBases = function (self, tokensList)
         end
 
     else
-        print ("Line " .. token.line .. ": Expected \":\" or \"{\", but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
+        Log ("Line " .. token.line .. ": Expected \":\" or \"{\", but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
         return false
     end
 end
@@ -229,7 +229,7 @@ Class.ReadContent = function (self, tokensList)
             if not currentChildReader:Parse (tokensList) then
                 return false
             elseif currentChildReader:GetTypeName () ~= "Function" then
-                print ("Line " .. token.line .. ": Class can contain only functions and constructors, but got \"" ..
+                Log ("Line " .. token.line .. ": Class can contain only functions and constructors, but got \"" ..
                     currentChildReader:GetTypeName () .. "\"!")
                 return false
 
@@ -254,7 +254,7 @@ Class.ReadContent = function (self, tokensList)
             if bindables [commandData.command] ~= nil then
                 currentChildReader = bindables [commandData.command] (self.fileName, commandData.arguments)
             else
-                print ("Line " .. token.line .. ": Unknown command \"" .. commandData.command .. "\"!")
+                Log ("Line " .. token.line .. ": Unknown command \"" .. commandData.command .. "\"!")
             end
         end
 
@@ -270,7 +270,7 @@ Class.ReadContent = function (self, tokensList)
     end
 
     if token == nil then
-        print ("Fatal error, token is nil!")
+        Log ("Fatal error, token is nil!")
         return false
     else
         return true
@@ -300,7 +300,7 @@ Class.GenerateInheritanceRegistrator = function (self)
                                  bindingName = "className",
                                  registerConstructors = "false"}) .. "\n"
                 else
-                    print ("Error! Can't inherite from \"" .. bindingBase ..
+                    Log ("Error! Can't inherite from \"" .. bindingBase ..
                             "\"! Can't find this class neither in classes or external classes!")
                 end
             end

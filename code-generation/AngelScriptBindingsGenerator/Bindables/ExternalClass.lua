@@ -19,11 +19,11 @@ ExternalClass.Parse = function (self, tokensList)
 
     token = tokensList:NextToken ()
     if token == nil then
-        print ("Fatal error, token is nil!")
+        Log ("Fatal error, token is nil!")
         return false
 
     elseif token.type ~= Tokens.Command then
-        print ("Line " .. token.line .. ": Expected external class registrator template, but got " ..
+        Log ("Line " .. token.line .. ": Expected external class registrator template, but got " ..
                 TokenUtils.TokenToString (token) .. "!")
         return false
 
@@ -32,7 +32,7 @@ ExternalClass.Parse = function (self, tokensList)
         if self.name ~= nil then
             return true
         else
-            print ("Line " .. token.line .. ": Can't read external class name!")
+            Log ("Line " .. token.line .. ": Can't read external class name!")
             return false
         end
 

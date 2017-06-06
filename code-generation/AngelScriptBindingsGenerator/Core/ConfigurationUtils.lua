@@ -1,22 +1,22 @@
 ConfigurationUtils = {}
 ConfigurationUtils.PrintConfiguration = function ()
-    print ("### Angel Script Bindings Generator Configuration:")
-    print ("    Path prefix: " .. configuration.pathPrefix)
-    print ("    Project dir: " .. configuration.projectDir)
-    print ("    Bindings dir: " .. configuration.bindingsDir)
-    print ("    Bindings file name: " .. configuration.bindingsFileName)
-    print ("    Bindings generator command: " .. configuration.bindingsGeneratorCommand .. "\n")
+    Log ("### Angel Script Bindings Generator Configuration:")
+    Log ("    Path prefix: " .. configuration.pathPrefix)
+    Log ("    Project dir: " .. configuration.projectDir)
+    Log ("    Bindings dir: " .. configuration.bindingsDir)
+    Log ("    Bindings file name: " .. configuration.bindingsFileName)
+    Log ("    Bindings generator command: " .. configuration.bindingsGeneratorCommand .. "\n")
 
-    print ("    Files: ")
+    Log ("    Files: ")
     for index, value in pairs (configuration.files) do
-        print ("        [" .. index .. "] " .. value)
+        Log ("        [" .. index .. "] " .. value)
     end
-    print ("\n")
+    Log ("\n")
 
-    print ("    Output hpp file template path: " .. configuration.outputHppFileTemplate)
-    print ("    Output cpp file template path: " .. configuration.outputCppFileTemplate)
-    print ("\n")
-    print ("\n")
+    Log ("    Output hpp file template path: " .. configuration.outputHppFileTemplate)
+    Log ("    Output cpp file template path: " .. configuration.outputCppFileTemplate)
+    Log ("\n")
+    Log ("\n")
 end
 
 ConfigurationUtils.LocalFileNameToFilePath = function (fileName)

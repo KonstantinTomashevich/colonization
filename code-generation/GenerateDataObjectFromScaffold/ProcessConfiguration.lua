@@ -7,7 +7,7 @@ function ReadTab (readedLine)
         _tab = _tab ..  " "
         index = index + 1
     end
-    print ("Tab setted: \"" .. _tab .. "\".")
+    Log ("Tab setted: \"" .. _tab .. "\".")
 end
 
 function ReadClassName (readedLine)
@@ -20,5 +20,5 @@ function ReadClassName (readedLine)
         end
         index = index + 1
     end
-    print ("Class name setted: \"" .. _className .. "\".")
+    Log ("Class name setted: \"" .. _className .. "\".")
 end

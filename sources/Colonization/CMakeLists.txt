@@ -33,7 +33,7 @@ configure_file (${CMAKE_SOURCE_DIR}/ASBindGenConfiguration.lua.cmake ${CMAKE_SOU
 
 set (ASBINDGEN_SCRIPT "./code-generation/AngelScriptBindingsGenerator/Main.lua")
 add_custom_target (ColonizationASBindGen
-                    COMMAND ${LUA} ${ASBINDGEN_SCRIPT} "ASBindGenConfiguration.lua"
+                    COMMAND ${LUA} ${ASBINDGEN_SCRIPT} "ASBindGenConfiguration.lua" "${CMAKE_BINARY_DIR}/ASBindGen.log"
                     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
                     COMMENT "Generating Angel Script bindings for Colonization via ASBindGen..."
                     VERBATIM)
@@ -48,8 +48,9 @@ foreach (SCAFFOLD ${SCAFFOLDS})
 
     set (OUTPUT_HPP "${DIR}/${NAME}.hpp")
     set (OUTPUT_CPP "${DIR}/${NAME}.cpp")
+    set (OUTPUT_LOG "${CMAKE_BINARY_DIR}/UnwrapperLogs/${NAME}.log")
     add_custom_target ("Unwrap${NAME}"
-                        COMMAND ${LUA} ${UNWRAPPER_SCRIPT} ${SCAFFOLD_REL} ${OUTPUT_HPP} ${OUTPUT_CPP} ${AS_BIND_GEN_COMMAND}
+                        COMMAND ${LUA} ${UNWRAPPER_SCRIPT} ${SCAFFOLD_REL} ${OUTPUT_HPP} ${OUTPUT_CPP} ${AS_BIND_GEN_COMMAND} ${OUTPUT_LOG}
                         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
                         COMMENT "Unwrapping ${NAME}..."
                         VERBATIM)

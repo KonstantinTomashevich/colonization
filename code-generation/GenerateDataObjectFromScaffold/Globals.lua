@@ -18,16 +18,16 @@ _processMode = "Configuration"
 function UpdateProcessMode (readedLine, fallbackToConfiguration)
     if readedLine:find ("vars") == 1 then
         _processMode = "Vars"
-        print ("New read mode: " .. _processMode .. ".")
+        Log ("New read mode: " .. _processMode .. ".")
     elseif readedLine:find ("header") == 1 then
         _processMode = "Header"
-        print ("New read mode: " .. _processMode .. ".")
+        Log ("New read mode: " .. _processMode .. ".")
     elseif readedLine:find ("object") == 1 then
         _processMode = "Object"
-        print ("New read mode: " .. _processMode .. ".")
+        Log ("New read mode: " .. _processMode .. ".")
     elseif readedLine:find ("bindings") == 1 then
         _processMode = "Bindings"
-        print ("New read mode: " .. _processMode .. ".")
+        Log ("New read mode: " .. _processMode .. ".")
     elseif (fallbackToConfiguration) then
         _processMode = "Configuration"
     end

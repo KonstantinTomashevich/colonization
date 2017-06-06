@@ -30,7 +30,7 @@ function ReadFile (fileName)
             if bindables [commandData.command] ~= nil then
                 currentlyProcessing = bindables [commandData.command] (fileName, commandData.arguments)
             else
-                print ("Line " .. token.line .. ": Unknown command \"" .. commandData.command .. "\"!")
+                Log ("Line " .. token.line .. ": Unknown command \"" .. commandData.command .. "\"!")
             end
         end
         token = tokensList:NextToken ()

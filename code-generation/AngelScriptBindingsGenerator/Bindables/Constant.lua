@@ -62,10 +62,10 @@ end
 Constant.ReadType = function (self, tokensList)
     local token = tokensList:CurrentOrNextToken ()
     if token == nil then
-        print ("Fatal error, token is nil!")
+        Log ("Fatal error, token is nil!")
         return false
     elseif token.type ~= Tokens.TypeOrName then
-        print ("Line " .. token.line .. ": Expected constant type, but got " .. TokenUtils.TokenToString (token) .. "!")
+        Log ("Line " .. token.line .. ": Expected constant type, but got " .. TokenUtils.TokenToString (token) .. "!")
         return false
     else
         self.type = token.value
@@ -76,10 +76,10 @@ end
 Constant.ReadName = function (self, tokensList)
     token = tokensList:NextToken ()
     if token == nil then
-        print ("Fatal error, token is nil!")
+        Log ("Fatal error, token is nil!")
         return false
     elseif token == nil or token.type ~= Tokens.TypeOrName then
-        print ("Line " .. token.line .. ": Expected constant name, but got " .. TokenUtils.TokenToString (token) .. "!")
+        Log ("Line " .. token.line .. ": Expected constant name, but got " .. TokenUtils.TokenToString (token) .. "!")
         return false
     else
         self.name = token.value

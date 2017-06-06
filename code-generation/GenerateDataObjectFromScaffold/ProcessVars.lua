@@ -59,7 +59,7 @@ function ReadVar (readedLine)
     varData.description = reading
     table.insert (_vars, varData)
 
-    print ("New var:\n    type: " .. varData.type .. "\n" ..
+    Log ("New var:\n    type: " .. varData.type .. "\n" ..
         "    name: " .. varData.name .. "\n" ..
         "    default: " .. varData.default .. "\n" ..
         "    description: " .. varData.description)

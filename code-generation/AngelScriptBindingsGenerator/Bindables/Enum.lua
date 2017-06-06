@@ -83,10 +83,10 @@ end
 Enum.SkipUntilEnumKeyword = function (self, tokensList)
     local token = tokensList:CurrentOrNextToken ()
     if token == nil then
-        print ("Fatal error, token is nil!")
+        Log ("Fatal error, token is nil!")
         return false
     elseif token.type ~= Tokens.TypeOrName or token.value ~= "enum" then
-        print ("Line " .. token.line .. ": Expected \"enum\"(Type Or Name), but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
+        Log ("Line " .. token.line .. ": Expected \"enum\"(Type Or Name), but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
         return false
     else
         return true
@@ -96,10 +96,10 @@ end
 Enum.ReadName = function (self, tokensList)
     local token = tokensList:NextToken ()
     if token == nil then
-        print ("Fatal error, token is nil!")
+        Log ("Fatal error, token is nil!")
         return false
     elseif token.type ~= Tokens.TypeOrName then
-        print ("Line " .. token.line .. ": Expected enum name, but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
+        Log ("Line " .. token.line .. ": Expected enum name, but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
         return false
     else
         self.name = token.value
@@ -126,7 +126,7 @@ Enum.ReadValues = function (self, tokensList)
     end
 
     if token == nil then
-        print ("Fatal error, token is nil!")
+        Log ("Fatal error, token is nil!")
         return false
     else
         return true
@@ -136,10 +136,10 @@ end
 Enum.SkipUntilValuesBlockBegin = function (self, tokensList)
     local token = tokensList:NextToken ()
     if token == nil then
-        print ("Fatal error, token is nil!")
+        Log ("Fatal error, token is nil!")
         return false
     elseif token.type ~= Tokens.Operator or token.value ~= "{" then
-        print ("Line " .. token.line .. ": Expected \"{\"(Operator), but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
+        Log ("Line " .. token.line .. ": Expected \"{\"(Operator), but got \"" .. TokenUtils.TokenToString (token) .. "\"!")
         return false
     else
         return true
