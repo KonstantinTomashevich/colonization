@@ -21,5 +21,7 @@ before_script:
 
 script:
 - echo $URHO3D_HOME && echo $PWD
-- mkdir build && cd build && ${CMake} .. -DCOLONIZATION_ENABLE_ASSERTION=1 && make  && make test
+- mkdir build && cd build && ${CMake} .. -DCOLONIZATION_ENABLE_ASSERTION=1 && make && make test
+- echo "ASBindGen log:" && cat "ASBindGen.log"
+- cd .. && cp ./PrintUnwrapperLogs.sh build/PrintUnwrapperLogs.sh && cd build && sh PrintUnwrapperLogs.sh
 - echo "Testing log:" && cat "Testing/Temporary/LastTest.log"
