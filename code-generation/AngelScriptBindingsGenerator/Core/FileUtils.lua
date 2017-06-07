@@ -42,7 +42,6 @@ FileUtils.MakePath = function (path)
         pathAddition = pathAddition .. dirName .. pathSeparator
         dirIndex = dirIndex + 1
     end
-    Log ("FileUtils command: " .. command)
     os.execute (command)
 end
 
