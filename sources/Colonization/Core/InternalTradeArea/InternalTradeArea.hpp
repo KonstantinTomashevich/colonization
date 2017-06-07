@@ -3,13 +3,15 @@
 #include <Urho3D/Container/Vector.h>
 #include <Urho3D/Scene/Component.h>
 
-#include <Colonization/Core/GameConfiguration.hpp>
+#include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/InternalTradeArea/DistrictProductionInfo.hpp>
 #include <Colonization/Core/InternalTradeArea/DistrictProductionInfoComparator.hpp>
 #include <Colonization/Core/InternalTradeArea/TradeDistrictProcessingInfo.hpp>
 
 namespace Colonization
 {
+class District;
+class GameConfiguration;
 //@ASBindGen Class ObjectType=Ref
 class InternalTradeArea : public Urho3D::Component
 {

@@ -7,6 +7,7 @@
 
 #include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Core/Map.hpp>
+#include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/Unit/UnitTags.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>

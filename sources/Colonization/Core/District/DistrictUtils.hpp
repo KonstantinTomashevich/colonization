@@ -1,10 +1,10 @@
 #pragma once
-#include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/InternalTradeArea/DistrictProductionInfo.hpp>
-#include <Colonization/Core/GameConfiguration.hpp>
-
 namespace Colonization
 {
+class GameConfiguration;
+class District;
+
 namespace DistrictUtils
 {
 //@ASBindGen Function AddNamespaceToCallName=DistrictUtils

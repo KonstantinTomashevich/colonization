@@ -1,10 +1,11 @@
 #pragma once
 #include <Urho3D/Scene/Node.h>
+#include <Urho3D/Scene/Component.h>
 #include <Urho3D/Container/Vector.h>
-#include <Colonization/Core/District/District.hpp>
 
 namespace Colonization
 {
+class District;
 class Unit;
 //@ASBindGen Function
 float HeuristicDistanceForPathFinding (District *goal, District *next);

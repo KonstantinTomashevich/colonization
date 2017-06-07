@@ -1,10 +1,10 @@
 #pragma once
 #include <Urho3D/Core/Object.h>
 #include <Colonization/Core/Map.hpp>
-#include <Colonization/Core/GameConfiguration.hpp>
 
 namespace Colonization
 {
+class GameConfiguration;
 class ColoniesEvolutionManager : public Urho3D::Component
 {
 URHO3D_OBJECT (ColoniesEvolutionManager, Component)

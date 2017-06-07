@@ -1,6 +1,7 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "VictoryTypesProcessorScriptDataAccessor.hpp"
 #include <Urho3D/Core/Context.h>
+#include <Colonization/Core/GameConfiguration.hpp>
 
 namespace Colonization
 {

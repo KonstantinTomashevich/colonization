@@ -5,7 +5,10 @@
 #include <Urho3D/Scene/Scene.h>
 
 #include <Colonization/Core/Map.hpp>
+#include <Colonization/Core/GameConfiguration.hpp>
+#include <Colonization/Core/District/District.hpp>
 #include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
+
 #include <Colonization/Backend/Diplomacy/DiplomacyProcessor.hpp>
 #include <Colonization/Backend/Diplomacy/DiplomacyWarRequest.hpp>
 #include <Colonization/Backend/Diplomacy/DiplomacyPeaceRequest.hpp>

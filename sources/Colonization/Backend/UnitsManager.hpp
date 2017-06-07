@@ -6,12 +6,13 @@
 #include <Colonization/Core/Unit/TradersUnit.hpp>
 #include <Colonization/Core/Unit/ColonizatorsUnit.hpp>
 #include <Colonization/Core/Unit/ArmyUnit.hpp>
-#include <Colonization/Core/GameConfiguration.hpp>
 
 namespace Colonization
 {
+class GameConfiguration;
 //@ASBindGen Function ReturnHandleArray
 Urho3D::PODVector <Unit *> GetUnitsInDistrict (Urho3D::Scene *scene, Urho3D::StringHash districtHash);
+
 class UnitsManager : public Urho3D::Component
 {
 URHO3D_OBJECT (UnitsManager, Component)

@@ -6,7 +6,10 @@
 #include <Urho3D/Scene/Scene.h>
 
 #include <cmath>
+#include <Colonization/Core/GameConfiguration.hpp>
+#include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/District/ColonyActions.hpp>
+
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>

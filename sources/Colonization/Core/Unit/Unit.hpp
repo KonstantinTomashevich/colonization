@@ -1,13 +1,13 @@
 #pragma once
 #include <Urho3D/Core/Object.h>
 #include <Urho3D/Core/Attribute.h>
-#include <Colonization/Core/GameConfiguration.hpp>
-#include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/Unit/UnitType.hpp>
 
 namespace Colonization
 {
+class GameConfiguration;
+class District;
 class UnitsManager;
 //@ASBindGen Class ObjectType=Ref
 class Unit : public Urho3D::Component

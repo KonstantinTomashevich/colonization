@@ -1,12 +1,12 @@
 #pragma once
 #include <Urho3D/Scene/Component.h>
-#include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Backend/Player/Player.hpp>
 
 namespace Colonization
 {
+class GameConfiguration;
 class PlayersPointsCalculator : public Urho3D::Component
 {
 URHO3D_OBJECT (PlayersPointsCalculator, Component)

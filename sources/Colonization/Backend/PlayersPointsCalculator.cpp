@@ -4,6 +4,8 @@
 #include <Urho3D/Scene/SceneEvents.h>
 #include <Urho3D/Scene/Scene.h>
 
+#include <Colonization/Core/GameConfiguration.hpp>
+#include <Colonization/Core/District/District.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>

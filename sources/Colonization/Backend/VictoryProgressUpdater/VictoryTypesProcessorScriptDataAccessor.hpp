@@ -1,10 +1,8 @@
 #pragma once
 #include <Urho3D/Scene/Component.h>
 #include <Urho3D/AngelScript/ScriptFile.h>
-
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/InternalTradeArea/InternalTradeArea.hpp>
-#include <Colonization/Core/GameConfiguration.hpp>
 
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
@@ -12,6 +10,7 @@
 
 namespace Colonization
 {
+class GameConfiguration;
 //@ASBindGen Class ObjectType=Ref
 class VictoryTypesProcessorScriptDataAccessor : public Urho3D::Object
 {

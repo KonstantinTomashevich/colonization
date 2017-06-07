@@ -7,7 +7,10 @@
 #include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
 #include <Colonization/Utils/Network/NetworkUpdateSmoother.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
+
+#include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/District/DistrictUtils.hpp>
+#include <Colonization/Core/GameConfiguration.hpp>
 
 #include <cmath>
 #include <Urho3D/Core/Context.h>

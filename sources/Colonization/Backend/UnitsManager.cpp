@@ -7,6 +7,9 @@
 
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Core/Unit/UnitTags.hpp>
+#include <Colonization/Core/GameConfiguration.hpp>
+#include <Colonization/Core/District/District.hpp>
+
 #include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>

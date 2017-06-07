@@ -1,5 +1,7 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "DistrictUtils.hpp"
+#include <Colonization/Core/District/District.hpp>
+#include <Colonization/Core/GameConfiguration.hpp>
 
 namespace Colonization
 {
