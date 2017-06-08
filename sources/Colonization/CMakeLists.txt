@@ -31,7 +31,6 @@ foreach (HEADER ${H_FILES})
 endforeach ()
 configure_file (${CMAKE_SOURCE_DIR}/ASBindGenConfiguration.lua.cmake ${CMAKE_SOURCE_DIR}/ASBindGenConfiguration.lua)
 
-set (ASBINDGEN_SCRIPT "./code-generation/AngelScriptBindingsGenerator/Main.lua")
 add_custom_target (ColonizationASBindGen
                     COMMAND ${LUA} ${AS_BIND_GEN_SCRIPT} "ASBindGenConfiguration.lua" "${CMAKE_BINARY_DIR}/ASBindGen.log"
                     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
@@ -39,7 +38,6 @@ add_custom_target (ColonizationASBindGen
                     VERBATIM)
 add_dependencies (Colonization ColonizationASBindGen)
 
-set (UNWRAPPER_SCRIPT "./code-generation/GenerateDataObjectFromScaffold/Main.lua")
 file (MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/UnwrapperLogs/)
 foreach (SCAFFOLD ${SCAFFOLDS})
     file (RELATIVE_PATH SCAFFOLD_REL ${CMAKE_SOURCE_DIR} ${SCAFFOLD})
