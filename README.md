@@ -1,4 +1,4 @@
-## Colonization [Work In Progress]
+# Colonization [Work In Progress]
 Multiplayer RTS game in colonization setting.
 
 **Engine:** Urho3D.
