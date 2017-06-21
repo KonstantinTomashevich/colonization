@@ -12,11 +12,8 @@ void DrawCircle (Urho3D::Image *image, Urho3D::Color color, int x, int y, int ra
 //@ASBindGen Function AddNamespaceToCallName=ImageUtils
 void FloodFill (Urho3D::Image *image, Urho3D::Color color, int x, int y);
 
-//@ASBindGen Function AddNamespaceToCallName=ImageUtils
 void LineFloodFill (Urho3D::Image *image, unsigned fillColor, unsigned seedColor, int x, int y);
-//@ASBindGen Function AddNamespaceToCallName=ImageUtils
 void LineFloodFillDrawLine (Urho3D::Image *image, unsigned fillColor, unsigned seedColor, int x, int y, int direction);
-//@ASBindGen Function AddNamespaceToCallName=ImageUtils
 void LineFloodFillScanForLinesStep (Urho3D::Image *image, unsigned fillColor, unsigned seedColor,
                                 int x, int y, int xDirection, int yDirection);
 }

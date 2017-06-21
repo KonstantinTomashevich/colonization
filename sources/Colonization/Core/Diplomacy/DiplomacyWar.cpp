@@ -223,7 +223,3 @@ void DiplomacyWar::SetDefendersListAttribute (const Urho3D::VariantVector &defen
     }
 }
 }
-
-
-
-

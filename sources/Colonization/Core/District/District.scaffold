@@ -69,6 +69,7 @@ class District : public Urho3D::Component
 {
 URHO3D_OBJECT (District, Component)
 protected:
+    // TODO: Maybe replace farms square by district capacity? District capacity can be influenced by logistics and defense. Also district capacity will not affect farms evolution.
     ClimateType climate_;
     NativesCharacterType nativesCharacter_;
     Urho3D::Vector <Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> > colonyActions_;
