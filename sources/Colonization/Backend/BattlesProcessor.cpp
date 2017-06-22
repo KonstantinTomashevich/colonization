@@ -2,6 +2,10 @@
 #include "BattlesProcessor.hpp"
 #include <Urho3D/Core/Context.h>
 
+#include <Urho3D/Scene/SceneEvents.h>
+#include <Urho3D/Scene/Node.h>
+#include <Urho3D/Scene/Scene.h>
+
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 

@@ -266,7 +266,7 @@ Unit *UnitsManager::GetUnitByHash (Urho3D::StringHash hash) const
     return 0;
 }
 
-Urho3D::PODVector <Urho3D::StringHash> UnitsManager::GetUnitsOfPlayer (Urho3D::StringHash playerNameHash)
+Urho3D::PODVector <Urho3D::StringHash> UnitsManager::GetUnitsOfPlayer (Urho3D::StringHash playerNameHash) const
 {
     Urho3D::PODVector <Urho3D::StringHash> units;
     for (int index = 0; index < units_.Size (); index++)

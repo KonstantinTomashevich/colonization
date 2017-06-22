@@ -52,7 +52,7 @@ void Battle::UpdateHash (BattlesProcessor *owner)
 {
     do
     {
-        hash_ = Urho3D::Random (0, 100) * districtHash_ * warHash_;
+        hash_ = Urho3D::StringHash (Urho3D::Random (0, 100) * districtHash_.Value () * warHash_.Value ());
     }
     while (owner->GetBattleByHash (hash_) != this);
 }
