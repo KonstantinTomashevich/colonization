@@ -172,7 +172,7 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
         {
             Unit *unit = units_.At (index);
             Urho3D::PODVector <Urho3D::StringHash> unitWay = unit->GetWay ();
-            if (!unitWay.Empty ())
+            if (!unitWay.Empty () && !unit->GetIsInBattle ())
             {
                 float updatePoints = 0.0f;
                 if (unit->GetPositionHash () == unitWay.At (0))

@@ -36,7 +36,8 @@ Unit::Unit (Urho3D::Context *context) : Urho3D::Component (context),
     unitType_ (UNIT_FLEET),
     positionHash_ (),
     way_ (),
-    wayToNextDistrictProgressInPercents_ (0.0f)
+    wayToNextDistrictProgressInPercents_ (0.0f),
+    isInBattle_ (false)
 {
 
 }
@@ -58,6 +59,7 @@ void Unit::RegisterObject (Urho3D::Context *context)
                                GetWayToNextDistrictProgressInPercents,
                                SetWayToNextDistrictProgressInPercents,
                                float, 0.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Is In Battle", GetIsInBattle, SetIsInBattle, bool, false, Urho3D::AM_DEFAULT);
 }
 
 bool Unit::IsCanGoTo (const District *district, const Map *map, Urho3D::StringHash imaginePosition) const
@@ -262,5 +264,15 @@ float Unit::GetWayToNextDistrictProgressInPercents () const
 void Unit::SetWayToNextDistrictProgressInPercents (float wayToNextDistrictProgressInPercents)
 {
     wayToNextDistrictProgressInPercents_ = wayToNextDistrictProgressInPercents;
+}
+
+bool Unit::GetIsInBattle () const
+{
+    return isInBattle_;
+}
+
+void Unit::SetIsInBattle (bool isInBattle)
+{
+    isInBattle_ = isInBattle;
 }
 }

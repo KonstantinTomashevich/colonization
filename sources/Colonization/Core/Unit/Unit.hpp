@@ -15,11 +15,13 @@ class Unit : public Urho3D::Component
 URHO3D_OBJECT (Unit, Component)
 protected:
     Urho3D::StringHash hash_;
+    // TODO: Is it necessary to keep unit owner name instead of unit owner name hash?
     Urho3D::String ownerPlayerName_;
     UnitType unitType_;
     Urho3D::StringHash positionHash_;
     Urho3D::PODVector <Urho3D::StringHash> way_;
     float wayToNextDistrictProgressInPercents_;
+    bool isInBattle_;
 
 public:
     Unit (Urho3D::Context *context);
@@ -62,6 +64,11 @@ public:
     float GetWayToNextDistrictProgressInPercents () const;
     //@ASBindGen Function OverrideName=set_wayToNextDistrictProgressInPercents
     void SetWayToNextDistrictProgressInPercents (float wayToNextDistrictProgressInPercents);
+
+    //@ASBindGen Function OverrideName=get_isInBattle
+    bool GetIsInBattle () const;
+    //@ASBindGen Function OverrideName=set_isInBattle
+    void SetIsInBattle (bool isInBattle);
 
     //@ASBindGen Function
     // TODO: Implement it in all units.
