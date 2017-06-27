@@ -7,6 +7,7 @@
 
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Core/Unit/UnitTags.hpp>
+#include <Colonization/Core/Unit/UnitEvents.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Core/District/District.hpp>
 
@@ -115,7 +116,13 @@ bool UnitsManager::OnNextTargetReached (Unit *unit, Urho3D::PODVector <Urho3D::S
         ProcessTrader (configuration, ((TradersUnit *) (unit)));
         return false;
     }
-    return true;
+    else
+    {
+        Urho3D::VariantMap eventData;
+        eventData [UnitPositionChanged::UNIT_HASH] = unit->GetHash ();
+        SendEvent (EVENT_UNIT_POSITION_CHANGED, eventData);
+        return true;
+    }
 }
 
 void UnitsManager::OnSceneSet (Urho3D::Scene *scene)

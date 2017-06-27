@@ -9,6 +9,7 @@
 #include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/District/ColonyActions.hpp>
+#include <Colonization/Core/Unit/UnitEvents.hpp>
 
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
@@ -104,6 +105,10 @@ bool ColoniesActionsProcessor::ProcessBuildWarShipAction (GameConfiguration *con
             newWarShip->SetPositionHash (targetDistrictHash);
             newWarShip->SetOwnerPlayerName (colony->GetColonyOwnerName ());
             ((FleetUnit *) (newWarShip))->SetWarShipsCount (1);
+
+            Urho3D::VariantMap eventData;
+            eventData [UnitCreated::UNIT_HASH] = newWarShip->GetHash ();
+            SendEvent (EVENT_UNIT_CREATED, eventData);
             return true;
         }
         else
