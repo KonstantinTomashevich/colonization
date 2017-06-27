@@ -34,5 +34,6 @@ public:
     DiplomacyWar *GetWarByIndex (int index);
     DiplomacyWar *GetWarByHash (Urho3D::StringHash hash);
     bool RemoveWarByHash (Urho3D::StringHash hash);
+    Urho3D::PODVector <Urho3D::StringHash> GetWarsOfPlayer (Urho3D::StringHash playerNameHash);
 };
 }

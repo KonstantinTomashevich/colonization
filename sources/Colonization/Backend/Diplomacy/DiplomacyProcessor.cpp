@@ -201,4 +201,18 @@ bool DiplomacyProcessor::RemoveWarByHash (Urho3D::StringHash hash)
         return false;
     }
 }
+
+Urho3D::PODVector <Urho3D::StringHash> DiplomacyProcessor::GetWarsOfPlayer (Urho3D::StringHash playerNameHash)
+{
+    Urho3D::PODVector <Urho3D::StringHash> warsOfPlayer;
+    for (int index = 0; index < wars_.Size (); index++)
+    {
+        DiplomacyWar *war = wars_.At (index);
+        if (war->IsAttacker (playerNameHash) || war->IsDefender (playerNameHash))
+        {
+            warsOfPlayer.Push (playerNameHash);
+        }
+    }
+    return warsOfPlayer;
+}
 }
