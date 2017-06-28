@@ -17,12 +17,13 @@ URHO3D_OBJECT (BattlesProcessor, Component)
 protected:
     Urho3D::Vector <Urho3D::SharedPtr <Battle> > battles_;
 
+    void OnUnitPositionChangedOrCreated (Urho3D::VariantMap &eventData);
     bool AddUnitToBattleIfNeeded (Unit *unit, District *unitPosition, Player *unitPlayer,
                                   DiplomacyProcessor *diplomacyProcessor, UnitsManager *unitsManager);
     bool CreateNewBattleIfNeeded (Unit *unit, District *district, Player *unitPlayer,
                                   DiplomacyProcessor *diplomacyProcessor, UnitsManager *unitsManager);
 
-    void SortAttackersAndDefendersInBattle (DiplomacyWar *war, bool isNewUnitsPlayerAttackerInWar,
+    void SortAttackersAndDefendersInBattle (DiplomacyWar *war, bool isNewUnitPlayerAttackerInWar,
                                             Urho3D::Vector <Urho3D::StringHash> &playersList,
                                             Urho3D::PODVector <Urho3D::StringHash> &willBeAttackers,
                                             Urho3D::PODVector <Urho3D::StringHash> &willBeDefenders);
@@ -40,7 +41,8 @@ public:
 
     static void RegisterObject (Urho3D::Context *context);
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
-    void OnUnitPositionChangedOrCreated (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void OnUnitCreated (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void OnUnitPositionChanged (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
 
     int GetBattlesCount () const;
     void UpdateBattlesList ();

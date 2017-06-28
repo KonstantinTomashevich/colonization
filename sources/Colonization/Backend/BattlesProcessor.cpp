@@ -1,5 +1,6 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "BattlesProcessor.hpp"
+#include <Urho3D/IO/Log.h>
 #include <Urho3D/Core/Context.h>
 
 #include <Urho3D/Scene/SceneEvents.h>
@@ -21,6 +22,22 @@
 
 namespace Colonization
 {
+void BattlesProcessor::OnUnitPositionChangedOrCreated (Urho3D::VariantMap &eventData)
+{
+    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
+    UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
+    DiplomacyProcessor *diplomacyProcessor = node_->GetScene ()->GetChild ("diplomacy")->GetComponent <DiplomacyProcessor> ();
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
+
+    Unit *unit = unitsManager->GetUnitByHash (eventData [UnitPositionChanged::UNIT_HASH].GetStringHash ());
+    assert (unit);
+    District *district = map->GetDistrictByHash (unit->GetPositionHash ());
+    assert (district);
+    Player *player = playersManager->GetPlayerByNameHash (Urho3D::StringHash (unit->GetOwnerPlayerName ()));
+
+    AddUnitToBattleIfNeeded (unit, district, player, diplomacyProcessor, unitsManager) ||
+            CreateNewBattleIfNeeded (unit, district, player, diplomacyProcessor, unitsManager);
+}
 
 bool BattlesProcessor::AddUnitToBattleIfNeeded (Unit *unit, District *unitPosition, Player *unitPlayer,
                                                 DiplomacyProcessor *diplomacyProcessor, UnitsManager *unitsManager)
@@ -111,7 +128,7 @@ bool BattlesProcessor::CreateNewBattleIfNeeded (Unit *unit, District *district, 
     }
 }
 
-void BattlesProcessor::SortAttackersAndDefendersInBattle (DiplomacyWar *war, bool isNewUnitsPlayerAttackerInWar,
+void BattlesProcessor::SortAttackersAndDefendersInBattle (DiplomacyWar *war, bool isNewUnitPlayerAttackerInWar,
                                                           Urho3D::Vector <Urho3D::StringHash> &playersList,
                                                           Urho3D::PODVector <Urho3D::StringHash> &willBeAttackers,
                                                           Urho3D::PODVector <Urho3D::StringHash> &willBeDefenders)
@@ -122,7 +139,7 @@ void BattlesProcessor::SortAttackersAndDefendersInBattle (DiplomacyWar *war, boo
         bool isCurrentScannedAttackerInWar = war->IsAttacker (playerNameHash);
         if (isCurrentScannedAttackerInWar || war->IsDefender (playerNameHash))
         {
-            if (isNewUnitsPlayerAttackerInWar == isCurrentScannedAttackerInWar)
+            if (isNewUnitPlayerAttackerInWar == isCurrentScannedAttackerInWar)
             {
                 willBeAttackers.Push (playerNameHash);
             }
@@ -183,8 +200,8 @@ void BattlesProcessor::OnSceneSet (Urho3D::Scene *scene)
     UnsubscribeFromAllEvents ();
     Urho3D::Component::OnSceneSet (scene);
     SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (BattlesProcessor, Update));
-    SubscribeToEvent (scene, EVENT_UNIT_CREATED, URHO3D_HANDLER (BattlesProcessor, OnUnitPositionChangedOrCreated));
-    SubscribeToEvent (scene, EVENT_UNIT_POSITION_CHANGED, URHO3D_HANDLER (BattlesProcessor, OnUnitPositionChangedOrCreated));
+    SubscribeToEvent (EVENT_UNIT_CREATED, URHO3D_HANDLER (BattlesProcessor, OnUnitCreated));
+    SubscribeToEvent (EVENT_UNIT_POSITION_CHANGED, URHO3D_HANDLER (BattlesProcessor, OnUnitPositionChanged));
 }
 
 BattlesProcessor::BattlesProcessor (Urho3D::Context *context) : Urho3D::Component (context),
@@ -209,21 +226,14 @@ void BattlesProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMap 
 
 }
 
-void BattlesProcessor::OnUnitPositionChangedOrCreated (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+void BattlesProcessor::OnUnitCreated (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
-    UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
-    DiplomacyProcessor *diplomacyProcessor = node_->GetScene ()->GetChild ("diplomacy")->GetComponent <DiplomacyProcessor> ();
-    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
+    OnUnitPositionChangedOrCreated (eventData);
+}
 
-    Unit *unit = unitsManager->GetUnitByHash (eventData [UnitPositionChanged::UNIT_HASH].GetStringHash ());
-    assert (unit);
-    District *district = map->GetDistrictByHash (unit->GetPositionHash ());
-    assert (district);
-    Player *player = playersManager->GetPlayerByNameHash (Urho3D::StringHash (unit->GetOwnerPlayerName ()));
-
-    AddUnitToBattleIfNeeded (unit, district, player, diplomacyProcessor, unitsManager) ||
-            CreateNewBattleIfNeeded (unit, district, player, diplomacyProcessor, unitsManager);
+void BattlesProcessor::OnUnitPositionChanged (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    OnUnitPositionChangedOrCreated (eventData);
 }
 
 int BattlesProcessor::GetBattlesCount () const
