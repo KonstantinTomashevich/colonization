@@ -26,9 +26,11 @@ protected:
                                             Urho3D::Vector <Urho3D::StringHash> &playersList,
                                             Urho3D::PODVector <Urho3D::StringHash> &willBeAttackers,
                                             Urho3D::PODVector <Urho3D::StringHash> &willBeDefenders);
+
     void InitNewBattle (Battle *battle, Urho3D::HashMap <Urho3D::StringHash, Urho3D::PODVector <Unit *> > &unitsInDistrict,
                         Urho3D::PODVector <Urho3D::StringHash> &willBeAttackers,
                         Urho3D::PODVector <Urho3D::StringHash> &willBeDefenders);
+
     Battle *CreateBattle (Urho3D::StringHash warHash, Urho3D::StringHash districtHash);
     virtual void OnSceneSet (Urho3D::Scene* scene);
 

@@ -108,15 +108,13 @@ void TestMapMaskGenerationApplication::Start ()
 
     Colonization::UnitsManager *unitsManager =
             scene->CreateChild ("units", Urho3D::REPLICATED)->CreateComponent <Colonization::UnitsManager> ();
-    Colonization::Unit *unit1 = unitsManager->CreateUnit (Colonization::UNIT_FLEET);
-    Colonization::Unit *unit2 = unitsManager->CreateUnit (Colonization::UNIT_FLEET);
-
+    // array (X * HEIGHT + Y) = (X, Y)
+    Colonization::Unit *unit1 = unitsManager->CreateUnit (Colonization::UNIT_FLEET,
+                                                          map->GetDistrictByIndex (0 * mapHeight + 4)->GetHash ());
+    Colonization::Unit *unit2 = unitsManager->CreateUnit (Colonization::UNIT_FLEET,
+                                                          map->GetDistrictByIndex (4 * mapHeight + 1)->GetHash ());
     unit1->SetOwnerPlayerName ("PlayerX");
     unit2->SetOwnerPlayerName ("PlayerX");
-
-    // array (X * HEIGHT + Y) = (X, Y)
-    unit1->SetPositionHash (map->GetDistrictByIndex (0 * mapHeight + 4)->GetHash ());
-    unit2->SetPositionHash (map->GetDistrictByIndex (4 * mapHeight + 1)->GetHash ());
 
     Colonization::FogOfWarCalculator *fogOfWarCalculator = scene->CreateComponent <Colonization::FogOfWarCalculator> ();
     fogOfWarCalculator->SetPlayerName ("PlayerX");

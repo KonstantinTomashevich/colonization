@@ -41,6 +41,6 @@ public:
     Unit *GetUnitByIndex (int index) const;
     Unit *GetUnitByHash (Urho3D::StringHash hash) const;
     Urho3D::PODVector <Urho3D::StringHash> GetUnitsOfPlayer (Urho3D::StringHash playerNameHash) const;
-    Unit *CreateUnit (UnitType unitType);
+    Unit *CreateUnit (UnitType unitType, Urho3D::StringHash positionHash);
 };
 }

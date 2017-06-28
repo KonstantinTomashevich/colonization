@@ -10,6 +10,7 @@
 
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/Unit/Unit.hpp>
+#include <Colonization/Core/Unit/UnitEvents.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Utils/Network/NetworkUpdateSmoother.hpp>
 #include <Colonization/Activities/HostActivity/HostActivityEvents.hpp>
@@ -156,6 +157,13 @@ void HostActivity::LoadUnits (Urho3D::ResourceCache *resourceCache, Urho3D::Stri
     unitsNode->LoadXML (resourceCache->GetResource <Urho3D::XMLFile> (unitsPath)->GetRoot ());
     UnitsManager *unitsManager = unitsNode->CreateComponent <UnitsManager> (Urho3D::LOCAL);
     unitsManager->UpdateUnitsList ();
+    for (int index = 0; index < unitsManager->GetUnitsCount (); index++)
+    {
+        Unit *unit = unitsManager->GetUnitByIndex (index);
+        Urho3D::VariantMap eventData;
+        eventData [UnitCreated::UNIT_HASH] = unit->GetHash ();
+        SendEvent (EVENT_UNIT_CREATED, eventData);
+    }
 }
 
 void HostActivity::LoadDiplomacy (Urho3D::ResourceCache *resourceCache, Urho3D::String diplomacyPath)

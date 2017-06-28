@@ -101,14 +101,9 @@ bool ColoniesActionsProcessor::ProcessBuildWarShipAction (GameConfiguration *con
         if (currentShipProgress >= 1.0f && colony->GetMenCount () > configuration->GetOneWarShipCrew ())
         {
             colony->SetMenCount (colony->GetMenCount () - configuration->GetOneWarShipCrew ());
-            Unit *newWarShip = unitsManager->CreateUnit (UNIT_FLEET);
-            newWarShip->SetPositionHash (targetDistrictHash);
+            Unit *newWarShip = unitsManager->CreateUnit (UNIT_FLEET, targetDistrictHash);
             newWarShip->SetOwnerPlayerName (colony->GetColonyOwnerName ());
             ((FleetUnit *) (newWarShip))->SetWarShipsCount (1);
-
-            Urho3D::VariantMap eventData;
-            eventData [UnitCreated::UNIT_HASH] = newWarShip->GetHash ();
-            SendEvent (EVENT_UNIT_CREATED, eventData);
             return true;
         }
         else
