@@ -4,6 +4,7 @@
         mapXML="/map.xml"
         unitsXML="/units.xml"
         diplomacyPath="/diplomacy.xml"
+        battlesPath="/battles.xml"
         preview="/terrain_texture.png"
         />
 
