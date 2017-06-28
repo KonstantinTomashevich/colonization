@@ -10,6 +10,7 @@
 #include <Colonization/Backend/TradeProcessor.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Backend/VictoryProgressUpdater/VictoryProgressUpdater.hpp>
+#include <Colonization/Backend/BattlesProcessor.hpp>
 
 #include <Colonization/Backend/Diplomacy/DiplomacyProcessor.hpp>
 #include <Colonization/Backend/Diplomacy/DiplomacyRequest.hpp>
@@ -21,6 +22,7 @@
 #include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Core/InternalTradeArea/InternalTradeArea.hpp>
 #include <Colonization/Core/Map.hpp>
+#include <Colonization/Core/Battle.hpp>
 #include <Colonization/Core/PlayerInfo/PlayerInfo.hpp>
 
 #include <Colonization/Core/Unit/Unit.hpp>
@@ -47,6 +49,7 @@ void RegisterAllObjects (Urho3D::Context *context)
     TradeProcessor::RegisterObject (context);
     UnitsManager::RegisterObject (context);
     VictoryProgressUpdater::RegisterObject (context);
+    BattlesProcessor::RegisterObject (context);
 
     DiplomacyProcessor::RegisterObject (context);
     DiplomacyRequest::RegisterObject (context);
@@ -58,6 +61,7 @@ void RegisterAllObjects (Urho3D::Context *context)
     GameConfiguration::RegisterObject (context);
     InternalTradeArea::RegisterObject (context);
     Map::RegisterObject (context);
+    Battle::RegisterObject (context);
     PlayerInfo::RegisterObject (context);
 
     Unit::RegisterObject (context);
