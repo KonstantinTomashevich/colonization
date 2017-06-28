@@ -287,7 +287,7 @@ Urho3D::PODVector <Urho3D::StringHash> UnitsManager::GetUnitsOfPlayer (Urho3D::S
     return units;
 }
 
-Unit *UnitsManager::CreateUnit (UnitType unitType, Urho3D::StringHash positionHash)
+Unit *UnitsManager::CreateUnit (UnitType unitType, Urho3D::String ownerPlayerName, Urho3D::StringHash positionHash)
 {
     assert (node_);
     Urho3D::Node *unitNode = node_->CreateChild ("unit", Urho3D::REPLICATED);
@@ -317,6 +317,7 @@ Unit *UnitsManager::CreateUnit (UnitType unitType, Urho3D::StringHash positionHa
 
         units_.Push (unit);
         unit->SetPositionHash (positionHash);
+        unit->SetOwnerPlayerName (ownerPlayerName);
         unit->UpdateHash (this);
 
         Urho3D::VariantMap eventData;

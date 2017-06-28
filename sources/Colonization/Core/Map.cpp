@@ -156,7 +156,7 @@ void Map::RecalculateDistrictsNeighbors ()
     }
 }
 
-Urho3D::PODVector<Urho3D::StringHash> Map::FindPath(const Urho3D::StringHash &targetDistrictHash, Unit *unit, bool setUnitWay) const
+Urho3D::PODVector <Urho3D::StringHash> Map::FindPath(const Urho3D::StringHash &targetDistrictHash, Unit *unit, bool setUnitWay) const
 {
     assert (unit);
     District *start = GetDistrictByHash (unit->GetPositionHash ());

@@ -224,9 +224,8 @@ float TradeProcessor::CalculateUnsoldGoodsCost (GameConfiguration *configuration
 void TradeProcessor::SendTrader (Map *map, UnitsManager *unitsManager, GameConfiguration *configuration,
                                  District *district, float goodsCost)
 {
-    Unit *unit = unitsManager->CreateUnit (UNIT_TRADERS, district->GetHash ());
+    Unit *unit = unitsManager->CreateUnit (UNIT_TRADERS, district->GetColonyOwnerName (), district->GetHash ());
     ((TradersUnit *) (unit))->SetTradeGoodsCost (goodsCost);
-    unit->SetOwnerPlayerName (district->GetColonyOwnerName ());
 
     District *nearestEuropeDistrict = map->GetDistrictByHash (
                 configuration->GetHeuristicNearestWayToEuropeDistrict (map, district));

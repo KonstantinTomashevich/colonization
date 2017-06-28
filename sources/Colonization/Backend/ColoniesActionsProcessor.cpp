@@ -101,8 +101,7 @@ bool ColoniesActionsProcessor::ProcessBuildWarShipAction (GameConfiguration *con
         if (currentShipProgress >= 1.0f && colony->GetMenCount () > configuration->GetOneWarShipCrew ())
         {
             colony->SetMenCount (colony->GetMenCount () - configuration->GetOneWarShipCrew ());
-            Unit *newWarShip = unitsManager->CreateUnit (UNIT_FLEET, targetDistrictHash);
-            newWarShip->SetOwnerPlayerName (colony->GetColonyOwnerName ());
+            Unit *newWarShip = unitsManager->CreateUnit (UNIT_FLEET, colony->GetColonyOwnerName (), targetDistrictHash);
             ((FleetUnit *) (newWarShip))->SetWarShipsCount (1);
             return true;
         }

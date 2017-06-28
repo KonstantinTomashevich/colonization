@@ -107,12 +107,10 @@ void TestFogOfWarCalculatorApplication::Start ()
     Colonization::UnitsManager *unitsManager =
             scene->CreateChild ("units", Urho3D::REPLICATED)->CreateComponent <Colonization::UnitsManager> ();
     // array (X * HEIGHT + Y) = (X, Y)
-    Colonization::Unit *unit1 = unitsManager->CreateUnit (Colonization::UNIT_FLEET,
+    Colonization::Unit *unit1 = unitsManager->CreateUnit (Colonization::UNIT_FLEET, "PlayerX",
                                                           map->GetDistrictByIndex (0 * mapHeight + 4)->GetHash ());
-    Colonization::Unit *unit2 = unitsManager->CreateUnit (Colonization::UNIT_FLEET,
+    Colonization::Unit *unit2 = unitsManager->CreateUnit (Colonization::UNIT_FLEET, "PlayerX",
                                                           map->GetDistrictByIndex (4 * mapHeight + 1)->GetHash ());
-    unit1->SetOwnerPlayerName ("PlayerX");
-    unit2->SetOwnerPlayerName ("PlayerX");
 
     Colonization::FogOfWarCalculator *fogOfWarCalculator = scene->CreateComponent <Colonization::FogOfWarCalculator> ();
     fogOfWarCalculator->SetPlayerName ("PlayerX");

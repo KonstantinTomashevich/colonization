@@ -102,9 +102,8 @@ void TestMapPathFindingApplication::Start ()
 
     // Create UnitsManager and Unit.
     Colonization::UnitsManager *unitsManager = scene->CreateChild ("units")->CreateComponent <Colonization::UnitsManager> ();
-    Colonization::Unit *unit = unitsManager->CreateUnit (Colonization::UNIT_TRADERS,
+    Colonization::Unit *unit = unitsManager->CreateUnit (Colonization::UNIT_TRADERS,  "PlayerX",
                                                          map->GetDistrictByIndex (4 * mapHeight + 0)->GetHash ());
-    unit->SetOwnerPlayerName ("PlayerX");
 
     // Firstly calculate path if ship owner isn't colony owner.
     Urho3D::PODVector <Urho3D::StringHash> way = map->FindPath (map->GetDistrictByIndex (2 * mapHeight + 2)->GetHash (), unit);
