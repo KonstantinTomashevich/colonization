@@ -210,7 +210,7 @@ Urho3D::PODVector <Urho3D::StringHash> DiplomacyProcessor::GetWarsOfPlayer (Urho
         DiplomacyWar *war = wars_.At (index);
         if (war->IsAttacker (playerNameHash) || war->IsDefender (playerNameHash))
         {
-            warsOfPlayer.Push (playerNameHash);
+            warsOfPlayer.Push (war->GetHash ());
         }
     }
     return warsOfPlayer;
