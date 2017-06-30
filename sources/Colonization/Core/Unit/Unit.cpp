@@ -31,13 +31,14 @@ const char *unitTypesNames [] =
 };
 
 Unit::Unit (Urho3D::Context *context) : Urho3D::Component (context),
-    hash_ ("nothing"),
-    ownerPlayerName_ ("???"),
+    hash_ (Urho3D::StringHash::ZERO),
+    ownerPlayerName_ (Urho3D::StringHash::ZERO),
     unitType_ (UNIT_FLEET),
     positionHash_ (),
     way_ (),
     wayToNextDistrictProgressInPercents_ (0.0f),
-    isInBattle_ (false)
+    isInBattle_ (false),
+    battleHash_ (Urho3D::StringHash::ZERO)
 {
 
 }
@@ -50,7 +51,7 @@ Unit::~Unit ()
 void Unit::RegisterObject (Urho3D::Context *context)
 {
     URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
-    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Hash", GetHash, SetHash, Urho3D::StringHash, Urho3D::StringHash ("nothing"), Urho3D::AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Hash", GetHash, SetHash, Urho3D::StringHash, Urho3D::StringHash::ZERO, Urho3D::AM_DEFAULT);
     URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Owner Player Name", GetOwnerPlayerName, SetOwnerPlayerName, Urho3D::String, Urho3D::String ("Unit without owner"), Urho3D::AM_DEFAULT);
     URHO3D_ENUM_ACCESSOR_ATTRIBUTE ("Unit Type", GetUnitType, SetUnitType, UnitType, unitTypesNames, UNIT_FLEET, Urho3D::AM_DEFAULT);
     URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Position Hash", GetPositionHash, SetPositionHash, Urho3D::StringHash, Urho3D::StringHash ("nothing"), Urho3D::AM_DEFAULT);
@@ -60,6 +61,7 @@ void Unit::RegisterObject (Urho3D::Context *context)
                                SetWayToNextDistrictProgressInPercents,
                                float, 0.0f, Urho3D::AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE ("Is In Battle", GetIsInBattle, SetIsInBattle, bool, false, Urho3D::AM_DEFAULT);
+    URHO3D_MIXED_ACCESSOR_ATTRIBUTE ("Battle Hash", GetBattleHash, SetBattleHash, Urho3D::StringHash, Urho3D::StringHash::ZERO, Urho3D::AM_DEFAULT);
 }
 
 bool Unit::IsCanGoTo (const District *district, const Map *map, Urho3D::StringHash imaginePosition) const
@@ -274,5 +276,15 @@ bool Unit::GetIsInBattle () const
 void Unit::SetIsInBattle (bool isInBattle)
 {
     isInBattle_ = isInBattle;
+}
+
+Urho3D::StringHash Unit::GetBattleHash () const
+{
+    return battleHash_;
+}
+
+void Unit::SetBattleHash (const Urho3D::StringHash &battleHash)
+{
+    battleHash_ = battleHash;
 }
 }

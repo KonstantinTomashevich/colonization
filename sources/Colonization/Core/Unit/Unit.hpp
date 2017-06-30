@@ -22,6 +22,7 @@ protected:
     Urho3D::PODVector <Urho3D::StringHash> way_;
     float wayToNextDistrictProgressInPercents_;
     bool isInBattle_;
+    Urho3D::StringHash battleHash_;
 
 public:
     Unit (Urho3D::Context *context);
@@ -69,6 +70,11 @@ public:
     bool GetIsInBattle () const;
     //@ASBindGen Function OverrideName=set_isInBattle
     void SetIsInBattle (bool isInBattle);
+
+    //@ASBindGen Function OverrideName=get_battleHash
+    Urho3D::StringHash GetBattleHash () const;
+    //@ASBindGen Function OverrideName=set_battleHash
+    void SetBattleHash (const Urho3D::StringHash &battleHash);
 
     //@ASBindGen Function
     // TODO: Implement it in all units.

@@ -71,6 +71,7 @@ bool BattlesProcessor::AddUnitToBattleIfNeeded (Unit *unit, District *unitPositi
                 }
 
                 unit->SetIsInBattle (true);
+                unit->SetBattleHash (battle->GetHash ());
                 NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
                 if (!counter)
                 {
@@ -165,6 +166,7 @@ void BattlesProcessor::InitNewBattle (Battle *battle,
             Unit *unit = units.At (unitIndex);
             battle->AddAttackerUnitHash (unit->GetHash ());
             unit->SetIsInBattle (true);
+            unit->SetBattleHash (battle->GetHash ());
         }
     }
 
@@ -177,6 +179,7 @@ void BattlesProcessor::InitNewBattle (Battle *battle,
             Unit *unit = units.At (unitIndex);
             battle->AddDefenderUnitHash (unit->GetHash ());
             unit->SetIsInBattle (true);
+            unit->SetBattleHash (battle->GetHash ());
         }
     }
 }
