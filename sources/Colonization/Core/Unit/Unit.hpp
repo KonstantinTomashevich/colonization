@@ -77,9 +77,9 @@ public:
     void SetBattleHash (const Urho3D::StringHash &battleHash);
 
     //@ASBindGen Function
-    // TODO: Implement it in all units.
     virtual float GetBattleAttackForce (GameConfiguration *configuration, bool isNaval) const = 0;
     //@ASBindGen Function
+    /// Returns false if unit destroyed.
     virtual bool ApplyDamage (GameConfiguration *configuration, float damage) = 0;
     //@ASBindGen Function
     virtual Urho3D::String GetUnitTypeTag () const = 0;

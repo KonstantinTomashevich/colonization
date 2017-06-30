@@ -11,7 +11,7 @@ class ColonizatorsUnit : public Unit
 {
 URHO3D_OBJECT (ColonizatorsUnit, Unit)
 protected:
-    int colonizatorsCount_;
+    float colonizatorsCount_;
 
 public:
     ColonizatorsUnit (Urho3D::Context *context);
@@ -21,9 +21,9 @@ public:
     virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);
 
     //@ASBindGen Function OverrideName=get_colonizatorsCount
-    int GetColonizatorsCount () const;
+    float GetColonizatorsCount () const;
     //@ASBindGen Function OverrideName=set_colonizatorsCount
-    void SetColonizatorsCount (int colonizatorsCount);
+    void SetColonizatorsCount (float colonizatorsCount);
 
     virtual float GetBattleAttackForce (GameConfiguration *configuration, bool isNaval) const;
     /// Return true if unit is destroyed.

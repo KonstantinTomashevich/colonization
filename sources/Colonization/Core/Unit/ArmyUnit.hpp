@@ -10,7 +10,7 @@ class ArmyUnit : public Unit
 {
 URHO3D_OBJECT (ArmyUnit, Unit)
 protected:
-    int soldiersCount_;
+    float soldiersCount_;
 
 public:
     ArmyUnit (Urho3D::Context *context);
@@ -20,9 +20,9 @@ public:
     virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);
 
     //@ASBindGen Function OverrideName=get_soldiersCount
-    int GetSoldiersCount () const;
+    float GetSoldiersCount () const;
     //@ASBindGen Function OverrideName=set_soldiersCount
-    void SetSoldiersCount (int soldiersCount);
+    void SetSoldiersCount (float soldiersCount);
 
     virtual float GetBattleAttackForce (GameConfiguration *configuration, bool isNaval) const;
     /// Return true if unit is destroyed.

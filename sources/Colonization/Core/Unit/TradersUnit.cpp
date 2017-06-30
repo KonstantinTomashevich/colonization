@@ -5,10 +5,13 @@
 #include <Urho3D/Graphics/DebugRenderer.h>
 #include <Urho3D/Scene/Scene.h>
 
-#include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/Unit/UnitTags.hpp>
+#include <Colonization/Core/Unit/UnitEvents.hpp>
+#include <Colonization/Core/GameConfiguration.hpp>
+
+#include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
@@ -57,12 +60,28 @@ void TradersUnit::SetTradeGoodsCost (float tradeGoodsCost)
 
 float TradersUnit::GetBattleAttackForce (GameConfiguration *configuration, bool isNaval) const
 {
-    return 0.0f;
+    if (isNaval)
+    {
+        return configuration->GetTraderBasicNavalAttackForce () * tradeGoodsCost_;
+    }
+    else
+    {
+        return configuration->GetTraderBasicLandAttackForce () * tradeGoodsCost_;
+    }
 }
 
 bool TradersUnit::ApplyDamage (GameConfiguration *configuration, float damage)
 {
-    return false;
+    float losses = damage / configuration->GetTraderBasicHealth ();
+    tradeGoodsCost_ -= losses;
+
+    Urho3D::VariantMap eventData;
+    eventData [TradersUnitLossesGold::UNIT_HASH] = hash_;
+    eventData [TradersUnitLossesGold::BATTLE_HASH] = battleHash_;
+    eventData [TradersUnitLossesGold::GOLD_AMOUNT] = losses;
+    SendEvent (EVENT_TRADERS_UNIT_LOSSES_GOLD, eventData);
+
+    return tradeGoodsCost_ > 0.0f;
 }
 
 Urho3D::String TradersUnit::GetUnitTypeTag () const
