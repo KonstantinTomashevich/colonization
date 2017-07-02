@@ -162,6 +162,8 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
     if (enabled_)
     {
         UpdateUnitsList ();
+        RemoveDeadUnits ();
+
         Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
         GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
         assert (map);
@@ -246,6 +248,23 @@ void UnitsManager::UpdateUnitsList ()
             {
                 units_.Push (Urho3D::SharedPtr <Unit> (unit));
             }
+        }
+    }
+}
+
+void UnitsManager::RemoveDeadUnits ()
+{
+    Urho3D::Vector <Urho3D::SharedPtr <Unit> >::Iterator iterator = units_.Begin ();
+    while (iterator != units_.End ())
+    {
+        if (iterator->Get ()->IsAlive ())
+        {
+            iterator++;
+        }
+        else
+        {
+            iterator->Get ()->GetNode ()->Remove ();
+            iterator = units_.Erase (iterator);
         }
     }
 }

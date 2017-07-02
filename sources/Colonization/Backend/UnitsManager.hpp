@@ -37,6 +37,7 @@ public:
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     int GetUnitsCount () const;
     void UpdateUnitsList ();
+    void RemoveDeadUnits ();
 
     Unit *GetUnitByIndex (int index) const;
     Unit *GetUnitByHash (Urho3D::StringHash hash) const;
