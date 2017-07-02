@@ -79,8 +79,13 @@ bool TradersUnit::ApplyDamage (GameConfiguration *configuration, float damage)
     eventData [TradersUnitLossesGold::UNIT_HASH] = hash_;
     eventData [TradersUnitLossesGold::BATTLE_HASH] = battleHash_;
     eventData [TradersUnitLossesGold::GOLD_AMOUNT] = losses;
-    SendEvent (EVENT_TRADERS_UNIT_LOSSES_GOLD, eventData);
 
+    SendEvent (EVENT_TRADERS_UNIT_LOSSES_GOLD, eventData);
+    return IsAlive ();
+}
+
+bool TradersUnit::IsAlive () const
+{
     return tradeGoodsCost_ > 0.0f;
 }
 

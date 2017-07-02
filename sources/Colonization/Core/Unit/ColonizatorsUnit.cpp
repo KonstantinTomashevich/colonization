@@ -73,6 +73,11 @@ bool ColonizatorsUnit::ApplyDamage (GameConfiguration *configuration, float dama
 {
     float losses = damage / configuration->GetColonizatorBasicHealth ();
     colonizatorsCount_ -= losses;
+    return IsAlive ();
+}
+
+bool ColonizatorsUnit::IsAlive () const
+{
     return colonizatorsCount_ > 0.0f;
 }
 

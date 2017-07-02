@@ -73,6 +73,11 @@ bool ArmyUnit::ApplyDamage (GameConfiguration *configuration, float damage)
 {
     float losses = damage / configuration->GetSoldierBasicHealth ();
     soldiersCount_ -= losses;
+    return IsAlive ();
+}
+
+bool ArmyUnit::IsAlive () const
+{
     return soldiersCount_ > 0.0f;
 }
 

@@ -186,6 +186,11 @@ bool FleetUnit::ApplyDamage (GameConfiguration *configuration, float damage)
             }
         }
     }
+    return IsAlive ();
+}
+
+bool FleetUnit::IsAlive () const
+{
     return warShipsCount_ > 0;
 }
 

@@ -36,6 +36,7 @@ public:
     virtual float GetBattleAttackForce (GameConfiguration *configuration, bool isNaval) const;
     /// Return true if unit is destroyed.
     virtual bool ApplyDamage (GameConfiguration *configuration, float damage);
+    virtual bool IsAlive () const;
     virtual Urho3D::String GetUnitTypeTag () const;
 };
 }

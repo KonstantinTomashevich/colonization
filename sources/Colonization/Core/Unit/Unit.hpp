@@ -81,6 +81,8 @@ public:
     //@ASBindGen Function
     /// Returns false if unit destroyed.
     virtual bool ApplyDamage (GameConfiguration *configuration, float damage) = 0;
+    //@ASBindGen Function OverrideName=get_alive
+    virtual bool IsAlive () const = 0;
     //@ASBindGen Function
     virtual Urho3D::String GetUnitTypeTag () const = 0;
 };
