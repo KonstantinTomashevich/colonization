@@ -32,6 +32,17 @@ protected:
                         Urho3D::PODVector <Urho3D::StringHash> &willBeAttackers,
                         Urho3D::PODVector <Urho3D::StringHash> &willBeDefenders);
 
+    /// Returns false if battle was ended.
+    bool ProcessBattle (Battle *battle, float timeStep);
+    void ReconstructBattleAttackersAndDefenders (UnitsManager *unitsManager, Battle *battle,
+                                                 Urho3D::PODVector <Unit *> &attackers,
+                                                 Urho3D::PODVector <Unit *> &defenders);
+    float CalculateUnitsAttackForce (Urho3D::PODVector <Unit *> &units, GameConfiguration *configuration, bool isNavalBattle);
+
+    void ApplyDamageToAttackers (Battle *battle, GameConfiguration *configuration,
+                                 float defendersAttackForce, Urho3D::PODVector <Unit *> &attackers);
+    void ApplyDamageToDefenders (Battle *battle, GameConfiguration *configuration, float districtDefense,
+                                 float attackersAttackForce, Urho3D::PODVector <Unit *> &defenders);
     Battle *CreateBattle (Urho3D::StringHash warHash, Urho3D::StringHash districtHash);
     virtual void OnSceneSet (Urho3D::Scene* scene);
 

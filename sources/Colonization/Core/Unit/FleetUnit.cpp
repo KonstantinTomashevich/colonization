@@ -180,7 +180,7 @@ bool FleetUnit::ApplyDamage (GameConfiguration *configuration, float damage)
                 shipToDamageIndex++;
             }
 
-            if (shipToDamageIndex > warShipsCount_)
+            if (shipToDamageIndex >= warShipsCount_)
             {
                 shipToDamageIndex = 0;
             }

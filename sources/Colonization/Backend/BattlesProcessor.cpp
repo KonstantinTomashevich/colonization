@@ -15,6 +15,7 @@
 #include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/Unit/Unit.hpp>
 #include <Colonization/Core/Unit/UnitEvents.hpp>
+#include <Colonization/Core/GameConfiguration.hpp>
 
 #include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
@@ -184,6 +185,111 @@ void BattlesProcessor::InitNewBattle (Battle *battle,
     }
 }
 
+bool BattlesProcessor::ProcessBattle (Battle *battle, float timeStep)
+{
+    UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
+    GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
+    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
+    District *district = map->GetDistrictByHash (battle->GetDistrictHash ());
+    assert (district);
+
+    Urho3D::PODVector <Unit *> attackers;
+    Urho3D::PODVector <Unit *> defenders;
+    ReconstructBattleAttackersAndDefenders (unitsManager, battle, attackers, defenders);
+
+    float attackersAttackForce = timeStep * CalculateUnitsAttackForce (attackers, configuration, district->GetIsSea ());
+    float defendersAttackForce = timeStep * CalculateUnitsAttackForce (defenders, configuration, district->GetIsSea ());
+    ApplyDamageToAttackers (battle, configuration, defendersAttackForce, attackers);
+
+    float districtDefense = district->GetIsSea () ? 1.0f : district->GetDefenseEvolutionPoints ();
+    ApplyDamageToDefenders (battle, configuration, districtDefense, attackersAttackForce, defenders);
+    return (battle->GetAttackersUnitsCount () > 0 && battle->GetDefendersUnitsCount () > 0);
+}
+
+void BattlesProcessor::ReconstructBattleAttackersAndDefenders (UnitsManager *unitsManager, Battle *battle,
+                                                               Urho3D::PODVector <Unit *> &attackers,
+                                                               Urho3D::PODVector <Unit *> &defenders)
+{
+    for (int index = 0; index < battle->GetAttackersUnitsCount (); index++)
+    {
+        Unit *unit = unitsManager->GetUnitByHash (battle->GetAttackerUnitHashByIndex (index));
+        assert (unit);
+        attackers.Push (unit);
+    }
+
+    for (int index = 0; index < battle->GetDefendersUnitsCount (); index++)
+    {
+        Unit *unit = unitsManager->GetUnitByHash (battle->GetDefenderUnitHashByIndex (index));
+        assert (unit);
+        defenders.Push (unit);
+    }
+}
+
+float BattlesProcessor::CalculateUnitsAttackForce (Urho3D::PODVector <Unit *> &units, GameConfiguration *configuration, bool isNavalBattle)
+{
+    float attackForce = 0.0f;
+    for (int index = 0; index < units.Size (); index++)
+    {
+        attackForce += units.At (index)->GetBattleAttackForce (configuration, isNavalBattle);
+    }
+    return attackForce;
+}
+
+void BattlesProcessor::ApplyDamageToAttackers (Battle *battle, GameConfiguration *configuration,
+                                               float defendersAttackForce, Urho3D::PODVector <Unit *> &attackers)
+{
+    int currentAttackerUnitIndex = 0;
+    while (defendersAttackForce > 0.0f && battle->GetAttackersUnitsCount () > 0)
+    {
+        float damage = (defendersAttackForce / (battle->GetAttackersUnitsCount () * 1.0f)) * Urho3D::Random (0.1f, 3.0f);
+        defendersAttackForce -= damage;
+
+        Unit *unit = attackers.At (currentAttackerUnitIndex);
+        if (!unit->ApplyDamage (configuration, damage))
+        {
+            battle->RemoveAttackerUnitHash (unit->GetHash ());
+            attackers.RemoveSwap (unit);
+        }
+        else
+        {
+            currentAttackerUnitIndex++;
+        }
+
+        if (currentAttackerUnitIndex >= battle->GetAttackersUnitsCount ())
+        {
+            currentAttackerUnitIndex = 0;
+        }
+    }
+}
+
+void BattlesProcessor::ApplyDamageToDefenders (Battle *battle, GameConfiguration *configuration, float districtDefense,
+                                               float attackersAttackForce, Urho3D::PODVector <Unit *> &defenders)
+{
+    attackersAttackForce /= Urho3D::Sqrt (Urho3D::Sqrt (districtDefense));
+    int currentDefenderUnitIndex = 0;
+    while (attackersAttackForce > 0.0f && battle->GetDefendersUnitsCount () > 0)
+    {
+        float damage = (attackersAttackForce / (battle->GetDefendersUnitsCount () * 1.0f)) * Urho3D::Random (0.1f, 3.0f);
+        attackersAttackForce -= damage;
+
+        Unit *unit = defenders.At (currentDefenderUnitIndex);
+        if (!unit->ApplyDamage (configuration, damage))
+        {
+            battle->RemoveDefenderUnitHash (unit->GetHash ());
+            defenders.RemoveSwap (unit);
+        }
+        else
+        {
+            currentDefenderUnitIndex++;
+        }
+
+        if (currentDefenderUnitIndex >= battle->GetDefendersUnitsCount ())
+        {
+            currentDefenderUnitIndex = 0;
+        }
+    }
+}
+
 Battle *BattlesProcessor::CreateBattle (Urho3D::StringHash warHash, Urho3D::StringHash districtHash)
 {
     Urho3D::Node *battleNode = node_->CreateChild ("battle", Urho3D::REPLICATED);
@@ -226,7 +332,25 @@ void BattlesProcessor::RegisterObject (Urho3D::Context *context)
 
 void BattlesProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
+    if (enabled_)
+    {
+        UpdateBattlesList ();
+        float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
+        Urho3D::Vector <Urho3D::SharedPtr <Battle> >::Iterator iterator = battles_.Begin ();
 
+        while (iterator != battles_.End ())
+        {
+            if (!ProcessBattle (iterator->Get (), timeStep))
+            {
+                iterator->Get ()->GetNode ()->Remove ();
+                iterator = battles_.Erase (iterator);
+            }
+            else
+            {
+                iterator++;
+            }
+        }
+    }
 }
 
 void BattlesProcessor::OnUnitCreated (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
