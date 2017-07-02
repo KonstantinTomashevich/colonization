@@ -13,7 +13,7 @@
 
 #include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/Map.hpp>
-#include <Colonization/Core/Battle.hpp>
+#include <Colonization/Core/Battle/Battle.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
 
 #include <Colonization/Backend/UnitsManager.hpp>

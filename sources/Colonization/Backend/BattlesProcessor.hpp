@@ -1,7 +1,7 @@
 #pragma once
 #include <Urho3D/Core/Object.h>
 #include <Urho3D/Scene/Component.h>
-#include <Colonization/Core/Battle.hpp>
+#include <Colonization/Core/Battle/Battle.hpp>
 #include <Colonization/Core/Unit/Unit.hpp>
 
 namespace Colonization
@@ -39,10 +39,8 @@ protected:
                                                  Urho3D::PODVector <Unit *> &defenders);
     float CalculateUnitsAttackForce (Urho3D::PODVector <Unit *> &units, GameConfiguration *configuration, bool isNavalBattle);
 
-    void ApplyDamageToAttackers (Battle *battle, GameConfiguration *configuration,
-                                 float defendersAttackForce, Urho3D::PODVector <Unit *> &attackers);
-    void ApplyDamageToDefenders (Battle *battle, GameConfiguration *configuration, float districtDefense,
-                                 float attackersAttackForce, Urho3D::PODVector <Unit *> &defenders);
+    void ApplyDamage (Battle *battle, GameConfiguration *configuration, float fullDamage,
+                      Urho3D::PODVector <Unit *> &units, bool isAttackers);
     Battle *CreateBattle (Urho3D::StringHash warHash, Urho3D::StringHash districtHash);
     virtual void OnSceneSet (Urho3D::Scene* scene);
 

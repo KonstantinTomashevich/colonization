@@ -16,6 +16,7 @@
 #include <Colonization/Core/Unit/Unit.hpp>
 #include <Colonization/Core/Unit/UnitEvents.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
+#include <Colonization/Core/Battle/BattleHelpers.hpp>
 
 #include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
@@ -199,10 +200,12 @@ bool BattlesProcessor::ProcessBattle (Battle *battle, float timeStep)
 
     float attackersAttackForce = timeStep * CalculateUnitsAttackForce (attackers, configuration, district->GetIsSea ());
     float defendersAttackForce = timeStep * CalculateUnitsAttackForce (defenders, configuration, district->GetIsSea ());
-    ApplyDamageToAttackers (battle, configuration, defendersAttackForce, attackers);
+    ApplyDamage (battle, configuration, defendersAttackForce, attackers, true);
+
 
     float districtDefense = district->GetIsSea () ? 1.0f : district->GetDefenseEvolutionPoints ();
-    ApplyDamageToDefenders (battle, configuration, districtDefense, attackersAttackForce, defenders);
+    attackersAttackForce /= Urho3D::Sqrt (Urho3D::Sqrt (districtDefense));
+    ApplyDamage (battle, configuration, attackersAttackForce, defenders, false);
     return (battle->GetAttackersUnitsCount () > 0 && battle->GetDefendersUnitsCount () > 0);
 }
 
@@ -235,57 +238,30 @@ float BattlesProcessor::CalculateUnitsAttackForce (Urho3D::PODVector <Unit *> &u
     return attackForce;
 }
 
-void BattlesProcessor::ApplyDamageToAttackers (Battle *battle, GameConfiguration *configuration,
-                                               float defendersAttackForce, Urho3D::PODVector <Unit *> &attackers)
+void BattlesProcessor::ApplyDamage (Battle *battle, GameConfiguration *configuration, float fullDamage,
+                                    Urho3D::PODVector <Unit *> &units, bool isAttackers)
 {
-    int currentAttackerUnitIndex = 0;
-    while (defendersAttackForce > 0.0f && battle->GetAttackersUnitsCount () > 0)
+    int currentUnitIndex = 0;
+    while (fullDamage > 0.0f && BattleHelpers::GetUnitsCountInBattle (battle, isAttackers))
     {
-        float damage = (defendersAttackForce / (battle->GetAttackersUnitsCount () * 1.0f)) * Urho3D::Random (0.1f, 3.0f);
-        defendersAttackForce -= damage;
+        float damage = (fullDamage / (BattleHelpers::GetUnitsCountInBattle (battle, isAttackers) * 1.0f)) *
+                Urho3D::Random (0.1f, 3.0f);
+        fullDamage -= damage;
 
-        Unit *unit = attackers.At (currentAttackerUnitIndex);
+        Unit *unit = units.At (currentUnitIndex);
         if (!unit->ApplyDamage (configuration, damage))
         {
-            battle->RemoveAttackerUnitHash (unit->GetHash ());
-            attackers.RemoveSwap (unit);
+            BattleHelpers::RemoveUnitFromBattle (battle, isAttackers, unit->GetHash ());
+            units.RemoveSwap (unit);
         }
         else
         {
-            currentAttackerUnitIndex++;
+            currentUnitIndex++;
         }
 
-        if (currentAttackerUnitIndex >= battle->GetAttackersUnitsCount ())
+        if (currentUnitIndex >= BattleHelpers::GetUnitsCountInBattle (battle, isAttackers))
         {
-            currentAttackerUnitIndex = 0;
-        }
-    }
-}
-
-void BattlesProcessor::ApplyDamageToDefenders (Battle *battle, GameConfiguration *configuration, float districtDefense,
-                                               float attackersAttackForce, Urho3D::PODVector <Unit *> &defenders)
-{
-    attackersAttackForce /= Urho3D::Sqrt (Urho3D::Sqrt (districtDefense));
-    int currentDefenderUnitIndex = 0;
-    while (attackersAttackForce > 0.0f && battle->GetDefendersUnitsCount () > 0)
-    {
-        float damage = (attackersAttackForce / (battle->GetDefendersUnitsCount () * 1.0f)) * Urho3D::Random (0.1f, 3.0f);
-        attackersAttackForce -= damage;
-
-        Unit *unit = defenders.At (currentDefenderUnitIndex);
-        if (!unit->ApplyDamage (configuration, damage))
-        {
-            battle->RemoveDefenderUnitHash (unit->GetHash ());
-            defenders.RemoveSwap (unit);
-        }
-        else
-        {
-            currentDefenderUnitIndex++;
-        }
-
-        if (currentDefenderUnitIndex >= battle->GetDefendersUnitsCount ())
-        {
-            currentDefenderUnitIndex = 0;
+            currentUnitIndex = 0;
         }
     }
 }
@@ -383,21 +359,25 @@ void BattlesProcessor::OnTradersUnitLossesGold (Urho3D::StringHash eventType, Ur
         Urho3D::StringHash tradersHash = eventData [TradersUnitLossesGold::UNIT_HASH].GetStringHash ();
         assert (battle->IsAttackerUnit (tradersHash) || battle->IsDefenderUnit (tradersHash));
 
-        Urho3D::PODVector <Urho3D::StringHash> enemies;
+        bool isLootersAttackers;
         if (battle->IsAttackerUnit (tradersHash))
         {
-            enemies = battle->GetDefendersUnitsList ();
+            isLootersAttackers = false;
         }
         else
         {
-            enemies = battle->GetAttackersUnitsList ();
+            isLootersAttackers = true;
         }
 
-        float goldPerUnit = eventData [TradersUnitLossesGold::GOLD_AMOUNT].GetFloat () / enemies.Size ();
-        for (int index = 0; index < enemies.Size (); index++)
+        float goldPerUnit = eventData [TradersUnitLossesGold::GOLD_AMOUNT].GetFloat () /
+                BattleHelpers::GetUnitsCountInBattle (battle, isLootersAttackers);
+
+        for (int index = 0; index < BattleHelpers::GetUnitsCountInBattle (battle, isLootersAttackers); index++)
         {
-            Unit *enemy = unitsManager->GetUnitByHash (enemies.At (index));
+            Unit *enemy = unitsManager->GetUnitByHash (
+                        BattleHelpers::GetUnitHashFromBattleByIndex (battle, isLootersAttackers, index));
             assert (enemy);
+
             Player *enemyPlayer = playersManager->GetPlayerByNameHash (Urho3D::StringHash (enemy->GetOwnerPlayerName ()));
             assert (enemyPlayer);
             enemyPlayer->SetGold (enemyPlayer->GetGold () + goldPerUnit * configuration->GetLootingCoefficient ());

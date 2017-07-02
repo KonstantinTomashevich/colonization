@@ -22,7 +22,7 @@
 #include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Core/InternalTradeArea/InternalTradeArea.hpp>
 #include <Colonization/Core/Map.hpp>
-#include <Colonization/Core/Battle.hpp>
+#include <Colonization/Core/Battle/Battle.hpp>
 #include <Colonization/Core/PlayerInfo/PlayerInfo.hpp>
 
 #include <Colonization/Core/Unit/Unit.hpp>
