@@ -103,6 +103,9 @@ void TestBattleCreationAndJoiningApplication::Start ()
 
     Urho3D::VariantMap updateEventData;
     updateEventData [Urho3D::SceneUpdate::P_TIMESTEP] = Urho3D::Variant (10.0f);
+    Urho3D::VariantMap battleProcessorUpdateEventData;
+    battleProcessorUpdateEventData [Urho3D::SceneUpdate::P_TIMESTEP] = Urho3D::Variant (0.0f);
+
     {
         Urho3D::SharedPtr <Colonization::DiplomacyWarRequest>
                 warRequest (new Colonization::DiplomacyWarRequest (context_));
@@ -131,7 +134,7 @@ void TestBattleCreationAndJoiningApplication::Start ()
 
     diplomacyProcessor->Update (Urho3D::E_SCENEUPDATE, updateEventData);
     playersManager->Update (Urho3D::E_SCENEUPDATE, updateEventData);
-    battlesProcessor->Update (Urho3D::E_SCENEUPDATE, updateEventData);
+    battlesProcessor->Update (Urho3D::E_SCENEUPDATE, battleProcessorUpdateEventData);
     unitsManager->Update (Urho3D::E_SCENEUPDATE, updateEventData);
 
     if (battlesProcessor->GetBattlesCount () != 1)
@@ -172,7 +175,7 @@ void TestBattleCreationAndJoiningApplication::Start ()
     {
         diplomacyProcessor->Update (Urho3D::E_SCENEUPDATE, updateEventData);
         playersManager->Update (Urho3D::E_SCENEUPDATE, updateEventData);
-        battlesProcessor->Update (Urho3D::E_SCENEUPDATE, updateEventData);
+        battlesProcessor->Update (Urho3D::E_SCENEUPDATE, battleProcessorUpdateEventData);
         unitsManager->Update (Urho3D::E_SCENEUPDATE, updateEventData);
     }
 
