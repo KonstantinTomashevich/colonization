@@ -311,6 +311,7 @@ void BattlesProcessor::OnSceneSet (Urho3D::Scene *scene)
     SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (BattlesProcessor, Update));
     SubscribeToEvent (EVENT_UNIT_CREATED, URHO3D_HANDLER (BattlesProcessor, OnUnitCreated));
     SubscribeToEvent (EVENT_UNIT_POSITION_CHANGED, URHO3D_HANDLER (BattlesProcessor, OnUnitPositionChanged));
+    SubscribeToEvent (EVENT_TRADERS_UNIT_LOSSES_GOLD, URHO3D_HANDLER (BattlesProcessor, OnTradersUnitLossesGold));
 }
 
 BattlesProcessor::BattlesProcessor (Urho3D::Context *context) : Urho3D::Component (context),
@@ -355,12 +356,53 @@ void BattlesProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMap 
 
 void BattlesProcessor::OnUnitCreated (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    OnUnitPositionChangedOrCreated (eventData);
+    if (enabled_)
+    {
+        OnUnitPositionChangedOrCreated (eventData);
+    }
 }
 
 void BattlesProcessor::OnUnitPositionChanged (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    OnUnitPositionChangedOrCreated (eventData);
+    if (enabled_)
+    {
+        OnUnitPositionChangedOrCreated (eventData);
+    }
+}
+
+void BattlesProcessor::OnTradersUnitLossesGold (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    if (enabled_)
+    {
+        UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
+        GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
+        PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
+
+        Battle *battle = GetBattleByHash (eventData [TradersUnitLossesGold::BATTLE_HASH].GetStringHash ());
+        assert (battle);
+        Urho3D::StringHash tradersHash = eventData [TradersUnitLossesGold::UNIT_HASH].GetStringHash ();
+        assert (battle->IsAttackerUnit (tradersHash) || battle->IsDefenderUnit (tradersHash));
+
+        Urho3D::PODVector <Urho3D::StringHash> enemies;
+        if (battle->IsAttackerUnit (tradersHash))
+        {
+            enemies = battle->GetDefendersUnitsList ();
+        }
+        else
+        {
+            enemies = battle->GetAttackersUnitsList ();
+        }
+
+        float goldPerUnit = eventData [TradersUnitLossesGold::GOLD_AMOUNT].GetFloat () / enemies.Size ();
+        for (int index = 0; index < enemies.Size (); index++)
+        {
+            Unit *enemy = unitsManager->GetUnitByHash (enemies.At (index));
+            assert (enemy);
+            Player *enemyPlayer = playersManager->GetPlayerByNameHash (Urho3D::StringHash (enemy->GetOwnerPlayerName ()));
+            assert (enemyPlayer);
+            enemyPlayer->SetGold (enemyPlayer->GetGold () + goldPerUnit * configuration->GetLootingCoefficient ());
+        }
+    }
 }
 
 int BattlesProcessor::GetBattlesCount () const

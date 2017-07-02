@@ -120,6 +120,7 @@ float colonizatorBasicHealth_ =1.5f$Colonizator Basic Health
 float warShipBasicHealth_ =50.0f$War Ship Basic Health
 float traderBasicHealth_ =2.0f$Trader Basic Health
 
+float lootingCoefficient_ =0.4f$Looting Coefficient
 float maximumGameDuration_ =900.0f$Maximum Game Duration
 float colonyPointsModifer_ =0.15f$Colony Points Modifer
 float unitFleetPointsModifer_ =0.5f$Unit Fleet Points Modifer

@@ -54,6 +54,7 @@ public:
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     void OnUnitCreated (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     void OnUnitPositionChanged (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void OnTradersUnitLossesGold (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
 
     int GetBattlesCount () const;
     void UpdateBattlesList ();
