@@ -159,7 +159,7 @@ float ColoniesEvolutionManager::ProcessColonyMinesEvolution (GameConfiguration *
     {
         perspective += 0.5f;
     }
-    else if (colony->GetForestsSquare () > colony->GetForestsSquare () < (colony->GetForestsSquare () + colony->GetFarmingSquare ()) * 0.75f)
+    else if (colony->GetForestsSquare () > (colony->GetForestsSquare () + colony->GetFarmingSquare ()) * 0.75f)
     {
         perspective += 1.0f;
     }
@@ -266,10 +266,6 @@ float ColoniesEvolutionManager::ProcessColonyIndustryEvolution (GameConfiguratio
 
 float ColoniesEvolutionManager::ProcessColonyLogisticsEvolution (GameConfiguration *configuration, District *colony, float timeStep)
 {
-    float totalColonyEvolution = GetTotalColonyEvolution (colony);
-    float colonyLogisticsEvolution = colony->GetLogisticsEvolutionPoints ();
-    float logisticsEvolutionInColonyEvolution = colonyLogisticsEvolution / totalColonyEvolution;
-
     float perspective = 0.0f;
     perspective += Urho3D::Sqrt (colony->GetFarmsEvolutionPoints ()) * 0.4f;
     perspective += Urho3D::Sqrt (colony->GetMinesEvolutionPoints ()) * 0.4f;
