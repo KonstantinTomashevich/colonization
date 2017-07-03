@@ -60,7 +60,6 @@ void Player::ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data)
 void Player::ProcessInvestToColonyAction (Urho3D::VectorBuffer data)
 {
     Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
-    ColoniesEvolutionManager *coloniesManager = scene_->GetComponent <ColoniesEvolutionManager> ();
     // Skip action type.
     data.ReadInt ();
 
