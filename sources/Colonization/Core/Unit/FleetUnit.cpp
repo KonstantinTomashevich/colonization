@@ -150,13 +150,13 @@ float FleetUnit::GetBattleAttackForce (GameConfiguration *configuration, bool is
 
 bool FleetUnit::ApplyDamage (GameConfiguration *configuration, float damage)
 {
-    float toLoss = damage / configuration->GetWarShipBasicHealth ();
+    float toLoss = damage * 100.0f / configuration->GetWarShipBasicHealth ();
     if (warShipsCount_ > 0)
     {
-        int shipToDamageIndex = 0;
+        int shipToDamageIndex = Urho3D::Random (0, warShipsCount_);
         while (toLoss > 0.0f && warShipsCount_ > 0)
         {
-            float thisShipDamage = configuration->GetWarShipBasicHealth () * Urho3D::Random (0.1f, 0.9f);
+            float thisShipDamage = configuration->GetWarShipBasicHealth () * Urho3D::Random (0.2f, 1.0f);
             if (thisShipDamage > toLoss)
             {
                 thisShipDamage = toLoss;
@@ -175,15 +175,8 @@ bool FleetUnit::ApplyDamage (GameConfiguration *configuration, float damage)
                 warShipsHealthPoints_.Erase (shipToDamageIndex);
                 warShipsCount_ -= 1;
             }
-            else
-            {
-                shipToDamageIndex++;
-            }
 
-            if (shipToDamageIndex >= warShipsCount_)
-            {
-                shipToDamageIndex = 0;
-            }
+            shipToDamageIndex = Urho3D::Random (0, warShipsCount_);
         }
     }
     return IsAlive ();
