@@ -101,7 +101,7 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
     assert (targetDistrict);
     assert (!targetDistrict->GetIsSea ());
     assert (!targetDistrict->GetIsImpassable ());
-    assert (!targetDistrict->GetHasColony () || (targetDistrict->GetHasColony () && targetDistrict->GetColonyOwnerName () == name_));
+    assert (!targetDistrict->GetHasColony () || targetDistrict->GetColonyOwnerName () == name_);
 
     GameConfiguration *configuration = scene_->GetComponent <GameConfiguration> ();
     int colonizatorsCount = data.ReadInt ();
