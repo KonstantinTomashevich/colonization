@@ -1,4 +1,5 @@
-for logFile in UnwrapperLogs/* 
+#!/bin/sh
+for logFile in UnwrapperLogs/*
 do
     echo "${logFile}:"
     cat ${logFile}
