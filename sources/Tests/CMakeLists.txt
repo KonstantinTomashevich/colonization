@@ -52,6 +52,12 @@ setup_executable ()
 target_link_libraries (TestBattleCreationAndJoining Colonization)
 add_test (NAME test_battle_creation_and_joining COMMAND TestBattleCreationAndJoining)
 
+set (TARGET_NAME TestBattleProcessingAndLooting)
+set (SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/TestBattleProcessingAndLooting.hpp ${CMAKE_CURRENT_SOURCE_DIR}/TestBattleProcessingAndLooting.cpp)
+setup_executable ()
+target_link_libraries (TestBattleProcessingAndLooting Colonization)
+add_test (NAME test_battle_processing_and_looting COMMAND TestBattleProcessingAndLooting)
+
 set_target_properties (
     TestDistrictsNeighborsCalculation
     TestMapPathFinding
@@ -62,6 +68,7 @@ set_target_properties (
     TestMapMaskGeneration
     TestDiplomacyWarAndPeace
     TestBattleCreationAndJoining
+    TestBattleProcessingAndLooting
 
     PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/Tests"
