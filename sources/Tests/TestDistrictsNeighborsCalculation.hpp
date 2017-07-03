@@ -7,7 +7,7 @@ class TestDistrictsNeighborsCalculationApplication : public Urho3D::Application
 {
 URHO3D_OBJECT (TestDistrictsNeighborsCalculationApplication, Object)
 public:
-    TestDistrictsNeighborsCalculationApplication (Urho3D::Context *context);
+    explicit TestDistrictsNeighborsCalculationApplication (Urho3D::Context *context);
     virtual ~TestDistrictsNeighborsCalculationApplication ();
 
     virtual void Setup ();

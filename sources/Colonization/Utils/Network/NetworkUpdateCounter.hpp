@@ -14,7 +14,7 @@ protected:
     float accumulatedUpdatePoints_;
 
 public:
-    NetworkUpdateCounter (Urho3D::Context *context);
+    explicit NetworkUpdateCounter (Urho3D::Context *context);
     virtual ~NetworkUpdateCounter ();
     static void RegisterObject (Urho3D::Context *context);
 

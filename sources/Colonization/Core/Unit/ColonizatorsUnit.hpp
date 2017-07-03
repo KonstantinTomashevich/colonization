@@ -14,7 +14,7 @@ protected:
     float colonizatorsCount_;
 
 public:
-    ColonizatorsUnit (Urho3D::Context *context);
+    explicit ColonizatorsUnit (Urho3D::Context *context);
     virtual ~ColonizatorsUnit ();
 
     static void RegisterObject (Urho3D::Context *context);

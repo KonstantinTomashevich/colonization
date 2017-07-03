@@ -15,7 +15,7 @@ protected:
     Urho3D::Vector <Urho3D::SharedPtr <Colonization::Activity> > activitiesToSetup_;
     Urho3D::Vector <Urho3D::SharedPtr <Colonization::Activity> > activitiesToStop_;
 public:
-    ActivitiesApplication (Urho3D::Context *context);
+    explicit ActivitiesApplication (Urho3D::Context *context);
     virtual ~ActivitiesApplication ();
 
     virtual void Setup ();

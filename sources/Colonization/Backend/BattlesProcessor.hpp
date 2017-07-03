@@ -45,7 +45,7 @@ protected:
     virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:
-    BattlesProcessor (Urho3D::Context *context);
+    explicit BattlesProcessor (Urho3D::Context *context);
     virtual ~BattlesProcessor ();
 
     static void RegisterObject (Urho3D::Context *context);

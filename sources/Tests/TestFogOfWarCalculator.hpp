@@ -7,7 +7,7 @@ class TestFogOfWarCalculatorApplication : public Urho3D::Application
 {
 URHO3D_OBJECT (TestFogOfWarCalculatorApplication, Object)
 public:
-    TestFogOfWarCalculatorApplication (Urho3D::Context *context);
+    explicit TestFogOfWarCalculatorApplication (Urho3D::Context *context);
     virtual ~TestFogOfWarCalculatorApplication ();
 
     virtual void Setup ();

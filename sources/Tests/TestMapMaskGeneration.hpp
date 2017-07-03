@@ -7,7 +7,7 @@ class TestMapMaskGenerationApplication : public Urho3D::Application
 {
 URHO3D_OBJECT (TestMapMaskGenerationApplication, Object)
 public:
-    TestMapMaskGenerationApplication (Urho3D::Context *context);
+    explicit TestMapMaskGenerationApplication (Urho3D::Context *context);
     virtual ~TestMapMaskGenerationApplication ();
 
     virtual void Setup ();

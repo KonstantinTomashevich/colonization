@@ -4,7 +4,7 @@ class CheckScripts : public Urho3D::Application
 {
 URHO3D_OBJECT (CheckScripts, Application)
 public:
-    CheckScripts (Urho3D::Context *context);
+    explicit CheckScripts (Urho3D::Context *context);
     virtual ~CheckScripts ();
 
     virtual void Setup ();

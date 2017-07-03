@@ -19,7 +19,7 @@ protected:
                                     District *colony, Urho3D::VariantMap &actionData, float timeStep);
 
 public:
-    ColoniesActionsProcessor (Urho3D::Context *context);
+    explicit ColoniesActionsProcessor (Urho3D::Context *context);
     virtual ~ColoniesActionsProcessor ();
 
     static void RegisterObject (Urho3D::Context *context);

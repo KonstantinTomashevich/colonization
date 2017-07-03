@@ -8,7 +8,7 @@ class TestDiplomacyWarAndPeaceApplication : public Urho3D::Application
 {
 URHO3D_OBJECT (TestDiplomacyWarAndPeaceApplication, Object)
 public:
-    TestDiplomacyWarAndPeaceApplication (Urho3D::Context *context);
+    explicit TestDiplomacyWarAndPeaceApplication (Urho3D::Context *context);
     virtual ~TestDiplomacyWarAndPeaceApplication ();
 
     virtual void Setup ();

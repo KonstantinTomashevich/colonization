@@ -25,7 +25,7 @@ protected:
     Urho3D::StringHash battleHash_;
 
 public:
-    Unit (Urho3D::Context *context);
+    explicit Unit (Urho3D::Context *context);
     virtual ~Unit ();
 
     static void RegisterObject (Urho3D::Context *context);

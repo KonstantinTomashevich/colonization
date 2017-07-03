@@ -18,7 +18,7 @@ protected:
     unsigned requestId_;
 
 public:
-    DiplomacyRequest (Urho3D::Context *context);
+    explicit DiplomacyRequest (Urho3D::Context *context);
     virtual ~DiplomacyRequest ();
     static void RegisterObject (Urho3D::Context *context);
 

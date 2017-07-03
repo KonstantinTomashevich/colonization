@@ -19,7 +19,7 @@ protected:
     virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:
-    DiplomacyProcessor (Urho3D::Context *context);
+    explicit DiplomacyProcessor (Urho3D::Context *context);
     virtual ~DiplomacyProcessor ();
 
     static void RegisterObject (Urho3D::Context *context);

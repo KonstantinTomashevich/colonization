@@ -8,7 +8,7 @@ class TestInternalTradeProcessingApplication : public Urho3D::Application
 {
 URHO3D_OBJECT (TestInternalTradeProcessingApplication, Object)
 public:
-    TestInternalTradeProcessingApplication (Urho3D::Context *context);
+    explicit TestInternalTradeProcessingApplication (Urho3D::Context *context);
     virtual ~TestInternalTradeProcessingApplication ();
 
     virtual void Setup ();

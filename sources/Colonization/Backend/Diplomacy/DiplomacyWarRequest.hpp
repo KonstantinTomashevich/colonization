@@ -12,7 +12,7 @@ protected:
     Urho3D::StringHash defender_;
 
 public:
-    DiplomacyWarRequest (Urho3D::Context *context);
+    explicit DiplomacyWarRequest (Urho3D::Context *context);
     virtual ~DiplomacyWarRequest ();
     static void RegisterObject (Urho3D::Context *context);
 

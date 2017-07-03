@@ -11,7 +11,7 @@ URHO3D_OBJECT (Activity, Object)
 protected:
     ActivitiesApplication *application_;
 public:
-    Activity (Urho3D::Context *context);
+    explicit Activity (Urho3D::Context *context);
     virtual ~Activity ();
 
     //@ASBindGen Function AddRef_arg-1 OverrideName=get_application

@@ -147,7 +147,7 @@ protected:
     //@Insert var list
 
 public:
-    GameConfiguration (Urho3D::Context *context);
+    explicit GameConfiguration (Urho3D::Context *context);
     virtual ~GameConfiguration ();
 
     static void RegisterObject (Urho3D::Context *context);

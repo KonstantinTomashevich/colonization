@@ -13,7 +13,7 @@ protected:
     float tradeGoodsCost_;
 
 public:
-    TradersUnit (Urho3D::Context *context);
+    explicit TradersUnit (Urho3D::Context *context);
     virtual ~TradersUnit ();
 
     static void RegisterObject (Urho3D::Context *context);

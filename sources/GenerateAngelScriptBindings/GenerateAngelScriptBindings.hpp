@@ -8,7 +8,7 @@ class GenerateAngelScriptBindings : public Urho3D::Application
 {
 URHO3D_OBJECT (GenerateAngelScriptBindings, Application)
 public:
-    GenerateAngelScriptBindings (Urho3D::Context *context);
+    explicit GenerateAngelScriptBindings (Urho3D::Context *context);
     virtual ~GenerateAngelScriptBindings ();
 
     virtual void Setup ();

@@ -16,7 +16,7 @@ protected:
     float conflictEscalation_;
 
 public:
-    DiplomacyWar (Urho3D::Context* context);
+    explicit DiplomacyWar (Urho3D::Context* context);
     virtual ~DiplomacyWar ();
     static void RegisterObject (Urho3D::Context *context);
 

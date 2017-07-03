@@ -20,7 +20,7 @@ protected:
     Urho3D::PODVector <Urho3D::StringHash> attackersUnits_;
 
 public:
-    Battle (Urho3D::Context *context);
+    explicit Battle (Urho3D::Context *context);
     virtual ~Battle ();
     static void RegisterObject (Urho3D::Context *context);
 

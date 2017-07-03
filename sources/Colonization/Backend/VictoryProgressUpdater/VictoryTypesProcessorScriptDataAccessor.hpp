@@ -23,7 +23,7 @@ protected:
     GameConfiguration *configuration_;
 
 public:
-    VictoryTypesProcessorScriptDataAccessor (Urho3D::Context *context);
+    explicit VictoryTypesProcessorScriptDataAccessor (Urho3D::Context *context);
     virtual ~VictoryTypesProcessorScriptDataAccessor ();
 
     void Setup (Map *map, UnitsManager *unitsManager, TradeProcessor *tradeProcessor, GameConfiguration *configuration);

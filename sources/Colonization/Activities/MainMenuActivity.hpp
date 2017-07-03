@@ -14,7 +14,7 @@ protected:
     Urho3D::ScriptInstance *angelScriptGUI_;
 public:
     //@ASBindGen Constructor UseUrho3DScriptContext_arg0
-    MainMenuActivity (Urho3D::Context *context);
+    explicit MainMenuActivity (Urho3D::Context *context);
     virtual ~MainMenuActivity ();
 
     virtual void Start ();

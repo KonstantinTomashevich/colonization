@@ -29,7 +29,7 @@ protected:
     virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:
-    TradeProcessor (Urho3D::Context *context);
+    explicit TradeProcessor (Urho3D::Context *context);
     virtual ~TradeProcessor ();
     static void RegisterObject (Urho3D::Context *context);
 

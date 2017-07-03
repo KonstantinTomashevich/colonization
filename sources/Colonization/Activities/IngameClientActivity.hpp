@@ -20,7 +20,7 @@ protected:
     Urho3D::Color playerColor_;
 public:
     //@ASBindGen Constructor UseUrho3DScriptContext_arg0
-    IngameClientActivity (Urho3D::Context *context);
+    explicit IngameClientActivity (Urho3D::Context *context);
     virtual ~IngameClientActivity ();
 
     virtual void Start ();

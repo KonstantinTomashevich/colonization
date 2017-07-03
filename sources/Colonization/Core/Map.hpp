@@ -21,7 +21,7 @@ protected:
     virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:
-    Map (Urho3D::Context *context);
+    explicit Map (Urho3D::Context *context);
     virtual ~Map ();
 
     virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);

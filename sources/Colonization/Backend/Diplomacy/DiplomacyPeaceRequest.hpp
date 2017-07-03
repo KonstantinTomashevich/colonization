@@ -17,7 +17,7 @@ protected:
     void ProcessDeclinedResult ();
 
 public:
-    DiplomacyPeaceRequest (Urho3D::Context *context);
+    explicit DiplomacyPeaceRequest (Urho3D::Context *context);
     virtual ~DiplomacyPeaceRequest ();
     static void RegisterObject (Urho3D::Context *context);
 

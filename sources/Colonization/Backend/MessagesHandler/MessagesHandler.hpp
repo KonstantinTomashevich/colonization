@@ -16,7 +16,7 @@ protected:
     void ProcessReselectPlayerColor (Player *player, Urho3D::VectorBuffer &messageData);
 
 public:
-    MessagesHandler (Urho3D::Context *context);
+    explicit MessagesHandler (Urho3D::Context *context);
     virtual ~MessagesHandler ();
     static void RegisterObject (Urho3D::Context *context);
 

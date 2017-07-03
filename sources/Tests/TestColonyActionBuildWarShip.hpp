@@ -11,7 +11,7 @@ protected:
     Urho3D::SharedPtr <Urho3D::Scene> scene_;
 
 public:
-    TestColonyActionBuildWarShipApplication (Urho3D::Context *context);
+    explicit TestColonyActionBuildWarShipApplication (Urho3D::Context *context);
     virtual ~TestColonyActionBuildWarShipApplication ();
 
     virtual void Setup ();

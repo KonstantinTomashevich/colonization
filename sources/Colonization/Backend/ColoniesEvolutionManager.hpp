@@ -20,7 +20,7 @@ protected:
     virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:
-    ColoniesEvolutionManager (Urho3D::Context *context);
+    explicit ColoniesEvolutionManager (Urho3D::Context *context);
     virtual ~ColoniesEvolutionManager ();
 
     static void RegisterObject (Urho3D::Context *context);

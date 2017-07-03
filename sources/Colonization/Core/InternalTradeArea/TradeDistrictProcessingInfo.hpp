@@ -16,7 +16,7 @@ protected:
     float soldTradeGoodsCost_;
     
 public:
-    TradeDistrictProcessingInfo (Urho3D::Context *context);
+    explicit TradeDistrictProcessingInfo (Urho3D::Context *context);
     virtual ~TradeDistrictProcessingInfo ();
 
     //@ASBindGen Function

@@ -60,7 +60,7 @@ protected:
     float CalculateUnsoldIndustryProductionCost (Urho3D::Vector <DistrictProductionInfo> &production, GameConfiguration *configuration);
 
 public:
-    InternalTradeArea (Urho3D::Context *context);
+    explicit InternalTradeArea (Urho3D::Context *context);
     virtual ~InternalTradeArea ();
 
     virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);

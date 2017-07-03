@@ -8,7 +8,7 @@ class TestBattleCreationAndJoiningApplication : public Urho3D::Application
 {
 URHO3D_OBJECT (TestBattleCreationAndJoiningApplication, Object)
 public:
-    TestBattleCreationAndJoiningApplication (Urho3D::Context *context);
+    explicit TestBattleCreationAndJoiningApplication (Urho3D::Context *context);
     virtual ~TestBattleCreationAndJoiningApplication ();
 
     virtual void Setup ();

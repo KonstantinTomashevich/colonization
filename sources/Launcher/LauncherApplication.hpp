@@ -5,7 +5,7 @@ class LauncherApplication : public Colonization::ActivitiesApplication
 {
 URHO3D_OBJECT (LauncherApplication, ActivitiesApplication)
 public:
-    LauncherApplication (Urho3D::Context *context);
+    explicit LauncherApplication (Urho3D::Context *context);
     virtual ~LauncherApplication ();
 
     virtual void Setup ();

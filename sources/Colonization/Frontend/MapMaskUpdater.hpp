@@ -43,7 +43,7 @@ protected:
     virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:
-    MapMaskUpdater (Urho3D::Context *context);
+    explicit MapMaskUpdater (Urho3D::Context *context);
     virtual ~MapMaskUpdater ();
 
     static void RegisterObject (Urho3D::Context *context);

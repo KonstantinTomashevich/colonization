@@ -28,7 +28,7 @@ protected:
     virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:
-    UnitsManager (Urho3D::Context *context);
+    explicit UnitsManager (Urho3D::Context *context);
     virtual ~UnitsManager ();
 
     virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);

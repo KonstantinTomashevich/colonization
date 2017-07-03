@@ -45,7 +45,7 @@ protected:
     bool WillGoFromPlayingToFinishedState ();
 public:
     //@ASBindGen Constructor UseUrho3DScriptContext_arg0
-    HostActivity (Urho3D::Context *context);
+    explicit HostActivity (Urho3D::Context *context);
     virtual ~HostActivity ();
 
     //@ASBindGen Function OverrideName=get_serverPort

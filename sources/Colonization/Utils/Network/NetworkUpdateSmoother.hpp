@@ -16,7 +16,7 @@ protected:
     virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:
-    NetworkUpdateSmoother (Urho3D::Context *context);
+    explicit NetworkUpdateSmoother (Urho3D::Context *context);
     virtual ~NetworkUpdateSmoother ();
 
     static void RegisterObject (Urho3D::Context *context);

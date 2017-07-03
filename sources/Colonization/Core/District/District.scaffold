@@ -76,7 +76,7 @@ protected:
     //@Insert var list
 
 public:
-    District (Urho3D::Context *context);
+    explicit District (Urho3D::Context *context);
     virtual ~District ();
 
     virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest);

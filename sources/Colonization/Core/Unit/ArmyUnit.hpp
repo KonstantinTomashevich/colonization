@@ -13,7 +13,7 @@ protected:
     float soldiersCount_;
 
 public:
-    ArmyUnit (Urho3D::Context *context);
+    explicit ArmyUnit (Urho3D::Context *context);
     virtual ~ArmyUnit ();
 
     static void RegisterObject (Urho3D::Context *context);

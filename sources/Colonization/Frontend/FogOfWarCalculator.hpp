@@ -15,7 +15,7 @@ protected:
     virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:
-    FogOfWarCalculator (Urho3D::Context *context);
+    explicit FogOfWarCalculator (Urho3D::Context *context);
     virtual ~FogOfWarCalculator ();
 
     static void RegisterObject (Urho3D::Context *context);

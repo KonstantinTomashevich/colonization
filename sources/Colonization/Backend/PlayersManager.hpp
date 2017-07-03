@@ -26,7 +26,7 @@ protected:
     virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:
-    PlayersManager (Urho3D::Context *context);
+    explicit PlayersManager (Urho3D::Context *context);
     virtual ~PlayersManager ();
     static void RegisterObject (Urho3D::Context *context);
 

@@ -7,7 +7,7 @@ class TestBasicColonyBalanceApplication : public Urho3D::Application
 {
 URHO3D_OBJECT (TestBasicColonyBalanceApplication, Object)
 public:
-    TestBasicColonyBalanceApplication (Urho3D::Context *context);
+    explicit TestBasicColonyBalanceApplication (Urho3D::Context *context);
     virtual ~TestBasicColonyBalanceApplication ();
 
     virtual void Setup ();

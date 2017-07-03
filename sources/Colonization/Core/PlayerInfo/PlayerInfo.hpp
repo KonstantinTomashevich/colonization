@@ -19,7 +19,7 @@ protected:
     Urho3D::VariantMap progressToVictory_;
 
 public:
-    PlayerInfo (Urho3D::Context *context);
+    explicit PlayerInfo (Urho3D::Context *context);
     virtual ~PlayerInfo ();
     static void RegisterObject (Urho3D::Context *context);
 

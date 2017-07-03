@@ -14,7 +14,7 @@ protected:
     Urho3D::PODVector <float> warShipsHealthPoints_;
 
 public:
-    FleetUnit (Urho3D::Context *context);
+    explicit FleetUnit (Urho3D::Context *context);
     virtual ~FleetUnit ();
 
     static void RegisterObject (Urho3D::Context *context);

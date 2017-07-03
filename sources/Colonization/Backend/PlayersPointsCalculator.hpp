@@ -17,7 +17,7 @@ protected:
     virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:
-    PlayersPointsCalculator (Urho3D::Context *context);
+    explicit PlayersPointsCalculator (Urho3D::Context *context);
     virtual ~PlayersPointsCalculator ();
 
     static void RegisterObject (Urho3D::Context *context);
