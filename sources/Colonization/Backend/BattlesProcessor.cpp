@@ -202,7 +202,6 @@ bool BattlesProcessor::ProcessBattle (Battle *battle, float timeStep)
     float defendersAttackForce = timeStep * CalculateUnitsAttackForce (defenders, configuration, district->GetIsSea ());
     ApplyDamage (battle, configuration, defendersAttackForce, attackers, true);
 
-
     float districtDefense = district->GetIsSea () ? 1.0f : district->GetDefenseEvolutionPoints ();
     attackersAttackForce /= Urho3D::Sqrt (Urho3D::Sqrt (districtDefense));
     ApplyDamage (battle, configuration, attackersAttackForce, defenders, false);
@@ -241,11 +240,16 @@ float BattlesProcessor::CalculateUnitsAttackForce (Urho3D::PODVector <Unit *> &u
 void BattlesProcessor::ApplyDamage (Battle *battle, GameConfiguration *configuration, float fullDamage,
                                     Urho3D::PODVector <Unit *> &units, bool isAttackers)
 {
-    int currentUnitIndex = 0;
-    while (fullDamage > 0.0f && BattleHelpers::GetUnitsCountInBattle (battle, isAttackers))
+    int currentUnitIndex = Urho3D::Random (0, units.Size ());
+    float medianDamagePerUnit = (fullDamage / (BattleHelpers::GetUnitsCountInBattle (battle, isAttackers) * 1.0f));
+
+    while (fullDamage > 0.0f && BattleHelpers::GetUnitsCountInBattle (battle, isAttackers) > 0)
     {
-        float damage = (fullDamage / (BattleHelpers::GetUnitsCountInBattle (battle, isAttackers) * 1.0f)) *
-                Urho3D::Random (0.1f, 3.0f);
+        float damage = medianDamagePerUnit * Urho3D::Random (0.2f, 5.0f);
+        if (damage > fullDamage)
+        {
+            damage = fullDamage;
+        }
         fullDamage -= damage;
 
         Unit *unit = units.At (currentUnitIndex);
@@ -254,15 +258,8 @@ void BattlesProcessor::ApplyDamage (Battle *battle, GameConfiguration *configura
             BattleHelpers::RemoveUnitFromBattle (battle, isAttackers, unit->GetHash ());
             units.RemoveSwap (unit);
         }
-        else
-        {
-            currentUnitIndex++;
-        }
 
-        if (currentUnitIndex >= BattleHelpers::GetUnitsCountInBattle (battle, isAttackers))
-        {
-            currentUnitIndex = 0;
-        }
+        currentUnitIndex = Urho3D::Random (0, units.Size ());
     }
 }
 
