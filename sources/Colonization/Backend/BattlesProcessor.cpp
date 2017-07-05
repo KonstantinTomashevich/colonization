@@ -454,4 +454,26 @@ Urho3D::PODVector <Urho3D::StringHash> BattlesProcessor::GetCurrentBattlesInDist
     }
     return currentBattlesInDistrict;
 }
+
+Urho3D::PODVector <Battle *> GetBattlesInDistrict (Urho3D::Scene *scene, Urho3D::StringHash districtHash)
+{
+    Urho3D::PODVector <Battle *> battlesInDistrict;
+    Urho3D::PODVector <Urho3D::Node *> battlesNodes;
+    scene->GetChild ("battles")->GetChildrenWithTag (battlesNodes, TAG_BATTLE);
+
+    for (int index = 0; index < battlesNodes.Size (); index++)
+    {
+        Urho3D::Node *battleNode = battlesNodes.At (index);
+        if (battleNode->GetID () < Urho3D::FIRST_LOCAL_ID)
+        {
+            Battle *battle = battleNode->GetComponent <Battle> ();
+            assert (battle);
+            if (battle && battle->GetDistrictHash () == districtHash)
+            {
+                battlesInDistrict.Push (battle);
+            }
+        }
+    }
+    return battlesInDistrict;
+}
 }

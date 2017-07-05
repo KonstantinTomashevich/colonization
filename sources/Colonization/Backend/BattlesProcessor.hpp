@@ -11,6 +11,8 @@ class UnitsManager;
 class Player;
 class DiplomacyWar;
 
+//@ASBindGen Function ReturnHandleArray
+Urho3D::PODVector <Battle *> GetBattlesInDistrict (Urho3D::Scene *scene, Urho3D::StringHash districtHash);
 class BattlesProcessor : public Urho3D::Component
 {
 URHO3D_OBJECT (BattlesProcessor, Component)
