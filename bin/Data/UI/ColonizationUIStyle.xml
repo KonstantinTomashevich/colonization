@@ -52,6 +52,12 @@
         <attribute name="Image Rect" value="388 1 516 129" />
     </element>
 
+    <element type="BannerIcon" auto="false">
+        <attribute name="Texture" value="Texture2D;Textures/ColonizatorsUI.png" />
+        <attribute name="Blend Mode" value="alpha" />
+        <attribute name="Image Rect" value="1026 130 1156 386" />
+    </element>
+
     <element type="Window">
         <attribute name="Texture" value="Texture2D;Textures/ColonizatorsUI.png" />
         <attribute name="Blend Mode" value="alpha" />

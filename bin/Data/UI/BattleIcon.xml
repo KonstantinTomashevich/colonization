@@ -15,20 +15,19 @@
 	<attribute name="Tags">
 		<string value="EnableUiResizer" />
 	</attribute>
-	<element type="BorderImage" style="ArmyIcon">
+	<element type="BorderImage" style="BannerIcon">
 		<attribute name="Name" value="attackerIcon" />
 		<attribute name="Max Anchor" value="0.45 1" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Enable Anchor" value="true" />
 		<attribute name="Image Rect" value="1026 130 1156 386" />
 	</element>
-	<element type="BorderImage" style="ArmyIcon">
+	<element type="BorderImage" style="BannerIcon">
 		<attribute name="Name" value="defenderIcon" />
 		<attribute name="Min Anchor" value="0.55 0" />
 		<attribute name="Max Anchor" value="1 1" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Enable Anchor" value="true" />
-		<attribute name="Image Rect" value="1026 130 1156 386" />
 	</element>
 	<element type="Text">
 		<attribute name="Name" value="vsText" />
