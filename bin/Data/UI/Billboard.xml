@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <element>
 	<attribute name="Name" value="billboard" />
-	<attribute name="Position" value="400 300" />
+	<attribute name="Position" value="550 300" />
 	<attribute name="Size" value="211 52" />
 	<attribute name="Pivot" value="0 0" />
 	<attribute name="Variables">
@@ -25,7 +25,7 @@
 		<attribute name="Max Anchor" value="1 1" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Enable Anchor" value="true" />
-        <attribute name="Opacity" value="0.65" />
+		<attribute name="Opacity" value="0.65" />
 	</element>
 	<element type="Text">
 		<attribute name="Name" value="title" />
@@ -38,7 +38,6 @@
 		<attribute name="Top Right Color" value="0.6 0.6 0.6 1" />
 		<attribute name="Bottom Left Color" value="0.6 0.6 0.6 1" />
 		<attribute name="Bottom Right Color" value="0.6 0.6 0.6 1" />
-        <attribute name="Opacity" value="1" />
 		<attribute name="Variables">
 			<variant hash="234597041" type="String" value="disable" name="WidthDependency" />
 			<variant hash="2184685394" type="String" value="disable" name="HeightDependency" />
@@ -68,17 +67,38 @@
 		<attribute name="Max Anchor" value="0.95 0.95" />
 		<attribute name="Pivot" value="0 0" />
 		<attribute name="Enable Anchor" value="true" />
-        <attribute name="Variables">
-            <variant hash="234597041" type="String" value="disable" name="WidthDependency" />
-            <variant hash="2184685394" type="String" value="disable" name="HeightDependency" />
-            <variant hash="511642371" type="String" value="disable" name="XDependency" />
-            <variant hash="2232932484" type="String" value="disable" name="YDependency" />
-            <variant hash="4144064518" type="Float" value="0" name="WidthModifer" />
-            <variant hash="4127232677" type="Float" value="0" name="HeightModifer" />
-            <variant hash="235997748" type="Float" value="0" name="XModifer" />
-            <variant hash="2971843571" type="Float" value="0" name="YModifer" />
-        </attribute>
-        <attribute name="Tags">
+		<attribute name="Variables">
+			<variant hash="234597041" type="String" value="disable" name="WidthDependency" />
+			<variant hash="2184685394" type="String" value="disable" name="HeightDependency" />
+			<variant hash="511642371" type="String" value="disable" name="XDependency" />
+			<variant hash="2232932484" type="String" value="disable" name="YDependency" />
+			<variant hash="4144064518" type="Float" value="0" name="WidthModifer" />
+			<variant hash="4127232677" type="Float" value="0" name="HeightModifer" />
+			<variant hash="235997748" type="Float" value="0" name="XModifer" />
+			<variant hash="2971843571" type="Float" value="0" name="YModifer" />
+		</attribute>
+		<attribute name="Tags">
+			<string value="EnableUiResizer" />
+		</attribute>
+	</element>
+	<element>
+		<attribute name="Name" value="battles" />
+		<attribute name="Size" value="168 31" />
+		<attribute name="Min Anchor" value="0.1 1" />
+		<attribute name="Max Anchor" value="0.9 1.6" />
+		<attribute name="Pivot" value="0 0" />
+		<attribute name="Enable Anchor" value="true" />
+		<attribute name="Variables">
+			<variant hash="234597041" type="String" value="disable" name="WidthDependency" />
+			<variant hash="2184685394" type="String" value="disable" name="HeightDependency" />
+			<variant hash="511642371" type="String" value="disable" name="XDependency" />
+			<variant hash="2232932484" type="String" value="disable" name="YDependency" />
+			<variant hash="4144064518" type="Float" value="0" name="WidthModifer" />
+			<variant hash="4127232677" type="Float" value="0" name="HeightModifer" />
+			<variant hash="235997748" type="Float" value="0" name="XModifer" />
+			<variant hash="2971843571" type="Float" value="0" name="YModifer" />
+		</attribute>
+		<attribute name="Tags">
 			<string value="EnableUiResizer" />
 		</attribute>
 	</element>
