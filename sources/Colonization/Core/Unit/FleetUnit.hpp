@@ -11,6 +11,7 @@ class FleetUnit : public Unit
 URHO3D_OBJECT (FleetUnit, Unit)
 protected:
     int warShipsCount_;
+    /// Any war ship health is in (0.0f, 100.0f].
     Urho3D::PODVector <float> warShipsHealthPoints_;
 
 public:
@@ -26,9 +27,8 @@ public:
     void SetWarShipsCount (int warShipsCount);
 
     //@ASBindGen Function OverrideName=get_warShipsHealthPoints
-    /// Any war ship health is in (0.0f, 100.0f].
     Urho3D::PODVector <float> GetWarShipsHealthPoints () const;
-    //@ASBindGen Function OverrideName=set_warShipsHealthPoints ReplaceInType_arg0=&|
+    //@ASBindGen Function OverrideName=set_warShipsHealthPoints ReplaceInType_arg0=&| ReplaceInType_arg0=const|
     void SetWarShipsHealthPoints (const Urho3D::PODVector <float> &warShipsHealthPoints);
     Urho3D::VariantVector GetWarShipsHealthPointsAttribute () const;
     void SetWarShipsHealthPointsAttribute (const Urho3D::VariantVector &warShipsHealthPoints);

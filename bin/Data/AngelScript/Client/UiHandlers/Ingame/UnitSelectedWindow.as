@@ -66,22 +66,22 @@ class UnitSelectedWindow : ScriptObject
             String additionalInfo;
             if (unit.unitType == UNIT_FLEET)
             {
-                additionalInfo += "War ships count: " +( cast <FleetUnit> (unit)).warShipsCount + ".\n";
+                additionalInfo += GenerateFleetInfo (cast <FleetUnit> (unit));
             }
 
             else if (unit.unitType == UNIT_TRADERS)
             {
-                additionalInfo += "Trade goods cost: " + Floor ((cast <TradersUnit> (unit)).tradeGoodsCost * 100.0f) / 100.0f + ".\n";
+                additionalInfo += GenerateTradersInfo (cast <TradersUnit> (unit));
             }
 
             else if (unit.unitType == UNIT_COLONIZATORS)
             {
-                additionalInfo += "Colonizators count: " + (cast <ColonizatorsUnit> (unit)).colonizatorsCount + ".\n";
+                additionalInfo += GenerateColonizatorsInfo (cast <ColonizatorsUnit> (unit));
             }
 
             else if (unit.unitType == UNIT_ARMY)
             {
-                additionalInfo += "Soldiers count: " + (cast <ArmyUnit> (unit)).soldiersCount + ".\n";
+                additionalInfo += GenerateArmyInfo (cast <ArmyUnit> (unit));
             }
 
             if (unit.way.length > 0)
@@ -103,6 +103,49 @@ class UnitSelectedWindow : ScriptObject
             scriptMain.vars ["selectionType"] = StringHash ("None");
             scriptMain.vars ["selectedHash"] = StringHash ();
         }
+    }
+
+    protected String GenerateFleetInfo (FleetUnit @unit)
+    {
+        String info;
+        info += "War ships count: " + unit.warShipsCount + ".\n";
+        info += "War ships HP:\n   ";
+
+        Array <float> warShipsHealth = unit.warShipsHealthPoints;
+        uint indexInRow = 0;
+        for (uint index = 0; index < warShipsHealth.length; index++)
+        {
+            String health = Floor (warShipsHealth [index] * 10.0f) / 10.0f + "%";
+            while (health.length < 4)
+            {
+                health = " " + health;
+            }
+
+            info += " " + health;
+            indexInRow++;
+            if (indexInRow == 4)
+            {
+                indexInRow = 0;
+                info += "\n   ";
+            }
+        }
+        info += "\n";
+        return info;
+    }
+
+    protected String GenerateTradersInfo (TradersUnit @unit)
+    {
+        return "Trade goods cost: " + Floor (unit.tradeGoodsCost * 100.0f) / 100.0f + ".\n";
+    }
+
+    protected String GenerateColonizatorsInfo (ColonizatorsUnit @unit)
+    {
+        return "Colonizators count: " + unit.colonizatorsCount + ".\n";
+    }
+
+    protected String GenerateArmyInfo (ArmyUnit @unit)
+    {
+        return "Soldiers count: " + unit.soldiersCount + ".\n";
     }
 
     UnitSelectedWindow ()
