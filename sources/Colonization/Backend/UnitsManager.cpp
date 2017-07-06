@@ -67,6 +67,7 @@ void UnitsManager::ProcessTrader (GameConfiguration *configuration, TradersUnit 
     assert (playersManager);
 
     Player *player = playersManager->GetPlayerByNameHash (Urho3D::String (unit->GetOwnerPlayerName ()));
+    // TODO: What if player was disconnected? Maybe delete all units and colonies of disconnected player?
     assert (player);
 
     float externalTaxes = configuration->GetExternalTaxes ();

@@ -7,6 +7,7 @@ class MapBillboards : ScriptObject
     protected XMLFile @style_;
     protected XMLFile @billboardXML_;
     protected XMLFile @unitIconXML_;
+    protected XMLFile @battleIconXML_;
     protected bool isSceneLoaded_;
 
     protected Vector3 BILLBOARD_WORLD_POSITION_OFFSET = Vector3 (0.0f, 1.0f, 0.0f);
@@ -41,6 +42,8 @@ class MapBillboards : ScriptObject
                     UpdateDistrictBillboardTitle (billboard, district);
                     UpdateDistrictBillboardBackground (billboard, district);
                     UpdateDistrictBillboardUnitsSection (billboard, district);
+
+                    UpdateDistrctBillboardBattlesSection (billboard, district);
                     nextBillboardIndex++;
                 }
             }
@@ -170,6 +173,64 @@ class MapBillboards : ScriptObject
         }
     }
 
+    protected void UpdateDistrctBillboardBattlesSection (UIElement @billboard, District @district)
+    {
+        FogOfWarCalculator @fogOfWarCalculator = scene.GetComponent ("FogOfWarCalculator");
+        // TODO: This algorithm can be optimized!
+        Array <Battle @> battlesInDistrict = GetBattlesInDistrict (scene, district.hash);
+        UIElement @battlesElement = billboard.GetChild ("battles");
+
+        if (battlesInDistrict.length > 0 and fogOfWarCalculator.IsDistrictVisible (district.hash))
+        {
+            uint index = 0;
+            for (index = 0; index < battlesInDistrict.length; index++)
+            {
+                Battle @battle = battlesInDistrict [index];
+                if (index == battlesElement.GetNumChildren (false))
+                {
+                    battlesElement.LoadChildXML (battleIconXML_.GetRoot (), style_);
+                }
+
+                UIElement @battleElement = battlesElement.GetChildren () [index];
+                battleElement.SetPosition (battlesElement.height * index, 0);
+
+                UpdateBattleIconBanners (battleElement, battle);
+                UpdateBattleIconButton (battleElement, battle);
+            }
+
+            while (index < battlesElement.GetNumChildren (false))
+            {
+                battlesElement.GetChildren () [index].Remove ();
+            }
+        }
+        else
+        {
+            battlesElement.RemoveAllChildren ();
+        }
+    }
+
+    protected void UpdateBattleIconBanners (UIElement @battleElement, Battle @battle)
+    {
+        BorderImage @attackerIcon = battleElement.GetChild ("attackerIcon");
+        BorderImage @defenderIcon = battleElement.GetChild ("defenderIcon");
+
+        Unit @firstAttackerUnit = GetUnitByHash (scene, battle.GetAttackerUnitHashByIndex (0));
+        Unit @firstDefenderUnit = GetUnitByHash (scene, battle.GetDefenderUnitHashByIndex (0));
+
+        PlayerInfo @firstAttackerPlayer = GetPlayerInfoByName (scene, firstAttackerUnit.ownerPlayerName);
+        PlayerInfo @firstDefenderPlayer = GetPlayerInfoByName (scene, firstDefenderUnit.ownerPlayerName);
+
+        attackerIcon.color = firstAttackerPlayer.color;
+        defenderIcon.color = firstDefenderPlayer.color;
+    }
+
+    protected void UpdateBattleIconButton (UIElement @battleElement, Battle @battle)
+    {
+        Button @selectButton = battleElement.GetChild ("selectButton");
+        selectButton.vars ["battleHash"] = Variant (battle.hash);
+        SubscribeToEvent (selectButton, "Released", "HandleSelectBattleClick");
+    }
+
     MapBillboards ()
     {
         isSceneLoaded_ = false;
@@ -185,6 +246,7 @@ class MapBillboards : ScriptObject
         style_ = cache.GetResource ("XMLFile", "UI/ColonizationUIStyle.xml");
         billboardXML_ = cache.GetResource ("XMLFile", "UI/Billboard.xml");
         unitIconXML_ = cache.GetResource ("XMLFile", "UI/UnitIcon.xml");
+        battleIconXML_ = cache.GetResource ("XMLFile", "UI/BattleIcon.xml");
 
         billboardsRoot_ = ui.root.GetChild ("billboardsRoot");
         billboardsRoot_.AddTag ("EnableUiResizer");
@@ -216,5 +278,14 @@ class MapBillboards : ScriptObject
         StringHash unitHash = element.vars ["unitHash"].GetStringHash ();
         scriptMain.vars ["selectionType"] = StringHash ("Unit");
         scriptMain.vars ["selectedHash"] = unitHash;
+    }
+
+    void HandleSelectBattleClick (StringHash eventType, VariantMap &eventData)
+    {
+        Node @scriptMain = GetScriptMain (node);
+        UIElement @element = eventData ["Element"].GetPtr ();
+        StringHash battleHash = element.vars ["battleHash"].GetStringHash ();
+        scriptMain.vars ["selectionType"] = StringHash ("Battle");
+        scriptMain.vars ["selectedHash"] = battleHash;
     }
 }

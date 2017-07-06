@@ -11,6 +11,7 @@ class UnitsManager;
 class Player;
 class DiplomacyWar;
 
+// TODO: New battles created only when unit changes position. But battles will be created if new war declared too!
 //@ASBindGen Function ReturnHandleArray
 Urho3D::PODVector <Battle *> GetBattlesInDistrict (Urho3D::Scene *scene, Urho3D::StringHash districtHash);
 class BattlesProcessor : public Urho3D::Component
