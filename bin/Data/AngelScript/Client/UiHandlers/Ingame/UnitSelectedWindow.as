@@ -50,7 +50,7 @@ class UnitSelectedWindow : ScriptObject
             }
 
             Button @moveToButton = unitInfoWindow.GetChild ("moveToButton");
-            if (unit.unitType == UNIT_FLEET or unit.unitType == UNIT_ARMY)
+            if (not unit.isInBattle and (unit.unitType == UNIT_FLEET or unit.unitType == UNIT_ARMY))
             {
                 moveToButton.visible = true;
             }
@@ -64,6 +64,11 @@ class UnitSelectedWindow : ScriptObject
             positionText.text = "in " + map.GetDistrictByHash (unit.positionHash).name;
 
             String additionalInfo;
+            if (unit.isInBattle)
+            {
+                additionalInfo += "[At fight, can't move]\n";
+            }
+
             if (unit.unitType == UNIT_FLEET)
             {
                 additionalInfo += GenerateFleetInfo (cast <FleetUnit> (unit));
