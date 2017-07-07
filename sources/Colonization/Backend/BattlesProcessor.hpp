@@ -43,7 +43,7 @@ protected:
     float CalculateUnitsAttackForce (Urho3D::PODVector <Unit *> &units, GameConfiguration *configuration, bool isNavalBattle);
 
     void ApplyDamage (Battle *battle, GameConfiguration *configuration, float fullDamage,
-                      Urho3D::PODVector <Unit *> &units, bool isAttackers);
+                      Urho3D::PODVector <Unit *> &units, bool isAttackers, float damagedUnitUpdatePoints);
     Battle *CreateBattle (Urho3D::StringHash warHash, Urho3D::StringHash districtHash);
     virtual void OnSceneSet (Urho3D::Scene* scene);
 

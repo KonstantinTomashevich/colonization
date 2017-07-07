@@ -200,11 +200,11 @@ bool BattlesProcessor::ProcessBattle (Battle *battle, float timeStep)
 
     float attackersAttackForce = timeStep * CalculateUnitsAttackForce (attackers, configuration, district->GetIsSea ());
     float defendersAttackForce = timeStep * CalculateUnitsAttackForce (defenders, configuration, district->GetIsSea ());
-    ApplyDamage (battle, configuration, defendersAttackForce, attackers, true);
+    ApplyDamage (battle, configuration, defendersAttackForce, attackers, true, timeStep * 100.0f);
 
     float districtDefense = district->GetIsSea () ? 1.0f : district->GetDefenseEvolutionPoints ();
     attackersAttackForce /= Urho3D::Sqrt (Urho3D::Sqrt (districtDefense));
-    ApplyDamage (battle, configuration, attackersAttackForce, defenders, false);
+    ApplyDamage (battle, configuration, attackersAttackForce, defenders, false, timeStep * 100.0f);
     return (battle->GetAttackersUnitsCount () > 0 && battle->GetDefendersUnitsCount () > 0);
 }
 
@@ -238,7 +238,7 @@ float BattlesProcessor::CalculateUnitsAttackForce (Urho3D::PODVector <Unit *> &u
 }
 
 void BattlesProcessor::ApplyDamage (Battle *battle, GameConfiguration *configuration, float fullDamage,
-                                    Urho3D::PODVector <Unit *> &units, bool isAttackers)
+                                    Urho3D::PODVector <Unit *> &units, bool isAttackers, float damagedUnitUpdatePoints)
 {
     int currentUnitIndex = Urho3D::Random (0, units.Size ());
     float medianDamagePerUnit = (fullDamage / (BattleHelpers::GetUnitsCountInBattle (battle, isAttackers) * 1.0f));
@@ -257,6 +257,15 @@ void BattlesProcessor::ApplyDamage (Battle *battle, GameConfiguration *configura
         {
             BattleHelpers::RemoveUnitFromBattle (battle, isAttackers, unit->GetHash ());
             units.RemoveSwap (unit);
+        }
+        else
+        {
+            NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
+            if (!counter)
+            {
+                counter = CreateNetworkUpdateCounterForComponent (unit);
+            }
+            counter->AddUpdatePoints (damagedUnitUpdatePoints);
         }
 
         currentUnitIndex = Urho3D::Random (0, units.Size ());
