@@ -10,8 +10,8 @@ class DistrictSelectedWindow : ScriptObject
     protected void UpdateDistrictSelection ()
     {
         Node @scriptMain = GetScriptMain (node);
-        Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
-        districtInfoWindow.visible = true;
+        Window @districtSelectedWindow = ui.root.GetChild ("ingame").GetChild ("districtSelectedWindow");
+        districtSelectedWindow.visible = true;
 
         Map @map = scene.GetChild ("map").GetComponent ("Map");
         GameConfiguration @configuration = scene.GetComponent ("GameConfiguration");
@@ -19,21 +19,21 @@ class DistrictSelectedWindow : ScriptObject
         District @district = map.GetDistrictByHash (districtHash);
 
         String playerName = scriptMain.vars ["playerName"].GetString ();
-        Text@ nameText = districtInfoWindow.GetChild ("nameText");
+        Text@ nameText = districtSelectedWindow.GetChild ("nameText");
         nameText.text = district.name;
 
-        districtInfoWindow.GetChild ("resourcesInfoButton").visible = !district.isSea;
-        districtInfoWindow.GetChild ("populationInfoButton").visible = !district.isSea;
-        districtInfoWindow.GetChild ("colonyEvolutionInfoButton").visible = district.hasColony;
+        districtSelectedWindow.GetChild ("resourcesInfoButton").visible = !district.isSea;
+        districtSelectedWindow.GetChild ("populationInfoButton").visible = !district.isSea;
+        districtSelectedWindow.GetChild ("colonyEvolutionInfoButton").visible = district.hasColony;
 
-        StringHash infoType = districtInfoWindow.vars ["infoType"].GetStringHash ();
-        UIElement @investButtons = districtInfoWindow.GetChild ("investButtons");
+        StringHash infoType = districtSelectedWindow.vars ["infoType"].GetStringHash ();
+        UIElement @investButtons = districtSelectedWindow.GetChild ("investButtons");
         investButtons.visible = (infoType == StringHash ("ColonyEvolution") and
                                  district.hasColony and
                                  scriptMain.vars ["gold"].GetFloat () >= DEFAULT_INVESTITION_SIZE and
                                  district.colonyOwnerName == playerName);
 
-        Button @sendColonizatorsButton = districtInfoWindow.GetChild ("sendColonizatorsButton");
+        Button @sendColonizatorsButton = districtSelectedWindow.GetChild ("sendColonizatorsButton");
         float colonizatorsExpeditionCost = COLONIZATORS_EXPEDITION_SIZE * configuration.oneColonizatorSendingCost;
         sendColonizatorsButton.visible = (infoType == StringHash ("Basic")) and
                                          not district.isSea and
@@ -45,7 +45,7 @@ class DistrictSelectedWindow : ScriptObject
                                       " gold).";
 
 
-        Button @buildWarShipButton = districtInfoWindow.GetChild ("buildWarShipButton");
+        Button @buildWarShipButton = districtSelectedWindow.GetChild ("buildWarShipButton");
         buildWarShipButton.visible = (infoType == StringHash ("Basic")) and
                                          district.hasColony and
                                          district.colonyOwnerName == playerName and
@@ -55,12 +55,12 @@ class DistrictSelectedWindow : ScriptObject
         buildWarShipButtonText.text = "Build war ship (cost: " +FloorToInt (configuration.oneWarShipBuildingCost) +
                                       " + " +FloorToInt (configuration.oneWarShipCrew) + " men as crew).";
 
-        Button @openDiplomacyButton = districtInfoWindow.GetChild ("openDiplomacyButton");
+        Button @openDiplomacyButton = districtSelectedWindow.GetChild ("openDiplomacyButton");
         openDiplomacyButton.visible = (infoType == StringHash ("Basic")) and
                                          district.hasColony and
                                          district.colonyOwnerName != playerName;
 
-        BorderImage @colorSample = districtInfoWindow.GetChild ("colorSample");
+        BorderImage @colorSample = districtSelectedWindow.GetChild ("colorSample");
         if (district.hasColony)
         {
             colorSample.visible = true;
@@ -81,23 +81,23 @@ class DistrictSelectedWindow : ScriptObject
 
         if (infoType == StringHash ("Basic"))
         {
-            UpdateDistrictBasicInfo (district, districtInfoWindow);
+            UpdateDistrictBasicInfo (district, districtSelectedWindow);
         }
         else if (infoType == StringHash ("Resources"))
         {
-            UpdateDistrictResourcesInfo (district, districtInfoWindow);
+            UpdateDistrictResourcesInfo (district, districtSelectedWindow);
         }
         else if (infoType == StringHash ("Population"))
         {
-            UpdateDistrictPopulationInfo (district, districtInfoWindow);
+            UpdateDistrictPopulationInfo (district, districtSelectedWindow);
         }
         else if (infoType == StringHash ("ColonyEvolution"))
         {
-            UpdateDistrictColonyEvolutionInfo (district, districtInfoWindow);
+            UpdateDistrictColonyEvolutionInfo (district, districtSelectedWindow);
         }
     }
 
-    protected void UpdateDistrictBasicInfo (District @district, Window @districtInfoWindow)
+    protected void UpdateDistrictBasicInfo (District @district, Window @districtSelectedWindow)
     {
         String infoText = "";
         if (district.isSea)
@@ -143,11 +143,11 @@ class DistrictSelectedWindow : ScriptObject
             infoText += "tropical.\n";
         }
 
-        Text @informationTextUi = districtInfoWindow.GetChild ("informationText");
+        Text @informationTextUi = districtSelectedWindow.GetChild ("informationText");
         informationTextUi.text = infoText;
     }
 
-    protected void UpdateDistrictResourcesInfo (District @district, Window @districtInfoWindow)
+    protected void UpdateDistrictResourcesInfo (District @district, Window @districtSelectedWindow)
     {
         String infoText = "";
         infoText += "Farming square: " + Floor (district.farmingSquare) + ".\n";
@@ -197,11 +197,11 @@ class DistrictSelectedWindow : ScriptObject
             infoText += "Has gold deposits.\n";
         }
 
-        Text @informationTextUi = districtInfoWindow.GetChild ("informationText");
+        Text @informationTextUi = districtSelectedWindow.GetChild ("informationText");
         informationTextUi.text = infoText;
     }
 
-    protected void UpdateDistrictPopulationInfo (District @district, Window @districtInfoWindow)
+    protected void UpdateDistrictPopulationInfo (District @district, Window @districtSelectedWindow)
     {
         String infoText = "";
         if (district.hasColony)
@@ -232,11 +232,11 @@ class DistrictSelectedWindow : ScriptObject
             infoText += "\n";
         }
 
-        Text @informationTextUi = districtInfoWindow.GetChild ("informationText");
+        Text @informationTextUi = districtSelectedWindow.GetChild ("informationText");
         informationTextUi.text = infoText;
     }
 
-    protected void UpdateDistrictColonyEvolutionInfo (District @district, Window @districtInfoWindow)
+    protected void UpdateDistrictColonyEvolutionInfo (District @district, Window @districtSelectedWindow)
     {
         String infoText = "";
         if (district.hasColony)
@@ -248,7 +248,7 @@ class DistrictSelectedWindow : ScriptObject
             infoText += "Defense evolution: " + Floor (district.defenseEvolutionPoints * 100) / 100 + ".\n";
         }
 
-        Text @informationTextUi = districtInfoWindow.GetChild ("informationText");
+        Text @informationTextUi = districtSelectedWindow.GetChild ("informationText");
         informationTextUi.text = infoText;
     }
 
@@ -265,19 +265,19 @@ class DistrictSelectedWindow : ScriptObject
 
     void Start ()
     {
-        Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
-        districtInfoWindow.vars ["infoType"] = StringHash ("Basic");
+        Window @districtSelectedWindow = ui.root.GetChild ("ingame").GetChild ("districtSelectedWindow");
+        districtSelectedWindow.vars ["infoType"] = StringHash ("Basic");
 
-        Button @basicInfoButton = districtInfoWindow.GetChild ("basicInfoButton");
-        Button @resourcesInfoButton = districtInfoWindow.GetChild ("resourcesInfoButton");
-        Button @populationInfoButton = districtInfoWindow.GetChild ("populationInfoButton");
-        Button @colonyEvolutionInfoButton = districtInfoWindow.GetChild ("colonyEvolutionInfoButton");
+        Button @basicInfoButton = districtSelectedWindow.GetChild ("basicInfoButton");
+        Button @resourcesInfoButton = districtSelectedWindow.GetChild ("resourcesInfoButton");
+        Button @populationInfoButton = districtSelectedWindow.GetChild ("populationInfoButton");
+        Button @colonyEvolutionInfoButton = districtSelectedWindow.GetChild ("colonyEvolutionInfoButton");
 
-        Button @sendColonizatorsButton = districtInfoWindow.GetChild ("sendColonizatorsButton");
-        Button @buildWarShipButton = districtInfoWindow.GetChild ("buildWarShipButton");
-        Button @openDiplomacyButton = districtInfoWindow.GetChild ("openDiplomacyButton");
+        Button @sendColonizatorsButton = districtSelectedWindow.GetChild ("sendColonizatorsButton");
+        Button @buildWarShipButton = districtSelectedWindow.GetChild ("buildWarShipButton");
+        Button @openDiplomacyButton = districtSelectedWindow.GetChild ("openDiplomacyButton");
 
-        UIElement @investButtons = districtInfoWindow.GetChild ("investButtons");
+        UIElement @investButtons = districtSelectedWindow.GetChild ("investButtons");
         Button @investToFarmsButton = investButtons.GetChild ("investToFarms");
         Button @investToMinesButton = investButtons.GetChild ("investToMines");
         Button @investToIndustryButton = investButtons.GetChild ("investToIndustry");
@@ -312,7 +312,7 @@ class DistrictSelectedWindow : ScriptObject
             untilSelectionUpdate_ -= timeStep;
             if (untilSelectionUpdate_ <= 0.0f)
             {
-                Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
+                Window @districtSelectedWindow = ui.root.GetChild ("ingame").GetChild ("districtSelectedWindow");
                 StringHash selectionType = scriptMain.vars ["selectionType"].GetStringHash ();
 
                 if (selectionType == StringHash ("District"))
@@ -321,7 +321,7 @@ class DistrictSelectedWindow : ScriptObject
                 }
                 else
                 {
-                    districtInfoWindow.visible = false;
+                    districtSelectedWindow.visible = false;
                 }
                 untilSelectionUpdate_ = SELECTION_UPDATE_DELAY;
             }
@@ -350,26 +350,26 @@ class DistrictSelectedWindow : ScriptObject
 
     void HandleBasicInfoClick ()
     {
-        Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
-        districtInfoWindow.vars ["infoType"] = StringHash ("Basic");
+        Window @districtSelectedWindow = ui.root.GetChild ("ingame").GetChild ("districtSelectedWindow");
+        districtSelectedWindow.vars ["infoType"] = StringHash ("Basic");
     }
 
     void HandleResourcesInfoClick ()
     {
-        Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
-        districtInfoWindow.vars ["infoType"] = StringHash ("Resources");
+        Window @districtSelectedWindow = ui.root.GetChild ("ingame").GetChild ("districtSelectedWindow");
+        districtSelectedWindow.vars ["infoType"] = StringHash ("Resources");
     }
 
     void HandlePopulationInfoClick ()
     {
-        Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
-        districtInfoWindow.vars ["infoType"] = StringHash ("Population");
+        Window @districtSelectedWindow = ui.root.GetChild ("ingame").GetChild ("districtSelectedWindow");
+        districtSelectedWindow.vars ["infoType"] = StringHash ("Population");
     }
 
     void HandleColonyEvolutionInfoClick ()
     {
-        Window @districtInfoWindow = ui.root.GetChild ("ingame").GetChild ("districtInfoWindow");
-        districtInfoWindow.vars ["infoType"] = StringHash ("ColonyEvolution");
+        Window @districtSelectedWindow = ui.root.GetChild ("ingame").GetChild ("districtSelectedWindow");
+        districtSelectedWindow.vars ["infoType"] = StringHash ("ColonyEvolution");
     }
 
     void HandleInvestClick (StringHash eventType, VariantMap &eventData)

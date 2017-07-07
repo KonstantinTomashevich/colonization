@@ -10,17 +10,17 @@ class UnitSelectedWindow : ScriptObject
     {
         Node @scriptMain = GetScriptMain (node);
         FogOfWarCalculator @fogOfWarCalculator = scene.GetComponent ("FogOfWarCalculator");
-        Window @unitInfoWindow = ui.root.GetChild ("ingame").GetChild ("unitInfoWindow");
+        Window @unitSelectedWindow = ui.root.GetChild ("ingame").GetChild ("unitSelectedWindow");
         StringHash unitHash = scriptMain.vars ["selectedHash"].GetStringHash ();
         Unit @unit = GetUnitByHash (scene, unitHash);
 
         if (unit !is null and fogOfWarCalculator.IsDistrictVisible (unit.positionHash))
         {
-            unitInfoWindow.visible = true;
-            Text @ownerText = unitInfoWindow.GetChild ("ownerText");
+            unitSelectedWindow.visible = true;
+            Text @ownerText = unitSelectedWindow.GetChild ("ownerText");
             ownerText.text = unit.ownerPlayerName + "'s";
 
-            BorderImage @colorSample = unitInfoWindow.GetChild ("colorSample");
+            BorderImage @colorSample = unitSelectedWindow.GetChild ("colorSample");
             PlayerInfo @unitOwner = GetPlayerInfoByName (scene, unit.ownerPlayerName);
             if (unitOwner !is null)
             {
@@ -31,7 +31,7 @@ class UnitSelectedWindow : ScriptObject
                 colorSample.color = NEUTRAL_COLOR;
             }
 
-            Text @typeText = unitInfoWindow.GetChild ("typeText");
+            Text @typeText = unitSelectedWindow.GetChild ("typeText");
             if (unit.unitType == UNIT_FLEET)
             {
                 typeText.text = "Fleet";
@@ -49,7 +49,7 @@ class UnitSelectedWindow : ScriptObject
                 typeText.text = "Army";
             }
 
-            Button @moveToButton = unitInfoWindow.GetChild ("moveToButton");
+            Button @moveToButton = unitSelectedWindow.GetChild ("moveToButton");
             if (not unit.isInBattle and (unit.unitType == UNIT_FLEET or unit.unitType == UNIT_ARMY))
             {
                 moveToButton.visible = true;
@@ -60,7 +60,7 @@ class UnitSelectedWindow : ScriptObject
             }
 
             Map @map = scene.GetChild ("map").GetComponent ("Map");
-            Text @positionText = unitInfoWindow.GetChild ("positionText");
+            Text @positionText = unitSelectedWindow.GetChild ("positionText");
             positionText.text = "in " + map.GetDistrictByHash (unit.positionHash).name;
 
             String additionalInfo;
@@ -98,13 +98,13 @@ class UnitSelectedWindow : ScriptObject
                                     Floor (unit.wayToNextDistrictProgressInPercents) + "%.\n";
             }
 
-            Text @anotherText = unitInfoWindow.GetChild ("anotherText");
+            Text @anotherText = unitSelectedWindow.GetChild ("anotherText");
             anotherText.text = additionalInfo;
         }
         else
         {
             // Clear selection if unit isn't exists.
-            unitInfoWindow.visible = false;
+            unitSelectedWindow.visible = false;
             scriptMain.vars ["selectionType"] = StringHash ("None");
             scriptMain.vars ["selectedHash"] = StringHash ();
         }
@@ -166,8 +166,8 @@ class UnitSelectedWindow : ScriptObject
 
     void Start ()
     {
-        Window @unitInfoWindow = ui.root.GetChild ("ingame").GetChild ("unitInfoWindow");
-        Button @moveToButton = unitInfoWindow.GetChild ("moveToButton");
+        Window @unitSelectedWindow = ui.root.GetChild ("ingame").GetChild ("unitSelectedWindow");
+        Button @moveToButton = unitSelectedWindow.GetChild ("moveToButton");
         SubscribeToEvent (moveToButton, "Released", "HandleMoveUnitToClick");
     }
 
@@ -183,7 +183,7 @@ class UnitSelectedWindow : ScriptObject
             untilSelectionUpdate_ -= timeStep;
             if (untilSelectionUpdate_ <= 0.0f)
             {
-                Window @unitInfoWindow = ui.root.GetChild ("ingame").GetChild ("unitInfoWindow");
+                Window @unitSelectedWindow = ui.root.GetChild ("ingame").GetChild ("unitSelectedWindow");
                 StringHash selectionType = scriptMain.vars ["selectionType"].GetStringHash ();
 
                 if (selectionType == StringHash ("Unit"))
@@ -192,7 +192,7 @@ class UnitSelectedWindow : ScriptObject
                 }
                 else
                 {
-                    unitInfoWindow.visible = false;
+                    unitSelectedWindow.visible = false;
                 }
                 untilSelectionUpdate_ = SELECTION_UPDATE_DELAY;
             }
