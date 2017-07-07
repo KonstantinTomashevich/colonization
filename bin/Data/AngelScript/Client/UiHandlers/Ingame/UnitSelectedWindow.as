@@ -145,12 +145,12 @@ class UnitSelectedWindow : ScriptObject
 
     protected String GenerateColonizatorsInfo (ColonizatorsUnit @unit)
     {
-        return "Colonizators count: " + unit.colonizatorsCount + ".\n";
+        return "Colonizators count: " + Floor (unit.colonizatorsCount) + ".\n";
     }
 
     protected String GenerateArmyInfo (ArmyUnit @unit)
     {
-        return "Soldiers count: " + unit.soldiersCount + ".\n";
+        return "Soldiers count: " + Floor (unit.soldiersCount) + ".\n";
     }
 
     UnitSelectedWindow ()
