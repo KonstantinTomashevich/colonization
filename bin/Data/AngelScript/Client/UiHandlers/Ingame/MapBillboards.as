@@ -220,8 +220,23 @@ class MapBillboards : ScriptObject
         PlayerInfo @firstAttackerPlayer = GetPlayerInfoByName (scene, firstAttackerUnit.ownerPlayerName);
         PlayerInfo @firstDefenderPlayer = GetPlayerInfoByName (scene, firstDefenderUnit.ownerPlayerName);
 
-        attackerIcon.color = firstAttackerPlayer.color;
-        defenderIcon.color = firstDefenderPlayer.color;
+        if (firstAttackerPlayer !is null)
+        {
+            attackerIcon.color = firstAttackerPlayer.color;
+        }
+        else
+        {
+            attackerIcon.color = NEUTRAL_COLOR;
+        }
+
+        if (firstDefenderPlayer !is null)
+        {
+            defenderIcon.color = firstDefenderPlayer.color;
+        }
+        else
+        {
+            defenderIcon.color = NEUTRAL_COLOR;
+        }
     }
 
     protected void UpdateBattleIconButton (UIElement @battleElement, Battle @battle)
