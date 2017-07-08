@@ -377,13 +377,12 @@ void BattlesProcessor::OnTradersUnitLossesGold (Urho3D::StringHash eventType, Ur
 
         float goldPerUnit = eventData [TradersUnitLossesGold::GOLD_AMOUNT].GetFloat () /
                 BattleHelpers::GetUnitsCountInBattle (battle, isLootersAttackers);
+        Urho3D::PODVector <Urho3D::StringHash> looters = BattleHelpers::GetUnitsInBattleList (battle, isLootersAttackers);
 
-        for (int index = 0; index < BattleHelpers::GetUnitsCountInBattle (battle, isLootersAttackers); index++)
+        for (int index = 0; index < looters.Size (); index++)
         {
-            Unit *enemy = unitsManager->GetUnitByHash (
-                        BattleHelpers::GetUnitHashFromBattleByIndex (battle, isLootersAttackers, index));
+            Unit *enemy = unitsManager->GetUnitByHash (looters.At (index));
             assert (enemy);
-
             Player *enemyPlayer = playersManager->GetPlayerByNameHash (Urho3D::StringHash (enemy->GetOwnerPlayerName ()));
             assert (enemyPlayer);
             enemyPlayer->SetGold (enemyPlayer->GetGold () + goldPerUnit * configuration->GetLootingCoefficient ());

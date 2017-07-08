@@ -12,6 +12,8 @@ bool RemoveUnitFromBattle (Battle *battle, bool isAttacker, Urho3D::StringHash u
 //@ASBindGen Function AddNamespaceToCallName=BattleHelpers
 Urho3D::StringHash GetUnitHashFromBattleByIndex (Battle *battle, bool isAttacker, int index);
 //@ASBindGen Function AddNamespaceToCallName=BattleHelpers
-unsigned GetUnitsCountInBattle(Battle *battle, bool isAttackers);
+unsigned GetUnitsCountInBattle (Battle *battle, bool isAttackers);
+//@ASBindGen Function AddNamespaceToCallName=BattleHelpers
+Urho3D::PODVector <Urho3D::StringHash> GetUnitsInBattleList (Battle *battle, bool isAttackers);
 }
 }

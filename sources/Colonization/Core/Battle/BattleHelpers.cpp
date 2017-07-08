@@ -52,5 +52,18 @@ unsigned GetUnitsCountInBattle (Battle *battle, bool isAttackers)
         return battle->GetDefendersUnitsCount ();
     }
 }
+
+Urho3D::PODVector <Urho3D::StringHash> GetUnitsInBattleList (Battle *battle, bool isAttackers)
+{
+    if (isAttackers)
+    {
+        return battle->GetAttackersUnitsList ();
+    }
+    else
+    {
+        return battle->GetDefendersUnitsList ();
+    }
+}
+
 }
 }
