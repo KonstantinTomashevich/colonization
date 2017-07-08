@@ -118,6 +118,11 @@ class ClientUi : ScriptObject
         diplomacyMessagesProcessorInstance.CreateObject (cache.GetResource ("ScriptFile",
                                                          "AngelScript/Client/UiHandlers/Ingame/DiplomacyMessagesProcessor.as"),
                                                "DiplomacyMessagesProcessor");
+
+        ScriptInstance @battleSelectedWindowInstance = uiHandlersNode.CreateChild ("BattleSelectedWindow", LOCAL).CreateComponent ("ScriptInstance");
+        battleSelectedWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Client/UiHandlers/Ingame/BattleSelectedWindow/BattleSelectedWindow.as"),
+                                               "BattleSelectedWindow");
     }
 
     ClientUi ()

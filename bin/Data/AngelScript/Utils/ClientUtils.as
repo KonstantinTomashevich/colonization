@@ -231,6 +231,37 @@ shared Unit @GetUnitByHash (Scene @scene_, StringHash unitHash)
     }
 }
 
+shared Battle @GetBattleByHash (Scene @scene_, StringHash battleHash)
+{
+    if (scene_.GetChild ("battles") is null)
+    {
+        return null;
+    }
+
+    Array <Node @> battlesNodes = scene_.GetChild ("battles").GetChildrenWithTag (TAG_BATTLE);
+    if (battlesNodes.empty)
+    {
+        return null;
+    }
+
+    Battle @battle = battlesNodes [0].GetComponent ("Battle");
+    uint index = 1;
+    while (battle.hash != battleHash and index < battlesNodes.length)
+    {
+        battle = battlesNodes [index].GetComponent ("Battle");
+        index++;
+    }
+
+    if (battle.hash == battleHash)
+    {
+        return battle;
+    }
+    else
+    {
+        return null;
+    }
+}
+
 Array <DiplomacyWar @> GetWarsWithPlayer (Scene @scene_, StringHash playerNameHash)
 {
     Array <DiplomacyWar @> wars;
