@@ -74,12 +74,24 @@ bool BattlesProcessor::AddUnitToBattleIfNeeded (Unit *unit, District *unitPositi
 
                 unit->SetIsInBattle (true);
                 unit->SetBattleHash (battle->GetHash ());
-                NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
-                if (!counter)
                 {
-                    counter = CreateNetworkUpdateCounterForComponent (unit);
+                    NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
+                    if (!counter)
+                    {
+                        counter = CreateNetworkUpdateCounterForComponent (unit);
+                    }
+                    counter->AddUpdatePoints (100.0f);
                 }
-                counter->AddUpdatePoints (100.0f);
+
+                // TODO: Maybe add helper function like AddUpdatePointsToObjectCounter?
+                {
+                    NetworkUpdateCounter *counter = battle->GetNode ()->GetComponent <NetworkUpdateCounter> ();
+                    if (!counter)
+                    {
+                        counter = CreateNetworkUpdateCounterForComponent (battle);
+                    }
+                    counter->AddUpdatePoints (100.0f);
+                }
                 return true;
             }
         }
@@ -194,6 +206,9 @@ bool BattlesProcessor::ProcessBattle (Battle *battle, float timeStep)
     District *district = map->GetDistrictByHash (battle->GetDistrictHash ());
     assert (district);
 
+    const unsigned attackersBefore = battle->GetAttackersUnitsCount ();
+    const unsigned defendersBefore = battle->GetDefendersUnitsCount ();
+
     Urho3D::PODVector <Unit *> attackers;
     Urho3D::PODVector <Unit *> defenders;
     ReconstructBattleAttackersAndDefenders (unitsManager, battle, attackers, defenders);
@@ -205,6 +220,17 @@ bool BattlesProcessor::ProcessBattle (Battle *battle, float timeStep)
     float districtDefense = district->GetIsSea () ? 1.0f : district->GetDefenseEvolutionPoints ();
     attackersAttackForce /= Urho3D::Sqrt (Urho3D::Sqrt (districtDefense));
     ApplyDamage (battle, configuration, attackersAttackForce, defenders, false, timeStep * 100.0f);
+
+    if (attackersBefore != battle->GetAttackersUnitsCount () ||
+            defendersBefore != battle->GetDefendersUnitsCount ())
+    {
+        NetworkUpdateCounter *counter = battle->GetNode ()->GetComponent <NetworkUpdateCounter> ();
+        if (!counter)
+        {
+            counter = CreateNetworkUpdateCounterForComponent (battle);
+        }
+        counter->AddUpdatePoints (100.0f);
+    }
     return (battle->GetAttackersUnitsCount () > 0 && battle->GetDefendersUnitsCount () > 0);
 }
 
