@@ -60,6 +60,10 @@ bool ColoniesActionsProcessor::ProcessAction (District *colony, Urho3D::Pair <Ur
     {
         result = ProcessBuildWarShipAction (configuration, map, unitsManager, colony, actionData, timeStep);
     }
+    else if (action.first_ == ColonyActions::FORM_ARMY)
+    {
+        result = ProcessFormArmyAction (configuration, map, unitsManager, colony, actionData, timeStep);
+    }
 
     action.second_ = actionData;
     return result;
@@ -101,13 +105,71 @@ bool ColoniesActionsProcessor::ProcessBuildWarShipAction (GameConfiguration *con
         if (currentShipProgress >= 1.0f && colony->GetMenCount () > configuration->GetOneWarShipCrew ())
         {
             colony->SetMenCount (colony->GetMenCount () - configuration->GetOneWarShipCrew ());
-            Unit *newWarShip = unitsManager->CreateUnit (UNIT_FLEET, colony->GetColonyOwnerName (), targetDistrictHash);
-            ((FleetUnit *) (newWarShip))->SetWarShipsCount (1);
+            NetworkUpdateCounter *counter = colony->GetNode ()->GetComponent <NetworkUpdateCounter> ();
+            if (!counter)
+            {
+                counter = CreateNetworkUpdateCounterForComponent (colony);
+            }
+            counter->AddUpdatePoints (100.0f);
+
+            FleetUnit *newWarShip = (FleetUnit *)
+                    unitsManager->CreateUnit (UNIT_FLEET, colony->GetColonyOwnerName (), targetDistrictHash);
+            newWarShip->SetWarShipsCount (1);
             return true;
         }
         else
         {
             actionData [COLONY_ACTION_PROGRESS] = currentShipProgress;
+            return false;
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool ColoniesActionsProcessor::ProcessFormArmyAction (GameConfiguration *configuration, Map *map, UnitsManager *unitsManager,
+                                                       District *colony, Urho3D::VariantMap &actionData, float timeStep)
+{
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
+    Player *player = playersManager->GetPlayerByNameHash (Urho3D::StringHash (colony->GetColonyOwnerName ()));
+    assert (player);
+
+    int soldiersCount = actionData [ColonyActions::FormArmy::SOLDIERS_COUNT].GetInt ();
+    float formingSpeed = 1.0f / (configuration->GetOneSoldierMobilizationTime () * soldiersCount);
+    float timeStepProgress = formingSpeed * timeStep;
+
+    float currentProgress = actionData [COLONY_ACTION_PROGRESS].GetFloat ();
+    if (currentProgress + timeStepProgress > 1.0f)
+    {
+        timeStepProgress = 1.0f - currentProgress;
+    }
+
+    float progressCost = timeStepProgress * soldiersCount * configuration->GetOneSoldierMobilizationCost ();
+    if (player->GetGold () > progressCost)
+    {
+        currentProgress += timeStepProgress;
+        player->SetGold (player->GetGold () - progressCost);
+
+        if (currentProgress >= 1.0f && colony->GetMenCount () > soldiersCount)
+        {
+            colony->SetMenCount (colony->GetMenCount () - soldiersCount);
+            NetworkUpdateCounter *counter = colony->GetNode ()->GetComponent <NetworkUpdateCounter> ();
+            if (!counter)
+            {
+                counter = CreateNetworkUpdateCounterForComponent (colony);
+            }
+            counter->AddUpdatePoints (100.0f);
+
+            ArmyUnit *army = (ArmyUnit *)
+                    unitsManager->CreateUnit (UNIT_ARMY, colony->GetColonyOwnerName (), colony->GetHash ());
+            army->SetSoldiersCount (soldiersCount * 1.0f);
+            return true;
+        }
+        else
+        {
+            actionData [COLONY_ACTION_PROGRESS] = currentProgress;
             return false;
         }
     }
