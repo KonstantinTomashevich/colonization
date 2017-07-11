@@ -7,6 +7,8 @@ Multiplayer RTS game in colonization setting.
 
 **Travis CI:** [![Build Status](https://travis-ci.org/KonstantinTomashevich/colonization.svg?branch=master)](https://travis-ci.org/KonstantinTomashevich/colonization)
 
+**Automated code reviews:**[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e8b7bf9ec5824c858619541d72830d99)](https://www.codacy.com/app/KonstantinTomashevich/colonization?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KonstantinTomashevich/colonization&amp;utm_campaign=Badge_Grade)[![Code Climate](https://codeclimate.com/github/KonstantinTomashevich/colonization/badges/gpa.svg)](https://codeclimate.com/github/KonstantinTomashevich/colonization)[![Issue Count](https://codeclimate.com/github/KonstantinTomashevich/colonization/badges/issue_count.svg)](https://codeclimate.com/github/KonstantinTomashevich/colonization)
+
 ## Features:
 - [x] Districts system like Europa Universalis.
 - [x] Different victory types like Civilization (victory types can be added by separate script, specified in map info xml).
