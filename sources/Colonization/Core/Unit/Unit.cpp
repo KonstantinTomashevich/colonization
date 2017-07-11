@@ -76,35 +76,33 @@ bool Unit::IsCanGoTo (const District *district, const Map *map, Urho3D::StringHa
         position = imaginePosition;
     }
 
-    if (!district->IsNeighborsWith (position))
+    if (!district->IsNeighborsWith (position) || district->GetIsImpassable ())
     {
         return false;
     }
     else if (unitType_ == UNIT_FLEET)
     {
-        return district->GetIsSea () && !district->GetIsImpassable ();
+        return district->GetIsSea ();
     }
     // TODO: Current rule for army units is temporary!
     else if (unitType_ == UNIT_TRADERS || unitType_ == UNIT_ARMY)
     {
-        return (district->GetIsSea () || (district->GetHasColony () && district->GetColonyOwnerName () == ownerPlayerName_))
-                && !district->GetIsImpassable ();
+        return (district->GetIsSea () || (district->GetHasColony () && district->GetColonyOwnerName () == ownerPlayerName_));
     }
     else if (unitType_ == UNIT_COLONIZATORS)
     {
         if (district->GetIsSea () || (district->GetHasColony () && district->GetColonyOwnerName () == ownerPlayerName_))
         {
-            return !district->GetIsImpassable ();
+            return true;
         }
-        else if (!district->GetIsImpassable () && !district->GetHasColony ())
+        else if (!district->GetHasColony ())
         {
             Urho3D::PODVector <Urho3D::StringHash> targetNeighbors = district->GetNeighborsHashes ();
             for (int index = 0; index < targetNeighbors.Size (); index++)
             {
                 District *targetNeighbor = map->GetDistrictByHash (targetNeighbors.At (index));
-                if ((targetNeighbor->GetIsSea () || (targetNeighbor->GetHasColony () &&
-                                                  targetNeighbor->GetColonyOwnerName () == ownerPlayerName_))
-                        && !targetNeighbor->GetIsImpassable ())
+                if (targetNeighbor->GetIsSea () || (targetNeighbor->GetHasColony () &&
+                                                    targetNeighbor->GetColonyOwnerName () == ownerPlayerName_))
                 {
                     return true;
                 }
