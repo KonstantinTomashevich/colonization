@@ -18,15 +18,38 @@ class DistrictSelectedWindow : ScriptObject
         StringHash districtHash = scriptMain.vars ["selectedHash"].GetStringHash ();
         District @district = map.GetDistrictByHash (districtHash);
 
-        String playerName = scriptMain.vars ["playerName"].GetString ();
         Text@ nameText = districtSelectedWindow.GetChild ("nameText");
         nameText.text = district.name;
+        StringHash infoType = districtSelectedWindow.vars ["infoType"].GetStringHash ();
+        UpdateButtonsVisibility (districtSelectedWindow, district, scriptMain, configuration, infoType);
+        UpdateColorSample (districtSelectedWindow, district);
 
+        if (infoType == StringHash ("Basic"))
+        {
+            UpdateDistrictBasicInfo (district, districtSelectedWindow);
+        }
+        else if (infoType == StringHash ("Resources"))
+        {
+            UpdateDistrictResourcesInfo (district, districtSelectedWindow);
+        }
+        else if (infoType == StringHash ("Population"))
+        {
+            UpdateDistrictPopulationInfo (district, districtSelectedWindow);
+        }
+        else if (infoType == StringHash ("ColonyEvolution"))
+        {
+            UpdateDistrictColonyEvolutionInfo (district, districtSelectedWindow);
+        }
+    }
+
+    protected void UpdateButtonsVisibility (Window @districtSelectedWindow, District @district,
+        Node @scriptMain, GameConfiguration @configuration, StringHash infoType)
+    {
+        String playerName = scriptMain.vars ["playerName"].GetString ();
         districtSelectedWindow.GetChild ("resourcesInfoButton").visible = !district.isSea;
         districtSelectedWindow.GetChild ("populationInfoButton").visible = !district.isSea;
         districtSelectedWindow.GetChild ("colonyEvolutionInfoButton").visible = district.hasColony;
 
-        StringHash infoType = districtSelectedWindow.vars ["infoType"].GetStringHash ();
         UIElement @investButtons = districtSelectedWindow.GetChild ("investButtons");
         investButtons.visible = (infoType == StringHash ("ColonyEvolution") and
                                  district.hasColony and
@@ -59,7 +82,10 @@ class DistrictSelectedWindow : ScriptObject
         openDiplomacyButton.visible = (infoType == StringHash ("Basic")) and
                                          district.hasColony and
                                          district.colonyOwnerName != playerName;
+    }
 
+    protected void UpdateColorSample (Window @districtSelectedWindow, District @district)
+    {
         BorderImage @colorSample = districtSelectedWindow.GetChild ("colorSample");
         if (district.hasColony)
         {
@@ -77,23 +103,6 @@ class DistrictSelectedWindow : ScriptObject
         else
         {
             colorSample.visible = false;
-        }
-
-        if (infoType == StringHash ("Basic"))
-        {
-            UpdateDistrictBasicInfo (district, districtSelectedWindow);
-        }
-        else if (infoType == StringHash ("Resources"))
-        {
-            UpdateDistrictResourcesInfo (district, districtSelectedWindow);
-        }
-        else if (infoType == StringHash ("Population"))
-        {
-            UpdateDistrictPopulationInfo (district, districtSelectedWindow);
-        }
-        else if (infoType == StringHash ("ColonyEvolution"))
-        {
-            UpdateDistrictColonyEvolutionInfo (district, districtSelectedWindow);
         }
     }
 
