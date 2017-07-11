@@ -28,6 +28,12 @@ setup_executable ()
 target_link_libraries (TestColonyActionBuildWarShip Colonization)
 add_test (NAME test_colony_action_build_war_ship COMMAND TestColonyActionBuildWarShip)
 
+set (TARGET_NAME TestColonyActionFormArmy)
+set (SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/TestColonyActionFormArmy.hpp ${CMAKE_CURRENT_SOURCE_DIR}/TestColonyActionFormArmy.cpp)
+setup_executable ()
+target_link_libraries (TestColonyActionFormArmy Colonization)
+add_test (NAME test_colony_action_form_army COMMAND TestColonyActionFormArmy)
+
 set (TARGET_NAME TestFogOfWarCalculator)
 set (SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/TestFogOfWarCalculator.hpp ${CMAKE_CURRENT_SOURCE_DIR}/TestFogOfWarCalculator.cpp)
 setup_executable ()
@@ -64,6 +70,7 @@ set_target_properties (
     TestBasicColonyBalance
     TestInternalTradeProcessing
     TestColonyActionBuildWarShip
+    TestColonyActionFormArmy
     TestFogOfWarCalculator
     TestMapMaskGeneration
     TestDiplomacyWarAndPeace
