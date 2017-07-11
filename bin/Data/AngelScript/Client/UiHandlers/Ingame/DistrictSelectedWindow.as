@@ -75,13 +75,24 @@ class DistrictSelectedWindow : ScriptObject
                                          district.menCount > configuration.oneWarShipCrew and
                                          scriptMain.vars ["gold"].GetFloat () > configuration.oneWarShipBuildingCost;
         Text @buildWarShipButtonText = buildWarShipButton.GetChild ("text");
-        buildWarShipButtonText.text = "Build war ship (cost: " +FloorToInt (configuration.oneWarShipBuildingCost) +
-                                      " + " +FloorToInt (configuration.oneWarShipCrew) + " men as crew).";
+        buildWarShipButtonText.text = "Build war ship (cost: " + FloorToInt (configuration.oneWarShipBuildingCost) +
+                                      " + " + FloorToInt (configuration.oneWarShipCrew) + " men as crew).";
 
         Button @openDiplomacyButton = districtSelectedWindow.GetChild ("openDiplomacyButton");
         openDiplomacyButton.visible = (infoType == StringHash ("Basic")) and
                                          district.hasColony and
                                          district.colonyOwnerName != playerName;
+
+        Button @formArmyButton = districtSelectedWindow.GetChild ("formArmyButton");
+        formArmyButton.visible = (infoType == StringHash ("Basic")) and
+                                    district.hasColony and
+                                    district.colonyOwnerName == playerName and
+                                    district.menCount > DEFAULT_ARMY_SOLDIERS_COUNT and
+                                    scriptMain.vars ["gold"].GetFloat () > configuration.oneSoldierMobilizationCost * DEFAULT_ARMY_SOLDIERS_COUNT;
+        Text @formArmyButtonText = formArmyButton.GetChild ("text");
+        formArmyButtonText.text = "Form army (cost: " +
+                                  Floor (configuration.oneSoldierMobilizationCost * DEFAULT_ARMY_SOLDIERS_COUNT * 10.0f) / 10.0f +
+                                  " + " + DEFAULT_ARMY_SOLDIERS_COUNT + " men).";
     }
 
     protected void UpdateColorSample (Window @districtSelectedWindow, District @district)
@@ -284,6 +295,7 @@ class DistrictSelectedWindow : ScriptObject
 
         Button @sendColonizatorsButton = districtSelectedWindow.GetChild ("sendColonizatorsButton");
         Button @buildWarShipButton = districtSelectedWindow.GetChild ("buildWarShipButton");
+        Button @formArmyButton = districtSelectedWindow.GetChild ("formArmyButton");
         Button @openDiplomacyButton = districtSelectedWindow.GetChild ("openDiplomacyButton");
 
         UIElement @investButtons = districtSelectedWindow.GetChild ("investButtons");
@@ -300,6 +312,7 @@ class DistrictSelectedWindow : ScriptObject
 
         SubscribeToEvent (sendColonizatorsButton, "Released", "HandleSendColonizatorsClick");
         SubscribeToEvent (buildWarShipButton, "Released", "HandleBuildWarShipClick");
+        SubscribeToEvent (formArmyButton, "Released", "HandleFormArmyClick");
         SubscribeToEvent (openDiplomacyButton, "Released", "HandleOpenDiplomacyClick");
 
         SubscribeToEvent (investToFarmsButton, "Released", "HandleInvestClick");
@@ -404,6 +417,37 @@ class DistrictSelectedWindow : ScriptObject
     {
         Node @scriptMain = GetScriptMain (node);
         scriptMain.vars ["currentClickCommand"] = StringHash ("BuildWarShip");
+    }
+
+    void HandleFormArmyClick ()
+    {
+        Node @scriptMain = GetScriptMain (node);
+        Map @map = scene.GetChild ("map").GetComponent ("Map");
+        GameConfiguration @configuration = scene.GetComponent ("GameConfiguration");
+
+        StringHash districtHash = scriptMain.vars ["selectedHash"].GetStringHash ();
+        District @district = map.GetDistrictByHash (districtHash);
+        String playerName = scriptMain.vars ["playerName"].GetString ();
+        float playerGold = scriptMain.vars ["gold"].GetFloat ();
+
+        if (district.hasColony and district.colonyOwnerName == playerName and
+            playerGold > configuration.oneSoldierMobilizationCost * DEFAULT_ARMY_SOLDIERS_COUNT and
+            district.menCount > DEFAULT_ARMY_SOLDIERS_COUNT)
+        {
+            VariantMap actionData;
+            actionData [ColonyActions_FormArmy_SOLDIERS_COUNT] = Variant (DEFAULT_ARMY_SOLDIERS_COUNT);
+
+            VectorBuffer buffer = VectorBuffer ();
+            buffer.WriteInt (PLAYER_ACTION_ADD_COLONY_ACTION);
+            buffer.WriteStringHash (district.hash);
+            buffer.WriteStringHash (ColonyActions_FORM_ARMY);
+            buffer.WriteVariantMap (actionData);
+
+            VariantMap eventData;
+            eventData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+            eventData ["messageBuffer"] = Variant (buffer);
+            SendEvent ("NewNetworkTask", eventData);
+        }
     }
 
     void HandleOpenDiplomacyClick ()
