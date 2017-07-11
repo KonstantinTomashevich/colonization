@@ -14,6 +14,9 @@ float oneWarShipBuildingCost_ =30.0f$One War Ship Building Cost
 float oneWarShipCrew_ =20.0f$One War Ship Crew
 float oneWarShipBasicBuildTime_ =20.0f$One War Ship Basic Build Time
 
+float oneSoldierMobilizationCost_ =0.5f$One Soldier Mobilization Cost
+float oneSoldierMobilizationTime_ =0.2f$One Soldier Mobilization Time
+
 float oneColonistFarmsProductionConsumption_ =0.02f$One Colonist Farms Production Consumption
 float oneSoldierFarmsProductionConsumption_ =0.0225f$One Soldier Farms Production Consumption
 float farmsProductionMinesConsumption_ =0.025f$Farms Production Mines Consumption
@@ -144,6 +147,8 @@ class GameConfiguration : public Urho3D::Component
 URHO3D_OBJECT (GameConfiguration, Component)
 protected:
     // TODO: Move taxes to player. In next game versions player should have ability to set them.
+    // TODO: With default configuration traders are TOO strong!
+    // TODO: Maybe increase mobilization and war ship building costs?
     //@Insert var list
 
 public:
