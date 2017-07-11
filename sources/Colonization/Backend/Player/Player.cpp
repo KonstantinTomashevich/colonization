@@ -42,19 +42,13 @@ void Player::ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data)
         return;
     }
 
-    if ((unit->GetUnitType () == UNIT_FLEET && target->GetIsSea ()) ||
-            (unit->GetUnitType () != UNIT_FLEET && target->GetHasColony () && target->GetColonyOwnerName () == name_) ||
-            (unit->GetUnitType () == UNIT_COLONIZATORS && !target->GetIsSea ()))
+    map->FindPath (target->GetHash (), unit);
+    NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
+    if (!counter)
     {
-        map->FindPath (target->GetHash (), unit);
-
-        NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
-        if (!counter)
-        {
-            counter = CreateNetworkUpdateCounterForComponent (unit);
-        }
-        counter->AddUpdatePoints (100.0f);
+        counter = CreateNetworkUpdateCounterForComponent (unit);
     }
+    counter->AddUpdatePoints (100.0f);
 }
 
 void Player::ProcessInvestToColonyAction (Urho3D::VectorBuffer data)
