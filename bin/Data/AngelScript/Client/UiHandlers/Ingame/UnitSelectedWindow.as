@@ -19,7 +19,7 @@ class UnitSelectedWindow : ScriptObject
         {
             unitSelectedWindow.visible = true;
             UpdateBasicInfos (unitSelectedWindow, unit, map);
-            UpdateButtonsVisibility (unitSelectedWindow, unit, map);
+            UpdateButtonsVisibility (unitSelectedWindow, unit, map, scriptMain.vars ["playerName"].GetString ());
 
             String additionalInfo;
             if (unit.isInBattle)
@@ -98,17 +98,17 @@ class UnitSelectedWindow : ScriptObject
         positionText.text = "in " + map.GetDistrictByHash (unit.positionHash).name;
     }
 
-    protected void UpdateButtonsVisibility (Window @unitSelectedWindow, Unit @unit, Map @map)
+    protected void UpdateButtonsVisibility (Window @unitSelectedWindow, Unit @unit, Map @map, String playerName)
     {
         Button @moveToButton = unitSelectedWindow.GetChild ("moveToButton");
-        if (not unit.isInBattle and (unit.unitType == UNIT_FLEET or unit.unitType == UNIT_ARMY))
-        {
-            moveToButton.visible = true;
-        }
-        else
-        {
-            moveToButton.visible = false;
-        }
+        moveToButton.visible = unit.ownerPlayerName == playerName and not unit.isInBattle
+                               and (unit.unitType == UNIT_FLEET or unit.unitType == UNIT_ARMY);
+
+        Button @demobilizeArmyButton = unitSelectedWindow.GetChild ("demobilizeArmyButton");
+        District @armyDistrict = map.GetDistrictByHash (unit.positionHash);
+        demobilizeArmyButton.visible = unit.ownerPlayerName == playerName and unit.unitType == UNIT_ARMY and
+                                       not unit.isInBattle and not armyDistrict.isSea and
+                                       armyDistrict.hasColony and armyDistrict.colonyOwnerName == playerName;
     }
 
     protected String GenerateFleetInfo (FleetUnit @unit)
@@ -183,7 +183,10 @@ class UnitSelectedWindow : ScriptObject
     {
         Window @unitSelectedWindow = ui.root.GetChild ("ingame").GetChild ("unitSelectedWindow");
         Button @moveToButton = unitSelectedWindow.GetChild ("moveToButton");
+        Button @demobilizeArmyButton = unitSelectedWindow.GetChild ("demobilizeArmyButton");
+
         SubscribeToEvent (moveToButton, "Released", "HandleMoveUnitToClick");
+        SubscribeToEvent (demobilizeArmyButton, "Released", "HandleDemobilizeArmyClick");
     }
 
     void Update (float timeStep)
@@ -223,5 +226,36 @@ class UnitSelectedWindow : ScriptObject
     {
         Node @scriptMain = GetScriptMain (node);
         scriptMain.vars ["currentClickCommand"] = StringHash ("MoveUnit");
+    }
+
+    void HandleDemobilizeArmyClick ()
+    {
+        Node @scriptMain = GetScriptMain (node);
+        Map @map = scene.GetChild ("map").GetComponent ("Map");
+        FogOfWarCalculator @fogOfWarCalculator = scene.GetComponent ("FogOfWarCalculator");
+        Window @unitSelectedWindow = ui.root.GetChild ("ingame").GetChild ("unitSelectedWindow");
+        StringHash unitHash = scriptMain.vars ["selectedHash"].GetStringHash ();
+        Unit @unit = GetUnitByHash (scene, unitHash);
+
+        if (unit is null)
+        {
+            return;
+        }
+        District @armyDistrict = map.GetDistrictByHash (unit.positionHash);
+        String playerName = scriptMain.vars ["playerName"].GetString ();
+
+        if (unit.ownerPlayerName == playerName and unit.unitType == UNIT_ARMY and
+            not unit.isInBattle and not armyDistrict.isSea and
+            armyDistrict.hasColony and armyDistrict.colonyOwnerName == playerName)
+        {
+            VectorBuffer buffer = VectorBuffer ();
+            buffer.WriteInt (PLAYER_ACTION_DEMOBILIZE_ARMY);
+            buffer.WriteStringHash (unitHash);
+
+            VariantMap eventData;
+            eventData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+            eventData ["messageBuffer"] = Variant (buffer);
+            SendEvent ("NewNetworkTask", eventData);
+        }
     }
 }
