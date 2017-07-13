@@ -9,6 +9,7 @@ class UnitSelectedWindow : ScriptObject
     protected void UpdateUnitSelection ()
     {
         Node @scriptMain = GetScriptMain (node);
+        Map @map = scene.GetChild ("map").GetComponent ("Map");
         FogOfWarCalculator @fogOfWarCalculator = scene.GetComponent ("FogOfWarCalculator");
         Window @unitSelectedWindow = ui.root.GetChild ("ingame").GetChild ("unitSelectedWindow");
         StringHash unitHash = scriptMain.vars ["selectedHash"].GetStringHash ();
@@ -17,51 +18,8 @@ class UnitSelectedWindow : ScriptObject
         if (unit !is null and fogOfWarCalculator.IsDistrictVisible (unit.positionHash))
         {
             unitSelectedWindow.visible = true;
-            Text @ownerText = unitSelectedWindow.GetChild ("ownerText");
-            ownerText.text = unit.ownerPlayerName + "'s";
-
-            BorderImage @colorSample = unitSelectedWindow.GetChild ("colorSample");
-            PlayerInfo @unitOwner = GetPlayerInfoByName (scene, unit.ownerPlayerName);
-            if (unitOwner !is null)
-            {
-                colorSample.color = unitOwner.color;
-            }
-            else
-            {
-                colorSample.color = NEUTRAL_COLOR;
-            }
-
-            Text @typeText = unitSelectedWindow.GetChild ("typeText");
-            if (unit.unitType == UNIT_FLEET)
-            {
-                typeText.text = "Fleet";
-            }
-            else if (unit.unitType == UNIT_TRADERS)
-            {
-                typeText.text = "Traders";
-            }
-            else if (unit.unitType == UNIT_COLONIZATORS)
-            {
-                typeText.text = "Colonizators";
-            }
-            else if (unit.unitType == UNIT_ARMY)
-            {
-                typeText.text = "Army";
-            }
-
-            Button @moveToButton = unitSelectedWindow.GetChild ("moveToButton");
-            if (not unit.isInBattle and (unit.unitType == UNIT_FLEET or unit.unitType == UNIT_ARMY))
-            {
-                moveToButton.visible = true;
-            }
-            else
-            {
-                moveToButton.visible = false;
-            }
-
-            Map @map = scene.GetChild ("map").GetComponent ("Map");
-            Text @positionText = unitSelectedWindow.GetChild ("positionText");
-            positionText.text = "in " + map.GetDistrictByHash (unit.positionHash).name;
+            UpdateBasicInfos (unitSelectedWindow, unit, map);
+            UpdateButtonsVisibility (unitSelectedWindow, unit, map);
 
             String additionalInfo;
             if (unit.isInBattle)
@@ -89,15 +47,7 @@ class UnitSelectedWindow : ScriptObject
                 additionalInfo += GenerateArmyInfo (cast <ArmyUnit> (unit));
             }
 
-            if (unit.way.length > 0)
-            {
-                Array <StringHash> unitWay = unit.way;
-                additionalInfo += "Going to: " + map.GetDistrictByHash (unitWay [unitWay.length - 1]).name + ".\n";
-                additionalInfo += "Next waypoint: " + map.GetDistrictByHash (unitWay [0]).name + "\n";
-                additionalInfo += "Traveled to next waypoit: " +
-                                    Floor (unit.wayToNextDistrictProgressInPercents) + "%.\n";
-            }
-
+            additionalInfo += GenerateUnitWayInfo (unit, map);
             Text @anotherText = unitSelectedWindow.GetChild ("anotherText");
             anotherText.text = additionalInfo;
         }
@@ -107,6 +57,57 @@ class UnitSelectedWindow : ScriptObject
             unitSelectedWindow.visible = false;
             scriptMain.vars ["selectionType"] = StringHash ("None");
             scriptMain.vars ["selectedHash"] = StringHash ();
+        }
+    }
+
+    protected void UpdateBasicInfos (Window @unitSelectedWindow, Unit @unit, Map @map)
+    {
+        Text @ownerText = unitSelectedWindow.GetChild ("ownerText");
+        ownerText.text = unit.ownerPlayerName + "'s";
+
+        BorderImage @colorSample = unitSelectedWindow.GetChild ("colorSample");
+        PlayerInfo @unitOwner = GetPlayerInfoByName (scene, unit.ownerPlayerName);
+        if (unitOwner !is null)
+        {
+            colorSample.color = unitOwner.color;
+        }
+        else
+        {
+            colorSample.color = NEUTRAL_COLOR;
+        }
+
+        Text @typeText = unitSelectedWindow.GetChild ("typeText");
+        if (unit.unitType == UNIT_FLEET)
+        {
+            typeText.text = "Fleet";
+        }
+        else if (unit.unitType == UNIT_TRADERS)
+        {
+            typeText.text = "Traders";
+        }
+        else if (unit.unitType == UNIT_COLONIZATORS)
+        {
+            typeText.text = "Colonizators";
+        }
+        else if (unit.unitType == UNIT_ARMY)
+        {
+            typeText.text = "Army";
+        }
+
+        Text @positionText = unitSelectedWindow.GetChild ("positionText");
+        positionText.text = "in " + map.GetDistrictByHash (unit.positionHash).name;
+    }
+
+    protected void UpdateButtonsVisibility (Window @unitSelectedWindow, Unit @unit, Map @map)
+    {
+        Button @moveToButton = unitSelectedWindow.GetChild ("moveToButton");
+        if (not unit.isInBattle and (unit.unitType == UNIT_FLEET or unit.unitType == UNIT_ARMY))
+        {
+            moveToButton.visible = true;
+        }
+        else
+        {
+            moveToButton.visible = false;
         }
     }
 
@@ -151,6 +152,20 @@ class UnitSelectedWindow : ScriptObject
     protected String GenerateArmyInfo (ArmyUnit @unit)
     {
         return "Soldiers count: " + Floor (unit.soldiersCount) + ".\n";
+    }
+
+    protected String GenerateUnitWayInfo (Unit @unit, Map @map)
+    {
+        String info;
+        if (unit.way.length > 0)
+        {
+            Array <StringHash> unitWay = unit.way;
+            info += "Going to: " + map.GetDistrictByHash (unitWay [unitWay.length - 1]).name + ".\n";
+            info += "Next waypoint: " + map.GetDistrictByHash (unitWay [0]).name + "\n";
+            info += "Traveled to next waypoit: " +
+                    Floor (unit.wayToNextDistrictProgressInPercents) + "%.\n";
+        }
+        return info;
     }
 
     UnitSelectedWindow ()
