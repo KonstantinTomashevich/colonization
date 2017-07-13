@@ -32,6 +32,8 @@ protected:
     void ProcessDeclareWarAction (Urho3D::VectorBuffer data);
     void ProcessSendPeaceTreatyAction (Urho3D::VectorBuffer data);
     void ProcessResponceToDiplomacyOfferAction (Urho3D::VectorBuffer data);
+
+    void ProcessDemobilizeArmyAction (Urho3D::VectorBuffer data);
     virtual void AfterActionsProcessing (float timeStep);
 public:
     Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Color color, Urho3D::Connection *connection, Urho3D::Scene *scene);

@@ -221,6 +221,34 @@ void Player::ProcessResponceToDiplomacyOfferAction (Urho3D::VectorBuffer data)
     diplomacyProcessor->UpdateDiplomacyRequestPlayerStatus (diplomacyOfferId, Urho3D::StringHash (name_), response);
 }
 
+void Player::ProcessDemobilizeArmyAction (Urho3D::VectorBuffer data)
+{
+    Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
+    UnitsManager *unitsManager = scene_->GetChild ("units")->GetComponent <UnitsManager> ();
+    // Skip action type.
+    data.ReadInt ();
+
+    Urho3D::StringHash unitHash = data.ReadStringHash ();
+    Unit *unit = unitsManager->GetUnitByHash (unitHash);
+    if (unit && unit->GetOwnerPlayerName () == name_ && unit->GetUnitType () == UNIT_ARMY)
+    {
+        District *district = map->GetDistrictByHash (unit->GetPositionHash ());
+        if (!district->GetIsSea () && district->GetHasColony () && district->GetColonyOwnerName () == name_)
+        {
+            ArmyUnit *armyUnit = (ArmyUnit *) unit;
+            district->SetMenCount (district->GetMenCount () + armyUnit->GetSoldiersCount ());
+            armyUnit->GetNode ()->Remove ();
+
+            NetworkUpdateCounter *counter = district->GetNode ()->GetComponent <NetworkUpdateCounter> ();
+            if (!counter)
+            {
+                counter = CreateNetworkUpdateCounterForComponent (district);
+            }
+            counter->AddUpdatePoints (100.0f);
+        }
+    }
+}
+
 void Player::AfterActionsProcessing (float timeStep)
 {
 
@@ -290,6 +318,10 @@ void Player::Update (float timeStep)
         else if (action.first_ == PLAYER_ACTION_RESPONCE_TO_DIPLOMACY_OFFER)
         {
             ProcessResponceToDiplomacyOfferAction (action.second_.GetVectorBuffer ());
+        }
+        else if (action.first_ == PLAYER_ACTION_DEMOBILIZE_ARMY)
+        {
+            ProcessDemobilizeArmyAction (action.second_.GetVectorBuffer ());
         }
         actionsSequence_.Remove (actionsSequence_.At (0));
     }
