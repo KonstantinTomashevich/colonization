@@ -43,12 +43,21 @@ class BattleSelectedWindow : ScriptObject
             if (selectionType == StringHash ("Battle"))
             {
                 Text @title = battleSelectedWindow.GetChild ("title");
-                Battle @battle = GetBattleByHash (scene, scriptMain.vars ["selectedHash"].GetStringHash ());
                 Map @map = scene.GetChild ("map").GetComponent ("Map");
+                Battle @battle = GetBattleByHash (scene, scriptMain.vars ["selectedHash"].GetStringHash ());
 
-                District @district = map.GetDistrictByHash (battle.districtHash);
-                title.text = "Battle at " + district.name;
-                battleSelectedWindow.visible = true;
+                if (battle !is null)
+                {
+                    District @district = map.GetDistrictByHash (battle.districtHash);
+                    title.text = "Battle at " + district.name;
+                    battleSelectedWindow.visible = true;
+                }
+                else
+                {
+                    battleSelectedWindow.visible = false;
+                    scriptMain.vars ["selectionType"] = StringHash ("None");
+                    scriptMain.vars ["selectedHash"] = StringHash ();
+                }
             }
             else
             {
