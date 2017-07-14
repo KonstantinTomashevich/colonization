@@ -12,6 +12,7 @@ class Player;
 class DiplomacyWar;
 
 // TODO: New battles created only when unit changes position. But battles will be created if new war declared too!
+// TODO: Also battles should be stopped if peace treaty accepted.
 //@ASBindGen Function ReturnHandleArray
 Urho3D::PODVector <Battle *> GetBattlesInDistrict (Urho3D::Scene *scene, Urho3D::StringHash districtHash);
 class BattlesProcessor : public Urho3D::Component
@@ -37,14 +38,13 @@ protected:
 
     /// Returns false if battle was ended.
     bool ProcessBattle (Battle *battle, float timeStep);
-    void ReconstructBattleAttackersAndDefenders (UnitsManager *unitsManager, Battle *battle,
-                                                 Urho3D::PODVector <Unit *> &attackers,
-                                                 Urho3D::PODVector <Unit *> &defenders);
+    Urho3D::PODVector <Unit *> ReconstructUnits (UnitsManager *unitsManager, Urho3D::PODVector <Urho3D::StringHash> unitsHashes);
     float CalculateUnitsAttackForce (Urho3D::PODVector <Unit *> &units, GameConfiguration *configuration, bool isNavalBattle);
 
     void ApplyDamage (Battle *battle, GameConfiguration *configuration, float fullDamage,
                       Urho3D::PODVector <Unit *> &units, bool isAttackers, float damagedUnitUpdatePoints);
     Battle *CreateBattle (Urho3D::StringHash warHash, Urho3D::StringHash districtHash);
+    void DeleteBattle (Battle *battle);
     virtual void OnSceneSet (Urho3D::Scene* scene);
 
 public:

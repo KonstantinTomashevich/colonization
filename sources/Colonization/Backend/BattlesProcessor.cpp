@@ -206,12 +206,10 @@ bool BattlesProcessor::ProcessBattle (Battle *battle, float timeStep)
     District *district = map->GetDistrictByHash (battle->GetDistrictHash ());
     assert (district);
 
-    const unsigned attackersBefore = battle->GetAttackersUnitsCount ();
-    const unsigned defendersBefore = battle->GetDefendersUnitsCount ();
-
-    Urho3D::PODVector <Unit *> attackers;
-    Urho3D::PODVector <Unit *> defenders;
-    ReconstructBattleAttackersAndDefenders (unitsManager, battle, attackers, defenders);
+    const unsigned attackersCountBefore = battle->GetAttackersUnitsCount ();
+    const unsigned defendersCountBefore = battle->GetDefendersUnitsCount ();
+    Urho3D::PODVector <Unit *> attackers = ReconstructUnits (unitsManager, BattleHelpers::GetUnitsInBattleList (battle, true));
+    Urho3D::PODVector <Unit *> defenders = ReconstructUnits (unitsManager, BattleHelpers::GetUnitsInBattleList (battle, false));
 
     float attackersAttackForce = timeStep * CalculateUnitsAttackForce (attackers, configuration, district->GetIsSea ());
     float defendersAttackForce = timeStep * CalculateUnitsAttackForce (defenders, configuration, district->GetIsSea ());
@@ -221,8 +219,8 @@ bool BattlesProcessor::ProcessBattle (Battle *battle, float timeStep)
     attackersAttackForce /= Urho3D::Sqrt (Urho3D::Sqrt (districtDefense));
     ApplyDamage (battle, configuration, attackersAttackForce, defenders, false, timeStep * 100.0f);
 
-    if (attackersBefore != battle->GetAttackersUnitsCount () ||
-            defendersBefore != battle->GetDefendersUnitsCount ())
+    if (attackersCountBefore != battle->GetAttackersUnitsCount () ||
+            defendersCountBefore != battle->GetDefendersUnitsCount ())
     {
         NetworkUpdateCounter *counter = battle->GetNode ()->GetComponent <NetworkUpdateCounter> ();
         if (!counter)
@@ -234,23 +232,18 @@ bool BattlesProcessor::ProcessBattle (Battle *battle, float timeStep)
     return (battle->GetAttackersUnitsCount () > 0 && battle->GetDefendersUnitsCount () > 0);
 }
 
-void BattlesProcessor::ReconstructBattleAttackersAndDefenders (UnitsManager *unitsManager, Battle *battle,
-                                                               Urho3D::PODVector <Unit *> &attackers,
-                                                               Urho3D::PODVector <Unit *> &defenders)
+Urho3D::PODVector <Unit *> BattlesProcessor::ReconstructUnits (UnitsManager *unitsManager, Urho3D::PODVector <Urho3D::StringHash> unitsHashes)
 {
-    for (int index = 0; index < battle->GetAttackersUnitsCount (); index++)
+    Urho3D::PODVector <Unit *> units;
+    for (int index = 0; index < unitsHashes.Size (); index++)
     {
-        Unit *unit = unitsManager->GetUnitByHash (battle->GetAttackerUnitHashByIndex (index));
-        assert (unit);
-        attackers.Push (unit);
+        Unit *unit = unitsManager->GetUnitByHash (unitsHashes.At (index));
+        if (unit)
+        {
+            units.Push (unit);
+        }
     }
-
-    for (int index = 0; index < battle->GetDefendersUnitsCount (); index++)
-    {
-        Unit *unit = unitsManager->GetUnitByHash (battle->GetDefenderUnitHashByIndex (index));
-        assert (unit);
-        defenders.Push (unit);
-    }
+    return units;
 }
 
 float BattlesProcessor::CalculateUnitsAttackForce (Urho3D::PODVector <Unit *> &units, GameConfiguration *configuration, bool isNavalBattle)
@@ -312,6 +305,30 @@ Battle *BattlesProcessor::CreateBattle (Urho3D::StringHash warHash, Urho3D::Stri
     return battle;
 }
 
+void BattlesProcessor::DeleteBattle (Battle *battle)
+{
+    UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
+    Urho3D::PODVector <Unit *> units;
+    units.Push (ReconstructUnits (unitsManager, BattleHelpers::GetUnitsInBattleList (battle, true)));
+    units.Push (ReconstructUnits (unitsManager, BattleHelpers::GetUnitsInBattleList (battle, false)));
+
+    for (int index = 0; index < units.Size (); index++)
+    {
+        Unit *unit = units.At (index);
+        if (unit)
+        {
+            unit->SetIsInBattle (false);
+            NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
+            if (!counter)
+            {
+                counter = CreateNetworkUpdateCounterForComponent (unit);
+            }
+            counter->AddUpdatePoints (100.0f);
+        }
+    }
+    battle->GetNode ()->Remove ();
+}
+
 void BattlesProcessor::OnSceneSet (Urho3D::Scene *scene)
 {
     UnsubscribeFromAllEvents ();
@@ -351,7 +368,7 @@ void BattlesProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMap 
         {
             if (!ProcessBattle (iterator->Get (), timeStep))
             {
-                iterator->Get ()->GetNode ()->Remove ();
+                DeleteBattle (iterator->Get ());
                 iterator = battles_.Erase (iterator);
             }
             else
