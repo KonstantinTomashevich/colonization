@@ -1,7 +1,7 @@
 #include "AngelScript/Utils/ClientUtils.as"
 #include "AngelScript/Utils/ScriptObjectWithBeforeStop.as"
 
-shared abstract class StringListEditorUiHandler : ScriptObjectWithBeforeStop
+abstract class StringListEditorUiHandler : ScriptObjectWithBeforeStop
 {
     protected uint elementsShowOffset_;
     protected float untilElementsScrollUpdate_;

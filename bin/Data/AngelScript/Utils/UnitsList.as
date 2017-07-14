@@ -2,7 +2,7 @@
 #include "AngelScript/Utils/ClientUtils.as"
 #include "AngelScript/Utils/StringListEditorUiHandler.as"
 
-shared abstract class UnitsList : StringListEditorUiHandler
+abstract class UnitsList : StringListEditorUiHandler
 {
     protected Array <StringHash> GetUnitsHashes ()
     {

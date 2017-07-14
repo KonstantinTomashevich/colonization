@@ -1,4 +1,4 @@
-shared abstract class ScriptObjectWithBeforeStop : ScriptObject
+abstract class ScriptObjectWithBeforeStop : ScriptObject
 {
     ScriptObjectWithBeforeStop ()
     {

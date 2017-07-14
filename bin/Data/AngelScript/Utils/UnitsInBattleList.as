@@ -1,7 +1,7 @@
 #include "AngelScript/Utils/ClientUtils.as"
 #include "AngelScript/Utils/UnitsList.as"
 
-shared abstract class UnitsInBattleList : UnitsList
+abstract class UnitsInBattleList : UnitsList
 {
     bool isAttackers_ = true;
 

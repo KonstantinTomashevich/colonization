@@ -1,7 +1,7 @@
 #include "AngelScript/Utils/ClientUtils.as"
 #include "AngelScript/Utils/ScriptObjectWithBeforeStop.as"
 
-shared abstract class ChatWindowInterface : ScriptObjectWithBeforeStop
+abstract class ChatWindowInterface : ScriptObjectWithBeforeStop
 {
     protected Array <VariantMap> messagesList_;
     protected uint messagesShowOffset_;
@@ -67,10 +67,10 @@ shared abstract class ChatWindowInterface : ScriptObjectWithBeforeStop
                 index++)
             {
                 VariantMap messageData = messagesList_ [index];
-                bool isPrivate = messageData ["isPrivate"].GetBool ();
-                String sender = messageData ["sender"].GetString ();
-                String message = messageData ["message"].GetString ();
-                String timeStamp = messageData ["timeStamp"].GetString ();
+                bool isPrivate = messageData [NewChatMessage::IS_PRIVATE].GetBool ();
+                String sender = messageData [NewChatMessage::SENDER].GetString ();
+                String message = messageData [NewChatMessage::MESSAGE].GetString ();
+                String timeStamp = messageData [NewChatMessage::TIME_STAMP].GetString ();
 
                 chatText += (isPrivate ? "[Private] [" : "[Public] [") + timeStamp + "] " +
                             sender + ": " + message + "\n";
@@ -109,7 +109,7 @@ shared abstract class ChatWindowInterface : ScriptObjectWithBeforeStop
         SubscribeToEvent (sendPrivateMessageButton, "Released", "HandleSendPrivateMessageClick");
         SubscribeToEvent (showBlockedUsersButton, "Released", "HandleShowBlockedUsersClick");
         SubscribeToEvent (showPrivateUsersButton, "Released", "HandleShowPrivateUsersClick");
-        SubscribeToEvent ("NewChatMessage", "HandleNewChatMessage");
+        SubscribeToEvent (EVENT_NEW_CHAT_MESSAGE, "HandleNewChatMessage");
 
         Node @scriptMain = GetScriptMain (node);
         LineEdit @messageEdit = chatWindow.GetChild ("messageEdit");
@@ -169,9 +169,9 @@ shared abstract class ChatWindowInterface : ScriptObjectWithBeforeStop
         buffer.WriteString (message);
 
         VariantMap eventData;
-        eventData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_CHAT_MESSAGE);
-        eventData ["messageBuffer"] = Variant (buffer);
-        SendEvent ("NewNetworkTask", eventData);
+        eventData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_CHAT_MESSAGE);
+        eventData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
+        SendEvent (EVENT_NEW_NETWORK_TASK, eventData);
     }
 
     void HandleSendPrivateMessageClick ()
@@ -193,9 +193,9 @@ shared abstract class ChatWindowInterface : ScriptObjectWithBeforeStop
         }
 
         VariantMap eventData;
-        eventData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_PRIVATE_MESSAGE);
-        eventData ["messageBuffer"] = Variant (buffer);
-        SendEvent ("NewNetworkTask", eventData);
+        eventData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PRIVATE_MESSAGE);
+        eventData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
+        SendEvent (EVENT_NEW_NETWORK_TASK, eventData);
     }
 
     void HandleShowBlockedUsersClick ()
