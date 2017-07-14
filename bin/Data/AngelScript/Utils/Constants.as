@@ -4,6 +4,7 @@ const int COLONIZATORS_EXPEDITION_SIZE = 100;
 const uint NEW_GAME_DEFAULT_SERVER_PORT = 13768;
 const float DEFAULT_RAYCAST_RAY_LENGTH = 300.0f;
 const float DEFAULT_INVESTITION_SIZE = 100.0f;
+const int DEFAULT_ARMY_SOLDIERS_COUNT = 50;
 
 const Color NEUTRAL_COLOR = Color (0.5f, 0.5f, 0.5f, 1.0f);
 const String MAPS_FOLDER ("Maps/");

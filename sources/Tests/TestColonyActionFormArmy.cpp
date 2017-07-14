@@ -1,4 +1,4 @@
-#include "TestColonyActionBuildWarShip.hpp"
+#include "TestColonyActionFormArmy.hpp"
 #include "EmptyInternalPlayer.hpp"
 #include <Urho3D/Input/Input.h>
 #include <Urho3D/Core/CoreEvents.h>
@@ -18,30 +18,30 @@
 #include <Colonization/Utils/Network/NetworkUpdateSmoother.hpp>
 #include <Colonization/Utils/Hubs/RegisterAllObjects.hpp>
 
-URHO3D_DEFINE_APPLICATION_MAIN (Tests::TestColonyActionBuildWarShipApplication)
+URHO3D_DEFINE_APPLICATION_MAIN (Tests::TestColonyActionFormArmyApplication)
 namespace Tests
 {
-TestColonyActionBuildWarShipApplication::TestColonyActionBuildWarShipApplication (Urho3D::Context *context) :
+TestColonyActionFormArmyApplication::TestColonyActionFormArmyApplication (Urho3D::Context *context) :
     Urho3D::Application (context)
 {
 
 }
 
-TestColonyActionBuildWarShipApplication::~TestColonyActionBuildWarShipApplication ()
+TestColonyActionFormArmyApplication::~TestColonyActionFormArmyApplication ()
 {
 
 }
 
-void TestColonyActionBuildWarShipApplication::Setup ()
+void TestColonyActionFormArmyApplication::Setup ()
 {
     engineParameters_ ["FullScreen"] = false;
     engineParameters_ ["WindowResizable"] = true;
-    engineParameters_ ["LogName"] = "TestColonyActionBuildWarShip.log";
-    engineParameters_ ["WindowTitle"] = "TestColonyActionBuildWarShip";
+    engineParameters_ ["LogName"] = "TestColonyActionFormArmy.log";
+    engineParameters_ ["WindowTitle"] = "TestColonyActionFormArmy";
     engineParameters_ ["ResourcePrefixPaths"] = "..;.";
 }
 
-void TestColonyActionBuildWarShipApplication::Start ()
+void TestColonyActionFormArmyApplication::Start ()
 {
     // Set mouse to free mode
     Urho3D::Input *input = GetSubsystem <Urho3D::Input> ();
@@ -58,6 +58,7 @@ void TestColonyActionBuildWarShipApplication::Start ()
     Colonization::Map *map = scene->CreateChild ("map")->CreateComponent <Colonization::Map> ();
     const int mapWidth = 2;
     const int mapHeight = 2;
+    const int soldiersWillBeModilized = 50;
 
     for (int x = 0; x < mapWidth; x++)
     {
@@ -83,7 +84,7 @@ void TestColonyActionBuildWarShipApplication::Start ()
                 district->SetColonyPosition (Urho3D::Vector3 (x + 0.5f, 0.0f, y + 0.2f));
                 district->SetHasColony (true);
                 district->SetColonyOwnerName ("PlayerX");
-                district->SetMenCount (140.0f);
+                district->SetMenCount (100.0f + soldiersWillBeModilized);
                 district->SetWomenCount (100.0f);
 
                 district->SetFarmsEvolutionPoints (1.0f);
@@ -119,59 +120,42 @@ void TestColonyActionBuildWarShipApplication::Start ()
     {
         ErrorExit ("Can't create internal player!");
     }
-    player->SetGold (configuration->GetOneWarShipBuildingCost () * 3.5f);
+    player->SetGold (configuration->GetOneSoldierMobilizationCost () * (soldiersWillBeModilized + 1));
 
     Urho3D::VariantMap updateEventData;
-    updateEventData [Urho3D::SceneUpdate::P_TIMESTEP] = configuration->GetOneWarShipBasicBuildTime () * 1.1f;
+    updateEventData [Urho3D::SceneUpdate::P_TIMESTEP] =
+            configuration->GetOneSoldierMobilizationTime () * (soldiersWillBeModilized + 1);
 
     Colonization::District *colony = map->GetDistrictByIndex (1 * mapHeight + 1);
-    Urho3D::VariantMap buildShipAction1;
-    buildShipAction1 [Colonization::ColonyActions::BuildWarShip::TARGET_DISTRICT] = map->GetDistrictByIndex (0 * mapHeight + 1)->GetHash ();
+    Urho3D::VariantMap formArmyAction;
+    formArmyAction [Colonization::ColonyActions::FormArmy::SOLDIERS_COUNT] = soldiersWillBeModilized;
 
-    Urho3D::VariantMap buildShipAction2;
-    buildShipAction2 [Colonization::ColonyActions::BuildWarShip::TARGET_DISTRICT] = map->GetDistrictByIndex (0 * mapHeight + 0)->GetHash ();
-
-    Urho3D::VariantMap buildShipAction3;
-    buildShipAction3 [Colonization::ColonyActions::BuildWarShip::TARGET_DISTRICT] = map->GetDistrictByIndex (1 * mapHeight + 0)->GetHash ();
-
-    colony->AddColonyAction (Colonization::ColonyActions::BUILD_WAR_SHIP, buildShipAction1);
-    colony->AddColonyAction (Colonization::ColonyActions::BUILD_WAR_SHIP, buildShipAction2);
-    colony->AddColonyAction (Colonization::ColonyActions::BUILD_WAR_SHIP, buildShipAction3);
-
+    colony->AddColonyAction (Colonization::ColonyActions::FORM_ARMY, formArmyAction);
     actionsProcessor->Update (Urho3D::E_SCENEUPDATE, updateEventData);
     if (unitsManager->GetUnitsCount () != 1)
     {
-        ErrorExit ("Expected 1 created fleet unit at this check! But got " +
-                   Urho3D::String (unitsManager->GetUnitsCount ()) + " fleet units and " +
+        ErrorExit ("Expected 1 created army unit! But got " +
+                   Urho3D::String (unitsManager->GetUnitsCount ()) + " units and " +
                    Urho3D::String (colony->GetColonyActionsCount ()) + " colony actions.");
+        return;
     }
     else
     {
-        actionsProcessor->Update (Urho3D::E_SCENEUPDATE, updateEventData);
-        if (unitsManager->GetUnitsCount () != 1 || colony->GetColonyActionsCount () != 1)
+        Colonization::ArmyUnit *army = (Colonization::ArmyUnit *) unitsManager->GetUnitByIndex (0);
+        if (army->GetSoldiersCount () != soldiersWillBeModilized * 1.0f)
         {
-            ErrorExit ("Expected 1 created fleet unit and 1 colony action at this check! But got " +
-                       Urho3D::String (unitsManager->GetUnitsCount ()) + " fleet units and " +
-                       Urho3D::String (colony->GetColonyActionsCount ()) + " colony actions.");
+            ErrorExit ("Expected " + Urho3D::String (soldiersWillBeModilized) + " soldiers, but got " +
+                       Urho3D::String (army->GetSoldiersCount ()) + "!");
+            return;
         }
         else
         {
-            actionsProcessor->Update (Urho3D::E_SCENEUPDATE, updateEventData);
-            if (unitsManager->GetUnitsCount () != 2 || colony->GetColonyActionsCount () != 0)
-            {
-                ErrorExit ("Expected 2 created fleet unit and 0 colony action at this check! But got " +
-                           Urho3D::String (unitsManager->GetUnitsCount ()) + " fleet units and " +
-                           Urho3D::String (colony->GetColonyActionsCount ()) + " colony actions.");
-            }
-            else
-            {
-                engine_->Exit ();
-            }
+            engine_->Exit ();
         }
     }
 }
 
-void TestColonyActionBuildWarShipApplication::Stop ()
+void TestColonyActionFormArmyApplication::Stop ()
 {
 
 }

@@ -17,6 +17,8 @@ protected:
     bool ProcessAction (District *colony, Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> &action, float timeStep);
     bool ProcessBuildWarShipAction (GameConfiguration *configuration, Map *map, UnitsManager *unitsManager,
                                     District *colony, Urho3D::VariantMap &actionData, float timeStep);
+    bool ProcessFormArmyAction (GameConfiguration *configuration, Map *map, UnitsManager *unitsManager,
+                                 District *colony, Urho3D::VariantMap &actionData, float timeStep);
 
 public:
     explicit ColoniesActionsProcessor (Urho3D::Context *context);
