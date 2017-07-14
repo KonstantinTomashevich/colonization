@@ -1,3 +1,4 @@
+#include "AngelScript/Utils/Constants.as"
 #include "AngelScript/Utils/ClientUtils.as"
 
 class MapPreviewWindow : ScriptObject
@@ -61,7 +62,7 @@ class MapPreviewWindow : ScriptObject
         if (scriptMain !is null)
         {
             Button @selectMapButton = mapPreviewWindow.GetChild ("selectMapButton");
-            selectMapButton.visible = scriptMain.vars ["isAdmin"].GetBool ();
+            selectMapButton.visible = scriptMain.vars [ScriptMainVars::IS_ADMIN].GetBool ();
         }
     }
 
@@ -73,18 +74,18 @@ class MapPreviewWindow : ScriptObject
     void HandleSelectMapClick ()
     {
         Node @scriptMain = GetScriptMain (node);
-        if (scriptMain !is null and scriptMain.vars ["isAdmin"].GetBool ())
+        if (scriptMain !is null and scriptMain.vars [ScriptMainVars::IS_ADMIN].GetBool ())
         {
             VariantMap eventData;
-            eventData ["windowName"] = Variant ("mapsListWindow");
-            SendEvent ("ShowFunctionalWindowRequest", eventData);
+            eventData [ShowFunctionalWindowRequest::WINDOW_NAME] = Variant ("mapsListWindow");
+            SendEvent (EVENT_SHOW_FUNCTIONAL_WINDOW_REQUEST, eventData);
         }
     }
 
     void HandleShowMapInfoClick ()
     {
         VariantMap eventData;
-        eventData ["windowName"] = Variant ("mapInfoWindow");
-        SendEvent ("ShowFunctionalWindowRequest", eventData);
+        eventData [ShowFunctionalWindowRequest::WINDOW_NAME] = Variant ("mapInfoWindow");
+        SendEvent (EVENT_SHOW_FUNCTIONAL_WINDOW_REQUEST, eventData);
     }
 }

@@ -1,3 +1,4 @@
+#include "AngelScript/Utils/Constants.as"
 #include "AngelScript/Utils/ClientUtils.as"
 #include "AngelScript/Utils/StringListEditorUiHandler.as"
 
@@ -31,8 +32,8 @@ class MapsList : StringListEditorUiHandler
     protected void Close ()
     {
         VariantMap eventData;
-        eventData ["windowName"] = Variant ("actionsWindow");
-        SendEvent ("ShowFunctionalWindowRequest", eventData);
+        eventData [ShowFunctionalWindowRequest::WINDOW_NAME] = Variant ("actionsWindow");
+        SendEvent (EVENT_SHOW_FUNCTIONAL_WINDOW_REQUEST, eventData);
     }
 
     void Update (float timeStep) override
@@ -41,7 +42,7 @@ class MapsList : StringListEditorUiHandler
 
         Node @scriptMain = GetScriptMain (node);
         Window @window = GetWindow ();
-        if (scriptMain !is null and window.visible and not scriptMain.vars ["isAdmin"].GetBool ())
+        if (scriptMain !is null and window.visible and not scriptMain.vars [ScriptMainVars::IS_ADMIN].GetBool ())
         {
             Close ();
         }
@@ -56,7 +57,7 @@ class MapsList : StringListEditorUiHandler
     {
         Node @scriptMain = GetScriptMain (node);
         Window @window = GetWindow ();
-        if (scriptMain !is null and scriptMain.vars ["isAdmin"].GetBool ())
+        if (scriptMain !is null and scriptMain.vars [ScriptMainVars::IS_ADMIN].GetBool ())
         {
             UIElement @element = eventData ["Element"].GetPtr ();
             int elementOffset = element.vars ["ElementOffset"].GetInt ();

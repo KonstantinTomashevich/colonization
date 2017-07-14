@@ -35,8 +35,8 @@ class DiplomacyMessagesProcessor : ScriptObject
 
     protected void ProcessCurrentDiplomacyInfo (Window @diplomacyMessagesWindow, VariantMap &infoData)
     {
-        StringHash infoType = infoData ["type"].GetStringHash ();
-        VariantMap infoDataMap = infoData ["data"].GetVariantMap ();
+        StringHash infoType = infoData [DiplomacyInfo::TYPE].GetStringHash ();
+        VariantMap infoDataMap = infoData [DiplomacyInfo::DATA].GetVariantMap ();
 
         Text @messageType = diplomacyMessagesWindow.GetChild ("messageType");
         if (infoType == DIPLOMACY_INFO_WAR_STARTED)
@@ -73,8 +73,8 @@ class DiplomacyMessagesProcessor : ScriptObject
 
     protected void ProcessCurrentDiplomacyOffer (Window @diplomacyMessagesWindow, VariantMap &offerData)
     {
-        StringHash offerType = offerData ["type"].GetStringHash ();
-        VariantMap offerDataMap = offerData ["data"].GetVariantMap ();
+        StringHash offerType = offerData [DiplomacyOffer::TYPE].GetStringHash ();
+        VariantMap offerDataMap = offerData [DiplomacyOffer::DATA].GetVariantMap ();
 
         Text @messageType = diplomacyMessagesWindow.GetChild ("messageType");
         if (offerType == DIPLOMACY_OFFER_PEACE)
@@ -88,7 +88,7 @@ class DiplomacyMessagesProcessor : ScriptObject
         {
             text = GetPeaceOfferText (offerDataMap);
         }
-        text += "\nUntil autodecline: " + Floor (offerData ["untilAutodecline"].GetFloat ()) + " seconds.";
+        text += "\nUntil autodecline: " + Floor (offerData [DiplomacyOffer::UNTIL_AUTODECLINE].GetFloat ()) + " seconds.";
         messageText.text = text;
 
         diplomacyMessagesWindow.GetChild ("closeInfoButton").visible = false;
@@ -171,8 +171,8 @@ class DiplomacyMessagesProcessor : ScriptObject
         SubscribeToEvent (closeInfoButton, "Released", "HandleCloseInfoClick");
         SubscribeToEvent (declineOfferButton, "Released", "HandleDeclineOfferClick");
         SubscribeToEvent (acceptOfferButton, "Released", "HandleAcceptOfferClick");
-        SubscribeToEvent ("DiplomacyInfo", "HandleDiplomacyInfo");
-        SubscribeToEvent ("DiplomacyOffer", "HandleDiplomacyOffer");
+        SubscribeToEvent (EVENT_DIPLOMACY_INFO, "HandleDiplomacyInfo");
+        SubscribeToEvent (EVENT_DIPLOMACY_OFFER, "HandleDiplomacyOffer");
     }
 
     void Update (float timeStep)
@@ -237,13 +237,13 @@ class DiplomacyMessagesProcessor : ScriptObject
         VariantMap firstMessage = diplomacyMessages_ [0];
         VectorBuffer buffer = VectorBuffer ();
         buffer.WriteInt (PLAYER_ACTION_RESPONCE_TO_DIPLOMACY_OFFER);
-        buffer.WriteUInt (firstMessage ["id"].GetUInt ());
+        buffer.WriteUInt (firstMessage [DiplomacyOffer::ID].GetUInt ());
         buffer.WriteUInt (DRPSTATUS_DECLINED);
 
         VariantMap taskData;
-        taskData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
-        taskData ["messageBuffer"] = Variant (buffer);
-        SendEvent ("NewNetworkTask", taskData);
+        taskData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+        taskData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
+        SendEvent (EVENT_NEW_NETWORK_TASK, taskData);
         diplomacyMessages_.Erase (0);
     }
 
@@ -252,13 +252,13 @@ class DiplomacyMessagesProcessor : ScriptObject
         VariantMap firstMessage = diplomacyMessages_ [0];
         VectorBuffer buffer = VectorBuffer ();
         buffer.WriteInt (PLAYER_ACTION_RESPONCE_TO_DIPLOMACY_OFFER);
-        buffer.WriteUInt (firstMessage ["id"].GetUInt ());
+        buffer.WriteUInt (firstMessage [DiplomacyOffer::ID].GetUInt ());
         buffer.WriteUInt (DRPSTATUS_ACCEPTED);
 
         VariantMap taskData;
-        taskData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
-        taskData ["messageBuffer"] = Variant (buffer);
-        SendEvent ("NewNetworkTask", taskData);
+        taskData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+        taskData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
+        SendEvent (EVENT_NEW_NETWORK_TASK, taskData);
         diplomacyMessages_.Erase (0);
     }
 }

@@ -1,3 +1,5 @@
+#include "AngelScript/Utils/Constants.as"
+
 class JoinGameMenu : ScriptObject
 {
     JoinGameMenu ()
@@ -64,18 +66,18 @@ class JoinGameMenu : ScriptObject
         float b = blueSlider.value / blueSlider.range;
 
         VariantMap eventData;
-        eventData ["nickname"] = Variant (nickname);
-        eventData ["color"] = Variant (Color (r, g, b, 1.0f));
-        eventData ["adress"] = Variant (adress);
-        eventData ["port"] = Variant (port);
-        SendEvent ("JoinGameRequest", eventData);
+        eventData [JoinGameRequest::NICKNAME] = Variant (nickname);
+        eventData [JoinGameRequest::COLOR] = Variant (Color (r, g, b, 1.0f));
+        eventData [JoinGameRequest::ADRESS] = Variant (adress);
+        eventData [JoinGameRequest::PORT] = Variant (port);
+        SendEvent (EVENT_JOIN_GAME_REQUEST, eventData);
     }
 
     void HandleGoBackClick ()
     {
         VariantMap eventData;
-        eventData ["windowName"] = Variant ("primaryMenu");
-        SendEvent ("ShowWindowRequest", eventData);
+        eventData [ShowWindowRequest::WINDOW_NAME] = Variant ("primaryMenu");
+        SendEvent (EVENT_SHOW_WINDOW_REQUEST, eventData);
     }
 
     void HandleSelectMapClick ()

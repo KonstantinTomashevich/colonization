@@ -60,8 +60,8 @@ class PlayersList : StringListEditorUiHandler
         Node @scriptMain = GetScriptMain (node);
         if (scriptMain !is null)
         {
-            if (elementsStrings [elementIndex] == scriptMain.vars ["playerName"].GetString () or
-                not scriptMain.vars ["isAdmin"].GetBool ())
+            if (elementsStrings [elementIndex] == scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString () or
+                not scriptMain.vars [ScriptMainVars::IS_ADMIN].GetBool ())
             {
                 kickButton.visible = false;
             }
@@ -101,8 +101,8 @@ class PlayersList : StringListEditorUiHandler
             int summaryOffset = elementsShowOffset_ + elementOffset;
 
             PlayerInfo @playerInfo = GetPlayerInfoByIndex (scene, summaryOffset);
-            if (playerInfo !is null and playerInfo.name != scriptMain.vars ["playerName"].GetString () and
-                scriptMain.vars ["isAdmin"].GetBool ())
+            if (playerInfo !is null and playerInfo.name != scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString () and
+                scriptMain.vars [ScriptMainVars::IS_ADMIN].GetBool ())
             {
                 VariantMap kickEventData;
                 kickEventData [HostRequestKickPlayer_PLAYER_NAME] = Variant (playerInfo.name);

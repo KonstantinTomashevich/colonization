@@ -1,3 +1,4 @@
+#include "AngelScript/Utils/Constants.as"
 #include "AngelScript/Utils/ClientUtils.as"
 
 class ClientUi : ScriptObject
@@ -143,7 +144,7 @@ class ClientUi : ScriptObject
         node.CreateChild ("uiHandlers", LOCAL);
         node.CreateChild ("utilHandlers", LOCAL);
         AddUtilHandlers ();
-        SubscribeToEvent ("GameStateChanged", "HandleGameStateChanged");
+        SubscribeToEvent (EVENT_GAME_STATE_CHANGED, "HandleGameStateChanged");
     }
 
     void Update (float timeStep)
@@ -162,7 +163,7 @@ class ClientUi : ScriptObject
 
     void HandleGameStateChanged (StringHash eventType, VariantMap &eventData)
     {
-        int newGameState = eventData ["newGameState"].GetInt ();
+        int newGameState = eventData [GameStateChanged::NEW_GAME_STATE].GetInt ();
         if (newGameState == GAME_STATE_WAITING_FOR_START)
         {
             AddWaitingForStartStateUiHandlers ();

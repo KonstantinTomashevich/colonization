@@ -1,3 +1,5 @@
+#include "AngelScript/Utils/Constants.as"
+
 class PrimaryMenu : ScriptObject
 {
     PrimaryMenu ()
@@ -35,19 +37,19 @@ class PrimaryMenu : ScriptObject
     void HandleStartGameClick ()
     {
         VariantMap eventData;
-        eventData ["windowName"] = Variant ("startGameMenu");
-        SendEvent ("ShowWindowRequest", eventData);
+        eventData [ShowWindowRequest::WINDOW_NAME] = Variant ("startGameMenu");
+        SendEvent (EVENT_SHOW_WINDOW_REQUEST, eventData);
     }
 
     void HandleJoinGameClick ()
     {
         VariantMap eventData;
-        eventData ["windowName"] = Variant ("joinGameMenu");
-        SendEvent ("ShowWindowRequest", eventData);
+        eventData [ShowWindowRequest::WINDOW_NAME] = Variant ("joinGameMenu");
+        SendEvent (EVENT_SHOW_WINDOW_REQUEST, eventData);
     }
 
     void HandleExitClick ()
     {
-        SendEvent ("ExitRequest");
+        SendEvent (EVENT_EXIT_REQUEST);
     }
 }

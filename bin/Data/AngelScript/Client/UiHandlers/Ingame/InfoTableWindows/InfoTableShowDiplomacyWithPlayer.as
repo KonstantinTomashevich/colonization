@@ -1,3 +1,4 @@
+#include "AngelScript/Utils/Constants.as"
 #include "AngelScript/Utils/ClientUtils.as"
 
 class InfoTableShowDiplomacyWithPlayer : ScriptObject
@@ -36,7 +37,7 @@ class InfoTableShowDiplomacyWithPlayer : ScriptObject
             if (playerInfo !is null)
             {
                 Node @scriptMain = GetScriptMain (scene);
-                String currentPlayerName = scriptMain.vars ["playerName"].GetString ();
+                String currentPlayerName = scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString ();
 
                 Text @title = showDiplomacyWithPlayer.GetChild ("title");
                 title.text = "Diplomacy with " + playerInfo.name + ".";
@@ -91,15 +92,15 @@ class InfoTableShowDiplomacyWithPlayer : ScriptObject
         buffer.WriteStringHash (showedPlayerNameHash_);
 
         VariantMap taskData;
-        taskData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
-        taskData ["messageBuffer"] = Variant (buffer);
-        SendEvent ("NewNetworkTask", taskData);
+        taskData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+        taskData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
+        SendEvent (EVENT_NEW_NETWORK_TASK, taskData);
     }
 
     void HandleSendPeaceTreatyClick ()
     {
         Node @scriptMain = GetScriptMain (scene);
-        String currentPlayerName = scriptMain.vars ["playerName"].GetString ();
+        String currentPlayerName = scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString ();
         Array <DiplomacyWar @> wars = FindWarsWhereThesePlayersFight (scene, StringHash (currentPlayerName), showedPlayerNameHash_);
         if (wars.empty)
         {
@@ -113,8 +114,8 @@ class InfoTableShowDiplomacyWithPlayer : ScriptObject
         buffer.WriteStringHash (showedPlayerNameHash_);
 
         VariantMap taskData;
-        taskData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
-        taskData ["messageBuffer"] = Variant (buffer);
-        SendEvent ("NewNetworkTask", taskData);
+        taskData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+        taskData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
+        SendEvent (EVENT_NEW_NETWORK_TASK, taskData);
     }
 }

@@ -45,7 +45,7 @@ class DistrictSelectedWindow : ScriptObject
     protected void UpdateButtonsVisibility (Window @districtSelectedWindow, District @district,
         Node @scriptMain, GameConfiguration @configuration, StringHash infoType)
     {
-        String playerName = scriptMain.vars ["playerName"].GetString ();
+        String playerName = scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString ();
         districtSelectedWindow.GetChild ("resourcesInfoButton").visible = !district.isSea;
         districtSelectedWindow.GetChild ("populationInfoButton").visible = !district.isSea;
         districtSelectedWindow.GetChild ("colonyEvolutionInfoButton").visible = district.hasColony;
@@ -53,7 +53,7 @@ class DistrictSelectedWindow : ScriptObject
         UIElement @investButtons = districtSelectedWindow.GetChild ("investButtons");
         investButtons.visible = (infoType == StringHash ("ColonyEvolution") and
                                  district.hasColony and
-                                 scriptMain.vars ["gold"].GetFloat () >= DEFAULT_INVESTITION_SIZE and
+                                 scriptMain.vars [ScriptMainVars::GOLD].GetFloat () >= DEFAULT_INVESTITION_SIZE and
                                  district.colonyOwnerName == playerName);
 
         Button @sendColonizatorsButton = districtSelectedWindow.GetChild ("sendColonizatorsButton");
@@ -62,7 +62,7 @@ class DistrictSelectedWindow : ScriptObject
                                          not district.isSea and
                                          not district.isImpassable and
                                          (district.colonyOwnerName == playerName or not district.hasColony) and
-                                         scriptMain.vars ["gold"].GetFloat () > colonizatorsExpeditionCost;
+                                         scriptMain.vars [ScriptMainVars::GOLD].GetFloat () > colonizatorsExpeditionCost;
         Text @sendColonizatorsButtonText = sendColonizatorsButton.GetChild ("text");
         sendColonizatorsButtonText.text = "Send 100 colonizators (cost: " +FloorToInt (colonizatorsExpeditionCost) +
                                       " gold).";
@@ -73,7 +73,7 @@ class DistrictSelectedWindow : ScriptObject
                                          district.hasColony and
                                          district.colonyOwnerName == playerName and
                                          district.menCount > configuration.oneWarShipCrew and
-                                         scriptMain.vars ["gold"].GetFloat () > configuration.oneWarShipBuildingCost;
+                                         scriptMain.vars [ScriptMainVars::GOLD].GetFloat () > configuration.oneWarShipBuildingCost;
         Text @buildWarShipButtonText = buildWarShipButton.GetChild ("text");
         buildWarShipButtonText.text = "Build war ship (cost: " + FloorToInt (configuration.oneWarShipBuildingCost) +
                                       " + " + FloorToInt (configuration.oneWarShipCrew) + " men as crew).";
@@ -88,7 +88,7 @@ class DistrictSelectedWindow : ScriptObject
                                     district.hasColony and
                                     district.colonyOwnerName == playerName and
                                     district.menCount > DEFAULT_ARMY_SOLDIERS_COUNT and
-                                    scriptMain.vars ["gold"].GetFloat () > configuration.oneSoldierMobilizationCost * DEFAULT_ARMY_SOLDIERS_COUNT;
+                                    scriptMain.vars [ScriptMainVars::GOLD].GetFloat () > configuration.oneSoldierMobilizationCost * DEFAULT_ARMY_SOLDIERS_COUNT;
         Text @formArmyButtonText = formArmyButton.GetChild ("text");
         formArmyButtonText.text = "Form army (cost: " +
                                   Floor (configuration.oneSoldierMobilizationCost * DEFAULT_ARMY_SOLDIERS_COUNT * 10.0f) / 10.0f +
@@ -365,9 +365,9 @@ class DistrictSelectedWindow : ScriptObject
         buffer.WriteInt (COLONIZATORS_EXPEDITION_SIZE);
 
         VariantMap eventData;
-        eventData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
-        eventData ["messageBuffer"] = Variant (buffer);
-        SendEvent ("NewNetworkTask", eventData);
+        eventData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+        eventData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
+        SendEvent (EVENT_NEW_NETWORK_TASK, eventData);
     }
 
     void HandleBasicInfoClick ()
@@ -408,9 +408,9 @@ class DistrictSelectedWindow : ScriptObject
         buffer.WriteFloat (DEFAULT_INVESTITION_SIZE);
 
         VariantMap taskData;
-        taskData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
-        taskData ["messageBuffer"] = Variant (buffer);
-        SendEvent ("NewNetworkTask", taskData);
+        taskData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+        taskData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
+        SendEvent (EVENT_NEW_NETWORK_TASK, taskData);
     }
 
     void HandleBuildWarShipClick ()
@@ -427,8 +427,8 @@ class DistrictSelectedWindow : ScriptObject
 
         StringHash districtHash = scriptMain.vars ["selectedHash"].GetStringHash ();
         District @district = map.GetDistrictByHash (districtHash);
-        String playerName = scriptMain.vars ["playerName"].GetString ();
-        float playerGold = scriptMain.vars ["gold"].GetFloat ();
+        String playerName = scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString ();
+        float playerGold = scriptMain.vars [ScriptMainVars::GOLD].GetFloat ();
 
         if (district.hasColony and district.colonyOwnerName == playerName and
             playerGold > configuration.oneSoldierMobilizationCost * DEFAULT_ARMY_SOLDIERS_COUNT and
@@ -444,9 +444,9 @@ class DistrictSelectedWindow : ScriptObject
             buffer.WriteVariantMap (actionData);
 
             VariantMap eventData;
-            eventData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
-            eventData ["messageBuffer"] = Variant (buffer);
-            SendEvent ("NewNetworkTask", eventData);
+            eventData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+            eventData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
+            SendEvent (EVENT_NEW_NETWORK_TASK, eventData);
         }
     }
 

@@ -1,3 +1,4 @@
+#include "AngelScript/Utils/Constants.as"
 #include "AngelScript/Utils/ChatWindowInterface.as"
 
 class ChatWindow : ChatWindowInterface
@@ -25,14 +26,14 @@ class ChatWindow : ChatWindowInterface
     void HandleShowBlockedUsersClick () override
     {
         VariantMap eventData;
-        eventData ["windowName"] = Variant ("chatBlockedPlayersWindow");
-        SendEvent ("ShowFunctionalWindowRequest", eventData);
+        eventData [ShowFunctionalWindowRequest::WINDOW_NAME] = Variant ("chatBlockedPlayersWindow");
+        SendEvent (EVENT_SHOW_FUNCTIONAL_WINDOW_REQUEST, eventData);
     }
 
     void HandleShowPrivateUsersClick () override
     {
         VariantMap eventData;
-        eventData ["windowName"] = Variant ("chatPrivateReceiversWindow");
-        SendEvent ("ShowFunctionalWindowRequest", eventData);
+        eventData [ShowFunctionalWindowRequest::WINDOW_NAME] = Variant ("chatPrivateReceiversWindow");
+        SendEvent (EVENT_SHOW_FUNCTIONAL_WINDOW_REQUEST, eventData);
     }
 }

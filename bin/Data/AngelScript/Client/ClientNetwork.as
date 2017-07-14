@@ -1,3 +1,4 @@
+#include "AngelScript/Utils/Constants.as"
 #include "AngelScript/Utils/ClientUtils.as"
 
 class ClientNetwork : ScriptObject
@@ -18,7 +19,7 @@ class ClientNetwork : ScriptObject
     void Start ()
     {
         SubscribeToEvent ("NetworkMessage", "HandleNetworkMessage");
-        SubscribeToEvent ("NewNetworkTask", "HandleNewNetworkTask");
+        SubscribeToEvent (EVENT_NEW_NETWORK_TASK, "HandleNewNetworkTask");
     }
 
     void Update (float timeStep)
@@ -65,8 +66,8 @@ class ClientNetwork : ScriptObject
 
     void HandleNewNetworkTask (StringHash eventType, VariantMap &eventData)
     {
-        int taskType = eventData ["taskType"].GetInt ();
-        VectorBuffer buffer = eventData ["messageBuffer"].GetBuffer ();
+        int taskType = eventData [NewNetworkTask::TASK_TYPE].GetInt ();
+        VectorBuffer buffer = eventData [NewNetworkTask::MESSAGE_BUFFER].GetBuffer ();
         network.serverConnection.SendMessage (taskType, true, false, buffer);
     }
 
@@ -82,9 +83,9 @@ class ClientNetwork : ScriptObject
         if (oldGameState != newGameState)
         {
             VariantMap gameStateChangedEventData;
-            gameStateChangedEventData ["oldGameState"] = Variant (oldGameState);
-            gameStateChangedEventData ["newGameState"] = Variant (newGameState);
-            SendEvent ("GameStateChanged", gameStateChangedEventData);
+            gameStateChangedEventData [GameStateChanged::OLD_GAME_STATE] = Variant (oldGameState);
+            gameStateChangedEventData [GameStateChanged::NEW_GAME_STATE] = Variant (newGameState);
+            SendEvent (EVENT_GAME_STATE_CHANGED, gameStateChangedEventData);
         }
     }
 
@@ -94,8 +95,8 @@ class ClientNetwork : ScriptObject
         Node @scriptMain = GetScriptMain (node);
         float gold = buffer.ReadFloat ();
         float points = buffer.ReadFloat ();
-        scriptMain.vars ["gold"] = gold;
-        scriptMain.vars ["points"] = points;
+        scriptMain.vars [ScriptMainVars::GOLD] = gold;
+        scriptMain.vars [ScriptMainVars::POINTS] = points;
     }
 
     void HandleChatMessage (VariantMap &eventData)
@@ -112,11 +113,11 @@ class ClientNetwork : ScriptObject
         if (blockedUsersList.Find (sender) < 0)
         {
             VariantMap messageEventData = VariantMap ();
-            messageEventData ["isPrivate"] = Variant (isPrivate);
-            messageEventData ["sender"] = Variant (sender);
-            messageEventData ["message"] = Variant (message);
-            messageEventData ["timeStamp"] = Variant (timeStamp);
-            SendEvent ("NewChatMessage", messageEventData);
+            messageEventData [NewChatMessage::IS_PRIVATE] = Variant (isPrivate);
+            messageEventData [NewChatMessage::SENDER] = Variant (sender);
+            messageEventData [NewChatMessage::MESSAGE] = Variant (message);
+            messageEventData [NewChatMessage::TIME_STAMP] = Variant (timeStamp);
+            SendEvent (EVENT_NEW_CHAT_MESSAGE, messageEventData);
         }
     }
 
@@ -128,11 +129,11 @@ class ClientNetwork : ScriptObject
         timeStamp = timeStamp.Substring (TIME_STAMP_SUBSTRING_START, TIME_STAMP_SUBSTRING_LENGTH);
 
         VariantMap messageEventData = VariantMap ();
-        messageEventData ["isPrivate"] = false;
-        messageEventData ["sender"] = "Host Automatics";
-        messageEventData ["message"] = Variant (message);
-        messageEventData ["timeStamp"] = Variant (timeStamp);
-        SendEvent ("NewChatMessage", messageEventData);
+        messageEventData [NewChatMessage::IS_PRIVATE] = false;
+        messageEventData [NewChatMessage::SENDER] = "Host Automatics";
+        messageEventData [NewChatMessage::MESSAGE] = Variant (message);
+        messageEventData [NewChatMessage::TIME_STAMP] = Variant (timeStamp);
+        SendEvent (EVENT_NEW_CHAT_MESSAGE, messageEventData);
     }
 
     void HandleGameEndedMessage (VariantMap &eventData)
@@ -143,10 +144,10 @@ class ClientNetwork : ScriptObject
         String victoryInfo = buffer.ReadString ();
 
         VariantMap gameEndedEventData;
-        gameEndedEventData ["winnerName"] = Variant (winnerName);
-        gameEndedEventData ["victoryType"] = Variant (victoryType);
-        gameEndedEventData ["victoryInfo"] = Variant (victoryInfo);
-        SendEvent ("GameEnded", gameEndedEventData);
+        gameEndedEventData [GameEnded::WINNER_NAME] = Variant (winnerName);
+        gameEndedEventData [GameEnded::VICTORY_TYPE] = Variant (victoryType);
+        gameEndedEventData [GameEnded::VICTORY_INFO] = Variant (victoryInfo);
+        SendEvent (EVENT_GAME_ENDED, gameEndedEventData);
     }
 
     void HandleDiplomacyInfoMessage (VariantMap &eventData)
@@ -156,9 +157,9 @@ class ClientNetwork : ScriptObject
         VariantMap infoData = buffer.ReadVariantMap ();
 
         VariantMap diplomacyInfoEventData;
-        diplomacyInfoEventData ["type"] = infoType;
-        diplomacyInfoEventData ["data"] = infoData;
-        SendEvent ("DiplomacyInfo", diplomacyInfoEventData);
+        diplomacyInfoEventData [DiplomacyInfo::TYPE] = infoType;
+        diplomacyInfoEventData [DiplomacyInfo::DATA] = infoData;
+        SendEvent (EVENT_DIPLOMACY_INFO, diplomacyInfoEventData);
     }
 
     void HandleDiplomacyOfferMessage (VariantMap &eventData)
@@ -170,10 +171,10 @@ class ClientNetwork : ScriptObject
         VariantMap offerData = buffer.ReadVariantMap ();
 
         VariantMap diplomacyOfferEventData;
-        diplomacyOfferEventData ["type"] = offerType;
-        diplomacyOfferEventData ["id"] = offerId;
-        diplomacyOfferEventData ["untilAutodecline"] = autodeclineTime - 1.0f;
-        diplomacyOfferEventData ["data"] = offerData;
-        SendEvent ("DiplomacyOffer", diplomacyOfferEventData);
+        diplomacyOfferEventData [DiplomacyOffer::TYPE] = offerType;
+        diplomacyOfferEventData [DiplomacyOffer::ID] = offerId;
+        diplomacyOfferEventData [DiplomacyOffer::UNTIL_AUTODECLINE] = autodeclineTime - 1.0f;
+        diplomacyOfferEventData [DiplomacyOffer::DATA] = offerData;
+        SendEvent (EVENT_DIPLOMACY_OFFER, diplomacyOfferEventData);
     }
 };

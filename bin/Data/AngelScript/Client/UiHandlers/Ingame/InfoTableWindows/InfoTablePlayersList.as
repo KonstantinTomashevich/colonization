@@ -13,7 +13,7 @@ class InfoTablePlayersList : StringListEditorUiHandler
     protected Array <String> GetElements () override
     {
         Node @scriptMain = GetScriptMain (scene);
-        currentPlayerName_ = scriptMain.vars ["playerName"].GetString ();
+        currentPlayerName_ = scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString ();
         return GetPlayersNamesList (scene);
     }
 

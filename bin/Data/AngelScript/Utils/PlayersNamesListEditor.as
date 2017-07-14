@@ -42,7 +42,7 @@ class PlayersNamesListEditor : StringListEditorUiHandler
     protected bool IsElementToAddCorrect (String element) override
     {
         Node @scriptMain = GetScriptMain (node);
-        String playerName = scriptMain.vars ["playerName"].GetString ();
+        String playerName = scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString ();
         return (playerName != element);
     }
 

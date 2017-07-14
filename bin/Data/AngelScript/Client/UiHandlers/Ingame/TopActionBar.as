@@ -1,3 +1,4 @@
+#include "AngelScript/Utils/Constants.as"
 #include "AngelScript/Utils/ClientUtils.as"
 
 class TopActionBar : ScriptObject
@@ -29,13 +30,13 @@ class TopActionBar : ScriptObject
         Text @playerStatsText = topActionBar.GetChild ("playerStatsInfo");
 
         String playerStatsInfo = "";
-        playerStatsInfo += scriptMain.vars ["playerName"].GetString () + "  ";
-        playerStatsInfo += "Gold: " + Floor (scriptMain.vars ["gold"].GetFloat ()) + "  ";
-        playerStatsInfo += "Points: " + Floor (scriptMain.vars ["points"].GetFloat ());
+        playerStatsInfo += scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString () + "  ";
+        playerStatsInfo += "Gold: " + Floor (scriptMain.vars [ScriptMainVars::GOLD].GetFloat ()) + "  ";
+        playerStatsInfo += "Points: " + Floor (scriptMain.vars [ScriptMainVars::POINTS].GetFloat ());
         playerStatsText.text = playerStatsInfo;
 
         BorderImage @colorSample = topActionBar.GetChild ("colorSample");
-        PlayerInfo @playerInfo = GetPlayerInfoByName (scene, scriptMain.vars ["playerName"].GetString ());
+        PlayerInfo @playerInfo = GetPlayerInfoByName (scene, scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString ());
         colorSample.color = playerInfo.color;
     }
 
@@ -46,7 +47,7 @@ class TopActionBar : ScriptObject
 
     void HandleExitClick ()
     {
-        SendEvent ("GoToMainMenuRequest");
+        SendEvent (EVENT_GO_TO_MAIN_MENU_REQUEST);
     }
 
     void HandleOpenInfoTableClick ()

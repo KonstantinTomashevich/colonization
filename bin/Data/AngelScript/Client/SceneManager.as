@@ -184,7 +184,7 @@ class SceneManager : ScriptObject
     {
         Node @scriptMain = GetScriptMain (node);
         FogOfWarCalculator @fogOfWarCalculator = scene.CreateComponent ("FogOfWarCalculator", LOCAL);
-        fogOfWarCalculator.playerName = scriptMain.vars ["playerName"].GetString ();
+        fogOfWarCalculator.playerName = scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString ();
 
         Node @mapNode = scene.GetChild ("map");
         MapMaskUpdater @mapMaskUpdater = scene.CreateComponent ("MapMaskUpdater", LOCAL);

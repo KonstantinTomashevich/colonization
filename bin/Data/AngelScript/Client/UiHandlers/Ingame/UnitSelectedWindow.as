@@ -1,3 +1,4 @@
+#include "AngelScript/Utils/Constants.as"
 #include "AngelScript/Utils/ClientUtils.as"
 
 class UnitSelectedWindow : ScriptObject
@@ -19,7 +20,7 @@ class UnitSelectedWindow : ScriptObject
         {
             unitSelectedWindow.visible = true;
             UpdateBasicInfos (unitSelectedWindow, unit, map);
-            UpdateButtonsVisibility (unitSelectedWindow, unit, map, scriptMain.vars ["playerName"].GetString ());
+            UpdateButtonsVisibility (unitSelectedWindow, unit, map, scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString ());
 
             String additionalInfo;
             if (unit.isInBattle)
@@ -242,7 +243,7 @@ class UnitSelectedWindow : ScriptObject
             return;
         }
         District @armyDistrict = map.GetDistrictByHash (unit.positionHash);
-        String playerName = scriptMain.vars ["playerName"].GetString ();
+        String playerName = scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString ();
 
         if (unit.ownerPlayerName == playerName and unit.unitType == UNIT_ARMY and
             not unit.isInBattle and not armyDistrict.isSea and
@@ -253,9 +254,9 @@ class UnitSelectedWindow : ScriptObject
             buffer.WriteStringHash (unitHash);
 
             VariantMap eventData;
-            eventData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
-            eventData ["messageBuffer"] = Variant (buffer);
-            SendEvent ("NewNetworkTask", eventData);
+            eventData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+            eventData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
+            SendEvent (EVENT_NEW_NETWORK_TASK, eventData);
         }
     }
 }

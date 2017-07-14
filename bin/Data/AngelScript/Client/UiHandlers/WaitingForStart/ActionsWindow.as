@@ -1,3 +1,4 @@
+#include "AngelScript/Utils/Constants.as"
 #include "AngelScript/Utils/ClientUtils.as"
 
 class ActionsWindow : ScriptObject
@@ -32,7 +33,7 @@ class ActionsWindow : ScriptObject
         Button @requestStartButton = actionsWindow.GetChild ("requestStartButton");
 
         Node @scriptMain = GetScriptMain (node);
-        if (scriptMain !is null and scriptMain.vars ["isAdmin"].GetBool ())
+        if (scriptMain !is null and scriptMain.vars [ScriptMainVars::IS_ADMIN].GetBool ())
         {
             requestStartButton.visible = true;
         }
@@ -50,8 +51,8 @@ class ActionsWindow : ScriptObject
     void HandleSelectPlayerColorClick ()
     {
         VariantMap eventData;
-        eventData ["windowName"] = Variant ("selectPlayerColorWindow");
-        SendEvent ("ShowFunctionalWindowRequest", eventData);
+        eventData [ShowFunctionalWindowRequest::WINDOW_NAME] = Variant ("selectPlayerColorWindow");
+        SendEvent (EVENT_SHOW_FUNCTIONAL_WINDOW_REQUEST, eventData);
     }
 
     void HandleAcceptStartClick ()
@@ -60,9 +61,9 @@ class ActionsWindow : ScriptObject
         buffer.WriteBool (true);
 
         VariantMap eventData;
-        eventData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_IS_PLAYER_READY_FOR_START);
-        eventData ["messageBuffer"] = Variant (buffer);
-        SendEvent ("NewNetworkTask", eventData);
+        eventData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_IS_PLAYER_READY_FOR_START);
+        eventData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
+        SendEvent (EVENT_NEW_NETWORK_TASK, eventData);
     }
 
     void HandleDeclineStartClick ()
@@ -71,15 +72,15 @@ class ActionsWindow : ScriptObject
         buffer.WriteBool (false);
 
         VariantMap eventData;
-        eventData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_IS_PLAYER_READY_FOR_START);
-        eventData ["messageBuffer"] = Variant (buffer);
-        SendEvent ("NewNetworkTask", eventData);
+        eventData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_IS_PLAYER_READY_FOR_START);
+        eventData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
+        SendEvent (EVENT_NEW_NETWORK_TASK, eventData);
     }
 
     void HandleRequestStartClick ()
     {
         Node @scriptMain = GetScriptMain (node);
-        if (scriptMain !is null and scriptMain.vars ["isAdmin"].GetBool ())
+        if (scriptMain !is null and scriptMain.vars [ScriptMainVars::IS_ADMIN].GetBool ())
         {
             SendEvent (EVENT_HOST_REQUEST_GAME_START);
         }

@@ -1,3 +1,4 @@
+#include "AngelScript/Utils/Constants.as"
 #include "AngelScript/Utils/ClientUtils.as"
 
 class Client : ScriptObject
@@ -58,7 +59,7 @@ class Client : ScriptObject
 
         SubscribeToEvent ("ServerDisconnected", "HandleServerDisconnected");
         SubscribeToEvent ("ConnectFailed", "HandleConnectFailed");
-        SubscribeToEvent ("GoToMainMenuRequest", "HandleGoToMainMenuRequest");
+        SubscribeToEvent (EVENT_GO_TO_MAIN_MENU_REQUEST, "HandleGoToMainMenuRequest");
     }
 
     void Update (float timeStep)
@@ -83,22 +84,24 @@ class Client : ScriptObject
 
     String get_playerName ()
     {
-        return node.vars ["playerName"].GetString ();
+        return node.vars [ScriptMainVars::PLAYER_NAME].GetString ();
     }
 
     void set_playerName (String playerName)
     {
-        node.vars ["playerName"] = playerName;
+        node.vars [ScriptMainVars::PLAYER_NAME] = playerName;
+        log.Info ("PlayerName setted");
+        log.Info (node.vars [ScriptMainVars::PLAYER_NAME].GetString ());
     }
 
     bool get_isAdmin ()
     {
-        return node.vars ["isAdmin"].GetBool ();
+        return node.vars [ScriptMainVars::IS_ADMIN].GetBool ();
     }
 
     void set_isAdmin (bool isAdmin)
     {
-        node.vars ["isAdmin"] = Variant (isAdmin);
+        node.vars [ScriptMainVars::IS_ADMIN] = Variant (isAdmin);
     }
 
     void HandleServerDisconnected ()

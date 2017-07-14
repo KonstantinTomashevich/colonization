@@ -1,10 +1,12 @@
+#include "AngelScript/Utils/Constants.as"
+
 class SelectPlayerColorWindow : ScriptObject
 {
     protected void Close ()
     {
         VariantMap eventData;
-        eventData ["windowName"] = Variant ("actionsWindow");
-        SendEvent ("ShowFunctionalWindowRequest", eventData);
+        eventData [ShowFunctionalWindowRequest::WINDOW_NAME] = Variant ("actionsWindow");
+        SendEvent (EVENT_SHOW_FUNCTIONAL_WINDOW_REQUEST, eventData);
     }
 
     SelectPlayerColorWindow ()
@@ -71,9 +73,9 @@ class SelectPlayerColorWindow : ScriptObject
         buffer.WriteColor (color);
 
         VariantMap eventData;
-        eventData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_RESELECT_PLAYER_COLOR);
-        eventData ["messageBuffer"] = Variant (buffer);
-        SendEvent ("NewNetworkTask", eventData);
+        eventData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_RESELECT_PLAYER_COLOR);
+        eventData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
+        SendEvent (EVENT_NEW_NETWORK_TASK, eventData);
         Close ();
     }
 }

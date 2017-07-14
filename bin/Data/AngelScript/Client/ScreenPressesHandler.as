@@ -55,9 +55,9 @@ class ScreenPressesHandler : ScriptObject
             buffer.WriteStringHash (target.hash);
 
             VariantMap eventData;
-            eventData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
-            eventData ["messageBuffer"] = Variant (buffer);
-            SendEvent ("NewNetworkTask", eventData);
+            eventData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+            eventData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
+            SendEvent (EVENT_NEW_NETWORK_TASK, eventData);
         }
         scriptMain.vars ["currentClickCommand"] = StringHash ("NoCommand");
     }
@@ -67,8 +67,8 @@ class ScreenPressesHandler : ScriptObject
         Node @scriptMain = GetScriptMain (node);
         GameConfiguration @configuration = scene.GetComponent ("GameConfiguration");
 
-        String playerName = scriptMain.vars ["playerName"].GetString ();
-        float playerGold = scriptMain.vars ["gold"].GetFloat ();
+        String playerName = scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString ();
+        float playerGold = scriptMain.vars [ScriptMainVars::GOLD].GetFloat ();
 
         if (requester.hasColony and requester.colonyOwnerName == playerName and
             requester.menCount > configuration.oneWarShipCrew and
@@ -84,9 +84,9 @@ class ScreenPressesHandler : ScriptObject
             buffer.WriteVariantMap (actionData);
 
             VariantMap eventData;
-            eventData ["taskType"] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
-            eventData ["messageBuffer"] = Variant (buffer);
-            SendEvent ("NewNetworkTask", eventData);
+            eventData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+            eventData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
+            SendEvent (EVENT_NEW_NETWORK_TASK, eventData);
         }
         scriptMain.vars ["currentClickCommand"] = StringHash ("NoCommand");
     }

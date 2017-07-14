@@ -89,14 +89,14 @@ class MainMenu : ScriptObject
         SetupBackground ();
         DisableFogOfWar ();
 
-        SubscribeToEvent ("StartGameRequest", "HandleStartGameRequest");
-        SubscribeToEvent ("JoinGameRequest", "HandleJoinGameRequest");
-        SubscribeToEvent ("ExitRequest", "HandleExitRequest");
-        SubscribeToEvent ("ShowWindowRequest", "HandleShowWindowRequest");
+        SubscribeToEvent (EVENT_START_GAME_REQUEST, "HandleStartGameRequest");
+        SubscribeToEvent (EVENT_JOIN_GAME_REQUEST, "HandleJoinGameRequest");
+        SubscribeToEvent (EVENT_EXIT_REQUEST, "HandleExitRequest");
+        SubscribeToEvent (EVENT_SHOW_WINDOW_REQUEST, "HandleShowWindowRequest");
 
         VariantMap eventData;
-        eventData ["windowName"] = Variant ("primaryMenu");
-        SendEvent ("ShowWindowRequest", eventData);
+        eventData [ShowWindowRequest::WINDOW_NAME] = Variant ("primaryMenu");
+        SendEvent (EVENT_SHOW_WINDOW_REQUEST, eventData);
     }
 
     void Update (float timeStep)
@@ -174,6 +174,6 @@ class MainMenu : ScriptObject
         {
             elements [index].visible = false;
         }
-        uiRoot.GetChild (eventData ["windowName"].GetString ()).visible = true;
+        uiRoot.GetChild (eventData [ShowFunctionalWindowRequest::WINDOW_NAME].GetString ()).visible = true;
     }
 };

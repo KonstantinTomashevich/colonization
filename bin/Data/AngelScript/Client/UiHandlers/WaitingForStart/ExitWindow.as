@@ -1,3 +1,5 @@
+#include "AngelScript/Utils/Constants.as"
+
 class ExitWindow : ScriptObject
 {
     ExitWindow ()
@@ -28,6 +30,6 @@ class ExitWindow : ScriptObject
 
     void HandleExitClick ()
     {
-        SendEvent ("GoToMainMenuRequest");
+        SendEvent (EVENT_GO_TO_MAIN_MENU_REQUEST);
     }
 }

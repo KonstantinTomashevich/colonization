@@ -1,3 +1,5 @@
+#include "AngelScript/Utils/Constants.as"
+
 class GameEndedWindow : ScriptObject
 {
     GameEndedWindow ()
@@ -13,7 +15,7 @@ class GameEndedWindow : ScriptObject
     void Start ()
     {
         ui.root.GetChild ("ingame").GetChild ("gameEndedWindow").visible = false;
-        SubscribeToEvent ("GameEnded", "HandleGameEnded");
+        SubscribeToEvent (EVENT_GAME_ENDED, "HandleGameEnded");
     }
 
     void Update (float timeStep)
@@ -28,9 +30,9 @@ class GameEndedWindow : ScriptObject
 
     void HandleGameEnded (StringHash eventType, VariantMap &eventData)
     {
-        String winnerName = eventData ["winnerName"].GetString ();
-        String victoryType = eventData ["victoryType"].GetString ();
-        String victoryInfo = eventData ["victoryInfo"].GetString ();
+        String winnerName = eventData [GameEnded::WINNER_NAME].GetString ();
+        String victoryType = eventData [GameEnded::VICTORY_TYPE].GetString ();
+        String victoryInfo = eventData [GameEnded::VICTORY_INFO].GetString ();
 
         Window @gameEndedWindow = ui.root.GetChild ("ingame").GetChild ("gameEndedWindow");
         gameEndedWindow.visible = true;

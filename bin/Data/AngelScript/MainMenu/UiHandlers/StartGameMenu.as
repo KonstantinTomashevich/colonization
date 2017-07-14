@@ -1,3 +1,4 @@
+#include "AngelScript/Utils/Constants.as"
 #include "AngelScript/Utils/ClientUtils.as"
 
 class StartGameMenu : ScriptObject
@@ -110,18 +111,18 @@ class StartGameMenu : ScriptObject
         float b = blueSlider.value / blueSlider.range;
 
         VariantMap eventData;
-        eventData ["nickname"] = Variant (nickname);
-        eventData ["color"] = Variant (Color (r, g, b, 1.0f));
-        eventData ["selectedMapFolder"] = Variant (selectedMapFolder);
-        eventData ["selectedMapInfo"] = Variant (selectedMapInfo);
-        SendEvent ("StartGameRequest", eventData);
+        eventData [StartGameRequest::NICKNAME] = Variant (nickname);
+        eventData [StartGameRequest::COLOR] = Variant (Color (r, g, b, 1.0f));
+        eventData [StartGameRequest::SELECTED_MAP_FOLDER] = Variant (selectedMapFolder);
+        eventData [StartGameRequest::SELECTED_MAP_INFO] = Variant (selectedMapInfo);
+        SendEvent (EVENT_START_GAME_REQUEST, eventData);
     }
 
     void HandleGoBackClick ()
     {
         VariantMap eventData;
-        eventData ["windowName"] = Variant ("primaryMenu");
-        SendEvent ("ShowWindowRequest", eventData);
+        eventData [ShowWindowRequest::WINDOW_NAME] = Variant ("primaryMenu");
+        SendEvent (EVENT_SHOW_WINDOW_REQUEST, eventData);
     }
 
     void HandleSelectMapClick ()

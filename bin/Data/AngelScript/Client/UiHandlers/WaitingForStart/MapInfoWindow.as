@@ -1,3 +1,4 @@
+#include "AngelScript/Utils/Constants.as"
 #include "AngelScript/Utils/ClientUtils.as"
 
 class MapInfoWindow : ScriptObject
@@ -44,7 +45,7 @@ class MapInfoWindow : ScriptObject
     void HandleHideClick ()
     {
         VariantMap eventData;
-        eventData ["windowName"] = Variant ("actionsWindow");
-        SendEvent ("ShowFunctionalWindowRequest", eventData);
+        eventData [ShowFunctionalWindowRequest::WINDOW_NAME] = Variant ("actionsWindow");
+        SendEvent (EVENT_SHOW_FUNCTIONAL_WINDOW_REQUEST, eventData);
     }
 }

@@ -1,3 +1,5 @@
+#include "AngelScript/Utils/Constants.as"
+
 class FunctionalWindowsShower : ScriptObject
 {
     FunctionalWindowsShower ()
@@ -51,10 +53,10 @@ class FunctionalWindowsShower : ScriptObject
             elements [index].visible = false;
         }
 
-        SubscribeToEvent ("ShowFunctionalWindowRequest", "HandleShowFunctionalWindowRequest");
+        SubscribeToEvent (EVENT_SHOW_FUNCTIONAL_WINDOW_REQUEST, "HandleShowFunctionalWindowRequest");
         VariantMap eventData;
-        eventData ["windowName"] = Variant ("actionsWindow");
-        SendEvent ("ShowFunctionalWindowRequest", eventData);
+        eventData [ShowFunctionalWindowRequest::WINDOW_NAME] = Variant ("actionsWindow");
+        SendEvent (EVENT_SHOW_FUNCTIONAL_WINDOW_REQUEST, eventData);
     }
 
     void Update (float timeStep)
@@ -75,6 +77,6 @@ class FunctionalWindowsShower : ScriptObject
         {
             elements [index].visible = false;
         }
-        functionalWindowsRoot.GetChild (eventData ["windowName"].GetString ()).visible = true;
+        functionalWindowsRoot.GetChild (eventData [ShowFunctionalWindowRequest::WINDOW_NAME].GetString ()).visible = true;
     }
 }
