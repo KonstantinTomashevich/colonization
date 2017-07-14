@@ -104,7 +104,7 @@ void TestBattleProcessingAndLootingApplication::Start ()
     playersManager->AddInternalPlayer (secondPlayer);
 
     Urho3D::VariantMap updateEventData;
-    const float timestep = 0.5f;
+    const float timestep = 1/30.0f;
     updateEventData [Urho3D::SceneUpdate::P_TIMESTEP] = Urho3D::Variant (timestep);
 
     {
@@ -137,11 +137,11 @@ void TestBattleProcessingAndLootingApplication::Start ()
             unitsManager->CreateUnit (Colonization::UNIT_TRADERS, "PlayerY",
                                       map->GetDistrictByIndex (1 * mapHeight + 1)->GetHash ());
 
-    const int warShipsCount = 20;
+    const int warShipsCount = 10;
     unit1->SetWarShipsCount (warShipsCount / 2);
     unit2->SetWarShipsCount (warShipsCount / 2);
-    unit3->SetTradeGoodsCost (500.0f);
-    unit4->SetTradeGoodsCost (500.0f);
+    unit3->SetTradeGoodsCost (2000.0f);
+    unit4->SetTradeGoodsCost (2000.0f);
 
     const int framesCount = 120;
     for (int frame = 0; frame < framesCount; frame++)

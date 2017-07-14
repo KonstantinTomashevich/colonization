@@ -109,21 +109,21 @@ float industryProductionQualityHasIronModifer_ =1.3f$Industry Production Quality
 float industryProductionQualityHasSilverModifer_ =1.1f$Industry Production Quality Has Silver Modifer
 float industryProductionQualityHasGoldModifer_ =1.1f$Industry Production Quality Has Gold Modifer
 
-float soldierBasicNavalAttackForce_ =0.035f$Soldier Basic Naval Attack Force
-float colonizatorBasicNavalAttackForce_ =0.01f$Colonizator Basic Naval Attack Force
+float soldierBasicNavalAttackForce_ =0.0125f$Soldier Basic Naval Attack Force
+float colonizatorBasicNavalAttackForce_ =0.003f$Colonizator Basic Naval Attack Force
 float warShipBasicNavalAttackForce_  =1.0f$War Ship Basic Naval Attack Force
-float traderBasicNavalAttackForce_  =0.015f$Trader Basic Naval Attack Force
+float traderBasicNavalAttackForce_  =0.0009f$Trader Basic Naval Attack Force
 
 float soldierBasicLandAttackForce_ =0.1f$Soldier Basic Land Attack Force
 float colonizatorBasicLandAttackForce_ =0.02f$Colonizator Basic Land Attack Force
-float traderBasicLandAttackForce_ =0.025f$Trader Basic Land Attack Force
+float traderBasicLandAttackForce_ =0.002f$Trader Basic Land Attack Force
 
-float soldierBasicHealth_ =2.5f$Soldier Basic Health
-float colonizatorBasicHealth_ =1.5f$Colonizator Basic Health
+float soldierBasicHealth_ =1.0f$Soldier Basic Health
+float colonizatorBasicHealth_ =0.35f$Colonizator Basic Health
 float warShipBasicHealth_ =50.0f$War Ship Basic Health
-float traderBasicHealth_ =2.0f$Trader Basic Health
+float traderBasicHealth_ =0.08f$Trader Basic Health
 
-float lootingCoefficient_ =0.4f$Looting Coefficient
+float lootingCoefficient_ =0.15f$Looting Coefficient
 float maximumGameDuration_ =900.0f$Maximum Game Duration
 float colonyPointsModifer_ =0.15f$Colony Points Modifer
 float unitFleetPointsModifer_ =0.5f$Unit Fleet Points Modifer
@@ -147,7 +147,6 @@ class GameConfiguration : public Urho3D::Component
 URHO3D_OBJECT (GameConfiguration, Component)
 protected:
     // TODO: Move taxes to player. In next game versions player should have ability to set them.
-    // TODO: With default configuration traders are TOO strong!
     // TODO: Maybe increase mobilization and war ship building costs?
     //@Insert var list
 
