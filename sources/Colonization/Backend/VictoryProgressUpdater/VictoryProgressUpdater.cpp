@@ -155,13 +155,7 @@ void VictoryProgressUpdater::ProcessScriptedVictoryTypes (float timeStep)
                                                                 value.GetVariantMap ());
                 }
             }
-
-            NetworkUpdateCounter *counter = playerInfo->GetNode ()->GetComponent <NetworkUpdateCounter> ();
-            if (!counter)
-            {
-                counter = CreateNetworkUpdateCounterForComponent (playerInfo);
-            }
-            counter->AddUpdatePoints (20.0f * timeStep);
+            AddNetworkUpdatePointsToComponentCounter (playerInfo, 20.0f * timeStep);
         }
     }
 }

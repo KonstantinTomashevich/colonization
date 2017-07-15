@@ -74,24 +74,8 @@ bool BattlesProcessor::AddUnitToBattleIfNeeded (Unit *unit, District *unitPositi
 
                 unit->SetIsInBattle (true);
                 unit->SetBattleHash (battle->GetHash ());
-                {
-                    NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
-                    if (!counter)
-                    {
-                        counter = CreateNetworkUpdateCounterForComponent (unit);
-                    }
-                    counter->AddUpdatePoints (100.0f);
-                }
-
-                // TODO: Maybe add helper function like AddUpdatePointsToObjectCounter?
-                {
-                    NetworkUpdateCounter *counter = battle->GetNode ()->GetComponent <NetworkUpdateCounter> ();
-                    if (!counter)
-                    {
-                        counter = CreateNetworkUpdateCounterForComponent (battle);
-                    }
-                    counter->AddUpdatePoints (100.0f);
-                }
+                AddNetworkUpdatePointsToComponentCounter (unit, 100.0f);
+                AddNetworkUpdatePointsToComponentCounter (battle, 100.0f);
                 return true;
             }
         }
@@ -222,12 +206,7 @@ bool BattlesProcessor::ProcessBattle (Battle *battle, float timeStep)
     if (attackersCountBefore != battle->GetAttackersUnitsCount () ||
             defendersCountBefore != battle->GetDefendersUnitsCount ())
     {
-        NetworkUpdateCounter *counter = battle->GetNode ()->GetComponent <NetworkUpdateCounter> ();
-        if (!counter)
-        {
-            counter = CreateNetworkUpdateCounterForComponent (battle);
-        }
-        counter->AddUpdatePoints (100.0f);
+        AddNetworkUpdatePointsToComponentCounter (battle, 100.0f);
     }
     return (battle->GetAttackersUnitsCount () > 0 && battle->GetDefendersUnitsCount () > 0);
 }
@@ -279,12 +258,7 @@ void BattlesProcessor::ApplyDamage (Battle *battle, GameConfiguration *configura
         }
         else
         {
-            NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
-            if (!counter)
-            {
-                counter = CreateNetworkUpdateCounterForComponent (unit);
-            }
-            counter->AddUpdatePoints (damagedUnitUpdatePoints);
+            AddNetworkUpdatePointsToComponentCounter (unit, damagedUnitUpdatePoints);
         }
 
         currentUnitIndex = Urho3D::Random (0, units.Size ());
@@ -318,12 +292,7 @@ void BattlesProcessor::DeleteBattle (Battle *battle)
         if (unit)
         {
             unit->SetIsInBattle (false);
-            NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
-            if (!counter)
-            {
-                counter = CreateNetworkUpdateCounterForComponent (unit);
-            }
-            counter->AddUpdatePoints (100.0f);
+            AddNetworkUpdatePointsToComponentCounter (unit, 100.0f);
         }
     }
     battle->GetNode ()->Remove ();

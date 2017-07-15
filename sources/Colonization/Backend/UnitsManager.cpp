@@ -65,18 +65,13 @@ void UnitsManager::SettleColonizator (ColonizatorsUnit *unit, Map *map)
                                          unit->GetColonizatorsCount () / newPopulation);
         colony->SetIndustryEvolutionPoints ((colony->GetIndustryEvolutionPoints () * oldPopulation / newPopulation) +
                                             unit->GetColonizatorsCount () / newPopulation);
+
         colony->SetLogisticsEvolutionPoints ((colony->GetLogisticsEvolutionPoints () * oldPopulation / newPopulation) +
                                              unit->GetColonizatorsCount () / newPopulation);
         colony->SetDefenseEvolutionPoints ((colony->GetDefenseEvolutionPoints () * oldPopulation / newPopulation) +
                                            unit->GetColonizatorsCount () / newPopulation);
         unit->GetNode ()->Remove ();
-
-        NetworkUpdateCounter *counter = colony->GetNode ()->GetComponent <NetworkUpdateCounter> ();
-        if (!counter)
-        {
-            counter = CreateNetworkUpdateCounterForComponent (colony);
-        }
-        counter->AddUpdatePoints (100.0f);
+        AddNetworkUpdatePointsToComponentCounter (colony, 100.0f);
     }
 }
 
@@ -240,12 +235,7 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
 
                 if (unit->GetNode () && unitExists)
                 {
-                    NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
-                    if (!counter)
-                    {
-                        counter = CreateNetworkUpdateCounterForComponent (unit);
-                    }
-                    counter->AddUpdatePoints (updatePoints);
+                    AddNetworkUpdatePointsToComponentCounter (unit, updatePoints);
                 }
             }
         }

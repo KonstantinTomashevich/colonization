@@ -60,13 +60,7 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
             Urho3D::SharedPtr <InternalTradeArea> tradeAreaSharedPtr (node->GetComponent <InternalTradeArea> ());
             float updatePoints = UpdateTradeArea (tradeAreaSharedPtr, map, toScan.At (0), toScan, configuration);
             tradeAreas_.Push (tradeAreaSharedPtr);
-
-            NetworkUpdateCounter *counter = tradeAreaSharedPtr->GetNode ()->GetComponent <NetworkUpdateCounter> ();
-            if (!counter)
-            {
-                counter = CreateNetworkUpdateCounterForComponent (tradeAreaSharedPtr);
-            }
-            counter->AddUpdatePoints (updatePoints);
+            AddNetworkUpdatePointsToComponentCounter (tradeAreaSharedPtr, updatePoints);
         }
         else
         {

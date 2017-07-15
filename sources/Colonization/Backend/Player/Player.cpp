@@ -43,12 +43,7 @@ void Player::ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data)
     }
 
     map->FindPath (target->GetHash (), unit);
-    NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
-    if (!counter)
-    {
-        counter = CreateNetworkUpdateCounterForComponent (unit);
-    }
-    counter->AddUpdatePoints (100.0f);
+    AddNetworkUpdatePointsToComponentCounter (unit, 100.0f);
 }
 
 void Player::ProcessInvestToColonyAction (Urho3D::VectorBuffer data)
@@ -71,13 +66,7 @@ void Player::ProcessInvestToColonyAction (Urho3D::VectorBuffer data)
     {
         targetDistrict->Invest (investitionType, money);
         gold_ -= money;
-
-        NetworkUpdateCounter *counter = targetDistrict->GetNode ()->GetComponent <NetworkUpdateCounter> ();
-        if (!counter)
-        {
-            counter = CreateNetworkUpdateCounterForComponent (targetDistrict);
-        }
-        counter->AddUpdatePoints (100.0f);
+        AddNetworkUpdatePointsToComponentCounter (targetDistrict, 100.0f);
     }
 }
 
@@ -111,13 +100,7 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
         {
             gold_ -= cost;
             ((ColonizatorsUnit *) (unit))->SetColonizatorsCount (colonizatorsCount);
-
-            NetworkUpdateCounter *counter = unit->GetNode ()->GetComponent <NetworkUpdateCounter> ();
-            if (!counter)
-            {
-                counter = CreateNetworkUpdateCounterForComponent (unit);
-            }
-            counter->AddUpdatePoints (100.0f);
+            AddNetworkUpdatePointsToComponentCounter (unit, 100.0f);
         }
         else
         {
@@ -238,13 +221,7 @@ void Player::ProcessDemobilizeArmyAction (Urho3D::VectorBuffer data)
             ArmyUnit *armyUnit = (ArmyUnit *) unit;
             district->SetMenCount (district->GetMenCount () + armyUnit->GetSoldiersCount ());
             armyUnit->GetNode ()->Remove ();
-
-            NetworkUpdateCounter *counter = district->GetNode ()->GetComponent <NetworkUpdateCounter> ();
-            if (!counter)
-            {
-                counter = CreateNetworkUpdateCounterForComponent (district);
-            }
-            counter->AddUpdatePoints (100.0f);
+            AddNetworkUpdatePointsToComponentCounter (district, 100.0f);
         }
     }
 }

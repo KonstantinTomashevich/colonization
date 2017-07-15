@@ -32,13 +32,7 @@ void ColoniesActionsProcessor::ProcessColonyActions (District *colony, float tim
         colony->SetColonyActionAtIndexData (0, action.second_);
         updatePoints = timeStep * 25.0f;
     }
-
-    NetworkUpdateCounter *counter = colony->GetNode ()->GetComponent <NetworkUpdateCounter> ();
-    if (!counter)
-    {
-        counter = CreateNetworkUpdateCounterForComponent (colony);
-    }
-    counter->AddUpdatePoints (updatePoints);
+    AddNetworkUpdatePointsToComponentCounter (colony, updatePoints);
 }
 
 void ColoniesActionsProcessor::OnSceneSet (Urho3D::Scene *scene)
@@ -105,12 +99,7 @@ bool ColoniesActionsProcessor::ProcessBuildWarShipAction (GameConfiguration *con
         if (currentShipProgress >= 1.0f && colony->GetMenCount () > configuration->GetOneWarShipCrew ())
         {
             colony->SetMenCount (colony->GetMenCount () - configuration->GetOneWarShipCrew ());
-            NetworkUpdateCounter *counter = colony->GetNode ()->GetComponent <NetworkUpdateCounter> ();
-            if (!counter)
-            {
-                counter = CreateNetworkUpdateCounterForComponent (colony);
-            }
-            counter->AddUpdatePoints (100.0f);
+            AddNetworkUpdatePointsToComponentCounter (colony, 100.0f);
 
             FleetUnit *newWarShip = (FleetUnit *)
                     unitsManager->CreateUnit (UNIT_FLEET, colony->GetColonyOwnerName (), targetDistrictHash);
@@ -155,12 +144,7 @@ bool ColoniesActionsProcessor::ProcessFormArmyAction (GameConfiguration *configu
         if (currentProgress >= 1.0f && colony->GetMenCount () > soldiersCount)
         {
             colony->SetMenCount (colony->GetMenCount () - soldiersCount);
-            NetworkUpdateCounter *counter = colony->GetNode ()->GetComponent <NetworkUpdateCounter> ();
-            if (!counter)
-            {
-                counter = CreateNetworkUpdateCounterForComponent (colony);
-            }
-            counter->AddUpdatePoints (100.0f);
+            AddNetworkUpdatePointsToComponentCounter (colony, 100.0f);
 
             ArmyUnit *army = (ArmyUnit *)
                     unitsManager->CreateUnit (UNIT_ARMY, colony->GetColonyOwnerName (), colony->GetHash ());

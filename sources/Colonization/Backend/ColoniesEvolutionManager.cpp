@@ -32,13 +32,7 @@ void ColoniesEvolutionManager::ProcessColony (GameConfiguration *configuration, 
     updatePoints += ProcessColonyDefenseEvolution (configuration, colony, timeStep);
     // TODO: Implement average level of life calculation.
     colony->SetAverageLevelOfLifePoints (1.0f);
-
-    NetworkUpdateCounter *counter = colony->GetNode ()->GetComponent <NetworkUpdateCounter> ();
-    if (!counter)
-    {
-        counter = CreateNetworkUpdateCounterForComponent (colony);
-    }
-    counter->AddUpdatePoints (updatePoints);
+    AddNetworkUpdatePointsToComponentCounter (colony, updatePoints);
 }
 
 float ColoniesEvolutionManager::ProcessColonyPopulation (GameConfiguration *configuration, District *colony, float timeStep)

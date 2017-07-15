@@ -371,12 +371,7 @@ void InternalTradeArea::CallDistrictsUpdate (Urho3D::PODVector<District *> &dist
         District *district = districts.At (index);
         if (node_->GetScene ()->GetComponent <NetworkUpdateSmoother> ())
         {
-            NetworkUpdateCounter *counter = district->GetNode ()->GetComponent <NetworkUpdateCounter> ();
-            if (!counter)
-            {
-                counter = CreateNetworkUpdateCounterForComponent (district);
-            }
-            counter->AddUpdatePoints (100.0f);
+            AddNetworkUpdatePointsToComponentCounter (district, 100.0f);
         }
     }
 }

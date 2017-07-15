@@ -134,13 +134,7 @@ void PlayersManager::UpdatePlayersInfos ()
                 }
                 updatePoints += 100.0f;
             }
-
-            NetworkUpdateCounter *counter = playerInfo->GetNode ()->GetComponent <NetworkUpdateCounter> ();
-            if (!counter)
-            {
-                counter = CreateNetworkUpdateCounterForComponent (playerInfo);
-            }
-            counter->AddUpdatePoints (updatePoints);
+            AddNetworkUpdatePointsToComponentCounter (playerInfo, updatePoints);
         }
         else
         {
