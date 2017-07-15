@@ -61,7 +61,7 @@ abstract class UnitsList : StringListEditorUiHandler
     protected void ProcessElementUi (UIElement @uiElement, int elementIndex, Array <String> &in elementsStrings) override
     {
         StringListEditorUiHandler::ProcessElementUi (uiElement, elementIndex, elementsStrings);
-        PlayerInfo @playerInfo = GetPlayerInfoByName (scene, elementsStrings [elementIndex].Split (';') [0]);
+        PlayerInfo @playerInfo = GetPlayerInfoByNameHash (scene, StringHash (elementsStrings [elementIndex].Split (';') [0]));
         BorderImage @colorSample = uiElement.GetChild ("colorSample");
 
         if (playerInfo !is null)

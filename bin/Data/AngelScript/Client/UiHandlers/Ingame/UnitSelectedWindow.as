@@ -67,7 +67,7 @@ class UnitSelectedWindow : ScriptObject
         ownerText.text = unit.ownerPlayerName + "'s";
 
         BorderImage @colorSample = unitSelectedWindow.GetChild ("colorSample");
-        PlayerInfo @unitOwner = GetPlayerInfoByName (scene, unit.ownerPlayerName);
+        PlayerInfo @unitOwner = GetPlayerInfoByNameHash (scene, StringHash (unit.ownerPlayerName));
         if (unitOwner !is null)
         {
             colorSample.color = unitOwner.color;

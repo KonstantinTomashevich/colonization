@@ -101,7 +101,7 @@ class DistrictSelectedWindow : ScriptObject
         if (district.hasColony)
         {
             colorSample.visible = true;
-            PlayerInfo @colonyOwner = GetPlayerInfoByName (scene, district.colonyOwnerName);
+            PlayerInfo @colonyOwner = GetPlayerInfoByNameHash (scene, StringHash (district.colonyOwnerName));
             if (colonyOwner !is null)
             {
                 colorSample.color = colonyOwner.color;

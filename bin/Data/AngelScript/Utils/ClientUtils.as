@@ -32,42 +32,6 @@ shared bool CheckIsSceneLoaded (Scene @scene_)
         return false;
 }
 
-shared PlayerInfo @GetPlayerInfoByNameHash (Scene @scene_, StringHash playerNameHash)
-{
-    if (scene_.GetChild ("players") is null)
-    {
-        return null;
-    }
-
-    Array <Node @> playersNodes = scene_.GetChild ("players").GetChildrenWithComponent ("PlayerInfo");
-    if (playersNodes.empty)
-    {
-        return null;
-    }
-
-    PlayerInfo @playerInfo = playersNodes [0].GetComponent ("PlayerInfo");
-    uint index = 1;
-    while (StringHash (playerInfo.name) != playerNameHash and index < playersNodes.length)
-    {
-        playerInfo = playersNodes [index].GetComponent ("PlayerInfo");
-        index++;
-    }
-
-    if (StringHash (playerInfo.name) == playerNameHash)
-    {
-        return playerInfo;
-    }
-    else
-    {
-        return null;
-    }
-}
-
-shared PlayerInfo @GetPlayerInfoByName (Scene @scene_, String playerName)
-{
-    return GetPlayerInfoByNameHash (scene_, StringHash (playerName));
-}
-
 shared PlayerInfo @GetPlayerInfoByIndex (Scene @scene_, uint index)
 {
     if (scene_.GetChild ("players") is null)

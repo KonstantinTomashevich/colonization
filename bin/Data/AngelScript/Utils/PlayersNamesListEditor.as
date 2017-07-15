@@ -26,7 +26,7 @@ class PlayersNamesListEditor : StringListEditorUiHandler
 
     protected String ProcessElementText (String text, int elementIndex) override
     {
-        PlayerInfo @playerInfo = GetPlayerInfoByName (scene, text);
+        PlayerInfo @playerInfo = GetPlayerInfoByNameHash (scene, StringHash (text));
         String result = "" + (elementIndex + 1) + ". " + text;
         if (playerInfo !is null)
         {

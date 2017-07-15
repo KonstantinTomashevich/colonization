@@ -10,6 +10,10 @@
 
 namespace Colonization
 {
+PlayerInfo *GetPlayerInfoByPointer (Urho3D::Scene *scene, Player *player);
+//@ASBindGen Function AddRef_arg-1
+PlayerInfo *GetPlayerInfoByNameHash (Urho3D::Scene *scene, Urho3D::StringHash nameHash);
+
 class PlayersManager : public Urho3D::Component
 {
 URHO3D_OBJECT (PlayersManager, Component)
@@ -44,10 +48,7 @@ public:
     Player *GetPlayerByConnection (Urho3D::Connection *connection) const;
     Player *GetPlayerByNameHash (Urho3D::StringHash nameHash) const;
 
-    PlayerInfo *GetPlayerInfoByPointer (Player *player) const;
-    PlayerInfo *GetPlayerInfoByNameHash (Urho3D::StringHash nameHash) const;
     bool IsColorUsed (Urho3D::Color color, Player *excludePlayer = 0) const;
-
     void DisconnectAllUnidentificatedConnections ();
     Urho3D::PODVector <Player *> GetPlayersByNames(Urho3D::PODVector <Urho3D::StringHash> namesHashes) const;
     Urho3D::PODVector <Player *> GetAllPlayers() const;

@@ -33,7 +33,7 @@ void VictoryProgressUpdater::UpdateVictoryByPointsProgresses ()
     for (int index = 0; index < players.Size (); index++)
     {
         Player *player = players.At (index);
-        PlayerInfo *playerInfo = playersManager->GetPlayerInfoByPointer (player);
+        PlayerInfo *playerInfo = GetPlayerInfoByPointer (node_->GetScene (), player);
         assert (playerInfo);
         Urho3D::VariantMap victoryInfo = playerInfo->GetProgressToVictoryOfTypeInfo (VICTORY_TYPE_BY_POINTS);
         victoryInfo [PLAYER_INFO_VICTORY_TYPE_NAME_KEY] = VICTORY_TYPE_BY_POINTS_NAME;
@@ -86,7 +86,7 @@ void VictoryProgressUpdater::CheckForAnyVictory ()
         Player *player = players.At (index);
         if (player)
         {
-            PlayerInfo *playerInfo = playersManager->GetPlayerInfoByPointer (player);
+            PlayerInfo *playerInfo = GetPlayerInfoByPointer (node_->GetScene (), player);
             assert (playerInfo);
 
             Urho3D::VariantMap progressToVictory = playerInfo->GetProgressToVictory ();
@@ -136,7 +136,7 @@ void VictoryProgressUpdater::ProcessScriptedVictoryTypes (float timeStep)
         Player *player = playersManager->GetPlayerByIndex (index);
         if (player)
         {
-            PlayerInfo *playerInfo = playersManager->GetPlayerInfoByPointer (player);
+            PlayerInfo *playerInfo = GetPlayerInfoByPointer (node_->GetScene (), player);
             assert (playerInfo);
             dataAccessor->SetPlayerInfo (playerInfo);
             executionParameters.At (2) = Urho3D::Variant (Urho3D::VariantMap ());

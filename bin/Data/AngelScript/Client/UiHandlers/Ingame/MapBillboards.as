@@ -83,7 +83,7 @@ class MapBillboards : ScriptObject
         BorderImage @background = billboard.GetChild ("background");
         if (district.hasColony)
         {
-            PlayerInfo @playerInfo = GetPlayerInfoByName (scene, district.colonyOwnerName);
+            PlayerInfo @playerInfo = GetPlayerInfoByNameHash (scene, StringHash (district.colonyOwnerName));
             if (playerInfo !is null)
             {
                 background.color = playerInfo.color;
@@ -159,7 +159,7 @@ class MapBillboards : ScriptObject
     protected void UpdateUnitIconButton (UIElement @unitElement, Unit @unit)
     {
         Button @backgroundButton = unitElement.GetChild ("selectButton");
-        PlayerInfo @playerInfo = GetPlayerInfoByName (scene, unit.ownerPlayerName);
+        PlayerInfo @playerInfo = GetPlayerInfoByNameHash (scene, StringHash (unit.ownerPlayerName));
         backgroundButton.vars ["unitHash"] = Variant (unit.hash);
 
         SubscribeToEvent (backgroundButton, "Released", "HandleSelectUnitClick");
@@ -217,8 +217,8 @@ class MapBillboards : ScriptObject
         Unit @firstAttackerUnit = GetUnitByHash (scene, battle.GetAttackerUnitHashByIndex (0));
         Unit @firstDefenderUnit = GetUnitByHash (scene, battle.GetDefenderUnitHashByIndex (0));
 
-        PlayerInfo @firstAttackerPlayer = GetPlayerInfoByName (scene, firstAttackerUnit.ownerPlayerName);
-        PlayerInfo @firstDefenderPlayer = GetPlayerInfoByName (scene, firstDefenderUnit.ownerPlayerName);
+        PlayerInfo @firstAttackerPlayer = GetPlayerInfoByNameHash (scene, StringHash (firstAttackerUnit.ownerPlayerName));
+        PlayerInfo @firstDefenderPlayer = GetPlayerInfoByNameHash (scene, StringHash (firstDefenderUnit.ownerPlayerName));
 
         if (firstAttackerPlayer !is null)
         {

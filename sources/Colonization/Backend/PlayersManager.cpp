@@ -311,29 +311,6 @@ Player *PlayersManager::GetPlayerByNameHash (Urho3D::StringHash nameHash) const
     }
 }
 
-PlayerInfo *PlayersManager::GetPlayerInfoByPointer (Player *player) const
-{
-    assert (player);
-    return GetPlayerInfoByNameHash (Urho3D::StringHash (player->GetName ()));
-}
-
-PlayerInfo *PlayersManager::GetPlayerInfoByNameHash (Urho3D::StringHash nameHash) const
-{
-    assert (node_);
-    Urho3D::PODVector <Urho3D::Node *> playersInfosNodes;
-    node_->GetChildrenWithComponent (playersInfosNodes, PlayerInfo::GetTypeStatic ());
-
-    for (int index = 0; index < playersInfosNodes.Size (); index++)
-    {
-        PlayerInfo *playerInfo = playersInfosNodes.At (index)->GetComponent <PlayerInfo> ();
-        if (Urho3D::StringHash (playerInfo->GetName ()) == nameHash)
-        {
-            return playerInfo;
-        }
-    }
-    return 0;
-}
-
 bool PlayersManager::IsColorUsed (Urho3D::Color color, Player *excludePlayer) const
 {
     float smallestDifference = 1.0f;
@@ -430,5 +407,28 @@ void PlayersManager::DisconnectPlayer (Urho3D::Connection *connection)
     {
         DisconnectPlayer (connectionHashToNameHashMap_ [Urho3D::StringHash (connection->ToString ())]);
     }
+}
+
+PlayerInfo *GetPlayerInfoByPointer (Urho3D::Scene *scene, Player *player)
+{
+    assert (player);
+    return GetPlayerInfoByNameHash (scene, Urho3D::StringHash (player->GetName ()));
+}
+
+PlayerInfo *GetPlayerInfoByNameHash (Urho3D::Scene *scene, Urho3D::StringHash nameHash)
+{
+    assert (scene);
+    Urho3D::PODVector <Urho3D::Node *> playersInfosNodes;
+    scene->GetChild ("players")->GetChildrenWithComponent (playersInfosNodes, PlayerInfo::GetTypeStatic ());
+
+    for (int index = 0; index < playersInfosNodes.Size (); index++)
+    {
+        PlayerInfo *playerInfo = playersInfosNodes.At (index)->GetComponent <PlayerInfo> ();
+        if (Urho3D::StringHash (playerInfo->GetName ()) == nameHash)
+        {
+            return playerInfo;
+        }
+    }
+    return 0;
 }
 }

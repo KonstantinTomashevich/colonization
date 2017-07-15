@@ -36,7 +36,7 @@ class TopActionBar : ScriptObject
         playerStatsText.text = playerStatsInfo;
 
         BorderImage @colorSample = topActionBar.GetChild ("colorSample");
-        PlayerInfo @playerInfo = GetPlayerInfoByName (scene, scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString ());
+        PlayerInfo @playerInfo = GetPlayerInfoByNameHash (scene, StringHash (scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString ()));
         colorSample.color = playerInfo.color;
     }
 
