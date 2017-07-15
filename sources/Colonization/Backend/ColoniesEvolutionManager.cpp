@@ -123,7 +123,8 @@ float ColoniesEvolutionManager::ProcessColonyFarmsEvolution (GameConfiguration *
     if (evolutionAddition > 0.0f)
     {
         colony->SetFarmsEvolutionPoints (oldFarmsEvolution + evolutionAddition);
-        float evolutionCost = configuration->GetEvolutionCostPerLevel () * evolutionAddition;
+        float evolutionCost = configuration->GetEvolutionCostPerLevelPerColonist () * evolutionAddition *
+                (colony->GetMenCount () + colony->GetWomenCount ());
         colony->SetFarmsBalance (balance - evolutionCost);
     }
     else
@@ -191,8 +192,8 @@ float ColoniesEvolutionManager::ProcessColonyMinesEvolution (GameConfiguration *
     if (evolutionAddition > 0.0f)
     {
         colony->SetMinesEvolutionPoints (oldMinesEvolution + evolutionAddition);
-        // TODO: Should evolution cost depend on colony population?
-        float evolutionCost = configuration->GetEvolutionCostPerLevel () * evolutionAddition;
+        float evolutionCost = configuration->GetEvolutionCostPerLevelPerColonist () * evolutionAddition *
+                (colony->GetMenCount () + colony->GetWomenCount ());
         colony->SetMinesBalance (balance - evolutionCost);
     }
     else
@@ -243,7 +244,8 @@ float ColoniesEvolutionManager::ProcessColonyIndustryEvolution (GameConfiguratio
     if (evolutionAddition > 0.0f)
     {
         colony->SetIndustryEvolutionPoints (oldIndustryEvolution + evolutionAddition);
-        float evolutionCost = configuration->GetEvolutionCostPerLevel () * evolutionAddition;
+        float evolutionCost = configuration->GetEvolutionCostPerLevelPerColonist () * evolutionAddition *
+                (colony->GetMenCount () + colony->GetWomenCount ());
         colony->SetIndustryBalance (balance - evolutionCost);
     }
     else
@@ -283,7 +285,8 @@ float ColoniesEvolutionManager::ProcessColonyLogisticsEvolution (GameConfigurati
     if (evolutionAddition > 0.0f)
     {
         colony->SetLogisticsEvolutionPoints (oldLogisticsEvolution + evolutionAddition);
-        float evolutionCost = configuration->GetEvolutionCostPerLevel () * evolutionAddition;
+        float evolutionCost = configuration->GetEvolutionCostPerLevelPerColonist () * evolutionAddition *
+                (colony->GetMenCount () + colony->GetWomenCount ());
         colony->SetLogisticsBalance (balance - evolutionCost);
     }
     else
@@ -317,7 +320,8 @@ float ColoniesEvolutionManager::ProcessColonyDefenseEvolution (GameConfiguration
     if (evolutionAddition > 0.0f)
     {
         colony->SetDefenseEvolutionPoints (oldDefenseEvolution + evolutionAddition);
-        float evolutionCost = configuration->GetEvolutionCostPerLevel () * evolutionAddition;
+        float evolutionCost = configuration->GetEvolutionCostPerLevelPerColonist () * evolutionAddition *
+                (colony->GetMenCount () + colony->GetWomenCount ());
         colony->SetDefenseBalance (balance - evolutionCost);
     }
     else
