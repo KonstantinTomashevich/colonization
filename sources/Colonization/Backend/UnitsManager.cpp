@@ -44,8 +44,16 @@ void UnitsManager::SettleColonizator (ColonizatorsUnit *unit, Map *map)
     }
     else
     {
-        // TODO: If there are a lot of women in colony and small count of men, spawn much more men.
-        float menPercent = Urho3D::Random (0.45f, 0.55f);
+        float menPercent;
+        if (colony->GetMenCount () / (colony->GetMenCount () + colony->GetWomenCount ()) < 0.35f)
+        {
+            menPercent = Urho3D::Random (0.65f, 0.85f);
+        }
+        else
+        {
+            menPercent = Urho3D::Random (0.45f, 0.55f);
+        }
+
         float oldPopulation = colony->GetMenCount () + colony->GetWomenCount ();
         colony->SetMenCount (colony->GetMenCount () + unit->GetColonizatorsCount () * 1.0f * menPercent);
         colony->SetWomenCount (colony->GetWomenCount () + unit->GetColonizatorsCount () * 1.0f * (1.0f - menPercent));
