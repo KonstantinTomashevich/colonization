@@ -45,10 +45,22 @@ void UnitsManager::SettleColonizator (ColonizatorsUnit *unit, Map *map)
     else
     {
         // TODO: If there are a lot of women in colony and small count of men, spawn much more men.
-        // TODO: New colonists should decrease evolution points. For examle, NewEvolution = (OldEvolution * oldPopulation / (oldPopulation + colonists)) + colonists / (oldPopulation + colonists)
         float menPercent = Urho3D::Random (0.45f, 0.55f);
+        float oldPopulation = colony->GetMenCount () + colony->GetWomenCount ();
         colony->SetMenCount (colony->GetMenCount () + unit->GetColonizatorsCount () * 1.0f * menPercent);
         colony->SetWomenCount (colony->GetWomenCount () + unit->GetColonizatorsCount () * 1.0f * (1.0f - menPercent));
+
+        float newPopulation = colony->GetMenCount () + colony->GetWomenCount ();
+        colony->SetFarmsEvolutionPoints ((colony->GetFarmsEvolutionPoints () * oldPopulation / newPopulation) +
+                                         unit->GetColonizatorsCount () / newPopulation);
+        colony->SetMinesEvolutionPoints ((colony->GetMinesEvolutionPoints () * oldPopulation / newPopulation) +
+                                         unit->GetColonizatorsCount () / newPopulation);
+        colony->SetIndustryEvolutionPoints ((colony->GetIndustryEvolutionPoints () * oldPopulation / newPopulation) +
+                                            unit->GetColonizatorsCount () / newPopulation);
+        colony->SetLogisticsEvolutionPoints ((colony->GetLogisticsEvolutionPoints () * oldPopulation / newPopulation) +
+                                             unit->GetColonizatorsCount () / newPopulation);
+        colony->SetDefenseEvolutionPoints ((colony->GetDefenseEvolutionPoints () * oldPopulation / newPopulation) +
+                                           unit->GetColonizatorsCount () / newPopulation);
         unit->GetNode ()->Remove ();
 
         NetworkUpdateCounter *counter = colony->GetNode ()->GetComponent <NetworkUpdateCounter> ();
