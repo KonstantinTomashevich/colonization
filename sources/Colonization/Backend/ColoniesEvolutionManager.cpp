@@ -122,14 +122,21 @@ float ColoniesEvolutionManager::ProcessColonyFarmsEvolution (GameConfiguration *
 
     if (evolutionAddition > 0.0f)
     {
-        colony->SetFarmsEvolutionPoints (oldFarmsEvolution + evolutionAddition);
         float evolutionCost = configuration->GetEvolutionCostPerLevelPerColonist () * evolutionAddition *
                 (colony->GetMenCount () + colony->GetWomenCount ());
+        if (evolutionCost > colony->GetFarmsBalance ())
+        {
+            evolutionAddition = evolutionAddition * colony->GetFarmsBalance () / evolutionCost;
+            evolutionCost = colony->GetFarmsBalance ();
+        }
+
+        colony->SetFarmsEvolutionPoints (oldFarmsEvolution + evolutionAddition);
         colony->SetFarmsBalance (balance - evolutionCost);
     }
     else
     {
-        float balanceAddition = -configuration->GetDegradationCostPerLevel () * evolutionAddition;
+        float balanceAddition = -configuration->GetDegradationCostPerLevelPerColonist () * evolutionAddition *
+                (colony->GetMenCount () + colony->GetWomenCount ());
         colony->SetFarmsBalance (balance + balanceAddition);
         if (oldFarmsEvolution > 1.0f)
         {
@@ -191,14 +198,21 @@ float ColoniesEvolutionManager::ProcessColonyMinesEvolution (GameConfiguration *
 
     if (evolutionAddition > 0.0f)
     {
-        colony->SetMinesEvolutionPoints (oldMinesEvolution + evolutionAddition);
         float evolutionCost = configuration->GetEvolutionCostPerLevelPerColonist () * evolutionAddition *
                 (colony->GetMenCount () + colony->GetWomenCount ());
+        if (evolutionCost > colony->GetMinesBalance ())
+        {
+            evolutionAddition = evolutionAddition * colony->GetMinesBalance () / evolutionCost;
+            evolutionCost = colony->GetMinesBalance ();
+        }
+
+        colony->SetMinesEvolutionPoints (oldMinesEvolution + evolutionAddition);
         colony->SetMinesBalance (balance - evolutionCost);
     }
     else
     {
-        float balanceAddition = -configuration->GetDegradationCostPerLevel () * evolutionAddition;
+        float balanceAddition = -configuration->GetDegradationCostPerLevelPerColonist () * evolutionAddition *
+                (colony->GetMenCount () + colony->GetWomenCount ());
         colony->SetMinesBalance (balance + balanceAddition);
         if (oldMinesEvolution > 1.0f)
         {
@@ -243,14 +257,21 @@ float ColoniesEvolutionManager::ProcessColonyIndustryEvolution (GameConfiguratio
 
     if (evolutionAddition > 0.0f)
     {
-        colony->SetIndustryEvolutionPoints (oldIndustryEvolution + evolutionAddition);
         float evolutionCost = configuration->GetEvolutionCostPerLevelPerColonist () * evolutionAddition *
                 (colony->GetMenCount () + colony->GetWomenCount ());
+        if (evolutionCost > colony->GetIndustryBalance ())
+        {
+            evolutionAddition = evolutionAddition * colony->GetIndustryBalance () / evolutionCost;
+            evolutionCost = colony->GetIndustryBalance ();
+        }
+
+        colony->SetIndustryEvolutionPoints (oldIndustryEvolution + evolutionAddition);
         colony->SetIndustryBalance (balance - evolutionCost);
     }
     else
     {
-        float balanceAddition = -configuration->GetDegradationCostPerLevel () * evolutionAddition;
+        float balanceAddition = -configuration->GetDegradationCostPerLevelPerColonist () * evolutionAddition *
+                (colony->GetMenCount () + colony->GetWomenCount ());
         colony->SetIndustryBalance (balance + balanceAddition);
         if (oldIndustryEvolution > 1.0f)
         {
@@ -284,14 +305,21 @@ float ColoniesEvolutionManager::ProcessColonyLogisticsEvolution (GameConfigurati
 
     if (evolutionAddition > 0.0f)
     {
-        colony->SetLogisticsEvolutionPoints (oldLogisticsEvolution + evolutionAddition);
         float evolutionCost = configuration->GetEvolutionCostPerLevelPerColonist () * evolutionAddition *
                 (colony->GetMenCount () + colony->GetWomenCount ());
+        if (evolutionCost > colony->GetLogisticsBalance ())
+        {
+            evolutionAddition = evolutionAddition * colony->GetLogisticsBalance () / evolutionCost;
+            evolutionCost = colony->GetLogisticsBalance ();
+        }
+
+        colony->SetLogisticsEvolutionPoints (oldLogisticsEvolution + evolutionAddition);
         colony->SetLogisticsBalance (balance - evolutionCost);
     }
     else
     {
-        float balanceAddition = -configuration->GetDegradationCostPerLevel () * evolutionAddition;
+        float balanceAddition = -configuration->GetDegradationCostPerLevelPerColonist () * evolutionAddition *
+                (colony->GetMenCount () + colony->GetWomenCount ());
         colony->SetLogisticsBalance (balance + balanceAddition);
         if (oldLogisticsEvolution > 1.0f)
         {
@@ -319,14 +347,21 @@ float ColoniesEvolutionManager::ProcessColonyDefenseEvolution (GameConfiguration
 
     if (evolutionAddition > 0.0f)
     {
-        colony->SetDefenseEvolutionPoints (oldDefenseEvolution + evolutionAddition);
         float evolutionCost = configuration->GetEvolutionCostPerLevelPerColonist () * evolutionAddition *
                 (colony->GetMenCount () + colony->GetWomenCount ());
+        if (evolutionCost > colony->GetDefenseBalance ())
+        {
+            evolutionAddition = evolutionAddition * colony->GetDefenseBalance () / evolutionCost;
+            evolutionCost = colony->GetDefenseBalance ();
+        }
+
+        colony->SetDefenseEvolutionPoints (oldDefenseEvolution + evolutionAddition);
         colony->SetDefenseBalance (balance - evolutionCost);
     }
     else
     {
-        float balanceAddition = -configuration->GetDegradationCostPerLevel () * evolutionAddition;
+        float balanceAddition = -configuration->GetDegradationCostPerLevelPerColonist () * evolutionAddition *
+                (colony->GetMenCount () + colony->GetWomenCount ());
         colony->SetDefenseBalance (balance + balanceAddition);
         if (oldDefenseEvolution > 1.0f)
         {
