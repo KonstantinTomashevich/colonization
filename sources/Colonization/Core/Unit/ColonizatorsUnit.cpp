@@ -57,6 +57,39 @@ void ColonizatorsUnit::SetColonizatorsCount (float colonizatorsCount)
     colonizatorsCount_ = colonizatorsCount;
 }
 
+bool ColonizatorsUnit::IsCanGoTo (const District *district, const Map *map, Urho3D::StringHash imaginePosition) const
+{
+    if (Unit::IsCanGoTo (district, map, imaginePosition))
+    {
+        if (district->GetIsSea () || (district->GetHasColony () && district->GetColonyOwnerName () == ownerPlayerName_))
+        {
+            return true;
+        }
+        else if (!district->GetHasColony ())
+        {
+            Urho3D::PODVector <Urho3D::StringHash> targetNeighbors = district->GetNeighborsHashes ();
+            for (int index = 0; index < targetNeighbors.Size (); index++)
+            {
+                District *targetNeighbor = map->GetDistrictByHash (targetNeighbors.At (index));
+                if (targetNeighbor->GetIsSea () || (targetNeighbor->GetHasColony () &&
+                                                    targetNeighbor->GetColonyOwnerName () == ownerPlayerName_))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
 float ColonizatorsUnit::GetBattleAttackForce (GameConfiguration *configuration, bool isNaval) const
 {
     if (isNaval)

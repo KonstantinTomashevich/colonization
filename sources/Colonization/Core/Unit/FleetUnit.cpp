@@ -136,6 +136,18 @@ void FleetUnit::SetWarShipsHealthPointsAttribute (const Urho3D::VariantVector &w
     }
 }
 
+bool FleetUnit::IsCanGoTo (const District *district, const Map *map, Urho3D::StringHash imaginePosition) const
+{
+    if (Unit::IsCanGoTo (district, map, imaginePosition))
+    {
+        return district->GetIsSea ();
+    }
+    else
+    {
+        return false;
+    }
+}
+
 float FleetUnit::GetBattleAttackForce (GameConfiguration *configuration, bool isNaval) const
 {
     if (isNaval)

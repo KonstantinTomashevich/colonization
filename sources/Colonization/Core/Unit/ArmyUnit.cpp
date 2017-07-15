@@ -11,6 +11,7 @@
 #include <Colonization/Core/GameConfiguration.hpp>
 
 #include <Colonization/Backend/UnitsManager.hpp>
+#include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
@@ -55,6 +56,30 @@ float ArmyUnit::GetSoldiersCount () const
 void ArmyUnit::SetSoldiersCount (float soldiersCount)
 {
     soldiersCount_ = soldiersCount;
+}
+
+bool ArmyUnit::IsCanGoTo (const District *district, const Map *map, Urho3D::StringHash imaginePosition) const
+{
+    if (Unit::IsCanGoTo (district, map, imaginePosition))
+    {
+        if (district->GetIsSea () || (district->GetHasColony () && district->GetColonyOwnerName () == ownerPlayerName_))
+        {
+            return true;
+        }
+        else if (district->GetHasColony ())
+        {
+            PlayerInfo *myPlayerInfo = GetPlayerInfoByNameHash (node_->GetScene (), Urho3D::StringHash (ownerPlayerName_));
+            return myPlayerInfo->IsAtWarWith (district->GetColonyOwnerName ());
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else
+    {
+        return false;
+    }
 }
 
 float ArmyUnit::GetBattleAttackForce (GameConfiguration *configuration, bool isNaval) const

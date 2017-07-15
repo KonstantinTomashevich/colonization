@@ -9,6 +9,8 @@ namespace Colonization
 class GameConfiguration;
 class District;
 class UnitsManager;
+class PlayerInfo;
+
 //@ASBindGen Class ObjectType=Ref
 class Unit : public Urho3D::Component
 {
@@ -31,8 +33,6 @@ public:
     static void RegisterObject (Urho3D::Context *context);
     virtual void DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest) = 0;
 
-    //@ASBindGen Function
-    bool IsCanGoTo (const District *district, const Map *map, Urho3D::StringHash imaginePosition = Urho3D::StringHash::ZERO) const;
     void UpdateHash (const UnitsManager *owner);
     //@ASBindGen Function OverrideName=get_hash
     Urho3D::StringHash GetHash () const;
@@ -76,6 +76,8 @@ public:
     //@ASBindGen Function OverrideName=set_battleHash
     void SetBattleHash (const Urho3D::StringHash &battleHash);
 
+    //@ASBindGen Function
+    virtual bool IsCanGoTo (const District *district, const Map *map, Urho3D::StringHash imaginePosition = Urho3D::StringHash::ZERO) const;
     //@ASBindGen Function
     virtual float GetBattleAttackForce (GameConfiguration *configuration, bool isNaval) const = 0;
     //@ASBindGen Function

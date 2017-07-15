@@ -24,6 +24,7 @@ public:
     //@ASBindGen Function OverrideName=set_soldiersCount
     void SetSoldiersCount (float soldiersCount);
 
+    virtual bool IsCanGoTo (const District *district, const Map *map, Urho3D::StringHash imaginePosition = Urho3D::StringHash::ZERO) const;
     virtual float GetBattleAttackForce (GameConfiguration *configuration, bool isNaval) const;
     /// Return true if unit is destroyed.
     virtual bool ApplyDamage (GameConfiguration *configuration, float damage);

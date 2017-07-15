@@ -58,6 +58,18 @@ void TradersUnit::SetTradeGoodsCost (float tradeGoodsCost)
     tradeGoodsCost_ = tradeGoodsCost;
 }
 
+bool TradersUnit::IsCanGoTo (const District *district, const Map *map, Urho3D::StringHash imaginePosition) const
+{
+    if (Unit::IsCanGoTo (district, map, imaginePosition))
+    {
+        return (district->GetIsSea () || (district->GetHasColony () && district->GetColonyOwnerName () == ownerPlayerName_));
+    }
+    else
+    {
+        return false;
+    }
+}
+
 float TradersUnit::GetBattleAttackForce (GameConfiguration *configuration, bool isNaval) const
 {
     if (isNaval)
