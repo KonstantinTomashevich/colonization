@@ -7,6 +7,37 @@ namespace Colonization
 {
 namespace DistrictUtils
 {
+float CleanupColonyFromDistrict (District *district)
+{
+    district->SetHasColony (false);
+    district->SetColonyOwnerName (Urho3D::String::EMPTY);
+    district->RemoveAllColonyActions ();
+    district->SetMenCount (0.0f);
+    district->SetWomenCount (0.0f);
+
+    district->SetFarmsEvolutionPoints (0.0f);
+    district->SetMinesEvolutionPoints (0.0f);
+    district->SetIndustryEvolutionPoints (0.0f);
+    district->SetLogisticsEvolutionPoints (0.0f);
+    district->SetDefenseEvolutionPoints (0.0f);
+
+    district->SetFarmsBalance (0.0f);
+    district->SetMinesBalance (0.0f);
+    district->SetIndustryBalance (0.0f);
+    district->SetLogisticsBalance (0.0f);
+    district->SetDefenseBalance (0.0f);
+
+    district->SetLastTradeFarmsProduction (Urho3D::Variant::emptyVariantMap);
+    district->SetLastTradeMinesProduction (Urho3D::Variant::emptyVariantMap);
+    district->SetLastTradeIndustryProduction (Urho3D::Variant::emptyVariantMap);
+
+    district->SetLastTradeFarmsBalanceAddition (0.0f);
+    district->SetLastTradeMinesBalanceAddition (0.0f);
+    district->SetLastTradeIndustryBalanceAddition (0.0f);
+    district->SetLastTradeLogisticsBalanceAddition (0.0f);
+    district->SetLastTradeDefenseBalanceAddition (0.0f);
+}
+
 float CalculateFarmsProductionAmount (District *district, GameConfiguration *configuration)
 {
     float climateModifer = 1.0f;

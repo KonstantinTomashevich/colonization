@@ -14,6 +14,15 @@ PlayerInfo *GetPlayerInfoByPointer (Urho3D::Scene *scene, Player *player);
 //@ASBindGen Function AddRef_arg-1
 PlayerInfo *GetPlayerInfoByNameHash (Urho3D::Scene *scene, Urho3D::StringHash nameHash);
 
+//@ASBindGen Constant
+const Urho3D::StringHash EVENT_PLAYER_WILL_BE_DISCONNECTED ("PlayerWillBeDisconnected");
+namespace PlayerWillBeDisconnected
+{
+//@ASBindGen Constant OverrideName=PlayerWillBeDisconnected_PLAYER AddNamespaceToName=PlayerWillBeDisconnected
+/// Pointer.
+const Urho3D::StringHash PLAYER ("Player");
+}
+
 class PlayersManager : public Urho3D::Component
 {
 URHO3D_OBJECT (PlayersManager, Component)
@@ -50,8 +59,8 @@ public:
 
     bool IsColorUsed (Urho3D::Color color, Player *excludePlayer = 0) const;
     void DisconnectAllUnidentificatedConnections ();
-    Urho3D::PODVector <Player *> GetPlayersByNames(Urho3D::PODVector <Urho3D::StringHash> namesHashes) const;
-    Urho3D::PODVector <Player *> GetAllPlayers() const;
+    Urho3D::PODVector <Player *> GetPlayersByNames (Urho3D::PODVector <Urho3D::StringHash> namesHashes) const;
+    Urho3D::PODVector <Player *> GetAllPlayers () const;
 
     void PlayerIdentified (Urho3D::Connection *connection, Urho3D::String name, Urho3D::Color color);
     void DisconnectPlayer (Urho3D::StringHash nameHash);

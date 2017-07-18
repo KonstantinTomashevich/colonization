@@ -22,6 +22,7 @@ public:
 
     void HandleClientIdentity (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     void HandleNetworkMessage (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandlePlayerWillBeDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
 
     void SendPlayersStats (Player *player);
     void SendChatMessage (Urho3D::String senderName, Urho3D::String message, Urho3D::PODVector <Player *> &recieviers, bool isPrivate);

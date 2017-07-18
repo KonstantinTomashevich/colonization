@@ -35,6 +35,8 @@ public:
     static void RegisterObject (Urho3D::Context *context);
 
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandlePlayerWillBeDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+
     int GetUnitsCount () const;
     void UpdateUnitsList ();
     void RemoveDeadUnits ();

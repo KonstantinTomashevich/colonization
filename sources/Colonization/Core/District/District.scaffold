@@ -110,6 +110,8 @@ public:
     void RemoveColonyActionByIndex (int index);
     //@ASBindGen Function
     bool RemoveColonyActionById (Urho3D::StringHash id);
+    //@ASBindGen Function
+    void RemoveAllColonyActions ();
 
     void UpdateHash (Map *owner);
     //@ASBindGen Function
@@ -413,6 +415,11 @@ bool District::RemoveColonyActionById (Urho3D::StringHash id)
         }
     }
     return false;
+}
+
+void District::RemoveAllColonyActions ()
+{
+    colonyActions_.Clear ();
 }
 
 void District::UpdateHash (Map *owner)

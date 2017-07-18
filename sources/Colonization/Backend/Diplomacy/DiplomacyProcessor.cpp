@@ -5,6 +5,11 @@
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/Scene/Scene.h>
 
+#include <Colonization/Backend/Player/Player.hpp>
+#include <Colonization/Backend/Diplomacy/DiplomacyRequestsUtils.hpp>
+#include <Colonization/Backend/Diplomacy/DiplomacyEvents.hpp>
+#include <Colonization/Backend/PlayersManager.hpp>
+
 #include <Colonization/Core/Diplomacy/DiplomacyTags.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
@@ -77,6 +82,7 @@ void DiplomacyProcessor::OnSceneSet (Urho3D::Scene *scene)
     UnsubscribeFromAllEvents ();
     Urho3D::Component::OnSceneSet (scene);
     SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (DiplomacyProcessor, Update));
+    SubscribeToEvent (EVENT_PLAYER_WILL_BE_DISCONNECTED, URHO3D_HANDLER (DiplomacyProcessor, HandlePlayerWillBeDisconnected));
 }
 
 DiplomacyProcessor::DiplomacyProcessor (Urho3D::Context *context) : Urho3D::Component (context),
@@ -104,6 +110,39 @@ void DiplomacyProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMa
         UpdateWarsList ();
         UpdateDiplomacyRequests (timeStep);
         // TODO: Process wars escalation.
+    }
+}
+
+void DiplomacyProcessor::HandlePlayerWillBeDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    Player *player = (Player *) eventData [PlayerWillBeDisconnected::PLAYER].GetPtr ();
+    Urho3D::StringHash playerNameHash (player->GetName ());
+    for (int index = 0; index < wars_.Size (); index++)
+    {
+        DiplomacyWar *war = wars_.At (index);
+        if (war->RemoveAttackerNameHash (playerNameHash) || war->RemoveDefenderNameHash (playerNameHash))
+        {
+            if (war->GetAttackersCount () > 0)
+            {
+                for (int attackerIndex = 0; attackerIndex < war->GetAttackersCount (); attackerIndex++)
+                {
+                    DiplomacyRequestsUtils::UpdatePlayerEnemies (node_->GetScene (), war->GetAttackerNameHashByIndex (attackerIndex));
+                }
+            }
+
+            if (war->GetDefendersCount () > 0)
+            {
+                for (int defenderIndex = 0; defenderIndex < war->GetDefendersCount (); defenderIndex++)
+                {
+                    DiplomacyRequestsUtils::UpdatePlayerEnemies (node_->GetScene (), war->GetDefenderNameHashByIndex (defenderIndex));
+                }
+            }
+
+            if (war->GetAttackersCount () == 0 || war->GetDefendersCount () == 0)
+            {
+                RemoveWarByPtr (war);
+            }
+        }
     }
 }
 
@@ -187,14 +226,24 @@ DiplomacyWar *DiplomacyProcessor::GetWarByHash (Urho3D::StringHash hash)
     return 0;
 }
 
+bool DiplomacyProcessor::RemoveWarByPtr (DiplomacyWar *war)
+{
+    assert (war);
+    Urho3D::VariantMap eventData;
+    eventData [WarEnded::WAR] = Urho3D::Variant (war);
+    SendEvent (EVENT_WAR_ENDED, eventData);
+
+    bool result = wars_.Remove (Urho3D::SharedPtr <DiplomacyWar> (war));
+    war->GetNode ()->Remove ();
+    return result;
+}
+
 bool DiplomacyProcessor::RemoveWarByHash (Urho3D::StringHash hash)
 {
     Urho3D::SharedPtr <DiplomacyWar> war (GetWarByHash (hash));
     if (war.NotNull ())
     {
-        wars_.Remove (war);
-        war->GetNode ()->Remove ();
-        return true;
+        RemoveWarByPtr (war.Get ());
     }
     else
     {

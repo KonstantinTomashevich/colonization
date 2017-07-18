@@ -82,7 +82,6 @@ void UnitsManager::ProcessTrader (GameConfiguration *configuration, TradersUnit 
     assert (playersManager);
 
     Player *player = playersManager->GetPlayerByNameHash (Urho3D::String (unit->GetOwnerPlayerName ()));
-    // TODO: What if player was disconnected? Maybe delete all units and colonies of disconnected player?
     assert (player);
 
     float externalTaxes = configuration->GetExternalTaxes ();
@@ -146,6 +145,7 @@ void UnitsManager::OnSceneSet (Urho3D::Scene *scene)
     UnsubscribeFromAllEvents ();
     Urho3D::Component::OnSceneSet (scene);
     SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (UnitsManager, Update));
+    SubscribeToEvent (EVENT_PLAYER_WILL_BE_DISCONNECTED, URHO3D_HANDLER (UnitsManager, HandlePlayerWillBeDisconnected));
 }
 
 UnitsManager::UnitsManager (Urho3D::Context *context) : Urho3D::Component (context),
@@ -238,6 +238,20 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
                     AddNetworkUpdatePointsToComponentCounter (unit, updatePoints);
                 }
             }
+        }
+    }
+}
+
+void UnitsManager::HandlePlayerWillBeDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    Player *player = (Player *) eventData [PlayerWillBeDisconnected::PLAYER].GetPtr ();
+    // Remove units nodes, so this units will be deleted in next frame.
+    for (int index = 0; index < units_.Size (); index++)
+    {
+        Unit *unit = units_.At (index).Get ();
+        if (unit->GetOwnerPlayerName () == player->GetName ())
+        {
+            unit->GetNode ()->Remove ();
         }
     }
 }

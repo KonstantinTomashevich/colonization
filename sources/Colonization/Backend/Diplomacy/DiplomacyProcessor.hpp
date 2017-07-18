@@ -24,6 +24,7 @@ public:
 
     static void RegisterObject (Urho3D::Context *context);
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandlePlayerWillBeDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
 
     void AddDiplomacyRequest (DiplomacyRequest *request);
     void UpdateDiplomacyRequestPlayerStatus (unsigned requestId, Urho3D::StringHash playerNameHash, DiplomacyRequestPlayerStatus status);
@@ -33,6 +34,8 @@ public:
     DiplomacyWar *CreateWar ();
     DiplomacyWar *GetWarByIndex (int index);
     DiplomacyWar *GetWarByHash (Urho3D::StringHash hash);
+
+    bool RemoveWarByPtr (DiplomacyWar *war);
     bool RemoveWarByHash (Urho3D::StringHash hash);
     Urho3D::PODVector <Urho3D::StringHash> GetWarsOfPlayer (Urho3D::StringHash playerNameHash);
 };

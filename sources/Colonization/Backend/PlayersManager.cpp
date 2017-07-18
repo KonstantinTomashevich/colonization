@@ -223,8 +223,9 @@ void PlayersManager::HandleClientDisconnected (Urho3D::StringHash eventType, Urh
         Player *player = GetPlayerByConnection (connection);
         if (player)
         {
-            Urho3D::PODVector <Player *> allPlayers = GetAllPlayers ();
-            messagesHandler->SendTextInfoFromServer (GetPlayerByConnection (connection)->GetName () + " left game!", allPlayers);
+            Urho3D::VariantMap playerWillBeDisconnectedEventData;
+            playerWillBeDisconnectedEventData [PlayerWillBeDisconnected::PLAYER] = Urho3D::Variant (player);
+            SendEvent (EVENT_PLAYER_WILL_BE_DISCONNECTED, playerWillBeDisconnectedEventData);
             DisconnectPlayer (connection);
         }
     }

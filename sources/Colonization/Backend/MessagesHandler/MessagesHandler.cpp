@@ -66,6 +66,7 @@ MessagesHandler::MessagesHandler (Urho3D::Context *context) : Urho3D::Component 
 {
     SubscribeToEvent (Urho3D::E_CLIENTIDENTITY, URHO3D_HANDLER (MessagesHandler, HandleClientIdentity));
     SubscribeToEvent (Urho3D::E_NETWORKMESSAGE, URHO3D_HANDLER (MessagesHandler, HandleNetworkMessage));
+    SubscribeToEvent (EVENT_PLAYER_WILL_BE_DISCONNECTED, URHO3D_HANDLER (MessagesHandler, HandlePlayerWillBeDisconnected));
 }
 
 MessagesHandler::~MessagesHandler ()
@@ -143,6 +144,15 @@ void MessagesHandler::HandleNetworkMessage (Urho3D::StringHash eventType, Urho3D
             }
         }
     }
+}
+
+void MessagesHandler::HandlePlayerWillBeDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
+    assert (playersManager);
+    Player *player = (Player *) eventData [PlayerWillBeDisconnected::PLAYER].GetPtr ();
+    Urho3D::PODVector <Player *> allPlayers = playersManager->GetAllPlayers ();
+    SendTextInfoFromServer (player->GetName () + " left the game!", allPlayers);
 }
 
 void MessagesHandler::SendPlayersStats (Player *player)

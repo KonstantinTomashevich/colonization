@@ -29,6 +29,11 @@ bool RemoveUnitFromBattle (Battle *battle, bool isAttacker, Urho3D::StringHash u
     }
 }
 
+bool RemoveUnitWithUnkwnownAlignmentFromBattle (Battle *battle, Urho3D::StringHash unitHash)
+{
+    return battle->RemoveAttackerUnitHash (unitHash) || battle->RemoveDefenderUnitHash (unitHash);
+}
+
 Urho3D::StringHash GetUnitHashFromBattleByIndex (Battle *battle, bool isAttacker, int index)
 {
     if (isAttacker)
@@ -64,6 +69,5 @@ Urho3D::PODVector <Urho3D::StringHash> GetUnitsInBattleList (Battle *battle, boo
         return battle->GetDefendersUnitsList ();
     }
 }
-
 }
 }

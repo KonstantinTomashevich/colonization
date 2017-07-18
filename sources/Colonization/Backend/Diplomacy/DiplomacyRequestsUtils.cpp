@@ -9,17 +9,32 @@ namespace Colonization
 {
 namespace DiplomacyRequestsUtils
 {
-void AddPlayerEnemy (Urho3D::Scene *scene, Urho3D::StringHash playerNameHash, Urho3D::StringHash newEnemyNameHash)
+void UpdatePlayerEnemies (Urho3D::Scene *scene, Urho3D::StringHash playerNameHash)
 {
     PlayersManager *playersManager = scene->GetChild ("players")->GetComponent <PlayersManager> ();
     Player *player = playersManager->GetPlayerByNameHash (playerNameHash);
     assert (player);
+    player->RemoveAllEnemies ();
 
-    bool isEnemyExists = playersManager->GetPlayerByNameHash (newEnemyNameHash);
-    assert (isEnemyExists);
-    if (isEnemyExists)
+    DiplomacyProcessor *diplomacyProcessor = scene->GetChild ("diplomacy")->GetComponent <DiplomacyProcessor> ();
+    for (int index = 0; index < diplomacyProcessor->GetWarsCount (); index++)
     {
-        player->AddEnemy (newEnemyNameHash);
+        DiplomacyWar *war = diplomacyProcessor->GetWarByIndex (index);
+        if (war->IsAttacker (playerNameHash))
+        {
+            for (int defenderIndex = 0; defenderIndex < war->GetDefendersCount (); defenderIndex++)
+            {
+                player->AddEnemy (war->GetDefenderNameHashByIndex (defenderIndex));
+            }
+        }
+
+        else if (war->IsDefender (playerNameHash))
+        {
+            for (int attackerIndex = 0; attackerIndex < war->GetAttackersCount (); attackerIndex++)
+            {
+                player->AddEnemy (war->GetAttackerNameHashByIndex (attackerIndex));
+            }
+        }
     }
 }
 
@@ -69,35 +84,6 @@ void SendDiplomacyOfferMessage (Urho3D::Scene *scene, Urho3D::StringHash offerTy
 
     MessagesHandler *messagesHandler = scene->GetComponent <MessagesHandler> ();
     messagesHandler->SendDiplomacyOffer (offerType, offerDiplomacyRequestId, autodeclineTime, offerData, players);
-}
-
-void UpdatePlayerEnemies (Urho3D::Scene *scene, Urho3D::StringHash playerNameHash)
-{
-    PlayersManager *playersManager = scene->GetChild ("players")->GetComponent <PlayersManager> ();
-    Player *player = playersManager->GetPlayerByNameHash (playerNameHash);
-    assert (player);
-    player->RemoveAllEnemies ();
-
-    DiplomacyProcessor *diplomacyProcessor = scene->GetChild ("diplomacy")->GetComponent <DiplomacyProcessor> ();
-    for (int index = 0; index < diplomacyProcessor->GetWarsCount (); index++)
-    {
-        DiplomacyWar *war = diplomacyProcessor->GetWarByIndex (index);
-        if (war->IsAttacker (playerNameHash))
-        {
-            for (int defenderIndex = 0; defenderIndex < war->GetDefendersCount (); defenderIndex++)
-            {
-                player->AddEnemy (war->GetDefenderNameHashByIndex (defenderIndex));
-            }
-        }
-
-        else if (war->IsDefender (playerNameHash))
-        {
-            for (int attackerIndex = 0; attackerIndex < war->GetAttackersCount (); attackerIndex++)
-            {
-                player->AddEnemy (war->GetAttackerNameHashByIndex (attackerIndex));
-            }
-        }
-    }
 }
 }
 }

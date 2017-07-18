@@ -6,6 +6,7 @@
 #include <Colonization/Core/Diplomacy/DiplomacyTags.hpp>
 #include <Colonization/Backend/Diplomacy/DiplomacyRequestsUtils.hpp>
 #include <Colonization/Backend/Diplomacy/DiplomacyInfoType.hpp>
+#include <Colonization/Backend/Diplomacy/DiplomacyEvents.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
@@ -67,6 +68,10 @@ void DiplomacyWarRequest::OnAddition ()
     DiplomacyRequestsUtils::SendDiplomacyInfoMessageToAllPlayers (node_->GetScene (),
                                                                   DIPLOMACY_INFO_WAR_STARTED,
                                                                   infoData);
+
+    Urho3D::VariantMap eventData;
+    eventData [WarStarted::WAR] = Urho3D::Variant (war);
+    SendEvent (EVENT_WAR_STARTED, eventData);
 }
 
 bool DiplomacyWarRequest::UpdatePlayerStatus (Urho3D::StringHash playerNameHash, DiplomacyRequestPlayerStatus status)

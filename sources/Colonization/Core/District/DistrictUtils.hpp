@@ -8,6 +8,8 @@ class District;
 namespace DistrictUtils
 {
 //@ASBindGen Function AddNamespaceToCallName=DistrictUtils
+float CleanupColonyFromDistrict (District *district);
+//@ASBindGen Function AddNamespaceToCallName=DistrictUtils
 float CalculateFarmsProductionAmount (District *district, GameConfiguration *configuration);
 //@ASBindGen Function AddNamespaceToCallName=DistrictUtils
 float CalculateMinesProductionAmount (District *district, GameConfiguration *configuration);

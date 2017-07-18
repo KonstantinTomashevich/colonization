@@ -5,9 +5,11 @@
 #include <Urho3D/IO/Log.h>
 #include <Urho3D/Scene/Scene.h>
 
-#include <cmath>
+#include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Core/District/District.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
+#include <Colonization/Core/District/DistrictUtils.hpp>
+
 #include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
@@ -376,6 +378,7 @@ void ColoniesEvolutionManager::OnSceneSet (Urho3D::Scene *scene)
     UnsubscribeFromAllEvents ();
     Urho3D::Component::OnSceneSet (scene);
     SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (ColoniesEvolutionManager, Update));
+    SubscribeToEvent (EVENT_PLAYER_WILL_BE_DISCONNECTED, URHO3D_HANDLER (ColoniesEvolutionManager, HandlePlayerWillBeDisconnected));
 }
 
 ColoniesEvolutionManager::ColoniesEvolutionManager (Urho3D::Context *context) : Urho3D::Component (context)
@@ -414,6 +417,19 @@ void ColoniesEvolutionManager::Update (Urho3D::StringHash eventType, Urho3D::Var
                 ProcessColony (configuration, district, timeStep);
             }
         }
+    }
+}
+
+void ColoniesEvolutionManager::HandlePlayerWillBeDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    Player *player = (Player *) eventData [PlayerWillBeDisconnected::PLAYER].GetPtr ();
+    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
+    Urho3D::PODVector <Urho3D::StringHash> colonies = map->GetColoniesOfPlayer (Urho3D::StringHash (player->GetName ()));
+
+    for (int index = 0; index < colonies.Size (); index++)
+    {
+        District *colony = map->GetDistrictByHash (colonies.At (index));
+        DistrictUtils::CleanupColonyFromDistrict (colony);
     }
 }
 }
