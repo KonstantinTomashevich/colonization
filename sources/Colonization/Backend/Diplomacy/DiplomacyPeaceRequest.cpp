@@ -12,30 +12,6 @@
 
 namespace Colonization
 {
-void DiplomacyPeaceRequest::ProcessAcceptedResult ()
-{
-    Urho3D::VariantMap infoData;
-    infoData [DiplomacyInfoPeaceTreatyAccepted::SENDER] = Urho3D::Variant (peaceRequester_);
-    infoData [DiplomacyInfoPeaceTreatyAccepted::ANOTHER_PLAYER] = Urho3D::Variant (enemy_);
-    DiplomacyRequestsUtils::SendDiplomacyInfoMessageToAllPlayers (node_->GetScene (),
-                                                                  DIPLOMACY_INFO_PEACE_TREATY_ACCEPTED,
-                                                                  infoData);
-
-    DiplomacyRequestsUtils::RemoveWarByHash (node_->GetScene (), warHash_);
-    DiplomacyRequestsUtils::UpdatePlayerEnemies (node_->GetScene (), peaceRequester_);
-    DiplomacyRequestsUtils::UpdatePlayerEnemies (node_->GetScene (), enemy_);
-}
-
-void DiplomacyPeaceRequest::ProcessDeclinedResult ()
-{
-    Urho3D::VariantMap infoData;
-    infoData [DiplomacyInfoPeaceTreatyDeclined::SENDER] = Urho3D::Variant (peaceRequester_);
-    infoData [DiplomacyInfoPeaceTreatyDeclined::ANOTHER_PLAYER] = Urho3D::Variant (enemy_);
-    DiplomacyRequestsUtils::SendDiplomacyInfoMessageToAllPlayers (node_->GetScene (),
-                                                                  DIPLOMACY_INFO_PEACE_TREATY_DECLINED,
-                                                                  infoData);
-}
-
 DiplomacyPeaceRequest::DiplomacyPeaceRequest (Urho3D::Context *context) : DiplomacyRequest (context),
     warHash_ (),
     peaceRequester_ (),
@@ -110,7 +86,7 @@ void DiplomacyPeaceRequest::OnAddition ()
     offerData [DiplomacyOfferPeace::ENEMY_NAME_HASH] = Urho3D::Variant (peaceRequester_);
     DiplomacyRequestsUtils::SendDiplomacyOfferMessage (node_->GetScene (),
                                                        DIPLOMACY_OFFER_PEACE,
-                                                       requestId_,
+                                                       GetRequestId (),
                                                        untilAutodecline_,
                                                        offerData,
                                                        recieviers);
@@ -158,5 +134,29 @@ bool DiplomacyPeaceRequest::TimeUpdate (float timeStep)
 Urho3D::String DiplomacyPeaceRequest::GetRequestTypeTag () const
 {
     return TAG_PEACE;
+}
+
+void DiplomacyPeaceRequest::ProcessAcceptedResult ()
+{
+    Urho3D::VariantMap infoData;
+    infoData [DiplomacyInfoPeaceTreatyAccepted::SENDER] = Urho3D::Variant (peaceRequester_);
+    infoData [DiplomacyInfoPeaceTreatyAccepted::ANOTHER_PLAYER] = Urho3D::Variant (enemy_);
+    DiplomacyRequestsUtils::SendDiplomacyInfoMessageToAllPlayers (node_->GetScene (),
+                                                                  DIPLOMACY_INFO_PEACE_TREATY_ACCEPTED,
+                                                                  infoData);
+
+    DiplomacyRequestsUtils::RemoveWarByHash (node_->GetScene (), warHash_);
+    DiplomacyRequestsUtils::UpdatePlayerEnemies (node_->GetScene (), peaceRequester_);
+    DiplomacyRequestsUtils::UpdatePlayerEnemies (node_->GetScene (), enemy_);
+}
+
+void DiplomacyPeaceRequest::ProcessDeclinedResult ()
+{
+    Urho3D::VariantMap infoData;
+    infoData [DiplomacyInfoPeaceTreatyDeclined::SENDER] = Urho3D::Variant (peaceRequester_);
+    infoData [DiplomacyInfoPeaceTreatyDeclined::ANOTHER_PLAYER] = Urho3D::Variant (enemy_);
+    DiplomacyRequestsUtils::SendDiplomacyInfoMessageToAllPlayers (node_->GetScene (),
+                                                                  DIPLOMACY_INFO_PEACE_TREATY_DECLINED,
+                                                                  infoData);
 }
 }

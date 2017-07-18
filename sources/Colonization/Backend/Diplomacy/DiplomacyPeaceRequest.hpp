@@ -7,15 +7,6 @@ namespace Colonization
 class DiplomacyPeaceRequest : public DiplomacyRequest
 {
 URHO3D_OBJECT (DiplomacyPeaceRequest, DiplomacyRequest)
-protected:
-    Urho3D::StringHash warHash_;
-    Urho3D::StringHash peaceRequester_;
-    Urho3D::StringHash enemy_;
-    float untilAutodecline_;
-
-    void ProcessAcceptedResult ();
-    void ProcessDeclinedResult ();
-
 public:
     explicit DiplomacyPeaceRequest (Urho3D::Context *context);
     virtual ~DiplomacyPeaceRequest ();
@@ -37,5 +28,14 @@ public:
     virtual bool UpdatePlayerStatus (Urho3D::StringHash playerNameHash, DiplomacyRequestPlayerStatus status);
     virtual bool TimeUpdate (float timeStep);
     virtual Urho3D::String GetRequestTypeTag () const;
+
+private:
+    Urho3D::StringHash warHash_;
+    Urho3D::StringHash peaceRequester_;
+    Urho3D::StringHash enemy_;
+    float untilAutodecline_;
+
+    void ProcessAcceptedResult ();
+    void ProcessDeclinedResult ();
 };
 }

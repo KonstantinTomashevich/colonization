@@ -29,7 +29,7 @@ void MainMenuActivity::Start ()
     assert (angelScriptGUI_->GetScriptFile ()->IsCompiled ());
 
     Urho3D::VariantVector executionParameters;
-    executionParameters.Push (application_);
+    executionParameters.Push (GetApplication ());
     angelScriptGUI_->Execute ("void set_activitiesApplication (ActivitiesApplication @activitiesApplication)", executionParameters);
 }
 

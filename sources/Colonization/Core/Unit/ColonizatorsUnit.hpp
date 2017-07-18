@@ -10,9 +10,6 @@ namespace Colonization
 class ColonizatorsUnit : public Unit
 {
 URHO3D_OBJECT (ColonizatorsUnit, Unit)
-protected:
-    float colonizatorsCount_;
-
 public:
     explicit ColonizatorsUnit (Urho3D::Context *context);
     virtual ~ColonizatorsUnit ();
@@ -31,5 +28,8 @@ public:
     virtual bool ApplyDamage (GameConfiguration *configuration, float damage);
     virtual bool IsAlive () const;
     virtual Urho3D::String GetUnitTypeTag () const;
+
+private:
+    float colonizatorsCount_;
 };
 }

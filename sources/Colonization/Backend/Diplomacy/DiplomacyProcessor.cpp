@@ -16,75 +16,6 @@
 
 namespace Colonization
 {
-void DiplomacyProcessor::UpdateDiplomacyRequests (float timeStep)
-{
-    Urho3D::Node *requestsRoot = GetOrCreateRequestsNode ();
-    const Urho3D::Vector <Urho3D::SharedPtr <Urho3D::Node> > children = requestsRoot->GetChildren ();
-
-    for (int index = 0; index < children.Size (); index++)
-    {
-        Urho3D::Node *requestNode = children.At (index).Get ();
-        DiplomacyRequest *request = requestNode->GetDerivedComponent <DiplomacyRequest> ();
-        if (request->TimeUpdate (timeStep))
-        {
-            requestNode->Remove ();
-        }
-    }
-}
-
-Urho3D::Node *DiplomacyProcessor::GetDiplomacyRequestNodeById (unsigned requestId)
-{
-    Urho3D::Node *requestsRoot = GetOrCreateRequestsNode ();
-    const Urho3D::Vector <Urho3D::SharedPtr <Urho3D::Node> > children = requestsRoot->GetChildren ();
-
-    for (int index = 0; index < children.Size (); index++)
-    {
-        Urho3D::Node *requestNode = children.At (index).Get ();
-        DiplomacyRequest *request = requestNode->GetDerivedComponent <DiplomacyRequest> ();
-        if (request->GetRequestId () == requestId)
-        {
-            return requestNode;
-        }
-    }
-    return 0;
-}
-
-unsigned DiplomacyProcessor::GetFreeDiplomacyRequestId ()
-{
-    unsigned id = 1;
-    Urho3D::Node *requestsRoot = GetOrCreateRequestsNode ();
-    const Urho3D::Vector <Urho3D::SharedPtr <Urho3D::Node> > children = requestsRoot->GetChildren ();
-
-    for (int index = 0; index < children.Size (); index++)
-    {
-        Urho3D::Node *requestNode = children.At (index).Get ();
-        DiplomacyRequest *request = requestNode->GetDerivedComponent <DiplomacyRequest> ();
-        if (request->GetRequestId () >= id)
-        {
-            id = request->GetRequestId () + 1;
-        }
-    }
-    return id;
-}
-
-Urho3D::Node *DiplomacyProcessor::GetOrCreateRequestsNode ()
-{
-    Urho3D::Node *requestsNode = node_->GetChild ("requests");
-    if (!requestsNode)
-    {
-        requestsNode = node_->CreateChild ("requests", Urho3D::LOCAL);
-    }
-    return requestsNode;
-}
-
-void DiplomacyProcessor::OnSceneSet (Urho3D::Scene *scene)
-{
-    UnsubscribeFromAllEvents ();
-    Urho3D::Component::OnSceneSet (scene);
-    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (DiplomacyProcessor, Update));
-    SubscribeToEvent (EVENT_PLAYER_WILL_BE_DISCONNECTED, URHO3D_HANDLER (DiplomacyProcessor, HandlePlayerWillBeDisconnected));
-}
-
 DiplomacyProcessor::DiplomacyProcessor (Urho3D::Context *context) : Urho3D::Component (context),
     wars_ ()
 {
@@ -263,5 +194,74 @@ Urho3D::PODVector <Urho3D::StringHash> DiplomacyProcessor::GetWarsOfPlayer (Urho
         }
     }
     return warsOfPlayer;
+}
+
+void DiplomacyProcessor::OnSceneSet (Urho3D::Scene *scene)
+{
+    UnsubscribeFromAllEvents ();
+    Urho3D::Component::OnSceneSet (scene);
+    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (DiplomacyProcessor, Update));
+    SubscribeToEvent (EVENT_PLAYER_WILL_BE_DISCONNECTED, URHO3D_HANDLER (DiplomacyProcessor, HandlePlayerWillBeDisconnected));
+}
+
+void DiplomacyProcessor::UpdateDiplomacyRequests (float timeStep)
+{
+    Urho3D::Node *requestsRoot = GetOrCreateRequestsNode ();
+    const Urho3D::Vector <Urho3D::SharedPtr <Urho3D::Node> > children = requestsRoot->GetChildren ();
+
+    for (int index = 0; index < children.Size (); index++)
+    {
+        Urho3D::Node *requestNode = children.At (index).Get ();
+        DiplomacyRequest *request = requestNode->GetDerivedComponent <DiplomacyRequest> ();
+        if (request->TimeUpdate (timeStep))
+        {
+            requestNode->Remove ();
+        }
+    }
+}
+
+Urho3D::Node *DiplomacyProcessor::GetDiplomacyRequestNodeById (unsigned requestId)
+{
+    Urho3D::Node *requestsRoot = GetOrCreateRequestsNode ();
+    const Urho3D::Vector <Urho3D::SharedPtr <Urho3D::Node> > children = requestsRoot->GetChildren ();
+
+    for (int index = 0; index < children.Size (); index++)
+    {
+        Urho3D::Node *requestNode = children.At (index).Get ();
+        DiplomacyRequest *request = requestNode->GetDerivedComponent <DiplomacyRequest> ();
+        if (request->GetRequestId () == requestId)
+        {
+            return requestNode;
+        }
+    }
+    return 0;
+}
+
+unsigned DiplomacyProcessor::GetFreeDiplomacyRequestId ()
+{
+    unsigned id = 1;
+    Urho3D::Node *requestsRoot = GetOrCreateRequestsNode ();
+    const Urho3D::Vector <Urho3D::SharedPtr <Urho3D::Node> > children = requestsRoot->GetChildren ();
+
+    for (int index = 0; index < children.Size (); index++)
+    {
+        Urho3D::Node *requestNode = children.At (index).Get ();
+        DiplomacyRequest *request = requestNode->GetDerivedComponent <DiplomacyRequest> ();
+        if (request->GetRequestId () >= id)
+        {
+            id = request->GetRequestId () + 1;
+        }
+    }
+    return id;
+}
+
+Urho3D::Node *DiplomacyProcessor::GetOrCreateRequestsNode ()
+{
+    Urho3D::Node *requestsNode = node_->GetChild ("requests");
+    if (!requestsNode)
+    {
+        requestsNode = node_->CreateChild ("requests", Urho3D::LOCAL);
+    }
+    return requestsNode;
 }
 }

@@ -26,18 +26,6 @@ const Urho3D::StringHash PLAYER ("Player");
 class PlayersManager : public Urho3D::Component
 {
 URHO3D_OBJECT (PlayersManager, Component)
-protected:
-    bool isAcceptingNewConnections_;
-    Urho3D::HashMap <Urho3D::StringHash, Player *> players_;
-    Urho3D::HashMap <Urho3D::StringHash, Urho3D::StringHash> connectionHashToNameHashMap_;
-    Urho3D::Vector <Urho3D::Pair <float, Urho3D::Connection *> > connectionsWithoutId_;
-
-    bool DeleteIdentificatedConnection (Urho3D::Connection *connection);
-    void UpdatePlayers (MessagesHandler *messagesHandler, float timeStep);
-    void UpdateConnectionsWithoudId (float timeStep);
-    void UpdatePlayersInfos ();
-    virtual void OnSceneSet (Urho3D::Scene* scene);
-
 public:
     explicit PlayersManager (Urho3D::Context *context);
     virtual ~PlayersManager ();
@@ -65,5 +53,19 @@ public:
     void PlayerIdentified (Urho3D::Connection *connection, Urho3D::String name, Urho3D::Color color);
     void DisconnectPlayer (Urho3D::StringHash nameHash);
     void DisconnectPlayer (Urho3D::Connection *connection);
+
+protected:
+    virtual void OnSceneSet (Urho3D::Scene* scene);
+
+private:
+    bool isAcceptingNewConnections_;
+    Urho3D::HashMap <Urho3D::StringHash, Player *> players_;
+    Urho3D::HashMap <Urho3D::StringHash, Urho3D::StringHash> connectionHashToNameHashMap_;
+    Urho3D::Vector <Urho3D::Pair <float, Urho3D::Connection *> > connectionsWithoutId_;
+
+    bool DeleteIdentificatedConnection (Urho3D::Connection *connection);
+    void UpdatePlayers (MessagesHandler *messagesHandler, float timeStep);
+    void UpdateConnectionsWithoudId (float timeStep);
+    void UpdatePlayersInfos ();
 };
 }

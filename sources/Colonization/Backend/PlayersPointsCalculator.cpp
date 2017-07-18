@@ -12,6 +12,55 @@
 
 namespace Colonization
 {
+PlayersPointsCalculator::PlayersPointsCalculator (Urho3D::Context *context) : Urho3D::Component (context)
+{
+
+}
+
+PlayersPointsCalculator::~PlayersPointsCalculator ()
+{
+
+}
+
+void PlayersPointsCalculator::RegisterObject (Urho3D::Context *context)
+{
+    context->RegisterFactory <PlayersPointsCalculator> (COLONIZATION_SERVER_ONLY_CATEGORY);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
+}
+
+void PlayersPointsCalculator::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    if (enabled_)
+    {
+        assert (node_);
+        PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
+        Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
+        UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
+        GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
+
+        assert (playersManager);
+        assert (map);
+        assert (unitsManager);
+        assert (configuration);
+
+        for (int index = 0; index < playersManager->GetPlayersCount (); index++)
+        {
+            Player *player = playersManager->GetPlayerByIndex (index);
+            if (player)
+            {
+                UpdatePlayerPoints (player, configuration, map, unitsManager);
+            }
+        }
+    }
+}
+
+void PlayersPointsCalculator::OnSceneSet (Urho3D::Scene *scene)
+{
+    UnsubscribeFromAllEvents ();
+    Urho3D::Component::OnSceneSet (scene);
+    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (PlayersPointsCalculator, Update));
+}
+
 float PlayersPointsCalculator::CalculateColonyPoints (District *district, GameConfiguration *configuration)
 {
     assert (district->GetHasColony ());
@@ -78,54 +127,5 @@ void PlayersPointsCalculator::UpdatePlayerPoints (Player *player, GameConfigurat
         }
     }
     player->SetPoints (summaryPoints);
-}
-
-void PlayersPointsCalculator::OnSceneSet (Urho3D::Scene *scene)
-{
-    UnsubscribeFromAllEvents ();
-    Urho3D::Component::OnSceneSet (scene);
-    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (PlayersPointsCalculator, Update));
-}
-
-PlayersPointsCalculator::PlayersPointsCalculator (Urho3D::Context *context) : Urho3D::Component (context)
-{
-
-}
-
-PlayersPointsCalculator::~PlayersPointsCalculator ()
-{
-
-}
-
-void PlayersPointsCalculator::RegisterObject (Urho3D::Context *context)
-{
-    context->RegisterFactory <PlayersPointsCalculator> (COLONIZATION_SERVER_ONLY_CATEGORY);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
-}
-
-void PlayersPointsCalculator::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
-{
-    if (enabled_)
-    {
-        assert (node_);
-        PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
-        Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
-        UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
-        GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
-
-        assert (playersManager);
-        assert (map);
-        assert (unitsManager);
-        assert (configuration);
-
-        for (int index = 0; index < playersManager->GetPlayersCount (); index++)
-        {
-            Player *player = playersManager->GetPlayerByIndex (index);
-            if (player)
-            {
-                UpdatePlayerPoints (player, configuration, map, unitsManager);
-            }
-        }
-    }
 }
 }

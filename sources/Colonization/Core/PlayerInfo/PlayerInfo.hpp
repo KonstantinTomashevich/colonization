@@ -7,17 +7,6 @@ namespace Colonization
 class PlayerInfo : public Urho3D::Component
 {
 URHO3D_OBJECT (PlayerInfo, Component)
-protected:
-    Urho3D::String name_;
-    float points_;
-    Urho3D::Color color_;
-    bool isReadyForStart_;
-    Urho3D::PODVector <Urho3D::StringHash> enemies_;
-    /// Progresses to victories. Key is victory type name, value is VariantMap.
-    /// Each value has progress indicator named "progress". It is float from 0.0 to 100.0.
-    /// Each value has angel script function name, which parses this value and returns text for tooltip.
-    Urho3D::VariantMap progressToVictory_;
-
 public:
     explicit PlayerInfo (Urho3D::Context *context);
     virtual ~PlayerInfo ();
@@ -72,5 +61,16 @@ public:
     Urho3D::VariantMap GetProgressToVictoryOfTypeInfo (Urho3D::StringHash victoryType) const;
     //@ASBindGen Function
     void SetProgressToVictoryOfTypeInfo (Urho3D::StringHash victoryType, const Urho3D::VariantMap &progressToVictoryInfo);
+
+private:
+    Urho3D::String name_;
+    float points_;
+    Urho3D::Color color_;
+    bool isReadyForStart_;
+    Urho3D::PODVector <Urho3D::StringHash> enemies_;
+    /// Progresses to victories. Key is victory type name, value is VariantMap.
+    /// Each value has progress indicator named "progress". It is float from 0.0 to 100.0.
+    /// Each value has angel script function name, which parses this value and returns text for tooltip.
+    Urho3D::VariantMap progressToVictory_;
 };
 }

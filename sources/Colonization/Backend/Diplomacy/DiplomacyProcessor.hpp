@@ -9,15 +9,6 @@ namespace Colonization
 class DiplomacyProcessor : public Urho3D::Component
 {
 URHO3D_OBJECT (DiplomacyProcessor, Component)
-protected:
-    Urho3D::Vector <Urho3D::SharedPtr <DiplomacyWar> > wars_;
-
-    void UpdateDiplomacyRequests (float timeStep);
-    Urho3D::Node *GetDiplomacyRequestNodeById (unsigned requestId);
-    unsigned GetFreeDiplomacyRequestId ();
-    Urho3D::Node *GetOrCreateRequestsNode ();
-    virtual void OnSceneSet (Urho3D::Scene* scene);
-
 public:
     explicit DiplomacyProcessor (Urho3D::Context *context);
     virtual ~DiplomacyProcessor ();
@@ -38,5 +29,16 @@ public:
     bool RemoveWarByPtr (DiplomacyWar *war);
     bool RemoveWarByHash (Urho3D::StringHash hash);
     Urho3D::PODVector <Urho3D::StringHash> GetWarsOfPlayer (Urho3D::StringHash playerNameHash);
+
+protected:
+    virtual void OnSceneSet (Urho3D::Scene* scene);
+
+private:
+    Urho3D::Vector <Urho3D::SharedPtr <DiplomacyWar> > wars_;
+
+    void UpdateDiplomacyRequests (float timeStep);
+    Urho3D::Node *GetDiplomacyRequestNodeById (unsigned requestId);
+    unsigned GetFreeDiplomacyRequestId ();
+    Urho3D::Node *GetOrCreateRequestsNode ();
 };
 }

@@ -7,13 +7,6 @@ class District;
 class FogOfWarCalculator : public Urho3D::Component
 {
 URHO3D_OBJECT (FogOfWarCalculator, Component)
-protected:
-    Urho3D::String playerName_;
-    // If true -- district visible.
-    Urho3D::HashMap <Urho3D::StringHash, bool> fogOfWarMap_;
-    void OpenDistrictAndNeighbors (District *district);
-    virtual void OnSceneSet (Urho3D::Scene* scene);
-
 public:
     explicit FogOfWarCalculator (Urho3D::Context *context);
     virtual ~FogOfWarCalculator ();
@@ -29,5 +22,14 @@ public:
     //@ASBindGen Function
     bool IsDistrictVisible (Urho3D::StringHash districtHash);
     Urho3D::HashMap <Urho3D::StringHash, bool> GetFogOfWarMap ();
+
+protected:
+    virtual void OnSceneSet (Urho3D::Scene* scene);
+
+private:
+    Urho3D::String playerName_;
+    // If true -- district visible.
+    Urho3D::HashMap <Urho3D::StringHash, bool> fogOfWarMap_;
+    void OpenDistrictAndNeighbors (District *district);
 };
 }

@@ -13,11 +13,81 @@
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
-#include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
+#include <Colonization/Utils/Network/NetworkUpdateCounterUtils.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
 namespace Colonization
 {
+TradeProcessor::TradeProcessor (Urho3D::Context *context) : Urho3D::Component (context),
+    tradeAreasUpdateDelay_ (10.0f),
+    untilTradeAreasUpdate_ (0.0f)
+{
+
+}
+
+TradeProcessor::~TradeProcessor ()
+{
+    tradeAreas_.Clear ();
+}
+
+void TradeProcessor::RegisterObject (Urho3D::Context *context)
+{
+    context->RegisterFactory <TradeProcessor> (COLONIZATION_SERVER_ONLY_CATEGORY);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Trade Areas Update Delay", GetTradeAreasUpdateDelay, SetTradeAreasUpdateDelay, float, 10.0f, Urho3D::AM_DEFAULT);
+}
+
+void TradeProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    if (enabled_)
+    {
+        float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
+        untilTradeAreasUpdate_ -= timeStep;
+        if (untilTradeAreasUpdate_ <= 0.0f)
+        {
+            UpdateTradeAreas (tradeAreasUpdateDelay_);
+            untilTradeAreasUpdate_ = tradeAreasUpdateDelay_;
+        }
+    }
+}
+
+int TradeProcessor::GetTradeAreasCount () const
+{
+    return tradeAreas_.Size ();
+}
+
+InternalTradeArea *TradeProcessor::GetTradeAreaByIndex (int index) const
+{
+    assert (index < tradeAreas_.Size ());
+    return tradeAreas_.At (index);
+}
+
+float TradeProcessor::GetTimeUntilTradeAreasUpdate () const
+{
+    return untilTradeAreasUpdate_;
+}
+
+float TradeProcessor::GetTradeAreasUpdateDelay () const
+{
+    return tradeAreasUpdateDelay_;
+}
+
+void TradeProcessor::SetTradeAreasUpdateDelay (float tradeAreasUpdateDelay)
+{
+    tradeAreasUpdateDelay_ = tradeAreasUpdateDelay;
+    if (tradeAreasUpdateDelay_ > untilTradeAreasUpdate_)
+    {
+        untilTradeAreasUpdate_ = tradeAreasUpdateDelay;
+    }
+}
+
+void TradeProcessor::OnSceneSet (Urho3D::Scene *scene)
+{
+    UnsubscribeFromAllEvents ();
+    Urho3D::Component::OnSceneSet (scene);
+    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (TradeProcessor, Update));
+}
+
 void TradeProcessor::UpdateTradeAreas (float updateDelay)
 {
     tradeAreas_.Clear ();
@@ -60,7 +130,7 @@ void TradeProcessor::UpdateTradeAreas (float updateDelay)
             Urho3D::SharedPtr <InternalTradeArea> tradeAreaSharedPtr (node->GetComponent <InternalTradeArea> ());
             float updatePoints = UpdateTradeArea (tradeAreaSharedPtr, map, toScan.At (0), toScan, configuration);
             tradeAreas_.Push (tradeAreaSharedPtr);
-            AddNetworkUpdatePointsToComponentCounter (tradeAreaSharedPtr, updatePoints);
+            NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (tradeAreaSharedPtr, updatePoints);
         }
         else
         {
@@ -233,75 +303,5 @@ void TradeProcessor::ClearTradeAreas ()
         tradeAreas_.At (index)->GetNode ()->Remove ();
     }
     tradeAreas_.Clear ();
-}
-
-void TradeProcessor::OnSceneSet (Urho3D::Scene *scene)
-{
-    UnsubscribeFromAllEvents ();
-    Urho3D::Component::OnSceneSet (scene);
-    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (TradeProcessor, Update));
-}
-
-TradeProcessor::TradeProcessor (Urho3D::Context *context) : Urho3D::Component (context),
-    tradeAreasUpdateDelay_ (10.0f),
-    untilTradeAreasUpdate_ (0.0f)
-{
-
-}
-
-TradeProcessor::~TradeProcessor ()
-{
-    tradeAreas_.Clear ();
-}
-
-void TradeProcessor::RegisterObject (Urho3D::Context *context)
-{
-    context->RegisterFactory <TradeProcessor> (COLONIZATION_SERVER_ONLY_CATEGORY);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Trade Areas Update Delay", GetTradeAreasUpdateDelay, SetTradeAreasUpdateDelay, float, 10.0f, Urho3D::AM_DEFAULT);
-}
-
-void TradeProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
-{
-    if (enabled_)
-    {
-        float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
-        untilTradeAreasUpdate_ -= timeStep;
-        if (untilTradeAreasUpdate_ <= 0.0f)
-        {
-            UpdateTradeAreas (tradeAreasUpdateDelay_);
-            untilTradeAreasUpdate_ = tradeAreasUpdateDelay_;
-        }
-    }
-}
-
-int TradeProcessor::GetTradeAreasCount () const
-{
-    return tradeAreas_.Size ();
-}
-
-InternalTradeArea *TradeProcessor::GetTradeAreaByIndex (int index) const
-{
-    assert (index < tradeAreas_.Size ());
-    return tradeAreas_.At (index);
-}
-
-float TradeProcessor::GetTimeUntilTradeAreasUpdate () const
-{
-    return untilTradeAreasUpdate_;
-}
-
-float TradeProcessor::GetTradeAreasUpdateDelay () const
-{
-    return tradeAreasUpdateDelay_;
-}
-
-void TradeProcessor::SetTradeAreasUpdateDelay (float tradeAreasUpdateDelay)
-{
-    tradeAreasUpdateDelay_ = tradeAreasUpdateDelay;
-    if (tradeAreasUpdateDelay_ > untilTradeAreasUpdate_)
-    {
-        untilTradeAreasUpdate_ = tradeAreasUpdateDelay;
-    }
 }
 }

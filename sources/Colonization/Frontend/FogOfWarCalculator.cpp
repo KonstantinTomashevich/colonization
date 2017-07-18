@@ -15,23 +15,6 @@
 
 namespace Colonization
 {
-void FogOfWarCalculator::OpenDistrictAndNeighbors (District *district)
-{
-    fogOfWarMap_ [district->GetHash ()] = true;
-    Urho3D::PODVector <Urho3D::StringHash> neighbors = district->GetNeighborsHashes ();
-    for (int index = 0; index < neighbors.Size (); index++)
-    {
-        fogOfWarMap_ [neighbors.At (index)] = true;
-    }
-}
-
-void FogOfWarCalculator::OnSceneSet (Urho3D::Scene *scene)
-{
-    //UnsubscribeFromAllEvents ();
-    Urho3D::Component::OnSceneSet (scene);
-    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (FogOfWarCalculator, Update));
-}
-
 FogOfWarCalculator::FogOfWarCalculator (Urho3D::Context *context) : Urho3D::Component (context),
     playerName_ (),
     fogOfWarMap_ ()
@@ -117,9 +100,25 @@ bool FogOfWarCalculator::IsDistrictVisible (Urho3D::StringHash districtHash)
     return fogOfWarMap_ [districtHash];
 }
 
-Urho3D::HashMap<Urho3D::StringHash, bool> FogOfWarCalculator::GetFogOfWarMap ()
+Urho3D::HashMap <Urho3D::StringHash, bool> FogOfWarCalculator::GetFogOfWarMap ()
 {
     return fogOfWarMap_;
 }
+
+void FogOfWarCalculator::OnSceneSet (Urho3D::Scene *scene)
+{
+    //UnsubscribeFromAllEvents ();
+    Urho3D::Component::OnSceneSet (scene);
+    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (FogOfWarCalculator, Update));
 }
 
+void FogOfWarCalculator::OpenDistrictAndNeighbors (District *district)
+{
+    fogOfWarMap_ [district->GetHash ()] = true;
+    Urho3D::PODVector <Urho3D::StringHash> neighbors = district->GetNeighborsHashes ();
+    for (int index = 0; index < neighbors.Size (); index++)
+    {
+        fogOfWarMap_ [neighbors.At (index)] = true;
+    }
+}
+}

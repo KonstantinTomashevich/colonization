@@ -9,9 +9,6 @@ namespace Colonization
 class ArmyUnit : public Unit
 {
 URHO3D_OBJECT (ArmyUnit, Unit)
-protected:
-    float soldiersCount_;
-
 public:
     explicit ArmyUnit (Urho3D::Context *context);
     virtual ~ArmyUnit ();
@@ -30,5 +27,8 @@ public:
     virtual bool ApplyDamage (GameConfiguration *configuration, float damage);
     virtual bool IsAlive () const;
     virtual Urho3D::String GetUnitTypeTag () const;
+
+private:
+    float soldiersCount_;
 };
 }

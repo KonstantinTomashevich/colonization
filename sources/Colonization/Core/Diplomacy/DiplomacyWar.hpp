@@ -8,13 +8,6 @@ class DiplomacyProcessor;
 class DiplomacyWar : public Urho3D::Component
 {
 URHO3D_OBJECT (DiplomacyWar, Component)
-protected:
-    Urho3D::StringHash hash_;
-    Urho3D::PODVector <Urho3D::StringHash> attackersList_;
-    Urho3D::PODVector <Urho3D::StringHash> defendersList_;
-    /// [0.0f, 100.0f]
-    float conflictEscalation_;
-
 public:
     explicit DiplomacyWar (Urho3D::Context* context);
     virtual ~DiplomacyWar ();
@@ -62,5 +55,12 @@ public:
 
     Urho3D::VariantVector GetDefendersListAttribute () const;
     void SetDefendersListAttribute (const Urho3D::VariantVector &defendersList);
+
+private:
+    Urho3D::StringHash hash_;
+    Urho3D::PODVector <Urho3D::StringHash> attackersList_;
+    Urho3D::PODVector <Urho3D::StringHash> defendersList_;
+    /// [0.0f, 100.0f]
+    float conflictEscalation_;
 };
 }

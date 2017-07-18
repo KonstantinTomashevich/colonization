@@ -10,31 +10,6 @@ const float PLAYER_NEW_CHAT_MESSAGE_DELAY = 1.0f;
 class Player : public Urho3D::Object
 {
 URHO3D_OBJECT (Player, Object)
-protected:
-    Urho3D::String name_;
-    Urho3D::Color color_;
-    float points_;
-    float gold_;
-    bool isReadyForStart_;
-
-    Urho3D::Scene *scene_;
-    float timeUntilNewChatMessage_;
-    Urho3D::Vector <Urho3D::Pair <PlayerActionType, Urho3D::Variant> > actionsSequence_;
-    Urho3D::PODVector <Urho3D::StringHash> enemies_;
-    Urho3D::Connection *connection_;
-
-    void ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data);
-    void ProcessInvestToColonyAction (Urho3D::VectorBuffer data);
-    void ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer data);
-    void ProcessAddColonyActionAction (Urho3D::VectorBuffer data);
-    void ProcessRemoveColonyActionAction (Urho3D::VectorBuffer data);
-
-    void ProcessDeclareWarAction (Urho3D::VectorBuffer data);
-    void ProcessSendPeaceTreatyAction (Urho3D::VectorBuffer data);
-    void ProcessResponceToDiplomacyOfferAction (Urho3D::VectorBuffer data);
-
-    void ProcessDemobilizeArmyAction (Urho3D::VectorBuffer data);
-    virtual void AfterActionsProcessing (float timeStep);
 public:
     Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Color color, Urho3D::Connection *connection, Urho3D::Scene *scene);
     virtual ~Player ();
@@ -77,5 +52,33 @@ public:
     bool AddEnemy (Urho3D::StringHash anotherPlayerNameHash);
     bool RemoveEnemy (Urho3D::StringHash anotherPlayerNameHash);
     void RemoveAllEnemies ();
+
+protected:
+    virtual void AfterActionsProcessing (float timeStep);
+
+private:
+    Urho3D::String name_;
+    Urho3D::Color color_;
+    float points_;
+    float gold_;
+    bool isReadyForStart_;
+
+    Urho3D::Scene *scene_;
+    float timeUntilNewChatMessage_;
+    Urho3D::Vector <Urho3D::Pair <PlayerActionType, Urho3D::Variant> > actionsSequence_;
+    Urho3D::PODVector <Urho3D::StringHash> enemies_;
+    Urho3D::Connection *connection_;
+
+    void ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data);
+    void ProcessInvestToColonyAction (Urho3D::VectorBuffer data);
+    void ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer data);
+    void ProcessAddColonyActionAction (Urho3D::VectorBuffer data);
+    void ProcessRemoveColonyActionAction (Urho3D::VectorBuffer data);
+
+    void ProcessDeclareWarAction (Urho3D::VectorBuffer data);
+    void ProcessSendPeaceTreatyAction (Urho3D::VectorBuffer data);
+    void ProcessResponceToDiplomacyOfferAction (Urho3D::VectorBuffer data);
+
+    void ProcessDemobilizeArmyAction (Urho3D::VectorBuffer data);
 };
 }

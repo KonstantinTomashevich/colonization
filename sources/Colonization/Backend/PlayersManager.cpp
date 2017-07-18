@@ -7,7 +7,7 @@
 #include <Urho3D/Network/NetworkEvents.h>
 #include <Urho3D/IO/Log.h>
 
-#include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
+#include <Colonization/Utils/Network/NetworkUpdateCounterUtils.hpp>
 #include <Colonization/Backend/MessagesHandler/MessagesHandler.hpp>
 #include <Colonization/Core/PlayerInfo/PlayerInfo.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
@@ -16,143 +16,6 @@
 
 namespace Colonization
 {
-bool PlayersManager::DeleteIdentificatedConnection (Urho3D::Connection *connection)
-{
-    bool isFinded = false;
-    int index = 0;
-    while (index < connectionsWithoutId_.Size () && !isFinded)
-    {
-        if (connectionsWithoutId_.At (index).second_ == connection)
-        {
-            connectionsWithoutId_.Remove (connectionsWithoutId_.At (index));
-            isFinded = true;
-        }
-        else
-        {
-            index++;
-        }
-    }
-    return isFinded;
-}
-
-void PlayersManager::UpdatePlayers (MessagesHandler *messagesHandler, float timeStep)
-{
-    Urho3D::HashMap <Urho3D::StringHash, Player *>::Iterator iterator = players_.Begin ();
-    while (iterator != players_.End ())
-    {
-        Player *player = iterator->second_;
-        if (!player)
-        {
-            iterator = players_.Erase (iterator);
-        }
-        else
-        {
-            player->Update (timeStep);
-            messagesHandler->SendPlayersStats (player);
-            iterator++;
-        }
-    }
-}
-
-void PlayersManager::UpdateConnectionsWithoudId (float timeStep)
-{
-    int index = 0;
-    while (index < connectionsWithoutId_.Size ())
-    {
-        connectionsWithoutId_.At (index).first_ -= timeStep;
-        if (connectionsWithoutId_.At (index).first_ <= 0.0f)
-        {
-            Urho3D::Connection *connection = connectionsWithoutId_.At (index).second_;
-            connectionsWithoutId_.Remove (connectionsWithoutId_.At (index));
-            connection->Disconnect ();
-        }
-        else
-        {
-            index++;
-        }
-    }
-}
-
-void PlayersManager::UpdatePlayersInfos ()
-{
-    assert (node_);
-    Urho3D::PODVector <Urho3D::Node *> playersInfosNodes;
-    node_->GetChildrenWithComponent (playersInfosNodes, PlayerInfo::GetTypeStatic ());
-
-    int index = 0;
-    while (index < players_.Size () || index < playersInfosNodes.Size ())
-    {
-        if (index < players_.Size ())
-        {
-            Player *player = players_.Values ().At (index);
-            Urho3D::Node *infoNode;
-            if (index < playersInfosNodes.Size ())
-            {
-                infoNode = playersInfosNodes.At (index);
-            }
-            else
-            {
-                infoNode = node_->CreateChild (player->GetName (), Urho3D::REPLICATED);
-                infoNode->CreateComponent <PlayerInfo> (Urho3D::REPLICATED);
-            }
-
-            infoNode->SetName (player->GetName ());
-            PlayerInfo *playerInfo = infoNode->GetComponent <PlayerInfo> ();
-            float updatePoints = 0.0f;
-
-            if (playerInfo->GetName () != player->GetName ())
-            {
-                playerInfo->SetName (player->GetName ());
-                updatePoints += 100.0f;
-            }
-
-            if (playerInfo->GetPoints () != player->GetPoints ())
-            {
-                float change = Urho3D::Abs (playerInfo->GetPoints () - player->GetPoints ());
-                playerInfo->SetPoints (player->GetPoints ());
-                updatePoints += change * 50.0f / player->GetPoints ();
-            }
-
-            if (playerInfo->GetColor () != player->GetColor ())
-            {
-                playerInfo->SetColor (player->GetColor ());
-                updatePoints += 100.0f;
-            }
-
-            if (playerInfo->IsReadyForStart () != player->IsReadyForStart ())
-            {
-                playerInfo->SetIsReadyForStart (player->IsReadyForStart ());
-                updatePoints += 100.0f;
-            }
-
-            if (playerInfo->GetEnemies () != player->GetEnemies ())
-            {
-                playerInfo->RemoveAllEnemies ();
-                for (int index = 0; index < player->GetEnemiesCount (); index++)
-                {
-                    playerInfo->AddEnemy (player->GetEnemyByIndex (index));
-                }
-                updatePoints += 100.0f;
-            }
-            AddNetworkUpdatePointsToComponentCounter (playerInfo, updatePoints);
-        }
-        else
-        {
-            playersInfosNodes.At (index)->Remove ();
-        }
-        index++;
-    }
-}
-
-void PlayersManager::OnSceneSet(Urho3D::Scene *scene)
-{
-    UnsubscribeFromAllEvents ();
-    Urho3D::Component::OnSceneSet (scene);
-    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (PlayersManager, Update));
-    SubscribeToEvent (Urho3D::E_CLIENTCONNECTED, URHO3D_HANDLER (PlayersManager, HandleClientConnected));
-    SubscribeToEvent (Urho3D::E_CLIENTDISCONNECTED, URHO3D_HANDLER (PlayersManager, HandleClientDisconnected));
-}
-
 PlayersManager::PlayersManager (Urho3D::Context *context) : Urho3D::Component (context),
     isAcceptingNewConnections_ (true),
     players_ (),
@@ -424,5 +287,142 @@ PlayerInfo *GetPlayerInfoByNameHash (Urho3D::Scene *scene, Urho3D::StringHash na
         }
     }
     return 0;
+}
+
+void PlayersManager::OnSceneSet (Urho3D::Scene *scene)
+{
+    UnsubscribeFromAllEvents ();
+    Urho3D::Component::OnSceneSet (scene);
+    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (PlayersManager, Update));
+    SubscribeToEvent (Urho3D::E_CLIENTCONNECTED, URHO3D_HANDLER (PlayersManager, HandleClientConnected));
+    SubscribeToEvent (Urho3D::E_CLIENTDISCONNECTED, URHO3D_HANDLER (PlayersManager, HandleClientDisconnected));
+}
+
+bool PlayersManager::DeleteIdentificatedConnection (Urho3D::Connection *connection)
+{
+    bool isFinded = false;
+    int index = 0;
+    while (index < connectionsWithoutId_.Size () && !isFinded)
+    {
+        if (connectionsWithoutId_.At (index).second_ == connection)
+        {
+            connectionsWithoutId_.Remove (connectionsWithoutId_.At (index));
+            isFinded = true;
+        }
+        else
+        {
+            index++;
+        }
+    }
+    return isFinded;
+}
+
+void PlayersManager::UpdatePlayers (MessagesHandler *messagesHandler, float timeStep)
+{
+    Urho3D::HashMap <Urho3D::StringHash, Player *>::Iterator iterator = players_.Begin ();
+    while (iterator != players_.End ())
+    {
+        Player *player = iterator->second_;
+        if (!player)
+        {
+            iterator = players_.Erase (iterator);
+        }
+        else
+        {
+            player->Update (timeStep);
+            messagesHandler->SendPlayersStats (player);
+            iterator++;
+        }
+    }
+}
+
+void PlayersManager::UpdateConnectionsWithoudId (float timeStep)
+{
+    int index = 0;
+    while (index < connectionsWithoutId_.Size ())
+    {
+        connectionsWithoutId_.At (index).first_ -= timeStep;
+        if (connectionsWithoutId_.At (index).first_ <= 0.0f)
+        {
+            Urho3D::Connection *connection = connectionsWithoutId_.At (index).second_;
+            connectionsWithoutId_.Remove (connectionsWithoutId_.At (index));
+            connection->Disconnect ();
+        }
+        else
+        {
+            index++;
+        }
+    }
+}
+
+void PlayersManager::UpdatePlayersInfos ()
+{
+    assert (node_);
+    Urho3D::PODVector <Urho3D::Node *> playersInfosNodes;
+    node_->GetChildrenWithComponent (playersInfosNodes, PlayerInfo::GetTypeStatic ());
+
+    int index = 0;
+    while (index < players_.Size () || index < playersInfosNodes.Size ())
+    {
+        if (index < players_.Size ())
+        {
+            Player *player = players_.Values ().At (index);
+            Urho3D::Node *infoNode;
+            if (index < playersInfosNodes.Size ())
+            {
+                infoNode = playersInfosNodes.At (index);
+            }
+            else
+            {
+                infoNode = node_->CreateChild (player->GetName (), Urho3D::REPLICATED);
+                infoNode->CreateComponent <PlayerInfo> (Urho3D::REPLICATED);
+            }
+
+            infoNode->SetName (player->GetName ());
+            PlayerInfo *playerInfo = infoNode->GetComponent <PlayerInfo> ();
+            float updatePoints = 0.0f;
+
+            if (playerInfo->GetName () != player->GetName ())
+            {
+                playerInfo->SetName (player->GetName ());
+                updatePoints += 100.0f;
+            }
+
+            if (playerInfo->GetPoints () != player->GetPoints ())
+            {
+                float change = Urho3D::Abs (playerInfo->GetPoints () - player->GetPoints ());
+                playerInfo->SetPoints (player->GetPoints ());
+                updatePoints += change * 50.0f / player->GetPoints ();
+            }
+
+            if (playerInfo->GetColor () != player->GetColor ())
+            {
+                playerInfo->SetColor (player->GetColor ());
+                updatePoints += 100.0f;
+            }
+
+            if (playerInfo->IsReadyForStart () != player->IsReadyForStart ())
+            {
+                playerInfo->SetIsReadyForStart (player->IsReadyForStart ());
+                updatePoints += 100.0f;
+            }
+
+            if (playerInfo->GetEnemies () != player->GetEnemies ())
+            {
+                playerInfo->RemoveAllEnemies ();
+                for (int index = 0; index < player->GetEnemiesCount (); index++)
+                {
+                    playerInfo->AddEnemy (player->GetEnemyByIndex (index));
+                }
+                updatePoints += 100.0f;
+            }
+            NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (playerInfo, updatePoints);
+        }
+        else
+        {
+            playersInfosNodes.At (index)->Remove ();
+        }
+        index++;
+    }
 }
 }

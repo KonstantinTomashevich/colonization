@@ -16,10 +16,6 @@ const Urho3D::String TAG_DISTRICT ("District");
 class Map : public Urho3D::Component
 {
 URHO3D_OBJECT (Map, Component)
-protected:
-    Urho3D::Vector <Urho3D::SharedPtr <District> > districts_;
-    virtual void OnSceneSet (Urho3D::Scene* scene);
-
 public:
     explicit Map (Urho3D::Context *context);
     virtual ~Map ();
@@ -54,5 +50,11 @@ public:
     //@ASBindGen Function
     Urho3D::PODVector <Urho3D::StringHash> FindPath (const Urho3D::StringHash &targetDistrictHash, Unit *unit,
                                                      bool setUnitWay = true) const;
+
+protected:
+    virtual void OnSceneSet (Urho3D::Scene* scene);
+
+private:
+    Urho3D::Vector <Urho3D::SharedPtr <District> > districts_;
 };
 }

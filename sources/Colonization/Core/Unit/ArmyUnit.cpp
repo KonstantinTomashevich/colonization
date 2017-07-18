@@ -40,7 +40,7 @@ void ArmyUnit::DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest)
     Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
     assert (map);
 
-    District *district = map->GetDistrictByHash (positionHash_);
+    District *district = map->GetDistrictByHash (GetPositionHash ());
     if (district)
     {
         Urho3D::Sphere sphere (district->GetUnitPosition (), 0.15f);
@@ -62,13 +62,13 @@ bool ArmyUnit::IsCanGoTo (const District *district, const Map *map, Urho3D::Stri
 {
     if (Unit::IsCanGoTo (district, map, imaginePosition))
     {
-        if (district->GetIsSea () || (district->GetHasColony () && district->GetColonyOwnerName () == ownerPlayerName_))
+        if (district->GetIsSea () || (district->GetHasColony () && district->GetColonyOwnerName () == GetOwnerPlayerName ()))
         {
             return true;
         }
         else if (district->GetHasColony ())
         {
-            PlayerInfo *myPlayerInfo = GetPlayerInfoByNameHash (node_->GetScene (), Urho3D::StringHash (ownerPlayerName_));
+            PlayerInfo *myPlayerInfo = GetPlayerInfoByNameHash (node_->GetScene (), Urho3D::StringHash (GetOwnerPlayerName ()));
             return myPlayerInfo->IsAtWarWith (district->GetColonyOwnerName ());
         }
         else

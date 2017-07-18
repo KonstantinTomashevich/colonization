@@ -7,7 +7,7 @@
 #include <Colonization/Core/Map.hpp>
 #include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Core/District/District.hpp>
-#include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
+#include <Colonization/Utils/Network/NetworkUpdateCounterUtils.hpp>
 
 #include <Colonization/Backend/Diplomacy/DiplomacyProcessor.hpp>
 #include <Colonization/Backend/Diplomacy/DiplomacyWarRequest.hpp>
@@ -18,219 +18,6 @@
 
 namespace Colonization
 {
-void Player::ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data)
-{
-    Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
-    UnitsManager *unitsManager = scene_->GetChild ("units")->GetComponent <UnitsManager> ();
-    // Skip action type.
-    data.ReadInt ();
-
-    assert (map);
-    assert (unitsManager);
-
-    Urho3D::StringHash unitHash = data.ReadStringHash ();
-    Urho3D::StringHash targetDistrictHash = data.ReadStringHash ();
-
-    Unit *unit = unitsManager->GetUnitByHash (unitHash);
-    District *target = map->GetDistrictByHash (targetDistrictHash);
-
-    assert (unit);
-    assert (target);
-
-    if (unit->GetOwnerPlayerName () != name_)
-    {
-        return;
-    }
-
-    map->FindPath (target->GetHash (), unit);
-    AddNetworkUpdatePointsToComponentCounter (unit, 100.0f);
-}
-
-void Player::ProcessInvestToColonyAction (Urho3D::VectorBuffer data)
-{
-    Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
-    // Skip action type.
-    data.ReadInt ();
-
-    Urho3D::StringHash targetDistrictHash = data.ReadStringHash ();
-    District *targetDistrict = map->GetDistrictByHash (targetDistrictHash);
-    assert (targetDistrict);
-    assert (!targetDistrict->GetIsSea ());
-    assert (!targetDistrict->GetIsImpassable ());
-    assert (targetDistrict->GetHasColony () && targetDistrict->GetColonyOwnerName () == name_);
-
-    Urho3D::StringHash investitionType = data.ReadStringHash ();
-    float money = data.ReadFloat ();
-
-    if (gold_ >= money)
-    {
-        targetDistrict->Invest (investitionType, money);
-        gold_ -= money;
-        AddNetworkUpdatePointsToComponentCounter (targetDistrict, 100.0f);
-    }
-}
-
-void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer data)
-{
-    Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
-    UnitsManager *unitsManager = scene_->GetChild ("units")->GetComponent <UnitsManager> ();
-    // Skip action type.
-    data.ReadInt ();
-    assert (map);
-    assert (unitsManager);
-
-    Urho3D::StringHash targetDistrictHash = data.ReadStringHash ();
-    District *targetDistrict = map->GetDistrictByHash (targetDistrictHash);
-    assert (targetDistrict);
-    assert (!targetDistrict->GetIsSea ());
-    assert (!targetDistrict->GetIsImpassable ());
-    assert (!targetDistrict->GetHasColony () || targetDistrict->GetColonyOwnerName () == name_);
-
-    GameConfiguration *configuration = scene_->GetComponent <GameConfiguration> ();
-    int colonizatorsCount = data.ReadInt ();
-    float cost = colonizatorsCount * configuration->GetOneColonizatorSendingCost ();
-
-    if (gold_ > cost)
-    {
-        District *nearestEuropeDistrict = map->GetDistrictByHash (
-                    configuration->GetHeuristicNearestWayToEuropeDistrict (map, targetDistrict));
-
-        Unit *unit = unitsManager->CreateUnit (UNIT_COLONIZATORS, name_, nearestEuropeDistrict->GetHash ());
-        if (!map->FindPath (targetDistrict->GetHash (), unit).Empty ())
-        {
-            gold_ -= cost;
-            static_cast <ColonizatorsUnit *> (unit)->SetColonizatorsCount (colonizatorsCount);
-            AddNetworkUpdatePointsToComponentCounter (unit, 100.0f);
-        }
-        else
-        {
-            unit->GetNode ()->Remove ();
-            Urho3D::Log::Write (Urho3D::LOG_ERROR, "Can't send colonizators. Can't find way from " +
-                                nearestEuropeDistrict->GetName () + " to " +
-                                targetDistrict->GetName () + "!");
-        }
-    }
-}
-
-void Player::ProcessAddColonyActionAction (Urho3D::VectorBuffer data)
-{
-    Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
-    // Skip action type.
-    data.ReadInt ();
-
-    Urho3D::StringHash colonyHash = data.ReadStringHash ();
-    District *colony = map->GetDistrictByHash (colonyHash);
-    assert (colony);
-
-    if (colony->GetHasColony () && colony->GetColonyOwnerName () == name_)
-    {
-        Urho3D::StringHash actionType = data.ReadStringHash ();
-        Urho3D::VariantMap actionData = data.ReadVariantMap ();
-        colony->AddColonyAction (actionType, actionData);
-    }
-}
-
-void Player::ProcessRemoveColonyActionAction (Urho3D::VectorBuffer data)
-{
-    Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
-    // Skip action type.
-    data.ReadInt ();
-
-    Urho3D::StringHash colonyHash = data.ReadStringHash ();
-    District *colony = map->GetDistrictByHash (colonyHash);
-    assert (colony);
-
-    if (colony->GetHasColony () && colony->GetColonyOwnerName () == name_)
-    {
-        Urho3D::StringHash actionId = data.ReadStringHash ();
-        colony->RemoveColonyActionById (actionId);
-    }
-}
-
-void Player::ProcessDeclareWarAction (Urho3D::VectorBuffer data)
-{
-    DiplomacyProcessor *diplomacyProcessor = scene_->GetChild ("diplomacy")->GetComponent <DiplomacyProcessor> ();
-    // Skip action type.
-    data.ReadInt ();
-    assert (diplomacyProcessor);
-
-    Urho3D::StringHash defenderNameHash = data.ReadStringHash ();
-    PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
-    assert (playersManager);
-    assert (playersManager->GetPlayerByNameHash (defenderNameHash));
-
-    if (playersManager->GetPlayerByNameHash (defenderNameHash))
-    {
-        DiplomacyWarRequest *warRequest = new DiplomacyWarRequest (context_);
-        warRequest->SetAttacker (Urho3D::StringHash (name_));
-        warRequest->SetDefender (defenderNameHash);
-        diplomacyProcessor->AddDiplomacyRequest (warRequest);
-    }
-}
-
-void Player::ProcessSendPeaceTreatyAction (Urho3D::VectorBuffer data)
-{
-    DiplomacyProcessor *diplomacyProcessor = scene_->GetChild ("diplomacy")->GetComponent <DiplomacyProcessor> ();
-    // Skip action type.
-    data.ReadInt ();
-    assert (diplomacyProcessor);
-
-    Urho3D::StringHash warHash = data.ReadStringHash ();
-    assert (diplomacyProcessor->GetWarByHash (warHash));
-    Urho3D::StringHash enemyNameHash = data.ReadStringHash ();
-    PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
-    assert (playersManager);
-    assert (playersManager->GetPlayerByNameHash (enemyNameHash));
-
-    if (playersManager->GetPlayerByNameHash (enemyNameHash) && diplomacyProcessor->GetWarByHash (warHash))
-    {
-        DiplomacyPeaceRequest *peaceRequest = new DiplomacyPeaceRequest (context_);
-        peaceRequest->SetPeaceRequester (Urho3D::StringHash (name_));
-        peaceRequest->SetEnemy (enemyNameHash);
-        peaceRequest->SetWarHash (warHash);
-        diplomacyProcessor->AddDiplomacyRequest (peaceRequest);
-    }
-}
-
-void Player::ProcessResponceToDiplomacyOfferAction (Urho3D::VectorBuffer data)
-{
-    DiplomacyProcessor *diplomacyProcessor = scene_->GetChild ("diplomacy")->GetComponent <DiplomacyProcessor> ();
-    // Skip action type.
-    data.ReadInt ();
-    assert (diplomacyProcessor);
-
-    unsigned diplomacyOfferId = data.ReadUInt ();
-    DiplomacyRequestPlayerStatus response = static_cast <DiplomacyRequestPlayerStatus> (data.ReadUInt ());
-    diplomacyProcessor->UpdateDiplomacyRequestPlayerStatus (diplomacyOfferId, Urho3D::StringHash (name_), response);
-}
-
-void Player::ProcessDemobilizeArmyAction (Urho3D::VectorBuffer data)
-{
-    Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
-    UnitsManager *unitsManager = scene_->GetChild ("units")->GetComponent <UnitsManager> ();
-    // Skip action type.
-    data.ReadInt ();
-
-    Urho3D::StringHash unitHash = data.ReadStringHash ();
-    Unit *unit = unitsManager->GetUnitByHash (unitHash);
-    if (unit && unit->GetOwnerPlayerName () == name_ && unit->GetUnitType () == UNIT_ARMY)
-    {
-        District *district = map->GetDistrictByHash (unit->GetPositionHash ());
-        if (!district->GetIsSea () && district->GetHasColony () && district->GetColonyOwnerName () == name_)
-        {
-            ArmyUnit *armyUnit = static_cast <ArmyUnit *> (unit);
-            district->SetMenCount (district->GetMenCount () + armyUnit->GetSoldiersCount ());
-            armyUnit->GetNode ()->Remove ();
-            AddNetworkUpdatePointsToComponentCounter (district, 100.0f);
-        }
-    }
-}
-
-void Player::AfterActionsProcessing (float timeStep)
-{
-
-}
-
 Player::Player (Urho3D::Context *context, Urho3D::String name, Urho3D::Color color, Urho3D::Connection *connection, Urho3D::Scene *scene) :
     Urho3D::Object (context),
     name_ (name),
@@ -460,5 +247,218 @@ bool Player::RemoveEnemy (Urho3D::StringHash anotherPlayerNameHash)
 void Player::RemoveAllEnemies ()
 {
     enemies_.Clear ();
+}
+
+void Player::AfterActionsProcessing (float timeStep)
+{
+
+}
+
+void Player::ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data)
+{
+    Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
+    UnitsManager *unitsManager = scene_->GetChild ("units")->GetComponent <UnitsManager> ();
+    // Skip action type.
+    data.ReadInt ();
+
+    assert (map);
+    assert (unitsManager);
+
+    Urho3D::StringHash unitHash = data.ReadStringHash ();
+    Urho3D::StringHash targetDistrictHash = data.ReadStringHash ();
+
+    Unit *unit = unitsManager->GetUnitByHash (unitHash);
+    District *target = map->GetDistrictByHash (targetDistrictHash);
+
+    assert (unit);
+    assert (target);
+
+    if (unit->GetOwnerPlayerName () != name_)
+    {
+        return;
+    }
+
+    map->FindPath (target->GetHash (), unit);
+    NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (unit, 100.0f);
+}
+
+void Player::ProcessInvestToColonyAction (Urho3D::VectorBuffer data)
+{
+    Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
+    // Skip action type.
+    data.ReadInt ();
+
+    Urho3D::StringHash targetDistrictHash = data.ReadStringHash ();
+    District *targetDistrict = map->GetDistrictByHash (targetDistrictHash);
+    assert (targetDistrict);
+    assert (!targetDistrict->GetIsSea ());
+    assert (!targetDistrict->GetIsImpassable ());
+    assert (targetDistrict->GetHasColony () && targetDistrict->GetColonyOwnerName () == name_);
+
+    Urho3D::StringHash investitionType = data.ReadStringHash ();
+    float money = data.ReadFloat ();
+
+    if (gold_ >= money)
+    {
+        targetDistrict->Invest (investitionType, money);
+        gold_ -= money;
+        NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (targetDistrict, 100.0f);
+    }
+}
+
+void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer data)
+{
+    Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
+    UnitsManager *unitsManager = scene_->GetChild ("units")->GetComponent <UnitsManager> ();
+    // Skip action type.
+    data.ReadInt ();
+    assert (map);
+    assert (unitsManager);
+
+    Urho3D::StringHash targetDistrictHash = data.ReadStringHash ();
+    District *targetDistrict = map->GetDistrictByHash (targetDistrictHash);
+    assert (targetDistrict);
+    assert (!targetDistrict->GetIsSea ());
+    assert (!targetDistrict->GetIsImpassable ());
+    assert (!targetDistrict->GetHasColony () || targetDistrict->GetColonyOwnerName () == name_);
+
+    GameConfiguration *configuration = scene_->GetComponent <GameConfiguration> ();
+    int colonizatorsCount = data.ReadInt ();
+    float cost = colonizatorsCount * configuration->GetOneColonizatorSendingCost ();
+
+    if (gold_ > cost)
+    {
+        District *nearestEuropeDistrict = map->GetDistrictByHash (
+                    configuration->GetHeuristicNearestWayToEuropeDistrict (map, targetDistrict));
+
+        Unit *unit = unitsManager->CreateUnit (UNIT_COLONIZATORS, name_, nearestEuropeDistrict->GetHash ());
+        if (!map->FindPath (targetDistrict->GetHash (), unit).Empty ())
+        {
+            gold_ -= cost;
+            static_cast <ColonizatorsUnit *> (unit)->SetColonizatorsCount (colonizatorsCount);
+            NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (unit, 100.0f);
+        }
+        else
+        {
+            unit->GetNode ()->Remove ();
+            Urho3D::Log::Write (Urho3D::LOG_ERROR, "Can't send colonizators. Can't find way from " +
+                                nearestEuropeDistrict->GetName () + " to " +
+                                targetDistrict->GetName () + "!");
+        }
+    }
+}
+
+void Player::ProcessAddColonyActionAction (Urho3D::VectorBuffer data)
+{
+    Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
+    // Skip action type.
+    data.ReadInt ();
+
+    Urho3D::StringHash colonyHash = data.ReadStringHash ();
+    District *colony = map->GetDistrictByHash (colonyHash);
+    assert (colony);
+
+    if (colony->GetHasColony () && colony->GetColonyOwnerName () == name_)
+    {
+        Urho3D::StringHash actionType = data.ReadStringHash ();
+        Urho3D::VariantMap actionData = data.ReadVariantMap ();
+        colony->AddColonyAction (actionType, actionData);
+    }
+}
+
+void Player::ProcessRemoveColonyActionAction (Urho3D::VectorBuffer data)
+{
+    Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
+    // Skip action type.
+    data.ReadInt ();
+
+    Urho3D::StringHash colonyHash = data.ReadStringHash ();
+    District *colony = map->GetDistrictByHash (colonyHash);
+    assert (colony);
+
+    if (colony->GetHasColony () && colony->GetColonyOwnerName () == name_)
+    {
+        Urho3D::StringHash actionId = data.ReadStringHash ();
+        colony->RemoveColonyActionById (actionId);
+    }
+}
+
+void Player::ProcessDeclareWarAction (Urho3D::VectorBuffer data)
+{
+    DiplomacyProcessor *diplomacyProcessor = scene_->GetChild ("diplomacy")->GetComponent <DiplomacyProcessor> ();
+    // Skip action type.
+    data.ReadInt ();
+    assert (diplomacyProcessor);
+
+    Urho3D::StringHash defenderNameHash = data.ReadStringHash ();
+    PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
+    assert (playersManager);
+    assert (playersManager->GetPlayerByNameHash (defenderNameHash));
+
+    if (playersManager->GetPlayerByNameHash (defenderNameHash))
+    {
+        DiplomacyWarRequest *warRequest = new DiplomacyWarRequest (context_);
+        warRequest->SetAttacker (Urho3D::StringHash (name_));
+        warRequest->SetDefender (defenderNameHash);
+        diplomacyProcessor->AddDiplomacyRequest (warRequest);
+    }
+}
+
+void Player::ProcessSendPeaceTreatyAction (Urho3D::VectorBuffer data)
+{
+    DiplomacyProcessor *diplomacyProcessor = scene_->GetChild ("diplomacy")->GetComponent <DiplomacyProcessor> ();
+    // Skip action type.
+    data.ReadInt ();
+    assert (diplomacyProcessor);
+
+    Urho3D::StringHash warHash = data.ReadStringHash ();
+    assert (diplomacyProcessor->GetWarByHash (warHash));
+    Urho3D::StringHash enemyNameHash = data.ReadStringHash ();
+    PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
+    assert (playersManager);
+    assert (playersManager->GetPlayerByNameHash (enemyNameHash));
+
+    if (playersManager->GetPlayerByNameHash (enemyNameHash) && diplomacyProcessor->GetWarByHash (warHash))
+    {
+        DiplomacyPeaceRequest *peaceRequest = new DiplomacyPeaceRequest (context_);
+        peaceRequest->SetPeaceRequester (Urho3D::StringHash (name_));
+        peaceRequest->SetEnemy (enemyNameHash);
+        peaceRequest->SetWarHash (warHash);
+        diplomacyProcessor->AddDiplomacyRequest (peaceRequest);
+    }
+}
+
+void Player::ProcessResponceToDiplomacyOfferAction (Urho3D::VectorBuffer data)
+{
+    DiplomacyProcessor *diplomacyProcessor = scene_->GetChild ("diplomacy")->GetComponent <DiplomacyProcessor> ();
+    // Skip action type.
+    data.ReadInt ();
+    assert (diplomacyProcessor);
+
+    unsigned diplomacyOfferId = data.ReadUInt ();
+    DiplomacyRequestPlayerStatus response = static_cast <DiplomacyRequestPlayerStatus> (data.ReadUInt ());
+    diplomacyProcessor->UpdateDiplomacyRequestPlayerStatus (diplomacyOfferId, Urho3D::StringHash (name_), response);
+}
+
+void Player::ProcessDemobilizeArmyAction (Urho3D::VectorBuffer data)
+{
+    Map *map = scene_->GetChild ("map")->GetComponent <Map> ();
+    UnitsManager *unitsManager = scene_->GetChild ("units")->GetComponent <UnitsManager> ();
+    // Skip action type.
+    data.ReadInt ();
+
+    Urho3D::StringHash unitHash = data.ReadStringHash ();
+    Unit *unit = unitsManager->GetUnitByHash (unitHash);
+    if (unit && unit->GetOwnerPlayerName () == name_ && unit->GetUnitType () == UNIT_ARMY)
+    {
+        District *district = map->GetDistrictByHash (unit->GetPositionHash ());
+        if (!district->GetIsSea () && district->GetHasColony () && district->GetColonyOwnerName () == name_)
+        {
+            ArmyUnit *armyUnit = static_cast <ArmyUnit *> (unit);
+            district->SetMenCount (district->GetMenCount () + armyUnit->GetSoldiersCount ());
+            armyUnit->GetNode ()->Remove ();
+            NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (district, 100.0f);
+        }
+    }
 }
 }

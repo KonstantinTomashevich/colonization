@@ -29,6 +29,114 @@
 
 namespace Colonization
 {
+HostActivity::HostActivity (Urho3D::Context *context) : Activity (context),
+    serverPort_ (13534),
+    isStartRequested_ (false),
+    mapFolder_ (Urho3D::String::EMPTY),
+    mapInfoPath_ (Urho3D::String::EMPTY),
+    scene_ (new Urho3D::Scene (context))
+{
+
+}
+
+HostActivity::~HostActivity ()
+{
+
+}
+
+unsigned short HostActivity::GetServerPort () const
+{
+    return serverPort_;
+}
+
+void HostActivity::SetServerPort (unsigned short serverPort)
+{
+    serverPort_ = serverPort;
+}
+
+Urho3D::Scene *HostActivity::GetScene () const
+{
+    return scene_;
+}
+
+Urho3D::String HostActivity::GetMapFolder () const
+{
+    return mapFolder_;
+}
+
+void HostActivity::SetMapFolder (Urho3D::String mapFolder)
+{
+    mapFolder_ = mapFolder;
+}
+
+Urho3D::String HostActivity::GetMapInfoPath () const
+{
+    return mapInfoPath_;
+}
+
+void HostActivity::SetMapInfoPath (Urho3D::String mapInfoPath)
+{
+    mapInfoPath_ = mapInfoPath;
+}
+
+bool HostActivity::IsStartRequested () const
+{
+    return isStartRequested_;
+}
+
+void HostActivity::HandleGameStartRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    isStartRequested_ = true;
+}
+
+void HostActivity::HandleKickPlayerRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    Urho3D::String playerName = eventData [HostRequestKickPlayer::PLAYER_NAME].GetString ();
+    PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
+    if (playersManager && playersManager->GetPlayerByNameHash (Urho3D::StringHash (playerName)))
+    {
+        playersManager->DisconnectPlayer (Urho3D::StringHash (playerName));
+    }
+}
+
+void HostActivity::HandleSelectMapRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    SetMapFolder (eventData [HostRequestSelectMap::MAP_FOLDER].GetString ());
+    SetMapInfoPath (eventData [HostRequestSelectMap::MAP_INFO_PATH].GetString ());
+}
+
+void HostActivity::Start ()
+{
+    bool isServerStarted = context_->GetSubsystem <Urho3D::Network> ()->StartServer (serverPort_);
+    assert (isServerStarted);
+    if (!isServerStarted)
+    {
+        Urho3D::Log::Write (Urho3D::LOG_ERROR, "Can't start server!");
+        context_->GetSubsystem <Urho3D::Engine> ()->Exit ();
+    }
+    SetupWaitingForPlayersState ();
+
+    SubscribeToEvent (Urho3D::StringHash (EVENT_HOST_REQUEST_GAME_START), URHO3D_HANDLER (HostActivity, HandleGameStartRequest));
+    SubscribeToEvent (Urho3D::StringHash (EVENT_HOST_REQUEST_KICK_PLAYER), URHO3D_HANDLER (HostActivity, HandleKickPlayerRequest));
+    SubscribeToEvent (Urho3D::StringHash (EVENT_HOST_REQUEST_SELECT_MAP), URHO3D_HANDLER (HostActivity, HandleSelectMapRequest));
+}
+
+void HostActivity::Update (float timeStep)
+{
+    WriteSceneReplicatedChildrenCount ();
+    UpdateMapFolderAndMapInfoPathSceneVars ();
+    GoToNextStateIfNeeded ();
+    SendCurrentStateToClients ();
+}
+
+void HostActivity::Stop ()
+{
+    bool clearReplicated = true;
+    bool clearLocal = true;
+    scene_->Clear (clearReplicated, clearLocal);
+    context_->GetSubsystem <Urho3D::Network> ()->StopServer ();
+}
+
 void HostActivity::WriteSceneReplicatedChildrenCount ()
 {
     Urho3D::PODVector <Urho3D::Node *> children;
@@ -281,113 +389,5 @@ bool HostActivity::WillGoFromPlayingToFinishedState ()
 {
     VictoryProgressUpdater *victoryProgressUpdater = scene_->GetComponent <VictoryProgressUpdater> ();
     return victoryProgressUpdater->IsAnyoneWon ();
-}
-
-HostActivity::HostActivity (Urho3D::Context *context) : Activity (context),
-    serverPort_ (13534),
-    isStartRequested_ (false),
-    mapFolder_ (Urho3D::String::EMPTY),
-    mapInfoPath_ (Urho3D::String::EMPTY),
-    scene_ (new Urho3D::Scene (context))
-{
-
-}
-
-HostActivity::~HostActivity ()
-{
-
-}
-
-unsigned short HostActivity::GetServerPort () const
-{
-    return serverPort_;
-}
-
-void HostActivity::SetServerPort (unsigned short serverPort)
-{
-    serverPort_ = serverPort;
-}
-
-Urho3D::Scene *HostActivity::GetScene () const
-{
-    return scene_;
-}
-
-Urho3D::String HostActivity::GetMapFolder () const
-{
-    return mapFolder_;
-}
-
-void HostActivity::SetMapFolder (Urho3D::String mapFolder)
-{
-    mapFolder_ = mapFolder;
-}
-
-Urho3D::String HostActivity::GetMapInfoPath () const
-{
-    return mapInfoPath_;
-}
-
-void HostActivity::SetMapInfoPath (Urho3D::String mapInfoPath)
-{
-    mapInfoPath_ = mapInfoPath;
-}
-
-bool HostActivity::IsStartRequested () const
-{
-    return isStartRequested_;
-}
-
-void HostActivity::HandleGameStartRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
-{
-    isStartRequested_ = true;
-}
-
-void HostActivity::HandleKickPlayerRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
-{
-    Urho3D::String playerName = eventData [HostRequestKickPlayer::PLAYER_NAME].GetString ();
-    PlayersManager *playersManager = scene_->GetChild ("players")->GetComponent <PlayersManager> ();
-    if (playersManager && playersManager->GetPlayerByNameHash (Urho3D::StringHash (playerName)))
-    {
-        playersManager->DisconnectPlayer (Urho3D::StringHash (playerName));
-    }
-}
-
-void HostActivity::HandleSelectMapRequest (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
-{
-    SetMapFolder (eventData [HostRequestSelectMap::MAP_FOLDER].GetString ());
-    SetMapInfoPath (eventData [HostRequestSelectMap::MAP_INFO_PATH].GetString ());
-}
-
-void HostActivity::Start ()
-{
-    bool isServerStarted = context_->GetSubsystem <Urho3D::Network> ()->StartServer (serverPort_);
-    assert (isServerStarted);
-    if (!isServerStarted)
-    {
-        Urho3D::Log::Write (Urho3D::LOG_ERROR, "Can't start server!");
-        context_->GetSubsystem <Urho3D::Engine> ()->Exit ();
-    }
-    SetupWaitingForPlayersState ();
-
-    SubscribeToEvent (Urho3D::StringHash (EVENT_HOST_REQUEST_GAME_START), URHO3D_HANDLER (HostActivity, HandleGameStartRequest));
-    SubscribeToEvent (Urho3D::StringHash (EVENT_HOST_REQUEST_KICK_PLAYER), URHO3D_HANDLER (HostActivity, HandleKickPlayerRequest));
-    SubscribeToEvent (Urho3D::StringHash (EVENT_HOST_REQUEST_SELECT_MAP), URHO3D_HANDLER (HostActivity, HandleSelectMapRequest));
-}
-
-void HostActivity::Update (float timeStep)
-{
-    WriteSceneReplicatedChildrenCount ();
-    UpdateMapFolderAndMapInfoPathSceneVars ();
-    GoToNextStateIfNeeded ();
-    SendCurrentStateToClients ();
-}
-
-void HostActivity::Stop ()
-{
-    bool clearReplicated = true;
-    bool clearLocal = true;
-    scene_->Clear (clearReplicated, clearLocal);
-    context_->GetSubsystem <Urho3D::Network> ()->StopServer ();
 }
 }

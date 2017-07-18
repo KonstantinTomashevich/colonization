@@ -19,301 +19,12 @@
 #include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Core/Battle/BattleHelpers.hpp>
 
-#include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
+#include <Colonization/Utils/Network/NetworkUpdateCounterUtils.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
 namespace Colonization
 {
-void BattlesProcessor::HandleUnitPositionChangedOrCreated (Urho3D::VariantMap &eventData)
-{
-    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
-    UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
-    DiplomacyProcessor *diplomacyProcessor = node_->GetScene ()->GetChild ("diplomacy")->GetComponent <DiplomacyProcessor> ();
-    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
-
-    Unit *unit = unitsManager->GetUnitByHash (eventData [UnitPositionChanged::UNIT_HASH].GetStringHash ());
-    assert (unit);
-    District *district = map->GetDistrictByHash (unit->GetPositionHash ());
-    assert (district);
-    Player *player = playersManager->GetPlayerByNameHash (Urho3D::StringHash (unit->GetOwnerPlayerName ()));
-
-    AddUnitToBattleIfNeeded (unit, district, player, diplomacyProcessor, unitsManager) ||
-            CreateNewBattleIfNeeded (unit, district, player, diplomacyProcessor, unitsManager);
-}
-
-bool BattlesProcessor::AddUnitToBattleIfNeeded (Unit *unit, District *unitPosition, Player *unitPlayer,
-                                                DiplomacyProcessor *diplomacyProcessor, UnitsManager *unitsManager)
-{
-    Urho3D::PODVector <Urho3D::StringHash> battlesInDistrict = GetCurrentBattlesInDistrict (unitPosition->GetHash ());
-    Urho3D::PODVector <Urho3D::StringHash> warsOfPlayer = diplomacyProcessor->GetWarsOfPlayer (
-                Urho3D::StringHash (unitPlayer->GetName ()));
-
-    if (!battlesInDistrict.Empty () && !warsOfPlayer.Empty ())
-    {
-        for (int index = 0; index < battlesInDistrict.Size (); index++)
-        {
-            Battle *battle = GetBattleByHash (battlesInDistrict.At (index));
-            if (warsOfPlayer.Contains (battle->GetWarHash ()))
-            {
-                DiplomacyWar *war = diplomacyProcessor->GetWarByHash (battle->GetWarHash ());
-                assert (war);
-                bool isAttackerInWar = war->IsAttacker (Urho3D::StringHash (unitPlayer->GetName ()));
-
-                Unit *firstAttackersUnit = unitsManager->GetUnitByHash (battle->GetAttackerUnitHashByIndex (0));
-                bool isFirstAttackerUnitAttackerInWar = war->IsAttacker (
-                            Urho3D::StringHash (firstAttackersUnit->GetOwnerPlayerName ()));
-
-                if (isAttackerInWar == isFirstAttackerUnitAttackerInWar)
-                {
-                    battle->AddAttackerUnitHash (unit->GetHash ());
-                }
-                else
-                {
-                    battle->AddDefenderUnitHash (unit->GetHash ());
-                }
-
-                unit->SetIsInBattle (true);
-                unit->SetBattleHash (battle->GetHash ());
-                AddNetworkUpdatePointsToComponentCounter (unit, 100.0f);
-                AddNetworkUpdatePointsToComponentCounter (battle, 100.0f);
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-bool BattlesProcessor::CreateNewBattleIfNeeded (Unit *unit, District *district, Player *unitPlayer,
-                                                DiplomacyProcessor *diplomacyProcessor, UnitsManager *unitsManager)
-{
-    Urho3D::PODVector <Urho3D::StringHash> warsOfPlayer = diplomacyProcessor->GetWarsOfPlayer (
-                Urho3D::StringHash (unitPlayer->GetName ()));
-
-    if (!warsOfPlayer.Empty ())
-    {
-        Urho3D::PODVector <Unit *> unitsInDistrict = GetUnitsInDistrict (node_->GetScene (), district->GetHash ());
-        Urho3D::HashMap <Urho3D::StringHash, Urho3D::PODVector <Unit *> > playersUnits;
-
-        for (int index = 0; index < unitsInDistrict.Size (); index++)
-        {
-            Unit *unit = unitsInDistrict.At (index);
-            if (!unit->GetIsInBattle ())
-            {
-                playersUnits [Urho3D::StringHash (unit->GetOwnerPlayerName ())].Push (unit);
-            }
-        }
-
-        for (int warIndex = 0; warIndex < warsOfPlayer.Size (); warIndex++)
-        {
-            DiplomacyWar *war = diplomacyProcessor->GetWarByHash (warsOfPlayer.At (warIndex));
-            assert (war);
-            bool isAttackerInWar = war->IsAttacker (Urho3D::StringHash (unitPlayer->GetName ()));
-            if (isAttackerInWar || war->IsDefender (Urho3D::StringHash (unitPlayer->GetName ())))
-            {
-                Urho3D::PODVector <Urho3D::StringHash> willBeAttackers;
-                Urho3D::PODVector <Urho3D::StringHash> willBeDefenders;
-                Urho3D::Vector <Urho3D::StringHash> playersList = playersUnits.Keys ();
-                SortAttackersAndDefendersInBattle (war, isAttackerInWar, playersList, willBeAttackers, willBeDefenders);
-
-                if (!willBeAttackers.Empty () && !willBeDefenders.Empty ())
-                {
-                    Battle *battle = CreateBattle (war->GetHash (), district->GetHash ());
-                    InitNewBattle (battle, playersUnits, willBeAttackers, willBeDefenders);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-}
-
-void BattlesProcessor::SortAttackersAndDefendersInBattle (DiplomacyWar *war, bool isNewUnitPlayerAttackerInWar,
-                                                          Urho3D::Vector <Urho3D::StringHash> &playersList,
-                                                          Urho3D::PODVector <Urho3D::StringHash> &willBeAttackers,
-                                                          Urho3D::PODVector <Urho3D::StringHash> &willBeDefenders)
-{
-    for (int playerIndex = 0; playerIndex < playersList.Size (); playerIndex++)
-    {
-        Urho3D::StringHash playerNameHash = playersList.At (playerIndex);
-        bool isCurrentScannedAttackerInWar = war->IsAttacker (playerNameHash);
-        if (isCurrentScannedAttackerInWar || war->IsDefender (playerNameHash))
-        {
-            if (isNewUnitPlayerAttackerInWar == isCurrentScannedAttackerInWar)
-            {
-                willBeAttackers.Push (playerNameHash);
-            }
-            else
-            {
-                willBeDefenders.Push (playerNameHash);
-            }
-        }
-    }
-}
-
-void BattlesProcessor::InitNewBattle (Battle *battle,
-                                      Urho3D::HashMap <Urho3D::StringHash, Urho3D::PODVector <Unit *> > &unitsInDistrict,
-                                      Urho3D::PODVector <Urho3D::StringHash> &willBeAttackers,
-                                      Urho3D::PODVector <Urho3D::StringHash> &willBeDefenders)
-{
-    for (int attackerIndex = 0; attackerIndex < willBeAttackers.Size (); attackerIndex++)
-    {
-        Urho3D::StringHash playerNameHash = willBeAttackers.At (attackerIndex);
-        Urho3D::PODVector <Unit *> units = unitsInDistrict [playerNameHash];
-        for (int unitIndex = 0; unitIndex < units.Size (); unitIndex++)
-        {
-            Unit *unit = units.At (unitIndex);
-            battle->AddAttackerUnitHash (unit->GetHash ());
-            unit->SetIsInBattle (true);
-            unit->SetBattleHash (battle->GetHash ());
-        }
-    }
-
-    for (int defenderIndex = 0; defenderIndex < willBeDefenders.Size (); defenderIndex++)
-    {
-        Urho3D::StringHash playerNameHash = willBeDefenders.At (defenderIndex);
-        Urho3D::PODVector <Unit *> units = unitsInDistrict [playerNameHash];
-        for (int unitIndex = 0; unitIndex < units.Size (); unitIndex++)
-        {
-            Unit *unit = units.At (unitIndex);
-            battle->AddDefenderUnitHash (unit->GetHash ());
-            unit->SetIsInBattle (true);
-            unit->SetBattleHash (battle->GetHash ());
-        }
-    }
-}
-
-bool BattlesProcessor::ProcessBattle (Battle *battle, float timeStep)
-{
-    UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
-    GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
-    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
-    District *district = map->GetDistrictByHash (battle->GetDistrictHash ());
-    assert (district);
-
-    const unsigned attackersCountBefore = battle->GetAttackersUnitsCount ();
-    const unsigned defendersCountBefore = battle->GetDefendersUnitsCount ();
-    Urho3D::PODVector <Unit *> attackers = ReconstructUnits (unitsManager, BattleHelpers::GetUnitsInBattleList (battle, true));
-    Urho3D::PODVector <Unit *> defenders = ReconstructUnits (unitsManager, BattleHelpers::GetUnitsInBattleList (battle, false));
-
-    float attackersAttackForce = timeStep * CalculateUnitsAttackForce (attackers, configuration, district->GetIsSea ());
-    float defendersAttackForce = timeStep * CalculateUnitsAttackForce (defenders, configuration, district->GetIsSea ());
-    ApplyDamage (battle, configuration, defendersAttackForce, attackers, true, timeStep * 100.0f);
-
-    float districtDefense = district->GetIsSea () ? 1.0f : district->GetDefenseEvolutionPoints ();
-    attackersAttackForce /= Urho3D::Sqrt (Urho3D::Sqrt (districtDefense));
-    ApplyDamage (battle, configuration, attackersAttackForce, defenders, false, timeStep * 100.0f);
-
-    if (attackersCountBefore != battle->GetAttackersUnitsCount () ||
-            defendersCountBefore != battle->GetDefendersUnitsCount ())
-    {
-        AddNetworkUpdatePointsToComponentCounter (battle, 100.0f);
-    }
-    return (battle->GetAttackersUnitsCount () > 0 && battle->GetDefendersUnitsCount () > 0);
-}
-
-Urho3D::PODVector <Unit *> BattlesProcessor::ReconstructUnits (UnitsManager *unitsManager, Urho3D::PODVector <Urho3D::StringHash> unitsHashes)
-{
-    Urho3D::PODVector <Unit *> units;
-    for (int index = 0; index < unitsHashes.Size (); index++)
-    {
-        Unit *unit = unitsManager->GetUnitByHash (unitsHashes.At (index));
-        if (unit)
-        {
-            units.Push (unit);
-        }
-    }
-    return units;
-}
-
-float BattlesProcessor::CalculateUnitsAttackForce (Urho3D::PODVector <Unit *> &units, GameConfiguration *configuration, bool isNavalBattle)
-{
-    float attackForce = 0.0f;
-    for (int index = 0; index < units.Size (); index++)
-    {
-        attackForce += units.At (index)->GetBattleAttackForce (configuration, isNavalBattle);
-    }
-    return attackForce;
-}
-
-void BattlesProcessor::ApplyDamage (Battle *battle, GameConfiguration *configuration, float fullDamage,
-                                    Urho3D::PODVector <Unit *> &units, bool isAttackers, float damagedUnitUpdatePoints)
-{
-    int currentUnitIndex = Urho3D::Random (0, units.Size ());
-    float medianDamagePerUnit = (fullDamage / (BattleHelpers::GetUnitsCountInBattle (battle, isAttackers) * 1.0f));
-
-    while (fullDamage > 0.0f && BattleHelpers::GetUnitsCountInBattle (battle, isAttackers) > 0)
-    {
-        float damage = medianDamagePerUnit * Urho3D::Random (0.2f, 5.0f);
-        if (damage > fullDamage)
-        {
-            damage = fullDamage;
-        }
-        fullDamage -= damage;
-
-        Unit *unit = units.At (currentUnitIndex);
-        if (!unit->ApplyDamage (configuration, damage))
-        {
-            BattleHelpers::RemoveUnitFromBattle (battle, isAttackers, unit->GetHash ());
-            units.RemoveSwap (unit);
-        }
-        else
-        {
-            AddNetworkUpdatePointsToComponentCounter (unit, damagedUnitUpdatePoints);
-        }
-
-        currentUnitIndex = Urho3D::Random (0, units.Size ());
-    }
-}
-
-Battle *BattlesProcessor::CreateBattle (Urho3D::StringHash warHash, Urho3D::StringHash districtHash)
-{
-    Urho3D::Node *battleNode = node_->CreateChild ("battle", Urho3D::REPLICATED);
-    Urho3D::SharedPtr <Battle> battle (battleNode->CreateComponent <Battle> (Urho3D::REPLICATED));
-    battleNode->SetName ("battle" + Urho3D::String (battleNode->GetID ()));
-    battleNode->AddTag (TAG_BATTLE);
-    battles_.Push (battle);
-
-    battle->SetWarHash (warHash);
-    battle->SetDistrictHash (districtHash);
-    battle->UpdateHash (this);
-    return battle;
-}
-
-void BattlesProcessor::DeleteBattle (Battle *battle)
-{
-    UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
-    Urho3D::PODVector <Unit *> units;
-    units.Push (ReconstructUnits (unitsManager, BattleHelpers::GetUnitsInBattleList (battle, true)));
-    units.Push (ReconstructUnits (unitsManager, BattleHelpers::GetUnitsInBattleList (battle, false)));
-
-    for (int index = 0; index < units.Size (); index++)
-    {
-        Unit *unit = units.At (index);
-        if (unit)
-        {
-            unit->SetIsInBattle (false);
-            AddNetworkUpdatePointsToComponentCounter (unit, 100.0f);
-        }
-    }
-    battle->GetNode ()->Remove ();
-}
-
-void BattlesProcessor::OnSceneSet (Urho3D::Scene *scene)
-{
-    UnsubscribeFromAllEvents ();
-    Urho3D::Component::OnSceneSet (scene);
-
-    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (BattlesProcessor, Update));
-    SubscribeToEvent (EVENT_UNIT_CREATED, URHO3D_HANDLER (BattlesProcessor, HandleUnitCreated));
-    SubscribeToEvent (EVENT_UNIT_POSITION_CHANGED, URHO3D_HANDLER (BattlesProcessor, HandleUnitPositionChanged));
-    SubscribeToEvent (EVENT_TRADERS_UNIT_LOSSES_GOLD, URHO3D_HANDLER (BattlesProcessor, HandleTradersUnitLossesGold));
-
-    SubscribeToEvent (EVENT_PLAYER_WILL_BE_DISCONNECTED, URHO3D_HANDLER (BattlesProcessor, HandlePlayerWillBeDisconnected));
-    SubscribeToEvent (EVENT_WAR_STARTED, URHO3D_HANDLER (BattlesProcessor, HandleWarStarted));
-    SubscribeToEvent (EVENT_WAR_ENDED, URHO3D_HANDLER (BattlesProcessor, HandleWarEnded));
-}
-
 BattlesProcessor::BattlesProcessor (Urho3D::Context *context) : Urho3D::Component (context),
     battles_ ()
 {
@@ -429,7 +140,7 @@ void BattlesProcessor::HandlePlayerWillBeDisconnected (Urho3D::StringHash eventT
 
         if (isBattleChanged)
         {
-            AddNetworkUpdatePointsToComponentCounter (battle, 100.0f);
+            NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (battle, 100.0f);
         }
     }
 }
@@ -565,5 +276,294 @@ Urho3D::PODVector <Battle *> GetBattlesInDistrict (Urho3D::Scene *scene, Urho3D:
         }
     }
     return battlesInDistrict;
+}
+
+void BattlesProcessor::OnSceneSet (Urho3D::Scene *scene)
+{
+    UnsubscribeFromAllEvents ();
+    Urho3D::Component::OnSceneSet (scene);
+
+    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (BattlesProcessor, Update));
+    SubscribeToEvent (EVENT_UNIT_CREATED, URHO3D_HANDLER (BattlesProcessor, HandleUnitCreated));
+    SubscribeToEvent (EVENT_UNIT_POSITION_CHANGED, URHO3D_HANDLER (BattlesProcessor, HandleUnitPositionChanged));
+    SubscribeToEvent (EVENT_TRADERS_UNIT_LOSSES_GOLD, URHO3D_HANDLER (BattlesProcessor, HandleTradersUnitLossesGold));
+
+    SubscribeToEvent (EVENT_PLAYER_WILL_BE_DISCONNECTED, URHO3D_HANDLER (BattlesProcessor, HandlePlayerWillBeDisconnected));
+    SubscribeToEvent (EVENT_WAR_STARTED, URHO3D_HANDLER (BattlesProcessor, HandleWarStarted));
+    SubscribeToEvent (EVENT_WAR_ENDED, URHO3D_HANDLER (BattlesProcessor, HandleWarEnded));
+}
+
+void BattlesProcessor::HandleUnitPositionChangedOrCreated (Urho3D::VariantMap &eventData)
+{
+    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
+    UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
+    DiplomacyProcessor *diplomacyProcessor = node_->GetScene ()->GetChild ("diplomacy")->GetComponent <DiplomacyProcessor> ();
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
+
+    Unit *unit = unitsManager->GetUnitByHash (eventData [UnitPositionChanged::UNIT_HASH].GetStringHash ());
+    assert (unit);
+    District *district = map->GetDistrictByHash (unit->GetPositionHash ());
+    assert (district);
+    Player *player = playersManager->GetPlayerByNameHash (Urho3D::StringHash (unit->GetOwnerPlayerName ()));
+
+    AddUnitToBattleIfNeeded (unit, district, player, diplomacyProcessor, unitsManager) ||
+            CreateNewBattleIfNeeded (unit, district, player, diplomacyProcessor, unitsManager);
+}
+
+bool BattlesProcessor::AddUnitToBattleIfNeeded (Unit *unit, District *unitPosition, Player *unitPlayer,
+                                                DiplomacyProcessor *diplomacyProcessor, UnitsManager *unitsManager)
+{
+    Urho3D::PODVector <Urho3D::StringHash> battlesInDistrict = GetCurrentBattlesInDistrict (unitPosition->GetHash ());
+    Urho3D::PODVector <Urho3D::StringHash> warsOfPlayer = diplomacyProcessor->GetWarsOfPlayer (
+                Urho3D::StringHash (unitPlayer->GetName ()));
+
+    if (!battlesInDistrict.Empty () && !warsOfPlayer.Empty ())
+    {
+        for (int index = 0; index < battlesInDistrict.Size (); index++)
+        {
+            Battle *battle = GetBattleByHash (battlesInDistrict.At (index));
+            if (warsOfPlayer.Contains (battle->GetWarHash ()))
+            {
+                DiplomacyWar *war = diplomacyProcessor->GetWarByHash (battle->GetWarHash ());
+                assert (war);
+                bool isAttackerInWar = war->IsAttacker (Urho3D::StringHash (unitPlayer->GetName ()));
+
+                Unit *firstAttackersUnit = unitsManager->GetUnitByHash (battle->GetAttackerUnitHashByIndex (0));
+                bool isFirstAttackerUnitAttackerInWar = war->IsAttacker (
+                            Urho3D::StringHash (firstAttackersUnit->GetOwnerPlayerName ()));
+
+                if (isAttackerInWar == isFirstAttackerUnitAttackerInWar)
+                {
+                    battle->AddAttackerUnitHash (unit->GetHash ());
+                }
+                else
+                {
+                    battle->AddDefenderUnitHash (unit->GetHash ());
+                }
+
+                unit->SetIsInBattle (true);
+                unit->SetBattleHash (battle->GetHash ());
+                NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (unit, 100.0f);
+                NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (battle, 100.0f);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool BattlesProcessor::CreateNewBattleIfNeeded (Unit *unit, District *district, Player *unitPlayer,
+                                                DiplomacyProcessor *diplomacyProcessor, UnitsManager *unitsManager)
+{
+    Urho3D::PODVector <Urho3D::StringHash> warsOfPlayer = diplomacyProcessor->GetWarsOfPlayer (
+                Urho3D::StringHash (unitPlayer->GetName ()));
+
+    if (!warsOfPlayer.Empty ())
+    {
+        Urho3D::PODVector <Unit *> unitsInDistrict = GetUnitsInDistrict (node_->GetScene (), district->GetHash ());
+        Urho3D::HashMap <Urho3D::StringHash, Urho3D::PODVector <Unit *> > playersUnits;
+
+        for (int index = 0; index < unitsInDistrict.Size (); index++)
+        {
+            Unit *unit = unitsInDistrict.At (index);
+            if (!unit->GetIsInBattle ())
+            {
+                playersUnits [Urho3D::StringHash (unit->GetOwnerPlayerName ())].Push (unit);
+            }
+        }
+
+        for (int warIndex = 0; warIndex < warsOfPlayer.Size (); warIndex++)
+        {
+            DiplomacyWar *war = diplomacyProcessor->GetWarByHash (warsOfPlayer.At (warIndex));
+            assert (war);
+            bool isAttackerInWar = war->IsAttacker (Urho3D::StringHash (unitPlayer->GetName ()));
+            if (isAttackerInWar || war->IsDefender (Urho3D::StringHash (unitPlayer->GetName ())))
+            {
+                Urho3D::PODVector <Urho3D::StringHash> willBeAttackers;
+                Urho3D::PODVector <Urho3D::StringHash> willBeDefenders;
+                Urho3D::Vector <Urho3D::StringHash> playersList = playersUnits.Keys ();
+                SortAttackersAndDefendersInBattle (war, isAttackerInWar, playersList, willBeAttackers, willBeDefenders);
+
+                if (!willBeAttackers.Empty () && !willBeDefenders.Empty ())
+                {
+                    Battle *battle = CreateBattle (war->GetHash (), district->GetHash ());
+                    InitNewBattle (battle, playersUnits, willBeAttackers, willBeDefenders);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+
+void BattlesProcessor::SortAttackersAndDefendersInBattle (DiplomacyWar *war, bool isNewUnitPlayerAttackerInWar,
+                                                          Urho3D::Vector <Urho3D::StringHash> &playersList,
+                                                          Urho3D::PODVector <Urho3D::StringHash> &willBeAttackers,
+                                                          Urho3D::PODVector <Urho3D::StringHash> &willBeDefenders)
+{
+    for (int playerIndex = 0; playerIndex < playersList.Size (); playerIndex++)
+    {
+        Urho3D::StringHash playerNameHash = playersList.At (playerIndex);
+        bool isCurrentScannedAttackerInWar = war->IsAttacker (playerNameHash);
+        if (isCurrentScannedAttackerInWar || war->IsDefender (playerNameHash))
+        {
+            if (isNewUnitPlayerAttackerInWar == isCurrentScannedAttackerInWar)
+            {
+                willBeAttackers.Push (playerNameHash);
+            }
+            else
+            {
+                willBeDefenders.Push (playerNameHash);
+            }
+        }
+    }
+}
+
+void BattlesProcessor::InitNewBattle (Battle *battle,
+                                      Urho3D::HashMap <Urho3D::StringHash, Urho3D::PODVector <Unit *> > &unitsInDistrict,
+                                      Urho3D::PODVector <Urho3D::StringHash> &willBeAttackers,
+                                      Urho3D::PODVector <Urho3D::StringHash> &willBeDefenders)
+{
+    for (int attackerIndex = 0; attackerIndex < willBeAttackers.Size (); attackerIndex++)
+    {
+        Urho3D::StringHash playerNameHash = willBeAttackers.At (attackerIndex);
+        Urho3D::PODVector <Unit *> units = unitsInDistrict [playerNameHash];
+        for (int unitIndex = 0; unitIndex < units.Size (); unitIndex++)
+        {
+            Unit *unit = units.At (unitIndex);
+            battle->AddAttackerUnitHash (unit->GetHash ());
+            unit->SetIsInBattle (true);
+            unit->SetBattleHash (battle->GetHash ());
+        }
+    }
+
+    for (int defenderIndex = 0; defenderIndex < willBeDefenders.Size (); defenderIndex++)
+    {
+        Urho3D::StringHash playerNameHash = willBeDefenders.At (defenderIndex);
+        Urho3D::PODVector <Unit *> units = unitsInDistrict [playerNameHash];
+        for (int unitIndex = 0; unitIndex < units.Size (); unitIndex++)
+        {
+            Unit *unit = units.At (unitIndex);
+            battle->AddDefenderUnitHash (unit->GetHash ());
+            unit->SetIsInBattle (true);
+            unit->SetBattleHash (battle->GetHash ());
+        }
+    }
+}
+
+bool BattlesProcessor::ProcessBattle (Battle *battle, float timeStep)
+{
+    UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
+    GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
+    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
+    District *district = map->GetDistrictByHash (battle->GetDistrictHash ());
+    assert (district);
+
+    const unsigned attackersCountBefore = battle->GetAttackersUnitsCount ();
+    const unsigned defendersCountBefore = battle->GetDefendersUnitsCount ();
+    Urho3D::PODVector <Unit *> attackers = ReconstructUnits (unitsManager, BattleHelpers::GetUnitsInBattleList (battle, true));
+    Urho3D::PODVector <Unit *> defenders = ReconstructUnits (unitsManager, BattleHelpers::GetUnitsInBattleList (battle, false));
+
+    float attackersAttackForce = timeStep * CalculateUnitsAttackForce (attackers, configuration, district->GetIsSea ());
+    float defendersAttackForce = timeStep * CalculateUnitsAttackForce (defenders, configuration, district->GetIsSea ());
+    ApplyDamage (battle, configuration, defendersAttackForce, attackers, true, timeStep * 100.0f);
+
+    float districtDefense = district->GetIsSea () ? 1.0f : district->GetDefenseEvolutionPoints ();
+    attackersAttackForce /= Urho3D::Sqrt (Urho3D::Sqrt (districtDefense));
+    ApplyDamage (battle, configuration, attackersAttackForce, defenders, false, timeStep * 100.0f);
+
+    if (attackersCountBefore != battle->GetAttackersUnitsCount () ||
+            defendersCountBefore != battle->GetDefendersUnitsCount ())
+    {
+        NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (battle, 100.0f);
+    }
+    return (battle->GetAttackersUnitsCount () > 0 && battle->GetDefendersUnitsCount () > 0);
+}
+
+Urho3D::PODVector <Unit *> BattlesProcessor::ReconstructUnits (UnitsManager *unitsManager, Urho3D::PODVector <Urho3D::StringHash> unitsHashes)
+{
+    Urho3D::PODVector <Unit *> units;
+    for (int index = 0; index < unitsHashes.Size (); index++)
+    {
+        Unit *unit = unitsManager->GetUnitByHash (unitsHashes.At (index));
+        if (unit)
+        {
+            units.Push (unit);
+        }
+    }
+    return units;
+}
+
+float BattlesProcessor::CalculateUnitsAttackForce (Urho3D::PODVector <Unit *> &units, GameConfiguration *configuration, bool isNavalBattle)
+{
+    float attackForce = 0.0f;
+    for (int index = 0; index < units.Size (); index++)
+    {
+        attackForce += units.At (index)->GetBattleAttackForce (configuration, isNavalBattle);
+    }
+    return attackForce;
+}
+
+void BattlesProcessor::ApplyDamage (Battle *battle, GameConfiguration *configuration, float fullDamage,
+                                    Urho3D::PODVector <Unit *> &units, bool isAttackers, float damagedUnitUpdatePoints)
+{
+    int currentUnitIndex = Urho3D::Random (0, units.Size ());
+    float medianDamagePerUnit = (fullDamage / (BattleHelpers::GetUnitsCountInBattle (battle, isAttackers) * 1.0f));
+
+    while (fullDamage > 0.0f && BattleHelpers::GetUnitsCountInBattle (battle, isAttackers) > 0)
+    {
+        float damage = medianDamagePerUnit * Urho3D::Random (0.2f, 5.0f);
+        if (damage > fullDamage)
+        {
+            damage = fullDamage;
+        }
+        fullDamage -= damage;
+
+        Unit *unit = units.At (currentUnitIndex);
+        if (!unit->ApplyDamage (configuration, damage))
+        {
+            BattleHelpers::RemoveUnitFromBattle (battle, isAttackers, unit->GetHash ());
+            units.RemoveSwap (unit);
+        }
+        else
+        {
+            NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (unit, damagedUnitUpdatePoints);
+        }
+
+        currentUnitIndex = Urho3D::Random (0, units.Size ());
+    }
+}
+
+Battle *BattlesProcessor::CreateBattle (Urho3D::StringHash warHash, Urho3D::StringHash districtHash)
+{
+    Urho3D::Node *battleNode = node_->CreateChild ("battle", Urho3D::REPLICATED);
+    Urho3D::SharedPtr <Battle> battle (battleNode->CreateComponent <Battle> (Urho3D::REPLICATED));
+    battleNode->SetName ("battle" + Urho3D::String (battleNode->GetID ()));
+    battleNode->AddTag (TAG_BATTLE);
+    battles_.Push (battle);
+
+    battle->SetWarHash (warHash);
+    battle->SetDistrictHash (districtHash);
+    battle->UpdateHash (this);
+    return battle;
+}
+
+void BattlesProcessor::DeleteBattle (Battle *battle)
+{
+    UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
+    Urho3D::PODVector <Unit *> units;
+    units.Push (ReconstructUnits (unitsManager, BattleHelpers::GetUnitsInBattleList (battle, true)));
+    units.Push (ReconstructUnits (unitsManager, BattleHelpers::GetUnitsInBattleList (battle, false)));
+
+    for (int index = 0; index < units.Size (); index++)
+    {
+        Unit *unit = units.At (index);
+        if (unit)
+        {
+            unit->SetIsInBattle (false);
+            NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (unit, 100.0f);
+        }
+    }
+    battle->GetNode ()->Remove ();
 }
 }

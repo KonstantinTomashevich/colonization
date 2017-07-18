@@ -12,12 +12,54 @@
 #include <Colonization/Core/Unit/UnitEvents.hpp>
 
 #include <Colonization/Backend/PlayersManager.hpp>
-#include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
+#include <Colonization/Utils/Network/NetworkUpdateCounterUtils.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
 namespace Colonization
 {
+ColoniesActionsProcessor::ColoniesActionsProcessor (Urho3D::Context *context) : Urho3D::Component (context)
+{
+
+}
+
+ColoniesActionsProcessor::~ColoniesActionsProcessor ()
+{
+
+}
+
+void ColoniesActionsProcessor::RegisterObject (Urho3D::Context *context)
+{
+    context->RegisterFactory <ColoniesActionsProcessor> (COLONIZATION_SERVER_ONLY_CATEGORY);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
+}
+
+void ColoniesActionsProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    if (enabled_)
+    {
+        Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
+        assert (map);
+        float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
+        for (int index = 0; index < map->GetDistrictsCount (); index++)
+        {
+            District *district = map->GetDistrictByIndex (index);
+            if (district->GetHasColony () && district->GetColonyActionsCount () > 0)
+            {
+                ProcessColonyActions (district, timeStep);
+            }
+        }
+    }
+}
+
+void ColoniesActionsProcessor::OnSceneSet (Urho3D::Scene *scene)
+{
+    UnsubscribeFromAllEvents ();
+    Urho3D::Component::OnSceneSet (scene);
+    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (ColoniesActionsProcessor, Update));
+}
+
 void ColoniesActionsProcessor::ProcessColonyActions (District *colony, float timeStep)
 {
     Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> action = colony->GetColonyActionByIndex (0);
@@ -32,14 +74,7 @@ void ColoniesActionsProcessor::ProcessColonyActions (District *colony, float tim
         colony->SetColonyActionAtIndexData (0, action.second_);
         updatePoints = timeStep * 25.0f;
     }
-    AddNetworkUpdatePointsToComponentCounter (colony, updatePoints);
-}
-
-void ColoniesActionsProcessor::OnSceneSet (Urho3D::Scene *scene)
-{
-    UnsubscribeFromAllEvents ();
-    Urho3D::Component::OnSceneSet (scene);
-    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (ColoniesActionsProcessor, Update));
+    NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (colony, updatePoints);
 }
 
 bool ColoniesActionsProcessor::ProcessAction (District *colony, Urho3D::Pair <Urho3D::StringHash, Urho3D::VariantMap> &action, float timeStep)
@@ -99,7 +134,7 @@ bool ColoniesActionsProcessor::ProcessBuildWarShipAction (GameConfiguration *con
         if (currentShipProgress >= 1.0f && colony->GetMenCount () > configuration->GetOneWarShipCrew ())
         {
             colony->SetMenCount (colony->GetMenCount () - configuration->GetOneWarShipCrew ());
-            AddNetworkUpdatePointsToComponentCounter (colony, 100.0f);
+            NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (colony, 100.0f);
 
             FleetUnit *newWarShip = static_cast <FleetUnit *> (
                         unitsManager->CreateUnit (UNIT_FLEET, colony->GetColonyOwnerName (), targetDistrictHash));
@@ -144,7 +179,7 @@ bool ColoniesActionsProcessor::ProcessFormArmyAction (GameConfiguration *configu
         if (currentProgress >= 1.0f && colony->GetMenCount () > soldiersCount)
         {
             colony->SetMenCount (colony->GetMenCount () - soldiersCount);
-            AddNetworkUpdatePointsToComponentCounter (colony, 100.0f);
+            NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (colony, 100.0f);
 
             ArmyUnit *army = static_cast <ArmyUnit *> (
                     unitsManager->CreateUnit (UNIT_ARMY, colony->GetColonyOwnerName (), colony->GetHash ()));
@@ -160,41 +195,6 @@ bool ColoniesActionsProcessor::ProcessFormArmyAction (GameConfiguration *configu
     else
     {
         return false;
-    }
-}
-
-ColoniesActionsProcessor::ColoniesActionsProcessor (Urho3D::Context *context) : Urho3D::Component (context)
-{
-
-}
-
-ColoniesActionsProcessor::~ColoniesActionsProcessor ()
-{
-
-}
-
-void ColoniesActionsProcessor::RegisterObject (Urho3D::Context *context)
-{
-    context->RegisterFactory <ColoniesActionsProcessor> (COLONIZATION_SERVER_ONLY_CATEGORY);
-
-    URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
-}
-
-void ColoniesActionsProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
-{
-    if (enabled_)
-    {
-        Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
-        assert (map);
-        float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
-        for (int index = 0; index < map->GetDistrictsCount (); index++)
-        {
-            District *district = map->GetDistrictByIndex (index);
-            if (district->GetHasColony () && district->GetColonyActionsCount () > 0)
-            {
-                ProcessColonyActions (district, timeStep);
-            }
-        }
     }
 }
 }

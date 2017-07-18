@@ -14,54 +14,6 @@
 
 namespace Colonization
 {
-void MessagesHandler::ProcessSendChatMessageInput (Player *player, Urho3D::VectorBuffer &messageData)
-{
-    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
-    Urho3D::PODVector <Player *> players = playersManager->GetAllPlayers ();
-    SendChatMessage (player->GetName (), messageData.ReadString (), players, false);
-    player->OnChatMessageSended ();
-}
-
-void MessagesHandler::ProcessSendPrivateMessageInput (Player *player, Urho3D::VectorBuffer &messageData)
-{
-    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
-    Urho3D::String message = messageData.ReadString ();
-    Urho3D::PODVector <Urho3D::StringHash> recievers;
-    recievers.Push (Urho3D::StringHash (player->GetName ()));
-    while (!messageData.IsEof ())
-    {
-        recievers.Push (Urho3D::StringHash (messageData.ReadString ()));
-    }
-
-    Urho3D::PODVector <Player *> players = playersManager->GetPlayersByNames (recievers);
-    SendChatMessage (player->GetName (), message, players, true);
-    player->OnChatMessageSended ();
-}
-
-void MessagesHandler::ProcessSendPlayerActionInput (Player *player, Urho3D::VectorBuffer &messageData)
-{
-    PlayerActionType actionType = static_cast <PlayerActionType> (messageData.ReadInt ());
-    Urho3D::Pair <PlayerActionType, Urho3D::Variant> action =
-            Urho3D::Pair <PlayerActionType, Urho3D::Variant> (actionType, messageData);
-    player->AddAction (action);
-}
-
-void MessagesHandler::ProcessSendIsPlayerReadyForStartInput (Player *player, Urho3D::VectorBuffer &messageData)
-{
-    bool isReadyForStart = messageData.ReadBool ();
-    player->SetIsReadyForStart (isReadyForStart);
-}
-
-void MessagesHandler::ProcessReselectPlayerColor (Player *player, Urho3D::VectorBuffer &messageData)
-{
-    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
-    Urho3D::Color color = messageData.ReadColor ();
-    if (!playersManager->IsColorUsed (color, player))
-    {
-        player->SetColor (color);
-    }
-}
-
 MessagesHandler::MessagesHandler (Urho3D::Context *context) : Urho3D::Component (context)
 {
     SubscribeToEvent (Urho3D::E_CLIENTIDENTITY, URHO3D_HANDLER (MessagesHandler, HandleClientIdentity));
@@ -246,6 +198,54 @@ void MessagesHandler::SendDiplomacyOffer (Urho3D::StringHash offerType, unsigned
         {
             recieviers.At (index)->SendMessage (STC_NETWORK_MESSAGE_DIPLOMACY_OFFER, true, false, messageData);
         }
+    }
+}
+
+void MessagesHandler::ProcessSendChatMessageInput (Player *player, Urho3D::VectorBuffer &messageData)
+{
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
+    Urho3D::PODVector <Player *> players = playersManager->GetAllPlayers ();
+    SendChatMessage (player->GetName (), messageData.ReadString (), players, false);
+    player->OnChatMessageSended ();
+}
+
+void MessagesHandler::ProcessSendPrivateMessageInput (Player *player, Urho3D::VectorBuffer &messageData)
+{
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
+    Urho3D::String message = messageData.ReadString ();
+    Urho3D::PODVector <Urho3D::StringHash> recievers;
+    recievers.Push (Urho3D::StringHash (player->GetName ()));
+    while (!messageData.IsEof ())
+    {
+        recievers.Push (Urho3D::StringHash (messageData.ReadString ()));
+    }
+
+    Urho3D::PODVector <Player *> players = playersManager->GetPlayersByNames (recievers);
+    SendChatMessage (player->GetName (), message, players, true);
+    player->OnChatMessageSended ();
+}
+
+void MessagesHandler::ProcessSendPlayerActionInput (Player *player, Urho3D::VectorBuffer &messageData)
+{
+    PlayerActionType actionType = static_cast <PlayerActionType> (messageData.ReadInt ());
+    Urho3D::Pair <PlayerActionType, Urho3D::Variant> action =
+            Urho3D::Pair <PlayerActionType, Urho3D::Variant> (actionType, messageData);
+    player->AddAction (action);
+}
+
+void MessagesHandler::ProcessSendIsPlayerReadyForStartInput (Player *player, Urho3D::VectorBuffer &messageData)
+{
+    bool isReadyForStart = messageData.ReadBool ();
+    player->SetIsReadyForStart (isReadyForStart);
+}
+
+void MessagesHandler::ProcessReselectPlayerColor (Player *player, Urho3D::VectorBuffer &messageData)
+{
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
+    Urho3D::Color color = messageData.ReadColor ();
+    if (!playersManager->IsColorUsed (color, player))
+    {
+        player->SetColor (color);
     }
 }
 }

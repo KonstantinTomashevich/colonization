@@ -22,72 +22,6 @@
 
 namespace Colonization
 {
-void MapMaskUpdater::DrawDistrictBorders (District *district, Urho3D::Image *target)
-{
-    Urho3D::PODVector <Urho3D::Vector3> polygonPoints = district->GetPolygonPoints ();
-    for (int index = 0; index < polygonPoints.Size (); index++)
-    {
-        Urho3D::Vector3 firstPoint = polygonPoints.At (index);
-        Urho3D::Vector3 secondPoint;
-
-        if (index + 1 < polygonPoints.Size ())
-        {
-            secondPoint = polygonPoints.At (index + 1);
-        }
-        else
-        {
-            secondPoint = polygonPoints.At (0);
-        }
-
-        Urho3D::IntVector2 firstOnMap = WorldPointToMapPoint (firstPoint);
-        Urho3D::IntVector2 secondOnMap = WorldPointToMapPoint (secondPoint);
-
-        ImageUtils::DrawLine (target, districtBorderLineColor_,
-                              firstOnMap.x_, firstOnMap.y_,
-                              secondOnMap.x_, secondOnMap.y_,
-                              districtBorderLineWidth_);
-    }
-}
-
-void MapMaskUpdater::UpdateFogOfWarMask (Map *map, FogOfWarCalculator *fogOfWarCalculator)
-{
-    for (int index = 0; index < map->GetDistrictsCount (); index++)
-    {
-        District *district = map->GetDistrictByIndex (index);
-        DrawDistrictBorders (district, fogOfWarMaskImage_);
-        Urho3D::Color color;
-        if (fogOfWarCalculator->IsDistrictVisible (district->GetHash ()))
-        {
-            color = visibleDistrictColor_;
-        }
-        else
-        {
-            color = districtUnderFogColor_;
-        }
-
-        if (selectedDistrictHash_ == district->GetHash ())
-        {
-            color.r_ *= selectedDistrictColorModifer_;
-            color.g_ *= selectedDistrictColorModifer_;
-            color.b_ *= selectedDistrictColorModifer_;
-        }
-
-        Urho3D::IntVector2 unitPositionOnMap = WorldPointToMapPoint (district->GetUnitPosition ());
-        ImageUtils::FloodFill (fogOfWarMaskImage_, color, unitPositionOnMap.x_, unitPositionOnMap.y_);
-    }
-
-    fogOfWarMaskTexture_->SetData (fogOfWarMaskImage_, false);
-    lastMaskUpdateSelectedHash_ = selectedDistrictHash_;
-    lastMaskUpdateFogOfWarMap_ = fogOfWarCalculator->GetFogOfWarMap ();
-}
-
-void MapMaskUpdater::OnSceneSet (Urho3D::Scene *scene)
-{
-    UnsubscribeFromAllEvents ();
-    Urho3D::Component::OnSceneSet (scene);
-    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (MapMaskUpdater, Update));
-}
-
 MapMaskUpdater::MapMaskUpdater (Urho3D::Context *context) : Urho3D::Component (context),
     mapMaskSize_ (1024, 1024),
     mapMaskComponents_ (4),
@@ -401,6 +335,72 @@ Urho3D::StringHash MapMaskUpdater::GetSelectedDistrictHash () const
 void MapMaskUpdater::SetSelectedDistrictHash (const Urho3D::StringHash &selectedDistrictHash)
 {
     selectedDistrictHash_ = selectedDistrictHash;
+}
+
+void MapMaskUpdater::OnSceneSet (Urho3D::Scene *scene)
+{
+    UnsubscribeFromAllEvents ();
+    Urho3D::Component::OnSceneSet (scene);
+    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (MapMaskUpdater, Update));
+}
+
+void MapMaskUpdater::DrawDistrictBorders (District *district, Urho3D::Image *target)
+{
+    Urho3D::PODVector <Urho3D::Vector3> polygonPoints = district->GetPolygonPoints ();
+    for (int index = 0; index < polygonPoints.Size (); index++)
+    {
+        Urho3D::Vector3 firstPoint = polygonPoints.At (index);
+        Urho3D::Vector3 secondPoint;
+
+        if (index + 1 < polygonPoints.Size ())
+        {
+            secondPoint = polygonPoints.At (index + 1);
+        }
+        else
+        {
+            secondPoint = polygonPoints.At (0);
+        }
+
+        Urho3D::IntVector2 firstOnMap = WorldPointToMapPoint (firstPoint);
+        Urho3D::IntVector2 secondOnMap = WorldPointToMapPoint (secondPoint);
+
+        ImageUtils::DrawLine (target, districtBorderLineColor_,
+                              firstOnMap.x_, firstOnMap.y_,
+                              secondOnMap.x_, secondOnMap.y_,
+                              districtBorderLineWidth_);
+    }
+}
+
+void MapMaskUpdater::UpdateFogOfWarMask (Map *map, FogOfWarCalculator *fogOfWarCalculator)
+{
+    for (int index = 0; index < map->GetDistrictsCount (); index++)
+    {
+        District *district = map->GetDistrictByIndex (index);
+        DrawDistrictBorders (district, fogOfWarMaskImage_);
+        Urho3D::Color color;
+        if (fogOfWarCalculator->IsDistrictVisible (district->GetHash ()))
+        {
+            color = visibleDistrictColor_;
+        }
+        else
+        {
+            color = districtUnderFogColor_;
+        }
+
+        if (selectedDistrictHash_ == district->GetHash ())
+        {
+            color.r_ *= selectedDistrictColorModifer_;
+            color.g_ *= selectedDistrictColorModifer_;
+            color.b_ *= selectedDistrictColorModifer_;
+        }
+
+        Urho3D::IntVector2 unitPositionOnMap = WorldPointToMapPoint (district->GetUnitPosition ());
+        ImageUtils::FloodFill (fogOfWarMaskImage_, color, unitPositionOnMap.x_, unitPositionOnMap.y_);
+    }
+
+    fogOfWarMaskTexture_->SetData (fogOfWarMaskImage_, false);
+    lastMaskUpdateSelectedHash_ = selectedDistrictHash_;
+    lastMaskUpdateFogOfWarMap_ = fogOfWarCalculator->GetFogOfWarMap ();
 }
 }
 

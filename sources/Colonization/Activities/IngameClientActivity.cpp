@@ -35,7 +35,7 @@ void IngameClientActivity::Start ()
     assert (angelScript_->GetScriptFile ()->IsCompiled ());
 
     Urho3D::VariantVector executionParameters;
-    executionParameters.Push (application_);
+    executionParameters.Push (GetApplication ());
     angelScript_->Execute ("void set_activitiesApplication (ActivitiesApplication @activitiesApplication)", executionParameters);
 
     executionParameters.Clear ();

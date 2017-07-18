@@ -10,12 +10,72 @@
 #include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Core/District/DistrictUtils.hpp>
 
-#include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
+#include <Colonization/Utils/Network/NetworkUpdateCounterUtils.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
 namespace Colonization
 {
+ColoniesEvolutionManager::ColoniesEvolutionManager (Urho3D::Context *context) : Urho3D::Component (context)
+{
+
+}
+
+ColoniesEvolutionManager::~ColoniesEvolutionManager ()
+{
+
+}
+
+void ColoniesEvolutionManager::RegisterObject (Urho3D::Context *context)
+{
+    context->RegisterFactory <ColoniesEvolutionManager> (COLONIZATION_SERVER_ONLY_CATEGORY);
+
+    URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
+}
+
+void ColoniesEvolutionManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    if (enabled_)
+    {
+        Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
+        GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
+
+        assert (map);
+        assert (configuration);
+        float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
+
+        for (int index = 0; index < map->GetDistrictsCount (); index++)
+        {
+            District *district = map->GetDistrictByIndex (index);
+            if (district->GetHasColony ())
+            {
+                ProcessColony (configuration, district, timeStep);
+            }
+        }
+    }
+}
+
+void ColoniesEvolutionManager::HandlePlayerWillBeDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    Player *player = static_cast <Player *> (eventData [PlayerWillBeDisconnected::PLAYER].GetPtr ());
+    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
+    Urho3D::PODVector <Urho3D::StringHash> colonies = map->GetColoniesOfPlayer (Urho3D::StringHash (player->GetName ()));
+
+    for (int index = 0; index < colonies.Size (); index++)
+    {
+        District *colony = map->GetDistrictByHash (colonies.At (index));
+        DistrictUtils::CleanupColonyFromDistrict (colony);
+    }
+}
+
+void ColoniesEvolutionManager::OnSceneSet (Urho3D::Scene *scene)
+{
+    UnsubscribeFromAllEvents ();
+    Urho3D::Component::OnSceneSet (scene);
+    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (ColoniesEvolutionManager, Update));
+    SubscribeToEvent (EVENT_PLAYER_WILL_BE_DISCONNECTED, URHO3D_HANDLER (ColoniesEvolutionManager, HandlePlayerWillBeDisconnected));
+}
+
 float ColoniesEvolutionManager::GetTotalColonyEvolution(District *colony)
 {
     return colony->GetFarmsEvolutionPoints () + colony->GetMinesEvolutionPoints () +
@@ -34,7 +94,7 @@ void ColoniesEvolutionManager::ProcessColony (GameConfiguration *configuration, 
     updatePoints += ProcessColonyDefenseEvolution (configuration, colony, timeStep);
     // TODO: Implement average level of life calculation.
     colony->SetAverageLevelOfLifePoints (1.0f);
-    AddNetworkUpdatePointsToComponentCounter (colony, updatePoints);
+    NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (colony, updatePoints);
 }
 
 float ColoniesEvolutionManager::ProcessColonyPopulation (GameConfiguration *configuration, District *colony, float timeStep)
@@ -371,65 +431,5 @@ float ColoniesEvolutionManager::ProcessColonyDefenseEvolution (GameConfiguration
         }
     }
     return (evolutionAddition * 1500.0f);
-}
-
-void ColoniesEvolutionManager::OnSceneSet (Urho3D::Scene *scene)
-{
-    UnsubscribeFromAllEvents ();
-    Urho3D::Component::OnSceneSet (scene);
-    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (ColoniesEvolutionManager, Update));
-    SubscribeToEvent (EVENT_PLAYER_WILL_BE_DISCONNECTED, URHO3D_HANDLER (ColoniesEvolutionManager, HandlePlayerWillBeDisconnected));
-}
-
-ColoniesEvolutionManager::ColoniesEvolutionManager (Urho3D::Context *context) : Urho3D::Component (context)
-{
-
-}
-
-ColoniesEvolutionManager::~ColoniesEvolutionManager ()
-{
-
-}
-
-void ColoniesEvolutionManager::RegisterObject (Urho3D::Context *context)
-{
-    context->RegisterFactory <ColoniesEvolutionManager> (COLONIZATION_SERVER_ONLY_CATEGORY);
-
-    URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
-}
-
-void ColoniesEvolutionManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
-{
-    if (enabled_)
-    {
-        Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
-        GameConfiguration *configuration = node_->GetScene ()->GetComponent <GameConfiguration> ();
-
-        assert (map);
-        assert (configuration);
-        float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
-
-        for (int index = 0; index < map->GetDistrictsCount (); index++)
-        {
-            District *district = map->GetDistrictByIndex (index);
-            if (district->GetHasColony ())
-            {
-                ProcessColony (configuration, district, timeStep);
-            }
-        }
-    }
-}
-
-void ColoniesEvolutionManager::HandlePlayerWillBeDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
-{
-    Player *player = static_cast <Player *> (eventData [PlayerWillBeDisconnected::PLAYER].GetPtr ());
-    Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
-    Urho3D::PODVector <Urho3D::StringHash> colonies = map->GetColoniesOfPlayer (Urho3D::StringHash (player->GetName ()));
-
-    for (int index = 0; index < colonies.Size (); index++)
-    {
-        District *colony = map->GetDistrictByHash (colonies.At (index));
-        DistrictUtils::CleanupColonyFromDistrict (colony);
-    }
 }
 }

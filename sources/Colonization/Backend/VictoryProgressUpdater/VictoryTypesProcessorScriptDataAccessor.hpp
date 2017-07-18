@@ -15,13 +15,6 @@ class GameConfiguration;
 class VictoryTypesProcessorScriptDataAccessor : public Urho3D::Object
 {
 URHO3D_OBJECT (VictoryTypesProcessorScriptDataAccessor, Object)
-protected:
-    Map *map_;
-    UnitsManager *unitsManager_;
-    TradeProcessor *tradeProcessor_;
-    PlayerInfo *playerInfo_;
-    GameConfiguration *configuration_;
-
 public:
     explicit VictoryTypesProcessorScriptDataAccessor (Urho3D::Context *context);
     virtual ~VictoryTypesProcessorScriptDataAccessor ();
@@ -48,5 +41,12 @@ public:
     unsigned GetInternalTradeAreasCount ();
     //@ASBindGen Function AddRef_arg-1
     const InternalTradeArea *GetInternalTradeAreaByIndex (int index) const;
+
+private:
+    Map *map_;
+    UnitsManager *unitsManager_;
+    TradeProcessor *tradeProcessor_;
+    PlayerInfo *playerInfo_;
+    GameConfiguration *configuration_;
 };
 }

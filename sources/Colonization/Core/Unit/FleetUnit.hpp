@@ -9,11 +9,6 @@ namespace Colonization
 class FleetUnit : public Unit
 {
 URHO3D_OBJECT (FleetUnit, Unit)
-protected:
-    int warShipsCount_;
-    /// Any war ship health is in (0.0f, 100.0f].
-    Urho3D::PODVector <float> warShipsHealthPoints_;
-
 public:
     explicit FleetUnit (Urho3D::Context *context);
     virtual ~FleetUnit ();
@@ -39,5 +34,10 @@ public:
     virtual bool ApplyDamage (GameConfiguration *configuration, float damage);
     virtual bool IsAlive () const;
     virtual Urho3D::String GetUnitTypeTag () const;
+
+private:
+    int warShipsCount_;
+    /// Any war ship health is in (0.0f, 100.0f].
+    Urho3D::PODVector <float> warShipsHealthPoints_;
 };
 }

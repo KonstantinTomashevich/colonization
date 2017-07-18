@@ -40,7 +40,7 @@ void TradersUnit::DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTes
     Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
     assert (map);
 
-    District *district = map->GetDistrictByHash (positionHash_);
+    District *district = map->GetDistrictByHash (GetPositionHash ());
     if (district)
     {
         Urho3D::Sphere sphere (district->GetUnitPosition (), 0.15f);
@@ -62,7 +62,7 @@ bool TradersUnit::IsCanGoTo (const District *district, const Map *map, Urho3D::S
 {
     if (Unit::IsCanGoTo (district, map, imaginePosition))
     {
-        return (district->GetIsSea () || (district->GetHasColony () && district->GetColonyOwnerName () == ownerPlayerName_));
+        return (district->GetIsSea () || (district->GetHasColony () && district->GetColonyOwnerName () == GetOwnerPlayerName ()));
     }
     else
     {
@@ -88,8 +88,8 @@ bool TradersUnit::ApplyDamage (GameConfiguration *configuration, float damage)
     tradeGoodsCost_ -= losses;
 
     Urho3D::VariantMap eventData;
-    eventData [TradersUnitLossesGold::UNIT_HASH] = hash_;
-    eventData [TradersUnitLossesGold::BATTLE_HASH] = battleHash_;
+    eventData [TradersUnitLossesGold::UNIT_HASH] = GetHash ();
+    eventData [TradersUnitLossesGold::BATTLE_HASH] = GetBattleHash ();
     eventData [TradersUnitLossesGold::GOLD_AMOUNT] = losses;
 
     SendEvent (EVENT_TRADERS_UNIT_LOSSES_GOLD, eventData);

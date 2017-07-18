@@ -14,9 +14,6 @@ enum DiplomacyRequestPlayerStatus
 class DiplomacyRequest : public Urho3D::Component
 {
 URHO3D_OBJECT (DiplomacyRequest, Component)
-protected:
-    unsigned requestId_;
-
 public:
     explicit DiplomacyRequest (Urho3D::Context *context);
     virtual ~DiplomacyRequest ();
@@ -29,5 +26,8 @@ public:
     virtual bool UpdatePlayerStatus (Urho3D::StringHash playerNameHash, DiplomacyRequestPlayerStatus status) = 0;
     virtual bool TimeUpdate (float timeStep) = 0;
     virtual Urho3D::String GetRequestTypeTag () const = 0;
+
+private:
+    unsigned requestId_;
 };
 }

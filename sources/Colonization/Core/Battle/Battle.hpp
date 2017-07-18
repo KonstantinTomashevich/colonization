@@ -12,13 +12,6 @@ const Urho3D::String TAG_BATTLE ("Battle");
 class Battle: public Urho3D::Component
 {
 URHO3D_OBJECT (Battle, Component)
-protected:
-    Urho3D::StringHash hash_;
-    Urho3D::StringHash districtHash_;
-    Urho3D::StringHash warHash_;
-    Urho3D::PODVector <Urho3D::StringHash> defendersUnits_;
-    Urho3D::PODVector <Urho3D::StringHash> attackersUnits_;
-
 public:
     explicit Battle (Urho3D::Context *context);
     virtual ~Battle ();
@@ -71,5 +64,12 @@ public:
 
     Urho3D::VariantVector GetDefendersUnitsListAttribute () const;
     void SetDefendersUnitsListAttribute (const Urho3D::VariantVector &defendersUnitsList);
+
+private:
+    Urho3D::StringHash hash_;
+    Urho3D::StringHash districtHash_;
+    Urho3D::StringHash warHash_;
+    Urho3D::PODVector <Urho3D::StringHash> defendersUnits_;
+    Urho3D::PODVector <Urho3D::StringHash> attackersUnits_;
 };
 }

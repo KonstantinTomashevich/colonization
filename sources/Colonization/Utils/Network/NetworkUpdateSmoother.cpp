@@ -9,13 +9,6 @@
 
 namespace Colonization
 {
-void NetworkUpdateSmoother::OnSceneSet (Urho3D::Scene *scene)
-{
-    UnsubscribeFromAllEvents ();
-    Urho3D::Component::OnSceneSet (scene);
-    SubscribeToEvent (Urho3D::E_NETWORKUPDATE, URHO3D_HANDLER (NetworkUpdateSmoother, NetworkUpdate));
-}
-
 NetworkUpdateSmoother::NetworkUpdateSmoother (Urho3D::Context *context) : Urho3D::Component (context),
     requests_ (),
     averageMarksPerUpdate_ (5),
@@ -87,6 +80,13 @@ int NetworkUpdateSmoother::GetMaxMarksPerUpdate ()
 void NetworkUpdateSmoother::SetMaxMarksPerUpdate (int maxMarksPerUpdate)
 {
     maxMarksPerUpdate_ = maxMarksPerUpdate;
+}
+
+void NetworkUpdateSmoother::OnSceneSet (Urho3D::Scene *scene)
+{
+    UnsubscribeFromAllEvents ();
+    Urho3D::Component::OnSceneSet (scene);
+    SubscribeToEvent (Urho3D::E_NETWORKUPDATE, URHO3D_HANDLER (NetworkUpdateSmoother, NetworkUpdate));
 }
 }
 

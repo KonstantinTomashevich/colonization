@@ -7,14 +7,7 @@ namespace Colonization
 //@ASBindGen Class ObjectType=Ref
 class TradeDistrictProcessingInfo : public Urho3D::Object
 {
-URHO3D_OBJECT (TradeDistrictProcessingInfo, Object)
-protected:
-    Urho3D::HashMap <Urho3D::StringHash, float> unusedProduction_;
-    Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> districtsProduction_;
-    Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> districtsBalanceAdditions_;
-    float unsoldTradeGoodsCost_;
-    float soldTradeGoodsCost_;
-    
+URHO3D_OBJECT (TradeDistrictProcessingInfo, Object)    
 public:
     explicit TradeDistrictProcessingInfo (Urho3D::Context *context);
     virtual ~TradeDistrictProcessingInfo ();
@@ -43,5 +36,12 @@ public:
     float GetSoldTradeGoodsCost () const;
     //@ASBindGen Function OverrideName=set_soldTradeGoodsCost
     void SetSoldTradeGoodsCost (float soldTradeGoodsCost);
+
+private:
+    Urho3D::HashMap <Urho3D::StringHash, float> unusedProduction_;
+    Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> districtsProduction_;
+    Urho3D::HashMap <Urho3D::StringHash, Urho3D::VariantMap> districtsBalanceAdditions_;
+    float unsoldTradeGoodsCost_;
+    float soldTradeGoodsCost_;
 };
 }

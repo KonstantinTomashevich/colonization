@@ -39,7 +39,7 @@ void ColonizatorsUnit::DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool dep
     Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
     assert (map);
 
-    District *district = map->GetDistrictByHash (positionHash_);
+    District *district = map->GetDistrictByHash (GetPositionHash ());
     if (district)
     {
         Urho3D::Sphere sphere (district->GetUnitPosition (), 0.15f);
@@ -61,7 +61,7 @@ bool ColonizatorsUnit::IsCanGoTo (const District *district, const Map *map, Urho
 {
     if (Unit::IsCanGoTo (district, map, imaginePosition))
     {
-        if (district->GetIsSea () || (district->GetHasColony () && district->GetColonyOwnerName () == ownerPlayerName_))
+        if (district->GetIsSea () || (district->GetHasColony () && district->GetColonyOwnerName () == GetOwnerPlayerName ()))
         {
             return true;
         }
@@ -72,7 +72,7 @@ bool ColonizatorsUnit::IsCanGoTo (const District *district, const Map *map, Urho
             {
                 District *targetNeighbor = map->GetDistrictByHash (targetNeighbors.At (index));
                 if (targetNeighbor->GetIsSea () || (targetNeighbor->GetHasColony () &&
-                                                    targetNeighbor->GetColonyOwnerName () == ownerPlayerName_))
+                                                    targetNeighbor->GetColonyOwnerName () == GetOwnerPlayerName ()))
                 {
                     return true;
                 }

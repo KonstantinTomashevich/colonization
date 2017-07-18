@@ -11,38 +11,6 @@ namespace Colonization
 class HostActivity : public Activity
 {
 URHO3D_OBJECT (HostActivity, Activity)
-protected:
-    Urho3D::SharedPtr <Urho3D::Scene> scene_;
-    unsigned short serverPort_;
-    bool isStartRequested_;
-    Urho3D::String mapFolder_;
-    Urho3D::String mapInfoPath_;
-    GameStateType currentState_;
-
-    void WriteSceneReplicatedChildrenCount ();
-    void UpdateMapFolderAndMapInfoPathSceneVars ();
-    void GoToNextStateIfNeeded ();
-    void SendCurrentStateToClients ();
-    void SendInformationAboutGameEnd ();
-
-    void SetupWaitingForPlayersState ();
-    void SetupPlayingState ();
-    void SetupFinishedState ();
-
-    void LoadGameConfiguration (Urho3D::ResourceCache *resourceCache, Urho3D::String configurationPath);
-    void LoadMap (Urho3D::ResourceCache *resourceCache, Urho3D::String mapPath);
-    void LoadUnits (Urho3D::ResourceCache *resourceCache, Urho3D::String unitsPath);
-    void LoadDiplomacy (Urho3D::ResourceCache *resourceCache, Urho3D::String diplomacyPath);
-    void LoadBattles (Urho3D::ResourceCache *resourceCache, Urho3D::String battlesPath);
-    void RecalculateUnitsHashes (Colonization::UnitsManager *unitsManager);
-    void CreateServerProcessorsAndManagers ();
-    void BanNewConnectionsAndSetStartGold ();
-
-    /// Parameters are parse output.
-    bool LoadAndParseMapInfo (Urho3D::String &configurationPath, Urho3D::String &mapPath, Urho3D::String &unitsPath,
-                              Urho3D::String &diplomacyPath, Urho3D::String &battlesPath);
-    bool WillGoFromWaitingForStartToPlayingState ();
-    bool WillGoFromPlayingToFinishedState ();
 public:
     //@ASBindGen Constructor UseUrho3DScriptContext_arg0
     explicit HostActivity (Urho3D::Context *context);
@@ -74,5 +42,38 @@ public:
     virtual void Start ();
     virtual void Update (float timeStep);
     virtual void Stop ();
+
+private:
+    Urho3D::SharedPtr <Urho3D::Scene> scene_;
+    unsigned short serverPort_;
+    bool isStartRequested_;
+    Urho3D::String mapFolder_;
+    Urho3D::String mapInfoPath_;
+    GameStateType currentState_;
+
+    void WriteSceneReplicatedChildrenCount ();
+    void UpdateMapFolderAndMapInfoPathSceneVars ();
+    void GoToNextStateIfNeeded ();
+    void SendCurrentStateToClients ();
+    void SendInformationAboutGameEnd ();
+
+    void SetupWaitingForPlayersState ();
+    void SetupPlayingState ();
+    void SetupFinishedState ();
+
+    void LoadGameConfiguration (Urho3D::ResourceCache *resourceCache, Urho3D::String configurationPath);
+    void LoadMap (Urho3D::ResourceCache *resourceCache, Urho3D::String mapPath);
+    void LoadUnits (Urho3D::ResourceCache *resourceCache, Urho3D::String unitsPath);
+    void LoadDiplomacy (Urho3D::ResourceCache *resourceCache, Urho3D::String diplomacyPath);
+    void LoadBattles (Urho3D::ResourceCache *resourceCache, Urho3D::String battlesPath);
+    void RecalculateUnitsHashes (Colonization::UnitsManager *unitsManager);
+    void CreateServerProcessorsAndManagers ();
+    void BanNewConnectionsAndSetStartGold ();
+
+    /// Parameters are parse output.
+    bool LoadAndParseMapInfo (Urho3D::String &configurationPath, Urho3D::String &mapPath, Urho3D::String &unitsPath,
+                              Urho3D::String &diplomacyPath, Urho3D::String &battlesPath);
+    bool WillGoFromWaitingForStartToPlayingState ();
+    bool WillGoFromPlayingToFinishedState ();
 };
 }

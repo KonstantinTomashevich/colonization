@@ -16,7 +16,31 @@ Urho3D::PODVector <Battle *> GetBattlesInDistrict (Urho3D::Scene *scene, Urho3D:
 class BattlesProcessor : public Urho3D::Component
 {
 URHO3D_OBJECT (BattlesProcessor, Component)
+public:
+    explicit BattlesProcessor (Urho3D::Context *context);
+    virtual ~BattlesProcessor ();
+
+    static void RegisterObject (Urho3D::Context *context);
+    void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandleUnitCreated (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandleUnitPositionChanged (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandleTradersUnitLossesGold (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+
+    void HandlePlayerWillBeDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandleWarStarted (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandleWarEnded (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+
+    int GetBattlesCount () const;
+    void UpdateBattlesList ();
+    Battle *GetBattleByIndex (int index) const;
+    Battle *GetBattleByHash (Urho3D::StringHash battleHash) const;
+    Urho3D::PODVector <Urho3D::StringHash> GetCurrentBattlesOfWar (Urho3D::StringHash warHash) const;
+    Urho3D::PODVector <Urho3D::StringHash> GetCurrentBattlesInDistrict (Urho3D::StringHash districtHash) const;
+
 protected:
+    virtual void OnSceneSet (Urho3D::Scene* scene);
+
+private:
     Urho3D::Vector <Urho3D::SharedPtr <Battle> > battles_;
 
     void HandleUnitPositionChangedOrCreated (Urho3D::VariantMap &eventData);
@@ -43,27 +67,5 @@ protected:
                       Urho3D::PODVector <Unit *> &units, bool isAttackers, float damagedUnitUpdatePoints);
     Battle *CreateBattle (Urho3D::StringHash warHash, Urho3D::StringHash districtHash);
     void DeleteBattle (Battle *battle);
-    virtual void OnSceneSet (Urho3D::Scene* scene);
-
-public:
-    explicit BattlesProcessor (Urho3D::Context *context);
-    virtual ~BattlesProcessor ();
-
-    static void RegisterObject (Urho3D::Context *context);
-    void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
-    void HandleUnitCreated (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
-    void HandleUnitPositionChanged (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
-    void HandleTradersUnitLossesGold (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
-
-    void HandlePlayerWillBeDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
-    void HandleWarStarted (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
-    void HandleWarEnded (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
-
-    int GetBattlesCount () const;
-    void UpdateBattlesList ();
-    Battle *GetBattleByIndex (int index) const;
-    Battle *GetBattleByHash (Urho3D::StringHash battleHash) const;
-    Urho3D::PODVector <Urho3D::StringHash> GetCurrentBattlesOfWar (Urho3D::StringHash warHash) const;
-    Urho3D::PODVector <Urho3D::StringHash> GetCurrentBattlesInDistrict (Urho3D::StringHash districtHash) const;
 };
 }

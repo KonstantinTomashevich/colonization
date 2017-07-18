@@ -145,11 +145,6 @@ class District;
 class GameConfiguration : public Urho3D::Component
 {
 URHO3D_OBJECT (GameConfiguration, Component)
-protected:
-    // TODO: Move taxes to player. In next game versions player should have ability to set them.
-    // TODO: Maybe increase mobilization and war ship building costs?
-    //@Insert var list
-
 public:
     explicit GameConfiguration (Urho3D::Context *context);
     virtual ~GameConfiguration ();
@@ -159,6 +154,10 @@ public:
     Urho3D::StringHash GetHeuristicNearestWayToEuropeDistrict (Map *map, District *wayStartDistrict) const;
 
     //@Insert vars getters and setters
+private:
+    // TODO: Move taxes to player. In next game versions player should have ability to set them.
+    // TODO: Maybe increase mobilization and war ship building costs?
+    //@Insert var list
 };
 }
 

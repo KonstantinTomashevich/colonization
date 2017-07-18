@@ -13,35 +13,6 @@ class Map;
 class MapMaskUpdater : public Urho3D::Component
 {
 URHO3D_OBJECT (MapMaskUpdater, Component)
-protected:
-    Urho3D::IntVector2 mapMaskSize_;
-    int mapMaskComponents_;
-    int districtBorderLineWidth_;
-    float selectedDistrictColorModifer_;
-    Urho3D::Color districtBorderLineColor_;
-    Urho3D::Color visibleDistrictColor_;
-    Urho3D::Color districtUnderFogColor_;
-
-    /// Rendered fog of war mask.
-    Urho3D::SharedPtr <Urho3D::Image> fogOfWarMaskImage_;
-    Urho3D::SharedPtr <Urho3D::Texture2D> fogOfWarMaskTexture_;
-
-    /// Used for determinating which district is on this point. Also contains districts borders lines.
-    Urho3D::SharedPtr <Urho3D::Image> maskImage_;
-    Urho3D::SharedPtr <Urho3D::Texture2D> maskTexture_;
-
-    Urho3D::Vector3 mapMinPoint_;
-    Urho3D::Vector3 mapMaxPoint_;
-    Urho3D::HashMap <Urho3D::StringHash, Urho3D::StringHash> districtColorToDistrictHash_;
-    Urho3D::StringHash selectedDistrictHash_;
-
-    Urho3D::StringHash lastMaskUpdateSelectedHash_;
-    Urho3D::HashMap <Urho3D::StringHash, bool> lastMaskUpdateFogOfWarMap_;
-
-    void DrawDistrictBorders (District *district, Urho3D::Image *image);
-    void UpdateFogOfWarMask (Map *map, FogOfWarCalculator *fogOfWarCalculator);
-    virtual void OnSceneSet (Urho3D::Scene* scene);
-
 public:
     explicit MapMaskUpdater (Urho3D::Context *context);
     virtual ~MapMaskUpdater ();
@@ -122,5 +93,36 @@ public:
     Urho3D::StringHash GetSelectedDistrictHash () const;
     //@ASBindGen Function OverrideName=set_selectedDistrictHash
     void SetSelectedDistrictHash (const Urho3D::StringHash &selectedDistrictHash);
+
+protected:
+    virtual void OnSceneSet (Urho3D::Scene* scene);
+
+private:
+    Urho3D::IntVector2 mapMaskSize_;
+    int mapMaskComponents_;
+    int districtBorderLineWidth_;
+    float selectedDistrictColorModifer_;
+    Urho3D::Color districtBorderLineColor_;
+    Urho3D::Color visibleDistrictColor_;
+    Urho3D::Color districtUnderFogColor_;
+
+    /// Rendered fog of war mask.
+    Urho3D::SharedPtr <Urho3D::Image> fogOfWarMaskImage_;
+    Urho3D::SharedPtr <Urho3D::Texture2D> fogOfWarMaskTexture_;
+
+    /// Used for determinating which district is on this point. Also contains districts borders lines.
+    Urho3D::SharedPtr <Urho3D::Image> maskImage_;
+    Urho3D::SharedPtr <Urho3D::Texture2D> maskTexture_;
+
+    Urho3D::Vector3 mapMinPoint_;
+    Urho3D::Vector3 mapMaxPoint_;
+    Urho3D::HashMap <Urho3D::StringHash, Urho3D::StringHash> districtColorToDistrictHash_;
+    Urho3D::StringHash selectedDistrictHash_;
+
+    Urho3D::StringHash lastMaskUpdateSelectedHash_;
+    Urho3D::HashMap <Urho3D::StringHash, bool> lastMaskUpdateFogOfWarMap_;
+
+    void DrawDistrictBorders (District *district, Urho3D::Image *image);
+    void UpdateFogOfWarMask (Map *map, FogOfWarCalculator *fogOfWarCalculator);
 };
 }

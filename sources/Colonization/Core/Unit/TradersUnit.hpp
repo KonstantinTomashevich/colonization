@@ -9,9 +9,6 @@ namespace Colonization
 class TradersUnit : public Unit
 {
 URHO3D_OBJECT (TradersUnit, Unit)
-protected:
-    float tradeGoodsCost_;
-
 public:
     explicit TradersUnit (Urho3D::Context *context);
     virtual ~TradersUnit ();
@@ -30,5 +27,8 @@ public:
     virtual bool ApplyDamage (GameConfiguration *configuration, float damage);
     virtual bool IsAlive () const;
     virtual Urho3D::String GetUnitTypeTag () const;
+
+private:
+    float tradeGoodsCost_;
 };
 }

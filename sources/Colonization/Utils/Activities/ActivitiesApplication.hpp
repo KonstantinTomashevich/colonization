@@ -10,10 +10,6 @@ namespace Colonization
 class ActivitiesApplication : public Urho3D::Application
 {
 URHO3D_OBJECT (ActivitiesApplication, Application)
-protected:
-    Urho3D::Vector <Urho3D::SharedPtr <Colonization::Activity> > currentActivities_;
-    Urho3D::Vector <Urho3D::SharedPtr <Colonization::Activity> > activitiesToSetup_;
-    Urho3D::Vector <Urho3D::SharedPtr <Colonization::Activity> > activitiesToStop_;
 public:
     explicit ActivitiesApplication (Urho3D::Context *context);
     virtual ~ActivitiesApplication ();
@@ -31,5 +27,10 @@ public:
     unsigned GetActivitiesCount ();
     //@ASBindGen Function AddRef_arg-1
     Colonization::Activity *GetActivityByIndex (int index);
+
+private:
+    Urho3D::Vector <Urho3D::SharedPtr <Colonization::Activity> > currentActivities_;
+    Urho3D::Vector <Urho3D::SharedPtr <Colonization::Activity> > activitiesToSetup_;
+    Urho3D::Vector <Urho3D::SharedPtr <Colonization::Activity> > activitiesToStop_;
 };
 }

@@ -51,7 +51,7 @@ void FleetUnit::DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest)
     Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
     assert (map);
 
-    District *district = map->GetDistrictByHash (positionHash_);
+    District *district = map->GetDistrictByHash (GetPositionHash ());
     if (district)
     {
         Urho3D::Sphere sphere (district->GetUnitPosition (), 0.15f);

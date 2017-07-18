@@ -11,143 +11,12 @@
 #include <Colonization/Core/GameConfiguration.hpp>
 #include <Colonization/Core/District/District.hpp>
 
-#include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
+#include <Colonization/Utils/Network/NetworkUpdateCounterUtils.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
 namespace Colonization
 {
-void UnitsManager::SettleColonizator (ColonizatorsUnit *unit, Map *map)
-{
-    assert (unit);
-    District *colony = map->GetDistrictByHash (unit->GetPositionHash ());
-    assert (colony);
-
-    if (!colony->GetHasColony ())
-    {
-        colony->SetHasColony (true);
-        colony->SetColonyOwnerName (unit->GetOwnerPlayerName ());
-
-        colony->SetFarmsEvolutionPoints (1.0f);
-        colony->SetMinesEvolutionPoints (1.0f);
-        colony->SetIndustryEvolutionPoints (1.0f);
-        colony->SetLogisticsEvolutionPoints (1.0f);
-        colony->SetDefenseEvolutionPoints (1.0f);
-    }
-
-    if (colony->GetHasColony () && colony->GetColonyOwnerName () != unit->GetOwnerPlayerName ())
-    {
-        Urho3D::Log::Write (Urho3D::LOG_WARNING, "Can't settle colonizator of " + unit->GetOwnerPlayerName () +
-                            " in " + colony->GetName () + ". Because there is a colony of " + colony->GetColonyOwnerName () + "!");
-        // TODO: Add ability to reselect colonizators target.
-        unit->GetNode ()->Remove ();
-    }
-    else
-    {
-        float menPercent;
-        if (colony->GetMenCount () / (colony->GetMenCount () + colony->GetWomenCount ()) < 0.35f)
-        {
-            menPercent = Urho3D::Random (0.65f, 0.85f);
-        }
-        else
-        {
-            menPercent = Urho3D::Random (0.45f, 0.55f);
-        }
-
-        float oldPopulation = colony->GetMenCount () + colony->GetWomenCount ();
-        colony->SetMenCount (colony->GetMenCount () + unit->GetColonizatorsCount () * 1.0f * menPercent);
-        colony->SetWomenCount (colony->GetWomenCount () + unit->GetColonizatorsCount () * 1.0f * (1.0f - menPercent));
-
-        float newPopulation = colony->GetMenCount () + colony->GetWomenCount ();
-        colony->SetFarmsEvolutionPoints ((colony->GetFarmsEvolutionPoints () * oldPopulation / newPopulation) +
-                                         unit->GetColonizatorsCount () / newPopulation);
-        colony->SetMinesEvolutionPoints ((colony->GetMinesEvolutionPoints () * oldPopulation / newPopulation) +
-                                         unit->GetColonizatorsCount () / newPopulation);
-        colony->SetIndustryEvolutionPoints ((colony->GetIndustryEvolutionPoints () * oldPopulation / newPopulation) +
-                                            unit->GetColonizatorsCount () / newPopulation);
-
-        colony->SetLogisticsEvolutionPoints ((colony->GetLogisticsEvolutionPoints () * oldPopulation / newPopulation) +
-                                             unit->GetColonizatorsCount () / newPopulation);
-        colony->SetDefenseEvolutionPoints ((colony->GetDefenseEvolutionPoints () * oldPopulation / newPopulation) +
-                                           unit->GetColonizatorsCount () / newPopulation);
-        unit->GetNode ()->Remove ();
-        AddNetworkUpdatePointsToComponentCounter (colony, 100.0f);
-    }
-}
-
-void UnitsManager::ProcessTrader (GameConfiguration *configuration, TradersUnit *unit)
-{
-    assert (unit);
-    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
-    assert (playersManager);
-
-    Player *player = playersManager->GetPlayerByNameHash (Urho3D::String (unit->GetOwnerPlayerName ()));
-    assert (player);
-
-    float externalTaxes = configuration->GetExternalTaxes ();
-    player->SetGold (player->GetGold () + unit->GetTradeGoodsCost () * externalTaxes);
-    unit->GetNode ()->Remove ();
-}
-
-float UnitsManager::GetUnitSpeedBetween (District *position, District *target, GameConfiguration *configuration)
-{
-    if (position->GetIsSea () && target->GetIsSea ())
-    {
-        return configuration->GetSailSpeed ();
-    }
-    else if (!position->GetIsSea () && !target->GetIsSea ())
-    {
-        return configuration->GetMarchSpeed ();
-    }
-    else if (!position->GetIsSea () && target->GetIsSea ())
-    {
-        return configuration->GetEmbarkationSpeed ();
-    }
-    else if (position->GetIsSea () && !target->GetIsSea ())
-    {
-        return configuration->GetDisembarkationSpeed ();
-    }
-    else
-    {
-        return 0.0f;
-    }
-}
-
-bool UnitsManager::OnNextTargetReached (Unit *unit, Urho3D::PODVector <Urho3D::StringHash> &unitWay,
-                                        Map *map, GameConfiguration *configuration)
-{
-    unit->SetPositionHash (unitWay.At (0));
-    unitWay.Remove (unitWay.At (0));
-    unit->SetWay (unitWay);
-    unit->SetWayToNextDistrictProgressInPercents (0.0f);
-
-    if (unitWay.Empty () && unit->GetUnitType () == UNIT_COLONIZATORS)
-    {
-        SettleColonizator (static_cast <ColonizatorsUnit *> (unit), map);
-        return false;
-    }
-    else if (unitWay.Empty () && unit->GetUnitType () == UNIT_TRADERS)
-    {
-        ProcessTrader (configuration, static_cast <TradersUnit *> (unit));
-        return false;
-    }
-    else
-    {
-        Urho3D::VariantMap eventData;
-        eventData [UnitPositionChanged::UNIT_HASH] = unit->GetHash ();
-        SendEvent (EVENT_UNIT_POSITION_CHANGED, eventData);
-        return true;
-    }
-}
-
-void UnitsManager::OnSceneSet (Urho3D::Scene *scene)
-{
-    UnsubscribeFromAllEvents ();
-    Urho3D::Component::OnSceneSet (scene);
-    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (UnitsManager, Update));
-    SubscribeToEvent (EVENT_PLAYER_WILL_BE_DISCONNECTED, URHO3D_HANDLER (UnitsManager, HandlePlayerWillBeDisconnected));
-}
-
 UnitsManager::UnitsManager (Urho3D::Context *context) : Urho3D::Component (context),
     units_ ()
 {
@@ -235,7 +104,7 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
 
                 if (unit->GetNode () && unitExists)
                 {
-                    AddNetworkUpdatePointsToComponentCounter (unit, updatePoints);
+                    NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (unit, updatePoints);
                 }
             }
         }
@@ -394,6 +263,137 @@ Urho3D::PODVector <Unit *> GetUnitsInDistrict (Urho3D::Scene *scene, Urho3D::Str
         }
     }
     return unitsInDistrict;
+}
+
+void UnitsManager::OnSceneSet (Urho3D::Scene *scene)
+{
+    UnsubscribeFromAllEvents ();
+    Urho3D::Component::OnSceneSet (scene);
+    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (UnitsManager, Update));
+    SubscribeToEvent (EVENT_PLAYER_WILL_BE_DISCONNECTED, URHO3D_HANDLER (UnitsManager, HandlePlayerWillBeDisconnected));
+}
+
+void UnitsManager::SettleColonizator (ColonizatorsUnit *unit, Map *map)
+{
+    assert (unit);
+    District *colony = map->GetDistrictByHash (unit->GetPositionHash ());
+    assert (colony);
+
+    if (!colony->GetHasColony ())
+    {
+        colony->SetHasColony (true);
+        colony->SetColonyOwnerName (unit->GetOwnerPlayerName ());
+
+        colony->SetFarmsEvolutionPoints (1.0f);
+        colony->SetMinesEvolutionPoints (1.0f);
+        colony->SetIndustryEvolutionPoints (1.0f);
+        colony->SetLogisticsEvolutionPoints (1.0f);
+        colony->SetDefenseEvolutionPoints (1.0f);
+    }
+
+    if (colony->GetHasColony () && colony->GetColonyOwnerName () != unit->GetOwnerPlayerName ())
+    {
+        Urho3D::Log::Write (Urho3D::LOG_WARNING, "Can't settle colonizator of " + unit->GetOwnerPlayerName () +
+                            " in " + colony->GetName () + ". Because there is a colony of " + colony->GetColonyOwnerName () + "!");
+        // TODO: Add ability to reselect colonizators target.
+        unit->GetNode ()->Remove ();
+    }
+    else
+    {
+        float menPercent;
+        if (colony->GetMenCount () / (colony->GetMenCount () + colony->GetWomenCount ()) < 0.35f)
+        {
+            menPercent = Urho3D::Random (0.65f, 0.85f);
+        }
+        else
+        {
+            menPercent = Urho3D::Random (0.45f, 0.55f);
+        }
+
+        float oldPopulation = colony->GetMenCount () + colony->GetWomenCount ();
+        colony->SetMenCount (colony->GetMenCount () + unit->GetColonizatorsCount () * 1.0f * menPercent);
+        colony->SetWomenCount (colony->GetWomenCount () + unit->GetColonizatorsCount () * 1.0f * (1.0f - menPercent));
+
+        float newPopulation = colony->GetMenCount () + colony->GetWomenCount ();
+        colony->SetFarmsEvolutionPoints ((colony->GetFarmsEvolutionPoints () * oldPopulation / newPopulation) +
+                                         unit->GetColonizatorsCount () / newPopulation);
+        colony->SetMinesEvolutionPoints ((colony->GetMinesEvolutionPoints () * oldPopulation / newPopulation) +
+                                         unit->GetColonizatorsCount () / newPopulation);
+        colony->SetIndustryEvolutionPoints ((colony->GetIndustryEvolutionPoints () * oldPopulation / newPopulation) +
+                                            unit->GetColonizatorsCount () / newPopulation);
+
+        colony->SetLogisticsEvolutionPoints ((colony->GetLogisticsEvolutionPoints () * oldPopulation / newPopulation) +
+                                             unit->GetColonizatorsCount () / newPopulation);
+        colony->SetDefenseEvolutionPoints ((colony->GetDefenseEvolutionPoints () * oldPopulation / newPopulation) +
+                                           unit->GetColonizatorsCount () / newPopulation);
+        unit->GetNode ()->Remove ();
+        NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (colony, 100.0f);
+    }
+}
+
+void UnitsManager::ProcessTrader (GameConfiguration *configuration, TradersUnit *unit)
+{
+    assert (unit);
+    PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
+    assert (playersManager);
+
+    Player *player = playersManager->GetPlayerByNameHash (Urho3D::String (unit->GetOwnerPlayerName ()));
+    assert (player);
+
+    float externalTaxes = configuration->GetExternalTaxes ();
+    player->SetGold (player->GetGold () + unit->GetTradeGoodsCost () * externalTaxes);
+    unit->GetNode ()->Remove ();
+}
+
+float UnitsManager::GetUnitSpeedBetween (District *position, District *target, GameConfiguration *configuration)
+{
+    if (position->GetIsSea () && target->GetIsSea ())
+    {
+        return configuration->GetSailSpeed ();
+    }
+    else if (!position->GetIsSea () && !target->GetIsSea ())
+    {
+        return configuration->GetMarchSpeed ();
+    }
+    else if (!position->GetIsSea () && target->GetIsSea ())
+    {
+        return configuration->GetEmbarkationSpeed ();
+    }
+    else if (position->GetIsSea () && !target->GetIsSea ())
+    {
+        return configuration->GetDisembarkationSpeed ();
+    }
+    else
+    {
+        return 0.0f;
+    }
+}
+
+bool UnitsManager::OnNextTargetReached (Unit *unit, Urho3D::PODVector <Urho3D::StringHash> &unitWay,
+                                        Map *map, GameConfiguration *configuration)
+{
+    unit->SetPositionHash (unitWay.At (0));
+    unitWay.Remove (unitWay.At (0));
+    unit->SetWay (unitWay);
+    unit->SetWayToNextDistrictProgressInPercents (0.0f);
+
+    if (unitWay.Empty () && unit->GetUnitType () == UNIT_COLONIZATORS)
+    {
+        SettleColonizator (static_cast <ColonizatorsUnit *> (unit), map);
+        return false;
+    }
+    else if (unitWay.Empty () && unit->GetUnitType () == UNIT_TRADERS)
+    {
+        ProcessTrader (configuration, static_cast <TradersUnit *> (unit));
+        return false;
+    }
+    else
+    {
+        Urho3D::VariantMap eventData;
+        eventData [UnitPositionChanged::UNIT_HASH] = unit->GetHash ();
+        SendEvent (EVENT_UNIT_POSITION_CHANGED, eventData);
+        return true;
+    }
 }
 }
 

@@ -9,15 +9,6 @@ namespace Colonization
 class IngameClientActivity : public Activity
 {
 URHO3D_OBJECT (IngameClientActivity, Activity)
-protected:
-    Urho3D::Scene *scene_;
-    Urho3D::ScriptInstance *angelScript_;
-
-    Urho3D::String serverAdress_;
-    unsigned short serverPort_;
-    bool isAdmin_;
-    Urho3D::String playerName_;
-    Urho3D::Color playerColor_;
 public:
     //@ASBindGen Constructor UseUrho3DScriptContext_arg0
     explicit IngameClientActivity (Urho3D::Context *context);
@@ -51,5 +42,15 @@ public:
     Urho3D::Color GetPlayerColor ();
     //@ASBindGen Function OverrideName=set_playerColor
     void SetPlayerColor (Urho3D::Color playerColor);
+
+private:
+    Urho3D::Scene *scene_;
+    Urho3D::ScriptInstance *angelScript_;
+
+    Urho3D::String serverAdress_;
+    unsigned short serverPort_;
+    bool isAdmin_;
+    Urho3D::String playerName_;
+    Urho3D::Color playerColor_;
 };
 }

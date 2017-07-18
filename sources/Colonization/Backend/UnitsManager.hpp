@@ -16,17 +16,6 @@ Urho3D::PODVector <Unit *> GetUnitsInDistrict (Urho3D::Scene *scene, Urho3D::Str
 class UnitsManager : public Urho3D::Component
 {
 URHO3D_OBJECT (UnitsManager, Component)
-protected:
-    Urho3D::Vector <Urho3D::SharedPtr <Unit> > units_;
-
-    void SettleColonizator (ColonizatorsUnit *unit, Map *map);
-    void ProcessTrader (GameConfiguration *configuration, TradersUnit *unit);
-    float GetUnitSpeedBetween (District *position, District *target, GameConfiguration *configuration);
-    /// Returns true if unit exists after it, otherwise false.
-    bool OnNextTargetReached (Unit *unit, Urho3D::PODVector <Urho3D::StringHash> &unitWay,
-                              Map *map, GameConfiguration *configuration);
-    virtual void OnSceneSet (Urho3D::Scene* scene);
-
 public:
     explicit UnitsManager (Urho3D::Context *context);
     virtual ~UnitsManager ();
@@ -45,5 +34,18 @@ public:
     Unit *GetUnitByHash (Urho3D::StringHash hash) const;
     Urho3D::PODVector <Urho3D::StringHash> GetUnitsOfPlayer (Urho3D::StringHash playerNameHash) const;
     Unit *CreateUnit (UnitType unitType, Urho3D::String ownerPlayerName, Urho3D::StringHash positionHash);
+
+protected:
+    virtual void OnSceneSet (Urho3D::Scene* scene);
+
+private:
+    Urho3D::Vector <Urho3D::SharedPtr <Unit> > units_;
+
+    void SettleColonizator (ColonizatorsUnit *unit, Map *map);
+    void ProcessTrader (GameConfiguration *configuration, TradersUnit *unit);
+    float GetUnitSpeedBetween (District *position, District *target, GameConfiguration *configuration);
+    /// Returns true if unit exists after it, otherwise false.
+    bool OnNextTargetReached (Unit *unit, Urho3D::PODVector <Urho3D::StringHash> &unitWay,
+                              Map *map, GameConfiguration *configuration);
 };
 }

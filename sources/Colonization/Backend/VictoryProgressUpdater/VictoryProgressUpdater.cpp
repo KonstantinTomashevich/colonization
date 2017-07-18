@@ -18,12 +18,93 @@
 
 #include <Colonization/Backend/VictoryProgressUpdater/VictoryTypesProcessorScriptDataAccessor.hpp>
 #include <Colonization/Backend/Player/PlayerComparator.hpp>
-#include <Colonization/Utils/Network/NetworkUpdateCounter.hpp>
+#include <Colonization/Utils/Network/NetworkUpdateCounterUtils.hpp>
 #include <Colonization/Utils/Serialization/Categories.hpp>
 #include <Colonization/Utils/Serialization/AttributeMacro.hpp>
 
 namespace Colonization
 {
+VictoryProgressUpdater::VictoryProgressUpdater (Urho3D::Context *context) : Urho3D::Component (context),
+    victoryTypesProcessor_ (),
+    timeUntilGameEnd_ (99999.0f),
+    isAnyoneWon_ (false),
+    winnerName_ (Urho3D::String::EMPTY),
+    victoryInfo_ (Urho3D::String::EMPTY)
+{
+
+}
+
+VictoryProgressUpdater::~VictoryProgressUpdater ()
+{
+
+}
+
+void VictoryProgressUpdater::RegisterObject (Urho3D::Context *context)
+{
+    context->RegisterFactory <VictoryProgressUpdater> (COLONIZATION_SERVER_ONLY_CATEGORY);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
+}
+
+void VictoryProgressUpdater::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    if (enabled_)
+    {
+        float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
+        timeUntilGameEnd_ -= timeStep;
+        UpdateVictoryByPointsProgresses ();
+        ProcessScriptedVictoryTypes (timeStep);
+        CheckForAnyVictory ();
+        if (timeUntilGameEnd_ <= 0.0f)
+        {
+            SetWinnerFromVictoryByPoints ();
+        }
+    }
+}
+
+float VictoryProgressUpdater::GetTimeUntilGameEnd () const
+{
+    return timeUntilGameEnd_;
+}
+
+bool VictoryProgressUpdater::IsAnyoneWon () const
+{
+    return isAnyoneWon_;
+}
+
+Urho3D::String VictoryProgressUpdater::GetWinnerName () const
+{
+    return winnerName_;
+}
+
+Urho3D::String VictoryProgressUpdater::GetVictoryType () const
+{
+    return victoryType_;
+}
+
+Urho3D::String VictoryProgressUpdater::GetVictoryInfo () const
+{
+    return victoryInfo_;
+}
+
+void VictoryProgressUpdater::OnSceneSet (Urho3D::Scene *scene)
+{
+    UnsubscribeFromAllEvents ();
+    Urho3D::Component::OnSceneSet (scene);
+    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (VictoryProgressUpdater, Update));
+
+    if (scene)
+    {
+        GameConfiguration *configuration = scene->GetComponent <GameConfiguration> ();
+        timeUntilGameEnd_ = configuration->GetMaximumGameDuration ();
+
+        Urho3D::ResourceCache *resourceCache = context_->GetSubsystem <Urho3D::ResourceCache> ();
+        victoryTypesProcessor_ = resourceCache->GetResource <Urho3D::ScriptFile> (
+                    configuration->GetVictoryTypesProcessorScriptPath ());
+        assert (victoryTypesProcessor_.NotNull ());
+        assert (victoryTypesProcessor_->IsCompiled ());
+    }
+}
+
 void VictoryProgressUpdater::UpdateVictoryByPointsProgresses ()
 {
     PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
@@ -155,89 +236,8 @@ void VictoryProgressUpdater::ProcessScriptedVictoryTypes (float timeStep)
                                                                 value.GetVariantMap ());
                 }
             }
-            AddNetworkUpdatePointsToComponentCounter (playerInfo, 20.0f * timeStep);
+            NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (playerInfo, 20.0f * timeStep);
         }
     }
-}
-
-void VictoryProgressUpdater::OnSceneSet (Urho3D::Scene *scene)
-{
-    UnsubscribeFromAllEvents ();
-    Urho3D::Component::OnSceneSet (scene);
-    SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (VictoryProgressUpdater, Update));
-
-    if (scene)
-    {
-        GameConfiguration *configuration = scene->GetComponent <GameConfiguration> ();
-        timeUntilGameEnd_ = configuration->GetMaximumGameDuration ();
-
-        Urho3D::ResourceCache *resourceCache = context_->GetSubsystem <Urho3D::ResourceCache> ();
-        victoryTypesProcessor_ = resourceCache->GetResource <Urho3D::ScriptFile> (
-                    configuration->GetVictoryTypesProcessorScriptPath ());
-        assert (victoryTypesProcessor_.NotNull ());
-        assert (victoryTypesProcessor_->IsCompiled ());
-    }
-}
-
-VictoryProgressUpdater::VictoryProgressUpdater (Urho3D::Context *context) : Urho3D::Component (context),
-    victoryTypesProcessor_ (),
-    timeUntilGameEnd_ (99999.0f),
-    isAnyoneWon_ (false),
-    winnerName_ (Urho3D::String::EMPTY),
-    victoryInfo_ (Urho3D::String::EMPTY)
-{
-
-}
-
-VictoryProgressUpdater::~VictoryProgressUpdater ()
-{
-
-}
-
-void VictoryProgressUpdater::RegisterObject (Urho3D::Context *context)
-{
-    context->RegisterFactory <VictoryProgressUpdater> (COLONIZATION_SERVER_ONLY_CATEGORY);
-    URHO3D_ACCESSOR_ATTRIBUTE ("Is Enabled", IsEnabled, SetEnabled, bool, true, Urho3D::AM_DEFAULT);
-}
-
-void VictoryProgressUpdater::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
-{
-    if (enabled_)
-    {
-        float timeStep = eventData [Urho3D::SceneUpdate::P_TIMESTEP].GetFloat ();
-        timeUntilGameEnd_ -= timeStep;
-        UpdateVictoryByPointsProgresses ();
-        ProcessScriptedVictoryTypes (timeStep);
-        CheckForAnyVictory ();
-        if (timeUntilGameEnd_ <= 0.0f)
-        {
-            SetWinnerFromVictoryByPoints ();
-        }
-    }
-}
-
-float VictoryProgressUpdater::GetTimeUntilGameEnd () const
-{
-    return timeUntilGameEnd_;
-}
-
-bool VictoryProgressUpdater::IsAnyoneWon () const
-{
-    return isAnyoneWon_;
-}
-
-Urho3D::String VictoryProgressUpdater::GetWinnerName () const
-{
-    return winnerName_;
-}
-
-Urho3D::String VictoryProgressUpdater::GetVictoryType () const
-{
-    return victoryType_;
-}
-
-Urho3D::String VictoryProgressUpdater::GetVictoryInfo () const
-{
-    return victoryInfo_;
 }
 }

@@ -8,11 +8,6 @@ namespace Colonization
 class NetworkUpdateCounter : public Urho3D::Component
 {
 URHO3D_OBJECT (NetworkUpdateCounter, Component)
-protected:
-    Urho3D::Serializable *trackingObject_;
-    /// When more than 100.0f points accumulated, MarkNetworkUpdate will be called.
-    float accumulatedUpdatePoints_;
-
 public:
     explicit NetworkUpdateCounter (Urho3D::Context *context);
     virtual ~NetworkUpdateCounter ();
@@ -27,14 +22,10 @@ public:
     float GetAccumulatedUpdatePoints ();
     //@ASBindGen Function
     void AddUpdatePoints (float points);
-};
 
-//@ASBindGen Function AddRef_arg-1
-NetworkUpdateCounter *CreateNetworkUpdateCounterForComponent (Urho3D::Component *component);
-//@ASBindGen Function AddRef_arg-1
-NetworkUpdateCounter *CreateNetworkUpdateCounterForNode (Urho3D::Node *node);
-//@ASBindGen Function
-void AddNetworkUpdatePointsToComponentCounter (Urho3D::Component *component, float updatePoints);
-//@ASBindGen Function
-void AddNetworkUpdatePointsToNodeCounter (Urho3D::Node *node, float updatePoints);
+private:
+    Urho3D::Serializable *trackingObject_;
+    /// When more than 100.0f points accumulated, MarkNetworkUpdate will be called.
+    float accumulatedUpdatePoints_;
+};
 }

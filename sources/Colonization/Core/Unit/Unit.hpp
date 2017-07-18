@@ -15,17 +15,6 @@ class PlayerInfo;
 class Unit : public Urho3D::Component
 {
 URHO3D_OBJECT (Unit, Component)
-protected:
-    Urho3D::StringHash hash_;
-    // TODO: Is it necessary to keep unit owner name instead of unit owner name hash?
-    Urho3D::String ownerPlayerName_;
-    UnitType unitType_;
-    Urho3D::StringHash positionHash_;
-    Urho3D::PODVector <Urho3D::StringHash> way_;
-    float wayToNextDistrictProgressInPercents_;
-    bool isInBattle_;
-    Urho3D::StringHash battleHash_;
-
 public:
     explicit Unit (Urho3D::Context *context);
     virtual ~Unit ();
@@ -87,5 +76,18 @@ public:
     virtual bool IsAlive () const = 0;
     //@ASBindGen Function
     virtual Urho3D::String GetUnitTypeTag () const = 0;
+
+protected:
+    UnitType unitType_;
+
+private:
+    Urho3D::StringHash hash_;
+    // TODO: Is it necessary to keep unit owner name instead of unit owner name hash?
+    Urho3D::String ownerPlayerName_;
+    Urho3D::StringHash positionHash_;
+    Urho3D::PODVector <Urho3D::StringHash> way_;
+    float wayToNextDistrictProgressInPercents_;
+    bool isInBattle_;
+    Urho3D::StringHash battleHash_;
 };
 }

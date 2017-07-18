@@ -9,12 +9,6 @@ namespace Colonization
 class NetworkUpdateSmoother : public Urho3D::Component
 {
 URHO3D_OBJECT (NetworkUpdateSmoother, Component)
-protected:
-    Urho3D::Vector <Urho3D::WeakPtr <Urho3D::Serializable> > requests_;
-    int averageMarksPerUpdate_;
-    int maxMarksPerUpdate_;
-    virtual void OnSceneSet (Urho3D::Scene* scene);
-
 public:
     explicit NetworkUpdateSmoother (Urho3D::Context *context);
     virtual ~NetworkUpdateSmoother ();
@@ -32,5 +26,13 @@ public:
     int GetMaxMarksPerUpdate ();
     //@ASBindGen Function OverrideName=get_maxMarksPerUpdate
     void SetMaxMarksPerUpdate (int maxMarksPerUpdate);
+
+protected:
+    virtual void OnSceneSet (Urho3D::Scene* scene);
+
+private:
+    Urho3D::Vector <Urho3D::WeakPtr <Urho3D::Serializable> > requests_;
+    int averageMarksPerUpdate_;
+    int maxMarksPerUpdate_;
 };
 }
