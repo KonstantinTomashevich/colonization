@@ -4,11 +4,6 @@
 
 class ChatBlockedPlayersListEditor : PlayersNamesListEditor
 {
-    protected Window @GetWindow () override
-    {
-        return ui.root.GetChild ("waitingForStart").GetChild ("functionalWindows").GetChild ("chatBlockedPlayersWindow");
-    }
-
     ChatBlockedPlayersListEditor ()
     {
         listVarName_ = "chatBlockedPlayersList";
@@ -24,5 +19,10 @@ class ChatBlockedPlayersListEditor : PlayersNamesListEditor
         VariantMap eventData;
         eventData [ShowFunctionalWindowRequest::WINDOW_NAME] = Variant ("actionsWindow");
         SendEvent (EVENT_SHOW_FUNCTIONAL_WINDOW_REQUEST, eventData);
+    }
+
+    protected Window @GetWindow () override
+    {
+        return ui.root.GetChild ("waitingForStart").GetChild ("functionalWindows").GetChild ("chatBlockedPlayersWindow");
     }
 }

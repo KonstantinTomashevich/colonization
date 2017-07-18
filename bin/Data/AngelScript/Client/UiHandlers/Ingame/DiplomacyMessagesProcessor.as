@@ -5,6 +5,117 @@ class DiplomacyMessagesProcessor : ScriptObject
 {
     Array <VariantMap> diplomacyMessages_;
 
+    DiplomacyMessagesProcessor ()
+    {
+
+    }
+
+    ~DiplomacyMessagesProcessor ()
+    {
+
+    }
+
+    void Start ()
+    {
+        Window @diplomacyMessagesWindow = ui.root.GetChild ("ingame").GetChild ("diplomacyMessagesWindow");
+        Button @closeInfoButton = diplomacyMessagesWindow.GetChild ("closeInfoButton");
+        Button @declineOfferButton = diplomacyMessagesWindow.GetChild ("declineOfferButton");
+        Button @acceptOfferButton = diplomacyMessagesWindow.GetChild ("acceptOfferButton");
+
+        SubscribeToEvent (closeInfoButton, "Released", "HandleCloseInfoClick");
+        SubscribeToEvent (declineOfferButton, "Released", "HandleDeclineOfferClick");
+        SubscribeToEvent (acceptOfferButton, "Released", "HandleAcceptOfferClick");
+        SubscribeToEvent (EVENT_DIPLOMACY_INFO, "HandleDiplomacyInfo");
+        SubscribeToEvent (EVENT_DIPLOMACY_OFFER, "HandleDiplomacyOffer");
+    }
+
+    void Update (float timeStep)
+    {
+        Window @diplomacyMessagesWindow = ui.root.GetChild ("ingame").GetChild ("diplomacyMessagesWindow");
+        if (diplomacyMessages_.empty)
+        {
+            diplomacyMessagesWindow.visible = false;
+        }
+        else
+        {
+            ProcessOffersAutodeclineTime (timeStep);
+            diplomacyMessagesWindow.visible = true;
+            Text @title = diplomacyMessagesWindow.GetChild ("title");
+            if (diplomacyMessages_.length == 1)
+            {
+                title.text = "Diplomacy | No new messages.";
+            }
+            else
+            {
+                title.text = "Diplomacy | " + (diplomacyMessages_.length - 1) + " new messages!";
+            }
+
+            VariantMap firstMessage = diplomacyMessages_ [0];
+            if (firstMessage ["messageType"].GetUInt () == DIPLOMACY_MESSAGE_INFO)
+            {
+                ProcessCurrentDiplomacyInfo (diplomacyMessagesWindow, firstMessage);
+            }
+            else if (firstMessage ["messageType"].GetUInt () == DIPLOMACY_MESSAGE_OFFER)
+            {
+                ProcessCurrentDiplomacyOffer (diplomacyMessagesWindow, firstMessage);
+            }
+        }
+    }
+
+    void Stop ()
+    {
+
+    }
+
+    void HandleDiplomacyInfo (StringHash eventType, VariantMap &eventData)
+    {
+        VariantMap data = eventData;
+        data ["messageType"] = DIPLOMACY_MESSAGE_INFO;
+        diplomacyMessages_.Push (data);
+    }
+
+    void HandleDiplomacyOffer (StringHash eventType, VariantMap &eventData)
+    {
+        VariantMap data = eventData;
+        data ["messageType"] = DIPLOMACY_MESSAGE_OFFER;
+        diplomacyMessages_.Push (data);
+    }
+
+    void HandleCloseInfoClick ()
+    {
+        diplomacyMessages_.Erase (0);
+    }
+
+    void HandleDeclineOfferClick ()
+    {
+        VariantMap firstMessage = diplomacyMessages_ [0];
+        VectorBuffer buffer = VectorBuffer ();
+        buffer.WriteInt (PLAYER_ACTION_RESPONCE_TO_DIPLOMACY_OFFER);
+        buffer.WriteUInt (firstMessage [DiplomacyOffer::ID].GetUInt ());
+        buffer.WriteUInt (DRPSTATUS_DECLINED);
+
+        VariantMap taskData;
+        taskData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+        taskData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
+        SendEvent (EVENT_NEW_NETWORK_TASK, taskData);
+        diplomacyMessages_.Erase (0);
+    }
+
+    void HandleAcceptOfferClick ()
+    {
+        VariantMap firstMessage = diplomacyMessages_ [0];
+        VectorBuffer buffer = VectorBuffer ();
+        buffer.WriteInt (PLAYER_ACTION_RESPONCE_TO_DIPLOMACY_OFFER);
+        buffer.WriteUInt (firstMessage [DiplomacyOffer::ID].GetUInt ());
+        buffer.WriteUInt (DRPSTATUS_ACCEPTED);
+
+        VariantMap taskData;
+        taskData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+        taskData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
+        SendEvent (EVENT_NEW_NETWORK_TASK, taskData);
+        diplomacyMessages_.Erase (0);
+    }
+
     protected void ProcessOffersAutodeclineTime (float timeStep)
     {
         uint index = 0;
@@ -149,116 +260,5 @@ class DiplomacyMessagesProcessor : ScriptObject
         PlayerInfo @enemy = GetPlayerInfoByNameHash (scene, infoDataMap [DiplomacyOfferPeace_ENEMY_NAME_HASH].GetStringHash ());
         return ((enemy !is null) ? enemy.name : "---error---") +
             " wants to make peace with you.\nDo you agree?";
-    }
-
-    DiplomacyMessagesProcessor ()
-    {
-
-    }
-
-    ~DiplomacyMessagesProcessor ()
-    {
-
-    }
-
-    void Start ()
-    {
-        Window @diplomacyMessagesWindow = ui.root.GetChild ("ingame").GetChild ("diplomacyMessagesWindow");
-        Button @closeInfoButton = diplomacyMessagesWindow.GetChild ("closeInfoButton");
-        Button @declineOfferButton = diplomacyMessagesWindow.GetChild ("declineOfferButton");
-        Button @acceptOfferButton = diplomacyMessagesWindow.GetChild ("acceptOfferButton");
-
-        SubscribeToEvent (closeInfoButton, "Released", "HandleCloseInfoClick");
-        SubscribeToEvent (declineOfferButton, "Released", "HandleDeclineOfferClick");
-        SubscribeToEvent (acceptOfferButton, "Released", "HandleAcceptOfferClick");
-        SubscribeToEvent (EVENT_DIPLOMACY_INFO, "HandleDiplomacyInfo");
-        SubscribeToEvent (EVENT_DIPLOMACY_OFFER, "HandleDiplomacyOffer");
-    }
-
-    void Update (float timeStep)
-    {
-        Window @diplomacyMessagesWindow = ui.root.GetChild ("ingame").GetChild ("diplomacyMessagesWindow");
-        if (diplomacyMessages_.empty)
-        {
-            diplomacyMessagesWindow.visible = false;
-        }
-        else
-        {
-            ProcessOffersAutodeclineTime (timeStep);
-            diplomacyMessagesWindow.visible = true;
-            Text @title = diplomacyMessagesWindow.GetChild ("title");
-            if (diplomacyMessages_.length == 1)
-            {
-                title.text = "Diplomacy | No new messages.";
-            }
-            else
-            {
-                title.text = "Diplomacy | " + (diplomacyMessages_.length - 1) + " new messages!";
-            }
-
-            VariantMap firstMessage = diplomacyMessages_ [0];
-            if (firstMessage ["messageType"].GetUInt () == DIPLOMACY_MESSAGE_INFO)
-            {
-                ProcessCurrentDiplomacyInfo (diplomacyMessagesWindow, firstMessage);
-            }
-            else if (firstMessage ["messageType"].GetUInt () == DIPLOMACY_MESSAGE_OFFER)
-            {
-                ProcessCurrentDiplomacyOffer (diplomacyMessagesWindow, firstMessage);
-            }
-        }
-    }
-
-    void Stop ()
-    {
-
-    }
-
-    void HandleDiplomacyInfo (StringHash eventType, VariantMap &eventData)
-    {
-        VariantMap data = eventData;
-        data ["messageType"] = DIPLOMACY_MESSAGE_INFO;
-        diplomacyMessages_.Push (data);
-    }
-
-    void HandleDiplomacyOffer (StringHash eventType, VariantMap &eventData)
-    {
-        VariantMap data = eventData;
-        data ["messageType"] = DIPLOMACY_MESSAGE_OFFER;
-        diplomacyMessages_.Push (data);
-    }
-
-    void HandleCloseInfoClick ()
-    {
-        diplomacyMessages_.Erase (0);
-    }
-
-    void HandleDeclineOfferClick ()
-    {
-        VariantMap firstMessage = diplomacyMessages_ [0];
-        VectorBuffer buffer = VectorBuffer ();
-        buffer.WriteInt (PLAYER_ACTION_RESPONCE_TO_DIPLOMACY_OFFER);
-        buffer.WriteUInt (firstMessage [DiplomacyOffer::ID].GetUInt ());
-        buffer.WriteUInt (DRPSTATUS_DECLINED);
-
-        VariantMap taskData;
-        taskData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
-        taskData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
-        SendEvent (EVENT_NEW_NETWORK_TASK, taskData);
-        diplomacyMessages_.Erase (0);
-    }
-
-    void HandleAcceptOfferClick ()
-    {
-        VariantMap firstMessage = diplomacyMessages_ [0];
-        VectorBuffer buffer = VectorBuffer ();
-        buffer.WriteInt (PLAYER_ACTION_RESPONCE_TO_DIPLOMACY_OFFER);
-        buffer.WriteUInt (firstMessage [DiplomacyOffer::ID].GetUInt ());
-        buffer.WriteUInt (DRPSTATUS_ACCEPTED);
-
-        VariantMap taskData;
-        taskData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
-        taskData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
-        SendEvent (EVENT_NEW_NETWORK_TASK, taskData);
-        diplomacyMessages_.Erase (0);
     }
 }

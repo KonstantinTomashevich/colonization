@@ -5,38 +5,6 @@ class Client : ScriptObject
 {
     protected ActivitiesApplication @activitiesApplication_;
 
-    protected void AddCoreScripts ()
-    {
-        Node @uiScriptNode = node.CreateChild ("uiScriptNode", LOCAL);
-        ScriptInstance @uiScript = uiScriptNode.CreateComponent ("ScriptInstance", LOCAL);
-        uiScript.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/Client/ClientUi.as"),
-                               "ClientUi");
-
-        Node @networkScriptNode = node.CreateChild ("networkScriptNode", LOCAL);
-        ScriptInstance @networkScript = networkScriptNode.CreateComponent ("ScriptInstance", LOCAL);
-        networkScript.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/Client/ClientNetwork.as"),
-                                    "ClientNetwork");
-
-        Node @sceneManagerScriptNode = node.CreateChild ("sceneManagerScriptNode", LOCAL);
-        ScriptInstance @sceneManagerScript = sceneManagerScriptNode.CreateComponent ("ScriptInstance", LOCAL);
-        sceneManagerScript.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/Client/SceneManager.as"),
-                                         "SceneManager");
-
-        Node @screenPressesHandlerScriptNode = node.CreateChild ("screenPressesHandlerScriptNode", LOCAL);
-        ScriptInstance @screenPressesHandlerScript = screenPressesHandlerScriptNode.CreateComponent ("ScriptInstance", LOCAL);
-        screenPressesHandlerScript.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/Client/ScreenPressesHandler.as"),
-                                                 "ScreenPressesHandler");
-
-        ScriptInstance @screenShotTakerInstance = node.CreateChild ("ScreenShotTaker", LOCAL).CreateComponent ("ScriptInstance");
-        screenShotTakerInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/Utils/ScreenShotTaker.as"),
-                                              "ScreenShotTaker");
-    }
-
     Client ()
     {
 
@@ -130,5 +98,37 @@ class Client : ScriptObject
     void HandleGoToMainMenuRequest ()
     {
         GoToMainMenuState ();
+    }
+
+    protected void AddCoreScripts ()
+    {
+        Node @uiScriptNode = node.CreateChild ("uiScriptNode", LOCAL);
+        ScriptInstance @uiScript = uiScriptNode.CreateComponent ("ScriptInstance", LOCAL);
+        uiScript.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Client/ClientUi.as"),
+                               "ClientUi");
+
+        Node @networkScriptNode = node.CreateChild ("networkScriptNode", LOCAL);
+        ScriptInstance @networkScript = networkScriptNode.CreateComponent ("ScriptInstance", LOCAL);
+        networkScript.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Client/ClientNetwork.as"),
+                                    "ClientNetwork");
+
+        Node @sceneManagerScriptNode = node.CreateChild ("sceneManagerScriptNode", LOCAL);
+        ScriptInstance @sceneManagerScript = sceneManagerScriptNode.CreateComponent ("ScriptInstance", LOCAL);
+        sceneManagerScript.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Client/SceneManager.as"),
+                                         "SceneManager");
+
+        Node @screenPressesHandlerScriptNode = node.CreateChild ("screenPressesHandlerScriptNode", LOCAL);
+        ScriptInstance @screenPressesHandlerScript = screenPressesHandlerScriptNode.CreateComponent ("ScriptInstance", LOCAL);
+        screenPressesHandlerScript.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Client/ScreenPressesHandler.as"),
+                                                 "ScreenPressesHandler");
+
+        ScriptInstance @screenShotTakerInstance = node.CreateChild ("ScreenShotTaker", LOCAL).CreateComponent ("ScriptInstance");
+        screenShotTakerInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Utils/ScreenShotTaker.as"),
+                                              "ScreenShotTaker");
     }
 };

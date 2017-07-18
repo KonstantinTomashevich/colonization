@@ -5,6 +5,16 @@ abstract class UnitsInBattleList : UnitsList
 {
     bool isAttackers_ = true;
 
+    UnitsInBattleList ()
+    {
+
+    }
+
+    ~UnitsInBattleList ()
+    {
+
+    }
+
     protected Array <StringHash> GetUnitsHashes () override
     {
         Node @scriptMain = GetScriptMain (node);
@@ -17,15 +27,5 @@ abstract class UnitsInBattleList : UnitsList
         {
             return Array <StringHash> ();
         }
-    }
-
-    UnitsInBattleList ()
-    {
-
-    }
-
-    ~UnitsInBattleList ()
-    {
-
     }
 }

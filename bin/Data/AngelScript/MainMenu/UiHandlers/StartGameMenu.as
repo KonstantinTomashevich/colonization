@@ -3,43 +3,9 @@
 
 class StartGameMenu : ScriptObject
 {
-    protected XMLFile @style_;
     Array <String> maps_;
 
-    protected void ScanForMaps ()
-    {
-        maps_ = GetMapsFoldersNames ();
-        Array <String> mapsNamesList;
-        for (uint index = 0; index < maps_.length; index++)
-        {
-            XMLFile @infoXML = cache.GetResource ("XMLFile", MAPS_FOLDER + maps_ [index] + MAP_INFO_FILE);
-            XMLElement userInfo = infoXML.GetRoot ().GetChild ("userInformation");
-            String name = userInfo.GetAttribute ("name");
-            mapsNamesList.Push (name);
-        }
-        node.parent.vars ["mapsList"] = mapsNamesList;
-    }
-
-    protected void UpdateMapInfo ()
-    {
-        Window @startGameMenu = ui.root.GetChild ("mainMenu").GetChild ("startGameMenu");
-        Text @mapLabel = startGameMenu.GetChild ("mapLabel");
-        Text @mapInfo = startGameMenu.GetChild ("mapInfo");
-        BorderImage @preview = startGameMenu.GetChild ("mapPreview");
-
-        int selectedMapIndex = node.parent.vars ["selectedMapIndex"].GetInt ();
-        String selectedMapFolder = MAPS_FOLDER + maps_ [selectedMapIndex];
-        XMLFile @infoXML = cache.GetResource ("XMLFile", selectedMapFolder + MAP_INFO_FILE);
-        XMLElement filesInfo = infoXML.GetRoot ().GetChild ("mapFiles");
-        XMLElement userInfo = infoXML.GetRoot ().GetChild ("userInformation");
-
-        mapLabel.text = "Map: " + userInfo.GetAttribute ("name") + ".";
-        String infoText = "Short info: " + userInfo.GetAttribute ("shortInfo") + "\n\n";
-        infoText += "Maximum players: " + userInfo.GetInt ("maxPlayers") + ".\n\n";
-        infoText += "Supported victory types: " + userInfo.GetAttribute ("supportedVictoryTypes") + ".";
-        mapInfo.text = infoText;
-        preview.texture = cache.GetResource ("Texture2D", selectedMapFolder + filesInfo.GetAttribute ("preview"));
-    }
+    protected XMLFile @style_;
 
     StartGameMenu ()
     {
@@ -128,5 +94,40 @@ class StartGameMenu : ScriptObject
     void HandleSelectMapClick ()
     {
         ui.root.GetChild ("mainMenu").GetChild ("mapsList").visible = true;
+    }
+
+    protected void ScanForMaps ()
+    {
+        maps_ = GetMapsFoldersNames ();
+        Array <String> mapsNamesList;
+        for (uint index = 0; index < maps_.length; index++)
+        {
+            XMLFile @infoXML = cache.GetResource ("XMLFile", MAPS_FOLDER + maps_ [index] + MAP_INFO_FILE);
+            XMLElement userInfo = infoXML.GetRoot ().GetChild ("userInformation");
+            String name = userInfo.GetAttribute ("name");
+            mapsNamesList.Push (name);
+        }
+        node.parent.vars ["mapsList"] = mapsNamesList;
+    }
+
+    protected void UpdateMapInfo ()
+    {
+        Window @startGameMenu = ui.root.GetChild ("mainMenu").GetChild ("startGameMenu");
+        Text @mapLabel = startGameMenu.GetChild ("mapLabel");
+        Text @mapInfo = startGameMenu.GetChild ("mapInfo");
+        BorderImage @preview = startGameMenu.GetChild ("mapPreview");
+
+        int selectedMapIndex = node.parent.vars ["selectedMapIndex"].GetInt ();
+        String selectedMapFolder = MAPS_FOLDER + maps_ [selectedMapIndex];
+        XMLFile @infoXML = cache.GetResource ("XMLFile", selectedMapFolder + MAP_INFO_FILE);
+        XMLElement filesInfo = infoXML.GetRoot ().GetChild ("mapFiles");
+        XMLElement userInfo = infoXML.GetRoot ().GetChild ("userInformation");
+
+        mapLabel.text = "Map: " + userInfo.GetAttribute ("name") + ".";
+        String infoText = "Short info: " + userInfo.GetAttribute ("shortInfo") + "\n\n";
+        infoText += "Maximum players: " + userInfo.GetInt ("maxPlayers") + ".\n\n";
+        infoText += "Supported victory types: " + userInfo.GetAttribute ("supportedVictoryTypes") + ".";
+        mapInfo.text = infoText;
+        preview.texture = cache.GetResource ("Texture2D", selectedMapFolder + filesInfo.GetAttribute ("preview"));
     }
 }

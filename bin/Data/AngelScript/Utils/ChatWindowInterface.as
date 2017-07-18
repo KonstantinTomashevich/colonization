@@ -15,72 +15,6 @@ abstract class ChatWindowInterface : ScriptObjectWithBeforeStop
     protected float CHAT_WINDOW_OPENED_YMODIFER = 0.35f;
     protected float CHAT_WINDOW_CLOSED_YMODIFER = 0.10f;
 
-
-    protected UIElement @GetChatWindow ()
-    {
-        //! Will be implemented in inheritors!
-        return null;
-    }
-
-    protected void UpdateChatMessagesScroll ()
-    {
-        Window @chatWindow = GetChatWindow ();
-        Button @earlierMessagesButton = chatWindow.GetChild ("earlierMessagesButton");
-        Button @laterMessagesButton = chatWindow.GetChild ("laterMessagesButton");
-
-        if (earlierMessagesButton.pressed)
-        {
-            messagesShowOffset_ += 1;
-        }
-        else if (laterMessagesButton.pressed)
-        {
-            messagesShowOffset_ -= 1;
-        }
-    }
-
-    protected void UpdateChatMessages ()
-    {
-        String chatText = "";
-        Window @chatWindow = GetChatWindow ();
-        if (messagesList_.length > 0)
-        {
-            if (messagesShowOffset_ < MAX_MESSAGES_IN_PAGE_COUNT)
-            {
-                messagesShowOffset_ = MAX_MESSAGES_IN_PAGE_COUNT;
-            }
-            else if (messagesShowOffset_ > messagesList_.length and messagesList_.length > MAX_MESSAGES_IN_PAGE_COUNT)
-            {
-                messagesShowOffset_ = messagesList_.length;
-            }
-
-            int startIndex = messagesList_.length - messagesShowOffset_;
-            if (startIndex < 0)
-            {
-                startIndex = 0;
-            }
-
-            Text @messagesInfo = chatWindow.GetChild ("messagesInfo");
-            messagesInfo.text = "Showing messages from " + (startIndex + 1) + " to " + (startIndex + MAX_MESSAGES_IN_PAGE_COUNT) + ".";
-
-            for (uint index = uint (startIndex);
-                (index < messagesList_.length) and (index < (uint (startIndex) + MAX_MESSAGES_IN_PAGE_COUNT));
-                index++)
-            {
-                VariantMap messageData = messagesList_ [index];
-                bool isPrivate = messageData [NewChatMessage::IS_PRIVATE].GetBool ();
-                String sender = messageData [NewChatMessage::SENDER].GetString ();
-                String message = messageData [NewChatMessage::MESSAGE].GetString ();
-                String timeStamp = messageData [NewChatMessage::TIME_STAMP].GetString ();
-
-                chatText += (isPrivate ? "[Private] [" : "[Public] [") + timeStamp + "] " +
-                            sender + ": " + message + "\n";
-            }
-        }
-
-        Text @chatMessagesText = chatWindow.GetChild ("chatMessages");
-        chatMessagesText.text = chatText;
-    }
-
     ChatWindowInterface ()
     {
         untilNewMessage_ = 0.0f;
@@ -215,5 +149,70 @@ abstract class ChatWindowInterface : ScriptObjectWithBeforeStop
         {
             messagesList_.Erase (0);
         }
+    }
+
+    protected UIElement @GetChatWindow ()
+    {
+        //! Will be implemented in inheritors!
+        return null;
+    }
+
+    protected void UpdateChatMessagesScroll ()
+    {
+        Window @chatWindow = GetChatWindow ();
+        Button @earlierMessagesButton = chatWindow.GetChild ("earlierMessagesButton");
+        Button @laterMessagesButton = chatWindow.GetChild ("laterMessagesButton");
+
+        if (earlierMessagesButton.pressed)
+        {
+            messagesShowOffset_ += 1;
+        }
+        else if (laterMessagesButton.pressed)
+        {
+            messagesShowOffset_ -= 1;
+        }
+    }
+
+    protected void UpdateChatMessages ()
+    {
+        String chatText = "";
+        Window @chatWindow = GetChatWindow ();
+        if (messagesList_.length > 0)
+        {
+            if (messagesShowOffset_ < MAX_MESSAGES_IN_PAGE_COUNT)
+            {
+                messagesShowOffset_ = MAX_MESSAGES_IN_PAGE_COUNT;
+            }
+            else if (messagesShowOffset_ > messagesList_.length and messagesList_.length > MAX_MESSAGES_IN_PAGE_COUNT)
+            {
+                messagesShowOffset_ = messagesList_.length;
+            }
+
+            int startIndex = messagesList_.length - messagesShowOffset_;
+            if (startIndex < 0)
+            {
+                startIndex = 0;
+            }
+
+            Text @messagesInfo = chatWindow.GetChild ("messagesInfo");
+            messagesInfo.text = "Showing messages from " + (startIndex + 1) + " to " + (startIndex + MAX_MESSAGES_IN_PAGE_COUNT) + ".";
+
+            for (uint index = uint (startIndex);
+                (index < messagesList_.length) and (index < (uint (startIndex) + MAX_MESSAGES_IN_PAGE_COUNT));
+                index++)
+            {
+                VariantMap messageData = messagesList_ [index];
+                bool isPrivate = messageData [NewChatMessage::IS_PRIVATE].GetBool ();
+                String sender = messageData [NewChatMessage::SENDER].GetString ();
+                String message = messageData [NewChatMessage::MESSAGE].GetString ();
+                String timeStamp = messageData [NewChatMessage::TIME_STAMP].GetString ();
+
+                chatText += (isPrivate ? "[Private] [" : "[Public] [") + timeStamp + "] " +
+                            sender + ": " + message + "\n";
+            }
+        }
+
+        Text @chatMessagesText = chatWindow.GetChild ("chatMessages");
+        chatMessagesText.text = chatText;
     }
 }

@@ -2,11 +2,6 @@
 
 class ChatWindow : ChatWindowInterface
 {
-    protected UIElement @GetChatWindow () override
-    {
-        return ui.root.GetChild ("ingame").GetChild ("chatWindow");
-    }
-
     ChatWindow ()
     {
 
@@ -47,5 +42,10 @@ class ChatWindow : ChatWindowInterface
         UIElement @uiRoot = GetChatWindow ().parent;
         uiRoot.GetChild ("chatBlockedPlayersWindow").visible = false;
         uiRoot.GetChild ("chatPrivateReceiversWindow").visible = true;
+    }
+
+    protected UIElement @GetChatWindow () override
+    {
+        return ui.root.GetChild ("ingame").GetChild ("chatWindow");
     }
 }

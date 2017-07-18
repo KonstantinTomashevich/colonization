@@ -2,6 +2,15 @@
 
 class MapsList : StringListEditorUiHandler
 {
+    // Remove buttons replaced by open buttons.
+    void HandleRemoveElementClick (StringHash eventType, VariantMap &eventData) override
+    {
+        UIElement @element = eventData ["Element"].GetPtr ();
+        int elementOffset = element.vars ["ElementOffset"].GetInt ();
+        int summaryOffset = elementsShowOffset_ + elementOffset;
+        node.parent.vars ["selectedMapIndex"] = Variant (summaryOffset);
+    }
+
     protected Window @GetWindow () override
     {
         return ui.root.GetChild ("mainMenu").GetChild ("mapsList");
@@ -25,14 +34,5 @@ class MapsList : StringListEditorUiHandler
     protected bool IsElementToAddCorrect (String element) override
     {
         return false;
-    }
-
-    // Remove buttons replaced by open buttons.
-    void HandleRemoveElementClick (StringHash eventType, VariantMap &eventData) override
-    {
-        UIElement @element = eventData ["Element"].GetPtr ();
-        int elementOffset = element.vars ["ElementOffset"].GetInt ();
-        int summaryOffset = elementsShowOffset_ + elementOffset;
-        node.parent.vars ["selectedMapIndex"] = Variant (summaryOffset);
     }
 }

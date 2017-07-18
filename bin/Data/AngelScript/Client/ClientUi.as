@@ -6,6 +6,58 @@ class ClientUi : ScriptObject
     protected XMLFile @style_;
     protected bool isSceneLoaded_;
 
+    ClientUi ()
+    {
+        isSceneLoaded_ = false;
+    }
+
+    ~ClientUi ()
+    {
+
+    }
+
+    void Start ()
+    {
+        ui.root.RemoveAllChildren ();
+        style_ = cache.GetResource ("XMLFile", "UI/ColonizationUIStyle.xml");
+        ui.root.defaultStyle = style_;
+        node.CreateChild ("uiHandlers", LOCAL);
+        node.CreateChild ("utilHandlers", LOCAL);
+        AddUtilHandlers ();
+        SubscribeToEvent (EVENT_GAME_STATE_CHANGED, "HandleGameStateChanged");
+    }
+
+    void Update (float timeStep)
+    {
+        Node @scriptMain = GetScriptMain (node);
+        if (!isSceneLoaded_ and scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
+        {
+            isSceneLoaded_ = CheckIsSceneLoaded (scene);
+        }
+    }
+
+    void Stop ()
+    {
+
+    }
+
+    void HandleGameStateChanged (StringHash eventType, VariantMap &eventData)
+    {
+        int newGameState = eventData [GameStateChanged::NEW_GAME_STATE].GetInt ();
+        if (newGameState == GAME_STATE_WAITING_FOR_START)
+        {
+            AddWaitingForStartStateUiHandlers ();
+        }
+        else if (newGameState == GAME_STATE_PLAYING)
+        {
+            AddPlayingStateUiHandlers ();
+        }
+        else if (newGameState == GAME_STATE_FINISHED)
+        {
+            // TODO: Implement game finished ui with more infos.
+        }
+    }
+
     protected void AddUtilHandlers ()
     {
         Node @utilHandlersNode = node.GetChild ("utilHandlers");
@@ -124,57 +176,5 @@ class ClientUi : ScriptObject
         battleSelectedWindowInstance.CreateObject (cache.GetResource ("ScriptFile",
                                                          "AngelScript/Client/UiHandlers/Ingame/BattleSelectedWindow/BattleSelectedWindow.as"),
                                                "BattleSelectedWindow");
-    }
-
-    ClientUi ()
-    {
-        isSceneLoaded_ = false;
-    }
-
-    ~ClientUi ()
-    {
-
-    }
-
-    void Start ()
-    {
-        ui.root.RemoveAllChildren ();
-        style_ = cache.GetResource ("XMLFile", "UI/ColonizationUIStyle.xml");
-        ui.root.defaultStyle = style_;
-        node.CreateChild ("uiHandlers", LOCAL);
-        node.CreateChild ("utilHandlers", LOCAL);
-        AddUtilHandlers ();
-        SubscribeToEvent (EVENT_GAME_STATE_CHANGED, "HandleGameStateChanged");
-    }
-
-    void Update (float timeStep)
-    {
-        Node @scriptMain = GetScriptMain (node);
-        if (!isSceneLoaded_ and scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
-        {
-            isSceneLoaded_ = CheckIsSceneLoaded (scene);
-        }
-    }
-
-    void Stop ()
-    {
-
-    }
-
-    void HandleGameStateChanged (StringHash eventType, VariantMap &eventData)
-    {
-        int newGameState = eventData [GameStateChanged::NEW_GAME_STATE].GetInt ();
-        if (newGameState == GAME_STATE_WAITING_FOR_START)
-        {
-            AddWaitingForStartStateUiHandlers ();
-        }
-        else if (newGameState == GAME_STATE_PLAYING)
-        {
-            AddPlayingStateUiHandlers ();
-        }
-        else if (newGameState == GAME_STATE_FINISHED)
-        {
-            // Nothing now.
-        }
     }
 };

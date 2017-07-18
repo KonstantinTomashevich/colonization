@@ -7,6 +7,97 @@ class UnitSelectedWindow : ScriptObject
     protected float untilSelectionUpdate_;
     protected float SELECTION_UPDATE_DELAY = 0.02f;
 
+    UnitSelectedWindow ()
+    {
+        isSceneLoaded_ = false;
+        untilSelectionUpdate_ = 0.0f;
+    }
+
+    ~UnitSelectedWindow ()
+    {
+
+    }
+
+    void Start ()
+    {
+        Window @unitSelectedWindow = ui.root.GetChild ("ingame").GetChild ("unitSelectedWindow");
+        Button @moveToButton = unitSelectedWindow.GetChild ("moveToButton");
+        Button @demobilizeArmyButton = unitSelectedWindow.GetChild ("demobilizeArmyButton");
+
+        SubscribeToEvent (moveToButton, "Released", "HandleMoveUnitToClick");
+        SubscribeToEvent (demobilizeArmyButton, "Released", "HandleDemobilizeArmyClick");
+    }
+
+    void Update (float timeStep)
+    {
+        Node @scriptMain = GetScriptMain (node);
+        if (!isSceneLoaded_ and scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
+        {
+            isSceneLoaded_ = CheckIsSceneLoaded (scene);
+        }
+        else
+        {
+            untilSelectionUpdate_ -= timeStep;
+            if (untilSelectionUpdate_ <= 0.0f)
+            {
+                Window @unitSelectedWindow = ui.root.GetChild ("ingame").GetChild ("unitSelectedWindow");
+                StringHash selectionType = scriptMain.vars ["selectionType"].GetStringHash ();
+
+                if (selectionType == StringHash ("Unit"))
+                {
+                    UpdateUnitSelection ();
+                }
+                else
+                {
+                    unitSelectedWindow.visible = false;
+                }
+                untilSelectionUpdate_ = SELECTION_UPDATE_DELAY;
+            }
+        }
+    }
+
+    void Stop ()
+    {
+        UnsubscribeFromAllEvents ();
+    }
+
+    void HandleMoveUnitToClick ()
+    {
+        Node @scriptMain = GetScriptMain (node);
+        scriptMain.vars ["currentClickCommand"] = StringHash ("MoveUnit");
+    }
+
+    void HandleDemobilizeArmyClick ()
+    {
+        Node @scriptMain = GetScriptMain (node);
+        Map @map = scene.GetChild ("map").GetComponent ("Map");
+        FogOfWarCalculator @fogOfWarCalculator = scene.GetComponent ("FogOfWarCalculator");
+        Window @unitSelectedWindow = ui.root.GetChild ("ingame").GetChild ("unitSelectedWindow");
+        StringHash unitHash = scriptMain.vars ["selectedHash"].GetStringHash ();
+        Unit @unit = GetUnitByHash (scene, unitHash);
+
+        if (unit is null)
+        {
+            return;
+        }
+        District @armyDistrict = map.GetDistrictByHash (unit.positionHash);
+        String playerName = scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString ();
+
+        if (unit.ownerPlayerName == playerName and unit.unitType == UNIT_ARMY and
+            not unit.isInBattle and not armyDistrict.isSea and
+            armyDistrict.hasColony and armyDistrict.colonyOwnerName == playerName)
+        {
+            VectorBuffer buffer = VectorBuffer ();
+            buffer.WriteInt (PLAYER_ACTION_DEMOBILIZE_ARMY);
+            buffer.WriteStringHash (unitHash);
+
+            VariantMap eventData;
+            eventData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+            eventData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
+            SendEvent (EVENT_NEW_NETWORK_TASK, eventData);
+        }
+    }
+
     protected void UpdateUnitSelection ()
     {
         Node @scriptMain = GetScriptMain (node);
@@ -167,96 +258,5 @@ class UnitSelectedWindow : ScriptObject
                     Floor (unit.wayToNextDistrictProgressInPercents) + "%.\n";
         }
         return info;
-    }
-
-    UnitSelectedWindow ()
-    {
-        isSceneLoaded_ = false;
-        untilSelectionUpdate_ = 0.0f;
-    }
-
-    ~UnitSelectedWindow ()
-    {
-
-    }
-
-    void Start ()
-    {
-        Window @unitSelectedWindow = ui.root.GetChild ("ingame").GetChild ("unitSelectedWindow");
-        Button @moveToButton = unitSelectedWindow.GetChild ("moveToButton");
-        Button @demobilizeArmyButton = unitSelectedWindow.GetChild ("demobilizeArmyButton");
-
-        SubscribeToEvent (moveToButton, "Released", "HandleMoveUnitToClick");
-        SubscribeToEvent (demobilizeArmyButton, "Released", "HandleDemobilizeArmyClick");
-    }
-
-    void Update (float timeStep)
-    {
-        Node @scriptMain = GetScriptMain (node);
-        if (!isSceneLoaded_ and scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
-        {
-            isSceneLoaded_ = CheckIsSceneLoaded (scene);
-        }
-        else
-        {
-            untilSelectionUpdate_ -= timeStep;
-            if (untilSelectionUpdate_ <= 0.0f)
-            {
-                Window @unitSelectedWindow = ui.root.GetChild ("ingame").GetChild ("unitSelectedWindow");
-                StringHash selectionType = scriptMain.vars ["selectionType"].GetStringHash ();
-
-                if (selectionType == StringHash ("Unit"))
-                {
-                    UpdateUnitSelection ();
-                }
-                else
-                {
-                    unitSelectedWindow.visible = false;
-                }
-                untilSelectionUpdate_ = SELECTION_UPDATE_DELAY;
-            }
-        }
-    }
-
-    void Stop ()
-    {
-        UnsubscribeFromAllEvents ();
-    }
-
-    void HandleMoveUnitToClick ()
-    {
-        Node @scriptMain = GetScriptMain (node);
-        scriptMain.vars ["currentClickCommand"] = StringHash ("MoveUnit");
-    }
-
-    void HandleDemobilizeArmyClick ()
-    {
-        Node @scriptMain = GetScriptMain (node);
-        Map @map = scene.GetChild ("map").GetComponent ("Map");
-        FogOfWarCalculator @fogOfWarCalculator = scene.GetComponent ("FogOfWarCalculator");
-        Window @unitSelectedWindow = ui.root.GetChild ("ingame").GetChild ("unitSelectedWindow");
-        StringHash unitHash = scriptMain.vars ["selectedHash"].GetStringHash ();
-        Unit @unit = GetUnitByHash (scene, unitHash);
-
-        if (unit is null)
-        {
-            return;
-        }
-        District @armyDistrict = map.GetDistrictByHash (unit.positionHash);
-        String playerName = scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString ();
-
-        if (unit.ownerPlayerName == playerName and unit.unitType == UNIT_ARMY and
-            not unit.isInBattle and not armyDistrict.isSea and
-            armyDistrict.hasColony and armyDistrict.colonyOwnerName == playerName)
-        {
-            VectorBuffer buffer = VectorBuffer ();
-            buffer.WriteInt (PLAYER_ACTION_DEMOBILIZE_ARMY);
-            buffer.WriteStringHash (unitHash);
-
-            VariantMap eventData;
-            eventData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
-            eventData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
-            SendEvent (EVENT_NEW_NETWORK_TASK, eventData);
-        }
     }
 }

@@ -3,11 +3,6 @@
 
 class DefendersUnitsInBattleList : UnitsInBattleList
 {
-    protected Window @GetWindow () override
-    {
-        return ui.root.GetChild ("ingame").GetChild ("battleSelectedWindow").GetChild ("defendersUnitsList");
-    }
-
     DefendersUnitsInBattleList ()
     {
         isAttackers_ = false;
@@ -16,5 +11,10 @@ class DefendersUnitsInBattleList : UnitsInBattleList
     ~DefendersUnitsInBattleList ()
     {
 
+    }
+
+    protected Window @GetWindow () override
+    {
+        return ui.root.GetChild ("ingame").GetChild ("battleSelectedWindow").GetChild ("defendersUnitsList");
     }
 }

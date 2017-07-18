@@ -7,33 +7,6 @@ class MapUpdater : ScriptObject
     bool setCorrectYForUnitsAndColoniesPositionNextFrame_;
     bool recalculateMapMaskNextFrame_;
 
-    protected void CalculateUnitPositionAsCenter (District @district)
-    {
-        Array <Vector3> polygonPoints = district.polygonPoints;
-        Vector3 sum;
-        for (uint index = 0; index < polygonPoints.length; index++)
-        {
-            sum.x += polygonPoints [index].x;
-            sum.y += polygonPoints [index].y;
-            sum.z += polygonPoints [index].z;
-        }
-        district.unitPosition = sum / polygonPoints.length;
-    }
-
-    protected void CorrectYForUnitAndColonyPosition (District @district, Terrain @terrain)
-    {
-        float unitHeight = terrain.GetHeight (district.unitPosition);
-        float colonyHeight = terrain.GetHeight (district.colonyPosition);
-
-        Vector3 newUnitPosition = district.unitPosition;
-        newUnitPosition.y = unitHeight;
-        district.unitPosition = newUnitPosition;
-
-        Vector3 newColonyPosition = district.colonyPosition;
-        newColonyPosition.y = colonyHeight;
-        district.colonyPosition = newColonyPosition;
-    }
-
     MapUpdater ()
     {
         updateDistrictsHashesNextFrame_ = false;
@@ -101,5 +74,32 @@ class MapUpdater : ScriptObject
     void Stop ()
     {
 
+    }
+
+    protected void CalculateUnitPositionAsCenter (District @district)
+    {
+        Array <Vector3> polygonPoints = district.polygonPoints;
+        Vector3 sum;
+        for (uint index = 0; index < polygonPoints.length; index++)
+        {
+            sum.x += polygonPoints [index].x;
+            sum.y += polygonPoints [index].y;
+            sum.z += polygonPoints [index].z;
+        }
+        district.unitPosition = sum / polygonPoints.length;
+    }
+
+    protected void CorrectYForUnitAndColonyPosition (District @district, Terrain @terrain)
+    {
+        float unitHeight = terrain.GetHeight (district.unitPosition);
+        float colonyHeight = terrain.GetHeight (district.colonyPosition);
+
+        Vector3 newUnitPosition = district.unitPosition;
+        newUnitPosition.y = unitHeight;
+        district.unitPosition = newUnitPosition;
+
+        Vector3 newColonyPosition = district.colonyPosition;
+        newColonyPosition.y = colonyHeight;
+        district.colonyPosition = newColonyPosition;
     }
 };

@@ -7,6 +7,197 @@ class DistrictSelectedWindow : ScriptObject
     protected float untilSelectionUpdate_;
     protected float SELECTION_UPDATE_DELAY = 0.02f;
 
+    DistrictSelectedWindow ()
+    {
+        isSceneLoaded_ = false;
+        untilSelectionUpdate_ = 0.0f;
+    }
+
+    ~DistrictSelectedWindow ()
+    {
+
+    }
+
+    void Start ()
+    {
+        Window @districtSelectedWindow = ui.root.GetChild ("ingame").GetChild ("districtSelectedWindow");
+        districtSelectedWindow.vars ["infoType"] = StringHash ("Basic");
+
+        Button @basicInfoButton = districtSelectedWindow.GetChild ("basicInfoButton");
+        Button @resourcesInfoButton = districtSelectedWindow.GetChild ("resourcesInfoButton");
+        Button @populationInfoButton = districtSelectedWindow.GetChild ("populationInfoButton");
+        Button @colonyEvolutionInfoButton = districtSelectedWindow.GetChild ("colonyEvolutionInfoButton");
+
+        Button @sendColonizatorsButton = districtSelectedWindow.GetChild ("sendColonizatorsButton");
+        Button @buildWarShipButton = districtSelectedWindow.GetChild ("buildWarShipButton");
+        Button @formArmyButton = districtSelectedWindow.GetChild ("formArmyButton");
+        Button @openDiplomacyButton = districtSelectedWindow.GetChild ("openDiplomacyButton");
+
+        UIElement @investButtons = districtSelectedWindow.GetChild ("investButtons");
+        Button @investToFarmsButton = investButtons.GetChild ("investToFarms");
+        Button @investToMinesButton = investButtons.GetChild ("investToMines");
+        Button @investToIndustryButton = investButtons.GetChild ("investToIndustry");
+        Button @investToLogisticsButton = investButtons.GetChild ("investToLogistics");
+        Button @investToDefenseButton = investButtons.GetChild ("investToDefense");
+
+        SubscribeToEvent (basicInfoButton, "Released", "HandleBasicInfoClick");
+        SubscribeToEvent (resourcesInfoButton, "Released", "HandleResourcesInfoClick");
+        SubscribeToEvent (populationInfoButton, "Released", "HandlePopulationInfoClick");
+        SubscribeToEvent (colonyEvolutionInfoButton, "Released", "HandleColonyEvolutionInfoClick");
+
+        SubscribeToEvent (sendColonizatorsButton, "Released", "HandleSendColonizatorsClick");
+        SubscribeToEvent (buildWarShipButton, "Released", "HandleBuildWarShipClick");
+        SubscribeToEvent (formArmyButton, "Released", "HandleFormArmyClick");
+        SubscribeToEvent (openDiplomacyButton, "Released", "HandleOpenDiplomacyClick");
+
+        SubscribeToEvent (investToFarmsButton, "Released", "HandleInvestClick");
+        SubscribeToEvent (investToMinesButton, "Released", "HandleInvestClick");
+        SubscribeToEvent (investToIndustryButton, "Released", "HandleInvestClick");
+        SubscribeToEvent (investToLogisticsButton, "Released", "HandleInvestClick");
+        SubscribeToEvent (investToDefenseButton, "Released", "HandleInvestClick");
+    }
+
+    void Update (float timeStep)
+    {
+        Node @scriptMain = GetScriptMain (node);
+        if (!isSceneLoaded_ and scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
+        {
+            isSceneLoaded_ = CheckIsSceneLoaded (scene);
+        }
+        else if (isSceneLoaded_)
+        {
+            untilSelectionUpdate_ -= timeStep;
+            if (untilSelectionUpdate_ <= 0.0f)
+            {
+                Window @districtSelectedWindow = ui.root.GetChild ("ingame").GetChild ("districtSelectedWindow");
+                StringHash selectionType = scriptMain.vars ["selectionType"].GetStringHash ();
+
+                if (selectionType == StringHash ("District"))
+                {
+                    UpdateDistrictSelection ();
+                }
+                else
+                {
+                    districtSelectedWindow.visible = false;
+                }
+                untilSelectionUpdate_ = SELECTION_UPDATE_DELAY;
+            }
+        }
+    }
+
+    void Stop ()
+    {
+        UnsubscribeFromAllEvents ();
+    }
+
+    void HandleSendColonizatorsClick ()
+    {
+        Node @scriptMain = GetScriptMain (node);
+        StringHash districtHash = scriptMain.vars ["selectedHash"].GetStringHash ();
+        VectorBuffer buffer = VectorBuffer ();
+        buffer.WriteInt (PLAYER_ACTION_REQUEST_COLONIZATORS_FROM_EUROPE);
+        buffer.WriteStringHash (districtHash);
+        buffer.WriteInt (COLONIZATORS_EXPEDITION_SIZE);
+
+        VariantMap eventData;
+        eventData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+        eventData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
+        SendEvent (EVENT_NEW_NETWORK_TASK, eventData);
+    }
+
+    void HandleBasicInfoClick ()
+    {
+        Window @districtSelectedWindow = ui.root.GetChild ("ingame").GetChild ("districtSelectedWindow");
+        districtSelectedWindow.vars ["infoType"] = StringHash ("Basic");
+    }
+
+    void HandleResourcesInfoClick ()
+    {
+        Window @districtSelectedWindow = ui.root.GetChild ("ingame").GetChild ("districtSelectedWindow");
+        districtSelectedWindow.vars ["infoType"] = StringHash ("Resources");
+    }
+
+    void HandlePopulationInfoClick ()
+    {
+        Window @districtSelectedWindow = ui.root.GetChild ("ingame").GetChild ("districtSelectedWindow");
+        districtSelectedWindow.vars ["infoType"] = StringHash ("Population");
+    }
+
+    void HandleColonyEvolutionInfoClick ()
+    {
+        Window @districtSelectedWindow = ui.root.GetChild ("ingame").GetChild ("districtSelectedWindow");
+        districtSelectedWindow.vars ["infoType"] = StringHash ("ColonyEvolution");
+    }
+
+    void HandleInvestClick (StringHash eventType, VariantMap &eventData)
+    {
+        Node @scriptMain = GetScriptMain (node);
+        UIElement @element = eventData ["Element"].GetPtr ();
+        StringHash investTypeHash = StringHash (element.vars ["investitionType"].GetString ());
+        StringHash districtHash = scriptMain.vars ["selectedHash"].GetStringHash ();
+
+        VectorBuffer buffer = VectorBuffer ();
+        buffer.WriteInt (PLAYER_ACTION_INVEST_TO_COLONY);
+        buffer.WriteStringHash (districtHash);
+        buffer.WriteStringHash (investTypeHash);
+        buffer.WriteFloat (DEFAULT_INVESTITION_SIZE);
+
+        VariantMap taskData;
+        taskData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+        taskData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
+        SendEvent (EVENT_NEW_NETWORK_TASK, taskData);
+    }
+
+    void HandleBuildWarShipClick ()
+    {
+        Node @scriptMain = GetScriptMain (node);
+        scriptMain.vars ["currentClickCommand"] = StringHash ("BuildWarShip");
+    }
+
+    void HandleFormArmyClick ()
+    {
+        Node @scriptMain = GetScriptMain (node);
+        Map @map = scene.GetChild ("map").GetComponent ("Map");
+        GameConfiguration @configuration = scene.GetComponent ("GameConfiguration");
+
+        StringHash districtHash = scriptMain.vars ["selectedHash"].GetStringHash ();
+        District @district = map.GetDistrictByHash (districtHash);
+        String playerName = scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString ();
+        float playerGold = scriptMain.vars [ScriptMainVars::GOLD].GetFloat ();
+
+        if (district.hasColony and district.colonyOwnerName == playerName and
+            playerGold > configuration.oneSoldierMobilizationCost * DEFAULT_ARMY_SOLDIERS_COUNT and
+            district.menCount > DEFAULT_ARMY_SOLDIERS_COUNT)
+        {
+            VariantMap actionData;
+            actionData [ColonyActions_FormArmy_SOLDIERS_COUNT] = Variant (DEFAULT_ARMY_SOLDIERS_COUNT);
+
+            VectorBuffer buffer = VectorBuffer ();
+            buffer.WriteInt (PLAYER_ACTION_ADD_COLONY_ACTION);
+            buffer.WriteStringHash (district.hash);
+            buffer.WriteStringHash (ColonyActions_FORM_ARMY);
+            buffer.WriteVariantMap (actionData);
+
+            VariantMap eventData;
+            eventData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
+            eventData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
+            SendEvent (EVENT_NEW_NETWORK_TASK, eventData);
+        }
+    }
+
+    void HandleOpenDiplomacyClick ()
+    {
+        Node @scriptMain = GetScriptMain (node);
+        Map @map = scene.GetChild ("map").GetComponent ("Map");
+        StringHash districtHash = scriptMain.vars ["selectedHash"].GetStringHash ();
+        District @district = map.GetDistrictByHash (districtHash);
+
+        Window @infoTableWindow = ui.root.GetChild ("ingame").GetChild ("infoTableWindow");
+        infoTableWindow.visible = true;
+        infoTableWindow.vars ["selectedInfoType"] = "showDiplomacyWithPlayer";
+        infoTableWindow.vars ["elementToShowHash"] = StringHash (district.colonyOwnerName);
+    }
+
     protected void UpdateDistrictSelection ()
     {
         Node @scriptMain = GetScriptMain (node);
@@ -270,196 +461,5 @@ class DistrictSelectedWindow : ScriptObject
 
         Text @informationTextUi = districtSelectedWindow.GetChild ("informationText");
         informationTextUi.text = infoText;
-    }
-
-    DistrictSelectedWindow ()
-    {
-        isSceneLoaded_ = false;
-        untilSelectionUpdate_ = 0.0f;
-    }
-
-    ~DistrictSelectedWindow ()
-    {
-
-    }
-
-    void Start ()
-    {
-        Window @districtSelectedWindow = ui.root.GetChild ("ingame").GetChild ("districtSelectedWindow");
-        districtSelectedWindow.vars ["infoType"] = StringHash ("Basic");
-
-        Button @basicInfoButton = districtSelectedWindow.GetChild ("basicInfoButton");
-        Button @resourcesInfoButton = districtSelectedWindow.GetChild ("resourcesInfoButton");
-        Button @populationInfoButton = districtSelectedWindow.GetChild ("populationInfoButton");
-        Button @colonyEvolutionInfoButton = districtSelectedWindow.GetChild ("colonyEvolutionInfoButton");
-
-        Button @sendColonizatorsButton = districtSelectedWindow.GetChild ("sendColonizatorsButton");
-        Button @buildWarShipButton = districtSelectedWindow.GetChild ("buildWarShipButton");
-        Button @formArmyButton = districtSelectedWindow.GetChild ("formArmyButton");
-        Button @openDiplomacyButton = districtSelectedWindow.GetChild ("openDiplomacyButton");
-
-        UIElement @investButtons = districtSelectedWindow.GetChild ("investButtons");
-        Button @investToFarmsButton = investButtons.GetChild ("investToFarms");
-        Button @investToMinesButton = investButtons.GetChild ("investToMines");
-        Button @investToIndustryButton = investButtons.GetChild ("investToIndustry");
-        Button @investToLogisticsButton = investButtons.GetChild ("investToLogistics");
-        Button @investToDefenseButton = investButtons.GetChild ("investToDefense");
-
-        SubscribeToEvent (basicInfoButton, "Released", "HandleBasicInfoClick");
-        SubscribeToEvent (resourcesInfoButton, "Released", "HandleResourcesInfoClick");
-        SubscribeToEvent (populationInfoButton, "Released", "HandlePopulationInfoClick");
-        SubscribeToEvent (colonyEvolutionInfoButton, "Released", "HandleColonyEvolutionInfoClick");
-
-        SubscribeToEvent (sendColonizatorsButton, "Released", "HandleSendColonizatorsClick");
-        SubscribeToEvent (buildWarShipButton, "Released", "HandleBuildWarShipClick");
-        SubscribeToEvent (formArmyButton, "Released", "HandleFormArmyClick");
-        SubscribeToEvent (openDiplomacyButton, "Released", "HandleOpenDiplomacyClick");
-
-        SubscribeToEvent (investToFarmsButton, "Released", "HandleInvestClick");
-        SubscribeToEvent (investToMinesButton, "Released", "HandleInvestClick");
-        SubscribeToEvent (investToIndustryButton, "Released", "HandleInvestClick");
-        SubscribeToEvent (investToLogisticsButton, "Released", "HandleInvestClick");
-        SubscribeToEvent (investToDefenseButton, "Released", "HandleInvestClick");
-    }
-
-    void Update (float timeStep)
-    {
-        Node @scriptMain = GetScriptMain (node);
-        if (!isSceneLoaded_ and scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
-        {
-            isSceneLoaded_ = CheckIsSceneLoaded (scene);
-        }
-        else if (isSceneLoaded_)
-        {
-            untilSelectionUpdate_ -= timeStep;
-            if (untilSelectionUpdate_ <= 0.0f)
-            {
-                Window @districtSelectedWindow = ui.root.GetChild ("ingame").GetChild ("districtSelectedWindow");
-                StringHash selectionType = scriptMain.vars ["selectionType"].GetStringHash ();
-
-                if (selectionType == StringHash ("District"))
-                {
-                    UpdateDistrictSelection ();
-                }
-                else
-                {
-                    districtSelectedWindow.visible = false;
-                }
-                untilSelectionUpdate_ = SELECTION_UPDATE_DELAY;
-            }
-        }
-    }
-
-    void Stop ()
-    {
-        UnsubscribeFromAllEvents ();
-    }
-
-    void HandleSendColonizatorsClick ()
-    {
-        Node @scriptMain = GetScriptMain (node);
-        StringHash districtHash = scriptMain.vars ["selectedHash"].GetStringHash ();
-        VectorBuffer buffer = VectorBuffer ();
-        buffer.WriteInt (PLAYER_ACTION_REQUEST_COLONIZATORS_FROM_EUROPE);
-        buffer.WriteStringHash (districtHash);
-        buffer.WriteInt (COLONIZATORS_EXPEDITION_SIZE);
-
-        VariantMap eventData;
-        eventData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
-        eventData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
-        SendEvent (EVENT_NEW_NETWORK_TASK, eventData);
-    }
-
-    void HandleBasicInfoClick ()
-    {
-        Window @districtSelectedWindow = ui.root.GetChild ("ingame").GetChild ("districtSelectedWindow");
-        districtSelectedWindow.vars ["infoType"] = StringHash ("Basic");
-    }
-
-    void HandleResourcesInfoClick ()
-    {
-        Window @districtSelectedWindow = ui.root.GetChild ("ingame").GetChild ("districtSelectedWindow");
-        districtSelectedWindow.vars ["infoType"] = StringHash ("Resources");
-    }
-
-    void HandlePopulationInfoClick ()
-    {
-        Window @districtSelectedWindow = ui.root.GetChild ("ingame").GetChild ("districtSelectedWindow");
-        districtSelectedWindow.vars ["infoType"] = StringHash ("Population");
-    }
-
-    void HandleColonyEvolutionInfoClick ()
-    {
-        Window @districtSelectedWindow = ui.root.GetChild ("ingame").GetChild ("districtSelectedWindow");
-        districtSelectedWindow.vars ["infoType"] = StringHash ("ColonyEvolution");
-    }
-
-    void HandleInvestClick (StringHash eventType, VariantMap &eventData)
-    {
-        Node @scriptMain = GetScriptMain (node);
-        UIElement @element = eventData ["Element"].GetPtr ();
-        StringHash investTypeHash = StringHash (element.vars ["investitionType"].GetString ());
-        StringHash districtHash = scriptMain.vars ["selectedHash"].GetStringHash ();
-
-        VectorBuffer buffer = VectorBuffer ();
-        buffer.WriteInt (PLAYER_ACTION_INVEST_TO_COLONY);
-        buffer.WriteStringHash (districtHash);
-        buffer.WriteStringHash (investTypeHash);
-        buffer.WriteFloat (DEFAULT_INVESTITION_SIZE);
-
-        VariantMap taskData;
-        taskData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
-        taskData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
-        SendEvent (EVENT_NEW_NETWORK_TASK, taskData);
-    }
-
-    void HandleBuildWarShipClick ()
-    {
-        Node @scriptMain = GetScriptMain (node);
-        scriptMain.vars ["currentClickCommand"] = StringHash ("BuildWarShip");
-    }
-
-    void HandleFormArmyClick ()
-    {
-        Node @scriptMain = GetScriptMain (node);
-        Map @map = scene.GetChild ("map").GetComponent ("Map");
-        GameConfiguration @configuration = scene.GetComponent ("GameConfiguration");
-
-        StringHash districtHash = scriptMain.vars ["selectedHash"].GetStringHash ();
-        District @district = map.GetDistrictByHash (districtHash);
-        String playerName = scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString ();
-        float playerGold = scriptMain.vars [ScriptMainVars::GOLD].GetFloat ();
-
-        if (district.hasColony and district.colonyOwnerName == playerName and
-            playerGold > configuration.oneSoldierMobilizationCost * DEFAULT_ARMY_SOLDIERS_COUNT and
-            district.menCount > DEFAULT_ARMY_SOLDIERS_COUNT)
-        {
-            VariantMap actionData;
-            actionData [ColonyActions_FormArmy_SOLDIERS_COUNT] = Variant (DEFAULT_ARMY_SOLDIERS_COUNT);
-
-            VectorBuffer buffer = VectorBuffer ();
-            buffer.WriteInt (PLAYER_ACTION_ADD_COLONY_ACTION);
-            buffer.WriteStringHash (district.hash);
-            buffer.WriteStringHash (ColonyActions_FORM_ARMY);
-            buffer.WriteVariantMap (actionData);
-
-            VariantMap eventData;
-            eventData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
-            eventData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
-            SendEvent (EVENT_NEW_NETWORK_TASK, eventData);
-        }
-    }
-
-    void HandleOpenDiplomacyClick ()
-    {
-        Node @scriptMain = GetScriptMain (node);
-        Map @map = scene.GetChild ("map").GetComponent ("Map");
-        StringHash districtHash = scriptMain.vars ["selectedHash"].GetStringHash ();
-        District @district = map.GetDistrictByHash (districtHash);
-
-        Window @infoTableWindow = ui.root.GetChild ("ingame").GetChild ("infoTableWindow");
-        infoTableWindow.visible = true;
-        infoTableWindow.vars ["selectedInfoType"] = "showDiplomacyWithPlayer";
-        infoTableWindow.vars ["elementToShowHash"] = StringHash (district.colonyOwnerName);
     }
 }

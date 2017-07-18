@@ -22,6 +22,78 @@ class SceneManager : ScriptObject
     protected int KEY_GO_FORWARD = KEY_W;
     protected int KEY_GO_BACK = KEY_S;
 
+    SceneManager ()
+    {
+        isSceneLoaded_ = false;
+        untilDistrictsUpdate_ = 0.0f;
+        untilUnitsUpdate_ = 0.0f;
+    }
+
+    ~SceneManager ()
+    {
+
+    }
+
+    void Start ()
+    {
+        scene.CreateChild ("locals", LOCAL);
+    }
+
+    void Update (float timeStep)
+    {
+        Node @scriptMain = GetScriptMain (node);
+        if (!isSceneLoaded_ and scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
+        {
+            isSceneLoaded_ = CheckIsSceneLoaded (scene);
+        }
+        else if (scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START and
+                 scene.GetChild ("map") !is null and scene.GetChild ("units") !is null)
+        {
+            if (renderPathUpdaterWillBeCreated_)
+            {
+                MapMaskUpdater @mapMaskUpdater = scene.GetComponent ("MapMaskUpdater");
+                mapMaskUpdater.RecalculateMaskImage ();
+
+                CreateRenderPathUpdater ();
+                renderPathUpdaterWillBeCreated_ = false;
+            }
+
+            if (scene.GetChild ("map").GetChild ("local") is null)
+            {
+                LoadPrefabOf (scene.GetChild ("map"), true, "local");
+                CreateLocalLight ();
+                CreateLocalCamera ();
+                CreateFogOfWarProcessors ();
+                renderPathUpdaterWillBeCreated_ = true;
+            }
+
+            if (cameraNode_ !is null)
+            {
+                UpdateCameraPositionByKeyboardInput (timeStep);
+            }
+
+            untilDistrictsUpdate_ -= timeStep;
+            untilUnitsUpdate_ -= timeStep;
+
+            if (untilDistrictsUpdate_ <= 0.0f)
+            {
+                UpdateDistricts ();
+                untilDistrictsUpdate_ = DISTRICTS_UPDATE_DELAY;
+            }
+
+            if (untilUnitsUpdate_ <= 0.0f)
+            {
+                UpdateUnits ();
+                untilUnitsUpdate_ = UNITS_UPDATE_DELAY;
+            }
+        }
+    }
+
+    void Stop ()
+    {
+
+    }
+
     protected void LoadPrefabOf (Node @replicatedNode, bool asChild, String name, String overridePrefabPath = "")
     {
         Node @localNode;
@@ -228,77 +300,5 @@ class SceneManager : ScriptObject
             positionDelta = positionDelta * timeStep;
             cameraNode_.worldPosition = cameraNode_.worldPosition + positionDelta;
         }
-    }
-
-    SceneManager ()
-    {
-        isSceneLoaded_ = false;
-        untilDistrictsUpdate_ = 0.0f;
-        untilUnitsUpdate_ = 0.0f;
-    }
-
-    ~SceneManager ()
-    {
-
-    }
-
-    void Start ()
-    {
-        scene.CreateChild ("locals", LOCAL);
-    }
-
-    void Update (float timeStep)
-    {
-        Node @scriptMain = GetScriptMain (node);
-        if (!isSceneLoaded_ and scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
-        {
-            isSceneLoaded_ = CheckIsSceneLoaded (scene);
-        }
-        else if (scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START and
-                 scene.GetChild ("map") !is null and scene.GetChild ("units") !is null)
-        {
-            if (renderPathUpdaterWillBeCreated_)
-            {
-                MapMaskUpdater @mapMaskUpdater = scene.GetComponent ("MapMaskUpdater");
-                mapMaskUpdater.RecalculateMaskImage ();
-
-                CreateRenderPathUpdater ();
-                renderPathUpdaterWillBeCreated_ = false;
-            }
-
-            if (scene.GetChild ("map").GetChild ("local") is null)
-            {
-                LoadPrefabOf (scene.GetChild ("map"), true, "local");
-                CreateLocalLight ();
-                CreateLocalCamera ();
-                CreateFogOfWarProcessors ();
-                renderPathUpdaterWillBeCreated_ = true;
-            }
-
-            if (cameraNode_ !is null)
-            {
-                UpdateCameraPositionByKeyboardInput (timeStep);
-            }
-
-            untilDistrictsUpdate_ -= timeStep;
-            untilUnitsUpdate_ -= timeStep;
-
-            if (untilDistrictsUpdate_ <= 0.0f)
-            {
-                UpdateDistricts ();
-                untilDistrictsUpdate_ = DISTRICTS_UPDATE_DELAY;
-            }
-
-            if (untilUnitsUpdate_ <= 0.0f)
-            {
-                UpdateUnits ();
-                untilUnitsUpdate_ = UNITS_UPDATE_DELAY;
-            }
-        }
-    }
-
-    void Stop ()
-    {
-
     }
 };

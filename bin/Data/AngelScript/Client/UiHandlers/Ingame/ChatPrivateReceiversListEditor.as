@@ -3,11 +3,6 @@
 
 class ChatPrivateReceiversListEditor : PlayersNamesListEditor
 {
-    protected Window @GetWindow () override
-    {
-        return ui.root.GetChild ("ingame").GetChild ("chatPrivateReceiversWindow");
-    }
-
     ChatPrivateReceiversListEditor ()
     {
         listVarName_ = "chatPrivateReceiversList";
@@ -16,5 +11,10 @@ class ChatPrivateReceiversListEditor : PlayersNamesListEditor
     ~ChatPrivateReceiversListEditor ()
     {
 
+    }
+
+    protected Window @GetWindow () override
+    {
+        return ui.root.GetChild ("ingame").GetChild ("chatPrivateReceiversWindow");
     }
 }

@@ -6,6 +6,16 @@ class PlayersNamesListEditor : StringListEditorUiHandler
     //! Will be setted in inheritors!
     protected String listVarName_;
 
+    PlayersNamesListEditor ()
+    {
+
+    }
+
+    ~PlayersNamesListEditor ()
+    {
+
+    }
+
     protected Window @GetWindow () override
     {
         //! Will be implemented in inheritors!
@@ -44,15 +54,5 @@ class PlayersNamesListEditor : StringListEditorUiHandler
         Node @scriptMain = GetScriptMain (node);
         String playerName = scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString ();
         return (playerName != element);
-    }
-
-    PlayersNamesListEditor ()
-    {
-
-    }
-
-    ~PlayersNamesListEditor ()
-    {
-
     }
 }

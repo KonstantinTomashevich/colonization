@@ -3,23 +3,6 @@
 
 class MapPreviewWindow : ScriptObject
 {
-    protected void ScanForMaps ()
-    {
-        Array <String> mapsFolders;
-        mapsFolders = GetMapsFoldersNames ();
-        Array <String> mapsNamesList;
-        for (uint index = 0; index < mapsFolders.length; index++)
-        {
-            XMLFile @infoXML = cache.GetResource ("XMLFile", MAPS_FOLDER + mapsFolders [index] + MAP_INFO_FILE);
-            XMLElement userInfo = infoXML.GetRoot ().GetChild ("userInformation");
-            String name = userInfo.GetAttribute ("name");
-            mapsNamesList.Push (name);
-        }
-
-        GetScriptMain (node).vars ["mapsFoldersList"] = mapsFolders;
-        GetScriptMain (node).vars ["mapsList"] = mapsNamesList;
-    }
-
     MapPreviewWindow ()
     {
 
@@ -87,5 +70,22 @@ class MapPreviewWindow : ScriptObject
         VariantMap eventData;
         eventData [ShowFunctionalWindowRequest::WINDOW_NAME] = Variant ("mapInfoWindow");
         SendEvent (EVENT_SHOW_FUNCTIONAL_WINDOW_REQUEST, eventData);
+    }
+
+    protected void ScanForMaps ()
+    {
+        Array <String> mapsFolders;
+        mapsFolders = GetMapsFoldersNames ();
+        Array <String> mapsNamesList;
+        for (uint index = 0; index < mapsFolders.length; index++)
+        {
+            XMLFile @infoXML = cache.GetResource ("XMLFile", MAPS_FOLDER + mapsFolders [index] + MAP_INFO_FILE);
+            XMLElement userInfo = infoXML.GetRoot ().GetChild ("userInformation");
+            String name = userInfo.GetAttribute ("name");
+            mapsNamesList.Push (name);
+        }
+
+        GetScriptMain (node).vars ["mapsFoldersList"] = mapsFolders;
+        GetScriptMain (node).vars ["mapsList"] = mapsNamesList;
     }
 }

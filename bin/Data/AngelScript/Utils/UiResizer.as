@@ -1,8 +1,40 @@
 class UiResizer : ScriptObject
 {
-    protected IntVector2 lastScreenSize_;
     String startElementName_;
     bool continuousResize_;
+
+    protected IntVector2 lastScreenSize_;
+
+    UiResizer ()
+    {
+        startElementName_ = "UIRoot";
+        continuousResize_ = false;
+    }
+
+    ~UiResizer ()
+    {
+
+    }
+
+    void Start ()
+    {
+        lastScreenSize_ = IntVector2 (0, 0);
+    }
+
+    void PostUpdate (float timeStep)
+    {
+        if (lastScreenSize_.x != graphics.width or lastScreenSize_.y != graphics.height or continuousResize_)
+        {
+            ResizeUi ();
+            lastScreenSize_.x = graphics.width;
+            lastScreenSize_.y = graphics.height;
+        }
+    }
+
+    void Stop ()
+    {
+
+    }
 
     protected void ResizeUi ()
     {
@@ -116,36 +148,5 @@ class UiResizer : ScriptObject
                 lineEdit.textElement.fontSize =FloorToInt (dependenciesMap [fontSizeDependency].GetFloat () * fontSizeModifer);
             }
         }
-    }
-
-    UiResizer ()
-    {
-        startElementName_ = "UIRoot";
-        continuousResize_ = false;
-    }
-
-    ~UiResizer ()
-    {
-
-    }
-
-    void Start ()
-    {
-        lastScreenSize_ = IntVector2 (0, 0);
-    }
-
-    void PostUpdate (float timeStep)
-    {
-        if (lastScreenSize_.x != graphics.width or lastScreenSize_.y != graphics.height or continuousResize_)
-        {
-            ResizeUi ();
-            lastScreenSize_.x = graphics.width;
-            lastScreenSize_.y = graphics.height;
-        }
-    }
-
-    void Stop ()
-    {
-
     }
 }

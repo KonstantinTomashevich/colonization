@@ -2,13 +2,6 @@
 
 class SelectPlayerColorWindow : ScriptObject
 {
-    protected void Close ()
-    {
-        VariantMap eventData;
-        eventData [ShowFunctionalWindowRequest::WINDOW_NAME] = Variant ("actionsWindow");
-        SendEvent (EVENT_SHOW_FUNCTIONAL_WINDOW_REQUEST, eventData);
-    }
-
     SelectPlayerColorWindow ()
     {
 
@@ -77,5 +70,12 @@ class SelectPlayerColorWindow : ScriptObject
         eventData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
         SendEvent (EVENT_NEW_NETWORK_TASK, eventData);
         Close ();
+    }
+
+    protected void Close ()
+    {
+        VariantMap eventData;
+        eventData [ShowFunctionalWindowRequest::WINDOW_NAME] = Variant ("actionsWindow");
+        SendEvent (EVENT_SHOW_FUNCTIONAL_WINDOW_REQUEST, eventData);
     }
 }

@@ -3,6 +3,46 @@
 
 class PlayersList : StringListEditorUiHandler
 {
+    PlayersList ()
+    {
+
+    }
+
+    ~PlayersList ()
+    {
+
+    }
+
+    void HandleAddElementClick () override
+    {
+        // Ignore, elements can't be added by user to this list.
+    }
+
+    void HandleRemoveElementClick (StringHash eventType, VariantMap &eventData) override
+    {
+        Node @scriptMain = GetScriptMain (node);
+        if (scriptMain !is null)
+        {
+            UIElement @element = eventData ["Element"].GetPtr ();
+            int elementOffset = element.vars ["ElementOffset"].GetInt ();
+            int summaryOffset = elementsShowOffset_ + elementOffset;
+
+            PlayerInfo @playerInfo = GetPlayerInfoByIndex (scene, summaryOffset);
+            if (playerInfo !is null and playerInfo.name != scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString () and
+                scriptMain.vars [ScriptMainVars::IS_ADMIN].GetBool ())
+            {
+                VariantMap kickEventData;
+                kickEventData [HostRequestKickPlayer_PLAYER_NAME] = Variant (playerInfo.name);
+                SendEvent (EVENT_HOST_REQUEST_KICK_PLAYER, kickEventData);
+            }
+        }
+    }
+
+    void HandleHideClick () override
+    {
+        // Ignore, this window can't be closed.
+    }
+
     protected Window @GetWindow () override
     {
         return ui.root.GetChild ("waitingForStart").GetChild ("playersListWindow");
@@ -74,45 +114,5 @@ class PlayersList : StringListEditorUiHandler
         {
             kickButton.visible = false;
         }
-    }
-
-    PlayersList ()
-    {
-
-    }
-
-    ~PlayersList ()
-    {
-
-    }
-
-    void HandleAddElementClick () override
-    {
-        // Ignore, elements can't be added by user to this list.
-    }
-
-    void HandleRemoveElementClick (StringHash eventType, VariantMap &eventData) override
-    {
-        Node @scriptMain = GetScriptMain (node);
-        if (scriptMain !is null)
-        {
-            UIElement @element = eventData ["Element"].GetPtr ();
-            int elementOffset = element.vars ["ElementOffset"].GetInt ();
-            int summaryOffset = elementsShowOffset_ + elementOffset;
-
-            PlayerInfo @playerInfo = GetPlayerInfoByIndex (scene, summaryOffset);
-            if (playerInfo !is null and playerInfo.name != scriptMain.vars [ScriptMainVars::PLAYER_NAME].GetString () and
-                scriptMain.vars [ScriptMainVars::IS_ADMIN].GetBool ())
-            {
-                VariantMap kickEventData;
-                kickEventData [HostRequestKickPlayer_PLAYER_NAME] = Variant (playerInfo.name);
-                SendEvent (EVENT_HOST_REQUEST_KICK_PLAYER, kickEventData);
-            }
-        }
-    }
-
-    void HandleHideClick () override
-    {
-        // Ignore, this window can't be closed.
     }
 }

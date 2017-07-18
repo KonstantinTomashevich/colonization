@@ -5,6 +5,41 @@ class InfoTablePlayersList : StringListEditorUiHandler
 {
     protected String currentPlayerName_;
 
+    InfoTablePlayersList ()
+    {
+
+    }
+
+    ~InfoTablePlayersList ()
+    {
+
+    }
+
+    void HandleAddElementClick () override
+    {
+        // Ignore, elements can't be added by user to this list.
+    }
+
+    void HandleRemoveElementClick (StringHash eventType, VariantMap &eventData) override
+    {
+        UIElement @element = eventData ["Element"].GetPtr ();
+        int elementOffset = element.vars ["ElementOffset"].GetInt ();
+        int summaryOffset = elementsShowOffset_ + elementOffset;
+
+        PlayerInfo @playerInfo = GetPlayerInfoByIndex (scene, summaryOffset);
+        if (playerInfo !is null)
+        {
+            Window @playersList = GetWindow ();
+            playersList.parent.vars ["selectedInfoType"] = "showDiplomacyWithPlayer";
+            playersList.parent.vars ["elementToShowHash"] = StringHash (playerInfo.name);
+        }
+    }
+
+    void HandleHideClick () override
+    {
+        // Ignore, this window can't be closed.
+    }
+
     protected Window @GetWindow () override
     {
         return ui.root.GetChild ("ingame").GetChild ("infoTableWindow").GetChild ("playersList");
@@ -69,40 +104,5 @@ class InfoTablePlayersList : StringListEditorUiHandler
             Button @diplomacyButton = uiElement.GetChild ("removeButton");
             diplomacyButton.visible = (playerInfo.name != currentPlayerName_);
         }
-    }
-
-    InfoTablePlayersList ()
-    {
-
-    }
-
-    ~InfoTablePlayersList ()
-    {
-
-    }
-
-    void HandleAddElementClick () override
-    {
-        // Ignore, elements can't be added by user to this list.
-    }
-
-    void HandleRemoveElementClick (StringHash eventType, VariantMap &eventData) override
-    {
-        UIElement @element = eventData ["Element"].GetPtr ();
-        int elementOffset = element.vars ["ElementOffset"].GetInt ();
-        int summaryOffset = elementsShowOffset_ + elementOffset;
-
-        PlayerInfo @playerInfo = GetPlayerInfoByIndex (scene, summaryOffset);
-        if (playerInfo !is null)
-        {
-            Window @playersList = GetWindow ();
-            playersList.parent.vars ["selectedInfoType"] = "showDiplomacyWithPlayer";
-            playersList.parent.vars ["elementToShowHash"] = StringHash (playerInfo.name);
-        }
-    }
-
-    void HandleHideClick () override
-    {
-        // Ignore, this window can't be closed.
     }
 }

@@ -7,6 +7,102 @@ abstract class StringListEditorUiHandler : ScriptObjectWithBeforeStop
     protected float untilElementsScrollUpdate_;
     protected uint ELEMENTS_SCROLL_SPEED = 5;
 
+    StringListEditorUiHandler ()
+    {
+        elementsShowOffset_ = 0;
+        untilElementsScrollUpdate_ = 1.0f / (ELEMENTS_SCROLL_SPEED * 1.0f);
+    }
+
+    ~StringListEditorUiHandler ()
+    {
+
+    }
+
+    void Start () override
+    {
+        ScriptObjectWithBeforeStop::Start ();
+
+        Window @window = GetWindow ();
+        Button @addButton = window.GetChild ("addButton");
+        Button @hideButton = window.GetChild ("hideButton");
+
+        SubscribeToEvent (addButton, "Released", "HandleAddElementClick");
+        SubscribeToEvent (hideButton, "Released", "HandleHideClick");
+
+        Array <UIElement @> elementsUi = window.GetChild ("elements").GetChildren ();
+        for (uint index = 0; index < elementsUi.length; index++)
+        {
+            Button @removeButton = elementsUi [index].GetChild ("removeButton");
+            SubscribeToEvent (removeButton, "Released", "HandleRemoveElementClick");
+        }
+
+        Node @scriptMain = GetScriptMain (node);
+        LineEdit @elementToAddEdit = window.GetChild ("elementToAddEdit");
+        RegisterLineEdit (scriptMain, elementToAddEdit);
+    }
+
+    void Update (float timeStep)
+    {
+        if (GetWindow ().visible)
+        {
+            untilElementsScrollUpdate_ -= timeStep;
+            if (untilElementsScrollUpdate_ <= 0.0f)
+            {
+                UpdateElementsScroll ();
+                untilElementsScrollUpdate_ = 1.0f / (ELEMENTS_SCROLL_SPEED * 1.0f);
+            }
+            UpdateElements ();
+        }
+    }
+
+    void Stop ()
+    {
+        UnsubscribeFromAllEvents ();
+    }
+
+    void BeforeStop (Scene @lastScene, Node @lastNode) override
+    {
+        Node @scriptMain = GetScriptMain (lastScene);
+        Window @window = GetWindow ();
+        if (scriptMain !is null and window !is null)
+        {
+            LineEdit @elementToAddEdit = window.GetChild ("elementToAddEdit");
+            UnregisterLineEdit (scriptMain, elementToAddEdit);
+        }
+    }
+
+    void HandleAddElementClick ()
+    {
+        Window @window = GetWindow ();
+        LineEdit @elementToAddEdit = window.GetChild ("elementToAddEdit");
+        String element = elementToAddEdit.text;
+        elementToAddEdit.text = "";
+        elementsShowOffset_ += 1;
+
+        if (IsElementToAddCorrect (element))
+        {
+            Array <String> elements = GetElements ();
+            elements.Push (element);
+            SetElements (elements);
+        }
+    }
+
+    void HandleRemoveElementClick (StringHash eventType, VariantMap &eventData)
+    {
+        UIElement @element = eventData ["Element"].GetPtr ();
+        int elementOffset = element.vars ["ElementOffset"].GetInt ();
+        int summaryOffset = elementsShowOffset_ + elementOffset;
+
+        Array <String> elements = GetElements ();
+        elements.Erase (summaryOffset);
+        SetElements (elements);
+    }
+
+    void HandleHideClick ()
+    {
+        GetWindow ().visible = false;
+    }
+
     protected Window @GetWindow ()
     {
         //! Will be implemented in inheritors!
@@ -105,101 +201,5 @@ abstract class StringListEditorUiHandler : ScriptObjectWithBeforeStop
                 uiElement.visible = false;
             }
         }
-    }
-
-    StringListEditorUiHandler ()
-    {
-        elementsShowOffset_ = 0;
-        untilElementsScrollUpdate_ = 1.0f / (ELEMENTS_SCROLL_SPEED * 1.0f);
-    }
-
-    ~StringListEditorUiHandler ()
-    {
-
-    }
-
-    void Start () override
-    {
-        ScriptObjectWithBeforeStop::Start ();
-
-        Window @window = GetWindow ();
-        Button @addButton = window.GetChild ("addButton");
-        Button @hideButton = window.GetChild ("hideButton");
-
-        SubscribeToEvent (addButton, "Released", "HandleAddElementClick");
-        SubscribeToEvent (hideButton, "Released", "HandleHideClick");
-
-        Array <UIElement @> elementsUi = window.GetChild ("elements").GetChildren ();
-        for (uint index = 0; index < elementsUi.length; index++)
-        {
-            Button @removeButton = elementsUi [index].GetChild ("removeButton");
-            SubscribeToEvent (removeButton, "Released", "HandleRemoveElementClick");
-        }
-
-        Node @scriptMain = GetScriptMain (node);
-        LineEdit @elementToAddEdit = window.GetChild ("elementToAddEdit");
-        RegisterLineEdit (scriptMain, elementToAddEdit);
-    }
-
-    void Update (float timeStep)
-    {
-        if (GetWindow ().visible)
-        {
-            untilElementsScrollUpdate_ -= timeStep;
-            if (untilElementsScrollUpdate_ <= 0.0f)
-            {
-                UpdateElementsScroll ();
-                untilElementsScrollUpdate_ = 1.0f / (ELEMENTS_SCROLL_SPEED * 1.0f);
-            }
-            UpdateElements ();
-        }
-    }
-
-    void Stop ()
-    {
-        UnsubscribeFromAllEvents ();
-    }
-
-    void BeforeStop (Scene @lastScene, Node @lastNode) override
-    {
-        Node @scriptMain = GetScriptMain (lastScene);
-        Window @window = GetWindow ();
-        if (scriptMain !is null and window !is null)
-        {
-            LineEdit @elementToAddEdit = window.GetChild ("elementToAddEdit");
-            UnregisterLineEdit (scriptMain, elementToAddEdit);
-        }
-    }
-
-    void HandleAddElementClick ()
-    {
-        Window @window = GetWindow ();
-        LineEdit @elementToAddEdit = window.GetChild ("elementToAddEdit");
-        String element = elementToAddEdit.text;
-        elementToAddEdit.text = "";
-        elementsShowOffset_ += 1;
-
-        if (IsElementToAddCorrect (element))
-        {
-            Array <String> elements = GetElements ();
-            elements.Push (element);
-            SetElements (elements);
-        }
-    }
-
-    void HandleRemoveElementClick (StringHash eventType, VariantMap &eventData)
-    {
-        UIElement @element = eventData ["Element"].GetPtr ();
-        int elementOffset = element.vars ["ElementOffset"].GetInt ();
-        int summaryOffset = elementsShowOffset_ + elementOffset;
-
-        Array <String> elements = GetElements ();
-        elements.Erase (summaryOffset);
-        SetElements (elements);
-    }
-
-    void HandleHideClick ()
-    {
-        GetWindow ().visible = false;
     }
 }

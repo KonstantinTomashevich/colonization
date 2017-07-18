@@ -4,6 +4,40 @@
 
 abstract class UnitsList : StringListEditorUiHandler
 {
+    UnitsList ()
+    {
+
+    }
+
+    ~UnitsList ()
+    {
+
+    }
+
+    void HandleAddElementClick () override
+    {
+        // Ignore, elements can't be added by user to this list.
+    }
+
+    // Select this unit on click
+    void HandleRemoveElementClick (StringHash eventType, VariantMap &eventData) override
+    {
+        Node @scriptMain = GetScriptMain (node);
+        UIElement @element = eventData ["Element"].GetPtr ();
+        int elementOffset = element.vars ["ElementOffset"].GetInt ();
+        int summaryOffset = elementsShowOffset_ + elementOffset;
+
+        Array <String> elements = GetElements ();
+        StringHash unitHash = StringHash (elements [summaryOffset].Split (';') [1].ToUInt ());
+        scriptMain.vars ["selectionType"] = StringHash ("Unit");
+        scriptMain.vars ["selectedHash"] = unitHash;
+    }
+
+    void HandleHideClick () override
+    {
+        // Ignore, this window can't be closed.
+    }
+
     protected Array <StringHash> GetUnitsHashes ()
     {
         //! Will be implemented in inheritors!
@@ -72,39 +106,5 @@ abstract class UnitsList : StringListEditorUiHandler
         {
             colorSample.color = Color (0.5f, 0.5f, 0.5f, 1.0f);
         }
-    }
-
-    UnitsList ()
-    {
-
-    }
-
-    ~UnitsList ()
-    {
-
-    }
-
-    void HandleAddElementClick () override
-    {
-        // Ignore, elements can't be added by user to this list.
-    }
-
-    // Select this unit on click
-    void HandleRemoveElementClick (StringHash eventType, VariantMap &eventData) override
-    {
-        Node @scriptMain = GetScriptMain (node);
-        UIElement @element = eventData ["Element"].GetPtr ();
-        int elementOffset = element.vars ["ElementOffset"].GetInt ();
-        int summaryOffset = elementsShowOffset_ + elementOffset;
-
-        Array <String> elements = GetElements ();
-        StringHash unitHash = StringHash (elements [summaryOffset].Split (';') [1].ToUInt ());
-        scriptMain.vars ["selectionType"] = StringHash ("Unit");
-        scriptMain.vars ["selectedHash"] = unitHash;
-    }
-
-    void HandleHideClick () override
-    {
-        // Ignore, this window can't be closed.
     }
 }

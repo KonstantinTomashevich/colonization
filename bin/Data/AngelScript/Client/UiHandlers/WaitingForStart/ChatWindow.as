@@ -3,11 +3,6 @@
 
 class ChatWindow : ChatWindowInterface
 {
-    protected UIElement @GetChatWindow () override
-    {
-        return ui.root.GetChild ("waitingForStart").GetChild ("chatWindow");
-    }
-
     ChatWindow ()
     {
 
@@ -35,5 +30,10 @@ class ChatWindow : ChatWindowInterface
         VariantMap eventData;
         eventData [ShowFunctionalWindowRequest::WINDOW_NAME] = Variant ("chatPrivateReceiversWindow");
         SendEvent (EVENT_SHOW_FUNCTIONAL_WINDOW_REQUEST, eventData);
+    }
+
+    protected UIElement @GetChatWindow () override
+    {
+        return ui.root.GetChild ("waitingForStart").GetChild ("chatWindow");
     }
 }

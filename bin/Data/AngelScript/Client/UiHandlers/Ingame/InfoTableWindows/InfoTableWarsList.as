@@ -4,6 +4,38 @@
 class InfoTableWarsList : StringListEditorUiHandler
 {
     protected Array <StringHash> visibleWarsHashes_;
+
+    InfoTableWarsList ()
+    {
+
+    }
+
+    ~InfoTableWarsList ()
+    {
+
+    }
+
+    void HandleAddElementClick () override
+    {
+        // Ignore, elements can't be added by user to this list.
+    }
+
+    void HandleRemoveElementClick (StringHash eventType, VariantMap &eventData) override
+    {
+        UIElement @element = eventData ["Element"].GetPtr ();
+        int elementOffset = element.vars ["ElementOffset"].GetInt ();
+        int summaryOffset = elementsShowOffset_ + elementOffset;
+
+        Window @warsList = GetWindow ();
+        warsList.parent.vars ["selectedInfoType"] = "showWarInfo";
+        warsList.parent.vars ["elementToShowHash"] = Variant (visibleWarsHashes_ [summaryOffset]);
+    }
+
+    void HandleHideClick () override
+    {
+        // Ignore, this window can't be closed.
+    }
+
     protected Window @GetWindow () override
     {
         return ui.root.GetChild ("ingame").GetChild ("infoTableWindow").GetChild ("warsList");
@@ -36,36 +68,5 @@ class InfoTableWarsList : StringListEditorUiHandler
     protected void ProcessElementUi (UIElement @uiElement, int elementIndex, Array <String> &in elementsStrings) override
     {
         StringListEditorUiHandler::ProcessElementUi (uiElement, elementIndex, elementsStrings);
-    }
-
-    InfoTableWarsList ()
-    {
-
-    }
-
-    ~InfoTableWarsList ()
-    {
-
-    }
-
-    void HandleAddElementClick () override
-    {
-        // Ignore, elements can't be added by user to this list.
-    }
-
-    void HandleRemoveElementClick (StringHash eventType, VariantMap &eventData) override
-    {
-        UIElement @element = eventData ["Element"].GetPtr ();
-        int elementOffset = element.vars ["ElementOffset"].GetInt ();
-        int summaryOffset = elementsShowOffset_ + elementOffset;
-
-        Window @warsList = GetWindow ();
-        warsList.parent.vars ["selectedInfoType"] = "showWarInfo";
-        warsList.parent.vars ["elementToShowHash"] = Variant (visibleWarsHashes_ [summaryOffset]);
-    }
-
-    void HandleHideClick () override
-    {
-        // Ignore, this window can't be closed.
     }
 }

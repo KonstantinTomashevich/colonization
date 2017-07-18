@@ -14,6 +14,64 @@ class MapBillboards : ScriptObject
     protected Vector2 BILLBOARD_MIN_SCREEN_POINT = Vector2 (-0.2f, -0.2f);
     protected Vector2 BILLBOARD_MAX_SCREEN_POINT = Vector2 (1.2f, 1.2f);
 
+    MapBillboards ()
+    {
+        isSceneLoaded_ = false;
+    }
+
+    ~MapBillboards ()
+    {
+
+    }
+
+    void Start ()
+    {
+        style_ = cache.GetResource ("XMLFile", "UI/ColonizationUIStyle.xml");
+        billboardXML_ = cache.GetResource ("XMLFile", "UI/Billboard.xml");
+        unitIconXML_ = cache.GetResource ("XMLFile", "UI/UnitIcon.xml");
+        battleIconXML_ = cache.GetResource ("XMLFile", "UI/BattleIcon.xml");
+
+        billboardsRoot_ = ui.root.GetChild ("billboardsRoot");
+        billboardsRoot_.AddTag ("EnableUiResizer");
+    }
+
+    void Update (float timeStep)
+    {
+        Node @scriptMain = GetScriptMain (node);
+        if (!isSceneLoaded_ and scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
+        {
+            isSceneLoaded_ = CheckIsSceneLoaded (scene);
+        }
+        else if (scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START and
+                 scene.GetChild ("map") !is null and scene.GetChild ("units") !is null)
+        {
+            ProcessMapBillboards ();
+        }
+    }
+
+    void Stop ()
+    {
+        UnsubscribeFromAllEvents ();
+    }
+
+    void HandleSelectUnitClick (StringHash eventType, VariantMap &eventData)
+    {
+        Node @scriptMain = GetScriptMain (node);
+        UIElement @element = eventData ["Element"].GetPtr ();
+        StringHash unitHash = element.vars ["unitHash"].GetStringHash ();
+        scriptMain.vars ["selectionType"] = StringHash ("Unit");
+        scriptMain.vars ["selectedHash"] = unitHash;
+    }
+
+    void HandleSelectBattleClick (StringHash eventType, VariantMap &eventData)
+    {
+        Node @scriptMain = GetScriptMain (node);
+        UIElement @element = eventData ["Element"].GetPtr ();
+        StringHash battleHash = element.vars ["battleHash"].GetStringHash ();
+        scriptMain.vars ["selectionType"] = StringHash ("Battle");
+        scriptMain.vars ["selectedHash"] = battleHash;
+    }
+
     protected void ProcessMapBillboards ()
     {
         Map @map = scene.GetChild ("map").GetComponent ("Map");
@@ -244,63 +302,5 @@ class MapBillboards : ScriptObject
         Button @selectButton = battleElement.GetChild ("selectButton");
         selectButton.vars ["battleHash"] = Variant (battle.hash);
         SubscribeToEvent (selectButton, "Released", "HandleSelectBattleClick");
-    }
-
-    MapBillboards ()
-    {
-        isSceneLoaded_ = false;
-    }
-
-    ~MapBillboards ()
-    {
-
-    }
-
-    void Start ()
-    {
-        style_ = cache.GetResource ("XMLFile", "UI/ColonizationUIStyle.xml");
-        billboardXML_ = cache.GetResource ("XMLFile", "UI/Billboard.xml");
-        unitIconXML_ = cache.GetResource ("XMLFile", "UI/UnitIcon.xml");
-        battleIconXML_ = cache.GetResource ("XMLFile", "UI/BattleIcon.xml");
-
-        billboardsRoot_ = ui.root.GetChild ("billboardsRoot");
-        billboardsRoot_.AddTag ("EnableUiResizer");
-    }
-
-    void Update (float timeStep)
-    {
-        Node @scriptMain = GetScriptMain (node);
-        if (!isSceneLoaded_ and scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
-        {
-            isSceneLoaded_ = CheckIsSceneLoaded (scene);
-        }
-        else if (scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START and
-                 scene.GetChild ("map") !is null and scene.GetChild ("units") !is null)
-        {
-            ProcessMapBillboards ();
-        }
-    }
-
-    void Stop ()
-    {
-        UnsubscribeFromAllEvents ();
-    }
-
-    void HandleSelectUnitClick (StringHash eventType, VariantMap &eventData)
-    {
-        Node @scriptMain = GetScriptMain (node);
-        UIElement @element = eventData ["Element"].GetPtr ();
-        StringHash unitHash = element.vars ["unitHash"].GetStringHash ();
-        scriptMain.vars ["selectionType"] = StringHash ("Unit");
-        scriptMain.vars ["selectedHash"] = unitHash;
-    }
-
-    void HandleSelectBattleClick (StringHash eventType, VariantMap &eventData)
-    {
-        Node @scriptMain = GetScriptMain (node);
-        UIElement @element = eventData ["Element"].GetPtr ();
-        StringHash battleHash = element.vars ["battleHash"].GetStringHash ();
-        scriptMain.vars ["selectionType"] = StringHash ("Battle");
-        scriptMain.vars ["selectedHash"] = battleHash;
     }
 }

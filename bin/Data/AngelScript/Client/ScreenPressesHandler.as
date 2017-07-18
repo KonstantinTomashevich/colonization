@@ -3,6 +3,69 @@
 
 class ScreenPressesHandler : ScriptObject
 {
+    ScreenPressesHandler ()
+    {
+
+    }
+
+    ~ScreenPressesHandler ()
+    {
+
+    }
+
+    void Start ()
+    {
+        SubscribeToEvent ("UIMouseClick", "HandleScreenPress");
+        Node @scriptMain = GetScriptMain (node);
+        scriptMain.vars ["currentClickCommand"] = StringHash ("NoCommand");
+    }
+
+    void Update (float timeStep)
+    {
+
+    }
+
+    void Stop ()
+    {
+
+    }
+
+    void HandleScreenPress (StringHash eventType, VariantMap &eventData)
+    {
+        Node @scriptMain = GetScriptMain (node);
+        if (eventData ["Element"].GetPtr () is null && scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
+        {
+            Camera @camera = scene.GetChild ("camera").GetComponent ("Camera");
+            Ray ray = camera.GetScreenRay (eventData ["X"].GetInt () * 1.0f / graphics.width,
+                                           eventData ["Y"].GetInt () * 1.0f / graphics.height);
+            RayQueryResult result = octree.RaycastSingle (ray, RAY_TRIANGLE, DEFAULT_RAYCAST_RAY_LENGTH, DRAWABLE_GEOMETRY);
+
+            if (result.node !is null)
+            {
+                Node @firstReplicated = GetFirstReplicatedParentOf (result.node);
+                if (firstReplicated !is scene)
+                {
+                    if (firstReplicated.HasComponent ("Unit"))
+                    {
+                        UnitSelected (firstReplicated.GetComponent ("Unit"), scriptMain);
+                    }
+                    else
+                    {
+                        ProcessDistrictSelection (result.position, scriptMain);
+                    }
+                }
+                else
+                {
+                    ClearSelection (scriptMain);
+                }
+            }
+            else
+            {
+                ClearSelection (scriptMain);
+            }
+        }
+    }
+
     protected Node @GetFirstReplicatedParentOf (Node @localNode)
     {
         Node @scanningNode = localNode;
@@ -134,69 +197,6 @@ class ScreenPressesHandler : ScriptObject
         else
         {
             ClearSelection (scriptMain);
-        }
-    }
-
-    ScreenPressesHandler ()
-    {
-
-    }
-
-    ~ScreenPressesHandler ()
-    {
-
-    }
-
-    void Start ()
-    {
-        SubscribeToEvent ("UIMouseClick", "HandleScreenPress");
-        Node @scriptMain = GetScriptMain (node);
-        scriptMain.vars ["currentClickCommand"] = StringHash ("NoCommand");
-    }
-
-    void Update (float timeStep)
-    {
-
-    }
-
-    void Stop ()
-    {
-
-    }
-
-    void HandleScreenPress (StringHash eventType, VariantMap &eventData)
-    {
-        Node @scriptMain = GetScriptMain (node);
-        if (eventData ["Element"].GetPtr () is null && scriptMain.vars ["gameState"].GetInt () != GAME_STATE_WAITING_FOR_START)
-        {
-            Camera @camera = scene.GetChild ("camera").GetComponent ("Camera");
-            Ray ray = camera.GetScreenRay (eventData ["X"].GetInt () * 1.0f / graphics.width,
-                                           eventData ["Y"].GetInt () * 1.0f / graphics.height);
-            RayQueryResult result = octree.RaycastSingle (ray, RAY_TRIANGLE, DEFAULT_RAYCAST_RAY_LENGTH, DRAWABLE_GEOMETRY);
-
-            if (result.node !is null)
-            {
-                Node @firstReplicated = GetFirstReplicatedParentOf (result.node);
-                if (firstReplicated !is scene)
-                {
-                    if (firstReplicated.HasComponent ("Unit"))
-                    {
-                        UnitSelected (firstReplicated.GetComponent ("Unit"), scriptMain);
-                    }
-                    else
-                    {
-                        ProcessDistrictSelection (result.position, scriptMain);
-                    }
-                }
-                else
-                {
-                    ClearSelection (scriptMain);
-                }
-            }
-            else
-            {
-                ClearSelection (scriptMain);
-            }
         }
     }
 };

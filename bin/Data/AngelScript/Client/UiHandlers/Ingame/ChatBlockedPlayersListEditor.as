@@ -3,11 +3,6 @@
 
 class ChatBlockedPlayersListEditor : PlayersNamesListEditor
 {
-    protected Window @GetWindow () override
-    {
-        return ui.root.GetChild ("ingame").GetChild ("chatBlockedPlayersWindow");
-    }
-
     ChatBlockedPlayersListEditor ()
     {
         listVarName_ = "chatBlockedPlayersList";
@@ -16,5 +11,10 @@ class ChatBlockedPlayersListEditor : PlayersNamesListEditor
     ~ChatBlockedPlayersListEditor ()
     {
 
+    }
+
+    protected Window @GetWindow () override
+    {
+        return ui.root.GetChild ("ingame").GetChild ("chatBlockedPlayersWindow");
     }
 }

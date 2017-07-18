@@ -4,36 +4,14 @@
 
 class MapsList : StringListEditorUiHandler
 {
-    protected Window @GetWindow () override
+    MapsList ()
     {
-        return ui.root.GetChild ("waitingForStart").GetChild ("functionalWindows").GetChild ("mapsListWindow");
+
     }
 
-    protected Array <String> GetElements () override
+    ~MapsList ()
     {
-        return GetScriptMain (node).vars ["mapsList"].GetStringVector ();
-    }
-
-    protected void SetElements (Array <String> elements) override
-    {
-        GetScriptMain (node).vars ["mapsList"] = Variant (elements);
-    }
-
-    protected String ProcessElementText (String text, int elementIndex) override
-    {
-        return ("" + (elementIndex + 1)  + ". " + text);
-    }
-
-    protected bool IsElementToAddCorrect (String element) override
-    {
-        return false;
-    }
-
-    protected void Close ()
-    {
-        VariantMap eventData;
-        eventData [ShowFunctionalWindowRequest::WINDOW_NAME] = Variant ("actionsWindow");
-        SendEvent (EVENT_SHOW_FUNCTIONAL_WINDOW_REQUEST, eventData);
+        
     }
 
     void Update (float timeStep) override
@@ -77,5 +55,37 @@ class MapsList : StringListEditorUiHandler
     void HandleHideClick () override
     {
         Close ();
+    }
+
+    protected Window @GetWindow () override
+    {
+        return ui.root.GetChild ("waitingForStart").GetChild ("functionalWindows").GetChild ("mapsListWindow");
+    }
+
+    protected Array <String> GetElements () override
+    {
+        return GetScriptMain (node).vars ["mapsList"].GetStringVector ();
+    }
+
+    protected void SetElements (Array <String> elements) override
+    {
+        GetScriptMain (node).vars ["mapsList"] = Variant (elements);
+    }
+
+    protected String ProcessElementText (String text, int elementIndex) override
+    {
+        return ("" + (elementIndex + 1)  + ". " + text);
+    }
+
+    protected bool IsElementToAddCorrect (String element) override
+    {
+        return false;
+    }
+
+    protected void Close ()
+    {
+        VariantMap eventData;
+        eventData [ShowFunctionalWindowRequest::WINDOW_NAME] = Variant ("actionsWindow");
+        SendEvent (EVENT_SHOW_FUNCTIONAL_WINDOW_REQUEST, eventData);
     }
 }

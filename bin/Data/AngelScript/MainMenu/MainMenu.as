@@ -4,66 +4,6 @@ class MainMenu : ScriptObject
 {
     protected ActivitiesApplication @activitiesApplication_;
 
-    protected void SetupBackground ()
-    {
-        scene.CreateComponent ("Octree");
-        XMLFile @backgroundXML = cache.GetResource ("XMLFile", "Objects/MainMenuBackground.xml");
-        Node @backgroundNode = node.CreateChild ("background", LOCAL);
-        backgroundNode.LoadXML (backgroundXML.root);
-
-        Node @cameraNode = node.GetChild ("background").GetChild ("camera");
-        Camera @camera = cameraNode.GetComponent ("Camera");
-        Viewport @viewport = Viewport (scene, camera);
-        renderer.viewports [0] = viewport;
-    }
-
-    protected void DisableFogOfWar ()
-    {
-        Array <Resource @> materials = cache.GetResources (StringHash ("Material"));
-        for (uint index = 0; index < materials.length; index++)
-        {
-            Material @material = materials [index];
-            if (material.shaderParameters ["UnderMapMask"].GetInt () == 1)
-            {
-                material.shaderParameters ["FogOfWarEnabled"] = Variant (0);
-            }
-        }
-    }
-
-    protected void AddScripts ()
-    {
-        ScriptInstance @primaryMenuInstance = node.CreateChild ("PrimaryMenu", LOCAL).CreateComponent ("ScriptInstance");
-        primaryMenuInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/MainMenu/UiHandlers/PrimaryMenu.as"),
-                                          "PrimaryMenu");
-
-        ScriptInstance @startGameMenuInstance = node.CreateChild ("StartGameMenu", LOCAL).CreateComponent ("ScriptInstance");
-        startGameMenuInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/MainMenu/UiHandlers/StartGameMenu.as"),
-                                            "StartGameMenu");
-
-        ScriptInstance @joinGameMenuInstance = node.CreateChild ("JoinGameMenu", LOCAL).CreateComponent ("ScriptInstance");
-        joinGameMenuInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/MainMenu/UiHandlers/JoinGameMenu.as"),
-                                           "JoinGameMenu");
-
-        ScriptInstance @mapsListInstance = node.CreateChild ("MapsList", LOCAL).CreateComponent ("ScriptInstance");
-        mapsListInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/MainMenu/UiHandlers/MapsList.as"),
-                                       "MapsList");
-
-        ScriptInstance @uiResizerInstance = node.CreateChild ("UiResizer", LOCAL).CreateComponent ("ScriptInstance");
-        uiResizerInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/Utils/UiResizer.as"),
-                                        "UiResizer");
-        uiResizerInstance.SetAttribute ("startElementName_", Variant ("mainMenu"));
-
-        ScriptInstance @screenShotTakerInstance = node.CreateChild ("ScreenShotTaker", LOCAL).CreateComponent ("ScriptInstance");
-        screenShotTakerInstance.CreateObject (cache.GetResource ("ScriptFile",
-                                                         "AngelScript/Utils/ScreenShotTaker.as"),
-                                              "ScreenShotTaker");
-    }
-
     MainMenu ()
     {
 
@@ -175,5 +115,65 @@ class MainMenu : ScriptObject
             elements [index].visible = false;
         }
         uiRoot.GetChild (eventData [ShowFunctionalWindowRequest::WINDOW_NAME].GetString ()).visible = true;
+    }
+
+    protected void SetupBackground ()
+    {
+        scene.CreateComponent ("Octree");
+        XMLFile @backgroundXML = cache.GetResource ("XMLFile", "Objects/MainMenuBackground.xml");
+        Node @backgroundNode = node.CreateChild ("background", LOCAL);
+        backgroundNode.LoadXML (backgroundXML.root);
+
+        Node @cameraNode = node.GetChild ("background").GetChild ("camera");
+        Camera @camera = cameraNode.GetComponent ("Camera");
+        Viewport @viewport = Viewport (scene, camera);
+        renderer.viewports [0] = viewport;
+    }
+
+    protected void DisableFogOfWar ()
+    {
+        Array <Resource @> materials = cache.GetResources (StringHash ("Material"));
+        for (uint index = 0; index < materials.length; index++)
+        {
+            Material @material = materials [index];
+            if (material.shaderParameters ["UnderMapMask"].GetInt () == 1)
+            {
+                material.shaderParameters ["FogOfWarEnabled"] = Variant (0);
+            }
+        }
+    }
+
+    protected void AddScripts ()
+    {
+        ScriptInstance @primaryMenuInstance = node.CreateChild ("PrimaryMenu", LOCAL).CreateComponent ("ScriptInstance");
+        primaryMenuInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/MainMenu/UiHandlers/PrimaryMenu.as"),
+                                          "PrimaryMenu");
+
+        ScriptInstance @startGameMenuInstance = node.CreateChild ("StartGameMenu", LOCAL).CreateComponent ("ScriptInstance");
+        startGameMenuInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/MainMenu/UiHandlers/StartGameMenu.as"),
+                                            "StartGameMenu");
+
+        ScriptInstance @joinGameMenuInstance = node.CreateChild ("JoinGameMenu", LOCAL).CreateComponent ("ScriptInstance");
+        joinGameMenuInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/MainMenu/UiHandlers/JoinGameMenu.as"),
+                                           "JoinGameMenu");
+
+        ScriptInstance @mapsListInstance = node.CreateChild ("MapsList", LOCAL).CreateComponent ("ScriptInstance");
+        mapsListInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/MainMenu/UiHandlers/MapsList.as"),
+                                       "MapsList");
+
+        ScriptInstance @uiResizerInstance = node.CreateChild ("UiResizer", LOCAL).CreateComponent ("ScriptInstance");
+        uiResizerInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Utils/UiResizer.as"),
+                                        "UiResizer");
+        uiResizerInstance.SetAttribute ("startElementName_", Variant ("mainMenu"));
+
+        ScriptInstance @screenShotTakerInstance = node.CreateChild ("ScreenShotTaker", LOCAL).CreateComponent ("ScriptInstance");
+        screenShotTakerInstance.CreateObject (cache.GetResource ("ScriptFile",
+                                                         "AngelScript/Utils/ScreenShotTaker.as"),
+                                              "ScreenShotTaker");
     }
 };
