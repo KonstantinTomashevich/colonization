@@ -141,7 +141,7 @@ void TestColonyActionFormArmyApplication::Start ()
     }
     else
     {
-        Colonization::ArmyUnit *army = (Colonization::ArmyUnit *) unitsManager->GetUnitByIndex (0);
+        Colonization::ArmyUnit *army = static_cast <Colonization::ArmyUnit *> (unitsManager->GetUnitByIndex (0));
         if (army->GetSoldiersCount () != soldiersWillBeModilized * 1.0f)
         {
             ErrorExit ("Expected " + Urho3D::String (soldiersWillBeModilized) + " soldiers, but got " +

@@ -121,13 +121,13 @@ void TestBattleCreationAndJoiningApplication::Start ()
     Colonization::BattlesProcessor *battlesProcessor = scene->CreateChild ("battles")->CreateComponent <Colonization::BattlesProcessor> ();
 
     // array (X * HEIGHT + Y) = (X, Y)
-    Colonization::FleetUnit *unit1 = (Colonization::FleetUnit *)
-            unitsManager->CreateUnit (Colonization::UNIT_FLEET, "PlayerX",
-                                      map->GetDistrictByIndex (1 * mapHeight + 1)->GetHash ());
+    Colonization::FleetUnit *unit1 = static_cast <Colonization::FleetUnit *> (
+                unitsManager->CreateUnit (Colonization::UNIT_FLEET, "PlayerX",
+                                          map->GetDistrictByIndex (1 * mapHeight + 1)->GetHash ()));
 
-    Colonization::FleetUnit *unit2 = (Colonization::FleetUnit *)
-            unitsManager->CreateUnit (Colonization::UNIT_FLEET, "PlayerY",
-                                      map->GetDistrictByIndex (1 * mapHeight + 1)->GetHash ());
+    Colonization::FleetUnit *unit2 = static_cast <Colonization::FleetUnit *> (
+                unitsManager->CreateUnit (Colonization::UNIT_FLEET, "PlayerY",
+                                          map->GetDistrictByIndex (1 * mapHeight + 1)->GetHash ()));
 
     unit1->SetWarShipsCount (150);
     unit2->SetWarShipsCount (100);
@@ -159,9 +159,9 @@ void TestBattleCreationAndJoiningApplication::Start ()
     }
 
     // array (X * HEIGHT + Y) = (X, Y)
-    Colonization::FleetUnit *unit3 = (Colonization::FleetUnit *)
-            unitsManager->CreateUnit (Colonization::UNIT_FLEET, "PlayerY",
-                                      map->GetDistrictByIndex (2 * mapHeight + 1)->GetHash ());
+    Colonization::FleetUnit *unit3 = static_cast <Colonization::FleetUnit *> (
+                unitsManager->CreateUnit (Colonization::UNIT_FLEET, "PlayerY",
+                                          map->GetDistrictByIndex (2 * mapHeight + 1)->GetHash ()));
     unit3->SetWarShipsCount (50);
 
     map->FindPath (map->GetDistrictByIndex (0 * mapHeight + 1)->GetHash (), unit3);

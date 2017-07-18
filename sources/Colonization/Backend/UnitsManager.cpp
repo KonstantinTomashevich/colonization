@@ -123,12 +123,12 @@ bool UnitsManager::OnNextTargetReached (Unit *unit, Urho3D::PODVector <Urho3D::S
 
     if (unitWay.Empty () && unit->GetUnitType () == UNIT_COLONIZATORS)
     {
-        SettleColonizator (((ColonizatorsUnit *) (unit)), map);
+        SettleColonizator (static_cast <ColonizatorsUnit *> (unit), map);
         return false;
     }
     else if (unitWay.Empty () && unit->GetUnitType () == UNIT_TRADERS)
     {
-        ProcessTrader (configuration, ((TradersUnit *) (unit)));
+        ProcessTrader (configuration, static_cast <TradersUnit *> (unit));
         return false;
     }
     else
@@ -244,7 +244,7 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
 
 void UnitsManager::HandlePlayerWillBeDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    Player *player = (Player *) eventData [PlayerWillBeDisconnected::PLAYER].GetPtr ();
+    Player *player = static_cast <Player *> (eventData [PlayerWillBeDisconnected::PLAYER].GetPtr ());
     // Remove units nodes, so this units will be deleted in next frame.
     for (int index = 0; index < units_.Size (); index++)
     {

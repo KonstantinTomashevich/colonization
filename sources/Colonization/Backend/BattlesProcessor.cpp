@@ -411,7 +411,7 @@ void BattlesProcessor::HandleTradersUnitLossesGold (Urho3D::StringHash eventType
 void BattlesProcessor::HandlePlayerWillBeDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
-    Player *player = (Player *) eventData [PlayerWillBeDisconnected::PLAYER].GetPtr ();
+    Player *player = static_cast <Player *> (eventData [PlayerWillBeDisconnected::PLAYER].GetPtr ());
     Urho3D::PODVector <Urho3D::StringHash> playerUnitsHashes = unitsManager->GetUnitsOfPlayer (Urho3D::StringHash (player->GetName ()));
 
     // Because disconnected player units will be deleted anyway, we can simply delete their hashes from battles.
@@ -437,7 +437,7 @@ void BattlesProcessor::HandlePlayerWillBeDisconnected (Urho3D::StringHash eventT
 void BattlesProcessor::HandleWarStarted (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
-    DiplomacyWar *war = (DiplomacyWar *) eventData [WarStarted::WAR].GetPtr ();
+    DiplomacyWar *war = static_cast <DiplomacyWar *> (eventData [WarStarted::WAR].GetPtr ());
 
     // To create new battles, we simply imitate each attackers unit reposition.
     for (int index = 0; index < war->GetAttackersCount (); index++)
@@ -455,7 +455,7 @@ void BattlesProcessor::HandleWarStarted (Urho3D::StringHash eventType, Urho3D::V
 
 void BattlesProcessor::HandleWarEnded (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    DiplomacyWar *war = (DiplomacyWar *) eventData [WarEnded::WAR].GetPtr ();
+    DiplomacyWar *war = static_cast <DiplomacyWar *> (eventData [WarEnded::WAR].GetPtr ());
     Urho3D::Vector <Urho3D::SharedPtr <Battle> >::Iterator iterator = battles_.Begin ();
 
     while (iterator != battles_.End ())

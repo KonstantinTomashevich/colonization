@@ -115,7 +115,7 @@ void DiplomacyProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMa
 
 void DiplomacyProcessor::HandlePlayerWillBeDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    Player *player = (Player *) eventData [PlayerWillBeDisconnected::PLAYER].GetPtr ();
+    Player *player = static_cast <Player *> (eventData [PlayerWillBeDisconnected::PLAYER].GetPtr ());
     Urho3D::StringHash playerNameHash (player->GetName ());
     for (int index = 0; index < wars_.Size (); index++)
     {

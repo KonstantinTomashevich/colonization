@@ -422,7 +422,7 @@ void ColoniesEvolutionManager::Update (Urho3D::StringHash eventType, Urho3D::Var
 
 void ColoniesEvolutionManager::HandlePlayerWillBeDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
-    Player *player = (Player *) eventData [PlayerWillBeDisconnected::PLAYER].GetPtr ();
+    Player *player = static_cast <Player *> (eventData [PlayerWillBeDisconnected::PLAYER].GetPtr ());
     Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
     Urho3D::PODVector <Urho3D::StringHash> colonies = map->GetColoniesOfPlayer (Urho3D::StringHash (player->GetName ()));
 

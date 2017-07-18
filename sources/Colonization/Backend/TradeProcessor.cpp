@@ -219,7 +219,7 @@ void TradeProcessor::SendTrader (Map *map, UnitsManager *unitsManager, GameConfi
                                  District *district, float goodsCost)
 {
     Unit *unit = unitsManager->CreateUnit (UNIT_TRADERS, district->GetColonyOwnerName (), district->GetHash ());
-    ((TradersUnit *) (unit))->SetTradeGoodsCost (goodsCost);
+    static_cast <TradersUnit *> (unit)->SetTradeGoodsCost (goodsCost);
 
     District *nearestEuropeDistrict = map->GetDistrictByHash (
                 configuration->GetHeuristicNearestWayToEuropeDistrict (map, district));

@@ -122,20 +122,21 @@ void TestBattleProcessingAndLootingApplication::Start ()
     Colonization::BattlesProcessor *battlesProcessor = scene->CreateChild ("battles")->CreateComponent <Colonization::BattlesProcessor> ();
 
     // array (X * HEIGHT + Y) = (X, Y)
-    Colonization::FleetUnit *unit1 = (Colonization::FleetUnit *)
-            unitsManager->CreateUnit (Colonization::UNIT_FLEET, "PlayerX",
-                                      map->GetDistrictByIndex (1 * mapHeight + 1)->GetHash ());
-    Colonization::FleetUnit *unit2 = (Colonization::FleetUnit *)
-            unitsManager->CreateUnit (Colonization::UNIT_FLEET, "PlayerX",
-                                      map->GetDistrictByIndex (1 * mapHeight + 1)->GetHash ());
+    Colonization::FleetUnit *unit1 = static_cast <Colonization::FleetUnit *> (
+                unitsManager->CreateUnit (Colonization::UNIT_FLEET, "PlayerX",
+                                          map->GetDistrictByIndex (1 * mapHeight + 1)->GetHash ()));
 
-    Colonization::TradersUnit *unit3 = (Colonization::TradersUnit *)
-            unitsManager->CreateUnit (Colonization::UNIT_TRADERS, "PlayerY",
-                                      map->GetDistrictByIndex (1 * mapHeight + 1)->GetHash ());
+    Colonization::FleetUnit *unit2 = static_cast <Colonization::FleetUnit *> (
+                unitsManager->CreateUnit (Colonization::UNIT_FLEET, "PlayerX",
+                                          map->GetDistrictByIndex (1 * mapHeight + 1)->GetHash ()));
 
-    Colonization::TradersUnit *unit4 = (Colonization::TradersUnit *)
-            unitsManager->CreateUnit (Colonization::UNIT_TRADERS, "PlayerY",
-                                      map->GetDistrictByIndex (1 * mapHeight + 1)->GetHash ());
+    Colonization::TradersUnit *unit3 = static_cast <Colonization::TradersUnit *> (
+                unitsManager->CreateUnit (Colonization::UNIT_TRADERS, "PlayerY",
+                                          map->GetDistrictByIndex (1 * mapHeight + 1)->GetHash ()));
+
+    Colonization::TradersUnit *unit4 = static_cast <Colonization::TradersUnit *> (
+                unitsManager->CreateUnit (Colonization::UNIT_TRADERS, "PlayerY",
+                                          map->GetDistrictByIndex (1 * mapHeight + 1)->GetHash ()));
 
     const int warShipsCount = 10;
     unit1->SetWarShipsCount (warShipsCount / 2);

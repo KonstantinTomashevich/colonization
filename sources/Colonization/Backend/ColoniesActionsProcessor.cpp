@@ -101,8 +101,8 @@ bool ColoniesActionsProcessor::ProcessBuildWarShipAction (GameConfiguration *con
             colony->SetMenCount (colony->GetMenCount () - configuration->GetOneWarShipCrew ());
             AddNetworkUpdatePointsToComponentCounter (colony, 100.0f);
 
-            FleetUnit *newWarShip = (FleetUnit *)
-                    unitsManager->CreateUnit (UNIT_FLEET, colony->GetColonyOwnerName (), targetDistrictHash);
+            FleetUnit *newWarShip = static_cast <FleetUnit *> (
+                        unitsManager->CreateUnit (UNIT_FLEET, colony->GetColonyOwnerName (), targetDistrictHash));
             newWarShip->SetWarShipsCount (1);
             return true;
         }
@@ -146,8 +146,8 @@ bool ColoniesActionsProcessor::ProcessFormArmyAction (GameConfiguration *configu
             colony->SetMenCount (colony->GetMenCount () - soldiersCount);
             AddNetworkUpdatePointsToComponentCounter (colony, 100.0f);
 
-            ArmyUnit *army = (ArmyUnit *)
-                    unitsManager->CreateUnit (UNIT_ARMY, colony->GetColonyOwnerName (), colony->GetHash ());
+            ArmyUnit *army = static_cast <ArmyUnit *> (
+                    unitsManager->CreateUnit (UNIT_ARMY, colony->GetColonyOwnerName (), colony->GetHash ()));
             army->SetSoldiersCount (soldiersCount * 1.0f);
             return true;
         }

@@ -84,8 +84,8 @@ void MessagesHandler::HandleClientIdentity (Urho3D::StringHash eventType, Urho3D
 {
     if (enabled_)
     {
-        Urho3D::Connection *connection = (Urho3D::Connection *)
-                eventData [Urho3D::ClientIdentity::P_CONNECTION].GetPtr ();
+        Urho3D::Connection *connection = static_cast <Urho3D::Connection *> (
+                eventData [Urho3D::ClientIdentity::P_CONNECTION].GetPtr ());
         PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
         assert (playersManager);
 
@@ -111,8 +111,8 @@ void MessagesHandler::HandleNetworkMessage (Urho3D::StringHash eventType, Urho3D
         PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
         assert (playersManager);
 
-        Urho3D::Connection *connection = (Urho3D::Connection *)
-                eventData [Urho3D::NetworkMessage::P_CONNECTION].GetPtr ();
+        Urho3D::Connection *connection = static_cast <Urho3D::Connection *> (
+                eventData [Urho3D::NetworkMessage::P_CONNECTION].GetPtr ());
         Player *player = playersManager->GetPlayerByConnection (connection);
 
         // Process messages only if player identified by players manager.
@@ -150,7 +150,7 @@ void MessagesHandler::HandlePlayerWillBeDisconnected (Urho3D::StringHash eventTy
 {
     PlayersManager *playersManager = node_->GetScene ()->GetChild ("players")->GetComponent <PlayersManager> ();
     assert (playersManager);
-    Player *player = (Player *) eventData [PlayerWillBeDisconnected::PLAYER].GetPtr ();
+    Player *player = static_cast <Player *> (eventData [PlayerWillBeDisconnected::PLAYER].GetPtr ());
     Urho3D::PODVector <Player *> allPlayers = playersManager->GetAllPlayers ();
     SendTextInfoFromServer (player->GetName () + " left the game!", allPlayers);
 }

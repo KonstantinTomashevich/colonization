@@ -197,8 +197,8 @@ void PlayersManager::HandleClientConnected (Urho3D::StringHash eventType, Urho3D
 {
     if (enabled_)
     {
-        Urho3D::Connection *connection = (Urho3D::Connection *)
-                eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
+        Urho3D::Connection *connection = static_cast <Urho3D::Connection *> (
+                eventData [Urho3D::ClientConnected::P_CONNECTION].GetPtr ());
 
         if (isAcceptingNewConnections_)
         {
@@ -215,8 +215,8 @@ void PlayersManager::HandleClientDisconnected (Urho3D::StringHash eventType, Urh
 {
     if (enabled_)
     {
-        Urho3D::Connection *connection = (Urho3D::Connection *)
-                eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ();
+        Urho3D::Connection *connection = static_cast <Urho3D::Connection *> (
+                eventData [Urho3D::ClientDisconnected::P_CONNECTION].GetPtr ());
         MessagesHandler *messagesHandler = node_->GetScene ()->GetComponent <MessagesHandler> ();
         assert (messagesHandler);
 
@@ -335,8 +335,7 @@ void PlayersManager::DisconnectAllUnidentificatedConnections ()
 {
     while (!connectionsWithoutId_.Empty ())
     {
-        Urho3D::Connection *connection = (Urho3D::Connection *)
-                connectionsWithoutId_.Front ().second_;
+        Urho3D::Connection *connection = connectionsWithoutId_.Front ().second_;
         connectionsWithoutId_.Remove (connectionsWithoutId_.Front ());
         connection->Disconnect ();
     }

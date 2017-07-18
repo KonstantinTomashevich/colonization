@@ -99,7 +99,7 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
         if (!map->FindPath (targetDistrict->GetHash (), unit).Empty ())
         {
             gold_ -= cost;
-            ((ColonizatorsUnit *) (unit))->SetColonizatorsCount (colonizatorsCount);
+            static_cast <ColonizatorsUnit *> (unit)->SetColonizatorsCount (colonizatorsCount);
             AddNetworkUpdatePointsToComponentCounter (unit, 100.0f);
         }
         else
@@ -218,7 +218,7 @@ void Player::ProcessDemobilizeArmyAction (Urho3D::VectorBuffer data)
         District *district = map->GetDistrictByHash (unit->GetPositionHash ());
         if (!district->GetIsSea () && district->GetHasColony () && district->GetColonyOwnerName () == name_)
         {
-            ArmyUnit *armyUnit = (ArmyUnit *) unit;
+            ArmyUnit *armyUnit = static_cast <ArmyUnit *> (unit);
             district->SetMenCount (district->GetMenCount () + armyUnit->GetSoldiersCount ());
             armyUnit->GetNode ()->Remove ();
             AddNetworkUpdatePointsToComponentCounter (district, 100.0f);
