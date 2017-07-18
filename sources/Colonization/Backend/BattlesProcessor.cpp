@@ -9,6 +9,7 @@
 
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/Diplomacy/DiplomacyProcessor.hpp>
+#include <Colonization/Backend/Diplomacy/DiplomacyEvents.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Backend/Player/Player.hpp>
 
@@ -24,7 +25,7 @@
 
 namespace Colonization
 {
-void BattlesProcessor::OnUnitPositionChangedOrCreated (Urho3D::VariantMap &eventData)
+void BattlesProcessor::HandleUnitPositionChangedOrCreated (Urho3D::VariantMap &eventData)
 {
     Map *map = node_->GetScene ()->GetChild ("map")->GetComponent <Map> ();
     UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
@@ -302,10 +303,15 @@ void BattlesProcessor::OnSceneSet (Urho3D::Scene *scene)
 {
     UnsubscribeFromAllEvents ();
     Urho3D::Component::OnSceneSet (scene);
+
     SubscribeToEvent (scene, Urho3D::E_SCENEUPDATE, URHO3D_HANDLER (BattlesProcessor, Update));
-    SubscribeToEvent (EVENT_UNIT_CREATED, URHO3D_HANDLER (BattlesProcessor, OnUnitCreated));
-    SubscribeToEvent (EVENT_UNIT_POSITION_CHANGED, URHO3D_HANDLER (BattlesProcessor, OnUnitPositionChanged));
-    SubscribeToEvent (EVENT_TRADERS_UNIT_LOSSES_GOLD, URHO3D_HANDLER (BattlesProcessor, OnTradersUnitLossesGold));
+    SubscribeToEvent (EVENT_UNIT_CREATED, URHO3D_HANDLER (BattlesProcessor, HandleUnitCreated));
+    SubscribeToEvent (EVENT_UNIT_POSITION_CHANGED, URHO3D_HANDLER (BattlesProcessor, HandleUnitPositionChanged));
+    SubscribeToEvent (EVENT_TRADERS_UNIT_LOSSES_GOLD, URHO3D_HANDLER (BattlesProcessor, HandleTradersUnitLossesGold));
+
+    SubscribeToEvent (EVENT_PLAYER_WILL_BE_DISCONNECTED, URHO3D_HANDLER (BattlesProcessor, HandlePlayerWillBeDisconnected));
+    SubscribeToEvent (EVENT_WAR_STARTED, URHO3D_HANDLER (BattlesProcessor, HandleWarStarted));
+    SubscribeToEvent (EVENT_WAR_ENDED, URHO3D_HANDLER (BattlesProcessor, HandleWarEnded));
 }
 
 BattlesProcessor::BattlesProcessor (Urho3D::Context *context) : Urho3D::Component (context),
@@ -348,23 +354,23 @@ void BattlesProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMap 
     }
 }
 
-void BattlesProcessor::OnUnitCreated (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+void BattlesProcessor::HandleUnitCreated (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     if (enabled_)
     {
-        OnUnitPositionChangedOrCreated (eventData);
+        HandleUnitPositionChangedOrCreated (eventData);
     }
 }
 
-void BattlesProcessor::OnUnitPositionChanged (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+void BattlesProcessor::HandleUnitPositionChanged (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     if (enabled_)
     {
-        OnUnitPositionChangedOrCreated (eventData);
+        HandleUnitPositionChangedOrCreated (eventData);
     }
 }
 
-void BattlesProcessor::OnTradersUnitLossesGold (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+void BattlesProcessor::HandleTradersUnitLossesGold (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
 {
     if (enabled_)
     {
@@ -398,6 +404,70 @@ void BattlesProcessor::OnTradersUnitLossesGold (Urho3D::StringHash eventType, Ur
             Player *enemyPlayer = playersManager->GetPlayerByNameHash (Urho3D::StringHash (enemy->GetOwnerPlayerName ()));
             assert (enemyPlayer);
             enemyPlayer->SetGold (enemyPlayer->GetGold () + goldPerUnit * configuration->GetLootingCoefficient ());
+        }
+    }
+}
+
+void BattlesProcessor::HandlePlayerWillBeDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
+    Player *player = (Player *) eventData [PlayerWillBeDisconnected::PLAYER].GetPtr ();
+    Urho3D::PODVector <Urho3D::StringHash> playerUnitsHashes = unitsManager->GetUnitsOfPlayer (Urho3D::StringHash (player->GetName ()));
+
+    // Because disconnected player units will be deleted anyway, we can simply delete their hashes from battles.
+    for (int index = 0; index < battles_.Size (); index++)
+    {
+        Battle *battle = battles_.At (index);
+        bool isBattleChanged = false;
+        for (int unitHashIndex = 0; unitHashIndex < playerUnitsHashes.Size (); unitHashIndex++)
+        {
+            if (BattleHelpers::RemoveUnitWithUnkwnownAlignmentFromBattle (battle, playerUnitsHashes.At (unitHashIndex)))
+            {
+                isBattleChanged = true;
+            }
+        }
+
+        if (isBattleChanged)
+        {
+            AddNetworkUpdatePointsToComponentCounter (battle, 100.0f);
+        }
+    }
+}
+
+void BattlesProcessor::HandleWarStarted (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    UnitsManager *unitsManager = node_->GetScene ()->GetChild ("units")->GetComponent <UnitsManager> ();
+    DiplomacyWar *war = (DiplomacyWar *) eventData [WarStarted::WAR].GetPtr ();
+
+    // To create new battles, we simply imitate each attackers unit reposition.
+    for (int index = 0; index < war->GetAttackersCount (); index++)
+    {
+        Urho3D::PODVector <Urho3D::StringHash> playerUnitsHashes =
+                unitsManager->GetUnitsOfPlayer (war->GetAttackerNameHashByIndex (index));
+        for (int unitIndex = 0; unitIndex < playerUnitsHashes.Size (); unitIndex++)
+        {
+            Urho3D::VariantMap positionChangedEventData;
+            positionChangedEventData [UnitPositionChanged::UNIT_HASH] = playerUnitsHashes.At (unitIndex);
+            SendEvent (EVENT_UNIT_POSITION_CHANGED, positionChangedEventData);
+        }
+    }
+}
+
+void BattlesProcessor::HandleWarEnded (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData)
+{
+    DiplomacyWar *war = (DiplomacyWar *) eventData [WarEnded::WAR].GetPtr ();
+    Urho3D::Vector <Urho3D::SharedPtr <Battle> >::Iterator iterator = battles_.Begin ();
+
+    while (iterator != battles_.End ())
+    {
+        if (iterator->Get ()->GetWarHash () == war->GetHash ())
+        {
+            DeleteBattle (iterator->Get ());
+            iterator = battles_.Erase (iterator);
+        }
+        else
+        {
+            iterator++;
         }
     }
 }

@@ -11,8 +11,6 @@ class UnitsManager;
 class Player;
 class DiplomacyWar;
 
-// TODO: New battles created only when unit changes position. But battles will be created if new war declared too!
-// TODO: Also battles should be stopped if peace treaty accepted.
 //@ASBindGen Function ReturnHandleArray
 Urho3D::PODVector <Battle *> GetBattlesInDistrict (Urho3D::Scene *scene, Urho3D::StringHash districtHash);
 class BattlesProcessor : public Urho3D::Component
@@ -21,7 +19,7 @@ URHO3D_OBJECT (BattlesProcessor, Component)
 protected:
     Urho3D::Vector <Urho3D::SharedPtr <Battle> > battles_;
 
-    void OnUnitPositionChangedOrCreated (Urho3D::VariantMap &eventData);
+    void HandleUnitPositionChangedOrCreated (Urho3D::VariantMap &eventData);
     bool AddUnitToBattleIfNeeded (Unit *unit, District *unitPosition, Player *unitPlayer,
                                   DiplomacyProcessor *diplomacyProcessor, UnitsManager *unitsManager);
     bool CreateNewBattleIfNeeded (Unit *unit, District *district, Player *unitPlayer,
@@ -53,9 +51,13 @@ public:
 
     static void RegisterObject (Urho3D::Context *context);
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
-    void OnUnitCreated (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
-    void OnUnitPositionChanged (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
-    void OnTradersUnitLossesGold (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandleUnitCreated (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandleUnitPositionChanged (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandleTradersUnitLossesGold (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+
+    void HandlePlayerWillBeDisconnected (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandleWarStarted (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+    void HandleWarEnded (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
 
     int GetBattlesCount () const;
     void UpdateBattlesList ();
