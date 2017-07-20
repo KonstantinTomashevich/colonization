@@ -66,11 +66,10 @@ float PlayersPointsCalculator::CalculateColonyPoints (District *district, GameCo
     assert (district->GetHasColony ());
     float modifer = configuration->GetColonyPointsModifer ();
     float population = district->GetMenCount () + district->GetWomenCount ();
-    float totalEvolution = district->GetFarmsEvolutionPoints () + district->GetMinesEvolutionPoints () +
+    float medianEvolution = (district->GetFarmsEvolutionPoints () + district->GetMinesEvolutionPoints () +
             district->GetIndustryEvolutionPoints () + district->GetLogisticsEvolutionPoints () +
-            district->GetDefenseEvolutionPoints ();
-    // TODO: Maybe median colony evolution instead of total?
-    return (modifer * population * totalEvolution);
+            district->GetDefenseEvolutionPoints ()) / 5.0f;
+    return (modifer * population * medianEvolution);
 }
 
 float PlayersPointsCalculator::CalculateUnitPoints (Unit *unit, GameConfiguration *configuration)

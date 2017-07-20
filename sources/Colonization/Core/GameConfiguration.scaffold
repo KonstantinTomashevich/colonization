@@ -126,12 +126,13 @@ float traderBasicHealth_ =0.08f$Trader Basic Health
 float lootingCoefficient_ =0.15f$Looting Coefficient
 float maximumGameDuration_ =900.0f$Maximum Game Duration
 float peaceTreatyAutodeclineTime_ =30.0f$Peace Treaty Autodecline Time
+float tradeAreasUpdateDelay_ =10.0f$Trade Areas Update Delay
 
 float colonyPointsModifer_ =0.15f$Colony Points Modifer
-float unitFleetPointsModifer_ =0.5f$Unit Fleet Points Modifer
+float unitFleetPointsModifer_ =7.0f$Unit Fleet Points Modifer
 float unitTradersPointsModifer_ =0.0f$Unit Traders Points Modifer
 float unitColonizatorsPointsModifer_ =0.0f$Unit Colonizators Points Modifer
-float unitArmyPointsModifer_ =0.02f$Unit Army Points Modifer
+float unitArmyPointsModifer_ =0.3f$Unit Army Points Modifer
 Urho3D::String victoryTypesProcessorScriptPath_ ="AngelScript/Utils/DefaultVictoryTypesProcessor.as"$Victory Types Processor Script Path
 
 header:
