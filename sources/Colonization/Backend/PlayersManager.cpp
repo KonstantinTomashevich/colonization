@@ -254,6 +254,16 @@ void PlayersManager::DisconnectPlayer (Urho3D::StringHash nameHash)
     {
         connectionHashToNameHashMap_.Erase (Urho3D::StringHash (player->GetConnection ()->ToString ()));
     }
+
+    if (node_ && node_->GetScene ())
+    {
+        PlayerInfo *playerInfo = GetPlayerInfoByPointer (node_->GetScene (), player);
+        if (playerInfo)
+        {
+            playerInfo->GetNode ()->Remove ();
+        }
+    }
+
     player->Disconnect (0);
     delete player;
 }
@@ -264,29 +274,6 @@ void PlayersManager::DisconnectPlayer (Urho3D::Connection *connection)
     {
         DisconnectPlayer (connectionHashToNameHashMap_ [Urho3D::StringHash (connection->ToString ())]);
     }
-}
-
-PlayerInfo *GetPlayerInfoByPointer (Urho3D::Scene *scene, Player *player)
-{
-    assert (player);
-    return GetPlayerInfoByNameHash (scene, Urho3D::StringHash (player->GetName ()));
-}
-
-PlayerInfo *GetPlayerInfoByNameHash (Urho3D::Scene *scene, Urho3D::StringHash nameHash)
-{
-    assert (scene);
-    Urho3D::PODVector <Urho3D::Node *> playersInfosNodes;
-    scene->GetChild ("players")->GetChildrenWithComponent (playersInfosNodes, PlayerInfo::GetTypeStatic ());
-
-    for (int index = 0; index < playersInfosNodes.Size (); index++)
-    {
-        PlayerInfo *playerInfo = playersInfosNodes.At (index)->GetComponent <PlayerInfo> ();
-        if (Urho3D::StringHash (playerInfo->GetName ()) == nameHash)
-        {
-            return playerInfo;
-        }
-    }
-    return 0;
 }
 
 void PlayersManager::OnSceneSet (Urho3D::Scene *scene)
@@ -358,71 +345,76 @@ void PlayersManager::UpdateConnectionsWithoudId (float timeStep)
 void PlayersManager::UpdatePlayersInfos ()
 {
     assert (node_);
-    Urho3D::PODVector <Urho3D::Node *> playersInfosNodes;
-    node_->GetChildrenWithComponent (playersInfosNodes, PlayerInfo::GetTypeStatic ());
-
-    int index = 0;
-    while (index < players_.Size () || index < playersInfosNodes.Size ())
+    Urho3D::Vector <Player *> players = players_.Values ();
+    for (int index = 0; index < players.Size (); index++)
     {
-        if (index < players_.Size ())
+        Player *player = players.At (index);
+        PlayerInfo *playerInfo = GetPlayerInfoByPointer (node_->GetScene (), player);
+        if (!playerInfo)
         {
-            Player *player = players_.Values ().At (index);
-            Urho3D::Node *infoNode;
-            if (index < playersInfosNodes.Size ())
-            {
-                infoNode = playersInfosNodes.At (index);
-            }
-            else
-            {
-                infoNode = node_->CreateChild (player->GetName (), Urho3D::REPLICATED);
-                infoNode->CreateComponent <PlayerInfo> (Urho3D::REPLICATED);
-            }
-
-            infoNode->SetName (player->GetName ());
-            PlayerInfo *playerInfo = infoNode->GetComponent <PlayerInfo> ();
-            float updatePoints = 0.0f;
-
-            if (playerInfo->GetName () != player->GetName ())
-            {
-                playerInfo->SetName (player->GetName ());
-                updatePoints += 100.0f;
-            }
-
-            if (playerInfo->GetPoints () != player->GetPoints ())
-            {
-                float change = Urho3D::Abs (playerInfo->GetPoints () - player->GetPoints ());
-                playerInfo->SetPoints (player->GetPoints ());
-                updatePoints += change * 50.0f / player->GetPoints ();
-            }
-
-            if (playerInfo->GetColor () != player->GetColor ())
-            {
-                playerInfo->SetColor (player->GetColor ());
-                updatePoints += 100.0f;
-            }
-
-            if (playerInfo->IsReadyForStart () != player->IsReadyForStart ())
-            {
-                playerInfo->SetIsReadyForStart (player->IsReadyForStart ());
-                updatePoints += 100.0f;
-            }
-
-            if (playerInfo->GetEnemies () != player->GetEnemies ())
-            {
-                playerInfo->RemoveAllEnemies ();
-                for (int index = 0; index < player->GetEnemiesCount (); index++)
-                {
-                    playerInfo->AddEnemy (player->GetEnemyByIndex (index));
-                }
-                updatePoints += 100.0f;
-            }
-            NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (playerInfo, updatePoints);
+            playerInfo = node_->CreateChild (player->GetName (), Urho3D::REPLICATED)->
+                    CreateComponent <PlayerInfo> (Urho3D::REPLICATED);;
         }
-        else
+        float updatePoints = 0.0f;
+
+        if (playerInfo->GetName () != player->GetName ())
         {
-            playersInfosNodes.At (index)->Remove ();
+            playerInfo->SetName (player->GetName ());
+            updatePoints += 100.0f;
         }
-        index++;
+
+        if (playerInfo->GetPoints () != player->GetPoints ())
+        {
+            float change = Urho3D::Abs (playerInfo->GetPoints () - player->GetPoints ());
+            playerInfo->SetPoints (player->GetPoints ());
+            updatePoints += change * 50.0f / player->GetPoints ();
+        }
+
+        if (playerInfo->GetColor () != player->GetColor ())
+        {
+            playerInfo->SetColor (player->GetColor ());
+            updatePoints += 100.0f;
+        }
+
+        if (playerInfo->IsReadyForStart () != player->IsReadyForStart ())
+        {
+            playerInfo->SetIsReadyForStart (player->IsReadyForStart ());
+            updatePoints += 100.0f;
+        }
+
+        if (playerInfo->GetEnemies () != player->GetEnemies ())
+        {
+            playerInfo->RemoveAllEnemies ();
+            for (int index = 0; index < player->GetEnemiesCount (); index++)
+            {
+                playerInfo->AddEnemy (player->GetEnemyByIndex (index));
+            }
+            updatePoints += 100.0f;
+        }
+        NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (playerInfo, updatePoints);
     }
+}
+
+PlayerInfo *GetPlayerInfoByPointer (Urho3D::Scene *scene, Player *player)
+{
+    assert (player);
+    return GetPlayerInfoByNameHash (scene, Urho3D::StringHash (player->GetName ()));
+}
+
+PlayerInfo *GetPlayerInfoByNameHash (Urho3D::Scene *scene, Urho3D::StringHash nameHash)
+{
+    assert (scene);
+    Urho3D::PODVector <Urho3D::Node *> playersInfosNodes;
+    scene->GetChild ("players")->GetChildrenWithComponent (playersInfosNodes, PlayerInfo::GetTypeStatic ());
+
+    for (int index = 0; index < playersInfosNodes.Size (); index++)
+    {
+        PlayerInfo *playerInfo = playersInfosNodes.At (index)->GetComponent <PlayerInfo> ();
+        if (Urho3D::StringHash (playerInfo->GetName ()) == nameHash)
+        {
+            return playerInfo;
+        }
+    }
+    return 0;
 }
 }
