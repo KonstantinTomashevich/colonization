@@ -135,7 +135,7 @@ void TestInternalTradeProcessingApplication::Start ()
             scene->CreateChild ("units", Urho3D::REPLICATED)->CreateComponent <Colonization::UnitsManager> ();
 
     Urho3D::VariantMap eventData;
-    eventData [Urho3D::SceneUpdate::P_TIMESTEP] = 0.1f;
+    eventData [Urho3D::SceneUpdate::P_TIMESTEP] = configuration->GetTradeAreasUpdateDelay () * 1.1f;
     tradeProcessor->Update (Urho3D::E_SCENEUPDATE, eventData);
 
     Urho3D::Log::Write (Urho3D::LOG_INFO, "Trade areas count: " + Urho3D::String (tradeProcessor->GetTradeAreasCount ()));

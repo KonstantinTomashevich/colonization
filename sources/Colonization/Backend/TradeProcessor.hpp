@@ -18,17 +18,13 @@ public:
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
     int GetTradeAreasCount () const;
     InternalTradeArea *GetTradeAreaByIndex (int index) const;
-
     float GetTimeUntilTradeAreasUpdate () const;
-    float GetTradeAreasUpdateDelay () const;
-    void SetTradeAreasUpdateDelay (float tradeAreasUpdateDelay);
 
 protected:
     virtual void OnSceneSet (Urho3D::Scene* scene);
 
 private:
     Urho3D::Vector <Urho3D::SharedPtr <InternalTradeArea> > tradeAreas_;
-    float tradeAreasUpdateDelay_;
     float untilTradeAreasUpdate_;
 
     void UpdateTradeAreas (float updateDelay);
