@@ -7,9 +7,6 @@ namespace Tests
 class TestColonyActionBuildWarShipApplication : public Urho3D::Application
 {
 URHO3D_OBJECT (TestColonyActionBuildWarShipApplication, Object)
-protected:
-    Urho3D::SharedPtr <Urho3D::Scene> scene_;
-
 public:
     explicit TestColonyActionBuildWarShipApplication (Urho3D::Context *context);
     virtual ~TestColonyActionBuildWarShipApplication ();
