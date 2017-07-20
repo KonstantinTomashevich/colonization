@@ -5,5 +5,5 @@ target_link_libraries (ColonizationLauncher Colonization)
 set_target_properties (
     ColonizationLauncher
     PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/GameLauncher"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/ColonizationLauncher"
     )

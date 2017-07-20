@@ -1,20 +1,20 @@
 #include <Colonization/BuildConfiguration.hpp>
-#include "LauncherApplication.hpp"
+#include "ColonizationLauncher.hpp"
 #include <Colonization/Activities/MainMenuActivity.hpp>
 #include <Urho3D/Input/Input.h>
 
-URHO3D_DEFINE_APPLICATION_MAIN (LauncherApplication)
-LauncherApplication::LauncherApplication (Urho3D::Context *context) : Colonization::ActivitiesApplication (context)
+URHO3D_DEFINE_APPLICATION_MAIN (ColonizationLauncher)
+ColonizationLauncher::ColonizationLauncher (Urho3D::Context *context) : Colonization::ActivitiesApplication (context)
 {
 
 }
 
-LauncherApplication::~LauncherApplication ()
+ColonizationLauncher::~ColonizationLauncher ()
 {
 
 }
 
-void LauncherApplication::Setup ()
+void ColonizationLauncher::Setup ()
 {
     engineParameters_ ["FullScreen"] = false;
     engineParameters_ ["WindowResizable"] = true;
@@ -23,7 +23,7 @@ void LauncherApplication::Setup ()
     engineParameters_ ["ResourcePrefixPaths"] = "..;.";
 }
 
-void LauncherApplication::Start ()
+void ColonizationLauncher::Start ()
 {
     // Set mouse to free mode.
     Urho3D::Input *input = GetSubsystem <Urho3D::Input> ();
@@ -41,7 +41,7 @@ void LauncherApplication::Start ()
     SetupActivityNextFrame (mainMenuActivity);
 }
 
-void LauncherApplication::Stop ()
+void ColonizationLauncher::Stop ()
 {
     ActivitiesApplication::Stop ();
 }

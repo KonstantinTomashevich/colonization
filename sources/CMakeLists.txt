@@ -1,5 +1,5 @@
 include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 add_subdirectory (Colonization)
-add_subdirectory (Launcher)
+add_subdirectory (ColonizationLauncher)
 add_subdirectory (Tests)
 add_subdirectory (Tools)
