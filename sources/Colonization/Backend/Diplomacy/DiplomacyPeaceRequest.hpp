@@ -29,6 +29,9 @@ public:
     virtual bool TimeUpdate (float timeStep);
     virtual Urho3D::String GetRequestTypeTag () const;
 
+protected:
+    virtual void OnSceneSet (Urho3D::Scene* scene);
+
 private:
     Urho3D::StringHash warHash_;
     Urho3D::StringHash peaceRequester_;

@@ -4,6 +4,8 @@
 
 #include <Colonization/Core/Diplomacy/DiplomacyWar.hpp>
 #include <Colonization/Core/Diplomacy/DiplomacyTags.hpp>
+#include <Colonization/Core/GameConfiguration.hpp>
+
 #include <Colonization/Backend/Diplomacy/DiplomacyRequestsUtils.hpp>
 #include <Colonization/Backend/Diplomacy/DiplomacyOfferType.hpp>
 #include <Colonization/Backend/Diplomacy/DiplomacyInfoType.hpp>
@@ -16,8 +18,7 @@ DiplomacyPeaceRequest::DiplomacyPeaceRequest (Urho3D::Context *context) : Diplom
     warHash_ (),
     peaceRequester_ (),
     enemy_ (),
-    // TODO: This var should be initialized by special value from GameConfiguration.
-    untilAutodecline_ (30.0f)
+    untilAutodecline_ (0.0f)
 {
 
 }
@@ -134,6 +135,16 @@ bool DiplomacyPeaceRequest::TimeUpdate (float timeStep)
 Urho3D::String DiplomacyPeaceRequest::GetRequestTypeTag () const
 {
     return TAG_PEACE;
+}
+
+void DiplomacyPeaceRequest::OnSceneSet (Urho3D::Scene *scene)
+{
+    Urho3D::Component::OnSceneSet (scene);
+    if (scene)
+    {
+        GameConfiguration *configuration = scene->GetComponent <GameConfiguration> ();
+        untilAutodecline_ = configuration->GetPeaceTreatyAutodeclineTime ();
+    }
 }
 
 void DiplomacyPeaceRequest::ProcessAcceptedResult ()

@@ -125,6 +125,8 @@ float traderBasicHealth_ =0.08f$Trader Basic Health
 
 float lootingCoefficient_ =0.15f$Looting Coefficient
 float maximumGameDuration_ =900.0f$Maximum Game Duration
+float peaceTreatyAutodeclineTime_ =30.0f$Peace Treaty Autodecline Time
+
 float colonyPointsModifer_ =0.15f$Colony Points Modifer
 float unitFleetPointsModifer_ =0.5f$Unit Fleet Points Modifer
 float unitTradersPointsModifer_ =0.0f$Unit Traders Points Modifer
