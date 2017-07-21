@@ -107,15 +107,23 @@ class ScreenPressesHandler : ScriptObject
         mapMaskUpdater.selectedDistrictHash = StringHash (0);
     }
 
-    protected void SetUnitMoveTarget (Unit @unit, District @target)
+    protected void SetUnitMoveTarget (Unit @unit, District @target, bool isGoingToSettle)
     {
         Node @scriptMain = GetScriptMain (node);
-        if (unit.unitType != UNIT_COLONIZATORS and unit.unitType != UNIT_TRADERS)
+        if (unit.unitType != UNIT_TRADERS)
         {
             VectorBuffer buffer = VectorBuffer ();
             buffer.WriteInt (PLAYER_ACTION_SET_UNIT_MOVE_TARGET);
             buffer.WriteStringHash (unit.hash);
             buffer.WriteStringHash (target.hash);
+            if (unit.unitType == UNIT_COLONIZATORS and IsCanSettleInDistrict (target, unit.ownerPlayerName))
+            {
+                buffer.WriteBool (isGoingToSettle);
+            }
+            else
+            {
+                buffer.WriteBool (false);
+            }
 
             VariantMap eventData;
             eventData [NewNetworkTask::TASK_TYPE] = Variant (CTS_NETWORK_MESSAGE_SEND_PLAYER_ACTION);
@@ -170,14 +178,14 @@ class ScreenPressesHandler : ScriptObject
                 DistrictSelected (district, scriptMain);
             }
 
-            else if (command == StringHash ("MoveUnit"))
+            else if (command == StringHash ("MoveUnit") || command == StringHash ("MoveColonizatorsAndSettle"))
             {
                 // Get selected unit.
                 StringHash selectedHash = scriptMain.vars ["selectedHash"].GetStringHash ();
                 Unit @unit = GetUnitByHash (scene, selectedHash);
                 if (unit !is null)
                 {
-                    SetUnitMoveTarget (unit, district);
+                    SetUnitMoveTarget (unit, district, command == StringHash ("MoveColonizatorsAndSettle"));
                 }
                 // If unit no longer exists, select district instead.
                 else

@@ -249,10 +249,7 @@ class DistrictSelectedWindow : ScriptObject
 
         Button @sendColonizatorsButton = districtSelectedWindow.GetChild ("sendColonizatorsButton");
         float colonizatorsExpeditionCost = COLONIZATORS_EXPEDITION_SIZE * configuration.oneColonizatorSendingCost;
-        sendColonizatorsButton.visible = (infoType == StringHash ("Basic")) and
-                                         not district.isSea and
-                                         not district.isImpassable and
-                                         (district.colonyOwnerName == playerName or not district.hasColony) and
+        sendColonizatorsButton.visible = (infoType == StringHash ("Basic")) and IsCanSettleInDistrict (district, playerName) and
                                          scriptMain.vars [ScriptMainVars::GOLD].GetFloat () > colonizatorsExpeditionCost;
         Text @sendColonizatorsButtonText = sendColonizatorsButton.GetChild ("text");
         sendColonizatorsButtonText.text = "Send 100 colonizators (cost: " +FloorToInt (colonizatorsExpeditionCost) +

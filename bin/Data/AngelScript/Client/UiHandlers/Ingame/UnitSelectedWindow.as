@@ -23,9 +23,11 @@ class UnitSelectedWindow : ScriptObject
         Window @unitSelectedWindow = ui.root.GetChild ("ingame").GetChild ("unitSelectedWindow");
         Button @moveToButton = unitSelectedWindow.GetChild ("moveToButton");
         Button @demobilizeArmyButton = unitSelectedWindow.GetChild ("demobilizeArmyButton");
+        Button @moveToAndSettleButton = unitSelectedWindow.GetChild ("moveToAndSettleButton");
 
         SubscribeToEvent (moveToButton, "Released", "HandleMoveUnitToClick");
         SubscribeToEvent (demobilizeArmyButton, "Released", "HandleDemobilizeArmyClick");
+        SubscribeToEvent (moveToAndSettleButton, "Released", "HandleMoveColonizatorsToAndSettleClick");
     }
 
     void Update (float timeStep)
@@ -96,6 +98,12 @@ class UnitSelectedWindow : ScriptObject
             eventData [NewNetworkTask::MESSAGE_BUFFER] = Variant (buffer);
             SendEvent (EVENT_NEW_NETWORK_TASK, eventData);
         }
+    }
+
+    void HandleMoveColonizatorsToAndSettleClick ()
+    {
+        Node @scriptMain = GetScriptMain (node);
+        scriptMain.vars ["currentClickCommand"] = StringHash ("MoveColonizatorsAndSettle");
     }
 
     protected void UpdateUnitSelection ()
@@ -194,13 +202,17 @@ class UnitSelectedWindow : ScriptObject
     {
         Button @moveToButton = unitSelectedWindow.GetChild ("moveToButton");
         moveToButton.visible = unit.ownerPlayerName == playerName and not unit.isInBattle
-                               and (unit.unitType == UNIT_FLEET or unit.unitType == UNIT_ARMY);
+                               and unit.unitType != UNIT_TRADERS;
 
         Button @demobilizeArmyButton = unitSelectedWindow.GetChild ("demobilizeArmyButton");
         District @armyDistrict = map.GetDistrictByHash (unit.positionHash);
         demobilizeArmyButton.visible = unit.ownerPlayerName == playerName and unit.unitType == UNIT_ARMY and
                                        not unit.isInBattle and not armyDistrict.isSea and
                                        armyDistrict.hasColony and armyDistrict.colonyOwnerName == playerName;
+
+        Button @moveToAndSettleButton = unitSelectedWindow.GetChild ("moveToAndSettleButton");
+        moveToAndSettleButton.visible = unit.ownerPlayerName == playerName and not unit.isInBattle
+                                        and unit.unitType == UNIT_COLONIZATORS;
     }
 
     protected String GenerateFleetInfo (FleetUnit @unit)
@@ -238,7 +250,13 @@ class UnitSelectedWindow : ScriptObject
 
     protected String GenerateColonizatorsInfo (ColonizatorsUnit @unit)
     {
-        return "Colonizators count: " + Floor (unit.colonizatorsCount) + ".\n";
+        String info;
+        if (unit.isGoingToSettle)
+        {
+            info += "[Going to settle]\n";
+        }
+        info += "Colonizators count: " + Floor (unit.colonizatorsCount) + ".\n";
+        return info;
     }
 
     protected String GenerateArmyInfo (ArmyUnit @unit)

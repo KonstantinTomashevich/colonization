@@ -272,6 +272,12 @@ Array <DiplomacyWar @> FindWarsWhereThesePlayersFight (Scene @scene_, StringHash
     return wars;
 }
 
+bool IsCanSettleInDistrict (District @district, String playerName)
+{
+    return not district.isSea and not district.isImpassable and
+           (district.colonyOwnerName == playerName or not district.hasColony);
+}
+
 shared void RegisterLineEdit (Node @scriptMain, LineEdit @lineEdit)
 {
     Array <Variant> lineEditVector = scriptMain.vars ["lineEditVector"].GetVariantVector ();
