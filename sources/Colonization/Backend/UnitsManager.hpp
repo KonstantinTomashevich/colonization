@@ -41,7 +41,7 @@ protected:
 private:
     Urho3D::Vector <Urho3D::SharedPtr <Unit> > units_;
 
-    void SettleColonizator (ColonizatorsUnit *unit, Map *map);
+    bool SettleColonizator (ColonizatorsUnit *unit, Map *map);
     void ProcessTrader (GameConfiguration *configuration, TradersUnit *unit);
     float GetUnitSpeedBetween (District *position, District *target, GameConfiguration *configuration);
     /// Returns true if unit exists after it, otherwise false.

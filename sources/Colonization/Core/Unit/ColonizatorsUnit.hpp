@@ -6,7 +6,6 @@
 namespace Colonization
 {
 //@ASBindGen Class ObjectType=Ref
-// TODO: Maybe add isSettleAtCurrentMoveTarget_? And add ability to rule colonizators from client.
 class ColonizatorsUnit : public Unit
 {
 URHO3D_OBJECT (ColonizatorsUnit, Unit)
@@ -22,6 +21,11 @@ public:
     //@ASBindGen Function OverrideName=set_colonizatorsCount
     void SetColonizatorsCount (float colonizatorsCount);
 
+    //@ASBindGen Function OverrideName=get_isGoingToSettle
+    bool GetIsGoingToSettle () const;
+    //@ASBindGen Function OverrideName=set_isGoingToSettle
+    void SetIsGoingToSettle (bool isGoingToSettle);
+
     virtual bool IsCanGoTo (const District *district, const Map *map, Urho3D::StringHash imaginePosition = Urho3D::StringHash::ZERO) const;
     virtual float GetBattleAttackForce (GameConfiguration *configuration, bool isNaval) const;
     /// Return true if unit is destroyed.
@@ -31,5 +35,6 @@ public:
 
 private:
     float colonizatorsCount_;
+    bool isGoingToSettle_;
 };
 }

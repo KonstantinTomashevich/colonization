@@ -279,6 +279,12 @@ void Player::ProcessSetUnitMoveTargetAction (Urho3D::VectorBuffer data)
     }
 
     map->FindPath (target->GetHash (), unit);
+    if (unit->GetUnitType () == UNIT_COLONIZATORS)
+    {
+        ColonizatorsUnit *colonizatorsUnit = static_cast <ColonizatorsUnit *> (unit);
+        bool isGoingToSettle = data.ReadBool ();
+        colonizatorsUnit->SetIsGoingToSettle (isGoingToSettle);
+    }
     NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (unit, 100.0f);
 }
 
@@ -335,7 +341,9 @@ void Player::ProcessRequestColonizatorsFromEuropeAction (Urho3D::VectorBuffer da
         if (!map->FindPath (targetDistrict->GetHash (), unit).Empty ())
         {
             gold_ -= cost;
-            static_cast <ColonizatorsUnit *> (unit)->SetColonizatorsCount (colonizatorsCount);
+            ColonizatorsUnit *colonizatorsUnit = static_cast <ColonizatorsUnit *> (unit);
+            colonizatorsUnit->SetColonizatorsCount (colonizatorsCount);
+            colonizatorsUnit->SetIsGoingToSettle (true);
             NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (unit, 100.0f);
         }
         else

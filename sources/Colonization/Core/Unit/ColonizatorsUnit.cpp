@@ -17,7 +17,8 @@
 namespace Colonization
 {
 ColonizatorsUnit::ColonizatorsUnit (Urho3D::Context *context) : Unit (context),
-    colonizatorsCount_ (0.0f)
+    colonizatorsCount_ (0.0f),
+    isGoingToSettle_ (false)
 {
     unitType_ = UNIT_COLONIZATORS;
 }
@@ -32,6 +33,7 @@ void ColonizatorsUnit::RegisterObject (Urho3D::Context *context)
     context->RegisterFactory <ColonizatorsUnit> (COLONIZATION_CORE_CATEGORY);
     URHO3D_COPY_BASE_ATTRIBUTES (Unit);
     URHO3D_ACCESSOR_ATTRIBUTE ("Colonizators Count", GetColonizatorsCount, SetColonizatorsCount, float, 0.0f, Urho3D::AM_DEFAULT);
+    URHO3D_ACCESSOR_ATTRIBUTE ("Is Going To Settle", GetIsGoingToSettle, SetIsGoingToSettle, bool, false, Urho3D::AM_DEFAULT);
 }
 
 void ColonizatorsUnit::DrawDebugGeometry (Urho3D::DebugRenderer *debug, bool depthTest)
@@ -55,6 +57,16 @@ float ColonizatorsUnit::GetColonizatorsCount () const
 void ColonizatorsUnit::SetColonizatorsCount (float colonizatorsCount)
 {
     colonizatorsCount_ = colonizatorsCount;
+}
+
+bool ColonizatorsUnit::GetIsGoingToSettle () const
+{
+    return isGoingToSettle_;
+}
+
+void ColonizatorsUnit::SetIsGoingToSettle (bool isGoingToSettle)
+{
+    isGoingToSettle_ = isGoingToSettle;
 }
 
 bool ColonizatorsUnit::IsCanGoTo (const District *district, const Map *map, Urho3D::StringHash imaginePosition) const

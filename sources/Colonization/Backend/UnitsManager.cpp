@@ -88,6 +88,12 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
                     if (unit->GetWayToNextDistrictProgressInPercents () >= 100.0f)
                     {
                         unitExists = OnNextTargetReached (unit, unitWay, map, configuration);
+                        if (unitExists)
+                        {
+                            Urho3D::VariantMap eventData;
+                            eventData [UnitPositionChanged::UNIT_HASH] = unit->GetHash ();
+                            SendEvent (EVENT_UNIT_POSITION_CHANGED, eventData);
+                        }
                         updatePoints += 100.0f;
                     }
                     else
@@ -273,11 +279,16 @@ void UnitsManager::OnSceneSet (Urho3D::Scene *scene)
     SubscribeToEvent (EVENT_PLAYER_WILL_BE_DISCONNECTED, URHO3D_HANDLER (UnitsManager, HandlePlayerWillBeDisconnected));
 }
 
-void UnitsManager::SettleColonizator (ColonizatorsUnit *unit, Map *map)
+bool UnitsManager::SettleColonizator (ColonizatorsUnit *unit, Map *map)
 {
     assert (unit);
     District *colony = map->GetDistrictByHash (unit->GetPositionHash ());
     assert (colony);
+
+    if (colony->GetIsSea () || colony->GetIsImpassable ())
+    {
+        return false;
+    }
 
     if (!colony->GetHasColony ())
     {
@@ -291,14 +302,7 @@ void UnitsManager::SettleColonizator (ColonizatorsUnit *unit, Map *map)
         colony->SetDefenseEvolutionPoints (1.0f);
     }
 
-    if (colony->GetHasColony () && colony->GetColonyOwnerName () != unit->GetOwnerPlayerName ())
-    {
-        Urho3D::Log::Write (Urho3D::LOG_WARNING, "Can't settle colonizator of " + unit->GetOwnerPlayerName () +
-                            " in " + colony->GetName () + ". Because there is a colony of " + colony->GetColonyOwnerName () + "!");
-        // TODO: Add ability to reselect colonizators target.
-        unit->GetNode ()->Remove ();
-    }
-    else
+    if (colony->GetHasColony () && colony->GetColonyOwnerName () == unit->GetOwnerPlayerName ())
     {
         float menPercent;
         if (colony->GetMenCount () / (colony->GetMenCount () + colony->GetWomenCount ()) < 0.35f)
@@ -328,6 +332,11 @@ void UnitsManager::SettleColonizator (ColonizatorsUnit *unit, Map *map)
                                            unit->GetColonizatorsCount () / newPopulation);
         unit->GetNode ()->Remove ();
         NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (colony, 100.0f);
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }
 
@@ -377,10 +386,10 @@ bool UnitsManager::OnNextTargetReached (Unit *unit, Urho3D::PODVector <Urho3D::S
     unit->SetWay (unitWay);
     unit->SetWayToNextDistrictProgressInPercents (0.0f);
 
-    if (unitWay.Empty () && unit->GetUnitType () == UNIT_COLONIZATORS)
+    if (unitWay.Empty () && unit->GetUnitType () == UNIT_COLONIZATORS &&
+            static_cast <ColonizatorsUnit *> (unit)->GetIsGoingToSettle ())
     {
-        SettleColonizator (static_cast <ColonizatorsUnit *> (unit), map);
-        return false;
+        return !SettleColonizator (static_cast <ColonizatorsUnit *> (unit), map);
     }
     else if (unitWay.Empty () && unit->GetUnitType () == UNIT_TRADERS)
     {
@@ -389,9 +398,6 @@ bool UnitsManager::OnNextTargetReached (Unit *unit, Urho3D::PODVector <Urho3D::S
     }
     else
     {
-        Urho3D::VariantMap eventData;
-        eventData [UnitPositionChanged::UNIT_HASH] = unit->GetHash ();
-        SendEvent (EVENT_UNIT_POSITION_CHANGED, eventData);
         return true;
     }
 }
