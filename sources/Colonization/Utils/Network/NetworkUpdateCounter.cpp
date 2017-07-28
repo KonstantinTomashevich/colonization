@@ -46,7 +46,12 @@ float NetworkUpdateCounter::GetAccumulatedUpdatePoints ()
 
 void NetworkUpdateCounter::AddUpdatePoints (float points)
 {
-    accumulatedUpdatePoints_ += points;
+    assert (points >= 0.0f);
+    if (points > 0.0f)
+    {
+        accumulatedUpdatePoints_ += points;
+    }
+
     if (accumulatedUpdatePoints_ >= 100.0f)
     {
         if (trackingObject_)
