@@ -41,6 +41,7 @@ void DiplomacyProcessor::Update (Urho3D::StringHash eventType, Urho3D::VariantMa
         UpdateWarsList ();
         UpdateDiplomacyRequests (timeStep);
         // TODO: Process wars escalation.
+        // TODO: Process wars update points.
     }
 }
 

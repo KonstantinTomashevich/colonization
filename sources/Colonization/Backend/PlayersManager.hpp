@@ -66,6 +66,6 @@ private:
     bool DeleteIdentificatedConnection (Urho3D::Connection *connection);
     void UpdatePlayers (MessagesHandler *messagesHandler, float timeStep);
     void UpdateConnectionsWithoudId (float timeStep);
-    void UpdatePlayersInfos ();
+    void UpdatePlayersInfos (float timeStep);
 };
 }

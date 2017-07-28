@@ -52,7 +52,7 @@ void PlayersManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &e
 
         UpdatePlayers (messagesHandler, timeStep);
         UpdateConnectionsWithoudId (timeStep);
-        UpdatePlayersInfos ();
+        UpdatePlayersInfos (timeStep);
     }
 }
 
@@ -342,7 +342,7 @@ void PlayersManager::UpdateConnectionsWithoudId (float timeStep)
     }
 }
 
-void PlayersManager::UpdatePlayersInfos ()
+void PlayersManager::UpdatePlayersInfos (float timeStep)
 {
     assert (node_);
     Urho3D::Vector <Player *> players = players_.Values ();
@@ -355,7 +355,7 @@ void PlayersManager::UpdatePlayersInfos ()
             playerInfo = node_->CreateChild (player->GetName (), Urho3D::REPLICATED)->
                     CreateComponent <PlayerInfo> (Urho3D::REPLICATED);;
         }
-        float updatePoints = 0.0f;
+        float updatePoints = timeStep * 100.0f;
 
         if (playerInfo->GetName () != player->GetName ())
         {
@@ -365,9 +365,9 @@ void PlayersManager::UpdatePlayersInfos ()
 
         if (playerInfo->GetPoints () != player->GetPoints ())
         {
-            float change = Urho3D::Abs (playerInfo->GetPoints () - player->GetPoints ());
+            float difference = Urho3D::Abs (playerInfo->GetPoints () - player->GetPoints ());
             playerInfo->SetPoints (player->GetPoints ());
-            updatePoints += change * 50.0f / player->GetPoints ();
+            updatePoints += difference * 5.0f;
         }
 
         if (playerInfo->GetColor () != player->GetColor ())

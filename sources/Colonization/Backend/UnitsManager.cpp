@@ -98,6 +98,7 @@ void UnitsManager::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &eve
                     }
                     else
                     {
+                        // TODO: What about this update points multipliers? Should they be declared as constants?
                         updatePoints += (addition * 20.0f);
                     }
                 }
