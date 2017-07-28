@@ -76,22 +76,15 @@ void ColoniesEvolutionManager::OnSceneSet (Urho3D::Scene *scene)
     SubscribeToEvent (EVENT_PLAYER_WILL_BE_DISCONNECTED, URHO3D_HANDLER (ColoniesEvolutionManager, HandlePlayerWillBeDisconnected));
 }
 
-float ColoniesEvolutionManager::GetTotalColonyEvolution(District *colony)
-{
-    return colony->GetFarmsEvolutionPoints () + colony->GetMinesEvolutionPoints () +
-            colony->GetIndustryEvolutionPoints () + colony->GetLogisticsEvolutionPoints () +
-            colony->GetDefenseEvolutionPoints ();
-}
-
 void ColoniesEvolutionManager::ProcessColony (GameConfiguration *configuration, District *colony, float timeStep)
 {
     float updatePoints = 0.0f;
     updatePoints += ProcessColonyPopulation (configuration, colony, timeStep);
-    updatePoints += ProcessColonyFarmsEvolution (configuration, colony, timeStep);
-    updatePoints += ProcessColonyMinesEvolution (configuration, colony, timeStep);
-    updatePoints += ProcessColonyIndustryEvolution (configuration, colony, timeStep);
-    updatePoints += ProcessColonyLogisticsEvolution (configuration, colony, timeStep);
-    updatePoints += ProcessColonyDefenseEvolution (configuration, colony, timeStep);
+    updatePoints += ProcessColonyEvolutionBranch (configuration, colony, DEB_FARMS, timeStep);
+    updatePoints += ProcessColonyEvolutionBranch (configuration, colony, DEB_MINES, timeStep);
+    updatePoints += ProcessColonyEvolutionBranch (configuration, colony, DEB_INDUSTRY, timeStep);
+    updatePoints += ProcessColonyEvolutionBranch (configuration, colony, DEB_LOGISTICS, timeStep);
+    updatePoints += ProcessColonyEvolutionBranch (configuration, colony, DEB_DEFENSE, timeStep);
     // TODO: Implement average level of life calculation.
     colony->SetAverageLevelOfLifePoints (1.0f);
     NetworkUpdateCounterUtils::AddNetworkUpdatePointsToComponentCounter (colony, updatePoints);
@@ -128,308 +121,40 @@ float ColoniesEvolutionManager::ProcessColonyPopulation (GameConfiguration *conf
     }
 }
 
-float ColoniesEvolutionManager::ProcessColonyFarmsEvolution (GameConfiguration *configuration, District *colony, float timeStep)
+float ColoniesEvolutionManager::ProcessColonyEvolutionBranch (GameConfiguration *configuration, District *colony,
+                                                              DistrictEvolutionBranch branch, float timeStep)
 {
-    float totalColonyEvolution = GetTotalColonyEvolution (colony);
-    float colonyFarmsEvolution = colony->GetFarmsEvolutionPoints ();
-    float farmsEvolutionInColonyEvolution = colonyFarmsEvolution / totalColonyEvolution;
-
-    float canBePlanted = (colony->GetMenCount () + colony->GetWomenCount ()) * farmsEvolutionInColonyEvolution *
-            configuration->GetCanBePlantedByOneColonist () * Urho3D::Sqrt (colonyFarmsEvolution);
-
-    // TODO: Remove all magic numbers there!
-    float climateModifer = 1.0f;
-    if (colony->GetClimate () == CLIMATE_TEMPERATE)
+    float balance = DistrictUtils::GetBalance (colony, branch);
+    float evolutionModifer;
+    if (balance >= 0.0f)
     {
-        climateModifer = 1.0f;
-    }
-    else if (colony->GetClimate () == CLIMATE_TEMPERATE_CONTINENTAL)
-    {
-        climateModifer = 0.8f;
-    }
-    else if (colony->GetClimate () == CLIMATE_TROPICAL)
-    {
-        climateModifer = 1.5f;
-    }
-    else if (colony->GetClimate () == CLIMATE_HOT)
-    {
-        climateModifer = 1.25f;
-    }
-    else if (colony->GetClimate () == CLIMATE_COLD)
-    {
-        climateModifer = 0.5f;
-    }
-    else if (colony->GetClimate () == CLIMATE_DESERT)
-    {
-        climateModifer = 0.25f;
-    }
-
-    // TODO: Farms evolution is inbalanced. Rewrite it.
-    float evolutionModifer = 2.0f * (colony->GetFarmingSquare () - canBePlanted) / colony->GetFarmingSquare ();
-    evolutionModifer *= colony->GetLandAverageFertility ();
-    evolutionModifer *= climateModifer;
-
-    float balance = colony->GetFarmsBalance ();
-    if (balance > 0.0f)
-    {
-        evolutionModifer *= configuration->GetBasicEvolutionSpeed ();
+        evolutionModifer = configuration->GetMaximumEvolutionSpeed () * timeStep;
     }
     else
     {
-        evolutionModifer = -configuration->GetBasicDegradationSpeed () / evolutionModifer;
+        evolutionModifer = -configuration->GetMaximumDegradationSpeed () * timeStep;
     }
 
-    float oldFarmsEvolution = colony->GetFarmsEvolutionPoints ();
-    float evolutionAddition = evolutionModifer * timeStep;
-
-    if (evolutionAddition > 0.0f)
+    float evolutionCost;
+    if (balance >= 0.0f)
     {
-        float evolutionCost = configuration->GetEvolutionCostPerLevelPerColonist () * evolutionAddition *
-                (colony->GetMenCount () + colony->GetWomenCount ());
-        if (evolutionCost > colony->GetFarmsBalance ())
-        {
-            evolutionAddition = evolutionAddition * colony->GetFarmsBalance () / evolutionCost;
-            evolutionCost = colony->GetFarmsBalance ();
-        }
-
-        colony->SetFarmsEvolutionPoints (oldFarmsEvolution + evolutionAddition);
-        colony->SetFarmsBalance (balance - evolutionCost);
+        evolutionCost = evolutionModifer * configuration->GetEvolutionCostPerLevelPerColonist () *
+                DistrictUtils::CalculateColonyPopulation (colony);
     }
     else
     {
-        float balanceAddition = -configuration->GetDegradationCostPerLevelPerColonist () * evolutionAddition *
-                (colony->GetMenCount () + colony->GetWomenCount ());
-        colony->SetFarmsBalance (balance + balanceAddition);
-        if (oldFarmsEvolution > 1.0f)
-        {
-            colony->SetFarmsEvolutionPoints (oldFarmsEvolution + evolutionAddition);
-        }
-    }
-    return (evolutionAddition * 1500.0f);
-}
-
-float ColoniesEvolutionManager::ProcessColonyMinesEvolution (GameConfiguration *configuration, District *colony, float timeStep)
-{
-    float perspective = 1.0f;
-    if (colony->GetForestsSquare () < (colony->GetForestsSquare () + colony->GetFarmingSquare ()) * 0.15f)
-    {
-        perspective -= 1.0;
-    }
-    else if (colony->GetForestsSquare () < (colony->GetForestsSquare () + colony->GetFarmingSquare ()) * 0.25f)
-    {
-        perspective -= 0.75f;
-    }
-    else if (colony->GetForestsSquare () > (colony->GetForestsSquare () + colony->GetFarmingSquare ()) * 0.5f)
-    {
-        perspective += 0.5f;
-    }
-    else if (colony->GetForestsSquare () > (colony->GetForestsSquare () + colony->GetFarmingSquare ()) * 0.75f)
-    {
-        perspective += 1.0f;
+        evolutionCost = evolutionModifer * configuration->GetDegradationCostPerLevelPerColonist () *
+                DistrictUtils::CalculateColonyPopulation (colony);
     }
 
-    if (colony->GetHasCoalDeposits ())
+    if (evolutionCost > 0.0f && evolutionCost > balance)
     {
-        perspective += 0.5f;
-    }
-    if (colony->GetHasIronDeposits ())
-    {
-        perspective += 0.75f;
-    }
-    if (colony->GetHasSilverDeposits ())
-    {
-        perspective += 1.25f;
-    }
-    if (colony->GetHasGoldDeposits ())
-    {
-        perspective += 1.5f;
+        evolutionModifer *= (balance / evolutionCost);
+        evolutionCost = balance;
     }
 
-    perspective = Urho3D::Sqrt (perspective);
-    float balance = colony->GetMinesBalance ();
-    if (balance > 0.0f)
-    {
-        perspective *= configuration->GetBasicEvolutionSpeed ();
-    }
-    else
-    {
-        perspective = -configuration->GetBasicDegradationSpeed () / perspective;
-    }
-    float oldMinesEvolution = colony->GetMinesEvolutionPoints ();
-    float evolutionAddition = perspective * timeStep;
-
-    if (evolutionAddition > 0.0f)
-    {
-        float evolutionCost = configuration->GetEvolutionCostPerLevelPerColonist () * evolutionAddition *
-                (colony->GetMenCount () + colony->GetWomenCount ());
-        if (evolutionCost > colony->GetMinesBalance ())
-        {
-            evolutionAddition = evolutionAddition * colony->GetMinesBalance () / evolutionCost;
-            evolutionCost = colony->GetMinesBalance ();
-        }
-
-        colony->SetMinesEvolutionPoints (oldMinesEvolution + evolutionAddition);
-        colony->SetMinesBalance (balance - evolutionCost);
-    }
-    else
-    {
-        float balanceAddition = -configuration->GetDegradationCostPerLevelPerColonist () * evolutionAddition *
-                (colony->GetMenCount () + colony->GetWomenCount ());
-        colony->SetMinesBalance (balance + balanceAddition);
-        if (oldMinesEvolution > 1.0f)
-        {
-            colony->SetMinesEvolutionPoints (oldMinesEvolution + evolutionAddition);
-        }
-    }
-    return (evolutionAddition * 1500.0f);
-}
-
-float ColoniesEvolutionManager::ProcessColonyIndustryEvolution (GameConfiguration *configuration, District *colony, float timeStep)
-{
-    float perspective = 0.0f;
-    perspective += Urho3D::Sqrt (colony->GetMinesEvolutionPoints ()) * 0.75f;
-    perspective += Urho3D::Sqrt (colony->GetLogisticsEvolutionPoints ()) * 0.75f;
-
-    if (colony->GetHasCoalDeposits () && colony->GetHasIronDeposits ())
-    {
-        perspective += 2.0f;
-    }
-    else if (colony->GetHasCoalDeposits ())
-    {
-        perspective += 0.5f;
-    }
-    else if (colony->GetHasIronDeposits ())
-    {
-        perspective += 1.0f;
-    }
-
-    perspective = Urho3D::Sqrt (perspective);
-    float balance = colony->GetIndustryBalance ();
-    if (balance > 0.0f)
-    {
-        perspective *= configuration->GetBasicEvolutionSpeed ();
-    }
-    else
-    {
-        perspective = -configuration->GetBasicDegradationSpeed () / perspective;
-    }
-
-    float oldIndustryEvolution = colony->GetIndustryEvolutionPoints ();
-    float evolutionAddition = perspective * timeStep;
-
-    if (evolutionAddition > 0.0f)
-    {
-        float evolutionCost = configuration->GetEvolutionCostPerLevelPerColonist () * evolutionAddition *
-                (colony->GetMenCount () + colony->GetWomenCount ());
-        if (evolutionCost > colony->GetIndustryBalance ())
-        {
-            evolutionAddition = evolutionAddition * colony->GetIndustryBalance () / evolutionCost;
-            evolutionCost = colony->GetIndustryBalance ();
-        }
-
-        colony->SetIndustryEvolutionPoints (oldIndustryEvolution + evolutionAddition);
-        colony->SetIndustryBalance (balance - evolutionCost);
-    }
-    else
-    {
-        float balanceAddition = -configuration->GetDegradationCostPerLevelPerColonist () * evolutionAddition *
-                (colony->GetMenCount () + colony->GetWomenCount ());
-        colony->SetIndustryBalance (balance + balanceAddition);
-        if (oldIndustryEvolution > 1.0f)
-        {
-            colony->SetIndustryEvolutionPoints (oldIndustryEvolution + evolutionAddition);
-        }
-    }
-    return (evolutionAddition * 1500.0f);
-}
-
-float ColoniesEvolutionManager::ProcessColonyLogisticsEvolution (GameConfiguration *configuration, District *colony, float timeStep)
-{
-    float perspective = 0.0f;
-    perspective += Urho3D::Sqrt (colony->GetFarmsEvolutionPoints ()) * 0.4f;
-    perspective += Urho3D::Sqrt (colony->GetMinesEvolutionPoints ()) * 0.4f;
-    perspective += Urho3D::Sqrt (colony->GetIndustryEvolutionPoints ()) * 0.75f;
-    perspective += Urho3D::Sqrt (colony->GetDefenseEvolutionPoints ());
-
-    perspective = Urho3D::Sqrt (perspective);
-    float balance = colony->GetLogisticsBalance ();
-    if (balance > 0.0f)
-    {
-        perspective *= configuration->GetBasicEvolutionSpeed ();
-    }
-    else
-    {
-        perspective = -configuration->GetBasicDegradationSpeed () / perspective;
-    }
-
-    float oldLogisticsEvolution = colony->GetLogisticsEvolutionPoints ();
-    float evolutionAddition = perspective * timeStep;
-
-    if (evolutionAddition > 0.0f)
-    {
-        float evolutionCost = configuration->GetEvolutionCostPerLevelPerColonist () * evolutionAddition *
-                (colony->GetMenCount () + colony->GetWomenCount ());
-        if (evolutionCost > colony->GetLogisticsBalance ())
-        {
-            evolutionAddition = evolutionAddition * colony->GetLogisticsBalance () / evolutionCost;
-            evolutionCost = colony->GetLogisticsBalance ();
-        }
-
-        colony->SetLogisticsEvolutionPoints (oldLogisticsEvolution + evolutionAddition);
-        colony->SetLogisticsBalance (balance - evolutionCost);
-    }
-    else
-    {
-        float balanceAddition = -configuration->GetDegradationCostPerLevelPerColonist () * evolutionAddition *
-                (colony->GetMenCount () + colony->GetWomenCount ());
-        colony->SetLogisticsBalance (balance + balanceAddition);
-        if (oldLogisticsEvolution > 1.0f)
-        {
-            colony->SetLogisticsEvolutionPoints (oldLogisticsEvolution + evolutionAddition);
-        }
-    }
-    return (evolutionAddition * 1500.0f);
-}
-
-float ColoniesEvolutionManager::ProcessColonyDefenseEvolution (GameConfiguration *configuration, District *colony, float timeStep)
-{
-    float perspective = 1.0f;
-    float balance = colony->GetDefenseBalance ();
-    if (balance > 0.0f)
-    {
-        perspective *= configuration->GetBasicEvolutionSpeed ();
-    }
-    else
-    {
-        perspective = -configuration->GetBasicDegradationSpeed () / perspective;
-    }
-
-    float oldDefenseEvolution = colony->GetDefenseEvolutionPoints ();
-    float evolutionAddition = perspective * timeStep;
-
-    if (evolutionAddition > 0.0f)
-    {
-        float evolutionCost = configuration->GetEvolutionCostPerLevelPerColonist () * evolutionAddition *
-                (colony->GetMenCount () + colony->GetWomenCount ());
-        if (evolutionCost > colony->GetDefenseBalance ())
-        {
-            evolutionAddition = evolutionAddition * colony->GetDefenseBalance () / evolutionCost;
-            evolutionCost = colony->GetDefenseBalance ();
-        }
-
-        colony->SetDefenseEvolutionPoints (oldDefenseEvolution + evolutionAddition);
-        colony->SetDefenseBalance (balance - evolutionCost);
-    }
-    else
-    {
-        float balanceAddition = -configuration->GetDegradationCostPerLevelPerColonist () * evolutionAddition *
-                (colony->GetMenCount () + colony->GetWomenCount ());
-        colony->SetDefenseBalance (balance + balanceAddition);
-        if (oldDefenseEvolution > 1.0f)
-        {
-            colony->SetDefenseEvolutionPoints (oldDefenseEvolution + evolutionAddition);
-        }
-    }
-    return (evolutionAddition * 1500.0f);
+    DistrictUtils::SetEvolutionPoints (colony, branch, DistrictUtils::GetEvolutionPoints (colony, branch) + evolutionModifer);
+    DistrictUtils::SetBalance (colony, branch, balance - evolutionCost);
+    return Urho3D::Abs (evolutionModifer) * 1500.0f;
 }
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <Urho3D/Core/Object.h>
 #include <Colonization/Core/Map.hpp>
+#include <Colonization/Core/District/DistrictUtils.hpp>
 
 namespace Colonization
 {
@@ -20,13 +21,9 @@ protected:
     virtual void OnSceneSet (Urho3D::Scene* scene);
 
 private:
-    float GetTotalColonyEvolution (District *colony);
     void ProcessColony (GameConfiguration *configuration, District *colony, float timeStep);
     float ProcessColonyPopulation (GameConfiguration *configuration, District *colony, float timeStep);
-    float ProcessColonyFarmsEvolution (GameConfiguration *configuration, District *colony, float timeStep);
-    float ProcessColonyMinesEvolution (GameConfiguration *configuration, District *colony, float timeStep);
-    float ProcessColonyIndustryEvolution (GameConfiguration *configuration, District *colony, float timeStep);
-    float ProcessColonyLogisticsEvolution (GameConfiguration *configuration, District *colony, float timeStep);
-    float ProcessColonyDefenseEvolution (GameConfiguration *configuration, District *colony, float timeStep);
+    float ProcessColonyEvolutionBranch (GameConfiguration *configuration, District *colony,
+                                        DistrictEvolutionBranch branch, float timeStep);
 };
 }

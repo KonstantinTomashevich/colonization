@@ -56,9 +56,9 @@ float tradeAreaMinesDefenseExpenses_ =0.31f$Trade Area Mines Defense Expenses
 float tradeAreaIndustryDefenseExpenses_ =0.3f$Trade Area Industry Defense Expenses
 
 float evolutionCostPerLevelPerColonist_ =10.0f$Evolution Cost Per Level Per Colonist
-float degradationCostPerLevelPerColonist_ =10.0f$Degradation Cost Per Level Per Colonist
-float basicEvolutionSpeed_ =0.01f$Basic Evolution Speed
-float basicDegradationSpeed_ =0.01f$Basic Degradation Speed
+float degradationCostPerLevelPerColonist_ =9.0f$Degradation Cost Per Level Per Colonist
+float maximumEvolutionSpeed_ =0.05f$Maximum Evolution Speed
+float maximumDegradationSpeed_ =0.1f$Maximum Degradation Speed
 
 float internalTaxes_ =0.25f$Internal Taxes
 float externalTaxes_ =0.25f$External Taxes
