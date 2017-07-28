@@ -5,6 +5,16 @@ namespace Colonization
 class GameConfiguration;
 class District;
 
+//@ASBindGen Enum
+enum DistrictEvolutionBranch
+{
+    DEB_FARMS = 0,
+    DEB_MINES = 1,
+    DEB_INDUSTRY = 2,
+    DEB_LOGISTICS = 3,
+    DEB_DEFENSE = 4
+};
+
 namespace DistrictUtils
 {
 //@ASBindGen Function AddNamespaceToCallName=DistrictUtils
@@ -47,5 +57,27 @@ float CalculateProductionConsumptionOfFarms (GameConfiguration *configuration, D
 float CalculateProductionConsumptionOfMines (GameConfiguration *configuration, District *district);
 //@ASBindGen Function AddNamespaceToCallName=DistrictUtils
 float CalculateProductionConsumptionOfIndustry (GameConfiguration *configuration, District *district);
+
+//@ASBindGen Function AddNamespaceToCallName=DistrictUtils
+float CalculateColonyPopulation (District *district);
+//@ASBindGen Function AddNamespaceToCallName=DistrictUtils
+float GetEvolutionPoints (District *district, DistrictEvolutionBranch branch);
+//@ASBindGen Function AddNamespaceToCallName=DistrictUtils
+void SetEvolutionPoints (District *district, DistrictEvolutionBranch branch, float evolutionPoints);
+
+//@ASBindGen Function AddNamespaceToCallName=DistrictUtils
+float GetBalance (District *district, DistrictEvolutionBranch branch);
+//@ASBindGen Function AddNamespaceToCallName=DistrictUtils
+void SetBalance (District *district, DistrictEvolutionBranch branch, float balance);
+
+//@ASBindGen Function AddNamespaceToCallName=DistrictUtils
+float GetLastTradeBalanceAddition (District *district, DistrictEvolutionBranch branch);
+//@ASBindGen Function AddNamespaceToCallName=DistrictUtils
+void SetLastTradeBalanceAddition (District *district, DistrictEvolutionBranch branch, float lastTradeBalanceAddition);
+
+//@ASBindGen Function AddNamespaceToCallName=DistrictUtils
+Urho3D::VariantMap GetLastTradeProduction (District *district, DistrictEvolutionBranch branch);
+//@ASBindGen Function AddNamespaceToCallName=DistrictUtils
+void SetLastTradeProduction (District *district, DistrictEvolutionBranch branch, const Urho3D::VariantMap &lastTradeProduction);
 }
 }

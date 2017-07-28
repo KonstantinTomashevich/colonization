@@ -70,6 +70,7 @@ float CalculateFarmsProductionAmount (District *district, GameConfiguration *con
             Urho3D::Sqrt (district->GetFarmsEvolutionPoints ()) * district->GetLandAverageFertility () * climateModifer;
 }
 
+// TODO: Should coal, iron, silver and gold affect mines and industry production amount?
 float CalculateMinesProductionAmount (District *district, GameConfiguration *configuration)
 {
     float districtPopulation = district->GetMenCount () + district->GetWomenCount ();
@@ -337,6 +338,191 @@ float CalculateProductionConsumptionOfIndustry (GameConfiguration *configuration
     totalConsumption += farmsConsumption * CalculateFarmsProductionAmount (district, configuration);
     totalConsumption += minesConsumption * CalculateMinesProductionAmount (district, configuration);
     return totalConsumption;
+}
+
+float CalculateColonyPopulation (District *district)
+{
+    return district->GetMenCount () + district->GetWomenCount ();
+}
+
+float GetEvolutionPoints (District *district, DistrictEvolutionBranch branch)
+{
+    if (branch == DEB_FARMS)
+    {
+        return district->GetFarmsEvolutionPoints ();
+    }
+    else if (branch == DEB_MINES)
+    {
+        return district->GetMinesEvolutionPoints ();
+    }
+    else if (branch == DEB_INDUSTRY)
+    {
+        return district->GetIndustryEvolutionPoints ();
+    }
+    else if (branch == DEB_LOGISTICS)
+    {
+        return district->GetLogisticsEvolutionPoints ();
+    }
+    else if (branch == DEB_DEFENSE)
+    {
+        return district->GetDefenseEvolutionPoints ();
+    }
+}
+
+void SetEvolutionPoints (District *district, DistrictEvolutionBranch branch, float evolutionPoints)
+{
+    if (branch == DEB_FARMS)
+    {
+        district->SetFarmsEvolutionPoints (evolutionPoints);
+    }
+    else if (branch == DEB_MINES)
+    {
+        district->SetMinesEvolutionPoints (evolutionPoints);
+    }
+    else if (branch == DEB_INDUSTRY)
+    {
+        district->SetIndustryEvolutionPoints (evolutionPoints);
+    }
+    else if (branch == DEB_LOGISTICS)
+    {
+        district->SetLogisticsEvolutionPoints (evolutionPoints);
+    }
+    else if (branch == DEB_DEFENSE)
+    {
+        district->SetDefenseEvolutionPoints (evolutionPoints);
+    }
+}
+
+float GetBalance (District *district, DistrictEvolutionBranch branch)
+{
+    if (branch == DEB_FARMS)
+    {
+        return district->GetFarmsBalance ();
+    }
+    else if (branch == DEB_MINES)
+    {
+        return district->GetMinesBalance ();
+    }
+    else if (branch == DEB_INDUSTRY)
+    {
+        return district->GetIndustryBalance ();
+    }
+    else if (branch == DEB_LOGISTICS)
+    {
+        return district->GetLogisticsBalance ();
+    }
+    else if (branch == DEB_DEFENSE)
+    {
+        return district->GetDefenseBalance ();
+    }
+}
+
+void SetBalance(District *district, DistrictEvolutionBranch branch, float balance)
+{
+    if (branch == DEB_FARMS)
+    {
+        district->SetFarmsBalance (balance);
+    }
+    else if (branch == DEB_MINES)
+    {
+        district->SetMinesBalance (balance);
+    }
+    else if (branch == DEB_INDUSTRY)
+    {
+        district->SetIndustryBalance (balance);
+    }
+    else if (branch == DEB_LOGISTICS)
+    {
+        district->SetLogisticsBalance (balance);
+    }
+    else if (branch == DEB_DEFENSE)
+    {
+        district->SetDefenseBalance (balance);
+    }
+}
+
+float GetLastTradeBalanceAddition (District *district, DistrictEvolutionBranch branch)
+{
+    if (branch == DEB_FARMS)
+    {
+        return district->GetLastTradeFarmsBalanceAddition ();
+    }
+    else if (branch == DEB_MINES)
+    {
+        return district->GetLastTradeMinesBalanceAddition ();
+    }
+    else if (branch == DEB_INDUSTRY)
+    {
+        return district->GetLastTradeIndustryBalanceAddition ();
+    }
+    else if (branch == DEB_LOGISTICS)
+    {
+        return district->GetLastTradeLogisticsBalanceAddition ();
+    }
+    else if (branch == DEB_DEFENSE)
+    {
+        return district->GetLastTradeDefenseBalanceAddition ();
+    }
+}
+
+void SetLastTradeBalanceAddition (District *district, DistrictEvolutionBranch branch, float lastTradeBalanceAddition)
+{
+    if (branch == DEB_FARMS)
+    {
+        district->SetLastTradeFarmsBalanceAddition (lastTradeBalanceAddition);
+    }
+    else if (branch == DEB_MINES)
+    {
+        district->SetLastTradeMinesBalanceAddition (lastTradeBalanceAddition);
+    }
+    else if (branch == DEB_INDUSTRY)
+    {
+        district->SetLastTradeIndustryBalanceAddition (lastTradeBalanceAddition);
+    }
+    else if (branch == DEB_LOGISTICS)
+    {
+        district->SetLastTradeLogisticsBalanceAddition (lastTradeBalanceAddition);
+    }
+    else if (branch == DEB_DEFENSE)
+    {
+        district->SetLastTradeDefenseBalanceAddition (lastTradeBalanceAddition);
+    }
+}
+
+Urho3D::VariantMap GetLastTradeProduction (District *district, DistrictEvolutionBranch branch)
+{
+    if (branch == DEB_FARMS)
+    {
+        return district->GetLastTradeFarmsProduction ();
+    }
+    else if (branch == DEB_MINES)
+    {
+        return district->GetLastTradeMinesProduction ();
+    }
+    else if (branch == DEB_INDUSTRY)
+    {
+        return district->GetLastTradeIndustryProduction ();
+    }
+    else if (branch == DEB_LOGISTICS || branch == DEB_DEFENSE)
+    {
+        return Urho3D::Variant::emptyVariantMap;
+    }
+}
+
+void SetLastTradeProduction(District *district, DistrictEvolutionBranch branch, const Urho3D::VariantMap &lastTradeProduction)
+{
+    if (branch == DEB_FARMS)
+    {
+        district->SetLastTradeFarmsProduction (lastTradeProduction);
+    }
+    else if (branch == DEB_MINES)
+    {
+        district->SetLastTradeMinesProduction (lastTradeProduction);
+    }
+    else if (branch == DEB_INDUSTRY)
+    {
+        district->SetLastTradeIndustryProduction (lastTradeProduction);
+    }
 }
 }
 }
