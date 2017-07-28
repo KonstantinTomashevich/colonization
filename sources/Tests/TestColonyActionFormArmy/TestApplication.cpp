@@ -15,7 +15,7 @@
 #include <Colonization/Backend/TradeProcessor.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
-#include <Colonization/Backend/ColoniesActionsProcessor.hpp>
+#include <Colonization/Backend/ColoniesProcessor.hpp>
 #include <Colonization/Utils/Network/NetworkUpdateSmoother.hpp>
 #include <Colonization/Utils/Hubs/RegisterAllObjects.hpp>
 
@@ -111,8 +111,7 @@ void TestApplication::Start ()
 
     Colonization::UnitsManager *unitsManager =
             scene->CreateChild ("units", Urho3D::REPLICATED)->CreateComponent <Colonization::UnitsManager> ();
-    Colonization::ColoniesActionsProcessor *actionsProcessor =
-            scene->CreateComponent <Colonization::ColoniesActionsProcessor> ();
+    Colonization::ColoniesProcessor *actionsProcessor = scene->CreateComponent <Colonization::ColoniesProcessor> ();
 
     EmptyInternalPlayer *player = new EmptyInternalPlayer (context_, "PlayerX", Urho3D::Color::RED, scene);
     if (!playersManager->AddInternalPlayer (player))

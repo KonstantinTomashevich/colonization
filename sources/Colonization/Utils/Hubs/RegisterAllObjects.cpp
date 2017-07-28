@@ -1,8 +1,7 @@
 #include <Colonization/BuildConfiguration.hpp>
 #include "RegisterAllObjects.hpp"
 
-#include <Colonization/Backend/ColoniesActionsProcessor.hpp>
-#include <Colonization/Backend/ColoniesEvolutionManager.hpp>
+#include <Colonization/Backend/ColoniesProcessor.hpp>
 #include <Colonization/Backend/MessagesHandler/MessagesHandler.hpp>
 #include <Colonization/Backend/Player/Player.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
@@ -41,8 +40,7 @@ namespace Colonization
 {
 void RegisterAllObjects (Urho3D::Context *context)
 {
-    ColoniesActionsProcessor::RegisterObject (context);
-    ColoniesEvolutionManager::RegisterObject (context);
+    ColoniesProcessor::RegisterObject (context);
     MessagesHandler::RegisterObject (context);
     PlayersManager::RegisterObject (context);
     PlayersPointsCalculator::RegisterObject (context);

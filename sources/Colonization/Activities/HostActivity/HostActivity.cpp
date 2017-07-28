@@ -16,8 +16,7 @@
 #include <Colonization/Activities/HostActivity/HostActivityEvents.hpp>
 #include <Colonization/Activities/HostActivity/HostActivityConstants.hpp>
 
-#include <Colonization/Backend/ColoniesActionsProcessor.hpp>
-#include <Colonization/Backend/ColoniesEvolutionManager.hpp>
+#include <Colonization/Backend/ColoniesProcessor.hpp>
 #include <Colonization/Backend/MessagesHandler/MessagesHandler.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
 #include <Colonization/Backend/PlayersPointsCalculator.hpp>
@@ -235,8 +234,7 @@ void HostActivity::SetupFinishedState ()
 {
     currentState_ = GAME_STATE_FINISHED;
     scene_->GetChild ("units")->GetComponent <UnitsManager> ()->Remove ();
-    scene_->GetComponent <ColoniesActionsProcessor> ()->Remove ();
-    scene_->GetComponent <ColoniesEvolutionManager> ()->Remove ();
+    scene_->GetComponent <ColoniesProcessor> ()->Remove ();
     scene_->GetComponent <TradeProcessor> ()->Remove ();
     scene_->GetComponent <PlayersPointsCalculator> ()->Remove ();
     scene_->GetComponent <VictoryProgressUpdater> ()->Remove ();
@@ -304,8 +302,7 @@ void HostActivity::RecalculateUnitsHashes (UnitsManager *unitsManager)
 
 void HostActivity::CreateServerProcessorsAndManagers ()
 {
-    scene_->CreateComponent <ColoniesActionsProcessor> (Urho3D::LOCAL);
-    scene_->CreateComponent <ColoniesEvolutionManager> (Urho3D::LOCAL);
+    scene_->CreateComponent <ColoniesProcessor> (Urho3D::LOCAL);
     scene_->CreateComponent <TradeProcessor> (Urho3D::LOCAL);
     scene_->CreateComponent <PlayersPointsCalculator> (Urho3D::LOCAL);
     scene_->CreateComponent <VictoryProgressUpdater> (Urho3D::LOCAL);

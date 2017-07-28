@@ -14,7 +14,6 @@
 #include <Colonization/Backend/Diplomacy/DiplomacyPeaceRequest.hpp>
 #include <Colonization/Backend/UnitsManager.hpp>
 #include <Colonization/Backend/PlayersManager.hpp>
-#include <Colonization/Backend/ColoniesEvolutionManager.hpp>
 
 namespace Colonization
 {
