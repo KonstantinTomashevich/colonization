@@ -179,6 +179,7 @@ Urho3D::PODVector <Urho3D::StringHash> Map::FindPath(const Urho3D::StringHash &t
     float marchSpeed = configuration->GetMarchSpeed ();
     float embarkationSpeed = configuration->GetEmbarkationSpeed ();
     float disembarkationSpeed = configuration->GetDisembarkationSpeed ();
+    float heuristicMedianSpeed = (sailSpeed + marchSpeed + embarkationSpeed + disembarkationSpeed) / 4.0f;
 
     Urho3D::Log::Write (Urho3D::LOG_DEBUG,
                         "\n"
@@ -276,7 +277,8 @@ Urho3D::PODVector <Urho3D::StringHash> Map::FindPath(const Urho3D::StringHash &t
 
                 if (!costSoFar.Contains (next->GetName ()) || newCost < costSoFar [next->GetName ()])
                 {
-                    int priority = 1 + static_cast <int> (HeuristicDistanceForPathFinding (target, next) * 1000);
+                    unsigned priority = static_cast <unsigned> ((HeuristicDistanceForPathFinding (target, next) / heuristicMedianSpeed) * 1000 +
+                            Urho3D::RoundToInt (newCost * 1000));
                     while (frontier [Urho3D::StringHash (priority)] && frontier [Urho3D::StringHash (priority)] != next)
                     {
                         priority++;
@@ -287,7 +289,7 @@ Urho3D::PODVector <Urho3D::StringHash> Map::FindPath(const Urho3D::StringHash &t
                     cameFrom [next->GetName ()] = current;
 
                     Urho3D::Log::Write (Urho3D::LOG_DEBUG, "Priority: " + Urho3D::String (priority) + "\n"
-                                        "Setted as lowerest cost to this district.\n");
+                                        "Setted as lowest cost to this district.\n");
                 }
 
                 Urho3D::Log::Write (Urho3D::LOG_DEBUG, "");
@@ -306,8 +308,6 @@ Urho3D::PODVector <Urho3D::StringHash> Map::FindPath(const Urho3D::StringHash &t
 
 float HeuristicDistanceForPathFinding (District *goal, District *next)
 {
-    return (Urho3D::Abs (goal->GetUnitPosition ().x_ - next->GetUnitPosition ().x_) +
-            Urho3D::Abs (goal->GetUnitPosition ().y_ - next->GetUnitPosition ().y_) +
-            Urho3D::Abs (goal->GetUnitPosition ().z_ - next->GetUnitPosition ().z_));
+    return (goal->GetUnitPosition () - next->GetUnitPosition ()).Length ();
 }
 }
