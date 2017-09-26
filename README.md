@@ -11,7 +11,7 @@ Multiplayer RTS game in colonization setting.
 
 ## Features:
 - [x] Districts system like Europa Universalis.
-- [x] Different victory types like Civilization (victory types can be added by separate script, specified in map info xml).
+- [x] Various victory types like Civilization (victory types can be added by separate script, specified in map info xml).
 - [x] Colonies evolution system (for now, evolution of farms, mines, industry, logistics and defense).
 - [x] Trade areas system (district with good logistics unite to trade area and it will give you additional profit).
 - [x] Diplomacy system (basic, you can declare war and send peace treaty).
