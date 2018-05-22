@@ -22,7 +22,7 @@ Multiplayer RTS game in colonization setting.
 ## How to build
 WARNING! `Lua` required. Build scripts use `lua` command.
 
-Step 1. Build [Urho3D](https://urho3d.github.io) SDK: clone sources from [git repository](https://github.com/Urho3D/Urho3D), [build it](https://urho3d.github.io/documentation/HEAD/_building.html) and generate SDK via `make install`.
+Step 1. Build [Urho3D](https://urho3d.github.io) SDK: clone sources from [git repository](https://github.com/Urho3D/Urho3D), [build it](https://urho3d.github.io/documentation/HEAD/_building.html) and generate SDK via `make install`. Recomended Urho3D version: [this commit](https://github.com/urho3d/Urho3D/commit/8f8f0e658de42935cbc1f6928c4097eaa0cd170c), newer version are not supported.
 
 Step 2. Set `URHO3D_HOME` environment var equal to the installed sdk dir.
 
