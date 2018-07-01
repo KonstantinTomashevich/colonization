@@ -41,10 +41,10 @@ make && make test
 Step 6. Executables will be in `${CMAKE_BINARY_DIR}/bin` in `Tools`, `Tests` and `GameLauncher` folders.
 
 ## Screenshots
-![0](https://s12.postimg.org/4ipmrhf25/image.png)
-![1](https://s12.postimg.org/drrt1lny5/image.png)
-![2](https://s12.postimg.org/fxm3w3rel/image.png)
-![3](https://s12.postimg.org/dhovvzypp/image.png)
-![4](https://s12.postimg.org/lbphhe6il/image.png)
-![5](https://s12.postimg.org/ade7z7hx9/image.png)
-![6](https://s12.postimg.org/8zml3winx/image.png)
+![0](https://pp.userapi.com/c847021/v847021302/7bfba/l1TjwSyYaJU.jpg)
+![1](https://pp.userapi.com/c847021/v847021302/7bfc4/ZWNbo9vavus.jpg)
+![2](https://pp.userapi.com/c847021/v847021302/7bfce/S-W0ZzdZeJs.jpg)
+![3](https://pp.userapi.com/c847021/v847021302/7bfd8/O4WJ-ULSRww.jpg)
+![4](https://pp.userapi.com/c847021/v847021302/7bfe2/VbX3OzYnIvo.jpg)
+![5](https://pp.userapi.com/c847021/v847021302/7bfec/fr7lF2Y4_Rg.jpg)
+![6](https://pp.userapi.com/c847021/v847021302/7bff6/btE_kUGMbBo.jpg)
